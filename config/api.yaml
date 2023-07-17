@@ -1,0 +1,9 @@
+# 配置文件，在这里填写api
+
+weather: Android  #心知天气api
+youdao: 10        #有道翻译
+poe-api:          #从poe.com爬取到token，可获取多个
+  poe-api1: xiaoqq
+  poe-api2: 123456
+siZhiAi: null     #思知ai
+
