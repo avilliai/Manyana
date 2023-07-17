@@ -1,6 +1,5 @@
 <div align="center">
-   <img width="160" src="https://github.com/avilliai/YIRIS/blob/main/QQ%E5%9B%BE%E7%89%8720230623102552.jpg
-" alt="logo"></br>
+   <img width="160" src="QQ图片20230623102552.jpg" alt="logo"></br>
 
    
 
