@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
 import json
+import random
 
 import poe
 from mirai import Image, Voice
@@ -31,7 +32,8 @@ from mirai import Mirai, WebSocketAdapter, FriendMessage, GroupMessage, At, Plai
 
 
 
-def main(bot,master,KEY,proxy):
+def main(bot,master,apiKey,proxy):
+    KEY=random.choice(apiKey)
     global client
     client = poe.Client(KEY, proxy=proxy)
     json.dumps(client.bot_names, indent=2)

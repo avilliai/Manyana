@@ -2,8 +2,10 @@
 
 weather: Android  #心知天气api
 youdao: 10        #有道翻译
-poe-api:          #从poe.com爬取到token，可获取多个
-  poe-api1: xiaoqq
-  poe-api2: 123456
+unKnown:          #从poe.com爬取到token，可获取多个
+  test1: xiaoqq
+  test2: 123456
+poe-api: [BHai3yLdvOcKajS6UnIX6A%3D%3D]         #从poe.com爬取到token，可获取多个
 siZhiAi: null     #思知ai
+proxy: localhost:1080   #代理
 

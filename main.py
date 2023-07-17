@@ -1,14 +1,26 @@
 # -*- coding:utf-8 -*-
 import datetime
+import json
+
 import yaml
 from mirai import Mirai, FriendMessage, WebSocketAdapter
 
 from run import poeAi
 
 if __name__ == '__main__':
-    bot = Mirai(12345678, adapter=WebSocketAdapter(
-        verify_key='your_verify_key', host='localhost', port=6090
+    with open('config.json','r',encoding='utf-8') as fp:
+        data=fp.read()
+    config=json.loads(data)
+    qq=int(config.get('botQQ'))
+    key=config.get("vertify_key")
+    port= int(config.get("port"))
+    bot = Mirai(qq, adapter=WebSocketAdapter(
+        verify_key=key, host='localhost', port=port
     ))
+
+
+    botName = config.get('botName')
+    master=int(config.get('master'))
 
     @bot.on(FriendMessage)
     async def on_friend_message(event: FriendMessage):
@@ -30,6 +42,6 @@ if __name__ == '__main__':
             file_object.close()
         print(all_the_text)
 
-    poeAi.main(bot,result.get("poe-api"))
+    poeAi.main(bot,master,result.get("poe-api"),result.get("proxy"))
     startVer()
     bot.run()
