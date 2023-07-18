@@ -1,11 +1,17 @@
 # -*- coding:utf-8 -*-
+import asyncio
 import datetime
 import json
+
+import os
+import subprocess
+
 
 import yaml
 from mirai import Mirai, FriendMessage, WebSocketAdapter
 
-from run import poeAi
+from plugins.newLogger import newLogger
+from run import poeAi, voiceReply
 
 if __name__ == '__main__':
     with open('config.json','r',encoding='utf-8') as fp:
@@ -17,31 +23,38 @@ if __name__ == '__main__':
     bot = Mirai(qq, adapter=WebSocketAdapter(
         verify_key=key, host='localhost', port=port
     ))
-
-
     botName = config.get('botName')
     master=int(config.get('master'))
 
-    @bot.on(FriendMessage)
-    async def on_friend_message(event: FriendMessage):
-        if str(event.message_chain) == '你好':
-            await bot.send(event, 'Hello World!')
 
+    #芝士logger
+    logger=newLogger()
 
-
-
+    #读取api列表
     with open('config/api.yaml', 'r', encoding='utf-8') as f:
         result = yaml.load(f.read(), Loader=yaml.FullLoader)
-    print(datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')+" 读取到apiKey列表")
+    app_id = result.get("youdao").get("app_id")
+    app_key=result.get("youdao").get("app_key")#有道翻译api
+    logger.info("读取到apiKey列表")
+
+
+
+
+
+    subprocess.Popen(["venv/Scripts/python.exe", "flask_voice.py"],cwd="vits")
+    #asyncio.run(os.system("cd vits && python flask_voice.py"))
+    logger.info(" 语音合成sever启动....")
 
     def startVer():
-        file_object = open("./mylog.log")
+        file_object = open("config/mylog.log")
         try:
             all_the_text = file_object.read()
         finally:
             file_object.close()
         print(all_the_text)
 
+    voiceReply.main(bot,app_id,app_key,logger)
     poeAi.main(bot,master,result.get("poe-api"),result.get("proxy"))
     startVer()
+
     bot.run()

@@ -1,5 +1,5 @@
 <div align="center">
-   <img width="160" src="QQ图片20230623102552.jpg" alt="logo"></br>
+   <img width="160" src="config/QQ图片20230623102552.jpg" alt="logo"></br>
 
    
 

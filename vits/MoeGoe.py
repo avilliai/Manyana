@@ -1,9 +1,13 @@
+# -*- coding:utf-8 -*-
+import asyncio
 import datetime
+from asyncio import sleep
 
 from scipy.io.wavfile import write
 
 
 from mel_processing import spectrogram_torch
+from plugins.RandomStr import random_str
 from text import text_to_sequence, _clean_text
 from models import SynthesizerTrn
 import utils
@@ -12,6 +16,8 @@ import sys
 import re
 from torch import no_grad, LongTensor
 import logging
+
+
 
 logging.getLogger('numba').setLevel(logging.WARNING)
 
@@ -80,23 +86,21 @@ def get_label(text, label):
     else:
         return False, text
 
-def voiceGenerate(tex,out,spealerIDDD=0,modelSelect=['voiceModel/nene/1374_epochsm.pth','voiceModel/nene/config.json']):
+async def voiceGenerate(tex,out,speakerID=0,modelSelect=['voiceModel/amm/amamiyam.pth','voiceModel/amm/config.json']):
     if len(tex)>150:
 
         tex='[JA]長すぎるああ、こんなに長い声..... んもう~[JA]'
-        spealerIDDD=0
-    if modelSelect == ['voiceModel/nene/1374_epochsm.pth','voiceModel/nene/config.json']:
-        tex=tex.replace('[JA]','')
+        speakerID=0
+    #if modelSelect == ['voiceModel/amm/amamiyam.pth','voiceModel/amm/config.json']:
+        #tex=tex.replace('[JA]','')
     text=tex
     out_path=out
-    speakeriddd=int(spealerIDDD)
+
     if '--escape' in sys.argv:
         escape = True
     else:
         escape = False
 
-    #model = 'voiceModel\\1374_epochsm.pth'#input('Path of a VITS model: ')
-    #config ='voiceModel\\config.json'#input('Path of a config file: ')
     model=modelSelect[0]
     config=modelSelect[1]
 
@@ -117,50 +121,48 @@ def voiceGenerate(tex,out,spealerIDDD=0,modelSelect=['voiceModel/nene/1374_epoch
     _ = net_g_ms.eval()
     utils.load_checkpoint(model, net_g_ms)
 
-    while True:
-        choice = 't'  # input('TTS or VC? (t/v):')
-        if choice == 't':
-            #text = input('Text to read: ')
-            if text == '[ADVANCED]':
-                text = input('Raw text:')
-                print('Cleaned text is:')
-                ex_print(_clean_text(
-                    text, hps_ms.data.text_cleaners), escape)
-                continue
 
-            length_scale, text = get_label_value(
-                text, 'LENGTH', 1.1, 'length scale')
-            noise_scale, text = get_label_value(
-                text, 'NOISE', 0.667, 'noise scale')
-            noise_scale_w, text = get_label_value(
-                text, 'NOISEW', 0.8, 'deviation of noise')
-            cleaned, text = get_label(text, 'CLEANED')
+
+    if text == '[ADVANCED]':
+        text = input('Raw text:')
+        print('Cleaned text is:')
+        ex_print(_clean_text(
+            text, hps_ms.data.text_cleaners), escape)
+
+
+    length_scale, text = get_label_value(
+        text, 'LENGTH', 1.1, 'length scale')
+    noise_scale, text = get_label_value(
+        text, 'NOISE', 0.667, 'noise scale')
+    noise_scale_w, text = get_label_value(
+        text, 'NOISEW', 0.8, 'deviation of noise')
+    cleaned, text = get_label(text, 'CLEANED')
 
 
 
-            stn_tst = get_text(text, hps_ms, cleaned=cleaned)
+    stn_tst = get_text(text, hps_ms, cleaned=cleaned)
 
-            #print_speakers(speakers, escape)
+    #print_speakers(speakers, escape)
 
-            time = datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')
-            print(time + '| 正在使用语音模型：'+str(speakeriddd)+' ......生成中'+'  |  文本：'+str(tex))
-            speaker_id = speakeriddd
+    time = datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')
+    print(time + '| 正在使用语音模型：'+str(speakerID)+' ......生成中'+'  |  文本：'+str(tex))
+    speaker_id = int(speakerID)
 
-            with no_grad():
-                x_tst = stn_tst.unsqueeze(0)
-                x_tst_lengths = LongTensor([stn_tst.size(0)])
-                sid = LongTensor([speaker_id])
-                audio = net_g_ms.infer(x_tst, x_tst_lengths, sid=sid, noise_scale=noise_scale,
-                                       noise_scale_w=noise_scale_w, length_scale=length_scale)[0][
-                    0, 0].data.cpu().float().numpy()
+    with no_grad():
+        x_tst = stn_tst.unsqueeze(0)
+        x_tst_lengths = LongTensor([stn_tst.size(0)])
+        sid = LongTensor([speaker_id])
+        audio = net_g_ms.infer(x_tst, x_tst_lengths, sid=sid, noise_scale=noise_scale,
+                               noise_scale_w=noise_scale_w, length_scale=length_scale)[0][
+            0, 0].data.cpu().float().numpy()
 
-        elif choice == 'v':
-            audio, out_path = voice_conversion()
 
-        write(out_path, hps_ms.data.sampling_rate, audio)
-        time = datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')
-        print(time + '| Successfully saved!')
-        break
+
+    write(out_path, hps_ms.data.sampling_rate, audio)#将生成的语音文件写入本地
+
+    time = datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')
+    print(time + '| Successfully saved!')
+
 
 
 def voice_conversion(sourcepath,speaker=0):
@@ -216,7 +218,20 @@ def voice_conversion(sourcepath,speaker=0):
 
 if __name__ == '__main__':
     #voice_conversion("plugins/voices/sing/rest.wav")
-    voiceGenerate('[JA]先生,ちょっとお時間..いただけますか?[JA]','voiceModel/YUUKA/1.wav')
+
+    print("任务1")
+    asyncio.run(voiceGenerate('[JA]先生,ちょっとお時間..いただけますか1?[JA]', 'voices/'+random_str()+'1.wav'))
+    print("任务1")
+    asyncio.run(voiceGenerate('[JA]先生,ちょっとお時間..いただけますか2?[JA]', 'voices/'+random_str()+'1.wav'))
+    print("任务1")
+    asyncio.run(voiceGenerate('[JA]先生,ちょっとお時間..いただけますか3?[JA]', 'voices/'+random_str()+'1.wav'))
+
+
+
+    '''async def voiceG():
+        await voiceGenerate('[JA]先生,ちょっとお時間..いただけますか?[JA]','voiceModel/1.wav')
+    asyncio.run(voiceG())'''
+
     '''ranpath = random_str()
     Path=sys.argv[0][:-23]
     print(Path)

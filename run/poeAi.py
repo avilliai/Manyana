@@ -5,8 +5,8 @@ import random
 import poe
 from mirai import Image, Voice
 from mirai import Mirai, WebSocketAdapter, FriendMessage, GroupMessage, At, Plain
-'''def gptHelper():
-    client = poe.Client("BHai3yLdvOcKajS6UnIX6A%3D%3D", proxy="http://127.0.0.1:1080")
+def gptHelper():
+    client = poe.Client("", proxy="http://127.0.0.1:1080")
     json.dumps(client.bot_names, indent=2)
     while True:
         message = input("you:")
@@ -14,7 +14,7 @@ from mirai import Mirai, WebSocketAdapter, FriendMessage, GroupMessage, At, Plai
         for chunk in client.send_message("capybara", message):
             #print(chunk["text_new"],end="", flush=True)
             s+=chunk["text_new"]
-        print(s)'''
+        print(s)
 
 """
 {
@@ -33,7 +33,7 @@ from mirai import Mirai, WebSocketAdapter, FriendMessage, GroupMessage, At, Plai
 
 
 def main(bot,master,apiKey,proxy):
-    KEY=random.choice(apiKey)
+    KEY=apiKey[0]
     global client
     client = poe.Client(KEY, proxy=proxy)
     json.dumps(client.bot_names, indent=2)
@@ -41,8 +41,8 @@ def main(bot,master,apiKey,proxy):
     @bot.on(GroupMessage)
     async def AiHelper(event:GroupMessage):
         global client
-        if str(event.message_chain).startswith("/poe"):
-            mes=str(event.message_chain)[4:]
+        if str(event.message_chain).startswith("@"+str(bot.qq)):
+            mes=str(event.message_chain).replace("@"+str(bot.qq),"")
             s = ""
             try:
                 for chunk in client.send_message("capybara", mes):
@@ -59,5 +59,5 @@ def main(bot,master,apiKey,proxy):
             client = poe.Client(token=KEY, proxy=proxy)
             json.dumps(client.bot_names, indent=2)
             await bot.send(event,"已重启")
-#if __name__ == '__main__':
-    #gptHelper()
+if __name__ == '__main__':
+    gptHelper()
