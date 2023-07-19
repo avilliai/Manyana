@@ -29,7 +29,7 @@ def main(bot,app_id,app_key,logger):
         if "说" in str(event.message_chain) and str(event.message_chain).split("说")[0] in characters:
             speaker=str(event.message_chain).split("说")[0]
             text = str(event.message_chain).split("说")[1]
-            text = translate(text, app_id, app_key)
+            text =await translate(text, app_id, app_key)
             out = '../data/voices/' + random_str() + '.wav'
             logger.info("语音生成_文本" + text)
             logger.info("语音生成_模型:"+speaker + str(characters.get(speaker)[1]))

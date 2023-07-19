@@ -1,3 +1,4 @@
+import httpx
 import requests
 import time
 import hashlib
@@ -6,7 +7,7 @@ import uuid
 youdao_url = 'https://openapi.youdao.com/api'  # 有道api地址
 
 # 需要翻译的文本'
-def translate(txt,app_id,app_key,ori="zh-CHS",aim="ja"):
+async def translate(txt,app_id,app_key,ori="zh-CHS",aim="ja"):
     translate_text = txt
 
     # 翻译文本生成sign前进行的处理
@@ -39,7 +40,8 @@ def translate(txt,app_id,app_key,ori="zh-CHS",aim="ja"):
         'curtime': time_curtime,  # 秒级时间戳
     }
 
-    r = requests.get(youdao_url, params=data).json()  # 获取返回的json()内容
-    return r["translation"][0]
+    async with httpx.AsyncClient() as client:
+        r = await client.get(youdao_url, params=data)
+        return r.json()["translation"][0]
     #print("翻译后的结果：" + r["translation"][0])  # 获取翻译内容
 

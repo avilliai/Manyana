@@ -1,14 +1,21 @@
-# coding: utf8
+import urllib
 
-import urllib.request
+from plugins.RandomStr import random_str
 
-def download_img(img_url, api_token):
+
+def dict_download_img(url,dirc):
+    img_url = url
+    api_token = "fklasjfljasdlkfjlasjflasjfljhasdljflsdjflkjsadljfljsda"
     header = {"Authorization": "Bearer " + api_token} # 设置http header
     request = urllib.request.Request(img_url, headers=header)
     try:
         response = urllib.request.urlopen(request)
-        img_name = "img.png"
-        filename = "pictures\\"+ img_name
+        ranpath = random_str()
+        if str(url).endswith('.gif') or str(url).endswith('.GIF'):
+            img_name = ranpath + ".gif"
+        else:
+            img_name = ranpath+".png"
+        filename = dir+"/"+ img_name
         if (response.getcode() == 200):
             with open(filename, "wb") as f:
                 f.write(response.read()) # 将内容写入图片
@@ -16,8 +23,6 @@ def download_img(img_url, api_token):
     except:
         return "failed"
 
-def imgDown(url):
-    # 下载要的图片
-    img_url = url
-    api_token = "fklasjfljasdlkfjlasjflasjfljhasdljflsdjflkjsadljfljsda"
-    download_img(img_url, api_token)
+
+if __name__ == '__main__':
+    dict_download_img('https://tvax3.sinaimg.cn/large/ec43126fgy1gwjqtn8f6bj229c38wnpk.jpg')

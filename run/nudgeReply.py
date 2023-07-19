@@ -31,10 +31,6 @@ def main(bot,logger):
     @bot.on(NudgeEvent)
     async def NudgeReply(event:NudgeEvent):
         if event.target==bot.qq:
-            rep=random.choice(normal_Reply)
-            logger.info("接收到来自"+str(event.from_id)+"的戳一戳")
-            logger.info("回复："+rep)
-            await bot.send_group_message(event.subject.id,rep)
             if random.randint(0,100)>100-prob:
                 await bot.send_group_message(event.subject.id, random.choice(special_Reply))
                 try:
@@ -46,6 +42,11 @@ def main(bot,logger):
                         await bot.send_group_message(event.subject.id, random.choice(special_Reply1))
                     except:
                         await bot.send_group_message(event.subject.id,"唔....似乎戳不了你呢....好可惜")
+            else:
+                rep = random.choice(normal_Reply)
+                logger.info("接收到来自" + str(event.from_id) + "的戳一戳")
+                logger.info("回复：" + rep)
+                await bot.send_group_message(event.subject.id, rep)
 
 
 

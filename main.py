@@ -8,11 +8,11 @@ import subprocess
 from random import random
 
 import yaml
-from mirai import Mirai, FriendMessage, WebSocketAdapter, Poke, GroupMessage
+from mirai import Mirai, FriendMessage, WebSocketAdapter, Poke, GroupMessage, Image
 from mirai.models import NudgeEvent
 
 from plugins.newLogger import newLogger
-from run import poeAi, voiceReply, nudgeReply, blueArchiveHelper
+from run import poeAi, voiceReply, nudgeReply, blueArchiveHelper, imgSearch, extraParts
 
 if __name__ == '__main__':
     with open('config.json','r',encoding='utf-8') as fp:
@@ -39,10 +39,12 @@ if __name__ == '__main__':
     logger.info("读取到apiKey列表")
 
 
-    @bot.on(GroupMessage)
+    '''@bot.on(GroupMessage)
     async def test112(event:GroupMessage):
-        if str(event.message_chain)=="zxc":
-            await bot.send_group_message(event.group.id,Poke(name="ChuoYiChuo"))
+        if event.message_chain.count(Image) == 1 and event.sender.id==master:
+            lst_img = event.message_chain.get(Image)
+            img_url = lst_img[0].url
+            print(img_url)'''
 
 
 
@@ -62,12 +64,13 @@ if __name__ == '__main__':
 
     voiceReply.main(bot,app_id,app_key,logger)#语音生成
     try:
-        #logger.info("开发过程中暂不启动poe-api")
-        poeAi.main(bot,master,result.get("poe-api"),result.get("proxy"),logger)#poe-api
+        logger.info("开发过程中暂不启动poe-api")
+        #poeAi.main(bot,master,result.get("poe-api"),result.get("proxy"),logger)#poe-api
     except:
         logger.error("poe-api启动失败")
-    nudgeReply.main(bot,logger)
-
+    imgSearch.main(bot, result.get("sauceno-api"), result.get("proxy"), logger)
+    nudgeReply.main(bot,logger)#戳一戳
+    extraParts.main(bot,logger)
     blueArchiveHelper.main(bot,app_id,app_key,logger)
     startVer()
 

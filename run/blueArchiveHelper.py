@@ -26,7 +26,7 @@ def main(bot,app_id,app_key,logger):
 
     @bot.on(GroupMessage)
     async def CharacterQuery(event:GroupMessage):
-        if str(event.message_chain).startswith("ba查询"):
+        if "ba查询" in str(event.message_chain):
             url=""
             aimCharacter=str(event.message_chain).split("ba查询")[1]
             if aimCharacter in result:
@@ -67,45 +67,45 @@ def main(bot,app_id,app_key,logger):
                 await bot.send(event, (Image(path=lobby),str(response.get("info")).replace(",", "\n")))
                 await bot.send(event,Image(path=portrait))
 
-        @bot.on(GroupMessage)
-        async def CharacterQuery(event: GroupMessage):
-            if str(event.message_chain).startswith("ba技能查询"):
-                url = ""
-                aimCharacter = str(event.message_chain).split("ba技能查询")[1]
-                if aimCharacter in result:
-                    url = 'https://api.ennead.cc/buruaka/character/' + aimCharacter + '?region=japan'  # 指定角色信息
+    @bot.on(GroupMessage)
+    async def CharacterQuery(event: GroupMessage):
+        if "ba技能查询" in str(event.message_chain):
+            url = ""
+            aimCharacter = str(event.message_chain).split("ba技能查询")[1]
+            if aimCharacter in result:
+                url = 'https://api.ennead.cc/buruaka/character/' + aimCharacter + '?region=japan'  # 指定角色信息
 
+            else:
+                for i in result:
+                    for s in result.get(i):
+                        if s == aimCharacter:
+                            url = 'https://api.ennead.cc/buruaka/character/' + i + '?region=japan'  # 指定角色信息
+                            break
+            if url == "":
+                logger.warning("查询ba角色技能:" + aimCharacter + " 失败，未收录对应数据")
+                logger.info("发送语音(日)：数据库里好像没有这个角色呢,要再检查一下吗？")
+                if os.path.exists("data/autoReply/voiceReply/queryFalse.wav") == False:
+                    data = {"text": "[JA]" + translate("数据库里好像没有这个角色呢,要再检查一下吗？", app_id, app_key) + "[JA]",
+                            "out": "../data/autoReply/voiceReply/queryFalse.wav"}
+                    await voiceGenerate(data)
+                    await bot.send(event, Voice(path="data/autoReply/voiceReply/queryFalse.wav"))
                 else:
-                    for i in result:
-                        for s in result.get(i):
-                            if s == aimCharacter:
-                                url = 'https://api.ennead.cc/buruaka/character/' + i + '?region=japan'  # 指定角色信息
-                                break
-                if url == "":
-                    logger.warning("查询ba角色技能:" + aimCharacter + " 失败，未收录对应数据")
-                    logger.info("发送语音(日)：数据库里好像没有这个角色呢,要再检查一下吗？")
-                    if os.path.exists("data/autoReply/voiceReply/queryFalse.wav") == False:
-                        data = {"text": "[JA]" + translate("数据库里好像没有这个角色呢,要再检查一下吗？", app_id, app_key) + "[JA]",
-                                "out": "../data/autoReply/voiceReply/queryFalse.wav"}
-                        await voiceGenerate(data)
-                        await bot.send(event, Voice(path="data/autoReply/voiceReply/queryFalse.wav"))
-                    else:
-                        await bot.send(event, Voice(path="data/autoReply/voiceReply/queryFalse.wav"))
-                else:
-                    logger.info("查询ba角色技能:" + aimCharacter)
-                    response = requests.get(url).json()
-                    # print(response,type(response))
-                    imgData = response.get("image")
-                    icon = imgData.get("icon").replace("https://api.ennead.cc/buruaka", "data/blueArchive/") + ".png"
-                    lobby = imgData.get("lobby").replace("https://api.ennead.cc/buruaka", "data/blueArchive/") + ".png"
-                    portrait = imgData.get("portrait").replace("https://api.ennead.cc/buruaka",
-                                                               "data/blueArchive/") + ".png"
-                    data1 = response.get("stat")
+                    await bot.send(event, Voice(path="data/autoReply/voiceReply/queryFalse.wav"))
+            else:
+                logger.info("查询ba角色技能:" + aimCharacter)
+                response = requests.get(url).json()
+                # print(response,type(response))
+                imgData = response.get("image")
+                icon = imgData.get("icon").replace("https://api.ennead.cc/buruaka", "data/blueArchive/") + ".png"
+                lobby = imgData.get("lobby").replace("https://api.ennead.cc/buruaka", "data/blueArchive/") + ".png"
+                portrait = imgData.get("portrait").replace("https://api.ennead.cc/buruaka",
+                                                           "data/blueArchive/") + ".png"
+                data1 = response.get("stat")
 
 
-                    await bot.send(event, (Image(path=icon),
-                                           str(data1).replace(",", "\n")))
-                    await bot.send(event, (Image(path=lobby), str(response.get("terrain")).replace(",", "\n")))
+                await bot.send(event, (Image(path=icon),str(data1).replace(",", "\n")))
+                await bot.send(event, (Image(path=lobby), str(response.get("terrain")).replace(",", "\n").replace("'urban'","市区").replace("'outdoor'","室外").replace("'indoor'","室内").replace("'DamageDealt'","伤害").replace("'ShieldBlockRate'","掩体成功率").replace("{","").replace("}","")))
+
 
 
     async def voiceGenerate(data):
