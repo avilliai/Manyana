@@ -34,7 +34,11 @@ def main(bot,logger):
         if '/pic' in str(event.message_chain):
             picNum = int((str(event.message_chain))[4:])
         elif "@"+str(bot.qq) in str(event.message_chain):
-            picNum=int(get_number(str(event.message_chain).replace("@"+str(bot.qq),"")))
+            if get_number(str(event.message_chain).replace("@"+str(bot.qq),""))==None:
+                return
+            else:
+                picNum=int(get_number(str(event.message_chain).replace("@"+str(bot.qq),"")))
+
         else:
             return
         logger.info("图片获取指令....数量："+str(picNum))
