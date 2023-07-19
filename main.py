@@ -62,11 +62,12 @@ if __name__ == '__main__':
 
     voiceReply.main(bot,app_id,app_key,logger)#语音生成
     try:
-        logger.info("开发过程中暂不启动poe-api")
-        #poeAi.main(bot,master,result.get("poe-api"),result.get("proxy"))#poe-api
+        #logger.info("开发过程中暂不启动poe-api")
+        poeAi.main(bot,master,result.get("poe-api"),result.get("proxy"),logger)#poe-api
     except:
         logger.error("poe-api启动失败")
     nudgeReply.main(bot,logger)
+
     blueArchiveHelper.main(bot,app_id,app_key,logger)
     startVer()
 

@@ -1,3 +1,7 @@
-s="ba查询ユキノ"
-for i in s.split('ba查询'):
-    print(i)
+# -*- coding: utf-8 -*-
+import requests
+import json
+import numpy as np
+
+# 定义请求参数
+import yaml

@@ -32,7 +32,8 @@ def gptHelper():
 
 
 
-def main(bot,master,apiKey,proxy):
+def main(bot,master,apiKey,proxy,logger):
+    logger.info("正在启动poe-AI")
     KEY=apiKey[0]
     global client
     client = poe.Client(KEY, proxy=proxy)
@@ -51,7 +52,16 @@ def main(bot,master,apiKey,proxy):
                 print("bot:"+s)
                 await bot.send(event,s)
             except:
+                logger.warning("出错，达到每分钟限制或token已失效。")
+                logger.warning("执行poe-api 重载指令")
                 await bot.send(event,"出错，达到每分钟限制或token已失效。")
+                try:
+                    client = poe.Client(token=KEY, proxy=proxy)
+                    json.dumps(client.bot_names, indent=2)
+                    logger.info("poe-api重载完成")
+                    await bot.send(event,"poe重启完成")
+                except:
+                    logger.error("poe-api重载失败，请检查代理或更新token")
         if str(event.message_chain)=="/clear" and str(event.sender.id)==str(master):
             client.send_chat_break("capybara")
             await bot.send(event,"已清除对话上下文。")

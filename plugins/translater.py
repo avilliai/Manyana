@@ -6,7 +6,7 @@ import uuid
 youdao_url = 'https://openapi.youdao.com/api'  # 有道api地址
 
 # 需要翻译的文本'
-def translate(txt,app_id,app_key):
+def translate(txt,app_id,app_key,ori="zh-CHS",aim="ja"):
     translate_text = txt
 
     # 翻译文本生成sign前进行的处理
@@ -30,8 +30,8 @@ def translate(txt,app_id,app_key):
 
     data = {
         'q': translate_text,  # 翻译文本
-        'from': "zh-CHS",  # 源语言
-        'to': "ja",  # 翻译语言
+        'from': ori,  # 源语言
+        'to': aim,  # 翻译语言
         'appKey': app_id,  # 应用id
         'salt': uu_id,  # 随机生产的uuid码
         'sign': sign,  # 签名
@@ -43,6 +43,3 @@ def translate(txt,app_id,app_key):
     return r["translation"][0]
     #print("翻译后的结果：" + r["translation"][0])  # 获取翻译内容
 
-if __name__ == '__main__':
-    s=translate('早上好')
-    print(s)
