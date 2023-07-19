@@ -2,15 +2,12 @@
 
 weather: Android  #心知天气api
 youdao:
-  app_id:         #有道翻译
+  app_id:        #有道翻译
   app_key:
 sauceno-api:  #sauceno搜图api，你可以从https://saucenao.com/user.php注册并获取
-unKnown:
-  test1: xiaoqq
-  test2: 123456
-moderate: null   #色图审核api
+moderate:   #色图审核api
 poe-api:
-  -  #从poe.com抓取到token，可获取多个
+  - BHai3yLdvOcKajS6UnIX6A%3D%3D #从poe.com抓取到token，可获取多个
 siZhiAi: null     #思知ai
 proxy: 'http://127.0.0.1:1080'  #代理
 
