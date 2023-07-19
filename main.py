@@ -5,13 +5,14 @@ import json
 
 import os
 import subprocess
-
+from random import random
 
 import yaml
-from mirai import Mirai, FriendMessage, WebSocketAdapter
+from mirai import Mirai, FriendMessage, WebSocketAdapter, Poke, GroupMessage
+from mirai.models import NudgeEvent
 
 from plugins.newLogger import newLogger
-from run import poeAi, voiceReply
+from run import poeAi, voiceReply, nudgeReply, blueArchiveHelper
 
 if __name__ == '__main__':
     with open('config.json','r',encoding='utf-8') as fp:
@@ -38,6 +39,12 @@ if __name__ == '__main__':
     logger.info("读取到apiKey列表")
 
 
+    @bot.on(GroupMessage)
+    async def test112(event:GroupMessage):
+        if str(event.message_chain)=="zxc":
+            await bot.send_group_message(event.group.id,Poke(name="ChuoYiChuo"))
+
+
 
 
 
@@ -53,8 +60,14 @@ if __name__ == '__main__':
             file_object.close()
         print(all_the_text)
 
-    voiceReply.main(bot,app_id,app_key,logger)
-    poeAi.main(bot,master,result.get("poe-api"),result.get("proxy"))
+    voiceReply.main(bot,app_id,app_key,logger)#语音生成
+    try:
+        logger.info("开发过程中暂不启动poe-api")
+        #poeAi.main(bot,master,result.get("poe-api"),result.get("proxy"))#poe-api
+    except:
+        logger.error("poe-api启动失败")
+    nudgeReply.main(bot,logger)
+    blueArchiveHelper.main(bot,app_id,app_key,logger)
     startVer()
 
     bot.run()

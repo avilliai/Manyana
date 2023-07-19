@@ -1,12 +1,15 @@
 # 配置文件，在这里填写api
 
 weather: Android  #心知天气api
-youdao: 10        #有道翻译
+youdao:
+  app_id: 67edf72f6213c548        #有道翻译
+  app_key: GIUcbzYlyLq1yKD2VVjV24OZXkzDpota
 unKnown:          #从poe.com爬取到token，可获取多个
   test1: xiaoqq
   test2: 123456
 moderate: null   #色图审核api
-poe-api: [BHai3yLdvOcKajS6UnIX6A%3D%3D]         #从poe.com爬取到token，可获取多个
+poe-api:
+  - BHai3yLdvOcKajS6UnIX6A%3D%3D #从poe.com抓取到token，可获取多个
 siZhiAi: null     #思知ai
-proxy: localhost:1080   #代理
+proxy: http://127.0.0.1:1080  #代理
 

@@ -1,33 +1,18 @@
-import logging
-import colorlog
+import requests
 
-# 创建一个logger对象
-logger = logging.getLogger("yucca")
+url = 'https://api.ennead.cc/buruaka/'
+response = requests.get(url)
+print(response.text)
 
-# 设置日志级别为DEBUG，这样可以输出所有级别的日志
-logger.setLevel(logging.DEBUG)
+pointCharacter='https://api.ennead.cc/buruaka/character/ミノリ?region=japan'#指定角色信息
+response=requests.get(pointCharacter)
+print(response.text,type(response.text))
+'''roles='https://api.ennead.cc/buruaka/character?region=japan'#所有角色
+response=requests.get(roles)
+print(response.text,type(response.text))'''
 
-# 创建一个StreamHandler对象，用于输出日志到控制台
-console_handler = logging.StreamHandler()
+gacha='https://api.ennead.cc/buruaka/banner?region=japan'#当前卡池信息
+response=requests.get(gacha)
+print(response.text,type(response.text))
 
-# 设置控制台输出的日志格式和颜色
-console_format = '%(log_color)s%(asctime)s - %(name)s - %(levelname)s - %(message)s'
-console_colors = {
-    'DEBUG': 'white',
-    'INFO': 'cyan',
-    'WARNING': 'yellow',
-    'ERROR': 'red',
-    'CRITICAL': 'bold_red',
-}
-console_formatter = colorlog.ColoredFormatter(console_format, log_colors=console_colors)
-console_handler.setFormatter(console_formatter)
-
-# 将控制台处理器添加到logger对象中
-logger.addHandler(console_handler)
-
-# 使用不同级别的方法来记录不同重要性的事件
-logger.debug('This is a debug message')
-logger.info('This is an info message')
-logger.warning('This is a warning message')
-logger.error('This is an error message')
-logger.critical('This is a critical message')
+raid='https://api.ennead.cc/buruaka/raid?region=japan'#总力战

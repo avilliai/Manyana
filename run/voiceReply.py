@@ -28,39 +28,42 @@ def main(bot,app_id,app_key,logger):
     async def characterSpeake(event:GroupMessage):
         if "说" in str(event.message_chain) and str(event.message_chain).split("说")[0] in characters:
             speaker=str(event.message_chain).split("说")[0]
-            text = str(event.message_chain)[5:]
+            text = str(event.message_chain).split("说")[1]
             text = translate(text, app_id, app_key)
-            out = 'voices/' + random_str() + '.wav'
+            out = '../data/voices/' + random_str() + '.wav'
+            logger.info("语音生成_文本" + text)
             logger.info("语音生成_模型:"+speaker + str(characters.get(speaker)[1]))
             data = {"text": "[JA]" + text + "[JA]", "out": out,'speaker':characters.get(speaker)[0],'modelSelect':characters.get(speaker)[1]}
             await voiceGenerate(data)
-            await bot.send(event, Voice(path="vits/" + out))
+            await bot.send(event, Voice(path=out[3:]))
 
     @bot.on(GroupMessage)
     async def characterSpeake(event: GroupMessage):
         if "中文" in str(event.message_chain) and str(event.message_chain).split("中文")[0] in characters:
             speaker = str(event.message_chain).split("中文")[0]
-            text = str(event.message_chain)[5:]
+            text = str(event.message_chain).split("中文")[1]
             #text = translate(text, app_id, app_key)不用翻译
-            out = 'voices/' + random_str() + '.wav'
+            out = '../data/voices/' + random_str() + '.wav'
+            logger.info("语音生成_文本" + text)
             logger.info("语音生成_模型:" + speaker + str(characters.get(speaker)[1]))
             data = {"text": "[ZH]" + text + "[ZH]", "out": out, 'speaker': characters.get(speaker)[0],
                     'modelSelect': characters.get(speaker)[1]}
             await voiceGenerate(data)
-            await bot.send(event, Voice(path="vits/" + out))
+            await bot.send(event, Voice(path=out[3:]))
 
     @bot.on(GroupMessage)
     async def characterSpeake(event: GroupMessage):
         if "日文" in str(event.message_chain) and str(event.message_chain).split("日文")[0] in characters:
             speaker = str(event.message_chain).split("日文")[0]
-            text = str(event.message_chain)[4:]
+            text = str(event.message_chain).split("日文")[1]
             # text = translate(text, app_id, app_key)不用翻译
-            out = 'voices/' + random_str() + '.wav'
+            logger.info("语音生成_文本"+text)
+            out = '../data/voices/' + random_str() + '.wav'
             logger.info("语音生成_模型:" + speaker + str(characters.get(speaker)[1]))
             data = {"text": "[JA]" + text + "[JA]", "out": out, 'speaker': characters.get(speaker)[0],
                     'modelSelect': characters.get(speaker)[1]}
             await voiceGenerate(data)
-            await bot.send(event, Voice(path="vits/" + out))
+            await bot.send(event, Voice(path=out[3:]))
 
 
 

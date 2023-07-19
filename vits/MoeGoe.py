@@ -229,7 +229,7 @@ if __name__ == '__main__':
 
 
     '''async def voiceG():
-        await voiceGenerate('[JA]先生,ちょっとお時間..いただけますか?[JA]','voiceModel/1.wav')
+        await voices('[JA]先生,ちょっとお時間..いただけますか?[JA]','voiceModel/1.wav')
     asyncio.run(voiceG())'''
 
     '''ranpath = random_str()
@@ -237,7 +237,7 @@ if __name__ == '__main__':
     print(Path)
     out = Path+'PythonPlugins\\plugins\\voices\\' + ranpath + '.wav'
     tex = '[JA]' + translate('测试语音.....') + '[JA]'
-    voiceGenerate(tex, out)'''
+    voices(tex, out)'''
     '''if '--escape' in sys.argv:
         escape = True
     else:
