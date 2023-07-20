@@ -115,14 +115,6 @@ def main(bot,api_KEY,logger):
             logger.info("成功获取到摸鱼人日历")
             await bot.send(event, Image(path=path))
 
-    @bot.on(GroupMessage)
-    async def tarotToday(event: GroupMessage):
-        if ("今日塔罗" in str(event.message_chain) and At(bot.qq) in event.message_chain) or str(event.message_chain)=="今日塔罗":
-            logger.info("获取今日塔罗")
-            txt,img = tarotChoice()
-            logger.info("成功获取到今日塔罗")
-            await bot.send(event,txt)
-            await bot.send(event, Image(path=img))
 
     async def voiceGenerate(data):
         # 向本地 API 发送 POST 请求
