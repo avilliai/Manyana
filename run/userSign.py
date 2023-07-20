@@ -84,9 +84,10 @@ def main(bot,api_KEY,logger):
             newUser.pop(str(event.sender.id))
             logger.info("用户+1："+str(event.sender.member_name)+" ("+str(event.sender.id)+")")
             time114514 = str(datetime.datetime.now().strftime('%Y-%m-%d'))
+            time = datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')
             try:
                 city = str(event.message_chain).split('#')[1]
-                time = datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')
+
                 await bot.send(event, '正在验证城市......，')
                 weather = await querys(city,api_KEY)
                 await bot.send(event, '成功')
