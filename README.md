@@ -58,10 +58,9 @@ xx说 yourText             # 通过角色名，指定一个角色模型
 xx中文yourText            # 此模式下输出为中文
 xx日文yourText            #输入日文，输出日文
 你也可以不带角色名直接@bot 说 或者使用其他两个指令
-导入模型：
-    在vits/voiceModel文件夹下新建一个文件夹放置.pth文件和config.json文件，重启main.py即可
-    你可以参考下面的图片
 ```
+### 导入模型：
+在vits/voiceModel文件夹下新建一个文件夹放置.pth文件和config.json文件，重启main.py即可
 ![img.png](data/pictures/img.png)
 ## 信息查询
 ### 历史上的今天
