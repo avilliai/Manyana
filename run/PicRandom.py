@@ -21,3 +21,4 @@ def main(bot,logger):
             la = "data/pictures/meme/" + random.choice(la)
             await bot.send(event, (str(event.sender.member_name) + "抽取到了：", Image(path=la)))
 
+
