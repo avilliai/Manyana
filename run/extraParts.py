@@ -21,6 +21,7 @@ from plugins.RandomStr import random_str
 from plugins.historicalToday import hisToday
 
 from plugins.modelsLoader import modelLoader
+from plugins.newsEveryDay import news
 from plugins.picGet import pic
 from plugins.translater import translate
 
@@ -97,6 +98,13 @@ def main(bot,api_KEY,logger):
             await bot.send(event, '查询中……')
             # 发送天气消息
             await bot.send(event, await weatherQuery.querys(city,api_KEY))
+    @bot.on(GroupMessage)
+    async def newsToday(event:GroupMessage):
+        if "新闻" in str(event.message_chain) and At(bot.qq) in event.message_chain:
+            logger.info("获取新闻")
+            path=await news()
+            logger.info("成功获取到今日新闻")
+            await bot.send(event,Image(path=path))
 
     async def voiceGenerate(data):
         # 向本地 API 发送 POST 请求

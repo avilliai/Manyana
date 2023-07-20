@@ -16,7 +16,8 @@ from mirai.models import NudgeEvent, MemberHonorChangeEvent, MemberCardChangeEve
 from plugins.RandomStr import random_str
 from plugins.newLogger import newLogger
 from plugins.translater import translate
-from run import poeAi, voiceReply, nudgeReply, blueArchiveHelper, imgSearch, extraParts, wReply, userSign, groupManager
+from run import poeAi, voiceReply, nudgeReply, blueArchiveHelper, imgSearch, extraParts, wReply, userSign, groupManager, \
+    PicRandom
 
 if __name__ == '__main__':
     with open('config.json','r',encoding='utf-8') as fp:
@@ -95,6 +96,7 @@ if __name__ == '__main__':
     blueArchiveHelper.main(bot,app_id,app_key,logger)
     userSign.main(bot,result.get("weatherXinZhi"),logger)
     groupManager.main(bot,config,moderate,logger)
+    PicRandom.main(bot,logger)
     startVer()
 
     bot.run()
