@@ -4,6 +4,7 @@ import json
 import os
 import datetime
 import random
+import re
 import time
 import sys
 
@@ -25,6 +26,51 @@ def main(bot,app_id,app_key,logger):
 
     # modelSelect=['voiceModel/selina/selina.pth','voiceModel/selina/config.json']
     # print('------\n'+str(CHOISE))
+    @bot.on(GroupMessage)
+    async def botSaid(event:GroupMessage):
+        msg = "".join(map(str, event.message_chain[Plain]))
+        # 匹配指令
+        m = re.match(r'^说\s*(.*)\s*$', msg.strip())
+        if m and str(event.message_chain).split("说")[0] not in characters:
+            # 取出指令中的地名
+            text = m.group(1)
+            path = '../data/voices/' + random_str() + '.wav'
+            text = await translate(text, app_id, app_key)
+            tex = '[JA]' + text + '[JA]'
+            logger.info("启动文本转语音：text: " + tex + " path: " + path[3:])
+            await voiceGenerate({"text": tex, "out": path})
+            await bot.send(event, Voice(path=path[3:]))
+
+    @bot.on(GroupMessage)
+    async def botSaid(event: GroupMessage):
+        msg = "".join(map(str, event.message_chain[Plain]))
+        # 匹配指令
+        m = re.match(r'^中文\s*(.*)\s*$', msg.strip())
+        if m and str(event.message_chain).split("中文")[0] not in characters:
+            # 取出指令中的地名
+            text = m.group(1)
+            path = '../data/voices/' + random_str() + '.wav'
+            #text = await translate(text, app_id, app_key)
+            tex = '[ZH]' + text + '[ZH]'
+            logger.info("启动文本转语音：text: " + tex + " path: " + path[3:])
+            await voiceGenerate({"text": tex, "out": path})
+            await bot.send(event, Voice(path=path[3:]))
+
+    @bot.on(GroupMessage)
+    async def botSaid(event: GroupMessage):
+        msg = "".join(map(str, event.message_chain[Plain]))
+        # 匹配指令
+        m = re.match(r'^日文\s*(.*)\s*$', msg.strip())
+        if m and str(event.message_chain).split("日文")[0] not in characters:
+            # 取出指令中的地名
+            text = m.group(1)
+            path = '../data/voices/' + random_str() + '.wav'
+            # text = await translate(text, app_id, app_key)
+            tex = '[JA]' + text + '[JA]'
+            logger.info("启动文本转语音：text: " + tex + " path: " + path[3:])
+            await voiceGenerate({"text": tex, "out": path})
+            await bot.send(event, Voice(path=path[3:]))
+
     @bot.on(GroupMessage)
     async def characterSpeake(event:GroupMessage):
         if "说" in str(event.message_chain) and str(event.message_chain).split("说")[0] in characters:

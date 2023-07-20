@@ -1,5 +1,5 @@
 prob: 9 #戳一戳反击概率
-voiceReply: 100
+voiceReply: 50   #戳一戳语音回复几率
 nudgedReply:
   - 这样很有趣吗
   - 你在想什么呢，是脑子坏掉了吗......
