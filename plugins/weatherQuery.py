@@ -1,9 +1,9 @@
-apiKey='06421441c859ba31cbf92cca73dda000'
+
 import asyncio
 
 import httpx
-
-url="https://api.openweathermap.org/data/2.5/weather?q=BeiJing&appid=06421441c859ba31cbf92cca73dda000&lang=zh_cn"
+apiKey=""
+url="https://api.openweathermap.org/data/2.5/weather?q=BeiJing&appid="+apiKey+"&lang=zh_cn"
 async def weatherQuery1(proxy):
     proxies = {
         "http://": proxy,
