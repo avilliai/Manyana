@@ -86,7 +86,7 @@ def get_label(text, label):
     else:
         return False, text
 
-async def voiceGenerate(tex,out,speakerID=0,modelSelect=['voiceModel/amm/amamiyam.pth','voiceModel/amm/config.json']):
+async def voiceGenerate(tex,out,speakerID=2,modelSelect=['voiceModel/nene/1374_epochsm.pth','voiceModel/nene/config.json'] ):
     if len(tex)>150:
 
         tex='[JA]長すぎるああ、こんなに長い声..... んもう~[JA]'
@@ -131,7 +131,7 @@ async def voiceGenerate(tex,out,speakerID=0,modelSelect=['voiceModel/amm/amamiya
 
 
     length_scale, text = get_label_value(
-        text, 'LENGTH', 1.1, 'length scale')
+        text, 'LENGTH', 1.16, 'length scale')
     noise_scale, text = get_label_value(
         text, 'NOISE', 0.667, 'noise scale')
     noise_scale_w, text = get_label_value(
@@ -144,8 +144,7 @@ async def voiceGenerate(tex,out,speakerID=0,modelSelect=['voiceModel/amm/amamiya
 
     #print_speakers(speakers, escape)
 
-    time = datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')
-    print(time + '| 正在使用语音模型：'+str(speakerID)+' ......生成中'+'  |  文本：'+str(tex))
+
     speaker_id = int(speakerID)
 
     with no_grad():
@@ -160,8 +159,6 @@ async def voiceGenerate(tex,out,speakerID=0,modelSelect=['voiceModel/amm/amamiya
 
     write(out_path, hps_ms.data.sampling_rate, audio)#将生成的语音文件写入本地
 
-    time = datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')
-    print(time + '| Successfully saved!')
 
 
 

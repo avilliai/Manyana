@@ -18,8 +18,13 @@ async def synthesize():
         speaker = data['speaker']
         modelSelect = data['modelSelect']
     except:
-        speaker = 0
-        modelSelect = ['voiceModel/amm/amamiyam.pth', 'voiceModel/amm/config.json']
+        speaker = 2
+        modelSelect = ['voiceModel/nene/1374_epochsm.pth','voiceModel/nene/config.json']
+
+        #with open('config/settings.yaml', 'r', encoding='utf-8') as f:
+            #result = yaml.load(f.read(), Loader=yaml.FullLoader)
+        #speaker = result.get("vits").get("speaker")
+        #modelSelect = result.get("vits").get("modelSelect")
     # 调用 voiceG() 函数
     await voiceGenerate(tex=text, out=out,speakerID=speaker,modelSelect=modelSelect)
     # 将生成的音频返回给客户端

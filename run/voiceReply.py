@@ -7,6 +7,7 @@ import random
 import time
 import sys
 
+import httpx
 import requests
 import utils
 from mirai import Image, Voice
@@ -65,14 +66,11 @@ def main(bot,app_id,app_key,logger):
             await voiceGenerate(data)
             await bot.send(event, Voice(path=out[3:]))
 
-
-
-
     async def voiceGenerate(data):
-        # 将请求参数转换为 JSON 格式
-        json_data = json.dumps(data)
         # 向本地 API 发送 POST 请求
         url = 'http://localhost:9080/synthesize'
-        response = requests.post(url, json=json_data)
-        #print(response.text)
+        data = json.dumps(data)
+        async with httpx.AsyncClient(timeout=None) as client:
+            await client.post(url, json=data)
+        logger.info("语音生成完成")
 

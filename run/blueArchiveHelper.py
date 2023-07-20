@@ -7,6 +7,7 @@ import random
 import time
 import sys
 
+import httpx
 import requests
 import utils
 import yaml
@@ -104,17 +105,14 @@ def main(bot,app_id,app_key,logger):
 
 
                 await bot.send(event, (Image(path=icon),str(data1).replace(",", "\n")))
-                await bot.send(event, (Image(path=lobby), str(response.get("terrain")).replace(",", "\n").replace("'urban'","市区").replace("'outdoor'","室外").replace("'indoor'","室内").replace("'DamageDealt'","伤害").replace("'ShieldBlockRate'","掩体成功率").replace("{","").replace("}","")))
-
-
+                await bot.send(event, (Image(path=lobby), str(response.get("terrain")).replace(",", "\n").replace("'urban'"," 市区").replace("'outdoor'","室外").replace("'indoor'","室内").replace("'DamageDealt'","伤害").replace("'ShieldBlockRate'","掩体成功率").replace("{","").replace("}","")))
 
     async def voiceGenerate(data):
-        # 将请求参数转换为 JSON 格式
-        json_data = json.dumps(data)
         # 向本地 API 发送 POST 请求
         url = 'http://localhost:9080/synthesize'
-        response = requests.post(url, json=json_data)
-        #print(response.text)
-
+        data = json.dumps(data)
+        async with httpx.AsyncClient(timeout=None) as client:
+            await client.post(url, json=data)
+        logger.info("语音生成完成")
 
 

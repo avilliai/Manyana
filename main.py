@@ -7,12 +7,16 @@ import os
 import subprocess
 from random import random
 
+import httpx
+import requests
 import yaml
-from mirai import Mirai, FriendMessage, WebSocketAdapter, Poke, GroupMessage, Image
+from mirai import Mirai, FriendMessage, WebSocketAdapter, Poke, GroupMessage, Image, Voice
 from mirai.models import NudgeEvent
 
+from plugins.RandomStr import random_str
 from plugins.newLogger import newLogger
-from run import poeAi, voiceReply, nudgeReply, blueArchiveHelper, imgSearch, extraParts
+from plugins.translater import translate
+from run import poeAi, voiceReply, nudgeReply, blueArchiveHelper, imgSearch, extraParts, wReply
 
 if __name__ == '__main__':
     with open('config.json','r',encoding='utf-8') as fp:
@@ -39,12 +43,27 @@ if __name__ == '__main__':
     logger.info("读取到apiKey列表")
 
 
-    '''@bot.on(GroupMessage)
+    @bot.on(GroupMessage)
     async def test112(event:GroupMessage):
-        if event.message_chain.count(Image) == 1 and event.sender.id==master:
-            lst_img = event.message_chain.get(Image)
-            img_url = lst_img[0].url
-            print(img_url)'''
+        if str(event.message_chain)=="214":
+            logger.info("接受214")
+            text = await translate("亲爱的晚上好", app_id, app_key)
+            tex = '[JA]' + text + '[JA]'
+            print("得到翻译结果"+tex)
+            path = '../data/voices/' + random_str() + '.wav'
+            data={"text": tex, "out": path}
+            await voiceGenerate(data)
+            await bot.send(event,Voice(path=path[3:]))
+
+
+    async def voiceGenerate(data):
+        # 向本地 API 发送 POST 请求
+        url = 'http://localhost:9080/synthesize'
+        data=json.dumps(data)
+        async with httpx.AsyncClient() as client:
+            response = await client.post(url, json=data)
+            #print(response.text)
+
 
 
 
@@ -69,8 +88,9 @@ if __name__ == '__main__':
     except:
         logger.error("poe-api启动失败")
     imgSearch.main(bot, result.get("sauceno-api"), result.get("proxy"), logger)
-    nudgeReply.main(bot,logger)#戳一戳
-    extraParts.main(bot,logger)
+    nudgeReply.main(bot,app_id,app_key,logger)#戳一戳
+    extraParts.main(bot,result.get("weatherXinZhi"),logger)#额外小功能
+    wReply.main(bot,config,app_id,app_key,logger)
     blueArchiveHelper.main(bot,app_id,app_key,logger)
     startVer()
 

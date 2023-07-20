@@ -16,7 +16,9 @@ import yaml
 from mirai import Image, Voice
 from mirai import Mirai, WebSocketAdapter, FriendMessage, GroupMessage, At, Plain
 
+from plugins import weatherQuery
 from plugins.RandomStr import random_str
+from plugins.historicalToday import hisToday
 
 from plugins.modelsLoader import modelLoader
 from plugins.picGet import pic
@@ -24,7 +26,7 @@ from plugins.translater import translate
 
 
 
-def main(bot,logger):
+def main(bot,api_KEY,logger):
     logger.info("额外的功能 启动完成")
 
     @bot.on(GroupMessage)
@@ -70,3 +72,36 @@ def main(bot,logger):
                 return match.group(3)
         else:
             return None
+    @bot.on(GroupMessage)
+    async def historyToday(event:GroupMessage):
+        pattern = r".*史.*今.*|.*今.*史.*"
+        string = str(event.message_chain)
+        match = re.search(pattern, string)
+        if match:
+            dataBack=await hisToday()
+            logger.info("获取历史上的今天")
+            logger.info(str(dataBack))
+            sendData=str(dataBack.get("result")).replace("["," ").replace("{'year': '","").replace("'}","").replace("]","").replace("', 'title': '"," ").replace(",","\n")
+            await bot.send(event,sendData)
+
+    @bot.on(GroupMessage)
+    async def weather_query(event: GroupMessage):
+        # 从消息链中取出文本
+        msg = "".join(map(str, event.message_chain[Plain]))
+        # 匹配指令
+        m = re.match(r'^查询\s*(\w+)\s*$', msg.strip())
+        if m:
+            # 取出指令中的地名
+            city = m.group(1)
+            logger.info("查询 "+city+" 天气")
+            await bot.send(event, '查询中……')
+            # 发送天气消息
+            await bot.send(event, await weatherQuery.querys(city,api_KEY))
+
+    async def voiceGenerate(data):
+        # 向本地 API 发送 POST 请求
+        url = 'http://localhost:9080/synthesize'
+        data = json.dumps(data)
+        async with httpx.AsyncClient(timeout=None) as client:
+            await client.post(url, json=data)
+        logger.info("语音生成完成")
