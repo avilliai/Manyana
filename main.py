@@ -16,7 +16,7 @@ from mirai.models import NudgeEvent
 from plugins.RandomStr import random_str
 from plugins.newLogger import newLogger
 from plugins.translater import translate
-from run import poeAi, voiceReply, nudgeReply, blueArchiveHelper, imgSearch, extraParts, wReply
+from run import poeAi, voiceReply, nudgeReply, blueArchiveHelper, imgSearch, extraParts, wReply, userSign
 
 if __name__ == '__main__':
     with open('config.json','r',encoding='utf-8') as fp:
@@ -92,6 +92,7 @@ if __name__ == '__main__':
     extraParts.main(bot,result.get("weatherXinZhi"),logger)#额外小功能
     wReply.main(bot,config,app_id,app_key,logger)
     blueArchiveHelper.main(bot,app_id,app_key,logger)
+    userSign.main(bot,result.get("weatherXinZhi"),logger)
     startVer()
 
     bot.run()
