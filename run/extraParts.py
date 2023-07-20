@@ -21,7 +21,7 @@ from plugins.RandomStr import random_str
 from plugins.historicalToday import hisToday
 
 from plugins.modelsLoader import modelLoader
-from plugins.newsEveryDay import news
+from plugins.newsEveryDay import news, moyu
 from plugins.picGet import pic
 from plugins.translater import translate
 
@@ -105,6 +105,14 @@ def main(bot,api_KEY,logger):
             path=await news()
             logger.info("成功获取到今日新闻")
             await bot.send(event,Image(path=path))
+
+    @bot.on(GroupMessage)
+    async def newsToday(event: GroupMessage):
+        if "摸鱼" in str(event.message_chain) and At(bot.qq) in event.message_chain:
+            logger.info("获取摸鱼人日历")
+            path = await moyu()
+            logger.info("成功获取到摸鱼人日历")
+            await bot.send(event, Image(path=path))
 
     async def voiceGenerate(data):
         # 向本地 API 发送 POST 请求
