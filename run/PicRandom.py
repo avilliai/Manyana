@@ -21,4 +21,12 @@ def main(bot,logger):
             la = "data/pictures/meme/" + random.choice(la)
             await bot.send(event, (str(event.sender.member_name) + "抽取到了：", Image(path=la)))
 
+    @bot.on(GroupMessage)
+    async def meme(event: GroupMessage):
+        global memeData
+        if "meme" in str(event.message_chain) and At(bot.qq) in event.message_chain:
+            la = os.listdir("data/pictures/amm")
+            la = "data/pictures/amm/" + random.choice(la)
+            await bot.send(event, (str(event.sender.member_name) + "今天的运势是", Image(path=la)))
+
 
