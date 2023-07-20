@@ -59,10 +59,10 @@ xx中文yourText            # 此模式下输出为中文
 xx日文yourText            #输入日文，输出日文
 你也可以不带角色名直接@bot 说 或者使用其他两个指令
 导入模型：
-    ![img.png](data/pictures/img.png)
-    把pth文件和config.json文件放置在vits/voiceModel文件夹下，重启main.py即可
-    
+    在vits/voiceModel文件夹下新建一个文件夹放置.pth文件和config.json文件，重启main.py即可
+    你可以参考下面的图片
 ```
+![img.png](data/pictures/img.png)
 ## 信息查询
 ### 历史上的今天
 ```angular2html
