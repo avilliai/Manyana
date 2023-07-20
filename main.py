@@ -40,6 +40,8 @@ if __name__ == '__main__':
         result = yaml.load(f.read(), Loader=yaml.FullLoader)
     app_id = result.get("youdao").get("app_id")
     app_key=result.get("youdao").get("app_key")#有道翻译api
+    sizhiKey=result.get("siZhiAi")
+    proxy=result.get("proxy")
     logger.info("读取到apiKey列表")
 
 
@@ -82,15 +84,18 @@ if __name__ == '__main__':
         print(all_the_text)
 
     voiceReply.main(bot,app_id,app_key,logger)#语音生成
-    try:
-        logger.info("开发过程中暂不启动poe-api")
-        #poeAi.main(bot,master,result.get("poe-api"),result.get("proxy"),logger)#poe-api
-    except:
-        logger.error("poe-api启动失败")
-    imgSearch.main(bot, result.get("sauceno-api"), result.get("proxy"), logger)
+    if proxy!="":
+        try:
+            logger.info("开发过程中暂不启动poe-api")
+            #poeAi.main(bot,master,result.get("poe-api"),result.get("proxy"),logger)#poe-api
+        except:
+            logger.error("poe-api启动失败")
+        imgSearch.main(bot, result.get("sauceno-api"), result.get("proxy"), logger)
+    else:
+        logger.warning("未设置代理，禁用poe-api与搜图")
     nudgeReply.main(bot,app_id,app_key,logger)#戳一戳
     extraParts.main(bot,result.get("weatherXinZhi"),logger)#额外小功能
-    wReply.main(bot,config,app_id,app_key,logger)
+    wReply.main(bot,config,sizhiKey,app_id,app_key,logger)
     blueArchiveHelper.main(bot,app_id,app_key,logger)
     userSign.main(bot,result.get("weatherXinZhi"),logger)
     startVer()

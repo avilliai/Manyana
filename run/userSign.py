@@ -69,10 +69,11 @@ def main(bot,api_KEY,logger):
                     logger.info("完成，发送签到图片")
                     await bot.send(event, Im(path=path), True)
                 else:
+                    logger.info("签到过了，拒绝签到")
                     await bot.send(event,'不要重复签到！笨蛋！',True)
             else:
                 logger.info("未注册用户"+str(event.sender.id)+"，提醒注册")
-                await bot.send(event,'请完善用户信息,发送  注册#城市名 以完善您的城市信息\n例如  注册#通辽',True)
+                await bot.send(event,'请完善用户信息\n发送 注册#城市名 以完善信息\n例如 注册#通辽',True)
                 global newUser
                 newUser[str(event.sender.id)]=0
 
@@ -107,6 +108,7 @@ def main(bot,api_KEY,logger):
             id = data.get('id')
             data['sts'] = times
             data['exp'] = exp
+            data['userName']=event.sender.member_name
             userdict[str(event.sender.id)] = data
             logger.info("更新用户数据中")
             with open('data/userData.yaml', 'w', encoding="utf-8") as file:
@@ -121,8 +123,7 @@ def main(bot,api_KEY,logger):
     @bot.on(GroupMessage)
     async def changeCity(event: GroupMessage):
         if str(event.message_chain).startswith('修改城市#'):
-            time = datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')
-            print(time + '| 接收城市修改请求')
+            logger.info("接收城市修改请求")
             city=str(event.message_chain)[5:]
             try:
 
@@ -148,7 +149,7 @@ def main(bot,api_KEY,logger):
         # 制底图
         layer = Image.open(fileName)
 
-        path="data/pictures/sign_backGround/"+random.choice("data/pictures/sign_backGround")
+        path="data/pictures/sign_backGround/"+random.choice(os.listdir("data/pictures/sign_backGround"))
         bg = Image.open(path)
         # merge = Image.blend(st, st2, 0.5)
         bg.paste(layer, (120, 147))
@@ -157,10 +158,10 @@ def main(bot,api_KEY,logger):
         imageFile = fileName
         # 导入数据
         tp = Image.open(imageFile)
-        font = ImageFont.truetype('Config/H-TTF-BuMing-B-2.ttf', 110)
+        font = ImageFont.truetype('config/H-TTF-BuMing-B-2.ttf', 110)
         draw = ImageDraw.Draw(tp)
         draw.text((423, 773), id, (12, 0, 6), font=font)
-        font = ImageFont.truetype('Config/H-TTF-BuMing-B-2.ttf', 73)
+        font = ImageFont.truetype('config/H-TTF-BuMing-B-2.ttf', 73)
         draw.text((2000, 716), weather, (12, 0, 6), font=font)
         draw.text((509, 1100), nowTime, (12, 0, 6), font=font)
         draw.text((509, 1258), times, (12, 0, 6), font=font)

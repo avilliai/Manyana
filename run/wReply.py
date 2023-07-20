@@ -23,7 +23,7 @@ from plugins.wReply.mohuReply import mohuaddReplys, mohudels, mohuadd
 from plugins.wReply.superDict import outPutDic, importDict
 
 
-def main(bot,config, app_id, app_key,logger):
+def main(bot,config,sizhiKey,app_id, app_key,logger):
     logger.info("启动自定义词库")
     logger.info("自定义词库读取配置文件")
     #读取配置文件
@@ -51,8 +51,7 @@ def main(bot,config, app_id, app_key,logger):
     file = open('config/superDict.txt', 'r')
     jss = file.read()
     file.close()
-    global sizhiKey
-    sizhiKey = config.get('sizhi')
+
     global superDict
     superDict = json.loads(jss)
 
@@ -65,7 +64,7 @@ def main(bot,config, app_id, app_key,logger):
     for i in userdict.keys():
         data = userdict.get(i)
         times = int(str(data.get('sts')))
-        if times > 4:
+        if times > 14:
             trustUser.append(str(i))
 
     logger.info('已读取信任用户' + str(len(trustUser)) + '个')
