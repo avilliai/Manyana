@@ -61,6 +61,7 @@ xx日文yourText            #输入日文，输出日文
 ```
 ### 导入模型：
 在vits/voiceModel文件夹下新建一个文件夹放置.pth文件和config.json文件，重启main.py即可
+
 ![img.png](data/pictures/img.png)
 ## 信息查询
 ### 历史上的今天
