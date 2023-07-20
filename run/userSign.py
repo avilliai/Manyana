@@ -148,7 +148,7 @@ def main(bot,api_KEY,logger):
         # 制底图
         layer = Image.open(fileName)
 
-        path="data/pictures/sign_backGround/"+random.choice("data/pictures/sign_backGround")+".png"
+        path="data/pictures/sign_backGround/"+random.choice("data/pictures/sign_backGround")
         bg = Image.open(path)
         # merge = Image.blend(st, st2, 0.5)
         bg.paste(layer, (120, 147))
