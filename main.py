@@ -11,12 +11,12 @@ import httpx
 import requests
 import yaml
 from mirai import Mirai, FriendMessage, WebSocketAdapter, Poke, GroupMessage, Image, Voice
-from mirai.models import NudgeEvent
+from mirai.models import NudgeEvent, MemberHonorChangeEvent, MemberCardChangeEvent, MemberSpecialTitleChangeEvent
 
 from plugins.RandomStr import random_str
 from plugins.newLogger import newLogger
 from plugins.translater import translate
-from run import poeAi, voiceReply, nudgeReply, blueArchiveHelper, imgSearch, extraParts, wReply, userSign
+from run import poeAi, voiceReply, nudgeReply, blueArchiveHelper, imgSearch, extraParts, wReply, userSign, groupManager
 
 if __name__ == '__main__':
     with open('config.json','r',encoding='utf-8') as fp:
@@ -42,22 +42,18 @@ if __name__ == '__main__':
     app_key=result.get("youdao").get("app_key")#有道翻译api
     sizhiKey=result.get("siZhiAi")
     proxy=result.get("proxy")
+    moderate=result.get("moderate")
     logger.info("读取到apiKey列表")
 
 
-    @bot.on(GroupMessage)
-    async def test112(event:GroupMessage):
-        if str(event.message_chain)=="214":
-            logger.info("接受214")
-            text = await translate("亲爱的晚上好", app_id, app_key)
-            tex = '[JA]' + text + '[JA]'
-            print("得到翻译结果"+tex)
-            path = '../data/voices/' + random_str() + '.wav'
-            data={"text": tex, "out": path}
-            await voiceGenerate(data)
-            await bot.send(event,Voice(path=path[3:]))
 
-
+    '''@bot.on(GroupMessage)
+    async def imgGet(event:GroupMessage):
+        if event.message_chain.count(Image):
+            lst_img = event.message_chain.get(Image)
+            for i in lst_img:
+                img_url = i.url
+                print(img_url)'''
     async def voiceGenerate(data):
         # 向本地 API 发送 POST 请求
         url = 'http://localhost:9080/synthesize'
@@ -98,6 +94,7 @@ if __name__ == '__main__':
     wReply.main(bot,config,sizhiKey,app_id,app_key,logger)
     blueArchiveHelper.main(bot,app_id,app_key,logger)
     userSign.main(bot,result.get("weatherXinZhi"),logger)
+    groupManager.main(bot,config,moderate,logger)
     startVer()
 
     bot.run()

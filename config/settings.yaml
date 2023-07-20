@@ -1,13 +1,35 @@
-
-wReply: # 自定义回复
-  voiceRate: 20     #语音回复的概率
-  replyRate: 5       #不艾特时的回复概率
-  sizhi: False         #是否启用思知ai
-  turnMessage: True   #是否启用私聊转发
-  banWords: ['妈', '主人', '狗', '老公', '老婆', '爸', '奶', '爷', '党', '爹', 'b', '逼', '牛', '国', '批'] #词库违禁添加词汇
-banGroups:            #黑名单群
-  - 1235799
-  - 578904
-banUser:              #黑名单用户
-  - 91793712344
-  - 741927340
+banGroups:
+- 1235799
+- 578904
+banUser:
+- 91793712344
+- 741927340
+moderate:
+  banTime: 300
+  banWords:
+    '60844343475':
+    - 斯卡蒂
+  groups:
+    '69945555439': 1
+  threshold: 40
+wReply:
+  banWords:
+  - 妈
+  - 主人
+  - 狗
+  - 老公
+  - 老婆
+  - 爸
+  - 奶
+  - 爷
+  - 党
+  - 爹
+  - b
+  - 逼
+  - 牛
+  - 国
+  - 批
+  replyRate: 5
+  sizhi: false
+  turnMessage: true
+  voiceRate: 20
