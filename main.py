@@ -67,9 +67,12 @@ if __name__ == '__main__':
     @bot.on(GroupMessage)
     async def help(event: GroupMessage):
         if ('帮助' in str(event.message_chain) or '菜单' in str(event.message_chain)) and At(bot.qq) in event.message_chain:
-            await bot.send(event, Image(path='config\\help.png'))
+            logger.info("菜单")
+            await bot.send(event, Image(path='config/help1.png'))
+            await bot.send(event, Image(path='config/help2.png'))
             await bot.send(event, '这是' + botName + '的功能列表\nヾ(≧▽≦*)o')
         if '制图' in str(event.message_chain) and At(bot.qq) in event.message_chain :
+            logger.info("菜单")
             await bot.send(event, Image(path='config/picMaker.png'))
             await bot.send(event, '这是' + botName + '的制图功能列表\nヾ(≧▽≦*)o')
 
