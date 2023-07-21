@@ -199,9 +199,9 @@ def main(bot,config,sizhiKey,app_id, app_key,logger):
             if str(event.sender.id) not in userdict:
                 replyssssss = replyssssss.replace("name", str(event.sender.member_name)).replace("{name}", str(event.sender.member_name)).replace("哥哥", str(event.sender.member_name)).replace("您", str(event.sender.member_name))
             else:
-                try:
-                    setName = userdict.get(str(event.sender.id)).get("userName")
-                except:
+
+                setName = userdict.get(str(event.sender.id)).get("userName")
+                if setName==None:
                     setName=event.sender.member_name
                 replyssssss = replyssssss.replace("name", setName).replace("{name}", setName).replace("哥哥", setName).replace("您", setName)
 
@@ -266,9 +266,9 @@ def main(bot,config,sizhiKey,app_id, app_key,logger):
             if str(event.sender.id) not in userdict:
                 replyssssss=replyssssss.replace("name", str(event.sender.nickname)).replace("{name}", str(event.sender.nickname)).replace("哥哥", str(event.sender.nickname))
             else:
-                try:
-                    setName=userdict.get(str(event.sender.id)).get("userName")
-                except:
+
+                setName=userdict.get(str(event.sender.id)).get("userName")
+                if setName==None:
                     setName=event.sender.nickname
                 replyssssss=replyssssss.replace("name", setName).replace("{name}", setName).replace("哥哥", setName)
             if event.sender.id != master:
