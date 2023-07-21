@@ -164,6 +164,7 @@ def main(bot,api_KEY,logger):
             mesg = get_cp_mesg(x[0], x[1])
             await bot.send(event, mesg, True)
 
+
     async def voiceGenerate(data):
         # 向本地 API 发送 POST 请求
         url = 'http://localhost:9080/synthesize'

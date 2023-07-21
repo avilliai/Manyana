@@ -5,12 +5,13 @@ import json
 
 import os
 import subprocess
+from asyncio import sleep
 from random import random
 
 import httpx
 import requests
 import yaml
-from mirai import Mirai, FriendMessage, WebSocketAdapter, Poke, GroupMessage, Image, Voice, At
+from mirai import Mirai, FriendMessage, WebSocketAdapter, Poke, GroupMessage, Image, Voice, At, Startup
 from mirai.models import NudgeEvent, MemberHonorChangeEvent, MemberCardChangeEvent, MemberSpecialTitleChangeEvent
 
 from plugins.RandomStr import random_str
@@ -75,7 +76,51 @@ if __name__ == '__main__':
             logger.info("菜单")
             await bot.send(event, Image(path='config/picMaker.png'))
             await bot.send(event, '这是' + botName + '的制图功能列表\nヾ(≧▽≦*)o')
+    @bot.on(GroupMessage)
+    async def clearCache(event:GroupMessage):
+        if event.sender.id==master and str(event.message_chain)=="/clearcache":
+            logger.info("执行清理缓存操作")
+            ls1=os.listdir("data/pictures/avatars")
+            for i in ls1:
+                try:
+                    os.remove("data/pictures/avatars/"+i)
+                except:
+                    continue
+            logger.info("清理头像缓存完成")
+            ls1 = os.listdir("data/pictures/cache")
+            for i in ls1:
+                try:
+                    os.remove("data/pictures/cache/" + i)
+                except:
+                    continue
+            logger.info("清理缓存完成")
+            ls1 = os.listdir("data/pictures/wallpaper")
+            for i in ls1:
+                try:
+                    os.remove("data/pictures/wallpaper/" + i)
+                except:
+                    continue
+            logger.info("清理图片缓存完成")
 
+    @bot.on(Startup)
+    async def clearCache(event:Startup):
+        while True:
+            await sleep(600)
+            logger.info("执行清理缓存操作")
+            ls1 = os.listdir("data/pictures/avatars")
+            for i in ls1:
+                try:
+                    os.remove("data/pictures/avatars/" + i)
+                except:
+                    continue
+            logger.info("清理头像缓存完成")
+            ls1 = os.listdir("data/pictures/cache")
+            for i in ls1:
+                try:
+                    os.remove("data/pictures/cache/" + i)
+                except:
+                    continue
+            logger.info("清理缓存完成")
 
 
 
