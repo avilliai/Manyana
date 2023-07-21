@@ -42,8 +42,8 @@ def main(bot,master,apiKey,proxy,logger):
     @bot.on(GroupMessage)
     async def AiHelper(event:GroupMessage):
         global client
-        if str(event.message_chain).startswith("@"+str(bot.qq)):
-            mes=str(event.message_chain).replace("@"+str(bot.qq),"")
+        if str(event.message_chain).startswith("/poe"):
+            mes=str(event.message_chain).replace("/poe","")
             s = ""
             try:
                 for chunk in client.send_message("capybara", mes):
