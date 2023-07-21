@@ -1,16 +1,18 @@
 # -*- coding:utf-8 -*-
 import datetime
 import json
+import os.path
 import random
 import re
 import urllib
 from asyncio import sleep
 
+import httpx
 import yaml
 from mirai import Image, Voice, Startup
 from mirai import Mirai, WebSocketAdapter, FriendMessage, GroupMessage, At, Plain
 from mirai.models.events import BotInvitedJoinGroupRequestEvent, NewFriendRequestEvent, MemberJoinRequestEvent, \
-    MemberHonorChangeEvent, MemberCardChangeEvent, BotMuteEvent, MemberSpecialTitleChangeEvent
+    MemberHonorChangeEvent, MemberCardChangeEvent, BotMuteEvent, MemberSpecialTitleChangeEvent, BotJoinGroupEvent
 
 from plugins.setuModerate import setuModerate
 
@@ -53,6 +55,19 @@ def main(bot,config,moderateKey,logger):
     severGroups=moderate.get("groups")
     global banTime
     banTime=moderate.get("banTime")
+
+    @bot.on(BotJoinGroupEvent)
+    async def botJoin(event:BotJoinGroupEvent):
+        await bot.send_group_message(event.group.id,"已加入服务群聊....")
+        path="data/autoReply/voiceReply/joinGroup.wav"
+        ok=os.path.exists(path)
+        if ok:
+            await bot.send_group_message(event.group.id,Voice(path=path))
+        else:
+            data={'text':"[JA]みなさん、こんにちは、私はこのグループのメンバーになりました、将来もっとアドバイスしてください![JA]","path":path}
+            await voiceGenerate(data)
+            await bot.send_group_message(event.group.id,Voice(path=path))
+        await bot.send_group_message(event.group.id,"发送 帮助 获取功能列表哦")
 
     @bot.on(Startup)
     async def updateData(event: Startup):
@@ -305,3 +320,10 @@ def main(bot,config,moderateKey,logger):
             with open('config/settings.yaml', 'w', encoding="utf-8") as file:
                 yaml.dump(result, file, allow_unicode=True)
             await bot.send(event, "ok")
+    async def voiceGenerate(data):
+        # 向本地 API 发送 POST 请求
+        url = 'http://localhost:9080/synthesize'
+        data = json.dumps(data)
+        async with httpx.AsyncClient(timeout=None) as client:
+            await client.post(url, json=data)
+        logger.info("语音生成完成")

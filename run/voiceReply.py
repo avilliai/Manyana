@@ -111,6 +111,13 @@ def main(bot,app_id,app_key,logger):
                     'modelSelect': characters.get(speaker)[1]}
             await voiceGenerate(data)
             await bot.send(event, Voice(path=out[3:]))
+    @bot.on(GroupMessage)
+    async def checkCharacters(event:GroupMessage):
+        if "角色" in str(event.message_chain) and At(bot.qq) in event.message_chain:
+            str1=""
+            for i in characters:
+                str1+=i+" |"
+            await bot.send(event,"可用角色如下：\n"+str1)
 
     async def voiceGenerate(data):
         # 向本地 API 发送 POST 请求
