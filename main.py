@@ -17,7 +17,7 @@ from plugins.RandomStr import random_str
 from plugins.newLogger import newLogger
 from plugins.translater import translate
 from run import poeAi, voiceReply, nudgeReply, blueArchiveHelper, imgSearch, extraParts, wReply, userSign, groupManager, \
-    PicRandom
+    PicRandom, musicShare
 
 if __name__ == '__main__':
     with open('config.json','r',encoding='utf-8') as fp:
@@ -108,6 +108,7 @@ if __name__ == '__main__':
     userSign.main(bot,result.get("weatherXinZhi"),logger)
     groupManager.main(bot,config,moderate,logger)
     PicRandom.main(bot,logger)
+    musicShare.main(bot,master,botName,logger)
     startVer()
 
     bot.run()
