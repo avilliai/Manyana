@@ -199,7 +199,10 @@ def main(bot,config,sizhiKey,app_id, app_key,logger):
             if str(event.sender.id) not in userdict:
                 replyssssss = replyssssss.replace("name", str(event.sender.member_name)).replace("{name}", str(event.sender.member_name)).replace("哥哥", str(event.sender.member_name)).replace("您", str(event.sender.member_name))
             else:
-                setName = userdict.get(str(event.sender.id)).get("userName")
+                try:
+                    setName = userdict.get(str(event.sender.id)).get("userName")
+                except:
+                    setName=event.sender.member_name
                 replyssssss = replyssssss.replace("name", setName).replace("{name}", setName).replace("哥哥", setName).replace("您", setName)
 
             if random.randint(1, 100) > voiceRate:
@@ -263,7 +266,10 @@ def main(bot,config,sizhiKey,app_id, app_key,logger):
             if str(event.sender.id) not in userdict:
                 replyssssss=replyssssss.replace("name", str(event.sender.nickname)).replace("{name}", str(event.sender.nickname)).replace("哥哥", str(event.sender.nickname))
             else:
-                setName=userdict.get(str(event.sender.id)).get("userName")
+                try:
+                    setName=userdict.get(str(event.sender.id)).get("userName")
+                except:
+                    setName=event.sender.nickname
                 replyssssss=replyssssss.replace("name", setName).replace("{name}", setName).replace("哥哥", setName)
             if event.sender.id != master:
                 logger.info('接收私聊消息,来自' + str(event.sender.get_name()) + ' | ' + str(
