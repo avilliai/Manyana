@@ -104,23 +104,22 @@ if __name__ == '__main__':
 
     @bot.on(Startup)
     async def clearCache(event:Startup):
-        while True:
-            await sleep(600)
-            logger.info("执行清理缓存操作")
-            ls1 = os.listdir("data/pictures/avatars")
-            for i in ls1:
-                try:
-                    os.remove("data/pictures/avatars/" + i)
-                except:
-                    continue
-            logger.info("清理头像缓存完成")
-            ls1 = os.listdir("data/pictures/cache")
-            for i in ls1:
-                try:
-                    os.remove("data/pictures/cache/" + i)
-                except:
-                    continue
-            logger.info("清理缓存完成")
+        await sleep(600)
+        logger.info("执行清理缓存操作")
+        ls1 = os.listdir("data/pictures/avatars")
+        for i in ls1:
+            try:
+                os.remove("data/pictures/avatars/" + i)
+            except:
+                continue
+        logger.info("清理头像缓存完成")
+        ls1 = os.listdir("data/pictures/cache")
+        for i in ls1:
+            try:
+                os.remove("data/pictures/cache/" + i)
+            except:
+                continue
+        logger.info("清理缓存完成")
 
 
 
