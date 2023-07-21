@@ -36,29 +36,29 @@ def main(bot,api_KEY,logger):
     @bot.on(GroupMessage)
     async def handle_group_message(event: GroupMessage):
         # if str(event.message_chain) == '/pic':
+        if At(bot.qq) not in event.message_chain:
+            if '/pic' in str(event.message_chain):
+                picNum = int((str(event.message_chain))[4:])
+            elif "@"+str(bot.qq) not in str(event.message_chain):
+                if get_number(str(event.message_chain))==None:
+                    return
+                else:
+                    picNum=int(get_number(str(event.message_chain)))
 
-        if '/pic' in str(event.message_chain):
-            picNum = int((str(event.message_chain))[4:])
-        elif "@"+str(bot.qq) not in str(event.message_chain):
-            if get_number(str(event.message_chain))==None:
-                return
             else:
-                picNum=int(get_number(str(event.message_chain)))
-
-        else:
-            return
-        logger.info("图片获取指令....数量："+str(picNum))
-        if picNum < 10 and picNum > -1:
-            for i in range(picNum):
-                logger.info("获取壁纸")
+                return
+            logger.info("图片获取指令....数量："+str(picNum))
+            if picNum < 10 and picNum > -1:
+                for i in range(picNum):
+                    logger.info("获取壁纸")
+                    a = pic()
+                    await bot.send(event, Image(path=a))
+            elif picNum == '':
                 a = pic()
                 await bot.send(event, Image(path=a))
-        elif picNum == '':
-            a = pic()
-            await bot.send(event, Image(path=a))
-        else:
-            await bot.send(event, "数字超出限制")
-        logger.info("图片获取完成")
+            else:
+                await bot.send(event, "数字超出限制")
+            logger.info("图片获取完成")
 
     # 整点正则
     pattern = r".*(壁纸|图|pic).*(\d+).*|.*(\d+).*(壁纸|图|pic).*"
