@@ -10,7 +10,6 @@ moderate:
     '60844343475':
     - 斯卡蒂
   groups:
-    '608443475': 50
     '69945555439': 1
   threshold: 40
 wReply:
@@ -30,7 +29,7 @@ wReply:
   - 牛
   - 国
   - 批
-  replyRate: 5
+  replyRate: 3
   sizhi: false
   turnMessage: true
-  voiceRate: 20
+  voiceRate: 30

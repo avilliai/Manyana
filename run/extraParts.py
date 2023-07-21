@@ -24,7 +24,7 @@ from plugins.jokeMaker import get_joke
 
 from plugins.modelsLoader import modelLoader
 from plugins.newsEveryDay import news, moyu
-from plugins.picGet import pic
+from plugins.picGet import pic, setuGet
 from plugins.tarot import tarotChoice
 from plugins.translater import translate
 
@@ -39,11 +39,11 @@ def main(bot,api_KEY,logger):
 
         if '/pic' in str(event.message_chain):
             picNum = int((str(event.message_chain))[4:])
-        elif "@"+str(bot.qq) in str(event.message_chain):
-            if get_number(str(event.message_chain).replace("@"+str(bot.qq),""))==None:
+        elif "@"+str(bot.qq) not in str(event.message_chain):
+            if get_number(str(event.message_chain))==None:
                 return
             else:
-                picNum=int(get_number(str(event.message_chain).replace("@"+str(bot.qq),"")))
+                picNum=int(get_number(str(event.message_chain)))
 
         else:
             return
@@ -76,6 +76,27 @@ def main(bot,api_KEY,logger):
                 return match.group(3)
         else:
             return None
+    @bot.on(GroupMessage)
+    async def setuHelper(event:GroupMessage):
+        pattern1 = r'(\d+)张(\w+)'
+        if At(bot.qq) in event.message_chain:
+            text1=str(event.message_chain).replace("壁纸","").replace("涩图","").replace("色图","").replace("图","").replace("r18","")
+            match1 = re.search(pattern1, text1)
+            if match1:
+                logger.info("提取图片关键字。 数量: "+str(match1.group(1))+" 关键字: "+match1.group(2))
+                data={"tag":""}
+                if "r18" in str(event.message_chain) or "色图" in str(event.message_chain) or "涩图" in str(event.message_chain):
+                    data["tag"]=match1.group(2)
+                    data["r18"]=1
+                else:
+                    data["tag"]=match1.group(2)
+                logger.info("组装数据完成："+str(data))
+                for i in range(int(match1.group(1))):
+                    path=await setuGet(data)
+                    logger.info("发送图片: "+path)
+                    await bot.send(event,Image(path=path))
+                    logger.info("图片发送成功")
+
     @bot.on(GroupMessage)
     async def historyToday(event:GroupMessage):
         pattern = r".*史.*今.*|.*今.*史.*"
