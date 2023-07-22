@@ -19,5 +19,5 @@ async def voiceGenerate(data):
         logger.error("语音生成服务端意外关闭，执行重新唤醒")
         subprocess.Popen(["python.exe", "flask_voice.py"], cwd="vits")
         logger.info("服务端重新唤醒完成，重新执行语音生成")
-        await voiceGenerate(data,logger)
+        await voiceGenerate(data)
     logger.info("语音生成完成")
