@@ -12,7 +12,7 @@ async def voiceGenerate(data):
     url = 'http://localhost:9080/synthesize'
     data = json.dumps(data)
     try:
-        async with httpx.AsyncClient(timeout=None) as client:
+        async with httpx.AsyncClient(timeout=200) as client:
             await client.post(url, json=data)
     except:
         print("语音生成服务端意外关闭，执行重新唤醒")

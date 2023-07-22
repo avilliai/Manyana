@@ -4,7 +4,7 @@ import httpx
 
 url="https://www.ipip5.com/today/api.php"
 async def hisToday():
-    async with httpx.AsyncClient() as client:
+    async with httpx.AsyncClient(timeout=100) as client:
         data = {"type": "json"}
         r = await client.get(url, params=data)
         return r.json()

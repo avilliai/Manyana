@@ -48,7 +48,7 @@ async def setuGet(data):
     ranpath = random_str()
     path="data/pictures/wallpaper/" + ranpath + ".png"
     url="https://api.lolicon.app/setu/v2?"
-    async with httpx.AsyncClient(timeout=None) as client:
+    async with httpx.AsyncClient(timeout=100) as client:
         r = await client.get(url,params=data)
         print(r.json().get("data")[0].get("urls").get("original"))
         url=r.json().get("data")[0].get("urls").get("original")

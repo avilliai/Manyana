@@ -40,7 +40,7 @@ async def translate(txt,app_id,app_key,ori="zh-CHS",aim="ja"):
         'curtime': time_curtime,  # 秒级时间戳
     }
 
-    async with httpx.AsyncClient() as client:
+    async with httpx.AsyncClient(timeout=20) as client:
         r = await client.get(youdao_url, params=data)
         return r.json()["translation"][0]
     #print("翻译后的结果：" + r["translation"][0])  # 获取翻译内容
