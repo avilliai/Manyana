@@ -1,45 +1,29 @@
-import datetime
 import os
+r = os.popen ("where python") # 启动脚本
+#print (r.read (),type(r.read())) # 读取输出内容
+a=r.read().split("\n")
+pyPath=a[0][:-10]
+print()
+r.close () # 关闭文件对象
+print("执行拷贝操作")
 
-from vits import utils
+import os
+import shutil
 
-def modelLoader():
-    global modelDll
-    modelDll = {}
-    a = os.listdir('vits/voiceModel')
-    # print(type(a))
-    ind = 0
+source_path = os.path.abspath(r'site-packages')
+target_path = os.path.abspath(pyPath+"Lib/site-packages")
 
-    global CHOISE
-    CHOISE = {}
+if not os.path.exists(target_path):
+    # 如果目标路径不存在原文件夹的话就创建
+    os.makedirs(target_path)
 
-    for i in a:
-        # print(i)
+if os.path.exists(source_path):
+    # 如果目标路径存在原文件夹的话就先删除
+    shutil.rmtree(target_path)
 
-        if os.path.isdir('vits/voiceModel/' + i):
-            # 内层循环遍历取出模型文件
-            file = os.listdir('vits/voiceModel/' + i)
-            for ass in file:
-                if ass.endswith('.pth'):
-                    hps_ms = utils.get_hparams_from_file('vits/voiceModel/' + i + '/config.json')
-                    speakers = hps_ms.speakers if 'speakers' in hps_ms.keys() else ['0']
-                    muspeakers = {}
-                    for id, name in enumerate(speakers):
-                        muspeakers[str(id)] = name
-                        CHOISE[name] = [str(id), ['voiceModel/' + i + '/' + ass, 'voiceModel/' + i + '/config.json']]
+shutil.copytree(source_path, target_path)
+print('依赖库拷贝完成')
+print("拉取bot代码")
+os.system("git clone https://github.com/avilliai/Manyana.git")
+print("完成，请阅读readMe并填写对应配置文件")
 
-                    modelDll[str(ind)] = ['voiceModel/' + i + '/' + ass, 'voiceModel/' + i + '/config.json', muspeakers]
-                    time = datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')
-                    modelSelect = ['voiceModel/' + i + '/' + ass, 'voiceModel/' + i + '/config.json', muspeakers]
-
-                    print(time + '| 已读取' + 'voiceModel/' + i + '文件夹下的模型文件' + str(muspeakers))
-                    ind += 1
-            else:
-                pass
-        else:
-            pass
-    print(modelDll)
-    print(CHOISE)
-    return modelDll,modelSelect,CHOISE
-if __name__ == '__main__':
-    modelLoader()
