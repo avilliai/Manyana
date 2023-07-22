@@ -132,7 +132,7 @@ if __name__ == '__main__':
 
 
 
-    subprocess.Popen(["venv/Scripts/python.exe", "flask_voice.py"],cwd="vits")
+    subprocess.Popen(["python.exe", "flask_voice.py"],cwd="vits")
     #asyncio.run(os.system("cd vits && python flask_voice.py"))
     logger.info(" 语音合成sever启动....")
 
