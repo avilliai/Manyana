@@ -132,7 +132,7 @@ if __name__ == '__main__':
     try:
         logger.info("检查github更新")
         os.system("git pull https://github.com/avilliai/Manyana.git")
-        logger.info("自动从github更新完成")
+        logger.info("自动从github更新完成.")
     except:
         logger.error("自动从github更新失败，请检查网络代理")
     subprocess.Popen(["python.exe", "flask_voice.py"],cwd="vits")

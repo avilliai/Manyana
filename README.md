@@ -64,7 +64,7 @@ xx日文yourText            #输入日文，输出日文
 
 ![img.png](data/pictures/img.png)
 ## 信息查询
-### 碧蓝档案
+### 碧蓝档案1
 ```angular2html
 ba查询[角色名]      # ba查询优香 查询一个角色信息
 ba技能查询[角色名]   # ba技能查询优香  #查询优香的数值
