@@ -19,6 +19,7 @@ from mirai import Mirai, WebSocketAdapter, FriendMessage, GroupMessage, At, Plai
 from plugins.RandomStr import random_str
 from plugins.imgDownload import dict_download_img
 from plugins.translater import translate
+from plugins.vitsGenerate import voiceGenerate
 from plugins.wReply.mohuReply import mohuaddReplys, mohudels, mohuadd
 from plugins.wReply.superDict import outPutDic, importDict
 
@@ -443,13 +444,7 @@ def main(bot,config,sizhiKey,app_id, app_key,logger):
             else:
                 await bot.send(event,str(event.sender.member_name)+"还不是用户...发送 签到 试试吧")
 
-    async def voiceGenerate(data):
-        # 向本地 API 发送 POST 请求
-        url = 'http://localhost:9080/synthesize'
-        data = json.dumps(data)
-        async with httpx.AsyncClient(timeout=None) as client:
-            await client.post(url, json=data)
-        logger.info("语音生成完成")
+
     async def checkIfOk(str1,event):
         if event.group.id in blGroup:
             return False

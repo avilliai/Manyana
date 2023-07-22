@@ -27,7 +27,7 @@ from plugins.newsEveryDay import news, moyu
 from plugins.picGet import pic, setuGet
 from plugins.tarot import tarotChoice
 from plugins.translater import translate
-
+from plugins.vitsGenerate import voiceGenerate
 
 
 def main(bot,api_KEY,logger):
@@ -157,18 +157,9 @@ def main(bot,api_KEY,logger):
                 tex = '[JA]' + text + '[JA]'
                 logger.info("启动文本转语音：text: " + tex + " path: " + path[3:])
                 await voiceGenerate({"text": tex, "out": path})
-
-
                 await bot.send(event, Voice(path=path))
                 return
             mesg = get_cp_mesg(x[0], x[1])
             await bot.send(event, mesg, True)
 
 
-    async def voiceGenerate(data):
-        # 向本地 API 发送 POST 请求
-        url = 'http://localhost:9080/synthesize'
-        data = json.dumps(data)
-        async with httpx.AsyncClient(timeout=None) as client:
-            await client.post(url, json=data)
-        logger.info("语音生成完成")

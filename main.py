@@ -47,6 +47,22 @@ if __name__ == '__main__':
     moderate=result.get("moderate")
     logger.info("读取到apiKey列表")
 
+    global notice
+    notice=0
+    @bot.on(GroupMessage)
+    async def unlockNotice(event:GroupMessage):
+        global notice
+        if str(event.message_chain)=="notice" and event.sender.id==master:
+            notice=1
+    async def sendNotice(event:GroupMessage):
+        global notice
+        if notice==1 and event.sender.id==master:
+            notice=0
+            file = open('data/music/groups.txt', 'r')
+            js = file.read()
+            severGroupsa = json.loads(js)
+            for i in severGroupsa:
+                await bot.send(int(i),(event.message_chain,"\n随机码："+random_str()))
 
 
     '''@bot.on(GroupMessage)
@@ -56,13 +72,7 @@ if __name__ == '__main__':
             for i in lst_img:
                 img_url = i.url
                 print(img_url)'''
-    async def voiceGenerate(data):
-        # 向本地 API 发送 POST 请求
-        url = 'http://localhost:9080/synthesize'
-        data=json.dumps(data)
-        async with httpx.AsyncClient() as client:
-            response = await client.post(url, json=data)
-            #print(response.text)
+
 
     # 菜单
     @bot.on(GroupMessage)
@@ -104,7 +114,6 @@ if __name__ == '__main__':
 
     @bot.on(Startup)
     async def clearCache(event:Startup):
-        await sleep(600)
         logger.info("执行清理缓存操作")
         ls1 = os.listdir("data/pictures/avatars")
         for i in ls1:

@@ -15,6 +15,7 @@ from mirai.models.events import BotInvitedJoinGroupRequestEvent, NewFriendReques
     MemberHonorChangeEvent, MemberCardChangeEvent, BotMuteEvent, MemberSpecialTitleChangeEvent, BotJoinGroupEvent
 
 from plugins.setuModerate import setuModerate
+from plugins.vitsGenerate import voiceGenerate
 
 
 def main(bot,config,moderateKey,logger):
@@ -88,7 +89,7 @@ def main(bot,config,moderateKey,logger):
                 if event.group_id in blGroups:
                     await bot.send_friend_message(event.from_id,"该群在黑名单内")
                     return
-                logger("同意")
+                logger.info("同意")
                 al = '同意'
                 sdf="请先向目标群群员确认是否愿意接受bot加群"
                 await bot.send_friend_message(event.from_id,sdf)
@@ -320,10 +321,4 @@ def main(bot,config,moderateKey,logger):
             with open('config/settings.yaml', 'w', encoding="utf-8") as file:
                 yaml.dump(result, file, allow_unicode=True)
             await bot.send(event, "ok")
-    async def voiceGenerate(data):
-        # 向本地 API 发送 POST 请求
-        url = 'http://localhost:9080/synthesize'
-        data = json.dumps(data)
-        async with httpx.AsyncClient(timeout=None) as client:
-            await client.post(url, json=data)
-        logger.info("语音生成完成")
+

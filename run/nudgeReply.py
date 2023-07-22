@@ -18,6 +18,7 @@ from mirai.models import NudgeEvent
 from plugins.RandomStr import random_str
 from plugins.modelsLoader import modelLoader
 from plugins.translater import translate
+from plugins.vitsGenerate import voiceGenerate
 
 
 def main(bot,app_id,app_key,logger):
@@ -58,13 +59,7 @@ def main(bot,app_id,app_key,logger):
                     await voiceGenerate({"text": tex, "out": path})
                     await bot.send_group_message(event.subject.id, Voice(path=path[3:]))
 
-    async def voiceGenerate(data):
-        # 向本地 API 发送 POST 请求
-        url = 'http://localhost:9080/synthesize'
-        data = json.dumps(data)
-        async with httpx.AsyncClient(timeout=None) as client:
-            await client.post(url, json=data)
-        logger.info("语音生成完成")
+
 
 
 
