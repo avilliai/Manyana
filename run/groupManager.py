@@ -182,7 +182,7 @@ def main(bot,config,moderateKey,logger):
                 banw=banWords.get(group)
 
                 for i in banw:
-                    if i in str(event.message_chain):
+                    if i in str(event.message_chain) and i!="":
                         id = event.message_chain.message_id
                         logger.info("获取到违禁词列表" + str(banw))
                         try:
