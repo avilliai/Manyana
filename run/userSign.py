@@ -25,7 +25,7 @@ from plugins.imgDownload import dict_download_img
 from plugins.weatherQuery import querys
 
 
-def main(bot,api_KEY,logger):
+def main(bot,api_KEY,master,logger):
 
     logger.info("签到部分启动完成")
     with open('data/userData.yaml', 'r', encoding='utf-8') as file:
@@ -120,6 +120,24 @@ def main(bot,api_KEY,logger):
             path=await signPicMaker(imgurl,id,weather,nowTime,times,exp,startTime)
             logger.info("完成，发送签到图片")
             await bot.send(event,Im(path=path),True)
+    @bot.on(GroupMessage)
+    async def accessGiver(event:GroupMessage):
+        if event.sender.id==master and str(event.message_chain).startswith("授权#"):
+            global userdict
+            userId=str(event.message_chain).split("#")[1]
+            if userId in userdict:
+                data=userdict.get(userId)
+                data["sts"]=999
+                userdict[userId]=data
+            else:
+                time = datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')
+                userdict[userId] = {"city": "通辽", "st": time, "sts": "1", "exp": "0",
+                                                  "id": str(len(userdict.keys()) + 1), 'ok': time}
+            logger.info("更新用户数据中")
+            with open('data/userData.yaml', 'w', encoding="utf-8") as file:
+                yaml.dump(userdict, file, allow_unicode=True)
+            logger.info("授权"+userId+"完成")
+            await bot.send(event,"授权完成")
 
     @bot.on(GroupMessage)
     async def changeCity(event: GroupMessage):

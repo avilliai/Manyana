@@ -86,7 +86,7 @@ def main(bot,config,moderateKey,logger):
     async def allowStranger(event: BotInvitedJoinGroupRequestEvent):
         logger.info("接收来自 "+str(event.from_id)+" 的加群邀请")
         if str(event.from_id) in userdict.keys():
-            if int(userdict.get(str(event.from_id)).get("sts"))>2:
+            if int(userdict.get(str(event.from_id)).get("sts"))>5:
                 if event.group_id in blGroups:
                     await bot.send_friend_message(event.from_id,"该群在黑名单内")
                     return
@@ -100,7 +100,7 @@ def main(bot,config,moderateKey,logger):
             else:
                 logger.info("签到天数不够，拒绝")
                 al = '拒绝'
-                await bot.send_friend_message(event.from_id,"群内签到天数不够呢(2)次，明天再来试试吧")
+                await bot.send_friend_message(event.from_id,"群内签到天数不够呢(6)次，明天再来试试吧。也可联系master"+str(master)+" 获取授权")
         else:
             logger.info("非用户，拒绝")
             al = '拒绝'
@@ -335,4 +335,12 @@ def main(bot,config,moderateKey,logger):
             with open('config/settings.yaml', 'w', encoding="utf-8") as file:
                 yaml.dump(result, file, allow_unicode=True)
             await bot.send(event, "ok")
+    @bot.on(GroupMessage)
+    async def exitBadGroup(event:GroupMessage):
+        ls=["你妈","傻逼","艹逼","你妈","死你","垃圾"]
+        for i in ls:
+            if i in str(event.message_chain):
+                logger.warn("遭到："+str(event.sender.id)+" 的辱骂,执行退群。")
+                await bot.quit(event.group.id)
+
 

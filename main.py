@@ -160,7 +160,7 @@ if __name__ == '__main__':
     extraParts.main(bot,result.get("weatherXinZhi"),logger)#额外小功能
     wReply.main(bot,config,sizhiKey,app_id,app_key,logger)
     blueArchiveHelper.main(bot,app_id,app_key,logger)
-    userSign.main(bot,result.get("weatherXinZhi"),logger)
+    userSign.main(bot,result.get("weatherXinZhi"),master,logger)
     groupManager.main(bot,config,moderate,logger)
     PicRandom.main(bot,logger)
     musicShare.main(bot,master,botName,logger)
