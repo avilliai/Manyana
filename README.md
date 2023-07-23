@@ -6,7 +6,7 @@
 ----
 
 
-Manyana基于开源框架Mirai进行开发，其前身是于2021年立项的Yucca
+Manyana基于[Mirai框架](https://github.com/mamoe/mirai) 进行开发，使用了[yiriMirai](https://github.com/YiriMiraiProject/YiriMirai) 项目以进行更便捷地开发。
 
 这个项目的名字来源于
      <p>佛教中的末那识，它是介于意识(第六识)与阿赖耶识(第八识)之间的第七识</p>
