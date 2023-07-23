@@ -166,5 +166,4 @@ if __name__ == '__main__':
     PicRandom.main(bot,logger)
     musicShare.main(bot,master,botName,logger)
     startVer()
-
     bot.run()
