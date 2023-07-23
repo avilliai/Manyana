@@ -60,7 +60,7 @@ def main(bot,app_id,app_key,logger):
                                                            "data/blueArchive/") + ".png"
                 data1=response.get("character")
                 profile=translate(data1.get("profile").replace("\n",""),app_id,app_key,aim="zh-CHS",ori="ja")
-                logger.info("获取profile翻译结果："+profile)
+                logger.info("获取profile翻译结果："+str(profile))
                 data1["profile"]=profile
 
 
