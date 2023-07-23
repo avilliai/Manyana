@@ -129,11 +129,11 @@ if __name__ == '__main__':
             except:
                 continue
         logger.info("清理缓存完成")
-    try:
         logger.info("检查github更新")
+        logger.info("如果遇到卡顿请按ctrl+c")
         os.system("git pull https://github.com/avilliai/Manyana.git")
-    except:
-        logger.error("自动从github更新失败，请检查网络代理")
+        logger.info("完成")
+
     subprocess.Popen(["python.exe", "flask_voice.py"],cwd="vits")
     #asyncio.run(os.system("cd vits && python flask_voice.py"))
     logger.info(" 语音合成sever启动....")
