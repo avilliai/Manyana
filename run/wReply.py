@@ -259,24 +259,19 @@ def main(bot,config,sizhiKey,app_id, app_key,logger):
         if str(replyssssss).endswith('.png') or str(replyssssss).endswith('.jpg'):
             await bot.send(event, Image(path='data/autoReply/imageReply/' + replyssssss))
         elif str(replyssssss).endswith('.wav'):
-            await bot.send(event, Voice(path='data/autoReply/voiceReply' + replyssssss))
+            return
         else:
-
-
             replyssssss = replyssssss.replace("小思", botName).replace("{me}", botName).replace("yucca", botName).replace("{segment}", ',')
             if str(event.sender.id) not in userdict:
                 replyssssss=replyssssss.replace("name", str(event.sender.nickname)).replace("{name}", str(event.sender.nickname)).replace("哥哥", str(event.sender.nickname))
             else:
-
                 setName=userdict.get(str(event.sender.id)).get("userName")
                 if setName==None:
                     setName=event.sender.nickname
                 replyssssss=replyssssss.replace("name", setName).replace("{name}", setName).replace("哥哥", setName)
-            if event.sender.id != master:
-                logger.info('接收私聊消息,来自' + str(event.sender.get_name()) + ' | ' + str(
-                    event.sender.id) + '内容：' + event.message_chain)
-            else:
-                pass
+
+            logger.info('接收私聊消息,来自' + str(event.sender.get_name()) + ' | ' + str(
+                event.sender.id) + '内容：' + event.message_chain)
             global turnMess
             if turnMess == True and event.sender.id != master:
                 await bot.send_friend_message(master,'接收私聊消息\n来自：' + str(event.sender.get_name()) + '\nQQ:' + str(event.sender.id) + '\n内容：' + event.message_chain + '\n用--> ' + replyssssss + ' <--回复了')
