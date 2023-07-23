@@ -2,7 +2,7 @@ import os
 
 
 def main():
-    print("请输入要执行的指令：\n1 绑定到远程仓库(如果通过源码包安装请执行)\n2 更新bot代码")
+    print("请输入要执行的指令：\n1 绑定到远程仓库(如果通过源码包安装请执行)\n2 更新bot代码\n3 启动数据清理大师(doge)")
     a=input("输入要执行的数字")
     if a=="1":
         os.system("git init")
@@ -13,6 +13,30 @@ def main():
         print("拉取bot代码")
         os.system("git pull https://github.com/avilliai/Manyana.git")
         print("已更新")
+    elif a=="3":
+        print("执行清理缓存操作")
+        ls1 = os.listdir("data/pictures/avatars")
+        for i in ls1:
+            try:
+                os.remove("data/pictures/avatars/" + i)
+            except:
+                continue
+        print("清理头像缓存完成")
+        ls1 = os.listdir("data/pictures/cache")
+        for i in ls1:
+            try:
+                os.remove("data/pictures/cache/" + i)
+            except:
+                continue
+
+        ls1 = os.listdir("data/pictures/wallpaper")
+        for i in ls1:
+            try:
+                os.remove("data/pictures/wallpaper/" + i)
+            except:
+                continue
+        print("清理本地图库缓存完成,缓存的涩图都没喽")
+        print("清理缓存完成")
     else:
         print("结束")
 
