@@ -180,16 +180,22 @@ def main(bot,config,moderateKey,logger):
             group=str(event.sender.group.id)
             try:
                 banw=banWords.get(group)
-                logger.info("获取到违禁词列表"+str(banw))
+
                 for i in banw:
                     if i in str(event.message_chain):
                         id = event.message_chain.message_id
+                        logger.info("获取到违禁词列表" + str(banw))
                         try:
                             await bot.recall(id)
                             logger.info("撤回违禁消息"+str(event.message_chain))
                             await bot.send(event,"检测到违禁词"+i+"，撤回")
                         except:
                             logger.error("关键词撤回失败！")
+                        try:
+                            await bot.mute(target=event.sender.group.id, member_id=event.sender.id, time=banTime)
+                            await bot.send(event, "检测到违禁词" + i + "，禁言")
+                        except:
+                            logger.error("禁言失败，权限可能过低")
 
             except:
                 pass
