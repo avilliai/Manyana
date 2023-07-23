@@ -7,7 +7,6 @@ def main():
     if a=="1":
         os.system("git init")
         os.system("git remote add origin https://github.com/avilliai/Manyana.git")
-        os.system("git pull origin main")
         print("over")
     elif a=="2":
         print("拉取bot代码")
