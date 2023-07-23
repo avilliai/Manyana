@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 import json
 import subprocess
+from asyncio import sleep
 
 import httpx
 
@@ -17,6 +18,8 @@ async def voiceGenerate(data):
     except:
         print("语音生成服务端意外关闭，执行重新唤醒")
         subprocess.Popen(["python.exe", "flask_voice.py"], cwd="vits")
+
         print("服务端重新唤醒完成，重新执行语音生成")
+        await sleep(25)
         await voiceGenerate(data)
     print("语音生成完成")
