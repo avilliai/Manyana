@@ -43,7 +43,8 @@ def main(bot,app_id,app_key,logger):
                 logger.warning("查询ba角色:"+aimCharacter+" 失败，未收录对应数据")
                 logger.info("发送语音(日)：数据库里好像没有这个角色呢,要再检查一下吗？")
                 if os.path.exists("data/autoReply/voiceReply/queryFalse.wav")==False:
-                    data={"text":"[JA]"+translate("数据库里好像没有这个角色呢,要再检查一下吗？",app_id,app_key)+"[JA]","out":"../data/autoReply/voiceReply/queryFalse.wav"}
+                    back=await translate("数据库里好像没有这个角色呢,要再检查一下吗？",app_id,app_key)
+                    data={"text":"[JA]"+str(back)+"[JA]","out":"../data/autoReply/voiceReply/queryFalse.wav"}
                     await voiceGenerate(data)
                     await bot.send(event,Voice(path="data/autoReply/voiceReply/queryFalse.wav"))
                 else:
@@ -59,7 +60,7 @@ def main(bot,app_id,app_key,logger):
                 portrait = imgData.get("portrait").replace("https://api.ennead.cc/buruaka",
                                                            "data/blueArchive/") + ".png"
                 data1=response.get("character")
-                profile=translate(data1.get("profile").replace("\n",""),app_id,app_key,aim="zh-CHS",ori="ja")
+                profile=await translate(data1.get("profile").replace("\n",""),app_id,app_key,aim="zh-CHS",ori="ja")
                 logger.info("获取profile翻译结果："+str(profile))
                 data1["profile"]=profile
 
@@ -86,7 +87,8 @@ def main(bot,app_id,app_key,logger):
                 logger.warning("查询ba角色技能:" + aimCharacter + " 失败，未收录对应数据")
                 logger.info("发送语音(日)：数据库里好像没有这个角色呢,要再检查一下吗？")
                 if os.path.exists("data/autoReply/voiceReply/queryFalse.wav") == False:
-                    data = {"text": "[JA]" + translate("数据库里好像没有这个角色呢,要再检查一下吗？", app_id, app_key) + "[JA]",
+                    da=await translate("数据库里好像没有这个角色呢,要再检查一下吗？", app_id, app_key)
+                    data = {"text": "[JA]" + str(da) + "[JA]",
                             "out": "../data/autoReply/voiceReply/queryFalse.wav"}
                     await voiceGenerate(data)
                     await bot.send(event, Voice(path="data/autoReply/voiceReply/queryFalse.wav"))
