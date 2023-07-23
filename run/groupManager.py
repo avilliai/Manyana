@@ -340,7 +340,8 @@ def main(bot,config,moderateKey,logger):
         ls=["你妈","傻逼","艹逼","你妈","死你","垃圾"]
         for i in ls:
             if i in str(event.message_chain):
-                logger.warn("遭到："+str(event.sender.id)+" 的辱骂,执行退群。")
+                logger.warn("遭到："+str(event.sender.id)+" 的辱骂,执行退群。群号:"+str(event.group.id))
                 await bot.quit(event.group.id)
+                return
 
 
