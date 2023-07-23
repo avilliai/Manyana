@@ -199,6 +199,13 @@ def main(bot,config,moderateKey,logger):
 
             except:
                 pass
+    @bot.on(GroupMessage)
+    async def checkBanWords(event:GroupMessage):
+        global banWords
+        if At(bot.qq) in event.message_chain and "违禁词" in str(event.message_chain) and "查" in str(event.message_chain):
+            group = str(event.sender.group.id)
+            banw = str(banWords.get(group)).replace(",",",\n")
+            await bot.send(event,"本群违禁词列表如下：\n"+banw)
 
     @bot.on(GroupMessage)
     async def addBanWord(event:GroupMessage):
