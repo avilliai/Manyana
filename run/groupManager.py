@@ -343,6 +343,17 @@ def main(bot,config,moderateKey,logger):
                 if i in str(event.message_chain):
                     logger.warn("遭到："+str(event.sender.id)+" 的辱骂,执行退群。群号:"+str(event.group.id))
                     await bot.quit(event.group.id)
+
+                    global blackList
+                    global blGroups
+                    blackList.append(event.sender.id)
+                    blGroups.append(event.group.id)
+                    with open('config/settings.yaml', 'r', encoding='utf-8') as f:
+                        result = yaml.load(f.read(), Loader=yaml.FullLoader)
+                    result["banUser"] = blackList
+                    result["banGroups"] = blGroups
+                    with open('config/settings.yaml', 'w', encoding="utf-8") as file:
+                        yaml.dump(result, file, allow_unicode=True)
                     return
 
 
