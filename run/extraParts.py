@@ -39,7 +39,7 @@ def main(bot,api_KEY,logger):
         if At(bot.qq) not in event.message_chain:
             if '/pic' in str(event.message_chain):
                 picNum = int((str(event.message_chain))[4:])
-            elif "@"+str(bot.qq) not in str(event.message_chain):
+            elif "@"+str(bot.qq) not in str(event.message_chain) and event.message_chain.count(Image)<1 and len(str(event.message_chain))<6:
                 if get_number(str(event.message_chain))==None:
                     return
                 else:
