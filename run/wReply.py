@@ -250,10 +250,7 @@ def main(bot,config,sizhiKey,app_id, app_key,logger):
         else:
             best_matches = process.extractBests(getStr, superDict.keys(), limit=3)
             logger.info("获取匹配结果：key:" + getStr + "|" + str(best_matches))
-            try:
-                replyssssss = random.choice(superDict.get(str(best_matches)[0][0]))
-            except:
-                return
+            replyssssss = random.choice(superDict.get(str((best_matches)[0][0])))
             logger.info("key:：" + getStr + " 选择回复：" + replyssssss)
 
         if str(replyssssss).endswith('.png') or str(replyssssss).endswith('.jpg'):
