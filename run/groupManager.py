@@ -61,14 +61,14 @@ def main(bot,config,moderateKey,logger):
     async def botJoin(event:BotJoinGroupEvent):
         await bot.send_group_message(event.group.id,"已加入服务群聊....")
         await bot.send_group_message(event.group.id,"发送 @bot 帮助 以获取功能列表\n项目地址：https://github.com/avilliai/Manyana\n喜欢bot的话可以给个star哦(≧∇≦)ﾉ")
-        path="data/autoReply/voiceReply/joinGroup.wav"
+        path="../data/autoReply/voiceReply/joinGroup.wav"
         ok=os.path.exists(path)
         if ok:
-            await bot.send_group_message(event.group.id,Voice(path=path))
+            await bot.send_group_message(event.group.id,Voice(path=path[3:]))
         else:
             data={'text':"[JA]みなさん、こんにちは、私はこのグループのメンバーになりました、将来もっとアドバイスしてください![JA]","path":path}
             await voiceGenerate(data)
-            await bot.send_group_message(event.group.id,Voice(path=path))
+            await bot.send_group_message(event.group.id,Voice(path=path[3:]))
         await bot.send_group_message(event.group.id,"发送 帮助 获取功能列表哦")
 
     @bot.on(Startup)
