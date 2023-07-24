@@ -24,7 +24,7 @@ Manyana基于[Mirai框架](https://github.com/mamoe/mirai) 进行开发，使用
 # 部署
 - 从release下载setUps.rar并解压，依次安装，全部默认下一步就行。apk安装到手机。
 - 特别地，对于watt Toolkit，开始加速前一定要勾选上加速github。不过你既然都到这里了，想必也用不到它。
-- 克隆本仓库。找一个你喜欢的目录(**不要带中文**)打开cmd执行
+- 克隆本仓库。找一个你喜欢的目录(**不要带中文**)打开cmd或git bash执行
 ```
 git clone https://github.com/avilliai/Manyana.git
 ```
