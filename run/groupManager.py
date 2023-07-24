@@ -367,6 +367,7 @@ def main(bot,config,moderateKey,logger):
             if str(event.message_chain).startswith("/bl add ") or str(event.message_chain).startswith("添加黑名单用户 "):
                 groupId = int(str(event.message_chain).split(" ")[-1])
                 if groupId not in blackList:
+                    print(str(blackList))
                     blackList= blackList.append(groupId)
                     logger.info("成功添加黑名单用户" + str(groupId))
                     await bot.send(event, "成功添加黑名单用户" + str(groupId))
