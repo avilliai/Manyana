@@ -374,10 +374,11 @@ def main(bot,config,moderateKey,logger):
 
                     with open('config/settings.yaml', 'r', encoding='utf-8') as f:
                         result = yaml.load(f.read(), Loader=yaml.FullLoader)
+                    logger.info("当前"+str(blackList))
                     result["banUser"] = blackList
                     with open('config/settings.yaml', 'w', encoding="utf-8") as file:
                         yaml.dump(result, file, allow_unicode=True)
-                    return
+
                 else:
                     await bot.send(event,"该用户已被拉黑")
     @bot.on(GroupMessage)
