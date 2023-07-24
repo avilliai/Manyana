@@ -23,6 +23,13 @@ def main():
             except:
                 continue
         print("清理头像缓存完成")
+        ls1 = os.listdir("data/voices")
+        for i in ls1:
+            try:
+                os.remove("data/voices/" + i)
+            except:
+                continue
+        print("清理音频缓存完成")
         ls1 = os.listdir("data/pictures/cache")
         for i in ls1:
             try:

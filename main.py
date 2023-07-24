@@ -86,31 +86,7 @@ if __name__ == '__main__':
             logger.info("菜单")
             await bot.send(event, Image(path='config/picMaker.png'))
             await bot.send(event, '这是' + botName + '的制图功能列表\nヾ(≧▽≦*)o')
-    @bot.on(GroupMessage)
-    async def clearCache(event:GroupMessage):
-        if event.sender.id==master and str(event.message_chain)=="/clearcache":
-            logger.info("执行清理缓存操作")
-            ls1=os.listdir("data/pictures/avatars")
-            for i in ls1:
-                try:
-                    os.remove("data/pictures/avatars/"+i)
-                except:
-                    continue
-            logger.info("清理头像缓存完成")
-            ls1 = os.listdir("data/pictures/cache")
-            for i in ls1:
-                try:
-                    os.remove("data/pictures/cache/" + i)
-                except:
-                    continue
-            logger.info("清理缓存完成")
-            ls1 = os.listdir("data/pictures/wallpaper")
-            for i in ls1:
-                try:
-                    os.remove("data/pictures/wallpaper/" + i)
-                except:
-                    continue
-            logger.info("清理图片缓存完成")
+
 
     @bot.on(Startup)
     async def clearCache(event:Startup):
@@ -128,7 +104,14 @@ if __name__ == '__main__':
                 os.remove("data/pictures/cache/" + i)
             except:
                 continue
-        logger.info("清理缓存完成")
+        logger.info("清理图片缓存完成")
+        ls1 = os.listdir("data/voices")
+        for i in ls1:
+            try:
+                os.remove("data/voices/" + i)
+            except:
+                continue
+        logger.info("清理语音缓存完成")
     logger.info("检查github更新")
     logger.info("如果遇到卡顿请按ctrl+c | 如成功更新了某些文件，请重启main.py以应用更新")
     try:
