@@ -248,6 +248,8 @@ def main(bot,config,sizhiKey,app_id, app_key,logger):
             print("yucca:\n" + answer.get("data").get("info").get("text"))
             replyssssss = answer.get("data").get("info").get("text")
         else:
+            if event.sender.id==bot.qq:
+                return
             best_matches = process.extractBests(getStr, superDict.keys(), limit=3)
             logger.info("获取匹配结果：key:" + getStr + "|" + str(best_matches))
             replyssssss = random.choice(superDict.get(str((best_matches)[0][0])))
