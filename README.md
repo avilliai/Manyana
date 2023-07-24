@@ -6,11 +6,14 @@
 ----
 
 
-Manyana基于[Mirai框架](https://github.com/mamoe/mirai) 进行开发，使用了[yiriMirai](https://github.com/YiriMiraiProject/YiriMirai) 项目以进行更便捷地开发。
+Manyana基于[Mirai框架](https://github.com/mamoe/mirai) 进行开发，使用了[YiriMirai](https://github.com/YiriMiraiProject/YiriMirai) 以进行更便捷地开发。
 
-这个项目的名字来源于
+封面图片来源于[stella](https://www.pixiv.net/artworks/109772665) ,很漂亮的ai绘画。
+
+项目的名字来源于
      <p>佛教中的末那识，它是介于意识(第六识)与阿赖耶识(第八识)之间的第七识</p>
      <p>它是当下的感官经验与更本原性的阿赖耶识——一切现象的种子之间的桥梁。这很抽象所以我用它做了新项目的名字</p>
+
 </div>
 
 - 项目使用了CjangCjengh的[MoeGoe](https://github.com/CjangCjengh/MoeGoe) 以及他的语音模型
@@ -103,6 +106,7 @@ ba技能查询[角色名]   # ba技能查询优香  #查询优香的数值
 ````angular2html
 添加违禁词XXX
 删除违禁词XXX
+@bot 查看违禁词
 ````
 #### 涩图审核撤回
 ```angular2html
