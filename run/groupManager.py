@@ -367,14 +367,13 @@ def main(bot,config,moderateKey,logger):
             if str(event.message_chain).startswith("/bl add ") or str(event.message_chain).startswith("添加黑名单用户 "):
                 groupId = int(str(event.message_chain).split(" ")[-1])
                 if groupId not in blackList:
-                    print(str(blackList))
-                    blackList= blackList.append(groupId)
+                    blackList.append(groupId)
                     logger.info("成功添加黑名单用户" + str(groupId))
                     await bot.send(event, "成功添加黑名单用户" + str(groupId))
 
                     with open('config/settings.yaml', 'r', encoding='utf-8') as f:
                         result = yaml.load(f.read(), Loader=yaml.FullLoader)
-                    logger.info("当前"+str(blackList))
+                    logger.info("当前黑名单"+str(blackList))
                     result["banUser"] = blackList
                     with open('config/settings.yaml', 'w', encoding="utf-8") as file:
                         yaml.dump(result, file, allow_unicode=True)
@@ -389,7 +388,7 @@ def main(bot,config,moderateKey,logger):
             if str(event.message_chain).startswith("/blgroup remove") or str(event.message_chain).startswith("移除黑名单群 "):
                 try:
                     groupId=int(str(event.message_chain).split(" ")[-1])
-                    blGroups=blGroups.remove(groupId)
+                    blGroups.remove(groupId)
                     logger.info("成功移除黑名单群"+str(groupId))
                     await bot.send(event,"成功移除黑名单群"+str(groupId))
 
@@ -405,7 +404,7 @@ def main(bot,config,moderateKey,logger):
             if str(event.message_chain).startswith("/bl remove") or str(event.message_chain).startswith("移除黑名单用户 "):
                 try:
                     groupId=int(str(event.message_chain).split(" ")[-1])
-                    blackList=blackList.remove(groupId)
+                    blackList.remove(groupId)
                     logger.info("成功移除黑名单用户"+str(groupId))
                     await bot.send(event,"成功移除黑名单用户"+str(groupId))
                     with open('config/settings.yaml', 'r', encoding='utf-8') as f:
