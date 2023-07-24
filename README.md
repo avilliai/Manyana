@@ -13,18 +13,24 @@ Manyana基于[Mirai框架](https://github.com/mamoe/mirai) 进行开发，使用
      <p>它是当下的感官经验与更本原性的阿赖耶识——一切现象的种子之间的桥梁。这很抽象所以我用它做了新项目的名字</p>
 </div>
 
+- 项目使用了CjangCjengh的[MoeGoe](https://github.com/CjangCjengh/MoeGoe) 以及他的语音模型
+- 基于[Yiri-mirai](https://github.com/YiriMiraiProject/YiriMirai) 实现
+- 请确保py版本为3.9
+- 请确保已安装[mirai-api-http](https://github.com/project-mirai/mirai-api-http) 并[正确配置](https://github.com/avilliai/wReply/blob/master/setting.yml)
+- 请确保已安装[mirai-login-solver-sakura](https://github.com/KasukuSakura/mirai-login-solver-sakura)
+- 可选安装[Mirai点歌插件](https://github.com/khjxiaogu/MiraiSongPlugin)
+- 可选安装[PetPet](https://github.com/Dituon/petpet)
 
-# 目录介绍
-## 文件
-- config.json 是基础配置文件，你需要在里面填写bot的基础信息
-- main.py是总控文件，准备好环境后启动它即可
-
-## 文件夹
-- config文件夹用于填写额外的配置文件
-- data文件夹存放各种数据
-- plugins文件夹实现具体功能
-- run文件夹调用plugins中的对应文件
-- vits文件夹实现语音合成
+# 部署
+- 从release下载setUps.rar并解压，依次安装，全部默认下一步就行。apk安装到手机。
+- 特别地，对于watt Toolkit，开始加速前一定要勾选上加速github。不过你既然都到这里了，想必也用不到它。
+- 克隆本仓库。找一个你喜欢的目录(**不要带中文**)打开cmd执行
+```
+git clone https://github.com/avilliai/Manyana.git
+```
+- 解压release中的site-packages.rar，打开cmd输入where python查看你的python安装目录
+- 进入python安装目录，找到Lib/site-packages，用release的site-packages替换它
+- 填写config.json与config/api.yaml，完成后运行main.py即可。
 
 # 功能
 ## 图片相关
