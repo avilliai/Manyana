@@ -341,19 +341,82 @@ def main(bot,config,moderateKey,logger):
         if At(bot.qq) in event.message_chain:
             for i in ls:
                 if i in str(event.message_chain):
-                    logger.warn("遭到："+str(event.sender.id)+" 的辱骂,执行退群。群号:"+str(event.group.id))
-                    await bot.quit(event.group.id)
+                    try:
+                        await bot.mute(target=event.sender.group.id, member_id=event.sender.id, time=banTime)
+                        return
+                    except:
+                        logger.error("禁言失败，权限可能过低")
+                        logger.warn("遭到："+str(event.sender.id)+" 的辱骂,执行退群。群号:"+str(event.group.id))
+                        await bot.quit(event.group.id)
+                        global blackList
+                        global blGroups
+                        blackList.append(event.sender.id)
+                        blGroups.append(event.group.id)
+                        with open('config/settings.yaml', 'r', encoding='utf-8') as f:
+                            result = yaml.load(f.read(), Loader=yaml.FullLoader)
+                        result["banUser"] = blackList
+                        result["banGroups"] = blGroups
+                        with open('config/settings.yaml', 'w', encoding="utf-8") as file:
+                            yaml.dump(result, file, allow_unicode=True)
+                        return
 
-                    global blackList
-                    global blGroups
-                    blackList.append(event.sender.id)
-                    blGroups.append(event.group.id)
+    @bot.on(GroupMessage)
+    async def removeBl(event: GroupMessage):
+        if event.sender.id == master:
+            global blackList
+            if str(event.message_chain).startswith("/bl add ") or str(event.message_chain).startswith("添加黑名单用户 "):
+                try:
+                    groupId = int(str(event.message_chain).split(" ")[-1])
+                    if groupId not in blackList:
+                        blackList= blackList.append(groupId)
+                        logger.info("成功添加黑名单用户" + str(groupId))
+                        await bot.send(event, "成功添加黑名单用户" + str(groupId))
+
+                        with open('config/settings.yaml', 'r', encoding='utf-8') as f:
+                            result = yaml.load(f.read(), Loader=yaml.FullLoader)
+                        result["banUser"] = blackList
+                        with open('config/settings.yaml', 'w', encoding="utf-8") as file:
+                            yaml.dump(result, file, allow_unicode=True)
+                        return
+                    else:
+                        await bot.send(event,"该用户已被拉黑")
+                except:
+                    logger.error("移除失败，该群不在黑名单中")
+                    await bot.send(event, "移除失败，该群不在黑名单中")
+    @bot.on(GroupMessage)
+    async def removeBl(event:GroupMessage):
+        if event.sender.id==master:
+            global blackList
+            global blGroups
+            if str(event.message_chain).startswith("/blgroup remove") or str(event.message_chain).startswith("移除黑名单群 "):
+                try:
+                    groupId=int(str(event.message_chain).split(" ")[-1])
+                    blGroups=blGroups.remove(groupId)
+                    logger.info("成功移除黑名单群"+str(groupId))
+                    await bot.send(event,"成功移除黑名单群"+str(groupId))
+
                     with open('config/settings.yaml', 'r', encoding='utf-8') as f:
                         result = yaml.load(f.read(), Loader=yaml.FullLoader)
-                    result["banUser"] = blackList
                     result["banGroups"] = blGroups
                     with open('config/settings.yaml', 'w', encoding="utf-8") as file:
                         yaml.dump(result, file, allow_unicode=True)
                     return
-
+                except:
+                    logger.error("移除失败，该群不在黑名单中")
+                    await bot.send(event,"移除失败，该群不在黑名单中")
+            if str(event.message_chain).startswith("/bl remove") or str(event.message_chain).startswith("移除黑名单用户 "):
+                try:
+                    groupId=int(str(event.message_chain).split(" ")[-1])
+                    blackList=blackList.remove(groupId)
+                    logger.info("成功移除黑名单用户"+str(groupId))
+                    await bot.send(event,"成功移除黑名单用户"+str(groupId))
+                    with open('config/settings.yaml', 'r', encoding='utf-8') as f:
+                        result = yaml.load(f.read(), Loader=yaml.FullLoader)
+                    result["banUser"] = blackList
+                    with open('config/settings.yaml', 'w', encoding="utf-8") as file:
+                        yaml.dump(result, file, allow_unicode=True)
+                    return
+                except:
+                    logger.error("移除失败，该用户不在黑名单中")
+                    await bot.send(event,"移除失败，该用户不在黑名单中")
 

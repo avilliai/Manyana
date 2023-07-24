@@ -130,6 +130,10 @@ meme         #抽取一张meme图
 ```
 授权#qq号       #给一个用户授权(群内发送)
 退群#群号       #退出指定群
+/bl add qq号   #拉黑一个用户
+/bl remove qq号   #取消拉黑
+/blgroup add 群号
+/blgroup remove 群号
 ```
 # 可选配置
 ## 设置api_key
