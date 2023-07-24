@@ -6,7 +6,7 @@
 ----
 
 
-Manyana基于[Mirai框架](https://github.com/mamoe/mirai) 进行开发，使用了[YiriMirai](https://github.com/YiriMiraiProject/YiriMirai) 以进行更便捷的开发。
+Manyana基于[Mirai框架](https://github.com/mamoe/mirai) ，使用了[YiriMirai](https://github.com/YiriMiraiProject/YiriMirai) 以进行更便捷的开发。
 
 封面图片来源于[stella](https://www.pixiv.net/artworks/109772665) ,很漂亮的ai绘画。
 
