@@ -365,24 +365,20 @@ def main(bot,config,moderateKey,logger):
         if event.sender.id == master:
             global blackList
             if str(event.message_chain).startswith("/bl add ") or str(event.message_chain).startswith("添加黑名单用户 "):
-                try:
-                    groupId = int(str(event.message_chain).split(" ")[-1])
-                    if groupId not in blackList:
-                        blackList= blackList.append(groupId)
-                        logger.info("成功添加黑名单用户" + str(groupId))
-                        await bot.send(event, "成功添加黑名单用户" + str(groupId))
+                groupId = int(str(event.message_chain).split(" ")[-1])
+                if groupId not in blackList:
+                    blackList= blackList.append(groupId)
+                    logger.info("成功添加黑名单用户" + str(groupId))
+                    await bot.send(event, "成功添加黑名单用户" + str(groupId))
 
-                        with open('config/settings.yaml', 'r', encoding='utf-8') as f:
-                            result = yaml.load(f.read(), Loader=yaml.FullLoader)
-                        result["banUser"] = blackList
-                        with open('config/settings.yaml', 'w', encoding="utf-8") as file:
-                            yaml.dump(result, file, allow_unicode=True)
-                        return
-                    else:
-                        await bot.send(event,"该用户已被拉黑")
-                except:
-                    logger.error("移除失败，该群不在黑名单中")
-                    await bot.send(event, "移除失败，该群不在黑名单中")
+                    with open('config/settings.yaml', 'r', encoding='utf-8') as f:
+                        result = yaml.load(f.read(), Loader=yaml.FullLoader)
+                    result["banUser"] = blackList
+                    with open('config/settings.yaml', 'w', encoding="utf-8") as file:
+                        yaml.dump(result, file, allow_unicode=True)
+                    return
+                else:
+                    await bot.send(event,"该用户已被拉黑")
     @bot.on(GroupMessage)
     async def removeBl(event:GroupMessage):
         if event.sender.id==master:
