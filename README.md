@@ -36,6 +36,7 @@ git clone https://github.com/avilliai/Manyana.git
 - 填写config.json与config/api.yaml，完成后运行main.py即可。
 
 # 功能
+发送@bot 帮助 以查看功能列表
 ## 图片相关
 ### 获取壁纸
 ```angular2html
