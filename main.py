@@ -114,9 +114,11 @@ if __name__ == '__main__':
         logger.info("清理语音缓存完成")
     logger.info("检查github更新")
     logger.info("如果遇到卡顿请按ctrl+c | 如成功更新了某些文件，请重启main.py以应用更新")
+
     try:
+        logger.warning("如果出现 Merge冲突 请重命名本地的对应文件，拉取后将你的数据重新导入")
         os.system("git pull https://github.com/avilliai/Manyana.git")
-        logger.info("完成")
+        logger.info("over")
     except:
         logger.error("取消github更新")
 
