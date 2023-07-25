@@ -38,6 +38,8 @@ def main(bot,config,sizhiKey,app_id, app_key,logger):
     yamlData = result.get("wReply")
     global voiceRate
     voiceRate= yamlData.get("voiceRate")
+    global chineseVoiceRate
+    chineseVoiceRate=yamlData.get("chineseVoiceRate")
     # 过滤词库
     global ban
     ban = yamlData.get("banWords")
@@ -210,10 +212,12 @@ def main(bot,config,sizhiKey,app_id, app_key,logger):
                 await bot.send(event, replyssssss)
             else:
                 replyssssss = replyssssss.replace(botName, "我")
-
                 path = '../data/voices/' + random_str() + '.wav'
-                text=await translate(str(replyssssss), app_id, app_key)
-                tex = '[JA]' + text + '[JA]'
+                if random.randint(1,100)>chineseVoiceRate:
+                    text=await translate(str(replyssssss), app_id, app_key)
+                    tex = '[JA]' + text + '[JA]'
+                else:
+                    tex="[ZH]"+replyssssss+"[ZH]"
                 logger.info("启动文本转语音：text: "+tex+" path: "+path[3:])
                 await voiceGenerate({"text": tex, "out": path})
                 await bot.send(event,Voice(path=path[3:]))

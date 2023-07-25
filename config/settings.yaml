@@ -1,9 +1,8 @@
 banGroups:
-- 1235799
-- 578904
+- 2132321
 banUser:
-- 91793712344
-- 741927340
+- 1
+- 4564949845
 moderate:
   banTime: 300
   banWords:
@@ -33,3 +32,4 @@ wReply:
   sizhi: false
   turnMessage: true
   voiceRate: 30
+  chineseVoiceRate: 30
