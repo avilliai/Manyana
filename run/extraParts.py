@@ -172,7 +172,7 @@ def main(bot,api_KEY,app_id,app_key,nasa_api,proxy,logger):
             }
             # Replace the key with your own
             dataa = {"api_key": nasa_api}
-            logger.info("发起搜图请求")
+            logger.info("发起nasa请求")
             try:
                 # 拼接url和参数
                 url = "https://api.nasa.gov/planetary/apod?" + "&".join([f"{k}={v}" for k, v in dataa.items()])
