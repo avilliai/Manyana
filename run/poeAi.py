@@ -34,6 +34,7 @@ def gptHelper():
 
 def main(bot,master,apiKey,proxy,logger):
     logger.info("正在启动poe-AI")
+    global KEY
     KEY=apiKey[0]
     global client
     client = poe.Client(KEY, proxy=proxy)
@@ -42,6 +43,7 @@ def main(bot,master,apiKey,proxy,logger):
     @bot.on(GroupMessage)
     async def AiHelper(event:GroupMessage):
         global client
+        global KEY
         if str(event.message_chain).startswith("/poe"):
             mes=str(event.message_chain).replace("/poe","")
             s = ""
@@ -53,10 +55,15 @@ def main(bot,master,apiKey,proxy,logger):
                 await bot.send(event,s)
             except:
                 logger.warning("出错，达到每分钟限制或token已失效。")
+                apiKey.remove(KEY)
+                if len(apiKey)==0:
+                    await bot.send(event,"令牌已全部失效，请联系master重新获取")
+                    return
                 logger.warning("执行poe-api 重载指令")
                 await bot.send(event,"出错，达到每分钟限制或token已失效。")
                 try:
-                    client = poe.Client(token=random.choice(apiKey), proxy=proxy)
+                    KEY=random.choice(apiKey)
+                    client = poe.Client(token=KEY, proxy=proxy)
                     json.dumps(client.bot_names, indent=2)
                     logger.info("poe-api重载完成")
                     await bot.send(event,"poe重启完成")
