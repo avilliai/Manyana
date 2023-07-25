@@ -56,7 +56,7 @@ def main(bot,master,apiKey,proxy,logger):
                 logger.warning("执行poe-api 重载指令")
                 await bot.send(event,"出错，达到每分钟限制或token已失效。")
                 try:
-                    client = poe.Client(token=KEY, proxy=proxy)
+                    client = poe.Client(token=random.choice(apiKey), proxy=proxy)
                     json.dumps(client.bot_names, indent=2)
                     logger.info("poe-api重载完成")
                     await bot.send(event,"poe重启完成")
@@ -66,7 +66,7 @@ def main(bot,master,apiKey,proxy,logger):
             client.send_chat_break("capybara")
             await bot.send(event,"已清除对话上下文。")
         if str(event.message_chain)=="/reload" and str(event.sender.id)==str(master):
-            client = poe.Client(token=KEY, proxy=proxy)
+            client = poe.Client(token=random.choice(apiKey), proxy=proxy)
             json.dumps(client.bot_names, indent=2)
             await bot.send(event,"已重启")
 if __name__ == '__main__':
