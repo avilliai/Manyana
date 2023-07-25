@@ -28,8 +28,10 @@ def main(bot,app_id,app_key,logger):
     special_Reply = result.get("BeatNudge")
     special_Reply1 = result.get("BeatNudge1")
     voiceReply = result.get("voiceReply")
+    chineseVoiceRate=result.get("chineseVoiceRate")
     prob=result.get("prob")
     logger.info("读取到apiKey列表")
+
 
     @bot.on(NudgeEvent)
     async def NudgeReply(event:NudgeEvent):
@@ -53,8 +55,11 @@ def main(bot,app_id,app_key,logger):
                     await bot.send_group_message(event.subject.id, rep)
                 else:
                     path = '../data/voices/' + random_str() + '.wav'
-                    text = await translate(str(rep), app_id, app_key)
-                    tex = '[JA]' + text + '[JA]'
+                    if random.randint(1,100)>chineseVoiceRate:
+                        text = await translate(str(rep), app_id, app_key)
+                        tex = '[JA]' + text + '[JA]'
+                    else:
+                        tex="[ZH]"+rep+"[ZH]"
                     logger.info("启动文本转语音：text: " + tex + " path: " + path[3:])
                     await voiceGenerate({"text": tex, "out": path})
                     await bot.send_group_message(event.subject.id, Voice(path=path[3:]))
