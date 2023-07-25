@@ -20,6 +20,7 @@ from plugins import weatherQuery
 from plugins.RandomStr import random_str
 from plugins.cpGenerate import get_cp_mesg
 from plugins.historicalToday import hisToday
+from plugins.imgDownload import dict_download_img
 from plugins.jokeMaker import get_joke
 
 from plugins.modelsLoader import modelLoader
@@ -30,7 +31,7 @@ from plugins.translater import translate
 from plugins.vitsGenerate import voiceGenerate
 
 
-def main(bot,api_KEY,logger):
+def main(bot,api_KEY,app_id,app_key,nasa_api,proxy,logger):
     logger.info("额外的功能 启动完成")
 
     @bot.on(GroupMessage)
@@ -161,5 +162,33 @@ def main(bot,api_KEY,logger):
                 return
             mesg = get_cp_mesg(x[0], x[1])
             await bot.send(event, mesg, True)
+
+    @bot.on(GroupMessage)
+    async def NasaHelper(event: GroupMessage):
+        if At(bot.qq) in event.message_chain and "天文" in str(event.message_chain):
+            proxies = {
+                "http://": proxy,
+                "https://": proxy
+            }
+            # Replace the key with your own
+            dataa = {"api_key": nasa_api}
+            logger.info("发起搜图请求")
+            try:
+                # 拼接url和参数
+                url = "https://api.nasa.gov/planetary/apod?" + "&".join([f"{k}={v}" for k, v in dataa.items()])
+                async with httpx.AsyncClient(proxies=proxies) as client:
+                    # 用get方法发送请求
+                    response = await client.get(url=url)
+                # response = requests.post(url="https://saucenao.com/search.php", data=dataa, proxies=proxies)
+                logger.info("获取到结果" + str(response.json()))
+                # logger.info("下载缩略图")
+                filename = dict_download_img(response.json().get("url"), dirc="data/pictures/cache")
+                txta=await translate(response.json().get("explanation"),app_id=app_id,app_key=app_key,ori="en",aim="zh-CHS")
+                txt = response.json().get("date") + "\n" + response.json().get("title") + "\n" + txta
+                await bot.send(event,(Image(path=filename),txt))
+
+            except:
+                logger.warning("获取每日天文图片失败")
+                await bot.send(event,"获取失败，请联系master检查代理或api_key是否可用")
 
 

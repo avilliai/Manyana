@@ -9,5 +9,6 @@ moderate: 207b10178c64089dvzv90ebfcd7f865d97a   #色图审核api 从https://www.
 poe-api:
   - BHai3yLdvOcjdadfzS6UnIX6A%3D%3D  #从poe.com抓取到token，可获取多个
 siZhiAi: 819d9jyeb3da9b2b5cba26d2430a     #思知ai    从https://console.ownthink.com/login
+nasa_api: dfafhalsdfalfdj              # nasa相关天文api 从https://api.nasa.gov/index.html#main-content申请
 proxy: 'http://127.0.0.1:1080'  #代理 自己设置对应的端口，没有就不填
 

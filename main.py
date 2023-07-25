@@ -45,6 +45,7 @@ if __name__ == '__main__':
     sizhiKey=result.get("siZhiAi")
     proxy=result.get("proxy")
     moderate=result.get("moderate")
+    nasa_api=result.get("nasa_api")
     logger.info("读取到apiKey列表")
 
     global notice
@@ -146,7 +147,7 @@ if __name__ == '__main__':
     else:
         logger.warning("未设置代理，禁用poe-api与搜图")
     nudgeReply.main(bot,app_id,app_key,logger)#戳一戳
-    extraParts.main(bot,result.get("weatherXinZhi"),logger)#额外小功能
+    extraParts.main(bot,result.get("weatherXinZhi"),app_id,app_key,nasa_api,proxy,logger)#额外小功能
     wReply.main(bot,config,sizhiKey,app_id,app_key,logger)
     blueArchiveHelper.main(bot,app_id,app_key,logger)
     userSign.main(bot,result.get("weatherXinZhi"),master,logger)
