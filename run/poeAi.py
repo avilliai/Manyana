@@ -32,8 +32,10 @@ def gptHelper():
 
 
 
-def main(bot,master,apiKey,proxy,logger):
+def main(bot,master,apikey,proxy,logger):
     logger.info("正在启动poe-AI")
+    global apiKey
+    apiKey=apikey
     global KEY
     KEY=apiKey[0]
     global client
