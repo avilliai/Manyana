@@ -117,7 +117,7 @@ if __name__ == '__main__':
 
     try:
         logger.warning("如果出现 Merge冲突 请重命名本地的对应文件，拉取后将你的数据重新导入")
-        logger.warning("merge冲突示例：error: The following untracked working tree files would be overwritten by merge:")
+        logger.warning("merge冲突示例：Your local changes to the following files would be overwritten by merge:")
         os.system("git pull https://github.com/avilliai/Manyana.git")
         logger.info("over")
     except:
