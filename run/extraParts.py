@@ -172,18 +172,23 @@ def main(bot,api_KEY,app_id,app_key,nasa_api,proxy,logger):
             }
             # Replace the key with your own
             dataa = {"api_key": nasa_api}
-            logger.info("向nasa发起请求")
-            # 拼接url和参数
-            url = "https://api.nasa.gov/planetary/apod?" + "&".join([f"{k}={v}" for k, v in dataa.items()])
-            async with httpx.AsyncClient(proxies=proxies) as client:
-                # 用get方法发送请求
-                response = await client.get(url=url)
-            # response = requests.post(url="https://saucenao.com/search.php", data=dataa, proxies=proxies)
-            logger.info("获取到结果" + str(response.json()))
-            # logger.info("下载缩略图")
-            filename = dict_download_img(response.json().get("url"), dirc="data/pictures/cache")
-            txta=await translate(response.json().get("explanation"),app_id=app_id,app_key=app_key,ori="en",aim="zh-CHS")
-            txt = response.json().get("date") + "\n" + response.json().get("title") + "\n" + txta
-            await bot.send(event,(Image(path=filename),txt))
+            logger.info("发起搜图请求")
+            try:
+                # 拼接url和参数
+                url = "https://api.nasa.gov/planetary/apod?" + "&".join([f"{k}={v}" for k, v in dataa.items()])
+                async with httpx.AsyncClient(proxies=proxies) as client:
+                    # 用get方法发送请求
+                    response = await client.get(url=url)
+                # response = requests.post(url="https://saucenao.com/search.php", data=dataa, proxies=proxies)
+                logger.info("获取到结果" + str(response.json()))
+                # logger.info("下载缩略图")
+                filename = dict_download_img(response.json().get("url"), dirc="data/pictures/cache")
+                txta=await translate(response.json().get("explanation"),app_id=app_id,app_key=app_key,ori="en",aim="zh-CHS")
+                txt = response.json().get("date") + "\n" + response.json().get("title") + "\n" + txta
+                await bot.send(event,(Image(path=filename),txt))
+
+            except:
+                logger.warning("获取每日天文图片失败")
+                await bot.send(event,"获取失败，请联系master检查代理或api_key是否可用")
 
 
