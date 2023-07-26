@@ -14,7 +14,7 @@ def main():
         print("拉取bot代码")
         os.system("git pull https://github.com/avilliai/Manyana.git")
         print("如出现 Merge冲突 例如：Your local changes to the following files would be overwritten by merge:\n请重命名本地的对应文件，拉取后将你的数据重新导入")
-        print("已更新")
+        print("结束")
     elif a=="3":
         print("执行清理缓存操作")
         ls1 = os.listdir("data/pictures/avatars")
