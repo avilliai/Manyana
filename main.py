@@ -160,7 +160,7 @@ if __name__ == '__main__':
             file_object.close()
         print(all_the_text)
 
-    voiceReply.main(bot,app_id,app_key,logger)#语音生成
+    voiceReply.main(bot,master,app_id,app_key,logger)#语音生成
     if proxy!="":
         try:
             #logger.info("开发过程中暂不启动poe-api")
