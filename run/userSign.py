@@ -131,7 +131,7 @@ def main(bot,api_KEY,master,logger):
                 userdict[userId]=data
             else:
                 time = datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')
-                userdict[userId] = {"city": "通辽", "st": time, "sts": "1", "exp": "0",
+                userdict[userId] = {"city": "通辽", "st": time, "sts": "99", "exp": "0",
                                                   "id": str(len(userdict.keys()) + 1), 'ok': time}
             logger.info("更新用户数据中")
             with open('data/userData.yaml', 'w', encoding="utf-8") as file:
