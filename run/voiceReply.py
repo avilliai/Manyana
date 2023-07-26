@@ -49,14 +49,6 @@ def main(bot,master,app_id,app_key,logger):
                 modelSelect = characters.get(speaker1)[1]
                 logger.info("设置了语音生成_speaker" + str(speaker))
                 logger.info("设置了语音生成_模型:" + str(modelSelect))
-                with open('config/nudgeReply.yaml', 'r', encoding='utf-8') as f:
-                    result = yaml.load(f.read(), Loader=yaml.FullLoader)
-                defaultModel = result.get("defaultModel")
-                defaultModel["speaker"] = speaker
-                defaultModel["modelSelect"] = modelSelect
-                result["defaultModel"] = defaultModel
-                with open('config/nudgeReply.yaml', 'w', encoding="utf-8") as file:
-                    yaml.dump(result, file, allow_unicode=True)
 
 
     # modelSelect=['voiceModel/selina/selina.pth','voiceModel/selina/config.json']
