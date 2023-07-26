@@ -61,7 +61,7 @@ def main(bot,master,app_id,app_key,logger):
                 with open('config/nudgeReply.yaml', 'w', encoding="utf-8") as file:
                     yaml.dump(result, file, allow_unicode=True)
 
-                await bot.send(event, "成功设置了语音生成默认角色为：" + speaker1)
+                await bot.send(event, "成功设置了戳一戳语音生成默认角色为：" + speaker1)
             else:
                 await bot.send(event, "不存在的角色")
 
