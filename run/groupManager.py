@@ -135,7 +135,7 @@ def main(bot,config,moderateKey,logger):
     @bot.on(MemberSpecialTitleChangeEvent)
     async def honorChange(event: MemberSpecialTitleChangeEvent):
         logger.info("群员称号改变")
-        await bot.send_group_message(event.member.group.id, str(event.member) + '获得了称号：' + str(event.current))
+        await bot.send_group_message(event.member.group.id, str(event.member.member_name) + '获得了称号：' + str(event.current))
 
     @bot.on(MemberCardChangeEvent)
     async def nameChange(event: MemberCardChangeEvent):
