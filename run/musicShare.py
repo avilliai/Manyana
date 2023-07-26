@@ -77,7 +77,7 @@ def main(bot,master,botName,logger):
             if sender.get(str(event.sender.id)).get("step")==1:
                 print("step:ok")
         except:
-            print("没事，只是私聊回复")
+            logger.info("接收私聊消息"+str(event.message_chain))
         else:
             print(sender)
         if event.message_chain.count(MusicShare) and (str(event.sender.id) in sender.keys()) and sender.get(str(event.sender.id)).get("step")==1:
@@ -215,5 +215,6 @@ def main(bot,master,botName,logger):
             severGroupsa[str(event.group.id)] = str(datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S'))
             severGroups = severGroupsa.keys()
             newData = json.dumps(severGroupsa)
+            logger.info("新增群"+str(event.group.id))
             with open('data/music/groups.txt', 'w') as fp:
                 fp.write(newData)
