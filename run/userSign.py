@@ -127,7 +127,7 @@ def main(bot,api_KEY,master,logger):
             userId=str(event.message_chain).split("#")[1]
             if userId in userdict:
                 data=userdict.get(userId)
-                data["sts"]=999
+                data["sts"]="99"
                 userdict[userId]=data
             else:
                 time = datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')
