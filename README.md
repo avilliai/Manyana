@@ -142,37 +142,44 @@ notice         # 群发通知用
 ```
 # 可选配置
 ## 设置api_key
-打开config/api.yaml填写对应信息即可
+打开config/api.yaml填写对应信息即可，有道必须填，其他的你随意。
 ## 戳一戳回复
 打开config/nudgeReply.yaml即可
+```
+BeatNudge:         #戳一戳反击的第一条消息
+- 生气了哦！
+BeatNudge1:       #戳一戳反击后的消息
+- 你是笨蛋吗
+chineseVoiceRate: 30    #中文回复几率
+defaultModel:         #默认语音模型
+  modelSelect:        
+  - voiceModel/nene/1374_epochsm.pth
+  - voiceModel/nene/config.json
+  speaker: 2
+nudgedReply:        #正常戳一戳的回复
+- 呜哇，好害羞啊……不过……
+- en?
+prob: 9            #反击几率
+voiceReply: 50    # 戳一戳转语音几率
+
+```
 ## 自定义回复相关
 由于对config/settings.yaml读写比较频繁，所以这个文件的注释写在了这里
-
 你可以对它进行修改，但一般建议使用默认设置
 ```angular2html
-wReply:                    #这是自定义回复的内容
-  banWords:                #设置自定义回复屏蔽词
+defaultModel:      #默认语音模型
+  modelSelect:       # 模型与配置文件路径
+  - voiceModel/nene/1374_epochsm.pth
+  - voiceModel/nene/config.json
+  speaker: 2          # 默认的speaker，一般单角色语音模型默认为0
+wReply:
+  banWords:          # 自定义回复敏感词
   - 妈
-  - 孙笑川
-  replyRate: 5             #不艾特时的回复几率
-  sizhi: false             #是否启用思知ai
-  turnMessage: true        #是否开启私聊转发
-  voiceRate: 20            #语音回复几率
-# 下面这些你基本可以不用管，这些是自动的。
-banGroups:                 #黑名单群
-- 1235799
-- 578904
-banUser:                   #黑名单用户
-- 91793712344
-- 741927340
-moderate:                  #审核
-  banTime: 300             #禁言时长
-  banWords:                #群聊敏感词撤回
-    '60844343475':
-    - 斯卡蒂
-  groups:                  #涩图审核撤回
-    '69945555439': 50
-  threshold: 40            #默认撤回阈值
+  chineseVoiceRate: 30  #自定义回复语音使用中文的几率
+  replyRate: 3          # 自定义回复不艾特的触发几率
+  sizhi: false         # 是否开启思知ai，(没太大必要有一说一)
+  turnMessage: true    #是否开启私聊转发，打开bot会把收到的私聊转发给你，很吵建议关闭
+  voiceRate: 30      #语音回复几率
 ```
 # 最后
 如果觉得项目还不错的话给个star喵，给个star谢谢喵
