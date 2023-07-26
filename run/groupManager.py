@@ -260,7 +260,7 @@ def main(bot,config,moderateKey,logger):
     async def geturla(event:GroupMessage):
         global moderateK
         global severGroups
-        if str(event.group.permission)!=str('Permission.Member') and event.message_chain.count(Image) and str(event.group.id) in severGroups :
+        if (str(event.group.permission)!=str('Permission.Member')) and event.message_chain.count(Image) and str(event.group.id) in severGroups :
             lst_img = event.message_chain.get(Image)
 
             for i in lst_img:
@@ -318,7 +318,7 @@ def main(bot,config,moderateKey,logger):
                     except:
                         await bot.send(event,"阈值设置出错，请进入config.json中手动设置threshold值")
 
-        if (str(event.sender.permission)!="MEMBER"  or event.sender.id==master )and str(event.message_chain)=="/moderate":
+        if (str(event.sender.permission)!="Permission.Member"  or event.sender.id==master )and str(event.message_chain)=="/moderate":
             if str(event.group.id) in severGroups:
                 logger.info("群:"+str(event.group.id)+" 关闭了审核")
                 severGroups.pop(str(event.group.id))

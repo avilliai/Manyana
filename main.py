@@ -55,6 +55,7 @@ if __name__ == '__main__':
         global notice
         if str(event.message_chain)=="notice" and event.sender.id==master:
             notice=1
+    @bot.on(GroupMessage)
     async def sendNotice(event:GroupMessage):
         global notice
         if notice==1 and event.sender.id==master:
@@ -64,6 +65,8 @@ if __name__ == '__main__':
             severGroupsa = json.loads(js)
             for i in severGroupsa:
                 await bot.send(int(i),(event.message_chain,"\n随机码："+random_str()))
+
+
 
 
     '''@bot.on(GroupMessage)
