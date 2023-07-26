@@ -150,6 +150,7 @@ def main(bot,config,moderateKey,logger):
         logger.info("bot被禁言，操作者"+str(event.operator.id))
         global blackList
         global blGroups
+
         blackList.append(event.operator.id)
         blGroups.append(event.operator.group.id)
         with open('config/settings.yaml', 'r', encoding='utf-8') as f:

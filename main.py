@@ -4,9 +4,10 @@ import datetime
 import json
 
 import os
+import random
 import subprocess
 from asyncio import sleep
-from random import random
+
 
 import httpx
 import requests
@@ -54,7 +55,9 @@ if __name__ == '__main__':
     async def unlockNotice(event:GroupMessage):
         global notice
         if str(event.message_chain)=="notice" and event.sender.id==master:
-            notice=1
+
+            await bot.send(event,"请发送要推送的消息")
+            notice = 1
     @bot.on(GroupMessage)
     async def sendNotice(event:GroupMessage):
         global notice
@@ -64,18 +67,16 @@ if __name__ == '__main__':
             js = file.read()
             severGroupsa = json.loads(js)
             for i in severGroupsa:
-                await bot.send(int(i),(event.message_chain,"\n随机码："+random_str()))
+                await sleep(random.randint(2,10))
+                logger.info("向群："+i +" 推送公告")
+                if event.message_chain.count(Image)<1:
+                    await bot.send_group_message(int(i),(event.message_chain+"\n随机码："+random_str()))
+                else:
+                    await bot.send_group_message(int(i), (event.message_chain +"\n随机码：" + random_str()))
 
 
 
 
-    '''@bot.on(GroupMessage)
-    async def imgGet(event:GroupMessage):
-        if event.message_chain.count(Image):
-            lst_img = event.message_chain.get(Image)
-            for i in lst_img:
-                img_url = i.url
-                print(img_url)'''
 
 
     # 菜单
@@ -116,6 +117,26 @@ if __name__ == '__main__':
             except:
                 continue
         logger.info("清理语音缓存完成")
+
+        file = open('data/music/groups.txt', 'r')
+        js = file.read()
+        severGroupsa = json.loads(js)
+        logger.info('已读取服务群聊:' + str(len(severGroupsa)) + '个')
+        with open('data/userData.yaml', 'r', encoding='utf-8') as file:
+            data = yaml.load(file, Loader=yaml.FullLoader)
+        global userdict
+        userdict = data
+        userCount = userdict.keys()
+        logger.info('已读取有记录用户:' + str(len(userCount)) + '个')
+
+        # 修改为你bot的名字
+        logger.info('botName:' + botName + '     |     master:' + str(master))
+        time1 = datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')
+        await bot.send_friend_message(master,time1 + '\n已读取服务群聊:' + str(len(severGroupsa)) + '个')
+        await bot.send_friend_message(master,time1 + '\n已读取有记录用户:' + str(len(userCount)) + '个')
+        await bot.send_friend_message(master,time1 + '\n功能已加载完毕，欢迎使用')
+
+
     logger.info("检查github更新")
     logger.info("如果遇到卡顿请按ctrl+c | 如成功更新了某些文件，请重启main.py以应用更新")
 
@@ -157,5 +178,6 @@ if __name__ == '__main__':
     groupManager.main(bot,config,moderate,logger)
     PicRandom.main(bot,logger)
     musicShare.main(bot,master,botName,logger)
+
     startVer()
     bot.run()
