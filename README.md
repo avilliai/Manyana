@@ -95,6 +95,10 @@ ba技能查询[角色名]   # ba技能查询优香  #查询优香的数值
 ```js
 @bot 摸鱼
 ```
+### nasa每日天文
+```js
+@bot 天文
+```
 
 ## 好友与加群管理
 ### 加好友与加群
@@ -134,6 +138,7 @@ meme         #抽取一张meme图
 /bl remove qq号   #取消拉黑
 /blgroup add 群号
 /blgroup remove 群号
+notice         # 群发通知用
 ```
 # 可选配置
 ## 设置api_key
