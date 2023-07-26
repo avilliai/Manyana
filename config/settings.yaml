@@ -1,16 +1,8 @@
-banGroups:
-- 2132321
-banUser:
-- 1
-- 4564949845
-moderate:
-  banTime: 300
-  banWords:
-    '60844343475':
-    - 斯卡蒂
-  groups:
-    '69945555439': 1
-  threshold: 40
+defaultModel:
+  modelSelect:
+  - voiceModel/nene/1374_epochsm.pth
+  - voiceModel/nene/config.json
+  speaker: 2
 wReply:
   banWords:
   - 妈
@@ -28,8 +20,8 @@ wReply:
   - 牛
   - 国
   - 批
+  chineseVoiceRate: 30
   replyRate: 3
   sizhi: false
   turnMessage: true
   voiceRate: 30
-  chineseVoiceRate: 30

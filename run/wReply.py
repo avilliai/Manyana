@@ -18,6 +18,7 @@ from mirai import Mirai, WebSocketAdapter, FriendMessage, GroupMessage, At, Plai
 
 from plugins.RandomStr import random_str
 from plugins.imgDownload import dict_download_img
+from plugins.modelsLoader import modelLoader
 from plugins.translater import translate
 from plugins.vitsGenerate import voiceGenerate
 from plugins.wReply.mohuReply import mohuaddReplys, mohudels, mohuadd
@@ -28,18 +29,21 @@ def main(bot,config,sizhiKey,app_id, app_key,logger):
     logger.info("启动自定义词库")
     logger.info("自定义词库读取配置文件")
     #读取配置文件
-    with open('config/settings.yaml', 'r', encoding='utf-8') as f:
+    with open('config/autoSettings.yaml', 'r', encoding='utf-8') as f:
         result = yaml.load(f.read(), Loader=yaml.FullLoader)
     global blUser
     blUser=result.get("banUser")
     global blGroup
     blGroup = result.get("banGroups")
+
+    with open('config/settings.yaml', 'r', encoding='utf-8') as f:
+        result = yaml.load(f.read(), Loader=yaml.FullLoader)
     global yamlData
     yamlData = result.get("wReply")
-    global voiceRate
-    voiceRate= yamlData.get("voiceRate")
     global chineseVoiceRate
-    chineseVoiceRate=yamlData.get("chineseVoiceRate")
+    chineseVoiceRate = yamlData.get("chineseVoiceRate")
+    global voiceRate
+    voiceRate = yamlData.get("voiceRate")
     # 过滤词库
     global ban
     ban = yamlData.get("banWords")
@@ -49,7 +53,14 @@ def main(bot,config,sizhiKey,app_id, app_key,logger):
     global sizhi
     sizhi = yamlData.get("sizhi")
     global turnMess
-    turnMess=yamlData.get("turnMessage")
+    turnMess = yamlData.get("turnMessage")
+
+    global modelSelect
+    global speaker
+    speaker = result.get("defaultModel").get("speaker")
+    modelSelect = result.get("defaultModel").get("modelSelect")
+    logger.info("当前语音模型设定："+str(speaker)+"\n模型"+str(modelSelect))
+
 
     file = open('config/superDict.txt', 'r')
     jss = file.read()
@@ -78,6 +89,37 @@ def main(bot,config,sizhiKey,app_id, app_key,logger):
     #你的QQ
     global master
     master=int(config.get('master'))
+    global models
+    global characters
+    models, default, characters = modelLoader()  # 读取模型
+
+    @bot.on(GroupMessage)
+    async def setDefaultModel(event:GroupMessage):
+        if event.sender.id==master and str(event.message_chain).startswith("设定角色#"):
+            global speaker
+            global modelSelect
+            if str(event.message_chain).split("#")[1] in characters:
+                speaker1 = str(event.message_chain).split("#")[1]
+                logger.info("尝试设定角色#"+speaker1)
+                speaker=int(characters.get(speaker1)[0])
+                modelSelect=characters.get(speaker1)[1]
+                logger.info("设置了语音生成_speaker" + str(speaker))
+                logger.info("设置了语音生成_模型:" + str(modelSelect))
+                with open('config/settings.yaml', 'r', encoding='utf-8') as f:
+                    result = yaml.load(f.read(), Loader=yaml.FullLoader)
+                defaultModel=result.get("defaultModel")
+                defaultModel["speaker"]=speaker
+                defaultModel["modelSelect"]=modelSelect
+                result["defaultModel"]=defaultModel
+                with open('config/settings.yaml', 'w', encoding="utf-8") as file:
+                    yaml.dump(result, file, allow_unicode=True)
+
+                await bot.send(event, "成功设置了语音生成默认角色为："+speaker1)
+            else:
+                await bot.send(event,"不存在的角色")
+
+
+
 
 
 
@@ -136,7 +178,7 @@ def main(bot,config,sizhiKey,app_id, app_key,logger):
                         path ='../data/autoReply/voiceReply/' + ranpath + '.wav'
                         text = await translate(str(event.message_chain)[2:], app_id, app_key)
                         tex = '[JA]' + text + '[JA]'
-                        await voiceGenerate({"text":tex,"out":path})
+                        await voiceGenerate({"text":tex,"out":path,"speaker":speaker,"modelSelect":modelSelect})
                         value = ranpath + '.wav'
                     elif event.message_chain.count(Image) == 1:
                         logger.info("增加图片回复")
@@ -219,7 +261,7 @@ def main(bot,config,sizhiKey,app_id, app_key,logger):
                 else:
                     tex="[ZH]"+replyssssss+"[ZH]"
                 logger.info("启动文本转语音：text: "+tex+" path: "+path[3:])
-                await voiceGenerate({"text": tex, "out": path})
+                await voiceGenerate({"text": tex, "out": path,"speaker":speaker,"modelSelect":modelSelect})
                 await bot.send(event,Voice(path=path[3:]))
     # 开启和关闭思知ai
     @bot.on(GroupMessage)
@@ -376,12 +418,14 @@ def main(bot,config,sizhiKey,app_id, app_key,logger):
         while True:
             await sleep(360)
             logger.info("开始更新数据")
-            with open('config/settings.yaml', 'r', encoding='utf-8') as f:
+            with open('config/autoSettings.yaml', 'r', encoding='utf-8') as f:
                 result = yaml.load(f.read(), Loader=yaml.FullLoader)
             global blUser
             blUser = result.get("banUser")
             global blGroup
             blUser = result.get("banGroups")
+            with open('config/settings.yaml', 'r', encoding='utf-8') as f:
+                result = yaml.load(f.read(), Loader=yaml.FullLoader)
             global yamlData
             yamlData = result.get("wReply")
             global voiceRate
@@ -396,6 +440,11 @@ def main(bot,config,sizhiKey,app_id, app_key,logger):
             sizhi = yamlData.get("sizhi")
             global turnMess
             turnMess = yamlData.get("turnMessage")
+
+            global modelSelect
+            global speaker
+            speaker=result.get("defaultModel").get("speaker")
+            modelSelect=result.get("defaultModel").get("modelSelect")
 
             file = open('config/superDict.txt', 'r')
             jss = file.read()

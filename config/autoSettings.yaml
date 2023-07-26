@@ -1,0 +1,13 @@
+banGroups:
+- 2132321
+banUser:
+- 1
+- 4564949845
+moderate:
+  banTime: 300
+  banWords:
+    '60844343475':
+    - 斯卡蒂
+  groups:
+    '69945555439': 1
+  threshold: 40

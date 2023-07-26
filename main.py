@@ -170,7 +170,7 @@ if __name__ == '__main__':
         imgSearch.main(bot, result.get("sauceno-api"), result.get("proxy"), logger)
     else:
         logger.warning("未设置代理，禁用poe-api与搜图")
-    nudgeReply.main(bot,app_id,app_key,logger)#戳一戳
+    nudgeReply.main(bot,master,app_id,app_key,logger)#戳一戳
     extraParts.main(bot,result.get("weatherXinZhi"),app_id,app_key,nasa_api,proxy,logger)#额外小功能
     wReply.main(bot,config,sizhiKey,app_id,app_key,logger)
     blueArchiveHelper.main(bot,app_id,app_key,logger)

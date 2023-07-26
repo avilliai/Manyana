@@ -21,7 +21,7 @@ from plugins.translater import translate
 from plugins.vitsGenerate import voiceGenerate
 
 
-def main(bot,app_id,app_key,logger):
+def main(bot,master,app_id,app_key,logger):
     with open('config/nudgeReply.yaml', 'r', encoding='utf-8') as f:
         result = yaml.load(f.read(), Loader=yaml.FullLoader)
     normal_Reply = result.get("nudgedReply")
@@ -29,9 +29,41 @@ def main(bot,app_id,app_key,logger):
     special_Reply1 = result.get("BeatNudge1")
     voiceReply = result.get("voiceReply")
     chineseVoiceRate=result.get("chineseVoiceRate")
+    global modelSelect
+    global speaker
+    speaker = result.get("defaultModel").get("speaker")
+    modelSelect = result.get("defaultModel").get("modelSelect")
     prob=result.get("prob")
     logger.info("读取到apiKey列表")
 
+    global models
+    global characters
+    models, default, characters = modelLoader()  # 读取模型
+
+    @bot.on(GroupMessage)
+    async def setDefaultModel(event: GroupMessage):
+        if event.sender.id == master and str(event.message_chain).startswith("设定角色#"):
+            global speaker
+            global modelSelect
+            if str(event.message_chain).split("#")[1] in characters:
+                speaker1 = str(event.message_chain).split("#")[1]
+                logger.info("尝试设定角色：" + speaker1)
+                speaker = int(characters.get(speaker1)[0])
+                modelSelect = characters.get(speaker1)[1]
+                logger.info("设置了语音生成_speaker" + str(speaker))
+                logger.info("设置了语音生成_模型:" + str(modelSelect))
+                with open('config/nudgeReply.yaml', 'r', encoding='utf-8') as f:
+                    result = yaml.load(f.read(), Loader=yaml.FullLoader)
+                defaultModel = result.get("defaultModel")
+                defaultModel["speaker"] = speaker
+                defaultModel["modelSelect"] = modelSelect
+                result["defaultModel"] = defaultModel
+                with open('config/nudgeReply.yaml', 'w', encoding="utf-8") as file:
+                    yaml.dump(result, file, allow_unicode=True)
+
+                await bot.send(event, "成功设置了语音生成默认角色为：" + speaker1)
+            else:
+                await bot.send(event, "不存在的角色")
 
     @bot.on(NudgeEvent)
     async def NudgeReply(event:NudgeEvent):
@@ -61,7 +93,7 @@ def main(bot,app_id,app_key,logger):
                     else:
                         tex="[ZH]"+rep+"[ZH]"
                     logger.info("启动文本转语音：text: " + tex + " path: " + path[3:])
-                    await voiceGenerate({"text": tex, "out": path})
+                    await voiceGenerate({"text": tex, "out": path,"speaker":speaker,"modelSelect":modelSelect})
                     await bot.send_group_message(event.subject.id, Voice(path=path[3:]))
 
 

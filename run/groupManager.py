@@ -23,7 +23,7 @@ def main(bot,config,moderateKey,logger):
     global moderateK
     moderateK=moderateKey
     logger.info("读取群管设置")
-    with open('config/settings.yaml', 'r', encoding='utf-8') as f:
+    with open('config/autoSettings.yaml', 'r', encoding='utf-8') as f:
         result = yaml.load(f.read(), Loader=yaml.FullLoader)
     global banWords
     banWords=result.get("moderate").get("banWords")
@@ -153,11 +153,11 @@ def main(bot,config,moderateKey,logger):
 
         blackList.append(event.operator.id)
         blGroups.append(event.operator.group.id)
-        with open('config/settings.yaml', 'r', encoding='utf-8') as f:
+        with open('config/autoSettings.yaml', 'r', encoding='utf-8') as f:
             result = yaml.load(f.read(), Loader=yaml.FullLoader)
         result["banUser"]=blackList
         result["banGroups"]=blGroups
-        with open('config/settings.yaml', 'w', encoding="utf-8") as file:
+        with open('config/autoSettings.yaml', 'w', encoding="utf-8") as file:
             yaml.dump(result, file, allow_unicode=True)
         await bot.send_friend_message(master,'bot在群:\n'+str(event.operator.group.name)+str(event.operator.group.id)+'\n被禁言'+str(event.duration_seconds)+'秒\n操作者id：'+str(event.operator.id)+'\nname:('+str(event.operator.member_name)+')\n已退群并增加不良记录')
         await bot.quit(event.operator.group.id)
@@ -223,13 +223,13 @@ def main(bot,config,moderateKey,logger):
                     banWords[str(event.sender.group.id)]=[aimWord]
                 else:
                     banWords[str(event.sender.group.id)]=[aimWord]
-                with open('config/settings.yaml', 'r', encoding='utf-8') as f:
+                with open('config/autoSettings.yaml', 'r', encoding='utf-8') as f:
                     result = yaml.load(f.read(), Loader=yaml.FullLoader)
                 moderate=result.get("moderate")
 
                 moderate["banWords"]=banWords
                 result["moderate"]=moderate
-                with open('config/settings.yaml', 'w',encoding="utf-8") as file:
+                with open('config/autoSettings.yaml', 'w',encoding="utf-8") as file:
                     yaml.dump(result, file, allow_unicode=True)
                 await bot.send(event,"已添加违禁词："+aimWord)
     @bot.on(GroupMessage)
@@ -245,12 +245,12 @@ def main(bot,config,moderateKey,logger):
                 try:
                     newData=banWords.get(str(event.sender.group.id)).remove(aimWord)
                     banWords[str(event.sender.group.id)]==newData
-                    with open('config/settings.yaml', 'r', encoding='utf-8') as f:
+                    with open('config/autoSettings.yaml', 'r', encoding='utf-8') as f:
                         result = yaml.load(f.read(), Loader=yaml.FullLoader)
                     moderate = result.get("moderate")
                     moderate["banWords"] = banWords
                     result["moderate"] = moderate
-                    with open('config/settings.yaml', 'w', encoding="utf-8") as file:
+                    with open('config/autoSettings.yaml', 'w', encoding="utf-8") as file:
                         yaml.dump(result, file, allow_unicode=True)
 
                     await bot.send(event,"已移除违禁词："+aimWord)
@@ -307,12 +307,12 @@ def main(bot,config,moderateKey,logger):
                     try:
                         threshold=temp
                         severGroups[str(event.group.id)] = temp
-                        with open('config/settings.yaml', 'r', encoding='utf-8') as f:
+                        with open('config/autoSettings.yaml', 'r', encoding='utf-8') as f:
                             result = yaml.load(f.read(), Loader=yaml.FullLoader)
                         moderate = result.get("moderate")
                         moderate["groups"] = severGroups
                         result["moderate"] = moderate
-                        with open('config/settings.yaml', 'w', encoding="utf-8") as file:
+                        with open('config/autoSettings.yaml', 'w', encoding="utf-8") as file:
                             yaml.dump(result, file, allow_unicode=True)
 
                         await bot.send(event,"成功修改撤回阈值为"+str(temp))
@@ -328,12 +328,12 @@ def main(bot,config,moderateKey,logger):
                 logger.info("群:" + str(event.group.id) + " 开启了审核")
                 severGroups[str(event.group.id)]=40
                 await bot.send(event,"开启审核")
-            with open('config/settings.yaml', 'r', encoding='utf-8') as f:
+            with open('config/autoSettings.yaml', 'r', encoding='utf-8') as f:
                 result = yaml.load(f.read(), Loader=yaml.FullLoader)
             moderate = result.get("moderate")
             moderate["groups"] = severGroups
             result["moderate"] = moderate
-            with open('config/settings.yaml', 'w', encoding="utf-8") as file:
+            with open('config/autoSettings.yaml', 'w', encoding="utf-8") as file:
                 yaml.dump(result, file, allow_unicode=True)
             await bot.send(event, "ok")
     @bot.on(GroupMessage)
@@ -353,11 +353,11 @@ def main(bot,config,moderateKey,logger):
                         global blGroups
                         blackList.append(event.sender.id)
                         blGroups.append(event.group.id)
-                        with open('config/settings.yaml', 'r', encoding='utf-8') as f:
+                        with open('config/autoSettings.yaml', 'r', encoding='utf-8') as f:
                             result = yaml.load(f.read(), Loader=yaml.FullLoader)
                         result["banUser"] = blackList
                         result["banGroups"] = blGroups
-                        with open('config/settings.yaml', 'w', encoding="utf-8") as file:
+                        with open('config/autoSettings.yaml', 'w', encoding="utf-8") as file:
                             yaml.dump(result, file, allow_unicode=True)
                         return
 
@@ -372,11 +372,11 @@ def main(bot,config,moderateKey,logger):
                     logger.info("成功添加黑名单用户" + str(groupId))
                     await bot.send(event, "成功添加黑名单用户" + str(groupId))
 
-                    with open('config/settings.yaml', 'r', encoding='utf-8') as f:
+                    with open('config/autoSettings.yaml', 'r', encoding='utf-8') as f:
                         result = yaml.load(f.read(), Loader=yaml.FullLoader)
                     logger.info("当前黑名单"+str(blackList))
                     result["banUser"] = blackList
-                    with open('config/settings.yaml', 'w', encoding="utf-8") as file:
+                    with open('config/autoSettings.yaml', 'w', encoding="utf-8") as file:
                         yaml.dump(result, file, allow_unicode=True)
 
                 else:
@@ -393,10 +393,10 @@ def main(bot,config,moderateKey,logger):
                     logger.info("成功移除黑名单群"+str(groupId))
                     await bot.send(event,"成功移除黑名单群"+str(groupId))
 
-                    with open('config/settings.yaml', 'r', encoding='utf-8') as f:
+                    with open('config/autoSettings.yaml', 'r', encoding='utf-8') as f:
                         result = yaml.load(f.read(), Loader=yaml.FullLoader)
                     result["banGroups"] = blGroups
-                    with open('config/settings.yaml', 'w', encoding="utf-8") as file:
+                    with open('config/autoSettings.yaml', 'w', encoding="utf-8") as file:
                         yaml.dump(result, file, allow_unicode=True)
                     return
                 except:
@@ -408,10 +408,10 @@ def main(bot,config,moderateKey,logger):
                     blackList.remove(groupId)
                     logger.info("成功移除黑名单用户"+str(groupId))
                     await bot.send(event,"成功移除黑名单用户"+str(groupId))
-                    with open('config/settings.yaml', 'r', encoding='utf-8') as f:
+                    with open('config/autoSettings.yaml', 'r', encoding='utf-8') as f:
                         result = yaml.load(f.read(), Loader=yaml.FullLoader)
                     result["banUser"] = blackList
-                    with open('config/settings.yaml', 'w', encoding="utf-8") as file:
+                    with open('config/autoSettings.yaml', 'w', encoding="utf-8") as file:
                         yaml.dump(result, file, allow_unicode=True)
                     return
                 except:
