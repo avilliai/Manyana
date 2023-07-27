@@ -134,7 +134,7 @@ def main(bot,api_KEY,master,logger):
                 else:
                     return
             except:
-                pass
+                return
 
             userId=str(event.message_chain).split("#")[1]
             if userId in userdict:
@@ -150,6 +150,7 @@ def main(bot,api_KEY,master,logger):
                 yaml.dump(userdict, file, allow_unicode=True)
             logger.info("授权"+userId+"完成")
             await bot.send(event,"授权完成")
+            await bot.send_friend_message(int(userId),"授权完成，解锁邀请bot加群权限")
 
     @bot.on(GroupMessage)
     async def changeCity(event: GroupMessage):
