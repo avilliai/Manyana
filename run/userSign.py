@@ -122,12 +122,13 @@ def main(bot,api_KEY,master,logger):
             await bot.send(event,Im(path=path),True)
     @bot.on(GroupMessage)
     async def accessGiver(event:GroupMessage):
+        global userdict
         if (event.sender.id==master or userdict.get(str(event.sender.id)).get("sts")>98)and str(event.message_chain).startswith("授权#"):
             if event.sender.id==master:
                 setN="99"
             else:
                 setN="9"
-            global userdict
+
             userId=str(event.message_chain).split("#")[1]
             if userId in userdict:
                 data=userdict.get(userId)
