@@ -122,16 +122,20 @@ def main(bot,api_KEY,master,logger):
             await bot.send(event,Im(path=path),True)
     @bot.on(GroupMessage)
     async def accessGiver(event:GroupMessage):
-        if event.sender.id==master and str(event.message_chain).startswith("授权#"):
+        if (event.sender.id==master or userdict.get(str(event.sender.id)).get("sts")>98)and str(event.message_chain).startswith("授权#"):
+            if event.sender.id==master:
+                setN="99"
+            else:
+                setN="9"
             global userdict
             userId=str(event.message_chain).split("#")[1]
             if userId in userdict:
                 data=userdict.get(userId)
-                data["sts"]="99"
+                data["sts"]=setN
                 userdict[userId]=data
             else:
                 time = datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')
-                userdict[userId] = {"city": "通辽", "st": time, "sts": "99", "exp": "0",
+                userdict[userId] = {"city": "通辽", "st": time, "sts": setN, "exp": "0",
                                                   "id": str(len(userdict.keys()) + 1), 'ok': time}
             logger.info("更新用户数据中")
             with open('data/userData.yaml', 'w', encoding="utf-8") as file:
