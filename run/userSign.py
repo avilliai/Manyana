@@ -129,7 +129,7 @@ def main(bot,api_KEY,master,logger):
             try:
                 if event.sender.id==master:
                     setN="99"
-                elif userdict.get(str(event.sender.id)).get("sts") > 98:
+                elif int(userdict.get(str(event.sender.id)).get("sts")) > 98:
                     setN="9"
                 else:
                     return
