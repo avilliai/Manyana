@@ -11,6 +11,8 @@ def main():
         os.system("git add .")
         print("over")
     elif a=="2":
+        print("更新poe-api")
+        os.system("pip install --upgrade poe-api")
         print("拉取bot代码")
         os.system("git pull https://github.com/avilliai/Manyana.git")
         print("如出现 Merge冲突 例如：Your local changes to the following files would be overwritten by merge:\n请重命名本地的对应文件，拉取后将你的数据重新导入")
