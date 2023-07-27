@@ -34,6 +34,14 @@ def main(bot,config,moderateKey,logger):
     global userdict
     userdict = data
 
+    global superUser
+    superUser = []
+    for i in userdict.keys():
+        data = userdict.get(i)
+        times = int(str(data.get('sts')))
+        if times > 98:
+            superUser.append(str(i))
+
 
     global blackList
     blackList= result.get("banUser")
@@ -364,7 +372,8 @@ def main(bot,config,moderateKey,logger):
 
     @bot.on(GroupMessage)
     async def removeBl(event: GroupMessage):
-        if event.sender.id == master:
+        global superUser
+        if event.sender.id == master or event.sender.id in superUser:
             global blackList
             if str(event.message_chain).startswith("/bl add ") or str(event.message_chain).startswith("添加黑名单用户 "):
                 groupId = int(str(event.message_chain).split(" ")[-1])
@@ -384,7 +393,7 @@ def main(bot,config,moderateKey,logger):
                     await bot.send(event,"该用户已被拉黑")
     @bot.on(GroupMessage)
     async def removeBl(event:GroupMessage):
-        if event.sender.id==master:
+        if event.sender.id == master or event.sender.id in superUser:
             global blackList
             global blGroups
             if str(event.message_chain).startswith("/blgroup remove") or str(event.message_chain).startswith("移除黑名单群 "):
