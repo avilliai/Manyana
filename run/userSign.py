@@ -99,7 +99,7 @@ def main(bot,api_KEY,master,logger):
                 logger.info("城市验证未通过，送进通辽当可汗子民")
             global userdict
             userdict[str(event.sender.id)] = {"city": city, "st": time, "sts": "1", "exp": "0",
-                                              "id": str(len(userdict.keys())+1),'ok':time114514}
+                                              "id": "miav-"+random_str(),'ok':time114514}
             data = userdict.get(str(event.sender.id))
             city = data.get('city')
             startTime = data.get('st')
@@ -136,7 +136,7 @@ def main(bot,api_KEY,master,logger):
             else:
                 time = datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')
                 userdict[userId] = {"city": "通辽", "st": time, "sts": setN, "exp": "0",
-                                                  "id": str(len(userdict.keys()) + 1), 'ok': time}
+                                                  "id": "miav-"+random_str(), 'ok': time}
             logger.info("更新用户数据中")
             with open('data/userData.yaml', 'w', encoding="utf-8") as file:
                 yaml.dump(userdict, file, allow_unicode=True)
