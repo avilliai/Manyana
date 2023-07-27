@@ -64,10 +64,13 @@ def main(bot,app_id,app_key,logger):
                 logger.info("获取profile翻译结果："+str(profile))
                 data1["profile"]=profile
 
-
-                await bot.send(event,(Image(path=icon),str(data1).replace(",","\n").replace("armorType","装甲类型").replace("baseStar","初始星级").replace("bulletType","攻击类型").replace("position","位置").replace("name","名字").replace("profile","简介").replace("rarity","稀有度").replace("role","职业").replace('squadType',"小队类型").replace("weaponType","武器类型")))
-                await bot.send(event, (Image(path=lobby),str(response.get("info")).replace(",", "\n")))
-                await bot.send(event,Image(path=portrait))
+                try:
+                    await bot.send(event,(Image(path=icon),str(data1).replace(",","\n").replace("armorType","装甲类型").replace("baseStar","初始星级").replace("bulletType","攻击类型").replace("position","位置").replace("name","名字").replace("profile","简介").replace("rarity","稀有度").replace("role","职业").replace('squadType',"小队类型").replace("weaponType","武器类型")))
+                    await bot.send(event, (Image(path=lobby),str(response.get("info")).replace(",", "\n")))
+                    await bot.send(event,Image(path=portrait))
+                except:
+                    await bot.send(event, str(data1).replace(",", "\n").replace("armorType", "装甲类型").replace("baseStar", "初始星级").replace("bulletType", "攻击类型").replace("position","位置").replace("name", "名字").replace("profile", "简介").replace("rarity", "稀有度").replace("role", "职业").replace('squadType', "小队类型").replace("weaponType","武器类型"))
+                    await bot.send(event,str(response.get("info")).replace(",", "\n"))
 
     @bot.on(GroupMessage)
     async def CharacterQuery(event: GroupMessage):
@@ -105,9 +108,12 @@ def main(bot,app_id,app_key,logger):
                                                            "data/blueArchive/") + ".png"
                 data1 = response.get("stat")
 
-
-                await bot.send(event, (Image(path=icon),str(data1).replace(",", "\n")))
-                await bot.send(event, (Image(path=lobby), str(response.get("terrain")).replace(",", "\n").replace("'urban'"," 市区").replace("'outdoor'","室外").replace("'indoor'","室内").replace("'DamageDealt'","伤害").replace("'ShieldBlockRate'","掩体成功率").replace("{","").replace("}","")))
+                try:
+                    await bot.send(event, (Image(path=icon),str(data1).replace(",", "\n")))
+                    await bot.send(event, (Image(path=lobby), str(response.get("terrain")).replace(",", "\n").replace("'urban'"," 市区").replace("'outdoor'","室外").replace("'indoor'","室内").replace("'DamageDealt'","伤害").replace("'ShieldBlockRate'","掩体成功率").replace("{","").replace("}","")))
+                except:
+                    await bot.send(event, str(data1).replace(",", "\n"))
+                    await bot.send(event, str(response.get("terrain")).replace(",", "\n").replace("'urban'"," 市区").replace("'outdoor'", "室外").replace("'indoor'", "室内").replace("'DamageDealt'","伤害").replace("'ShieldBlockRate'", "掩体成功率").replace("{", "").replace("}", ""))
 
 
 
