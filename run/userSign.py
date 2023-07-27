@@ -123,11 +123,18 @@ def main(bot,api_KEY,master,logger):
     @bot.on(GroupMessage)
     async def accessGiver(event:GroupMessage):
         global userdict
-        if (event.sender.id==master or userdict.get(str(event.sender.id)).get("sts")>98)and str(event.message_chain).startswith("授权#"):
-            if event.sender.id==master:
-                setN="99"
-            else:
-                setN="9"
+        if str(event.message_chain).startswith("授权#"):
+            if str(event.sender.id) not in userdict:
+                return
+            try:
+                if event.sender.id==master:
+                    setN="99"
+                elif userdict.get(str(event.sender.id)).get("sts") > 98:
+                    setN="9"
+                else:
+                    return
+            except:
+                pass
 
             userId=str(event.message_chain).split("#")[1]
             if userId in userdict:
