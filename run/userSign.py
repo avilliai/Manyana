@@ -162,6 +162,7 @@ def main(bot,api_KEY,master,logger):
                 await bot.send(event, '正在验证城市......，')
                 weather = await querys(city,api_KEY)
                 data['city']=city
+                data["id"]="miav-"+random_str()
                 await bot.send(event, '成功')
                 userdict[str(event.sender.id)] = data
                 with open('data/userData.yaml', 'w', encoding="utf-8") as file:
