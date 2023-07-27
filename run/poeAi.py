@@ -38,6 +38,7 @@ def main(bot,master,apikey,proxy,logger):
     apiKey=apikey
     global KEY
     KEY=apiKey[0]
+    logger.info("选择key:"+KEY)
     global client
     client = poe.Client(KEY, proxy=proxy)
     json.dumps(client.bot_names, indent=2)
@@ -49,11 +50,12 @@ def main(bot,master,apikey,proxy,logger):
         if str(event.message_chain).startswith("/poe"):
             mes=str(event.message_chain).replace("/poe","")
             s = ""
+            logger.info("poe接收消息："+mes)
             try:
                 for chunk in client.send_message("capybara", mes):
                     # print(chunk["text_new"],end="", flush=True)
                     s += chunk["text_new"]
-                print("bot:"+s)
+                logger.info("bot:"+s)
                 await bot.send(event,s)
             except:
                 logger.warning("出错，达到每分钟限制或token已失效。")
