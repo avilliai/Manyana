@@ -69,13 +69,22 @@ if __name__ == '__main__':
             for i in severGroupsa:
                 await sleep(random.randint(2,10))
                 logger.info("向群："+i +" 推送公告")
-                if event.message_chain.count(Image):
-                    await bot.send_group_message(int(i),(event.message_chain+"\n随机码："+random_str()))
-                else:
-                    try:
-                        await bot.send_group_message(int(i), (event.message_chain +"\n随机码：" + random_str()))
-                    except:
-                        await bot.send_group_message(int(i), event.message_chain)
+                try:
+                    if event.message_chain.count(Image):
+                        await bot.send_group_message(int(i),(event.message_chain+"\n随机码："+random_str()))
+                    else:
+                        try:
+                            await bot.send_group_message(int(i), (event.message_chain +"\n随机码：" + random_str()))
+                        except:
+                            await bot.send_group_message(int(i), event.message_chain)
+                except:
+                    logger.error("不存在的群："+str(i))
+                    severGroupsa.pop(i)
+                    newData=json.dumps(severGroupsa)
+                    with open('data/music/music.txt', 'w') as fp:
+                        fp.write(newData)
+                    continue
+
 
 
 
