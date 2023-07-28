@@ -26,7 +26,7 @@ async def synthesize():
         #speaker = result.get("vits").get("speaker")
         #modelSelect = result.get("vits").get("modelSelect")
     # 调用 voiceG() 函数
-    if modelSelect[0].endswith("m.pth"):
+    if modelSelect[0].endswith("I.pth"):
         text=text.replace("[JA]","").replace("[ZH]","")
     await voiceGenerate(tex=text, out=out,speakerID=speaker,modelSelect=modelSelect)
     # 将生成的音频返回给客户端
