@@ -20,6 +20,7 @@ from plugins import weatherQuery
 from plugins.RandomStr import random_str
 from plugins.arkOperator import arkOperator
 from plugins.cpGenerate import get_cp_mesg
+from plugins.genshinGo import genshinDraw
 from plugins.historicalToday import hisToday
 from plugins.imgDownload import dict_download_img
 from plugins.jokeMaker import get_joke
@@ -198,5 +199,14 @@ def main(bot,api_KEY,app_id,app_key,nasa_api,proxy,logger):
             o=arkOperator()
             o=o.replace("为生成",event.sender.member_name)
             await bot.send(event,o,True)
+
+    @bot.on(GroupMessage)
+    async def genshin1(event: GroupMessage):
+        if ("原神" in str(event.message_chain) and "启动" in str(event.message_chain)) or ("抽签" in str(event.message_chain) and "原" in str(event.message_chain)):
+            logger.info("有原皮！获取抽签信息中....")
+            o = genshinDraw()
+            logger.info(o)
+            await bot.send(event, o, True)
+
 
 
