@@ -275,7 +275,11 @@ def main(bot,config,moderateKey,logger):
             for i in lst_img:
                 url=i.url
                 logger.info("图片审核:url:" + url+" key:"+moderateK)
-                rate=await setuModerate(url,moderateK)
+                try:
+                    rate=await setuModerate(url,moderateK)
+                except:
+                    logger.error("涩图审核失败，可能是图片太大，也可能是(小概率)api-key达到本月调用次数限制，尝试注册新账号更新新的api-key以解决")
+                    return
                 logger.info("图片审核:结果:" + str(rate))
                 threshold=severGroups.get(str(event.group.id))
                 if rate>threshold:
@@ -297,7 +301,12 @@ def main(bot,config,moderateKey,logger):
             lst_img = event.message_chain.get(Image)
             url = lst_img[0].url
             logger.info("图片审核:url:" + url)
-            rate = await setuModerate(url, moderateK)
+            try:
+                rate = await setuModerate(url, moderateK)
+            except:
+                logger.error("涩图审核失败，可能是图片太大，也可能是(小概率)api-key达到本月调用次数限制，尝试注册新账号更新新的api-key以解决")
+                await bot.send(event,"涩图审核失败，可能是图片太大，也可能是(小概率)api-key达到本月调用次数限制，尝试注册新账号更新新的api-key以解决")
+                return
             logger.info("图片审核:结果:" + str(rate))
             await bot.send(event, "图片检测结果：\npredictions-adult:" + str(rate))
 
