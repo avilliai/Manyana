@@ -197,7 +197,7 @@ def zhiye():
     zhiye=zhiye.format(random.choice(ark.get(mainZ)))
     return zhiye
 def arkOperator():
-    s="为生成的干员信息如下：\n{}\n【性别】{}\n【种族】{}\n【出身地】{}\n【战斗经验】{}\n【身高】[{}]cm\n【感染情况】{}\n—综合体检测试—\n{}\n【职业】{}".format(random.choice(ark.get("方舟稀有度")),random.choice(ark.get("干员性别")),random.choice(ark.get("方舟种族")),random.choice(ark.get("方舟地区")),random.choice(ark.get("战斗经验")).replace("_数字a",str(random.randint(1,10))),str(random.randint(110,240)),calc(),ceshi(),zhiye())
+    s="为生成的干员信息如下：\n{}\n【性别】{}\n【种族】{}\n【出身地】{}\n【战斗经验】{}\n【身高】[{}]cm\n【感染情况】{}\n—综合体检测试—\n{}\n【职业】{}".format(random.choice(ark.get("方舟稀有度")),random.choice(ark.get("干员性别")),random.choice(ark.get("方舟种族")),random.choice(ark.get("方舟地区")),random.choice(ark.get("战斗经验")).replace("_数字a",str(random.randint(1,34))),str(random.randint(110,240)),calc(),ceshi(),zhiye())
     return s
 if __name__ == '__main__':
     arkOperator()

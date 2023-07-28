@@ -194,6 +194,7 @@ def main(bot,api_KEY,app_id,app_key,nasa_api,proxy,logger):
     @bot.on(GroupMessage)
     async def arkGene(event:GroupMessage):
         if "干员" in str(event.message_chain) and "生成" in str(event.message_chain):
+            logger.info("又有皱皮了，生成干员信息中.....")
             o=arkOperator()
             o=o.replace("为生成",event.sender.member_name)
             await bot.send(event,o,True)
