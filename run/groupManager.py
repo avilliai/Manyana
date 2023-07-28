@@ -356,7 +356,7 @@ def main(bot,config,moderateKey,logger):
                     except:
                         logger.error("禁言失败，权限可能过低")
                         logger.warn("遭到："+str(event.sender.id)+" 的辱骂")
-                        await bot.send_friend_message(master,"遭到："+str(event.sender.id)+" 的辱骂\n内容："+str(event.message_chain)+"\n可使用 退群#群号 操作bot退出该群")
+                        await bot.send_friend_message(master,"遭到："+str(event.sender.id)+" 的辱骂\n群号："+str(event.group.id)+"\n内容："+str(event.message_chain)+"\n可使用 退群#群号 操作bot退出该群")
                         #await bot.quit(event.group.id)
                         global blackList
                         global blGroups
