@@ -18,6 +18,7 @@ from mirai import Mirai, WebSocketAdapter, FriendMessage, GroupMessage, At, Plai
 
 from plugins import weatherQuery
 from plugins.RandomStr import random_str
+from plugins.arkOperator import arkOperator
 from plugins.cpGenerate import get_cp_mesg
 from plugins.historicalToday import hisToday
 from plugins.imgDownload import dict_download_img
@@ -190,5 +191,11 @@ def main(bot,api_KEY,app_id,app_key,nasa_api,proxy,logger):
             except:
                 logger.warning("获取每日天文图片失败")
                 await bot.send(event,"获取失败，请联系master检查代理或api_key是否可用")
+    @bot.on(GroupMessage)
+    async def arkGene(event:GroupMessage):
+        if "干员" in str(event.message_chain) and "生成" in str(event.message_chain):
+            o=arkOperator()
+            o=o.replace("为生成",event.sender.member_name)
+            await bot.send(event,o,True)
 
 
