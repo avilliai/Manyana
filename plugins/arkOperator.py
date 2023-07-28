@@ -170,11 +170,9 @@ ark={
         "【物理强度】{}\n【战场机动】{}\n【生理耐受】{}\n【战术规划】{}\n【战斗技巧】{}\n【源石技艺适应性】{}"
     ],
 
-"战斗经验":["没有战斗经验","没有战斗经验","没有战斗经验","未知","未公开","{%_数字a}年","{%_数字a}年","{%_数字b}十{%_数字b}年"],
+"战斗经验":["没有战斗经验","没有战斗经验","没有战斗经验","未知","未公开","_数字a年"],
 
 "_数字a":["一","两","三","四","五","六","七","八","九"],
-
-"_数字b":["","一","二","三","四","五","六","七","八","九"],
 
     "干员信息作成": [
         "为{nick}生成的干员信息如下：\n{%方舟稀有度}\n【性别】{%干员性别}\n【种族】{%方舟种族}\n【出身地】{%方舟地区}\n【战斗经验】{%战斗经验}\n【身高】[3d6*5+2d12+100]cm\n【感染情况】{%感染情况}\n—综合体检测试—\n{%综合体检测试}\n【职业】{%方舟职业}"
@@ -199,7 +197,7 @@ def zhiye():
     zhiye=zhiye.format(random.choice(ark.get(mainZ)))
     return zhiye
 def arkOperator():
-    s="为生成的干员信息如下：\n{}\n【性别】{}\n【种族】{}\n【出身地】{}\n【战斗经验】{}\n【身高】[{}]cm\n【感染情况】{}\n—综合体检测试—\n{}\n【职业】{}".format(random.choice(ark.get("方舟稀有度")),random.choice(ark.get("干员性别")),random.choice(ark.get("方舟种族")),random.choice(ark.get("方舟地区")),random.choice(ark.get("战斗经验")),str(random.randint(110,240)),calc(),ceshi(),zhiye())
+    s="为生成的干员信息如下：\n{}\n【性别】{}\n【种族】{}\n【出身地】{}\n【战斗经验】{}\n【身高】[{}]cm\n【感染情况】{}\n—综合体检测试—\n{}\n【职业】{}".format(random.choice(ark.get("方舟稀有度")),random.choice(ark.get("干员性别")),random.choice(ark.get("方舟种族")),random.choice(ark.get("方舟地区")),random.choice(ark.get("战斗经验")).replace("_数字a",str(random.randint(1,10))),str(random.randint(110,240)),calc(),ceshi(),zhiye())
     return s
 if __name__ == '__main__':
     arkOperator()
