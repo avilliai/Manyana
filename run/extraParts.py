@@ -205,7 +205,7 @@ def main(bot,api_KEY,app_id,app_key,nasa_api,proxy,logger):
         if ("原神" in str(event.message_chain) and "启动" in str(event.message_chain)) or ("抽签" in str(event.message_chain) and "原" in str(event.message_chain)):
             logger.info("有原皮！获取抽签信息中....")
             o = genshinDraw()
-            logger.info(o)
+            logger.info("\n"+o)
             await bot.send(event, o, True)
 
 

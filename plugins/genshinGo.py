@@ -38,7 +38,7 @@ item = [
 "\n\n今天的幸运物是：弯弯曲曲的「蜥蜴尾巴」\n蜥蜴遇到潜在的危险时，大多数会断尾求生。\n若是遇到无法整理的情绪，那么该断则断吧。"
 ]
 def genshinDraw():
-    print(random.choice(lucky)+random.choice(item))
+
     return random.choice(lucky)+random.choice(item)
 if __name__ == '__main__':
     genshinDraw()
