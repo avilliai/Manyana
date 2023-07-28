@@ -66,7 +66,7 @@ if __name__ == '__main__':
             file = open('data/music/groups.txt', 'r')
             js = file.read()
             severGroupsa = json.loads(js)
-            dat = severGroupsa
+            dat = []
             for i in severGroupsa:
                 await sleep(random.randint(2,10))
                 logger.info("向群："+i +" 推送公告")
@@ -80,11 +80,14 @@ if __name__ == '__main__':
                             await bot.send_group_message(int(i), event.message_chain)
                 except:
                     logger.error("不存在的群："+str(i))
-                    dat.pop(i)
-                    newData=json.dumps(dat)
-                    with open('data/music/music.txt', 'w') as fp:
-                        fp.write(newData)
+                    dat.append(str(i))
                     continue
+            logger.warning("清除无效群")
+            for i in dat:
+                severGroupsa.pop(i)
+            newData = json.dumps(severGroupsa)
+            with open('data/music/music.txt', 'w') as fp:
+                fp.write(newData)
 
 
 
