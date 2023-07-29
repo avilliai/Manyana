@@ -53,7 +53,7 @@ def main(bot,app_id,app_key,logger):
                         logger.info("写入文件")
                         #logger.info(newResult)
                         with open('data/blueArchive/character.yaml', 'w', encoding="utf-8") as file:
-                            yaml.dump(data1, file, allow_unicode=True)
+                            yaml.dump(newResult, file, allow_unicode=True)
                         webScreenShoot(url,path)
                         logger.info("发送成功")
                         await bot.send(event,Image(path=path))
