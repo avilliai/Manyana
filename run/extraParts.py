@@ -35,7 +35,7 @@ from plugins.vitsGenerate import voiceGenerate
 
 def main(bot,api_KEY,app_id,app_key,nasa_api,proxy,logger):
     logger.info("额外的功能 启动完成")
-    with open("data/odes.json") as fp:
+    with open("data/odes.json",encoding="utf-8") as fp:
         odes=json.loads(fp.read())
 
 
