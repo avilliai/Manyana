@@ -204,7 +204,7 @@ def main(bot,api_KEY,app_id,app_key,nasa_api,proxy,logger):
                     # response = requests.post(url="https://saucenao.com/search.php", data=dataa, proxies=proxies)
                     logger.info("获取到结果" + str(response.json()))
                     # logger.info("下载缩略图")
-                    filename = await picDwn(response.json().get("url"), "data/pictures/nasa/"+response.json().get("date"))
+                    filename = await picDwn(response.json().get("url"), "data/pictures/nasa/"+response.json().get("date")+".png")
                     txta=await translate(response.json().get("explanation"),app_id=app_id,app_key=app_key,ori="en",aim="zh-CHS")
                     txt = response.json().get("date") + "\n" + response.json().get("title") + "\n" + txta
                     temp={"path":"data/pictures/nasa/"+response.json().get("date"),"oriTxt":response.json().get("explanation"),"transTxt":txt}
