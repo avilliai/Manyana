@@ -25,6 +25,7 @@ def main(bot,app_id,app_key,logger):
     logger.info("blueArchive")
     with open('data/blueArchive/characterName.yaml', 'r', encoding='utf-8') as f:
         result = yaml.load(f.read(), Loader=yaml.FullLoader)
+    global newResult
     with open('data/blueArchive/character.yaml', 'r', encoding='utf-8') as f:
         newResult = yaml.load(f.read(), Loader=yaml.FullLoader)
 
