@@ -59,10 +59,20 @@ def main(bot,master,apikey,proxy,logger):
                 await bot.send(event,s)
             except:
                 logger.warning("出错，达到每分钟限制或token已失效。")
-                apiKey.remove(KEY)
+
                 if len(apiKey)==0:
                     await bot.send(event,"令牌已全部失效，请联系master重新获取")
                     return
+                else:
+                    logger.error("移出token:" + KEY)
+                    try:
+
+                        apiKey.remove(KEY)
+                        if len(apiKey) == 0:
+                            apiKey.append(KEY)
+                    except:
+                        logger.error("移出token失败")
+                    logger.info("当前token:"+str(apiKey))
                 logger.warning("执行poe-api 重载指令")
                 await bot.send(event,"出错，达到每分钟限制或token已失效。")
                 try:
