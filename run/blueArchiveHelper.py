@@ -51,7 +51,7 @@ def main(bot,app_id,app_key,logger):
                         data1["detail"]=path
                         newResult[i]=data1
                         logger.info("写入文件")
-                        logger.info(newResult)
+                        #logger.info(newResult)
                         with open('data/blueArchive/character.yaml', 'w', encoding="utf-8") as file:
                             yaml.dump(data1, file, allow_unicode=True)
                         webScreenShoot(url,path)
