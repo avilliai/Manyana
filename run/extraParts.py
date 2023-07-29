@@ -40,7 +40,7 @@ def main(bot,api_KEY,app_id,app_key,nasa_api,proxy,logger):
     with open("data/IChing.json",encoding="utf-8") as fp:
         IChing=json.loads(fp.read())
     global data
-    with open('data / tasks.yaml', 'r',encoding='utf-8') as file:
+    with open('data /tasks.yaml', 'r',encoding='utf-8') as file:
         data = yaml.load(file, Loader=yaml.FullLoader)
 
 
