@@ -19,8 +19,9 @@ Manyana基于[Mirai框架](https://github.com/mamoe/mirai) ，使用了[YiriMira
 - 项目使用了CjangCjengh的[MoeGoe](https://github.com/CjangCjengh/MoeGoe) 以及他的语音模型
 - 基于[Yiri-mirai](https://github.com/YiriMiraiProject/YiriMirai) 实现
 - 请确保py版本为3.9
+- 请确保已安装[[fireFox浏览器](https://www.firefox.com.cn/)
 - 请确保已安装[mirai-api-http](https://github.com/project-mirai/mirai-api-http) 并[正确配置](https://github.com/avilliai/wReply/blob/master/setting.yml)
-- 请确保已安装[mirai-login-solver-sakura](https://github.com/KasukuSakura/mirai-login-solver-sakura)
+- 可选安装[mirai-login-solver-sakura](https://github.com/KasukuSakura/mirai-login-solver-sakura)
 - 可选安装[Mirai点歌插件](https://github.com/khjxiaogu/MiraiSongPlugin)
 - 可选安装[PetPet](https://github.com/Dituon/petpet)
 
@@ -124,6 +125,7 @@ ba技能查询[角色名]   # ba技能查询优香  #查询优香的数值
 ```
 ## 小功能
 ```js
+截图#url     #打开指定网页并截图
 meme         #抽取一张meme图
 运势          #是阿喵喵版本的运势卡
 今日塔罗       #塔罗牌
