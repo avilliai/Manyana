@@ -35,6 +35,10 @@ from plugins.vitsGenerate import voiceGenerate
 
 def main(bot,api_KEY,app_id,app_key,nasa_api,proxy,logger):
     logger.info("额外的功能 启动完成")
+    with open("data/odes.json") as fp:
+        odes=json.loads(fp.read())
+
+
 
     @bot.on(GroupMessage)
     async def handle_group_message(event: GroupMessage):
@@ -208,5 +212,12 @@ def main(bot,api_KEY,app_id,app_key,nasa_api,proxy,logger):
             logger.info("\n"+o)
             await bot.send(event, o, True)
 
+    @bot.on(GroupMessage)
+    async def NasaHelper(event: GroupMessage):
+        if At(bot.qq) in event.message_chain and "诗经" in str(event.message_chain):
+            logger.info("获取一篇诗经")
+            ode=random.choice(odes.get("诗经"))
+            logger.info(ode)
+            await bot.send(event,ode)
 
 
