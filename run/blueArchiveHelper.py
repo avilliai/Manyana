@@ -33,12 +33,26 @@ def main(bot,app_id,app_key,logger):
     async def CharacterQuery(event:GroupMessage):
         if "ba查询" in str(event.message_chain):
             aimCharacter = str(event.message_chain).split("ba查询")[1]
+            logger.info("查询ba角色:" + aimCharacter)
             for i in newResult:
                 if aimCharacter in newResult.get(i).get('otherName'):
-                    url='https://blue-utils.me/'+newResult.get(i).get('url')
-                    path="data/blueArchive/cache/"+random_str()+'.png'
-                    webScreenShoot(url,path)
-                    await bot.send(event,Image(path=path))
+                    if 'detail' in newResult.get(i):
+                        logger.info("存在本地数据文件，直接发送")
+                        path=newResult.get(i).get("detail")
+                        await bot.send(event,Image(path=path))
+                    else:
+                        logger.warning("没有本地数据文件，启用下载")
+                        url='https://blue-utils.me/'+newResult.get(i).get('url')
+                        path="data/blueArchive/cache/"+random_str()+'.png'
+                        data1=newResult.get(i)
+                        data1["detail"]=path
+                        newResult[i]=data1
+                        logger.info("写入文件")
+                        with open('data/blueArchive/character.yaml', 'w', encoding="utf-8") as file:
+                            yaml.dump(data1, file, allow_unicode=True)
+                        webScreenShoot(url,path)
+                        logger.info("发送成功")
+                        await bot.send(event,Image(path=path))
                     return
                 else:
                     continue
