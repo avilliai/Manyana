@@ -18,17 +18,29 @@ from plugins.RandomStr import random_str
 from plugins.modelsLoader import modelLoader
 from plugins.translater import translate
 from plugins.vitsGenerate import voiceGenerate
+from plugins.webScreenShoot import webScreenShoot
 
 
 def main(bot,app_id,app_key,logger):
     logger.info("blueArchive")
     with open('data/blueArchive/characterName.yaml', 'r', encoding='utf-8') as f:
         result = yaml.load(f.read(), Loader=yaml.FullLoader)
+    with open('data/blueArchive/character.yaml', 'r', encoding='utf-8') as f:
+        newResult = yaml.load(f.read(), Loader=yaml.FullLoader)
+
 
     @bot.on(GroupMessage)
     async def CharacterQuery(event:GroupMessage):
         if "ba查询" in str(event.message_chain):
-            url=""
+            aimCharacter = str(event.message_chain).split("ba查询")[1]
+            for i in newResult:
+                if aimCharacter in newResult.get(i).get('otherName'):
+                    url='https://blue-utils.me/'+newResult.get(i).get('url')
+                    path="data/blueArchive/cache/"+random_str()+'.png'
+                    webScreenShoot(url,path)
+                    await bot.send(event,Image(path=path))
+
+            '''url=""
             aimCharacter=str(event.message_chain).split("ba查询")[1]
             if aimCharacter in result:
                 url = 'https://api.ennead.cc/buruaka/character/' + aimCharacter + '?region=japan'  # 指定角色信息
@@ -113,7 +125,7 @@ def main(bot,app_id,app_key,logger):
                     await bot.send(event, (Image(path=lobby), str(response.get("terrain")).replace(",", "\n").replace("'urban'"," 市区").replace("'outdoor'","室外").replace("'indoor'","室内").replace("'DamageDealt'","伤害").replace("'ShieldBlockRate'","掩体成功率").replace("{","").replace("}","")))
                 except:
                     await bot.send(event, str(data1).replace(",", "\n"))
-                    await bot.send(event, str(response.get("terrain")).replace(",", "\n").replace("'urban'"," 市区").replace("'outdoor'", "室外").replace("'indoor'", "室内").replace("'DamageDealt'","伤害").replace("'ShieldBlockRate'", "掩体成功率").replace("{", "").replace("}", ""))
+                    await bot.send(event, str(response.get("terrain")).replace(",", "\n").replace("'urban'"," 市区").replace("'outdoor'", "室外").replace("'indoor'", "室内").replace("'DamageDealt'","伤害").replace("'ShieldBlockRate'", "掩体成功率").replace("{", "").replace("}", ""))'''
 
 
 
