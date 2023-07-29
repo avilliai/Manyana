@@ -37,7 +37,8 @@ def main(bot,api_KEY,app_id,app_key,nasa_api,proxy,logger):
     logger.info("额外的功能 启动完成")
     with open("data/odes.json",encoding="utf-8") as fp:
         odes=json.loads(fp.read())
-
+    with open("data/IChing.json",encoding="utf-8") as fp:
+        IChing=json.loads(fp.read())
 
 
     @bot.on(GroupMessage)
@@ -220,4 +221,11 @@ def main(bot,api_KEY,app_id,app_key,nasa_api,proxy,logger):
             logger.info("\n"+ode)
             await bot.send(event,ode)
 
+    @bot.on(GroupMessage)
+    async def NasaHelper(event: GroupMessage):
+        if At(bot.qq) in event.message_chain and "周易" in str(event.message_chain):
+            logger.info("获取卦象")
+            ode = random.choice(odes.get("六十四卦"))
+            logger.info("\n" + ode)
+            await bot.send(event, ode)
 
