@@ -31,6 +31,7 @@ def main(bot,app_id,app_key,logger):
 
     @bot.on(GroupMessage)
     async def CharacterQuery(event:GroupMessage):
+        global newResult
         if "ba查询" in str(event.message_chain):
             aimCharacter = str(event.message_chain).split("ba查询")[1]
             logger.info("查询ba角色:" + aimCharacter)
@@ -45,9 +46,11 @@ def main(bot,app_id,app_key,logger):
                         url='https://blue-utils.me/'+newResult.get(i).get('url')
                         path="data/blueArchive/cache/"+random_str()+'.png'
                         data1=newResult.get(i)
+
                         data1["detail"]=path
                         newResult[i]=data1
                         logger.info("写入文件")
+                        logger.info(newResult)
                         with open('data/blueArchive/character.yaml', 'w', encoding="utf-8") as file:
                             yaml.dump(data1, file, allow_unicode=True)
                         webScreenShoot(url,path)

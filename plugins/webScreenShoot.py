@@ -7,4 +7,4 @@ def webScreenShoot(url,path,width=1200,height=7500):
 
     browser.save_screenshot(path)
     browser.close()
-webScreenShoot("https://blue-utils.me/student-detail/shiroko","test.png")
+#webScreenShoot("https://blue-utils.me/student-detail/shiroko","test.png")
