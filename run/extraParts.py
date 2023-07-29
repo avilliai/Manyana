@@ -207,7 +207,7 @@ def main(bot,api_KEY,app_id,app_key,nasa_api,proxy,logger):
                     filename = await picDwn(response.json().get("url"), "data/pictures/nasa/"+response.json().get("date")+".png")
                     txta=await translate(response.json().get("explanation"),app_id=app_id,app_key=app_key,ori="en",aim="zh-CHS")
                     txt = response.json().get("date") + "\n" + response.json().get("title") + "\n" + txta
-                    temp={"path":"data/pictures/nasa/"+response.json().get("date"),"oriTxt":response.json().get("explanation"),"transTxt":txt}
+                    temp={"path":"data/pictures/nasa/"+response.json().get("date")+".png","oriTxt":response.json().get("explanation"),"transTxt":txt}
                     nasaData=data.get("nasa")
                     nasaData[datetime.datetime.now().strftime('%Y-%m-%d')]=temp
                     data["nasa"]=nasaData
