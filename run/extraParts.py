@@ -27,7 +27,7 @@ from plugins.jokeMaker import get_joke
 
 from plugins.modelsLoader import modelLoader
 from plugins.newsEveryDay import news, moyu
-from plugins.picGet import pic, setuGet
+from plugins.picGet import pic, setuGet, picDwn
 from plugins.tarot import tarotChoice
 from plugins.translater import translate
 from plugins.vitsGenerate import voiceGenerate
@@ -39,6 +39,11 @@ def main(bot,api_KEY,app_id,app_key,nasa_api,proxy,logger):
         odes=json.loads(fp.read())
     with open("data/IChing.json",encoding="utf-8") as fp:
         IChing=json.loads(fp.read())
+    global data
+    with open('data / tasks.yaml', 'r',encoding='utf-8') as file:
+        data = yaml.load(file, Loader=yaml.FullLoader)
+
+
 
 
     @bot.on(GroupMessage)
@@ -172,31 +177,47 @@ def main(bot,api_KEY,app_id,app_key,nasa_api,proxy,logger):
 
     @bot.on(GroupMessage)
     async def NasaHelper(event: GroupMessage):
+        global data
         if At(bot.qq) in event.message_chain and "天文" in str(event.message_chain):
-            proxies = {
-                "http://": proxy,
-                "https://": proxy
-            }
-            # Replace the key with your own
-            dataa = {"api_key": nasa_api}
-            logger.info("发起nasa请求")
-            try:
-                # 拼接url和参数
-                url = "https://api.nasa.gov/planetary/apod?" + "&".join([f"{k}={v}" for k, v in dataa.items()])
-                async with httpx.AsyncClient(proxies=proxies) as client:
-                    # 用get方法发送请求
-                    response = await client.get(url=url)
-                # response = requests.post(url="https://saucenao.com/search.php", data=dataa, proxies=proxies)
-                logger.info("获取到结果" + str(response.json()))
-                # logger.info("下载缩略图")
-                filename = dict_download_img(response.json().get("url"), dirc="data/pictures/cache")
-                txta=await translate(response.json().get("explanation"),app_id=app_id,app_key=app_key,ori="en",aim="zh-CHS")
-                txt = response.json().get("date") + "\n" + response.json().get("title") + "\n" + txta
-                await bot.send(event,(Image(path=filename),txt))
+            if datetime.datetime.now().strftime('%Y-%m-%d') in data.get("nasa"):
+                todayNasa=data.get("nasa").get(datetime.datetime.now().strftime('%Y-%m-%d'))
+                path=todayNasa.get("path")
+                txt=todayNasa.get("transTxt")
+                try:
+                    await bot.send(event, (Image(path=path), txt))
+                except:
+                    await bot.send(event,txt)
+            else:
+                proxies = {
+                    "http://": proxy,
+                    "https://": proxy
+                }
+                # Replace the key with your own
+                dataa = {"api_key": nasa_api}
+                logger.info("发起nasa请求")
+                try:
+                    # 拼接url和参数
+                    url = "https://api.nasa.gov/planetary/apod?" + "&".join([f"{k}={v}" for k, v in dataa.items()])
+                    async with httpx.AsyncClient(proxies=proxies) as client:
+                        # 用get方法发送请求
+                        response = await client.get(url=url)
+                    # response = requests.post(url="https://saucenao.com/search.php", data=dataa, proxies=proxies)
+                    logger.info("获取到结果" + str(response.json()))
+                    # logger.info("下载缩略图")
+                    filename = picDwn(response.json().get("url"), "data/pictures/nasa/"+response.json().get("date"))
+                    txta=await translate(response.json().get("explanation"),app_id=app_id,app_key=app_key,ori="en",aim="zh-CHS")
+                    txt = response.json().get("date") + "\n" + response.json().get("title") + "\n" + txta
+                    temp={"path":"data/pictures/nasa/"+response.json().get("date"),"oriTxt":response.json().get("explanation"),"transTxt":txt}
+                    nasaData=data.get("nasa")
+                    nasaData[datetime.datetime.now().strftime('%Y-%m-%d')]=temp
+                    data["nasa"]=nasaData
+                    with open('data/tasks.yaml', 'w', encoding="utf-8") as file:
+                        yaml.dump(data, file, allow_unicode=True)
+                    await bot.send(event,(Image(path=filename),txt))
 
-            except:
-                logger.warning("获取每日天文图片失败")
-                await bot.send(event,"获取失败，请联系master检查代理或api_key是否可用")
+                except:
+                    logger.warning("获取每日天文图片失败")
+                    await bot.send(event,"获取失败，请联系master检查代理或api_key是否可用")
     @bot.on(GroupMessage)
     async def arkGene(event:GroupMessage):
         if "干员" in str(event.message_chain) and "生成" in str(event.message_chain):
@@ -228,4 +249,6 @@ def main(bot,api_KEY,app_id,app_key,nasa_api,proxy,logger):
             IChing1 = random.choice(IChing.get("六十四卦"))
             logger.info("\n" + IChing1)
             await bot.send(event, IChing1)
+
+
 

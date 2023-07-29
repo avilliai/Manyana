@@ -57,6 +57,13 @@ async def setuGet(data):
         img = Image.open(BytesIO(r.content))  # 从二进制数据创建图片对象
         img.save(path)  # 使用PIL库保存图片
         return path
+async def picDwn(url,path):
+    async with httpx.AsyncClient(timeout=20) as client:
+        r = await client.get(url)
+        img = Image.open(BytesIO(r.content))  # 从二进制数据创建图片对象
+        img.save(path)  # 使用PIL库保存图片
+        return path
+
 if __name__ == '__main__':
-    #asyncio.run(pic())
-    pic()
+    asyncio.run(sim())
+    #pic()
