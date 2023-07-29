@@ -187,6 +187,7 @@ def main(bot,api_KEY,app_id,app_key,nasa_api,proxy,logger):
                     await bot.send(event, (Image(path=path), txt))
                 except:
                     logger.warning("我不大清楚这里为什么会报错,但似乎影响不大")
+                return
             else:
                 proxies = {
                     "http://": proxy,
