@@ -217,7 +217,7 @@ def main(bot,api_KEY,app_id,app_key,nasa_api,proxy,logger):
         if At(bot.qq) in event.message_chain and "诗经" in str(event.message_chain):
             logger.info("获取一篇诗经")
             ode=random.choice(odes.get("诗经"))
-            logger.info(ode)
+            logger.info("\n"+ode)
             await bot.send(event,ode)
 
 
