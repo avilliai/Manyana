@@ -42,19 +42,32 @@ def main(bot,app_id,app_key,logger):
                         logger.info("存在本地数据文件，直接发送")
                         path=newResult.get(i).get("detail")
                         await bot.send(event,Image(path=path))
+                        return
                     else:
                         logger.warning("没有本地数据文件，启用下载")
                         url='https://blue-utils.me/'+newResult.get(i).get('url')
                         path="data/blueArchive/cache/"+random_str()+'.png'
                         data1=newResult.get(i)
-
+                        try:
+                            webScreenShoot(url, path)
+                        except:
+                            logger.warning("查询ba角色:" + aimCharacter + " 失败，未收录对应数据")
+                            logger.info("发送语音()：数据库里好像没有这个角色呢,要再检查一下吗？")
+                            if os.path.exists("data/autoReply/voiceReply/queryFalse.wav") == False:
+                                data = {"text": "[ZH]数据库里好像没有这个角色呢,要再检查一下吗？[ZH]",
+                                        "out": "../data/autoReply/voiceReply/queryFalse.wav"}
+                                await voiceGenerate(data)
+                                await bot.send(event, Voice(path="data/autoReply/voiceReply/queryFalse.wav"))
+                            else:
+                                await bot.send(event, Voice(path="data/autoReply/voiceReply/queryFalse.wav"))
+                            return
                         data1["detail"]=path
                         newResult[i]=data1
                         logger.info("写入文件")
                         #logger.info(newResult)
                         with open('data/blueArchive/character.yaml', 'w', encoding="utf-8") as file:
                             yaml.dump(newResult, file, allow_unicode=True)
-                        webScreenShoot(url,path)
+
                         logger.info("发送成功")
                         await bot.send(event,Image(path=path))
                     return
