@@ -35,7 +35,9 @@ def main(bot,config,sizhiKey,app_id, app_key,logger):
     blUser=result.get("banUser")
     global blGroup
     blGroup = result.get("banGroups")
-
+    with open('config/noResponse.yaml', 'r', encoding='utf-8') as f:
+        noRes1 = yaml.load(f.read(), Loader=yaml.FullLoader)
+        noRes=noRes1.get("noRes")
     with open('config/settings.yaml', 'r', encoding='utf-8') as f:
         result = yaml.load(f.read(), Loader=yaml.FullLoader)
     global yamlData
@@ -212,6 +214,9 @@ def main(bot,config,sizhiKey,app_id, app_key,logger):
     async def mohu(event: GroupMessage):
         global superDict,botName,likeindex,temp,sizhi,sizhiKey
         if At(bot.qq) in event.message_chain:
+            for i in noRes:
+                if i in str(event.message_chain):
+                    return
             getStr = str(event.message_chain).replace("@"+str(bot.qq)+" ", '')
 
         elif random.randint(0,100)<likeindex:
