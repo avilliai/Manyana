@@ -31,6 +31,7 @@ from plugins.picGet import pic, setuGet, picDwn
 from plugins.tarot import tarotChoice
 from plugins.translater import translate
 from plugins.vitsGenerate import voiceGenerate
+from plugins.webScreenShoot import webScreenShoot
 
 
 def main(bot,api_KEY,app_id,app_key,nasa_api,proxy,logger):
@@ -249,6 +250,18 @@ def main(bot,api_KEY,app_id,app_key,nasa_api,proxy,logger):
             IChing1 = random.choice(IChing.get("六十四卦"))
             logger.info("\n" + IChing1)
             await bot.send(event, IChing1)
+
+    @bot.on(GroupMessage)
+    async def screenShoot(event: GroupMessage):
+        if str(event.message_chain).startswith("截图#"):
+            url=str(event.message_chain).split("#")[1]
+            path="data/pictures/cache/"+random_str()+".png"
+            logger.info("接收网页截图任务url:"+url)
+            try:
+                webScreenShoot(url, path,1200,2000)
+            except:
+                logger.error("截图失败!")
+            await bot.send(event, Image(path=path), True)
 
 
 
