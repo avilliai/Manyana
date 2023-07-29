@@ -39,6 +39,17 @@ def main(bot,app_id,app_key,logger):
                     path="data/blueArchive/cache/"+random_str()+'.png'
                     webScreenShoot(url,path)
                     await bot.send(event,Image(path=path))
+                    return
+                else:
+                    continue
+            logger.warning("查询ba角色:" + aimCharacter + " 失败，未收录对应数据")
+            logger.info("发送语音(日)：数据库里好像没有这个角色呢,要再检查一下吗？")
+            if os.path.exists("data/autoReply/voiceReply/queryFalse.wav") == False:
+                data = {"text": "[ZH]数据库里好像没有这个角色呢,要再检查一下吗？[ZH]", "out": "../data/autoReply/voiceReply/queryFalse.wav"}
+                await voiceGenerate(data)
+                await bot.send(event, Voice(path="data/autoReply/voiceReply/queryFalse.wav"))
+            else:
+                await bot.send(event, Voice(path="data/autoReply/voiceReply/queryFalse.wav"))
 
             '''url=""
             aimCharacter=str(event.message_chain).split("ba查询")[1]
