@@ -130,7 +130,7 @@ def main(bot,api_KEY,app_id,app_key,nasa_api,proxy,logger):
                         await bot.send(event,"r18模式已关闭")
 
                 data["tag"]=match1.group(2)
-                data["sizi"] = "regular"
+                data["size"] = "regular"
                 logger.info("组装数据完成："+str(data))
                 a=int(match1.group(1))
                 if int(match1.group(1))>6:
