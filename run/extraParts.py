@@ -43,7 +43,9 @@ def main(bot,api_KEY,app_id,app_key,nasa_api,proxy,logger):
     global data
     with open('data/tasks.yaml', 'r',encoding='utf-8') as file:
         data = yaml.load(file, Loader=yaml.FullLoader)
-
+    with open('config/settings.yaml', 'r', encoding='utf-8') as f:
+        result = yaml.load(f.read(), Loader=yaml.FullLoader)
+    setu=result.get("setu")
 
 
 
@@ -100,12 +102,19 @@ def main(bot,api_KEY,app_id,app_key,nasa_api,proxy,logger):
                 logger.info("提取图片关键字。 数量: "+str(match1.group(1))+" 关键字: "+match1.group(2))
                 data={"tag":""}
                 if "r18" in str(event.message_chain) or "色图" in str(event.message_chain) or "涩图" in str(event.message_chain):
-                    data["tag"]=match1.group(2)
-                    data["r18"]=1
-                else:
-                    data["tag"]=match1.group(2)
+                    if setu==True:
+                        data["r18"]=1
+                    else:
+                        await bot.send(event,"r18模式已关闭")
+
+                data["tag"]=match1.group(2)
+                data["sizi"] = "regular"
                 logger.info("组装数据完成："+str(data))
-                for i in range(int(match1.group(1))):
+                a=int(match1.group(1))
+                if int(match1.group(1))>6:
+                    a=5
+                    await bot.send(event,"api访问限制，修改获取张数为 5")
+                for i in range(a):
                     path=await setuGet(data)
                     logger.info("发送图片: "+path)
                     await bot.send(event,Image(path=path))
