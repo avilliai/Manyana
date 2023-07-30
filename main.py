@@ -86,7 +86,7 @@ if __name__ == '__main__':
             for i in dat:
                 severGroupsa.pop(i)
             newData = json.dumps(severGroupsa)
-            with open('data/music/music.txt', 'w') as fp:
+            with open('data/music/groups.txt', 'w') as fp:
                 fp.write(newData)
 
 
