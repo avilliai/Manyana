@@ -229,7 +229,7 @@ def main(bot,config,sizhiKey,app_id, app_key,logger):
             sess = requests.get('https://api.ownthink.com/bot?spoken=' + getStr + '&appid='+sizhiKey)
             answer = sess.text
             answer = json.loads(answer)
-            print("yucca:\n" + answer.get("data").get("info").get("text"))
+            logger.info("bot(思知):" + answer.get("data").get("info").get("text"))
             replyssssss=answer.get("data").get("info").get("text")
         else:
             #best_match = process.extractOne(getStr, superDict.keys())
@@ -289,13 +289,13 @@ def main(bot,config,sizhiKey,app_id, app_key,logger):
         if event.sender.id in blUser:
             return
         getStr=str(event.message_chain)
-        if sizhi==1:
+        if sizhi==True:
             sess = requests.get(
                 'https://api.ownthink.com/bot?spoken=' + getStr + '&appid='+sizhiKey)
 
             answer = sess.text
             answer = json.loads(answer)
-            logger.info("思知:\n" + answer.get("data").get("info").get("text"))
+            logger.info("bot(思知):\n" + answer.get("data").get("info").get("text"))
             replyssssss = answer.get("data").get("info").get("text")
         else:
             if event.sender.id==bot.qq:
