@@ -296,7 +296,7 @@ def main(bot,config,sizhiKey,app_id, app_key,logger):
 
             answer = sess.text
             answer = json.loads(answer)
-            print("yucca:\n" + answer.get("data").get("info").get("text"))
+            logger.info("思知:\n" + answer.get("data").get("info").get("text"))
             replyssssss = answer.get("data").get("info").get("text")
         else:
             if event.sender.id==bot.qq:
