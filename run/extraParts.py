@@ -58,7 +58,7 @@ def main(bot,api_KEY,app_id,app_key,nasa_api,proxy,logger):
     @bot.on(Startup)
     async def update(event:Startup):
         while True:
-            await sleep(400)
+            await sleep(300)
             logger.info("更新用户数据")
             with open('data/userData.yaml', 'r', encoding='utf-8') as file:
                 data1 = yaml.load(file, Loader=yaml.FullLoader)
