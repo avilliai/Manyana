@@ -18,7 +18,7 @@ from mirai.models import NudgeEvent, MemberHonorChangeEvent, MemberCardChangeEve
 from plugins.RandomStr import random_str
 from plugins.newLogger import newLogger
 from plugins.translater import translate
-from run import poeAi, voiceReply, nudgeReply, blueArchiveHelper, imgSearch, extraParts, wReply, userSign, groupManager, \
+from run import poeAi, voiceReply, nudgeReply, wikiHelper, imgSearch, extraParts, wReply, userSign, groupManager, \
     PicRandom, musicShare
 
 if __name__ == '__main__':

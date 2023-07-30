@@ -23,12 +23,64 @@ from plugins.webScreenShoot import webScreenShoot
 
 def main(bot,app_id,app_key,logger):
     logger.info("blueArchive")
-    with open('data/blueArchive/characterName.yaml', 'r', encoding='utf-8') as f:
-        result = yaml.load(f.read(), Loader=yaml.FullLoader)
+    global punishing
+    with open('data/Punishing.yaml', 'r', encoding='utf-8') as f:
+        punishing = yaml.load(f.read(), Loader=yaml.FullLoader)
     global newResult
     with open('data/blueArchive/character.yaml', 'r', encoding='utf-8') as f:
         newResult = yaml.load(f.read(), Loader=yaml.FullLoader)
 
+    @bot.on(GroupMessage)
+    async def CharacterQuery(event: GroupMessage):
+        global punishing
+        if "战双查询" in str(event.message_chain):
+            aimCharacter = str(event.message_chain).split("战双查询")[1]
+            logger.info("查询战双角色:" + aimCharacter)
+            for i in punishing:
+                if aimCharacter in punishing.get(i).get('otherName'):
+                    if 'detail' in punishing.get(i):
+                        logger.info("存在本地数据文件，直接发送")
+                        path = punishing.get(i).get("detail")
+                        await bot.send(event, Image(path=path))
+                        return
+                    else:
+                        logger.warning("没有本地数据文件，启用下载")
+                        url = 'https://wiki.biligame.com' + punishing.get(i).get('url')
+                        path = "data/pictures/punishing/" + random_str() + '.png'
+                        data1 = punishing.get(i)
+                        try:
+                            webScreenShoot(url, path,1200,5800)
+                        except:
+                            logger.warning("查询战双角色:" + aimCharacter + " 失败，未收录对应数据")
+                            logger.info("发送语音()：数据库里好像没有这个角色呢,要再检查一下吗？")
+                            if os.path.exists("data/autoReply/voiceReply/queryFalse.wav") == False:
+                                data = {"text": "[ZH]数据库里好像没有这个角色呢,要再检查一下吗？[ZH]",
+                                        "out": "../data/autoReply/voiceReply/queryFalse.wav"}
+                                await voiceGenerate(data)
+                                await bot.send(event, Voice(path="data/autoReply/voiceReply/queryFalse.wav"))
+                            else:
+                                await bot.send(event, Voice(path="data/autoReply/voiceReply/queryFalse.wav"))
+                            return
+                        data1["detail"] = path
+                        punishing[i] = data1
+                        logger.info("写入文件")
+                        # logger.info(newResult)
+                        with open('data/Punishing.yaml', 'w', encoding="utf-8") as file:
+                            yaml.dump(punishing, file, allow_unicode=True)
+
+                        logger.info("发送成功")
+                        await bot.send(event, Image(path=path))
+                    return
+                else:
+                    continue
+            logger.warning("查询ba角色:" + aimCharacter + " 失败，未收录对应数据")
+            logger.info("发送语音(日)：数据库里好像没有这个角色呢,要再检查一下吗？")
+            if os.path.exists("data/autoReply/voiceReply/queryFalse.wav") == False:
+                data = {"text": "[ZH]数据库里好像没有这个角色呢,要再检查一下吗？[ZH]", "out": "../data/autoReply/voiceReply/queryFalse.wav"}
+                await voiceGenerate(data)
+                await bot.send(event, Voice(path="data/autoReply/voiceReply/queryFalse.wav"))
+            else:
+                await bot.send(event, Voice(path="data/autoReply/voiceReply/queryFalse.wav"))
 
     @bot.on(GroupMessage)
     async def CharacterQuery(event:GroupMessage):

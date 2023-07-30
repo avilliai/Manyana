@@ -7,4 +7,6 @@ def webScreenShoot(url,path,width=1200,height=7500):
 
     browser.save_screenshot(path)
     browser.close()
-#webScreenShoot("https://blue-utils.me/student-detail/shiroko","test.png")
+if __name__ == '__main__':
+
+    webScreenShoot("https://wiki.biligame.com/zspms/21%E5%8F%B7%C2%B7XXI","test.png",1200,5800)
