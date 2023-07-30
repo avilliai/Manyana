@@ -17,7 +17,7 @@ from plugins.RandomStr import random_str
 from plugins.tarot import tarotChoice
 from PIL import Image as Image1
 
-def main(bot,logger):
+def main(bot,proxy,logger):
     logger.info("抽卡/运势模块启动")
     @bot.on(GroupMessage)
     async def meme(event: GroupMessage):
@@ -25,16 +25,22 @@ def main(bot,logger):
         if str(event.message_chain) == "meme" or ("meme" in str(event.message_chain) and At(bot.qq) in event.message_chain):
             try:
                 logger.info("使用网络meme")
-                headers = {
-                    'User-Agent': 'Apifox/1.0.0 (https://apifox.com)'
+
+                url = 'https://meme-api.com/gimme'
+                proxies = {
+                    "http://": proxy,
+                    "https://": proxy
                 }
-                url = "https://oss.grass.starxw.com/service/image?type=download"
                 async with httpx.AsyncClient(timeout=20) as client:
-                    r = await client.get(url, headers=headers)
-                    img = Image1.open(BytesIO(r.content))  # 从二进制数据创建图片对象
-                    path="data/pictures/meme/"+random_str()+".png"
-                    img.save(path)  # 使用PIL库保存图片
-                    await bot.send(event,Image(path=path))
+                    r = await client.get(url)
+                    print(r.json().get("preview")[-1])
+                    async with httpx.AsyncClient(timeout=20, proxies=proxies) as client:
+                        r = await client.get(r.json().get("preview")[-1])
+                        img = Image.open(BytesIO(r.content))  # 从二进制数据创建图片对象
+                        path = "data/pictures/meme/" + random_str() + ".png"
+                        img.save(path)  # 使用PIL库保存图片
+                        await bot.send(event, Image(path=path))
+
             except:
                 logger.warning("网络meme出错，使用本地meme图")
                 la = os.listdir("data/pictures/meme")

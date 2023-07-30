@@ -192,7 +192,7 @@ if __name__ == '__main__':
     wikiHelper.main(bot,app_id,app_key,logger)
     userSign.main(bot,result.get("weatherXinZhi"),master,logger)
     groupManager.main(bot,config,moderate,logger)
-    PicRandom.main(bot,logger)
+    PicRandom.main(bot,proxy,logger)
     musicShare.main(bot,master,botName,logger)
 
     startVer()
