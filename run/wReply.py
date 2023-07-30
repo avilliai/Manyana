@@ -453,8 +453,6 @@ def main(bot,config,sizhiKey,app_id, app_key,logger):
             file = open('config/superDict.txt', 'r')
             jss = file.read()
             file.close()
-            global sizhiKey
-            sizhiKey = config.get('sizhi')
             global superDict
             superDict = json.loads(jss)
 
