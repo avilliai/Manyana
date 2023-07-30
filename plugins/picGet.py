@@ -50,8 +50,8 @@ async def setuGet(data):
     url="https://api.lolicon.app/setu/v2?"
     async with httpx.AsyncClient(timeout=100) as client:
         r = await client.get(url,params=data)
-        print(r.json().get("data")[0].get("urls").get("original"))
-        url=r.json().get("data")[0].get("urls").get("original")
+        print(r.json().get("data")[0].get("urls").get("regular"))
+        url=r.json().get("data")[0].get("urls").get("regular")
     async with httpx.AsyncClient(timeout=20) as client:
         r = await client.get(url)
         img = Image.open(BytesIO(r.content))  # 从二进制数据创建图片对象
@@ -65,5 +65,5 @@ async def picDwn(url,path):
         return path
 
 if __name__ == '__main__':
-    asyncio.run(sim())
+    asyncio.run(picDwn("https://blue-utils.me/img/common/profile/Skill_Portrait_CH0135.png","./ba.png"))
     #pic()
