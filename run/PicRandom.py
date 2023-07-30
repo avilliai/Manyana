@@ -36,7 +36,7 @@ def main(bot,proxy,logger):
                     print(r.json().get("preview")[-1])
                     async with httpx.AsyncClient(timeout=20, proxies=proxies) as client:
                         r = await client.get(r.json().get("preview")[-1])
-                        img = Image.open(BytesIO(r.content))  # 从二进制数据创建图片对象
+                        img = Image1.open(BytesIO(r.content))  # 从二进制数据创建图片对象
                         path = "data/pictures/meme/" + random_str() + ".png"
                         img.save(path)  # 使用PIL库保存图片
                         await bot.send(event, Image(path=path))
