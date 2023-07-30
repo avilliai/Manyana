@@ -3,7 +3,7 @@ defaultModel:
   - voiceModel/nene/1374_epochsm.pth
   - voiceModel/nene/config.json
   speaker: 2
-setu: False
+setu: false
 wReply:
   banWords:
   - 妈
