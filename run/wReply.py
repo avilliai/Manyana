@@ -212,7 +212,7 @@ def main(bot,config,sizhiKey,app_id, app_key,logger):
     # 模糊词库触发回复
     @bot.on(GroupMessage)
     async def mohu(event: GroupMessage):
-        global superDict,botName,likeindex,temp,sizhi,sizhiKey
+        global superDict,botName,likeindex,temp,sizhi
         if At(bot.qq) in event.message_chain:
             for i in noRes:
                 if i in str(event.message_chain):
@@ -286,7 +286,6 @@ def main(bot,config,sizhiKey,app_id, app_key,logger):
         global superDict
         global botName
         global sizhi
-        global sizhiKey
         if event.sender.id in blUser:
             return
         getStr=str(event.message_chain)
