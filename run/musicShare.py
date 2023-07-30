@@ -10,6 +10,9 @@ from mirai import Mirai, WebSocketAdapter, FriendMessage, GroupMessage, At, Plai
 from mirai.models import MusicShare
 from mirai import Startup, Shutdown
 
+from plugins.RandomStr import random_str
+
+
 def main(bot,master,botName,logger):
     file = open('data/music/music.txt', 'r')
     js = file.read()
@@ -70,16 +73,16 @@ def main(bot,master,botName,logger):
         global step
         global message
         if event.message_chain.count(MusicShare):
-            print("ok")
+            logger.info("点歌链接收到")
         if (str(event.sender.id) in sender.keys()):
-            print("senderOk")
+            logger.info("senderOk")
         try:
             if sender.get(str(event.sender.id)).get("step")==1:
-                print("step:ok")
+                logger.info("step:ok")
         except:
             logger.info("接收私聊消息"+str(event.message_chain))
         else:
-            print(sender)
+            logger.info(sender)
         if event.message_chain.count(MusicShare) and (str(event.sender.id) in sender.keys()) and sender.get(str(event.sender.id)).get("step")==1:
             await bot.send_friend_message(int(master),event.message_chain)
             share=event.message_chain.get(MusicShare)
@@ -92,7 +95,7 @@ def main(bot,master,botName,logger):
             print(share[0].music_url)
             print(share[0].picture_url)
             print(share[0].summary)'''
-            print("构建数据")
+            logger.info("构建数据")
             valuea={}
             valuea["kind"]=share[0].kind
             valuea["title"]=share[0].title
@@ -140,7 +143,7 @@ def main(bot,master,botName,logger):
                 if adsf==0:
 
                     sender[str(event.sender.id)]={"step":1,"message":str(event.message_chain)}
-                    print(sender)
+                    logger.info(sender)
                     await bot.send(event,"留言： "+str(event.message_chain))
                     await bot.send(event,"请发送音乐链接(推荐网易云)")
 
@@ -174,7 +177,7 @@ def main(bot,master,botName,logger):
     def stop_scheduler(_):
         scheduler.shutdown(True)  # 结束定时器
 
-    @scheduler.scheduled_job(CronTrigger(hour=12, minute=16))
+    @scheduler.scheduled_job(CronTrigger(hour=20, minute=40))
     async def timer():
         global bm
         for i in severGroups:
@@ -186,14 +189,14 @@ def main(bot,master,botName,logger):
             js = file.read()
             try:
                 music = json.loads(js).get(str(datetime.date.today()))
-                print(music)
+                logger.info(music)
                 # out = random.choice(file)
                 logger.info( '正在向群' + str(i) + '点歌')
                 await bot.send_group_message(intTrans,MusicShare(kind=music.get("kind"),title=music.get("title"), summary=music.get("summary"), jump_url=music.get("jump_url"), picture_url=music.get("picture_url"), music_url=music.get("music_url"),  brief=music.get("brief")))
-                await bot.send_group_message(intTrans,"来自"+str(music.get("user")+"的点歌\n留言："+str(music.get("message"))))
-                await bot.send_group_message(intTrans,"私聊"+bm+"发送 点歌 即可点歌\n群内发送 /回复+回复内容 即可向点歌人回复")
+                await bot.send_group_message(intTrans,"晚间电台ヾ(≧▽≦*)o\n来自"+str(music.get("user")+"的点歌\n留言："+str(music.get("message"))+"\n随机码:"+random_str()))
+                await bot.send_group_message(intTrans,"私聊"+bm+"发送 点歌 即可点歌\n群内发送 /回复+回复内容 即可向点歌人回复\n随机码:"+random_str())
             except:
-                logger.info("指定群不存在或已退出")
+                logger.error("指定群不存在或已退出")
         temp=userdict.get(str(datetime.date.today()))
         temp["userid"]="A"+userdict.get(str(datetime.date.today())).get("userid")
         userdict[str(datetime.date.today())]=temp
