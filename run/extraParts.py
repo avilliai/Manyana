@@ -8,12 +8,13 @@ import re
 import time
 import sys
 import socket
+from asyncio import sleep
 
 import httpx
 import requests
 import utils
 import yaml
-from mirai import Image, Voice
+from mirai import Image, Voice, Startup
 from mirai import Mirai, WebSocketAdapter, FriendMessage, GroupMessage, At, Plain
 
 from plugins import weatherQuery
@@ -43,11 +44,32 @@ def main(bot,api_KEY,app_id,app_key,nasa_api,proxy,logger):
     global data
     with open('data/tasks.yaml', 'r',encoding='utf-8') as file:
         data = yaml.load(file, Loader=yaml.FullLoader)
-    with open('config/settings.yaml', 'r', encoding='utf-8') as f:
-        result = yaml.load(f.read(), Loader=yaml.FullLoader)
-    setu=result.get("setu")
+    with open('data/userData.yaml', 'r',encoding='utf-8') as file:
+        data1 = yaml.load(file, Loader=yaml.FullLoader)
+    global trustUser
+    userdict = data1
+    trustUser = []
+    for i in userdict.keys():
+        data = userdict.get(i)
+        times = int(str(data.get('sts')))
+        if times > 8:
+            trustUser.append(str(i))
 
-
+    @bot.on(Startup)
+    async def update(event:Startup):
+        while True:
+            await sleep(400)
+            logger.info("更新用户数据")
+            with open('data/userData.yaml', 'r', encoding='utf-8') as file:
+                data1 = yaml.load(file, Loader=yaml.FullLoader)
+            global trustUser
+            userdict = data1
+            trustUser = []
+            for i in userdict.keys():
+                data = userdict.get(i)
+                times = int(str(data.get('sts')))
+                if times > 8:
+                    trustUser.append(str(i))
 
     @bot.on(GroupMessage)
     async def handle_group_message(event: GroupMessage):
@@ -102,7 +124,7 @@ def main(bot,api_KEY,app_id,app_key,nasa_api,proxy,logger):
                 logger.info("提取图片关键字。 数量: "+str(match1.group(1))+" 关键字: "+match1.group(2))
                 data={"tag":""}
                 if "r18" in str(event.message_chain) or "色图" in str(event.message_chain) or "涩图" in str(event.message_chain):
-                    if setu==True:
+                    if str(event.sender.id) in trustUser:
                         data["r18"]=1
                     else:
                         await bot.send(event,"r18模式已关闭")
