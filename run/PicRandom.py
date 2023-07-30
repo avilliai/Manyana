@@ -33,7 +33,7 @@ def main(bot,proxy,logger):
                 }
                 async with httpx.AsyncClient(timeout=20) as client:
                     r = await client.get(url)
-                    print(r.json().get("preview")[-1])
+                    logger.info(r.json().get("preview")[-1])
                     async with httpx.AsyncClient(timeout=20, proxies=proxies) as client:
                         r = await client.get(r.json().get("preview")[-1])
                         img = Image1.open(BytesIO(r.content))  # 从二进制数据创建图片对象
