@@ -233,6 +233,7 @@ def main(bot,config,sizhiKey,app_id, app_key,logger):
             except:
                 logger.warning("在调用思知ai时出现了一个问题，但似乎又没啥问题，请忽略")
                 return
+            logger.info("ASK:"+getStr)
             logger.info("bot(思知):" + answer.get("data").get("info").get("text"))
             replyssssss=answer.get("data").get("info").get("text")
         else:
@@ -303,7 +304,8 @@ def main(bot,config,sizhiKey,app_id, app_key,logger):
             except:
                 logger.warning("在调用思知ai时出现了一个问题，但似乎又没啥问题，请忽略")
                 return
-            logger.info("bot(思知):\n" + answer.get("data").get("info").get("text"))
+            logger.info("ASK:"+getStr)
+            logger.info("bot(私聊):" + answer.get("data").get("info").get("text"))
             replyssssss = answer.get("data").get("info").get("text")
         else:
             if event.sender.id==bot.qq:
