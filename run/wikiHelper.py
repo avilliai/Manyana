@@ -45,6 +45,7 @@ def main(bot,app_id,app_key,logger):
                         return
                     else:
                         logger.warning("没有本地数据文件，启用下载")
+                        await bot.send(event,"抓取数据中....初次查询将耗费较长时间。")
                         url = 'https://wiki.biligame.com' + punishing.get(i).get('url')
                         path = "data/pictures/punishing/" + random_str() + '.png'
                         data1 = punishing.get(i)
@@ -98,6 +99,7 @@ def main(bot,app_id,app_key,logger):
                         return
                     else:
                         logger.warning("没有本地数据文件，启用下载")
+                        await bot.send(event, "抓取数据中....初次查询将耗费较长时间。")
                         url='https://blue-utils.me/'+newResult.get(i).get('url')
                         path="data/blueArchive/cache/"+random_str()+'.png'
                         data1=newResult.get(i)
@@ -150,6 +152,7 @@ def main(bot,app_id,app_key,logger):
                 return
             else:
                 logger.warning("没有本地数据文件，启用下载")
+                await bot.send(event, "抓取数据中....初次查询将耗费较长时间。")
                 url = 'https://prts.wiki/w/' + aimCharacter
                 path = "data/arknights/"+aimCharacter+".png"
 
