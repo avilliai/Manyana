@@ -34,7 +34,7 @@ async def screenshot_to_pdf_and_png(link,path):
     driver = webdriver.Firefox()
     # 6> 模仿手动滑动滚动条，解决懒加载问题
     try:
-        driver.implicitly_wait(1)
+        driver.implicitly_wait(3)
         driver.get(link)
 
         # 模拟人滚动滚动条,处理图片懒加载问题
