@@ -77,7 +77,7 @@ def main(bot,config,moderateKey,logger):
             data={'text':"[JA]みなさん、こんにちは、私はこのグループのメンバーになりました、将来もっとアドバイスしてください![JA]","out":path}
             await voiceGenerate(data)
             await bot.send_group_message(event.group.id,Voice(path=path[3:]))
-        await bot.send_group_message(event.group.id,"发送 帮助 获取功能列表哦")
+        #await bot.send_group_message(event.group.id,"发送 帮助 获取功能列表哦")
 
     @bot.on(Startup)
     async def updateData(event: Startup):
