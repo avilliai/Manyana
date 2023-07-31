@@ -63,7 +63,7 @@ async def screenshot_to_pdf_and_png(link,path):
         #print(width, height)
         # 将浏览器的宽高设置成刚刚获取的宽高
         driver.set_window_size(width + 100, height + 100)
-        time.sleep(1)
+        time.sleep(3)
         png_path = path
 
         # 截图并关掉浏览器
