@@ -289,7 +289,7 @@ def main(bot,api_KEY,app_id,app_key,nasa_api,proxy,logger):
             path="data/pictures/cache/"+random_str()+".png"
             logger.info("接收网页截图任务url:"+url)
             try:
-                await screenshot_to_pdf_and_png(url, path,1200,2000)
+                await screenshot_to_pdf_and_png(url, path)
             except:
                 logger.error("截图失败!")
             await bot.send(event, Image(path=path), True)
