@@ -49,8 +49,8 @@ def main(bot,app_id,app_key,logger):
                         path = "data/pictures/punishing/" + random_str() + '.png'
                         data1 = punishing.get(i)
                         try:
-                            webScreenShoot(url,path,1200,6500)
-                            #await screenshot_to_pdf_and_png(url, path)
+                            #webScreenShoot(url,path,1200,6500)
+                            await screenshot_to_pdf_and_png(url, path)
                         except:
                             logger.warning("查询战双角色:" + aimCharacter + " 失败，未收录对应数据")
                             logger.info("发送语音()：数据库里好像没有这个角色呢,要再检查一下吗？")
@@ -154,8 +154,8 @@ def main(bot,app_id,app_key,logger):
                 path = "data/arknights/"+aimCharacter+".png"
 
                 try:
-                    webScreenShoot(url,path,1200,9500)
-                    #await screenshot_to_pdf_and_png(url, path)
+                    #webScreenShoot(url,path,1200,9500)
+                    await screenshot_to_pdf_and_png(url, path)
                 except:
                     logger.warning("查询方舟角色:" + aimCharacter + " 失败，未收录对应数据")
                     logger.info("发送语音()：数据库里好像没有这个角色呢,要再检查一下吗？")
