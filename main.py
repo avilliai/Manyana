@@ -189,7 +189,7 @@ if __name__ == '__main__':
     nudgeReply.main(bot,master,app_id,app_key,logger)#戳一戳
     extraParts.main(bot,result.get("weatherXinZhi"),app_id,app_key,nasa_api,proxy,logger)#额外小功能
     wReply.main(bot,config,sizhiKey,app_id,app_key,logger)
-    wikiHelper.main(bot,app_id,app_key,logger)
+    asyncio.run(wikiHelper.main(bot,app_id,app_key,logger))
     userSign.main(bot,result.get("weatherXinZhi"),master,logger)
     groupManager.main(bot,config,moderate,logger)
     PicRandom.main(bot,proxy,logger)

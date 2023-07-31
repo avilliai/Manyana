@@ -1,4 +1,5 @@
 import asyncio
+from asyncio import sleep
 
 from selenium import webdriver
 def webScreenShoot(url,path,width=1200,height=7500):
@@ -47,13 +48,13 @@ async def screenshot_to_pdf_and_png(link,path):
                 js_move = "window.scrollTo(0,{})".format(k * 500)
                 #print(js_move)
                 driver.execute_script(js_move)
-                time.sleep(1)
+                await sleep(0.2)
                 height = driver.execute_script(js_height)
                 k += 1
             else:
                 break
 
-        time.sleep(1)
+        await sleep(1)
 
         # 7>  # 直接截图截不全，调取最大网页截图
         width = driver.execute_script(
@@ -63,7 +64,7 @@ async def screenshot_to_pdf_and_png(link,path):
         #print(width, height)
         # 将浏览器的宽高设置成刚刚获取的宽高
         driver.set_window_size(width + 100, height + 100)
-        time.sleep(3)
+        await sleep(1)
         png_path = path
 
         # 截图并关掉浏览器
@@ -82,6 +83,6 @@ async def screenshot_to_pdf_and_png(link,path):
 
 if __name__ == '__main__':
     asyncio.run(screenshot_to_pdf_and_png("https://prts.wiki/w/波登可","./test.png"))
-    asyncio.run(screenshot_to_pdf_and_png("https://prts.wiki/w/斯卡蒂", "./test.png"))
+    #asyncio.run(screenshot_to_pdf_and_png("https://prts.wiki/w/斯卡蒂", "./test.png"))
 
     #webScreenShoot("https://prts.wiki/w/w","test.png",1200,7500)

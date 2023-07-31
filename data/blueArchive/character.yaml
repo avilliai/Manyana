@@ -1,4 +1,5 @@
 Akeshiro Rumi:
+  detail: data/blueArchive/cache/Akeshiro Rumi.png
   otherName:
   - 朱城ルミ
   - 朱城瑠美
@@ -7,6 +8,7 @@ Akeshiro Rumi:
   touxiang: /img/common/profile/Skill_Portrait_CH0135.png
   url: /student-detail/rumi
 Asuma Toki:
+  detail: data/blueArchive/cache/Asuma Toki.png
   otherName:
   - 飛鳥馬トキ
   - toki
@@ -18,6 +20,7 @@ Asuma Toki:
   touxiang: /img/common/profile/Skill_Portrait_CH0187.png
   url: /student-detail/toki
 Asuma Toki兔女郎:
+  detail: data/blueArchive/cache/Asuma Toki兔女郎.png
   otherName:
   - 兔toki
   - 兔女郎时
@@ -27,6 +30,7 @@ Asuma Toki兔女郎:
   touxiang: /img/common/profile/Skill_Portrait_CH0211.png
   url: /student-detail/toki_bunny
 Kirifuji Nagisa:
+  detail: data/blueArchive/cache/Kirifuji Nagisa.png
   otherName:
   - 桐藤ナギサ
   - ナギサ
@@ -37,6 +41,7 @@ Kirifuji Nagisa:
   touxiang: /img/common/profile/Skill_Portrait_Nagisa.png
   url: /student-detail/nagisa
 Konoe Mina:
+  detail: data/blueArchive/cache/Konoe Mina.png
   otherName:
   - 近衛ミナ
   - 南
@@ -48,6 +53,7 @@ Konoe Mina:
   touxiang: /img/common/profile/Skill_Portrait_CH0138.png
   url: /student-detail/mina
 Kurosaki Koyuki:
+  detail: data/blueArchive/cache/Kurosaki Koyuki.png
   otherName:
   - 黒崎コユキ
   - コユキ
@@ -57,6 +63,7 @@ Kurosaki Koyuki:
   touxiang: /img/common/profile/Skill_Portrait_CH0198.png
   url: /student-detail/koyuki
 Kuwakami Kaho:
+  detail: data/blueArchive/cache/Kuwakami Kaho.png
   otherName:
   - 桑上カホ
   - カホ
@@ -66,6 +73,7 @@ Kuwakami Kaho:
   touxiang: /img/common/profile/Skill_Portrait_CH0107.png
   url: /student-detail/kaho
 Utazumi Sakurako:
+  detail: data/blueArchive/cache/Utazumi Sakurako.png
   otherName:
   - 歌住サクラコ
   - サクラコ
@@ -74,6 +82,7 @@ Utazumi Sakurako:
   touxiang: /img/common/profile/Skill_Portrait_Sakurako.png
   url: /student-detail/sakurako
 Uzawa Reisa:
+  detail: data/blueArchive/cache/Uzawa Reisa.png
   otherName:
   - 宇沢レイサ
   - レイサ
@@ -85,6 +94,7 @@ Uzawa Reisa:
   touxiang: /img/common/profile/Skill_Portrait_CH0167.png
   url: /student-detail/reisa
 Yasumori Minori:
+  detail: data/blueArchive/cache/Yasumori Minori.png
   otherName:
   - 安守ミノリ
   - 安人
@@ -96,6 +106,7 @@ Yasumori Minori:
   touxiang: /img/common/profile/Skill_Portrait_CH0214.png
   url: /student-detail/minori
 一之瀬 明日奈:
+  detail: data/blueArchive/cache/一之瀬 明日奈.png
   otherName:
   - 一之瀬アスナ
   - アスナ
@@ -105,6 +116,7 @@ Yasumori Minori:
   touxiang: /img/common/profile/Skill_Portrait_Asuna.png
   url: /student-detail/asuna
 一之瀬 明日奈兔女郎:
+  detail: data/blueArchive/cache/一之瀬 明日奈兔女郎.png
   otherName:
   - 兔明日奈
   - 兔女郎明日奈
@@ -112,6 +124,7 @@ Yasumori Minori:
   touxiang: /img/common/profile/Skill_Portrait_CH0098.png
   url: /student-detail/asuna_bunny
 下倉 惠:
+  detail: data/blueArchive/cache/下倉 惠.png
   otherName:
   - 下倉メグ
   - メグ
@@ -121,6 +134,7 @@ Yasumori Minori:
   touxiang: /img/common/profile/Skill_Portrait_CH0088.png
   url: /student-detail/megu
 下江 小春:
+  detail: data/blueArchive/cache/下江 小春.png
   otherName:
   - 下江コハル
   - 笨蛋
@@ -131,6 +145,7 @@ Yasumori Minori:
   touxiang: /img/common/profile/Skill_Portrait_Koharu.png
   url: /student-detail/koharu
 下江 小春泳裝:
+  detail: data/blueArchive/cache/下江 小春泳裝.png
   otherName:
   - コハル（水着）
   - 水小春
@@ -138,6 +153,7 @@ Yasumori Minori:
   touxiang: /img/common/profile/Skill_Portrait_CH0205.png
   url: /student-detail/koharu_swimsuit
 中務 桐乃:
+  detail: data/blueArchive/cache/中務 桐乃.png
   otherName:
   - 中務キリノ
   - キリノ
@@ -147,6 +163,7 @@ Yasumori Minori:
   touxiang: /img/common/profile/Skill_Portrait_Kirino.png
   url: /student-detail/kirino
 久田 伊樹菜:
+  detail: data/blueArchive/cache/久田 伊樹菜.png
   otherName:
   - 久田イズナ
   - イズナ
@@ -159,6 +176,7 @@ Yasumori Minori:
   touxiang: /img/common/profile/Skill_Portrait_Izuna.png
   url: /student-detail/izuna
 久田 伊樹菜泳裝:
+  detail: data/blueArchive/cache/久田 伊樹菜泳裝.png
   otherName:
   - 水泉奈
   - 水忍忍
@@ -166,6 +184,7 @@ Yasumori Minori:
   touxiang: /img/common/profile/Skill_Portrait_CH0179.png
   url: /student-detail/izuna_swimsuit
 乙花 堇:
+  detail: data/blueArchive/cache/乙花 堇.png
   otherName:
   - 乙花スミレ
   - スミレ
@@ -175,6 +194,7 @@ Yasumori Minori:
   touxiang: /img/common/profile/Skill_Portrait_Sumire.png
   url: /student-detail/sumire
 伊原木 喜美:
+  detail: data/blueArchive/cache/伊原木 喜美.png
   otherName:
   - 伊原木ヨシミ
   - 伊原木
@@ -186,6 +206,7 @@ Yasumori Minori:
   touxiang: /img/common/profile/Skill_Portrait_Yoshimi.png
   url: /student-detail/yoshimi
 伊草 遙香:
+  detail: data/blueArchive/cache/伊草 遙香.png
   otherName:
   - 春香
   - 伊草 ハルカ
@@ -196,6 +217,7 @@ Yasumori Minori:
   touxiang: /img/common/profile/Skill_Portrait_Haruka.png
   url: /student-detail/haruka
 伊草 遙香正月:
+  detail: data/blueArchive/cache/伊草 遙香正月.png
   otherName:
   - 正月遥香
   - 正月春香
@@ -205,6 +227,7 @@ Yasumori Minori:
   touxiang: /img/common/profile/Skill_Portrait_CH0087.png
   url: /student-detail/haruka_newyear
 伊落 瑪麗:
+  detail: data/blueArchive/cache/伊落 瑪麗.png
   otherName:
   - 伊落マリー
   - マリー
@@ -214,12 +237,14 @@ Yasumori Minori:
   touxiang: /img/common/profile/Skill_Portrait_Mari.png
   url: /student-detail/mari
 伊落 瑪麗Gym:
+  detail: data/blueArchive/cache/伊落 瑪麗Gym.png
   otherName:
   - 体操服玛丽
   star: ★3
   touxiang: /img/common/profile/Skill_Portrait_CH0186.png
   url: /student-detail/mari_gym
 佐城 智惠:
+  detail: data/blueArchive/cache/佐城 智惠.png
   otherName:
   - 佐城トモエ
   - 佐城
@@ -230,6 +255,7 @@ Yasumori Minori:
   touxiang: /img/common/profile/Skill_Portrait_Tomoe.png
   url: /student-detail/tomoe
 円堂 志美子:
+  detail: data/blueArchive/cache/円堂 志美子.png
   otherName:
   - 円堂シミコ
   - シミコ
@@ -238,6 +264,7 @@ Yasumori Minori:
   touxiang: /img/common/profile/Skill_Portrait_Shimiko.png
   url: /student-detail/shimiko
 初音 未來:
+  detail: data/blueArchive/cache/初音 未來.png
   otherName:
   - 初音ミク
   - 初音
@@ -248,6 +275,7 @@ Yasumori Minori:
   touxiang: /img/common/profile/Skill_Portrait_CH9999.png
   url: /student-detail/miku
 劍先 弦生:
+  detail: data/blueArchive/cache/劍先 弦生.png
   otherName:
   - 剣先ツルギ
   - 鹤城
@@ -259,6 +287,7 @@ Yasumori Minori:
   touxiang: /img/common/profile/Skill_Portrait_Tsurugi.png
   url: /student-detail/tsurugi
 劍先 弦生泳裝:
+  detail: data/blueArchive/cache/劍先 弦生泳裝.png
   otherName:
   - ツルギ（水着）
   - 水鹤城
@@ -266,6 +295,7 @@ Yasumori Minori:
   touxiang: /img/common/profile/Skill_Portrait_CH0060.png
   url: /student-detail/tsurugi_swimsuit
 勇美 楓:
+  detail: data/blueArchive/cache/勇美 楓.png
   otherName:
   - 勇美カエデ
   - カエデ
@@ -275,6 +305,7 @@ Yasumori Minori:
   touxiang: /img/common/profile/Skill_Portrait_Kaede.png
   url: /student-detail/kaede
 十六夜 野乃美:
+  detail: data/blueArchive/cache/十六夜 野乃美.png
   otherName:
   - 十六夜 ノノミ
   - 十六夜野乃美
@@ -285,12 +316,14 @@ Yasumori Minori:
   touxiang: /img/common/profile/Skill_Portrait_Nonomi.png
   url: /student-detail/nonomi
 十六夜 野乃美泳裝:
+  detail: data/blueArchive/cache/十六夜 野乃美泳裝.png
   otherName:
   - 水野宫
   star: ★3
   touxiang: /img/common/profile/Skill_Portrait_CH0092.png
   url: /student-detail/nonomi_swimsuit
 千鳥 三千留:
+  detail: data/blueArchive/cache/千鳥 三千留.png
   otherName:
   - 千鳥ミチル
   - ミチル
@@ -301,6 +334,7 @@ Yasumori Minori:
   touxiang: /img/common/profile/Skill_Portrait_CH0113.png
   url: /student-detail/michiru
 古関 憂:
+  detail: data/blueArchive/cache/古関 憂.png
   otherName:
   - 古関ウイ
   - ウイ
@@ -310,6 +344,7 @@ Yasumori Minori:
   touxiang: /img/common/profile/Skill_Portrait_CH0169.png
   url: /student-detail/ui
 古関 憂泳裝:
+  detail: data/blueArchive/cache/古関 憂泳裝.png
   otherName:
   - ウイ（水着）
   - 水忧
@@ -317,6 +352,7 @@ Yasumori Minori:
   touxiang: /img/common/profile/Skill_Portrait_CH0204.png
   url: /student-detail/ui_swimsuit
 各務 千尋:
+  detail: data/blueArchive/cache/各務 千尋.png
   otherName:
   - 各務チヒロ
   - チヒロ
@@ -326,6 +362,7 @@ Yasumori Minori:
   touxiang: /img/common/profile/Skill_Portrait_CH0160.png
   url: /student-detail/chihiro
 合歓垣 吹雪:
+  detail: data/blueArchive/cache/合歓垣 吹雪.png
   otherName:
   - 合歓垣フブキ
   - 摆子
@@ -336,6 +373,7 @@ Yasumori Minori:
   touxiang: /img/common/profile/Skill_Portrait_CH0141.png
   url: /student-detail/fubuki
 和樂 知世:
+  detail: data/blueArchive/cache/和樂 知世.png
   otherName:
   - 和楽チセ
   - 和乐千世
@@ -347,6 +385,7 @@ Yasumori Minori:
   touxiang: /img/common/profile/Skill_Portrait_Chise.png
   url: /student-detail/chise
 和樂 知世泳裝:
+  detail: data/blueArchive/cache/和樂 知世泳裝.png
   otherName:
   - 水千世
   - 水知世
@@ -354,6 +393,7 @@ Yasumori Minori:
   touxiang: /img/common/profile/Skill_Portrait_CH0178.png
   url: /student-detail/chise_swimsuit
 和泉元 英美:
+  detail: data/blueArchive/cache/和泉元 英美.png
   otherName:
   - 和泉元エイミ
   - 艾子龙
@@ -365,6 +405,7 @@ Yasumori Minori:
   touxiang: /img/common/profile/Skill_Portrait_Eimi.png
   url: /student-detail/eimi
 大野 月夜:
+  detail: data/blueArchive/cache/大野 月夜.png
   otherName:
   - 大野ツクヨ
   - ツクヨ
@@ -375,6 +416,7 @@ Yasumori Minori:
   touxiang: /img/common/profile/Skill_Portrait_CH0114.png
   url: /student-detail/tsukuyo
 天童 愛麗絲:
+  detail: data/blueArchive/cache/天童 愛麗絲.png
   otherName:
   - 天童アリス
   - アリス
@@ -384,12 +426,14 @@ Yasumori Minori:
   touxiang: /img/common/profile/Skill_Portrait_Aris.png
   url: /student-detail/aris
 天童 愛麗絲Idol(?):
+  detail: data/blueArchive/cache/天童 愛麗絲Idol(?).png
   otherName:
   - 偶像爱丽丝
   star: Idol(?)
   touxiang: /img/common/profile/aris_idol_41.png
   url: /student-detail/aris_idol_41
 天童 愛麗絲Maid:
+  detail: data/blueArchive/cache/天童 愛麗絲Maid.png
   otherName:
   - 女仆爱丽丝
   - 扫地机器人
@@ -397,6 +441,7 @@ Yasumori Minori:
   touxiang: /img/common/profile/Skill_Portrait_CH0200.png
   url: /student-detail/aris_maid
 天見 和香:
+  detail: data/blueArchive/cache/天見 和香.png
   otherName:
   - 天見ノドカ
   - ノドカ
@@ -406,12 +451,14 @@ Yasumori Minori:
   touxiang: /img/common/profile/Skill_Portrait_Nodoka.png
   url: /student-detail/nodoka
 天見 和香温泉:
+  detail: data/blueArchive/cache/天見 和香温泉.png
   otherName:
   - 温泉和香
   star: ★3
   touxiang: /img/common/profile/Skill_Portrait_CH0165.png
   url: /student-detail/nodoka_onsen
 天雨 亞子:
+  detail: data/blueArchive/cache/天雨 亞子.png
   otherName:
   - 天雨 アコ
   - 天雨亚子
@@ -420,6 +467,7 @@ Yasumori Minori:
   touxiang: /img/common/profile/Skill_Portrait_ako.png
   url: /student-detail/ako
 奥空 綾音:
+  detail: data/blueArchive/cache/奥空 綾音.png
   otherName:
   - 绫音
   - 奥空绫音
@@ -428,12 +476,14 @@ Yasumori Minori:
   touxiang: /img/common/profile/Skill_Portrait_Ayane.png
   url: /student-detail/ayane
 奥空 綾音泳裝:
+  detail: data/blueArchive/cache/奥空 綾音泳裝.png
   otherName:
   - 水绫音
   star: ★1
   touxiang: /img/common/profile/Skill_Portrait_CH0176.png
   url: /student-detail/ayane_swimsuit
 守月 鈴美:
+  detail: data/blueArchive/cache/守月 鈴美.png
   otherName:
   - 守月スズミ
   - スズミ
@@ -443,6 +493,7 @@ Yasumori Minori:
   touxiang: /img/common/profile/Skill_Portrait_Suzumi.png
   url: /student-detail/suzumi
 室笠 朱音:
+  detail: data/blueArchive/cache/室笠 朱音.png
   otherName:
   - 室笠アカネ
   - 朱音
@@ -454,6 +505,7 @@ Yasumori Minori:
   touxiang: /img/common/profile/Skill_Portrait_Akane.png
   url: /student-detail/akane
 室笠 朱音兔女郎:
+  detail: data/blueArchive/cache/室笠 朱音兔女郎.png
   otherName:
   - 兔女郎朱茵
   - 兔女郎茜
@@ -462,6 +514,7 @@ Yasumori Minori:
   touxiang: /img/common/profile/Skill_Portrait_CH0099.png
   url: /student-detail/akane_bunny
 小塗 真紀:
+  detail: data/blueArchive/cache/小塗 真紀.png
   otherName:
   - 小塗マキ
   - マキ
@@ -471,6 +524,7 @@ Yasumori Minori:
   touxiang: /img/common/profile/Skill_Portrait_Maki.png
   url: /student-detail/maki
 小鈎 晴:
+  detail: data/blueArchive/cache/小鈎 晴.png
   otherName:
   - 小鈎ハレ
   - ハレ
@@ -481,6 +535,7 @@ Yasumori Minori:
   touxiang: /img/common/profile/Skill_Portrait_Hare.png
   url: /student-detail/hare
 小鳥遊 星野:
+  detail: data/blueArchive/cache/小鳥遊 星野.png
   otherName:
   - 星野
   - 大叔
@@ -490,6 +545,7 @@ Yasumori Minori:
   touxiang: /img/common/profile/Skill_Portrait_Hoshino.png
   url: /student-detail/hoshino
 小鳥遊 星野泳裝:
+  detail: data/blueArchive/cache/小鳥遊 星野泳裝.png
   otherName:
   - 水大叔
   - 水星野
@@ -497,6 +553,7 @@ Yasumori Minori:
   touxiang: /img/common/profile/Skill_Portrait_Hoshino_Swimsuit.png
   url: /student-detail/hoshino_swimsuit
 尾刃 環奈:
+  detail: data/blueArchive/cache/尾刃 環奈.png
   otherName:
   - 局长
   - カンナ
@@ -506,6 +563,7 @@ Yasumori Minori:
   touxiang: /img/common/profile/Skill_Portrait_CH0170.png
   url: /student-detail/kanna
 愛清 風華:
+  detail: data/blueArchive/cache/愛清 風華.png
   otherName:
   - 愛清フウカ
   - 枫香
@@ -518,12 +576,14 @@ Yasumori Minori:
   touxiang: /img/common/profile/Skill_Portrait_Fuuka.png
   url: /student-detail/fuuka
 愛清 風華正月:
+  detail: data/blueArchive/cache/愛清 風華正月.png
   otherName:
   - 春枫香
   star: ★3
   touxiang: /img/common/profile/Skill_Portrait_CH0177.png
   url: /student-detail/fuuka_newyear
 戒野 美咲:
+  detail: data/blueArchive/cache/戒野 美咲.png
   otherName:
   - 戒野ミサキ
   - 戒野
@@ -534,6 +594,7 @@ Yasumori Minori:
   touxiang: /img/common/profile/Skill_Portrait_Misaki.png
   url: /student-detail/misaki
 才羽 桃井:
+  detail: data/blueArchive/cache/才羽 桃井.png
   otherName:
   - 才羽モモイ
   - モモイ
@@ -544,6 +605,7 @@ Yasumori Minori:
   touxiang: /img/common/profile/Skill_Portrait_Momoi.png
   url: /student-detail/momoi
 才羽 綠:
+  detail: data/blueArchive/cache/才羽 綠.png
   otherName:
   - 才羽ミドリ
   - ミドリ
@@ -553,6 +615,7 @@ Yasumori Minori:
   touxiang: /img/common/profile/Skill_Portrait_Midori.png
   url: /student-detail/midori
 早瀬 優香:
+  detail: data/blueArchive/cache/早瀬 優香.png
   otherName:
   - 早瀬ユウカ
   - 📫
@@ -564,6 +627,7 @@ Yasumori Minori:
   touxiang: /img/common/profile/Skill_Portrait_Yuuka.png
   url: /student-detail/yuuka
 早瀬 優香Gym:
+  detail: data/blueArchive/cache/早瀬 優香Gym.png
   otherName:
   - 体操服邮箱
   - 体操服📫
@@ -573,12 +637,14 @@ Yasumori Minori:
   touxiang: /img/common/profile/Skill_Portrait_CH0184.png
   url: /student-detail/yuuka_gym
 早瀬 優香Idol(?):
+  detail: data/blueArchive/cache/早瀬 優香Idol(?).png
   otherName:
   - 偶像优香
   star: Idol(?)
   touxiang: /img/common/profile/yuuka_idol_41.png
   url: /student-detail/yuuka_idol_41
 明星 陽葵:
+  detail: data/blueArchive/cache/明星 陽葵.png
   otherName:
   - 明星ヒマリ
   - otto
@@ -590,6 +656,7 @@ Yasumori Minori:
   touxiang: /img/common/profile/Skill_Portrait_CH0159.png
   url: /student-detail/himari
 春原 心菜:
+  detail: data/blueArchive/cache/春原 心菜.png
   otherName:
   - 春原ココナ
   - ココナ
@@ -601,6 +668,7 @@ Yasumori Minori:
   touxiang: /img/common/profile/Skill_Portrait_CH0137.png
   url: /student-detail/kokona
 春原 旬:
+  detail: data/blueArchive/cache/春原 旬.png
   otherName:
   - 春原シュン
   - シュン
@@ -611,12 +679,14 @@ Yasumori Minori:
   touxiang: /img/common/profile/Skill_Portrait_Shun.png
   url: /student-detail/shun
 春原 旬幼女:
+  detail: data/blueArchive/cache/春原 旬幼女.png
   otherName:
   - 幼瞬
   star: ★3
   touxiang: /img/common/profile/Skill_Portrait_CH0066.png
   url: /student-detail/shun_small
 春日 椿:
+  detail: data/blueArchive/cache/春日 椿.png
   otherName:
   - 春日ツバキ
   - 狗盾
@@ -626,6 +696,7 @@ Yasumori Minori:
   touxiang: /img/common/profile/Skill_Portrait_Tsubaki.png
   url: /student-detail/tsubaki
 月雪 都子:
+  detail: data/blueArchive/cache/月雪 都子.png
   otherName:
   - 月雪ミヤコ
   - ミヤコ
@@ -636,6 +707,7 @@ Yasumori Minori:
   touxiang: /img/common/profile/Skill_Portrait_Miyako.png
   url: /student-detail/miyako
 月雪 都子泳裝:
+  detail: data/blueArchive/cache/月雪 都子泳裝.png
   otherName:
   - 水宫子
   - 泳装宫子
@@ -643,6 +715,7 @@ Yasumori Minori:
   touxiang: /img/common/profile/Skill_Portrait_CH0215.png
   url: /student-detail/miyako_swimsuit
 朝比奈 菲娜:
+  detail: data/blueArchive/cache/朝比奈 菲娜.png
   otherName:
   - 朝比奈フィーナ
   - フィーナ
@@ -652,6 +725,7 @@ Yasumori Minori:
   touxiang: /img/common/profile/Skill_Portrait_Pina.png
   url: /student-detail/pina
 朝顏 花繪:
+  detail: data/blueArchive/cache/朝顏 花繪.png
   otherName:
   - 朝顔ハナエ
   - 大护士
@@ -663,6 +737,7 @@ Yasumori Minori:
   touxiang: /img/common/profile/Skill_Portrait_Hanae.png
   url: /student-detail/hanae
 朝顏 花繪Christmas:
+  detail: data/blueArchive/cache/朝顏 花繪Christmas.png
   otherName:
   - 圣诞大护士
   - 圣诞花江
@@ -670,6 +745,7 @@ Yasumori Minori:
   touxiang: /img/common/profile/Skill_Portrait_CH0195.png
   url: /student-detail/hanae_christmas
 杏山 千紗:
+  detail: data/blueArchive/cache/杏山 千紗.png
   otherName:
   - 杏山カズサ
   - カズサ
@@ -680,6 +756,7 @@ Yasumori Minori:
   touxiang: /img/common/profile/Skill_Portrait_Kazusa.png
   url: /student-detail/kazusa
 柚鳥 夏:
+  detail: data/blueArchive/cache/柚鳥 夏.png
   otherName:
   - 柚鳥ナツ
   - ナツ
@@ -690,6 +767,7 @@ Yasumori Minori:
   touxiang: /img/common/profile/Skill_Portrait_CH0155.png
   url: /student-detail/natsu
 栗村 愛莉:
+  detail: data/blueArchive/cache/栗村 愛莉.png
   otherName:
   - 栗村アイリ
   - 爱理
@@ -701,6 +779,7 @@ Yasumori Minori:
   touxiang: /img/common/profile/Skill_Portrait_Airi.png
   url: /student-detail/airi
 棗 伊呂波:
+  detail: data/blueArchive/cache/棗 伊呂波.png
   otherName:
   - '168'
   - 棗 イロハ
@@ -710,6 +789,7 @@ Yasumori Minori:
   touxiang: /img/common/profile/Skill_Portrait_CH0156.png
   url: /student-detail/iroha
 槌永 日和:
+  detail: data/blueArchive/cache/槌永 日和.png
   otherName:
   - 日和
   - 纳米肚肚
@@ -718,6 +798,7 @@ Yasumori Minori:
   touxiang: /img/common/profile/Skill_Portrait_Hiyori.png
   url: /student-detail/hiyori
 水羽 三森:
+  detail: data/blueArchive/cache/水羽 三森.png
   otherName:
   - 水羽ミモリ
   - ミモリ
@@ -727,6 +808,7 @@ Yasumori Minori:
   touxiang: /img/common/profile/Skill_Portrait_Mimori.png
   url: /student-detail/mimori
 氷室 瀬奈:
+  detail: data/blueArchive/cache/氷室 瀬奈.png
   otherName:
   - 氷室セナ
   - 救护车
@@ -738,6 +820,7 @@ Yasumori Minori:
   touxiang: /img/common/profile/Skill_Portrait_Sena.png
   url: /student-detail/sena
 池倉 瑪麗娜:
+  detail: data/blueArchive/cache/池倉 瑪麗娜.png
   otherName:
   - 池倉マリナ
   - マリナ
@@ -748,6 +831,7 @@ Yasumori Minori:
   touxiang: /img/common/profile/Skill_Portrait_Marina.png
   url: /student-detail/marina
 河和 靜子:
+  detail: data/blueArchive/cache/河和 靜子.png
   otherName:
   - 河和シズコ
   - シズコ
@@ -757,12 +841,14 @@ Yasumori Minori:
   touxiang: /img/common/profile/Skill_Portrait_Shizuko.png
   url: /student-detail/shizuko
 河和 靜子泳裝:
+  detail: data/blueArchive/cache/河和 靜子泳裝.png
   otherName:
   - 水静子
   star: ★1
   touxiang: /img/common/profile/Skill_Portrait_CH0180.png
   url: /student-detail/shizuko_swimsuit
 浦和 花子:
+  detail: data/blueArchive/cache/浦和 花子.png
   otherName:
   - 浦和ハナコ
   - ハナコ
@@ -772,6 +858,7 @@ Yasumori Minori:
   touxiang: /img/common/profile/Skill_Portrait_Hanako.png
   url: /student-detail/hanako
 淺黃 無月:
+  detail: data/blueArchive/cache/淺黃 無月.png
   otherName:
   - 睦月
   - 浅黄 ムツキ
@@ -780,12 +867,14 @@ Yasumori Minori:
   touxiang: /img/common/profile/Skill_Portrait_Mutsuki.png
   url: /student-detail/mutsuki
 淺黃 無月正月:
+  detail: data/blueArchive/cache/淺黃 無月正月.png
   otherName:
   - 春睦月
   star: ★3
   touxiang: /img/common/profile/Skill_Portrait_Mutsuki_newyear.png
   url: /student-detail/mutsuki_newyear
 火宮 千夏:
+  detail: data/blueArchive/cache/火宮 千夏.png
   otherName:
   - 火宮 チナツ
   - 火宫千夏
@@ -794,12 +883,14 @@ Yasumori Minori:
   touxiang: /img/common/profile/Skill_Portrait_Chinatsu.png
   url: /student-detail/chinatsu
 火宮 千夏温泉:
+  detail: data/blueArchive/cache/火宮 千夏温泉.png
   otherName:
   - 温泉千夏
   star: ★3
   touxiang: /img/common/profile/Skill_Portrait_CH0163.png
   url: /student-detail/chinatsu_onsen
 牛牧 茱莉:
+  detail: data/blueArchive/cache/牛牧 茱莉.png
   otherName:
   - 牛牧ジュリ
   - ジュリ
@@ -810,6 +901,7 @@ Yasumori Minori:
   touxiang: /img/common/profile/Skill_Portrait_Juri.png
   url: /student-detail/juri
 狐坂 若藻:
+  detail: data/blueArchive/cache/狐坂 若藻.png
   otherName:
   - 狐坂ワカモ
   - ワカモ
@@ -819,12 +911,14 @@ Yasumori Minori:
   touxiang: /img/common/profile/Skill_Portrait_Wakamo.png
   url: /student-detail/wakamo
 狐坂 若藻泳裝:
+  detail: data/blueArchive/cache/狐坂 若藻泳裝.png
   otherName:
   - 水若藻
   star: ★3
   touxiang: /img/common/profile/Skill_Portrait_CH0175.png
   url: /student-detail/wakamo_swimsuit
 猫塚 響:
+  detail: data/blueArchive/cache/猫塚 響.png
   otherName:
   - 猫塚ヒビキ
   - ヒビキ
@@ -833,6 +927,7 @@ Yasumori Minori:
   touxiang: /img/common/profile/Skill_Portrait_Hibiki.png
   url: /student-detail/hibiki
 猫塚 響Cheerleader:
+  detail: data/blueArchive/cache/猫塚 響Cheerleader.png
   otherName:
   - ヒビキ（応援団）
   - 啦啦响
@@ -840,6 +935,7 @@ Yasumori Minori:
   touxiang: /img/common/profile/Skill_Portrait_CH0181.png
   url: /student-detail/hibiki_oendan
 獅子堂 泉:
+  detail: data/blueArchive/cache/獅子堂 泉.png
   otherName:
   - 堂泉
   - 老八
@@ -850,6 +946,7 @@ Yasumori Minori:
   touxiang: /img/common/profile/Skill_Portrait_Izumi.png
   url: /student-detail/izumi
 獅子堂 泉泳裝:
+  detail: data/blueArchive/cache/獅子堂 泉泳裝.png
   otherName:
   - イズミ（水着）
   - 水老八
@@ -857,6 +954,7 @@ Yasumori Minori:
   touxiang: /img/common/profile/Skill_Portrait_Izumi_swimsuit.png
   url: /student-detail/izumi_swimsuit
 生塩 乃愛:
+  detail: data/blueArchive/cache/生塩 乃愛.png
   otherName:
   - 生塩ノア
   - noa
@@ -867,6 +965,7 @@ Yasumori Minori:
   touxiang: /img/common/profile/Skill_Portrait_CH0095.png
   url: /student-detail/noa
 白洲 梓:
+  detail: data/blueArchive/cache/白洲 梓.png
   otherName:
   - 白洲アズサ
   - アズサ
@@ -876,6 +975,7 @@ Yasumori Minori:
   touxiang: /img/common/profile/Skill_Portrait_Azusa.png
   url: /student-detail/azusa
 白洲 梓泳裝:
+  detail: data/blueArchive/cache/白洲 梓泳裝.png
   otherName:
   - 水梓
   - 泳装白洲梓
@@ -883,6 +983,7 @@ Yasumori Minori:
   touxiang: /img/common/profile/Skill_Portrait_Azusa_Swimsuit.png
   url: /student-detail/azusa_swimsuit
 白石 詠葉:
+  detail: data/blueArchive/cache/白石 詠葉.png
   otherName:
   - 白石ウタハ
   - ウタハ
@@ -892,6 +993,7 @@ Yasumori Minori:
   touxiang: /img/common/profile/Skill_Portrait_Utaha.png
   url: /student-detail/utaha
 白石 詠葉Cheerleader:
+  detail: data/blueArchive/cache/白石 詠葉Cheerleader.png
   otherName:
   - 啦啦歌原
   - ウタハ（応援団）
@@ -899,6 +1001,7 @@ Yasumori Minori:
   touxiang: /img/common/profile/Skill_Portrait_CH0182.png
   url: /student-detail/utaha_oendan
 砂狼 白子:
+  detail: data/blueArchive/cache/砂狼 白子.png
   otherName:
   - 砂狼 シロコ
   - 砂狼白子
@@ -907,12 +1010,14 @@ Yasumori Minori:
   touxiang: /img/common/profile/Skill_Portrait_Shiroko.png
   url: /student-detail/shiroko
 砂狼 白子泳裝:
+  detail: data/blueArchive/cache/砂狼 白子泳裝.png
   otherName:
   - 水白子
   star: ★3
   touxiang: /img/common/profile/Skill_Portrait_CH0188.png
   url: /student-detail/shiroko_swimsuit
 砂狼 白子騎車:
+  detail: data/blueArchive/cache/砂狼 白子騎車.png
   otherName:
   - 单车白子
   - 骑行白子
@@ -920,6 +1025,7 @@ Yasumori Minori:
   touxiang: /img/common/profile/Skill_Portrait_Shiroko_ridingsuit.png
   url: /student-detail/shiroko_cycling
 秤 敦子:
+  detail: data/blueArchive/cache/秤 敦子.png
   otherName:
   - 秤アツコ
   - アツコ
@@ -931,6 +1037,7 @@ Yasumori Minori:
   touxiang: /img/common/profile/Skill_Portrait_Atsuko.png
   url: /student-detail/atsuko
 空井 咲希:
+  detail: data/blueArchive/cache/空井 咲希.png
   otherName:
   - 空井サキ
   - 空井
@@ -943,6 +1050,7 @@ Yasumori Minori:
   touxiang: /img/common/profile/Skill_Portrait_CH0144.png
   url: /student-detail/saki
 空井 咲希泳裝:
+  detail: data/blueArchive/cache/空井 咲希泳裝.png
   otherName:
   - 水咲希
   - 水咲
@@ -950,6 +1058,7 @@ Yasumori Minori:
   touxiang: /img/common/profile/Skill_Portrait_CH0217.png
   url: /student-detail/saki_swimsuit
 空崎 陽奈:
+  detail: data/blueArchive/cache/空崎 陽奈.png
   otherName:
   - 日奈
   - hina
@@ -962,12 +1071,14 @@ Yasumori Minori:
   touxiang: /img/common/profile/Skill_Portrait_Hina.png
   url: /student-detail/hina
 空崎 陽奈泳裝:
+  detail: data/blueArchive/cache/空崎 陽奈泳裝.png
   otherName:
   - 水日奈
   star: ★3
   touxiang: /img/common/profile/Skill_Portrait_CH0063.png
   url: /student-detail/hina_swimsuit
 美甘 寧瑠:
+  detail: data/blueArchive/cache/美甘 寧瑠.png
   otherName:
   - 美甘ネル
   - 尼禄
@@ -979,6 +1090,7 @@ Yasumori Minori:
   touxiang: /img/common/profile/Skill_Portrait_Neru.png
   url: /student-detail/neru
 美甘 寧瑠兔女郎:
+  detail: data/blueArchive/cache/美甘 寧瑠兔女郎.png
   otherName:
   - 兔女郎尼禄
   - 兔尼禄
@@ -986,6 +1098,7 @@ Yasumori Minori:
   touxiang: /img/common/profile/Skill_Portrait_CH0101.png
   url: /student-detail/neru_bunny
 羽川 蓮實:
+  detail: data/blueArchive/cache/羽川 蓮實.png
   otherName:
   - 羽川ハスミ
   - 莲见
@@ -996,6 +1109,7 @@ Yasumori Minori:
   touxiang: /img/common/profile/Skill_Portrait_Hasumi.png
   url: /student-detail/hasumi
 羽川 蓮實Gym:
+  detail: data/blueArchive/cache/羽川 蓮實Gym.png
   otherName:
   - ハスミ（体操服）
   - 体操服莲见
@@ -1004,6 +1118,7 @@ Yasumori Minori:
   touxiang: /img/common/profile/Skill_Portrait_CH0190.png
   url: /student-detail/hasumi_gym
 聖園 彌香:
+  detail: data/blueArchive/cache/聖園 彌香.png
   otherName:
   - 聖園ミカ
   - mika
@@ -1016,6 +1131,7 @@ Yasumori Minori:
   touxiang: /img/common/profile/Skill_Portrait_CH0069.png
   url: /student-detail/mika
 花岡 柚子:
+  detail: data/blueArchive/cache/花岡 柚子.png
   otherName:
   - 花岡ユズ
   - ユズ
@@ -1025,12 +1141,14 @@ Yasumori Minori:
   touxiang: /img/common/profile/Skill_Portrait_Yuzu.png
   url: /student-detail/yuzu
 花岡 柚子Maid:
+  detail: data/blueArchive/cache/花岡 柚子Maid.png
   otherName:
   - 女仆柚子
   star: ★1
   touxiang: /img/common/profile/Skill_Portrait_CH0203.png
   url: /student-detail/yuzu_maid
 若葉 日向:
+  detail: data/blueArchive/cache/若葉 日向.png
   otherName:
   - 若葉ヒナタ
   - ヒナタ
@@ -1040,12 +1158,14 @@ Yasumori Minori:
   touxiang: /img/common/profile/Skill_Portrait_Hinata.png
   url: /student-detail/hinata
 若葉 日向泳裝:
+  detail: data/blueArchive/cache/若葉 日向泳裝.png
   otherName:
   - 水日向
   star: ★3
   touxiang: /img/common/profile/Skill_Portrait_CH0210.png
   url: /student-detail/hinata_swimsuit
 蒼森 美禰:
+  detail: data/blueArchive/cache/蒼森 美禰.png
   otherName:
   - 蒼森ミネ
   - ミネ
@@ -1057,6 +1177,7 @@ Yasumori Minori:
   touxiang: /img/common/profile/Skill_Portrait_CH0152.png
   url: /student-detail/mine
 薬子 沙耶:
+  detail: data/blueArchive/cache/薬子 沙耶.png
   otherName:
   - 薬子サヤ
   - サヤ
@@ -1068,12 +1189,14 @@ Yasumori Minori:
   touxiang: /img/common/profile/Skill_Portrait_Saya.png
   url: /student-detail/saya
 薬子 沙耶私服:
+  detail: data/blueArchive/cache/薬子 沙耶私服.png
   otherName:
   - 私服鼠鼠
   star: ★3
   touxiang: /img/common/profile/Skill_Portrait_Saya_Casual.png
   url: /student-detail/saya_casual
 角楯 花凛:
+  detail: data/blueArchive/cache/角楯 花凛.png
   otherName:
   - 角楯カリン
   - カリン
@@ -1083,6 +1206,7 @@ Yasumori Minori:
   touxiang: /img/common/profile/Skill_Portrait_Karin.png
   url: /student-detail/karin
 角楯 花凛兔女郎:
+  detail: data/blueArchive/cache/角楯 花凛兔女郎.png
   otherName:
   - 兔女郎花凛
   - 兔花凛
@@ -1090,6 +1214,7 @@ Yasumori Minori:
   touxiang: /img/common/profile/Skill_Portrait_CH0100.png
   url: /student-detail/karin_bunny
 豊見 亞都梨:
+  detail: data/blueArchive/cache/豊見 亞都梨.png
   otherName:
   - 豊見コトリ
   - コトリ
@@ -1100,6 +1225,7 @@ Yasumori Minori:
   touxiang: /img/common/profile/Skill_Portrait_Kotori.png
   url: /student-detail/kotori
 赤司 淳子:
+  detail: data/blueArchive/cache/赤司 淳子.png
   otherName:
   - 赤司 ジュンコ
   - 赤司淳子
@@ -1109,6 +1235,7 @@ Yasumori Minori:
   touxiang: /img/common/profile/Skill_Portrait_Zunko.png
   url: /student-detail/zunko
 赤司 淳子正月:
+  detail: data/blueArchive/cache/赤司 淳子正月.png
   otherName:
   - ジュンコ（正月）
   - 春淳子
@@ -1116,6 +1243,7 @@ Yasumori Minori:
   touxiang: /img/common/profile/Skill_Portrait_CH0192.png
   url: /student-detail/zunko_newyear
 連河 潔莉諾:
+  detail: data/blueArchive/cache/連河 潔莉諾.png
   otherName:
   - 連河チェリノ
   - チェリノ
@@ -1126,6 +1254,7 @@ Yasumori Minori:
   touxiang: /img/common/profile/Skill_Portrait_Cherino.png
   url: /student-detail/cherino
 連河 潔莉諾温泉:
+  detail: data/blueArchive/cache/連河 潔莉諾温泉.png
   otherName:
   - 温泉切里诺
   - 温泉斯大萝
@@ -1133,6 +1262,7 @@ Yasumori Minori:
   touxiang: /img/common/profile/Skill_Portrait_CH0164.png
   url: /student-detail/cherino_onsen
 銀鏡 伊織:
+  detail: data/blueArchive/cache/銀鏡 伊織.png
   otherName:
   - 銀鏡 イオリ
   - 银镜伊织
@@ -1143,12 +1273,14 @@ Yasumori Minori:
   touxiang: /img/common/profile/Skill_Portrait_Iori.png
   url: /student-detail/iori
 銀鏡 伊織泳裝:
+  detail: data/blueArchive/cache/銀鏡 伊織泳裝.png
   otherName:
   - 水佐仓
   star: ★3
   touxiang: /img/common/profile/Skill_Portrait_CH0064.png
   url: /student-detail/iori_swimsuit
 錠前 沙織:
+  detail: data/blueArchive/cache/錠前 沙織.png
   otherName:
   - 錠前サオリ
   - サオリ
@@ -1159,6 +1291,7 @@ Yasumori Minori:
   touxiang: /img/common/profile/Skill_Portrait_Saori.png
   url: /student-detail/saori
 間宵 時雨:
+  detail: data/blueArchive/cache/間宵 時雨.png
   otherName:
   - 間宵シグレ
   - シグレ
@@ -1169,6 +1302,7 @@ Yasumori Minori:
   touxiang: /img/common/profile/Skill_Portrait_Shigure.png
   url: /student-detail/shigure
 阿慈谷 日步美:
+  detail: data/blueArchive/cache/阿慈谷 日步美.png
   otherName:
   - 阿慈谷ヒフミ
   - hifumi
@@ -1181,12 +1315,14 @@ Yasumori Minori:
   touxiang: /img/common/profile/Skill_Portrait_Hihumi.png
   url: /student-detail/hifumi
 阿慈谷 日步美Idol(?):
+  detail: data/blueArchive/cache/阿慈谷 日步美Idol(?).png
   otherName:
   - 偶像hifumi
   star: Idol(?)
   touxiang: /img/common/profile/hifumi_idol_41.png
   url: /student-detail/hifumi_idol_41
 阿慈谷 日步美泳裝:
+  detail: data/blueArchive/cache/阿慈谷 日步美泳裝.png
   otherName:
   - 水日富美
   - 十字军
@@ -1194,6 +1330,7 @@ Yasumori Minori:
   touxiang: /img/common/profile/Skill_Portrait_CH0058.png
   url: /student-detail/hifumi_swimsuit
 陸八魔 亞瑠:
+  detail: data/blueArchive/cache/陸八魔 亞瑠.png
   otherName:
   - 陸八魔 アル
   - 陆八魔亚瑠
@@ -1204,18 +1341,21 @@ Yasumori Minori:
   touxiang: /img/common/profile/Skill_Portrait_Aru.png
   url: /student-detail/aru
 陸八魔 亞瑠Idol(?):
+  detail: data/blueArchive/cache/陸八魔 亞瑠Idol(?).png
   otherName:
   - 偶像阿露
   star: Idol(?)
   touxiang: /img/common/profile/aru_idol_41.png
   url: /student-detail/aru_idol_41
 陸八魔 亞瑠正月:
+  detail: data/blueArchive/cache/陸八魔 亞瑠正月.png
   otherName:
   - 春阿露
   star: ★3
   touxiang: /img/common/profile/Skill_Portrait_Aru_newyear.png
   url: /student-detail/aru_newyear
 霞沢 美優:
+  detail: data/blueArchive/cache/霞沢 美優.png
   otherName:
   - 霞沢ミユ
   - 美游
@@ -1226,12 +1366,14 @@ Yasumori Minori:
   touxiang: /img/common/profile/Skill_Portrait_CH0145.png
   url: /student-detail/miyu
 霞沢 美優泳裝:
+  detail: data/blueArchive/cache/霞沢 美優泳裝.png
   otherName:
   - 水美游
   star: ★1
   touxiang: /img/common/profile/Skill_Portrait_CH0218.png
   url: /student-detail/miyu_swimsuit
 靜山 麻白:
+  detail: data/blueArchive/cache/靜山 麻白.png
   otherName:
   - 静山マシロ
   - マシロ
@@ -1242,12 +1384,14 @@ Yasumori Minori:
   touxiang: /img/common/profile/Skill_Portrait_Mashiro.png
   url: /student-detail/mashiro
 靜山 麻白泳裝:
+  detail: data/blueArchive/cache/靜山 麻白泳裝.png
   otherName:
   - 水真白
   star: ★3
   touxiang: /img/common/profile/Skill_Portrait_mashiro_swimsuit.png
   url: /student-detail/mashiro_swimsuit
 音瀬 小玉:
+  detail: data/blueArchive/cache/音瀬 小玉.png
   otherName:
   - 音瀬コタマ
   - コタマ
@@ -1257,6 +1401,7 @@ Yasumori Minori:
   touxiang: /img/common/profile/Skill_Portrait_Kotama.png
   url: /student-detail/kotama
 風倉 萌:
+  detail: data/blueArchive/cache/風倉 萌.png
   otherName:
   - 風倉モエ
   - モエ
@@ -1267,6 +1412,7 @@ Yasumori Minori:
   touxiang: /img/common/profile/Skill_Portrait_Moe.png
   url: /student-detail/moe
 鬼方 佳世子:
+  detail: data/blueArchive/cache/鬼方 佳世子.png
   otherName:
   - 佳代子
   - 鬼方 カヨコ
@@ -1276,6 +1422,7 @@ Yasumori Minori:
   touxiang: /img/common/profile/Skill_Portrait_Kayoko.png
   url: /student-detail/kayoko
 鬼方 佳世子正月:
+  detail: data/blueArchive/cache/鬼方 佳世子正月.png
   otherName:
   - 春佳代子
   - 正月佳代子
@@ -1283,6 +1430,7 @@ Yasumori Minori:
   touxiang: /img/common/profile/Skill_Portrait_CH0086.png
   url: /student-detail/kayoko_newyear
 鰐渕 亞伽里:
+  detail: data/blueArchive/cache/鰐渕 亞伽里.png
   otherName:
   - 鰐渕 アカリ
   - 鳄渊亚伽里
@@ -1292,6 +1440,7 @@ Yasumori Minori:
   touxiang: /img/common/profile/Skill_Portrait_Akari.png
   url: /student-detail/akari
 鷲見 芹奈:
+  detail: data/blueArchive/cache/鷲見 芹奈.png
   otherName:
   - 鷲見セリナ
   - セリナ
@@ -1302,6 +1451,7 @@ Yasumori Minori:
   touxiang: /img/common/profile/Skill_Portrait_Serina.png
   url: /student-detail/serina
 鷲見 芹奈Christmas:
+  detail: data/blueArchive/cache/鷲見 芹奈Christmas.png
   otherName:
   - 圣诞芹娜
   - 圣诞小护士
@@ -1309,6 +1459,7 @@ Yasumori Minori:
   touxiang: /img/common/profile/Skill_Portrait_CH0194.png
   url: /student-detail/serina_christmas
 黒舘 羽留奈:
+  detail: data/blueArchive/cache/黒舘 羽留奈.png
   otherName:
   - 晴奈
   - 黒舘 ハルナ
@@ -1319,6 +1470,7 @@ Yasumori Minori:
   touxiang: /img/common/profile/Skill_Portrait_Haruna.png
   url: /student-detail/haruna
 黒舘 羽留奈正月:
+  detail: data/blueArchive/cache/黒舘 羽留奈正月.png
   otherName:
   - 春晴奈
   - 正月晴奈
@@ -1326,6 +1478,7 @@ Yasumori Minori:
   touxiang: /img/common/profile/Skill_Portrait_CH0191.png
   url: /student-detail/haruna_newyear
 黒見 茜香:
+  detail: data/blueArchive/cache/黒見 茜香.png
   otherName:
   - 黑猫
   - 芹香
@@ -1334,6 +1487,7 @@ Yasumori Minori:
   touxiang: /img/common/profile/Skill_Portrait_Serika.png
   url: /student-detail/serika
 黒見 茜香正月:
+  detail: data/blueArchive/cache/黒見 茜香正月.png
   otherName:
   - 春芹香
   - 神社猫猫
