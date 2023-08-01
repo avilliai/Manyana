@@ -139,7 +139,7 @@ def main(bot,api_KEY,app_id,app_key,nasa_api,proxy,logger):
                 for i in range(a):
                     path=await setuGet(data)
                     logger.info("发送图片: "+path)
-                    await bot.send(event,Image(path=path))
+                    await bot.send(event,Image(url=path))
                     logger.info("图片发送成功")
 
     @bot.on(GroupMessage)
