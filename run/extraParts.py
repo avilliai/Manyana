@@ -211,8 +211,9 @@ def main(bot,api_KEY,app_id,app_key,nasa_api,proxy,logger):
     async def NasaHelper(event: GroupMessage):
         global data
         if At(bot.qq) in event.message_chain and "天文" in str(event.message_chain):
-            if datetime.datetime.now().strftime('%Y-%m-%d') in data.get("nasa"):
-                todayNasa=data.get("nasa").get(datetime.datetime.now().strftime('%Y-%m-%d'))
+            logger.info(str(data.keys()))
+            if datetime.datetime.now().strftime('%Y-%m-%d') in data.keys():
+                todayNasa=data.get(datetime.datetime.now().strftime('%Y-%m-%d'))
                 path=todayNasa.get("path")
                 txt=todayNasa.get("transTxt")
                 try:
@@ -240,9 +241,9 @@ def main(bot,api_KEY,app_id,app_key,nasa_api,proxy,logger):
                     txta=await translate(response.json().get("explanation"),app_id=app_id,app_key=app_key,ori="en",aim="zh-CHS")
                     txt = response.json().get("date") + "\n" + response.json().get("title") + "\n" + txta
                     temp={"path":"data/pictures/nasa/"+response.json().get("date")+".png","oriTxt":response.json().get("explanation"),"transTxt":txt}
-                    nasaData=data.get("nasa")
-                    nasaData[datetime.datetime.now().strftime('%Y-%m-%d')]=temp
-                    data["nasa"]=nasaData
+
+                    data[datetime.datetime.now().strftime('%Y-%m-%d')]=temp
+
                     with open('data/tasks.yaml', 'w', encoding="utf-8") as file:
                         yaml.dump(data, file, allow_unicode=True)
                     await bot.send(event,(Image(path=filename),txt))
