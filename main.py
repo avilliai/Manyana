@@ -111,7 +111,7 @@ if __name__ == '__main__':
 
     @bot.on(Startup)
     async def clearCache(event:Startup):
-        '''logger.info("执行清理缓存操作")
+        logger.info("执行清理缓存操作")
         ls1 = os.listdir("data/pictures/avatars")
         for i in ls1:
             try:
@@ -132,7 +132,7 @@ if __name__ == '__main__':
                 os.remove("data/voices/" + i)
             except:
                 continue
-        logger.info("清理语音缓存完成")'''
+        logger.info("清理语音缓存完成")
 
         file = open('data/music/groups.txt', 'r')
         js = file.read()
@@ -179,8 +179,8 @@ if __name__ == '__main__':
     voiceReply.main(bot,master,app_id,app_key,logger)#语音生成
     if proxy!="":
         try:
-            logger.info("开发过程中暂不启动poe-api")
-            #poeAi.main(bot,master,result.get("poe-api"),result.get("proxy"),logger)#poe-api
+            #logger.info("开发过程中暂不启动poe-api")
+            poeAi.main(bot,master,result.get("poe-api"),result.get("proxy"),logger)#poe-api
         except:
             logger.error("poe-api启动失败")
         imgSearch.main(bot, result.get("sauceno-api"), result.get("proxy"), logger)
