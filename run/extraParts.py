@@ -50,8 +50,8 @@ def main(bot,api_KEY,app_id,app_key,nasa_api,proxy,logger):
     userdict = data1
     trustUser = []
     for i in userdict.keys():
-        data = userdict.get(i)
-        times = int(str(data.get('sts')))
+        data2 = userdict.get(i)
+        times = int(str(data2.get('sts')))
         if times > 8:
             trustUser.append(str(i))
 
