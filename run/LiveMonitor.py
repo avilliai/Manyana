@@ -101,6 +101,7 @@ def main(bot,master,botName,logger):
                 with open('data/biliMonitor.yaml', 'w', encoding="utf-8") as file:
                     yaml.dump(live, file, allow_unicode=True)
                 lists[content]=0
+                await bot.send(event,"已添加订阅")
                 #print(event.message_chain.get(App)[0].content,type(event.message_chain.get(App)[0].content))
                 #dat1=event.message_chain.get(App)[0].content
 
