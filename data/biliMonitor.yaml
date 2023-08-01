@@ -1,0 +1,12 @@
+13233348:
+  app: '{"app":"com.tencent.structmsg","desc":"新闻","bizsrc":"","view":"news","ver":"0.0.0.1","prompt":"[分享]害怕网络暴力","meta":{"news":{"action":"","android_pkg_name":"","app_type":1,"appid":100951776,"ctime":1690864649,"desc":"UP主：撸sir兰陵君-房间号：13233348","jumpUrl":"https:\/\/b23.tv\/cXcB626?share_medium=android&share_source=qq&bbid=XYD5A01D13F938C975A76F49824AB1B71A148&ts=1690864644877","preview":"https:\/\/pic.ugcimg.cn\/43a2efe92517baf532c42a324cd4a4aa\/jpg1","source_icon":"https:\/\/open.gtimg.cn\/open\/app_icon\/00\/95\/17\/76\/100951776_100_m.png?t=1690355655","source_url":"","tag":"哔哩哔哩","title":"害怕网络暴力","uin":1840094972}},"config":{"ctime":1690864649,"forward":true,"token":"d4064e9b56699b05a2065eda160d6a12","type":"normal"}}'
+  group:
+  - 732096208
+22880088:
+  app: '{"app":"com.tencent.structmsg","config":{"ctime":1690869336,"forward":true,"token":"a74e54509e88fcf2c639f8edfea0585f","type":"normal"},"desc":"新闻","extra":{"app_type":1,"appid":100951776,"msg_seq":7262228497312660573,"uin":1840094972},"meta":{"news":{"action":"","android_pkg_name":"","app_type":1,"appid":100951776,"ctime":1690869336,"desc":"UP主：圆掌-房间号：22880088","jumpUrl":"https://b23.tv/Z0FqQjI?share_medium=android&share_source=qq&bbid=XYD5A01D13F938C975A76F49824AB1B71A148&ts=1690869332774","preview":"https://pic.ugcimg.cn/a1e26d71ccc7752885d5fff19ec65534/jpg1","source_icon":"https://open.gtimg.cn/open/app_icon/00/95/17/76/100951776_100_m.png?t=1690355655","source_url":"","tag":"哔哩哔哩","title":"西宁野生动物园慢直播","uin":1840094972}},"prompt":"[分享]西宁野生动物园慢直播","ver":"0.0.0.1","view":"news"}'
+  group:
+  - 732096208
+27916071:
+  app: '{"app":"com.tencent.structmsg","desc":"新闻","bizsrc":"","view":"news","ver":"0.0.0.1","prompt":"[分享]【转】","meta":{"news":{"action":"","android_pkg_name":"","app_type":1,"appid":100951776,"ctime":1690864915,"desc":"UP主：天宫心Official-房间号：23465036","jumpUrl":"https:\\/\\/b23.tv\\/rGvDVVJ?share_medium=android&share_source=qq&bbid=XYD5A01D13F938C975A76F49824AB1B71A148&ts=1690864911562","preview":"https:\\/\\/pic.ugcimg.cn\\/2a24a69f3207f385b6e38da3befb60f0\\/jpg1","source_icon":"https:\\/\\/open.gtimg.cn\\/open\\/app_icon\\/00\\/95\\/17\\/76\\/100951776_100_m.png?t=1690355655","source_url":"","tag":"哔哩哔哩","title":"【转】","uin":1840094972}},"config":{"ctime":1690864915,"forward":true,"token":"dd3b0d4879849fccc0dd650ce61b4643","type":"normal"}}'
+  group:
+  - 699455559
