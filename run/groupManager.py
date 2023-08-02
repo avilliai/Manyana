@@ -123,8 +123,8 @@ def main(bot,config,moderateKey,logger):
             al='同意'
             await bot.allow(event)
             await sleep(5)
-            await bot.send_friend_message(event.from_id,"你好ヾ(≧▽≦*)o，如有使用疑问请在用户群628763673反馈")
-            await bot.send_friend_message(event.from_id, "群内发送 帮助 获取功能列表")
+            await bot.send_friend_message(event.from_id,"你好ヾ(≧▽≦*)o，bot项目地址：https://github.com/avilliai/Manyana\n觉得还不错的话可以点个star哦")
+            await bot.send_friend_message(event.from_id, "群内发送 @bot 帮助 获取功能列表")
         else:
             logger.info("无用户记录，拒绝")
             al='拒绝'
