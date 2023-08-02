@@ -153,16 +153,16 @@ if __name__ == '__main__':
         await bot.send_friend_message(master,time1 + '\n功能已加载完毕，欢迎使用')
 
 
-    logger.info("检查github更新")
-    logger.info("如果遇到卡顿请按ctrl+c | 如成功更新了某些文件，请重启main.py以应用更新")
+    logger.warning("请定期通过setUp.py进行更新")
+   # logger.info("如果遇到卡顿请按ctrl+c | 如成功更新了某些文件，请重启main.py以应用更新")
 
-    try:
+    '''try:
         logger.warning("如果出现 Merge冲突 请重命名本地的对应文件，拉取后将你的数据重新导入")
         logger.warning("merge冲突示例：Your local changes to the following files would be overwritten by merge:")
         os.system("git pull https://github.com/avilliai/Manyana.git")
         logger.info("over")
     except:
-        logger.error("取消github更新")
+        logger.error("取消github更新")'''
 
     subprocess.Popen(["python.exe", "flask_voice.py"],cwd="vits")
     #asyncio.run(os.system("cd vits && python flask_voice.py"))
