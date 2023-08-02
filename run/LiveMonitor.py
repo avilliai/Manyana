@@ -35,8 +35,9 @@ def main(bot,master,botName,logger):
     @bot.on(Startup)
     async def monitor(event:GroupMessage):
         while True:
-            try:
-                for i in lists:
+
+            for i in lists:
+                try:
                     url = "https://api.live.bilibili.com/room/v1/Room/room_init?id="+str(i)
 
                     headers = {
@@ -69,8 +70,9 @@ def main(bot,master,botName,logger):
                                     await bot.send_group_message(int(ia), App(content=live.get(i).get("app")))
 
                         lists[i] = asf.get("data").get("live_status")
-            except:
-                logger.info("直播订阅异常，请忽略")
+                except:
+                    logger.waring("直播订阅异常，请忽略")
+                    continue
             await sleep(80)
 
     @bot.on(GroupMessage)
