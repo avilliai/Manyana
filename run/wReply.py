@@ -226,7 +226,7 @@ def main(bot,config,sizhiKey,app_id, app_key,logger):
         if event.sender.id in blUser:
             return
         if sizhi==True:
-            sess = requests.get('https://api.ownthink.com/bot?spoken=' + getStr + '&appid='+sizhiKey)
+            sess = requests.get('https://api.ownthink.com/bot?spoken=' + getStr + '&appid='+random.choice(sizhiKey))
             answer = sess.text
             try:
                 answer = json.loads(answer)
@@ -296,7 +296,7 @@ def main(bot,config,sizhiKey,app_id, app_key,logger):
         getStr=str(event.message_chain)
         if sizhi==True:
             sess = requests.get(
-                'https://api.ownthink.com/bot?spoken=' + getStr + '&appid='+sizhiKey)
+                'https://api.ownthink.com/bot?spoken=' + getStr + '&appid='+random.choice(sizhiKey))
 
             answer = sess.text
             try:

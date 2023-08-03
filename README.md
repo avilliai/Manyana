@@ -10,7 +10,7 @@ Manyana基于[Mirai框架](https://github.com/mamoe/mirai) ，使用了[YiriMira
 
 封面图片来源于[stella](https://www.pixiv.net/artworks/109772665) ,很漂亮的ai绘画。
 
-项目的名字来源于
+Manyana指
      <p>佛教中的末那识，它是介于意识(第六识)与阿赖耶识(第八识)之间的第七识</p>
      <p>它是当下的感官经验与更本原性的阿赖耶识——一切现象的种子之间的桥梁。这很抽象所以我用它做了新项目的名字</p>
 
@@ -197,5 +197,14 @@ wReply:
   turnMessage: true    #是否开启私聊转发，打开bot会把收到的私聊转发给你，很吵建议关闭
   voiceRate: 30      #语音回复几率
 ```
+# 使用思知ai
+这比我写的自定义回复更好用，推荐。release有对应的知识库(sizhi.rar)用以导入思知控制台
+- [登录并创建多个bot](https://console.ownthink.com/login)
+- ![img.png](data/autoReply/imageReply/sizhi1.png)
+- 点击设置旁边的知识库，进入后如下
+- ![img.png](data/autoReply/imageReply/sizhi2.png)
+- 点击上传txt文本，选择解压后的sizhi.rar中的任一个。每个创建的bot对应一个知识库，完成后点击训练。
+- 记录你所有的的Appid，回到Manyana/api.yaml，填入siZhiAi中
+- 在settings.yaml打开思知ai回复
 # 最后
 如果觉得项目还不错的话给个star喵，给个star谢谢喵
