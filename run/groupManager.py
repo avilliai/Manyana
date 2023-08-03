@@ -316,7 +316,7 @@ def main(bot,config,moderateKey,logger):
                 moderateK=ModerateApiKeys.get(str(event.group.id))
             except:
                 logger.warning(str(event.group.id) + " 开启色图审核失败，未配置apiKey或apiKey已失效")
-                await bot.send(event, "调用失败，公共apiKey已耗尽本月使用限额或本群配置apiKey已失效")
+                await bot.send(event, "调用失败，公共apiKey已耗尽本月使用限额或本群配置apiKey已失效。请联系"+str(master)+"授予本群新apiKey权限或自行配置apiKey")
                 await bot.send(event,
                                "请在https://www.moderatecontent.com/注册并获取apiKey(不要用QQ邮箱)\n随后群内发送如下指令\n设置审核密钥[apiKey]\n以开启本群审核功能\n例如\n设置审核密钥207b10178c64089dvzv90ebfcd7f865d97a")
                 return
@@ -326,6 +326,9 @@ def main(bot,config,moderateKey,logger):
             except:
                 logger.error("涩图审核失败，可能是图片太大，也可能是(小概率)api-key达到本月调用次数限制，尝试注册新账号更新新的api-key以解决")
                 await bot.send(event,"涩图审核失败，可能是图片太大，也可能是(小概率)api-key达到本月调用次数限制，尝试注册新账号更新新的api-key以解决")
+                await bot.send(event,
+                               "请在https://www.moderatecontent.com/注册并获取apiKey(不要用QQ邮箱)\n随后群内发送如下指令\n设置审核密钥[apiKey]\n以开启本群审核功能\n例如\n设置审核密钥207b10178c64089dvzv90ebfcd7f865d97a")
+
                 return
             logger.info("图片审核:结果:" + str(rate))
             await bot.send(event, "图片检测结果：\npredictions-adult:" + str(rate))
@@ -344,7 +347,7 @@ def main(bot,config,moderateKey,logger):
                 url="http://gchat.qpic.cn/gchatpic_new/1840094972/628763673-2513575912-6E5C0A02BCE4CD95CE27E0E4A140B540/0?term=2&is_origin=0"
                 rate = await setuModerate(url, a)
             except:
-                logger.error("涩图审核失败，可能是图片太大，也可能是(小概率)api-key达到本月调用次数限制，尝试注册新账号更新新的api-key以解决")
+                logger.error("无效的apiKey或图片太大")
                 await bot.send(event, "涩图审核失败，可能是图片太大，也可能是api-key无效\n尝试注册新账号https://www.moderatecontent.com/获取新的api-key以解决\n指令：设置审核密钥[apiKey]\n示例如下：设置审核密钥2f4tga2tarafa4hjohljghvbngnf58")
                 return
             logger.info("图片审核:结果:" + str(rate))
@@ -382,7 +385,7 @@ def main(bot,config,moderateKey,logger):
                             await bot.send(event,"阈值设置出错，请进入config.json中手动设置threshold值")
                 else:
                     logger.warning(str(event.group.id)+" 开启色图审核失败，未配置apiKey")
-                    await bot.send(event,"公共apiKey达到每月调用次数限制")
+                    await bot.send(event,"公共apiKey达到每月调用次数限制，本群未配置apiKey,无法开启此功能")
                     await bot.send(event,"请在https://www.moderatecontent.com/注册并获取apiKey(不要用QQ邮箱)\n随后群内发送\n设置审核密钥[apiKey]\n以开启本群审核功能\n例如\n设置审核密钥207b10178c64089dvzv90ebfcd7f865d97a")
 
         if (str(event.sender.permission)!="Permission.Member"  or event.sender.id==master )and str(event.message_chain)=="/moderate":
@@ -406,6 +409,7 @@ def main(bot,config,moderateKey,logger):
             else:
                 logger.warning(str(event.group.id) + " 开启色图审核失败，未配置apiKey")
                 await bot.send(event, "公共apiKey达到每月调用次数限制")
+                await bot.send(event,"开启色图审核失败，未配置本群apiKey")
                 await bot.send(event,
                                "请在https://www.moderatecontent.com/注册并获取apiKey(不要用QQ邮箱)\n随后群内发送\n设置审核密钥[apiKey]\n以开启本群审核功能\n例如\n设置审核密钥207b10178c64089dvzv90ebfcd7f865d97a")
 
