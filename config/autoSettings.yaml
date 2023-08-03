@@ -10,4 +10,6 @@ moderate:
     - 斯卡蒂
   groups:
     '69945555439': 1
+  apiKeys:
+    '699455559': fadfasfasf
   threshold: 40

@@ -25,6 +25,8 @@ def main(bot,config,moderateKey,logger):
     logger.info("读取群管设置")
     with open('config/autoSettings.yaml', 'r', encoding='utf-8') as f:
         result = yaml.load(f.read(), Loader=yaml.FullLoader)
+    global ModerateApiKeys
+    ModerateApiKeys=result.get("moderate").get('apiKeys')
     global banWords
     banWords=result.get("moderate").get("banWords")
     #读取用户数据
@@ -270,40 +272,55 @@ def main(bot,config,moderateKey,logger):
 
     @bot.on(GroupMessage)
     async def geturla(event:GroupMessage):
-        global moderateK
         global severGroups
-        if (str(event.group.permission)!=str('Permission.Member')) and event.message_chain.count(Image) and str(event.group.id) in severGroups :
-            lst_img = event.message_chain.get(Image)
-
-            for i in lst_img:
-                url=i.url
-                logger.info("图片审核:url:" + url+" key:"+moderateK)
+        if str(event.group.id) in ModerateApiKeys:
+            if (str(event.group.permission)!=str('Permission.Member')) and event.message_chain.count(Image) and str(event.group.id) in severGroups :
+                lst_img = event.message_chain.get(Image)
                 try:
-                    rate=await setuModerate(url,moderateK)
+                    moderateK=ModerateApiKeys.get(str(event.group.id))
                 except:
-                    logger.error("涩图审核失败，可能是图片太大，也可能是(小概率)api-key达到本月调用次数限制，尝试注册新账号更新新的api-key以解决")
+                    logger.warning(str(event.group.id) + " 开启色图审核失败，未配置apiKey或apiKey已失效")
+                    await bot.send(event, "调用失败，公共apiKey已耗尽本月使用限额或本群配置apiKey已失效")
+                    await bot.send(event,
+                                   "请在https://www.moderatecontent.com/注册并获取apiKey(不要用QQ邮箱)\n随后群内发送如下指令\n设置审核密钥[apiKey]\n以开启本群审核功能\n例如\n设置审核密钥207b10178c64089dvzv90ebfcd7f865d97a")
                     return
-                logger.info("图片审核:结果:" + str(rate))
-                threshold=severGroups.get(str(event.group.id))
-                if rate>threshold:
-                    await bot.send(event, "检测到图片违规\npredictions-adult:" + str(rate))
+                for i in lst_img:
+                    url=i.url
+                    logger.info("图片审核:url:" + url+" key:"+moderateK)
                     try:
-                        await bot.recall(event.message_chain.message_id)
+                        rate=await setuModerate(url,moderateK)
                     except:
-                        logger.error("撤回图片失败")
-                    try:
-                        await bot.mute(target=event.sender.group.id, member_id=event.sender.id, time=banTime)
-                    except:
-                        logger.error("禁言失败，权限可能过低")
-                    return
+                        logger.error("涩图审核失败，可能是图片太大，也可能是(小概率)api-key达到本月调用次数限制，尝试注册新账号更新新的api-key以解决")
+                        return
+                    logger.info("图片审核:结果:" + str(rate))
+                    threshold=severGroups.get(str(event.group.id))
+                    if rate>threshold:
+                        await bot.send(event, "检测到图片违规\npredictions-adult:" + str(rate))
+                        try:
+                            await bot.recall(event.message_chain.message_id)
+                        except:
+                            logger.error("撤回图片失败")
+                        try:
+                            await bot.mute(target=event.sender.group.id, member_id=event.sender.id, time=banTime)
+                        except:
+                            logger.error("禁言失败，权限可能过低")
+                        return
     @bot.on(GroupMessage)
     async def geturla(event:GroupMessage):
-        global moderateK
         global severGroups
         if  event.message_chain.count(Image)==1 and "ping" in str(event.message_chain):
             lst_img = event.message_chain.get(Image)
             url = lst_img[0].url
             logger.info("图片审核:url:" + url)
+            try:
+                moderateK=ModerateApiKeys.get(str(event.group.id))
+            except:
+                logger.warning(str(event.group.id) + " 开启色图审核失败，未配置apiKey或apiKey已失效")
+                await bot.send(event, "调用失败，公共apiKey已耗尽本月使用限额或本群配置apiKey已失效")
+                await bot.send(event,
+                               "请在https://www.moderatecontent.com/注册并获取apiKey(不要用QQ邮箱)\n随后群内发送如下指令\n设置审核密钥[apiKey]\n以开启本群审核功能\n例如\n设置审核密钥207b10178c64089dvzv90ebfcd7f865d97a")
+                return
+
             try:
                 rate = await setuModerate(url, moderateK)
             except:
@@ -314,48 +331,84 @@ def main(bot,config,moderateKey,logger):
             await bot.send(event, "图片检测结果：\npredictions-adult:" + str(rate))
 
     @bot.on(GroupMessage)
+    async def addKeys(event: GroupMessage):
+        global severGroups
+        global ModerateApiKeys
+        if "设置审核密钥" in str(event.message_chain):
+            a = str(event.message_chain).split("设置审核密钥")
+            if event.sender.id==int(master):
+                a=moderateK
+
+            logger.info("测试密钥:" + a)
+            try:
+                url="http://gchat.qpic.cn/gchatpic_new/1840094972/628763673-2513575912-6E5C0A02BCE4CD95CE27E0E4A140B540/0?term=2&is_origin=0"
+                rate = await setuModerate(url, a)
+            except:
+                logger.error("涩图审核失败，可能是图片太大，也可能是(小概率)api-key达到本月调用次数限制，尝试注册新账号更新新的api-key以解决")
+                await bot.send(event, "涩图审核失败，可能是图片太大，也可能是api-key无效\n尝试注册新账号https://www.moderatecontent.com/获取新的api-key以解决\n指令：设置审核密钥[apiKey]\n示例如下：设置审核密钥2f4tga2tarafa4hjohljghvbngnf58")
+                return
+            logger.info("图片审核:结果:" + str(rate))
+            ModerateApiKeys[str(event.group.id)]=a
+            with open('config/autoSettings.yaml', 'r', encoding='utf-8') as f:
+                result = yaml.load(f.read(), Loader=yaml.FullLoader)
+            result["moderate"]["apiKeys"]=ModerateApiKeys
+            with open('config/autoSettings.yaml', 'w', encoding="utf-8") as file:
+                yaml.dump(result, file, allow_unicode=True)
+            await bot.send(event, "设置apiKey成功")
+    @bot.on(GroupMessage)
     async def setConfiga(event:GroupMessage):
         global threshold
         global severGroups
         if 1==1:
             if str(event.message_chain).startswith("/阈值") and (str(event.sender.permission)!="Permission.Member" or event.sender.id==master) :
+                if str(event.group.id) in ModerateApiKeys:
+                    temp=int(str(event.message_chain)[3:])
+                    if temp>100 or temp<0:
+                        await bot.send(event,"设置阈值不合法")
+                    else:
+                        try:
+                            threshold=temp
+                            severGroups[str(event.group.id)] = temp
+                            with open('config/autoSettings.yaml', 'r', encoding='utf-8') as f:
+                                result = yaml.load(f.read(), Loader=yaml.FullLoader)
+                            moderate = result.get("moderate")
+                            moderate["groups"] = severGroups
+                            result["moderate"] = moderate
+                            with open('config/autoSettings.yaml', 'w', encoding="utf-8") as file:
+                                yaml.dump(result, file, allow_unicode=True)
 
-                temp=int(str(event.message_chain)[3:])
-                if temp>100 or temp<0:
-                    await bot.send(event,"设置阈值不合法")
+                            await bot.send(event,"成功修改撤回阈值为"+str(temp))
+                        except:
+                            await bot.send(event,"阈值设置出错，请进入config.json中手动设置threshold值")
                 else:
-                    try:
-                        threshold=temp
-                        severGroups[str(event.group.id)] = temp
-                        with open('config/autoSettings.yaml', 'r', encoding='utf-8') as f:
-                            result = yaml.load(f.read(), Loader=yaml.FullLoader)
-                        moderate = result.get("moderate")
-                        moderate["groups"] = severGroups
-                        result["moderate"] = moderate
-                        with open('config/autoSettings.yaml', 'w', encoding="utf-8") as file:
-                            yaml.dump(result, file, allow_unicode=True)
-
-                        await bot.send(event,"成功修改撤回阈值为"+str(temp))
-                    except:
-                        await bot.send(event,"阈值设置出错，请进入config.json中手动设置threshold值")
+                    logger.warning(str(event.group.id)+" 开启色图审核失败，未配置apiKey")
+                    await bot.send(event,"公共apiKey达到每月调用次数限制")
+                    await bot.send(event,"请在https://www.moderatecontent.com/注册并获取apiKey(不要用QQ邮箱)\n随后群内发送\n设置审核密钥[apiKey]\n以开启本群审核功能\n例如\n设置审核密钥207b10178c64089dvzv90ebfcd7f865d97a")
 
         if (str(event.sender.permission)!="Permission.Member"  or event.sender.id==master )and str(event.message_chain)=="/moderate":
-            if str(event.group.id) in severGroups:
-                logger.info("群:"+str(event.group.id)+" 关闭了审核")
-                severGroups.pop(str(event.group.id))
-                await bot.send(event,"关闭审核")
+            if str(event.group.id) in ModerateApiKeys:
+                if str(event.group.id) in severGroups:
+                    logger.info("群:"+str(event.group.id)+" 关闭了审核")
+                    severGroups.pop(str(event.group.id))
+                    await bot.send(event,"关闭审核")
+                else:
+                    logger.info("群:" + str(event.group.id) + " 开启了审核")
+                    severGroups[str(event.group.id)]=40
+                    await bot.send(event,"开启审核")
+                with open('config/autoSettings.yaml', 'r', encoding='utf-8') as f:
+                    result = yaml.load(f.read(), Loader=yaml.FullLoader)
+                moderate = result.get("moderate")
+                moderate["groups"] = severGroups
+                result["moderate"] = moderate
+                with open('config/autoSettings.yaml', 'w', encoding="utf-8") as file:
+                    yaml.dump(result, file, allow_unicode=True)
+                await bot.send(event, "ok")
             else:
-                logger.info("群:" + str(event.group.id) + " 开启了审核")
-                severGroups[str(event.group.id)]=40
-                await bot.send(event,"开启审核")
-            with open('config/autoSettings.yaml', 'r', encoding='utf-8') as f:
-                result = yaml.load(f.read(), Loader=yaml.FullLoader)
-            moderate = result.get("moderate")
-            moderate["groups"] = severGroups
-            result["moderate"] = moderate
-            with open('config/autoSettings.yaml', 'w', encoding="utf-8") as file:
-                yaml.dump(result, file, allow_unicode=True)
-            await bot.send(event, "ok")
+                logger.warning(str(event.group.id) + " 开启色图审核失败，未配置apiKey")
+                await bot.send(event, "公共apiKey达到每月调用次数限制")
+                await bot.send(event,
+                               "请在https://www.moderatecontent.com/注册并获取apiKey(不要用QQ邮箱)\n随后群内发送\n设置审核密钥[apiKey]\n以开启本群审核功能\n例如\n设置审核密钥207b10178c64089dvzv90ebfcd7f865d97a")
+
     @bot.on(GroupMessage)
     async def exitBadGroup(event:GroupMessage):
         ls=["你妈","傻逼","艹逼","你妈","死你","垃圾"]
