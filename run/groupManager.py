@@ -338,7 +338,7 @@ def main(bot,config,moderateKey,logger):
         global severGroups
         global ModerateApiKeys
         if "设置审核密钥" in str(event.message_chain):
-            a = str(event.message_chain).split("设置审核密钥")
+            a = str(event.message_chain).split("设置审核密钥")[1]
             if event.sender.id==int(master):
                 a=moderateK
 
