@@ -294,7 +294,7 @@ def main(bot,config,moderateKey,logger):
                         return
                     logger.info("图片审核:结果:" + str(rate))
                     threshold=severGroups.get(str(event.group.id))
-                    if rate>threshold:
+                    if int(rate)>threshold:
                         await bot.send(event, "检测到图片违规\npredictions-adult:" + str(rate))
                         try:
                             await bot.recall(event.message_chain.message_id)
@@ -345,7 +345,7 @@ def main(bot,config,moderateKey,logger):
             logger.info("测试密钥:" + a)
 
             try:
-                url="http://gchat.qpic.cn/gchatpic_new/1840094972/628763673-2513575912-6E5C0A02BCE4CD95CE27E0E4A140B540/0?term=2&is_origin=0"
+                url='http://gchat.qpic.cn/gchatpic_new/1840094972/732096208-2692656462-9F4724505A26A9CC596C96C371D7E185/0?term=2&is_origin=0'
                 logger.info("图片审核:url:" + url + " key:" + moderateK)
                 rate = await setuModerate(url, a)
             except:
