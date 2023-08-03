@@ -343,8 +343,10 @@ def main(bot,config,moderateKey,logger):
                 a=moderateK
 
             logger.info("测试密钥:" + a)
+
             try:
                 url="http://gchat.qpic.cn/gchatpic_new/1840094972/628763673-2513575912-6E5C0A02BCE4CD95CE27E0E4A140B540/0?term=2&is_origin=0"
+                logger.info("图片审核:url:" + url + " key:" + moderateK)
                 rate = await setuModerate(url, a)
             except:
                 logger.error("无效的apiKey或图片太大")
