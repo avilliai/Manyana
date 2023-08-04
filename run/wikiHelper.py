@@ -158,7 +158,7 @@ async def main(bot,app_id,app_key,logger):
 
                 try:
                     #webScreenShoot(url,path,1200,9500)
-                    await screenshot_to_pdf_and_png(url, path)
+                    await screenshot_to_pdf_and_png(url, path,5)
                 except:
                     logger.warning("查询方舟角色:" + aimCharacter + " 失败，未收录对应数据")
                     logger.info("发送语音()：数据库里好像没有这个角色呢,要再检查一下吗？")

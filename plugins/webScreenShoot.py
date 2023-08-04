@@ -22,7 +22,7 @@ from selenium.webdriver.chrome.options import Options
 from PIL import Image
 
 
-async def screenshot_to_pdf_and_png(link,path):
+async def screenshot_to_pdf_and_png(link,path,waitT=1):
     ''' 参数：网址
         功能: 保存网址截图
              解决了截图不全问题
@@ -64,7 +64,7 @@ async def screenshot_to_pdf_and_png(link,path):
         #print(width, height)
         # 将浏览器的宽高设置成刚刚获取的宽高
         driver.set_window_size(width + 100, height + 100)
-        await sleep(1)
+        await sleep(waitT)
         png_path = path
 
         # 截图并关掉浏览器
