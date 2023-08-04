@@ -25,6 +25,7 @@ def main():
         logger.warning("如出现 Merge冲突 例如：Your local changes to the following files would be overwritten by merge:\n请重命名本地的对应文件，拉取后将你的数据重新导入\n--------------------")
         os.system("git pull https://github.com/avilliai/Manyana.git")
         logger.info("结束")
+        logger.info("如更新成功请自行查看 更新日志.yaml")
     elif a=="3":
         print("执行清理缓存操作")
         ls1 = os.listdir("data/pictures/avatars")
