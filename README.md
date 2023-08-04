@@ -35,6 +35,9 @@ git clone https://github.com/avilliai/Manyana.git
 - 解压release中的site-packages.rar，打开cmd输入where python查看你的python安装目录
 - 进入python安装目录，找到Lib/site-packages，用release的site-packages替换它
 - 填写config.json与config/api.yaml，完成后运行main.py即可。
+```js
+{"botName": "Manyana", "botQQ": "1283992481", "master": "1840094972", "vertify_key": <这里写你http-api的key,尖括号不用带>, "port": "23456"}
+```
 
 # 功能
 发送@bot 帮助 以查看功能列表
