@@ -8,3 +8,4 @@
   - 用户自行在mainGroup中授权以及解黑
   - 授权#QQ号
   - /blgroup remove 群号
+  - 你需要重新填写settings.yaml以及config.json
