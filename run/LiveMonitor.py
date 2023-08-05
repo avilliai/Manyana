@@ -83,8 +83,12 @@ def main(bot,master,botName,logger):
             logger.info("尝试取消订阅"+id1)
             id1=int(id1)
             try:
-                d1=live.get(id1).get("group").pop(id1)
+                d1=live.get(id1).get("group")
+                logger.info("取到数值")
+                d1.pop(id1)
+                logger.info("弹出")
                 t1=[]
+
                 if d1==t1:
                     live.pop(id1)
                 else:
