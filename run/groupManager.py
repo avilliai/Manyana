@@ -126,7 +126,7 @@ def main(bot,config,moderateKey,logger):
     @bot.on(NewFriendRequestEvent)
     async def allowStranger(event: NewFriendRequestEvent):
         logger.info("新的好友申请，来自"+str(event.from_id))
-        if str(event.from_id) in userdict.keys():
+        if str(event.from_id) in userdict.keys() or event.group_id==mainGroup:
             logger.info("有用户记录，同意")
             al='同意'
             await bot.allow(event)
