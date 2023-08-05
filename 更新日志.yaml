@@ -5,7 +5,7 @@
   - 修复了可以重复添加直播订阅的问题
   - 可以在settings.yaml中修改可以邀请bot加群的签到天数限制
   - config.json增加mainGroup，填写为你自己的群
-  - 用户自行在mainGroup中授权以及解黑
+  - 用户自行在mainGroup中授权以及解黑指令如下
   - 授权#QQ号
   - /blgroup remove 群号
   - 你需要重新填写settings.yaml以及config.json
