@@ -25,11 +25,13 @@ from plugins.imgDownload import dict_download_img
 from plugins.weatherQuery import querys
 
 
-def main(bot,api_KEY,master,logger):
+def main(bot,api_KEY,master,config,logger):
 
     logger.info("签到部分启动完成")
     with open('data/userData.yaml', 'r', encoding='utf-8') as file:
         data = yaml.load(file, Loader=yaml.FullLoader)
+    global mainGroup
+    mainGroup = int(config.get("mainGroup"))
     global userdict
     userdict = data
     logger.info("读取用户数据完成")
@@ -123,16 +125,13 @@ def main(bot,api_KEY,master,logger):
     @bot.on(GroupMessage)
     async def accessGiver(event:GroupMessage):
         global userdict
-        if str(event.message_chain).startswith("授权#"):
-            if str(event.sender.id) not in userdict:
-                return
+        if str(event.message_chain).startswith("授权#") and event.group.id==mainGroup:
             try:
                 if event.sender.id==master:
                     setN="99"
-                elif int(userdict.get(str(event.sender.id)).get("sts")) > 98:
-                    setN="9"
                 else:
-                    return
+                    setN="9"
+
             except:
                 return
 
@@ -149,7 +148,7 @@ def main(bot,api_KEY,master,logger):
             with open('data/userData.yaml', 'w', encoding="utf-8") as file:
                 yaml.dump(userdict, file, allow_unicode=True)
             logger.info("授权"+userId+"完成")
-            await bot.send(event,"授权完成")
+            await bot.send(event,"授权完成,一分钟后数据将完成同步")
             await bot.send_friend_message(int(userId),"授权完成，解锁部分bot权限(一分钟后)")
 
     @bot.on(GroupMessage)

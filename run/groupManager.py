@@ -76,6 +76,7 @@ def main(bot,config,moderateKey,logger):
     @bot.on(BotJoinGroupEvent)
     async def botJoin(event:BotJoinGroupEvent):
         await bot.send_group_message(event.group.id,"已加入服务群聊....")
+        await bot.send_group_message(event.group.id,"如有使用问题请在用户群"+str(mainGroup)+"反馈")
         await bot.send_group_message(event.group.id,"发送 @bot 帮助 以获取功能列表\n项目地址：https://github.com/avilliai/Manyana\n喜欢bot的话可以给个star哦(≧∇≦)ﾉ")
         path="../data/autoReply/voiceReply/joinGroup.wav"
         ok=os.path.exists(path)
@@ -116,7 +117,7 @@ def main(bot,config,moderateKey,logger):
             else:
                 logger.info("签到天数不够，拒绝")
                 al = '拒绝'
-                await bot.send_friend_message(event.from_id,"群内签到天数不够呢(6)次，明天再来试试吧。也可联系master"+str(master)+" 获取授权")
+                await bot.send_friend_message(event.from_id,"群内签到天数不够呢(6)次，明天再来试试吧。也可前往用户群"+str(mainGroup)+" 获取授权\n在群内发送:\n授权#你的QQ")
         else:
             logger.info("非用户，拒绝")
             al = '拒绝'
@@ -428,8 +429,16 @@ def main(bot,config,moderateKey,logger):
                         #await bot.quit(event.group.id)
                         global blackList
                         global blGroups
-                        blackList.append(event.sender.id)
-                        blGroups.append(event.group.id)
+                        if event.sender.group in blGroups:
+                            logger.info("已有黑名单群"+str(event.sender.group))
+                        else:
+                            blGroups.append(event.group.id)
+
+                        if event.sender.id in blackList:
+                            logger.info("已有黑名单用户"+str(event.sender.id))
+                        else:
+                            blackList.append(event.sender.id)
+
                         with open('config/autoSettings.yaml', 'r', encoding='utf-8') as f:
                             result = yaml.load(f.read(), Loader=yaml.FullLoader)
                         result["banUser"] = blackList
