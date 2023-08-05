@@ -85,6 +85,7 @@ def main(bot,master,botName,logger):
             try:
                 d1=live.get(id1).get("group")
                 logger.info("取到数值")
+                logger.info(str(d1))
                 d1.pop(id1)
                 logger.info("弹出")
                 t1=[]
