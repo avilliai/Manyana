@@ -80,6 +80,8 @@ def main(bot,master,botName,logger):
         global live
         if str(event.message_chain).startswith("取消直播订阅#"):
             id1=str(event.message_chain).split("#")[1]
+            logger.info("尝试取消订阅"+id1)
+            id1=int(id1)
             try:
                 d1=live.get(id1).get("group").pop(id1)
                 t1=[]
