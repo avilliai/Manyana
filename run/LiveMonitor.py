@@ -77,6 +77,25 @@ def main(bot,master,botName,logger):
 
     @bot.on(GroupMessage)
     async def bilimON1(event: GroupMessage):
+        global live
+        if str(event.message_chain).startswith("取消直播订阅#"):
+            id1=str(event.message_chain).split("#")[1]
+            try:
+                d1=live.get(id1).get("group").pop(id1)
+                t1=[]
+                if d1==t1:
+                    live.pop(id1)
+                else:
+                    live[id1]["group"]=d1
+                with open('data/biliMonitor.yaml', 'w', encoding="utf-8") as file:
+                    yaml.dump(live, file, allow_unicode=True)
+                logger.warning("取消了直播订阅")
+                await bot.send(event, "取消了对"+str(id1)+"的直播订阅")
+            except:
+                await bot.send(event,"error，请检查直播房间号是否正确")
+
+    @bot.on(GroupMessage)
+    async def bilimON1(event: GroupMessage):
         if str(event.message_chain)=="添加直播":
             await bot.send(event,"请从bilibili分享直播到群内，bot将记录数据并添加任务")
             temp[event.group.id]={"step":1}
@@ -93,8 +112,11 @@ def main(bot,master,botName,logger):
                 logger.info("增加直播订阅"+str(content))
                 if content in live:
                     groups=live.get(content).get("group")
-                    groups.append(event.group.id)
-                    live[content]["group"]=groups
+                    if event.group.id in groups:
+                        await bot.send(event,"已添加过订阅")
+                    else:
+                        groups.append(event.group.id)
+                        live[content]["group"]=groups
                 else:
                     live[content]={"app":con,"group":[event.group.id]}
                 await bot.send(event,"成功添加了对"+str(content)+"的直播订阅")
@@ -103,7 +125,7 @@ def main(bot,master,botName,logger):
                 with open('data/biliMonitor.yaml', 'w', encoding="utf-8") as file:
                     yaml.dump(live, file, allow_unicode=True)
                 lists[content]=0
-                await bot.send(event,"已添加订阅")
+                #await bot.send(event,"已添加订阅")
                 #print(event.message_chain.get(App)[0].content,type(event.message_chain.get(App)[0].content))
                 #dat1=event.message_chain.get(App)[0].content
 
