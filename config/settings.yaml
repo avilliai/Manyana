@@ -3,6 +3,7 @@ defaultModel:
   - voiceModel/nene/1374_epochsm.pth
   - voiceModel/nene/config.json
   speaker: 2
+signTimes: 3    # 签到几天后可以邀请加群
 wReply:
   banWords:
   - 妈

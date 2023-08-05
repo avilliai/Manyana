@@ -27,6 +27,8 @@ def main(bot,config,moderateKey,logger):
         result = yaml.load(f.read(), Loader=yaml.FullLoader)
     global ModerateApiKeys
     ModerateApiKeys=result.get("moderate").get('apiKeys')
+    global mainGroup
+    mainGroup=int(config.get("mainGroup"))
     global banWords
     banWords=result.get("moderate").get("banWords")
     #读取用户数据
@@ -35,6 +37,10 @@ def main(bot,config,moderateKey,logger):
         data = yaml.load(file, Loader=yaml.FullLoader)
     global userdict
     userdict = data
+    with open('config/settings.yaml', 'r', encoding='utf-8') as f:
+        result1 = yaml.load(f.read(), Loader=yaml.FullLoader)
+    global qiandaoT
+    qiandaoT=result1.get("signTimes")
 
     global superUser
     superUser = []
@@ -96,9 +102,9 @@ def main(bot,config,moderateKey,logger):
     async def allowStranger(event: BotInvitedJoinGroupRequestEvent):
         logger.info("接收来自 "+str(event.from_id)+" 的加群邀请")
         if str(event.from_id) in userdict.keys():
-            if int(userdict.get(str(event.from_id)).get("sts"))>5:
+            if int(userdict.get(str(event.from_id)).get("sts"))>qiandaoT:
                 if event.group_id in blGroups:
-                    await bot.send_friend_message(event.from_id,"该群在黑名单内")
+                    await bot.send_friend_message(event.from_id,"该群在黑名单内.\n解除拉黑请前往本bot用户群"+str(mainGroup)+"在群内发送\n/blgroup remove 群号")
                     return
                 logger.info("同意")
                 al = '同意'
@@ -127,6 +133,7 @@ def main(bot,config,moderateKey,logger):
             await sleep(5)
             await bot.send_friend_message(event.from_id,"你好ヾ(≧▽≦*)o，bot项目地址：https://github.com/avilliai/Manyana\n觉得还不错的话可以点个star哦")
             await bot.send_friend_message(event.from_id, "群内发送 @bot 帮助 获取功能列表")
+            await bot.send_friend_message(event.from_id,"本bot用户群"+str(mainGroup))
         else:
             logger.info("无用户记录，拒绝")
             al='拒绝'
@@ -454,10 +461,10 @@ def main(bot,config,moderateKey,logger):
                     await bot.send(event,"该用户已被拉黑")
     @bot.on(GroupMessage)
     async def removeBl(event:GroupMessage):
-        if event.sender.id == master or event.sender.id in superUser:
+        if event.sender.id == master or event.sender.id in superUser or event.group.id==mainGroup:
             global blackList
             global blGroups
-            if str(event.message_chain).startswith("/blgroup remove") or str(event.message_chain).startswith("移除黑名单群 "):
+            if str(event.message_chain).startswith("/blgroup remove") or str(event.message_chain).startswith("移除黑名单群"):
                 try:
                     groupId=int(str(event.message_chain).split(" ")[-1])
                     blGroups.remove(groupId)
@@ -473,7 +480,7 @@ def main(bot,config,moderateKey,logger):
                 except:
                     logger.error("移除失败，该群不在黑名单中")
                     await bot.send(event,"移除失败，该群不在黑名单中")
-            if str(event.message_chain).startswith("/bl remove") or str(event.message_chain).startswith("移除黑名单用户 "):
+            if str(event.message_chain).startswith("/bl remove") or str(event.message_chain).startswith("移除黑名单用户"):
                 try:
                     groupId=int(str(event.message_chain).split(" ")[-1])
                     blackList.remove(groupId)
