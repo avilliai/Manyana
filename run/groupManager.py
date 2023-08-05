@@ -117,7 +117,7 @@ def main(bot,config,moderateKey,logger):
             else:
                 logger.info("签到天数不够，拒绝")
                 al = '拒绝'
-                await bot.send_friend_message(event.from_id,"群内签到天数不够呢(6)次，明天再来试试吧。也可前往用户群"+str(mainGroup)+" 获取授权\n在群内发送:\n授权#你的QQ")
+                await bot.send_friend_message(event.from_id,"群内签到天数不够呢次，明天再来试试吧。也可前往用户群"+str(mainGroup)+" 获取授权\n在群内发送:\n授权#你的QQ")
         else:
             logger.info("非用户，拒绝")
             al = '拒绝'
