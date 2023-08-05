@@ -464,23 +464,24 @@ def main(bot,config,moderateKey,logger):
         if event.sender.id == master or event.sender.id in superUser or event.group.id==mainGroup:
             global blackList
             global blGroups
-            if str(event.message_chain).startswith("/blgroup remove") or str(event.message_chain).startswith("移除黑名单群"):
+            if str(event.message_chain).startswith("/blgroup remove ") or str(event.message_chain).startswith("移除黑名单群 "):
                 try:
                     groupId=int(str(event.message_chain).split(" ")[-1])
                     blGroups.remove(groupId)
                     logger.info("成功移除黑名单群"+str(groupId))
                     await bot.send(event,"成功移除黑名单群"+str(groupId))
+                    logger.info("当前黑名单群"+str(blGroups))
 
                     with open('config/autoSettings.yaml', 'r', encoding='utf-8') as f:
-                        result = yaml.load(f.read(), Loader=yaml.FullLoader)
-                    result["banGroups"] = blGroups
+                        result11 = yaml.load(f.read(), Loader=yaml.FullLoader)
+                    result11["banGroups"] = blGroups
                     with open('config/autoSettings.yaml', 'w', encoding="utf-8") as file:
-                        yaml.dump(result, file, allow_unicode=True)
+                        yaml.dump(result11, file, allow_unicode=True)
                     return
                 except:
                     logger.error("移除失败，该群不在黑名单中")
                     await bot.send(event,"移除失败，该群不在黑名单中")
-            if str(event.message_chain).startswith("/bl remove") or str(event.message_chain).startswith("移除黑名单用户"):
+            if str(event.message_chain).startswith("/bl remove ") or str(event.message_chain).startswith(" 移除黑名单用户"):
                 try:
                     groupId=int(str(event.message_chain).split(" ")[-1])
                     blackList.remove(groupId)
