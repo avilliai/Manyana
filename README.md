@@ -19,7 +19,7 @@ Manyana指
 - 项目使用了CjangCjengh的[MoeGoe](https://github.com/CjangCjengh/MoeGoe) 以及他的语音模型
 - 基于[Yiri-mirai](https://github.com/YiriMiraiProject/YiriMirai) 实现
 - 请确保py版本为3.9
-- 请确保已安装[[fireFox浏览器](https://www.firefox.com.cn/)
+- 请确保已安装[fireFox浏览器](https://www.firefox.com.cn/)
 - 请确保已安装[mirai-api-http](https://github.com/project-mirai/mirai-api-http) 并[正确配置](https://github.com/avilliai/wReply/blob/master/setting.yml)
 - 可选安装[mirai-login-solver-sakura](https://github.com/KasukuSakura/mirai-login-solver-sakura)
 - 可选安装[Mirai点歌插件](https://github.com/khjxiaogu/MiraiSongPlugin)
@@ -36,7 +36,9 @@ git clone https://github.com/avilliai/Manyana.git
 - 进入python安装目录，找到Lib/site-packages，用release的site-packages替换它
 - 填写config.json与config/api.yaml，完成后运行main.py即可。
 ```js
-{"botName": "Manyana", "botQQ": "1283992481", "master": "1840094972", "vertify_key": <这里写你http-api的key,尖括号不用带>, "port": "23456"}
+{"botName": "机器人名字", "botQQ": "机器人QQ", "master": "你的QQ", "mainGroup": "你自己群的群号","vertify_key": "这里写你http-api的key,尖括号不用带", "port": "httpapi的运行端口"}
+下面是一个填写示例实例
+{"botName": "Manyana", "botQQ": "1283992481", "master": "1840094972","mainGroup": "628763673", "vertify_key": "1234567890", "port": "23456"}
 ```
 
 # 功能
@@ -191,6 +193,7 @@ defaultModel:      #默认语音模型
   - voiceModel/nene/1374_epochsm.pth
   - voiceModel/nene/config.json
   speaker: 2          # 默认的speaker，一般单角色语音模型默认为0
+signTimes: 3    # 签到几天后可以邀请加群
 wReply:
   banWords:          # 自定义回复敏感词
   - 妈
