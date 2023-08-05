@@ -94,10 +94,56 @@ def main(bot,config,moderateKey,logger):
             await sleep(60)
             # 读取用户数据
             logger.info("更新用户数据")
+            global moderateK
+            moderateK = moderateKey
+            logger.info("读取群管设置")
+            with open('config/autoSettings.yaml', 'r', encoding='utf-8') as f:
+                result = yaml.load(f.read(), Loader=yaml.FullLoader)
+            global ModerateApiKeys
+            ModerateApiKeys = result.get("moderate").get('apiKeys')
+            global mainGroup
+            mainGroup = int(config.get("mainGroup"))
+            global banWords
+            banWords = result.get("moderate").get("banWords")
+            # 读取用户数据
+            logger.info("读取用户数据")
             with open('data/userData.yaml', 'r', encoding='utf-8') as file:
                 data = yaml.load(file, Loader=yaml.FullLoader)
             global userdict
             userdict = data
+            with open('config/settings.yaml', 'r', encoding='utf-8') as f:
+                result1 = yaml.load(f.read(), Loader=yaml.FullLoader)
+            global qiandaoT
+            qiandaoT = result1.get("signTimes")
+
+            global superUser
+            superUser = []
+            for i in userdict.keys():
+                data = userdict.get(i)
+                times = int(str(data.get('sts')))
+                if times > 98:
+                    superUser.append(str(i))
+
+            global blackList
+            blackList = result.get("banUser")
+            global blGroups
+            blGroups = result.get("banGroups")
+
+            global blackListID
+            blackListID = []
+
+            global master
+            master = int(config.get('master'))
+
+            moderate = result.get("moderate")
+
+            global threshold
+            threshold = moderate.get("threshold")
+
+            global severGroups
+            severGroups = moderate.get("groups")
+            global banTime
+            banTime = moderate.get("banTime")
 
     @bot.on(BotInvitedJoinGroupRequestEvent)
     async def allowStranger(event: BotInvitedJoinGroupRequestEvent):
