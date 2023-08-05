@@ -76,8 +76,8 @@ def main(bot,config,moderateKey,logger):
     @bot.on(BotJoinGroupEvent)
     async def botJoin(event:BotJoinGroupEvent):
         await bot.send_group_message(event.group.id,"已加入服务群聊....")
-        await bot.send_group_message(event.group.id,"如有使用问题请在用户群"+str(mainGroup)+"反馈")
         await bot.send_group_message(event.group.id,"发送 @bot 帮助 以获取功能列表\n项目地址：https://github.com/avilliai/Manyana\n喜欢bot的话可以给个star哦(≧∇≦)ﾉ")
+        await bot.send_friend_message(event.from_id, "如需获取授权请在本bot用户群内自行使用指令\n授权#你的QQ\n本bot用户群" + str(mainGroup))
         path="../data/autoReply/voiceReply/joinGroup.wav"
         ok=os.path.exists(path)
         if ok:
@@ -217,9 +217,16 @@ def main(bot,config,moderateKey,logger):
         logger.info("bot被禁言，操作者"+str(event.operator.id))
         global blackList
         global blGroups
+        if event.operator.group.id in blGroups:
+            logger.info("已有黑名单群" + str(event.sender.group))
+        else:
+            blGroups.append(event.operator.group.id)
 
-        blackList.append(event.operator.id)
-        blGroups.append(event.operator.group.id)
+        if event.operator.id in blackList:
+            logger.info("已有黑名单用户" + str(event.sender.id))
+        else:
+            blackList.append(event.operator.id)
+
         with open('config/autoSettings.yaml', 'r', encoding='utf-8') as f:
             result = yaml.load(f.read(), Loader=yaml.FullLoader)
         result["banUser"]=blackList
