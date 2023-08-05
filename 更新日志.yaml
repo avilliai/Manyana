@@ -3,3 +3,8 @@
 2023/8/5:
   - 新指令:取消直播订阅#房间号
   - 修复了可以重复添加直播订阅的问题
+  - 可以在settings.yaml中修改可以邀请bot加群的签到天数限制
+  - config.json增加mainGroup，填写为你自己的群
+  - 用户自行在mainGroup中授权以及解黑
+  - 授权#QQ号
+  - /blgroup remove 群号
