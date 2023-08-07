@@ -101,7 +101,7 @@ def main(bot,api_KEY,master,config,logger):
                 logger.info("城市验证未通过，送进通辽当可汗子民")
             global userdict
             userdict[str(event.sender.id)] = {"city": city, "st": time, "sts": "1", "exp": "0",
-                                              "id": "miav-"+random_str(),'ok':time114514}
+                                              "id": "miav-"+random_str(6,'AaBbCcDdEeFfGgHhIiJjKkLlMmNnOoPpQqRrSsTtUuVvWwXxYyZz0123456789'),'ok':time114514}
             data = userdict.get(str(event.sender.id))
             city = data.get('city')
             startTime = data.get('st')
@@ -162,7 +162,7 @@ def main(bot,api_KEY,master,config,logger):
                 await bot.send(event, '正在验证城市......，')
                 weather = await querys(city,api_KEY)
                 data['city']=city
-                data["id"]="miav-"+random_str()
+                data["id"]="miav-"+random_str(6,'AaBbCcDdEeFfGgHhIiJjKkLlMmNnOoPpQqRrSsTtUuVvWwXxYyZz0123456789')
                 await bot.send(event, '成功')
                 userdict[str(event.sender.id)] = data
                 with open('data/userData.yaml', 'w', encoding="utf-8") as file:
