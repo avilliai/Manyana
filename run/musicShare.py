@@ -180,6 +180,12 @@ def main(bot,master,botName,logger):
     @scheduler.scheduled_job(CronTrigger(hour=20, minute=40))
     async def timer():
         global bm
+        temp = userdict.get(str(datetime.date.today()))
+        temp["userid"] = "A" + userdict.get(str(datetime.date.today())).get("userid")
+        userdict[str(datetime.date.today())] = temp
+        newData = json.dumps(userdict)
+        with open('data/music/music.txt', 'w') as fp:
+            fp.write(newData)
         for i in severGroups:
             intTrans = int(i)
 
@@ -187,6 +193,7 @@ def main(bot,master,botName,logger):
 
             file = open('data/music/music.txt', 'r')
             js = file.read()
+
             try:
                 music = json.loads(js).get(str(datetime.date.today()))
                 logger.info(music)
@@ -197,12 +204,7 @@ def main(bot,master,botName,logger):
                 await bot.send_group_message(intTrans,"私聊"+bm+"发送 点歌 即可点歌\n群内发送 /回复+回复内容 即可向点歌人回复\n随机码:"+random_str())
             except:
                 logger.error("指定群不存在或已退出")
-        temp=userdict.get(str(datetime.date.today()))
-        temp["userid"]="A"+userdict.get(str(datetime.date.today())).get("userid")
-        userdict[str(datetime.date.today())]=temp
-        newData = json.dumps(userdict)
-        with open('data/music/music.txt', 'w') as fp:
-            fp.write(newData)
+
     @bot.on(GroupMessage)
     async def reply(event:GroupMessage):
         global userdict
