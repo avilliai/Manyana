@@ -77,7 +77,7 @@ def main(bot,config,moderateKey,logger):
     async def botJoin(event:BotJoinGroupEvent):
         await bot.send_group_message(event.group.id,"已加入服务群聊....")
         await bot.send_group_message(event.group.id,"发送 @bot 帮助 以获取功能列表\n项目地址：https://github.com/avilliai/Manyana\n喜欢bot的话可以给个star哦(≧∇≦)ﾉ")
-        await bot.send_friend_message(event.from_id, "如需获取授权请在本bot用户群内自行使用指令\n授权#你的QQ\n本bot用户群" + str(mainGroup))
+        await bot.send_group_message(event.group.id, "如需获取授权请在本bot用户群内自行使用指令\n授权#你的QQ\n本bot用户群" + str(mainGroup))
         path="../data/autoReply/voiceReply/joinGroup.wav"
         ok=os.path.exists(path)
         if ok:
