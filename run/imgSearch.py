@@ -48,4 +48,4 @@ def main(bot,api_key,proxy,logger):
                 await bot.send(event,' similarity:'+str(response.json().get("results")[0].get('header').get('similarity'))+"\n"+str(response.json().get("results")[0].get('data')).replace(",","\n").replace("{"," ").replace("}","").replace("'","").replace("[","").replace("]",""),True)
             except:
                 logger.warning("搜图失败，无结果或访问次数过多，请稍后再试")
-                await bot.send(event,"搜图功能冷却中.....")
+                await bot.send(event,"搜图失败，无结果或访问次数过多，请稍后再试")
