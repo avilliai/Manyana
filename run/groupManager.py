@@ -218,12 +218,12 @@ def main(bot,config,moderateKey,logger):
         global blackList
         global blGroups
         if event.operator.group.id in blGroups:
-            logger.info("已有黑名单群" + str(event.sender.group))
+            logger.info("已有黑名单群" + str(event.operator.group.id))
         else:
             blGroups.append(event.operator.group.id)
 
         if event.operator.id in blackList:
-            logger.info("已有黑名单用户" + str(event.sender.id))
+            logger.info("已有黑名单用户" + str(event.operator.id))
         else:
             blackList.append(event.operator.id)
 
