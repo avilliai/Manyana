@@ -78,7 +78,7 @@ def main(bot,config,moderateKey,logger):
 
     @bot.on(MemberJoinEvent)
     async def MemberJoinHelper(event:MemberJoinEvent):
-        await bot.send(event,(At(event.member.id),"欢迎哦，这里是"+botName+'\n(*≧︶≦))(￣▽￣* )ゞ源项目地址与文档：https://github.com/avilliai/Manyana\n也可以发送@bot 帮助 以查看功能列表'))
+        await bot.send_group_message(event.member.group.id,(At(event.member.id),"欢迎哦，这里是"+botName+'\n(*≧︶≦))(￣▽￣* )ゞ源项目地址与文档：https://github.com/avilliai/Manyana\n也可以发送@bot 帮助 以查看功能列表'))
 
     @bot.on(BotJoinGroupEvent)
     async def botJoin(event:BotJoinGroupEvent):
