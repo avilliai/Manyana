@@ -57,6 +57,11 @@ ping[图片]
 ```angular2html
 搜图[图片]
 ```
+## ai回复
+```
+/poe[你的文本，不要带括号]  你需要填写api.yaml中的内容，抓取方式看https://github.com/avilliai/Poe_QQ
+/rwkv[你的文本，不要带括号]    需要在本地部署rwkv模型，具体看https://www.bilibili.com/video/BV1hM4y1v76R/?vd_source=b41b8c06d400241b8d0badbe1f821ec9
+```
 ## 自定义回复
 ```angular2html
 开始添加            #此指令用于开始词库添加

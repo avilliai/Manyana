@@ -9,3 +9,7 @@
   - 授权#QQ号
   - /blgroup remove 群号
   - 你需要重新填写settings.yaml以及config.json
+2023/8/10:
+  - 更新支持rwkv模型，安装：https://www.bilibili.com/video/BV1hM4y1v76R/?vd_source=b41b8c06d400241b8d0badbe1f821ec9
+  - 端口默认8000，不用改就行
+  - 指令：/rwkv你好

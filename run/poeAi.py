@@ -5,8 +5,12 @@ import random
 import poe
 from mirai import Image, Voice
 from mirai import Mirai, WebSocketAdapter, FriendMessage, GroupMessage, At, Plain
+
+from plugins.rwkvHelper import rwkvHelper
+
+
 def gptHelper():
-    client = poe.Client("", proxy="http://127.0.0.1:1080")
+    client = poe.Client(token="BHai3yLdvOcKajS6UnIX6A%3D%3D", proxy="http://127.0.0.1:1080")
     json.dumps(client.bot_names, indent=2)
     while True:
         message = input("you:")
@@ -33,15 +37,32 @@ def gptHelper():
 
 
 def main(bot,master,apikey,proxy,logger):
-    logger.info("正在启动poe-AI")
-    global apiKey
-    apiKey=apikey
-    global KEY
-    KEY=apiKey[0]
-    logger.info("选择key:"+KEY)
-    global client
-    client = poe.Client(KEY, proxy=proxy)
-    json.dumps(client.bot_names, indent=2)
+    try:
+        logger.info("正在启动poe-AI")
+        global apiKey
+        apiKey=apikey
+        global KEY
+        KEY=apiKey[0]
+        logger.info("选择key:"+KEY)
+        global client
+        client = poe.Client(KEY, proxy=proxy)
+        json.dumps(client.bot_names, indent=2)
+    except:
+        logger.error("poeAi启动失败，请检查代理或重试")
+    logger.info("正在启动rwkv对话模型")
+
+    @bot.on(GroupMessage)
+    async def rwkv(event:GroupMessage):
+        if str(event.message_chain).startswith("/rwkv"):
+            s=str(event.message_chain).replace("/rwkv","")
+            try:
+                logger.info("rwkv接收信息："+s)
+                s=await rwkvHelper(s)
+                logger.info("rwkv:"+s)
+                await bot.send(event,s)
+            except:
+                logger.error("调用rwkv失败，请检查本地rwkv是否启动或端口是否配置正确(8000)")
+                await bot.send(event,"无法连接到本地rwkv")
 
     @bot.on(GroupMessage)
     async def AiHelper(event:GroupMessage):
