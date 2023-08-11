@@ -84,11 +84,12 @@ def main(bot,config,moderateKey,logger):
     async def MemberJoinHelper(event:MemberJoinEvent):
         await bot.send_group_message(event.member.group.id,(At(event.member.id),random.choice(memberJoinWelcome).replace("botName",botName)))
         try:
-            await bot.send_temp_message(event.member.id,random.choice(sendTemp).replace("botName",botName))
+            await bot.send_temp_message(event.member.id,random.choice(sendTemp).replace("botName",botName).replace(r"\n","\n"))
         except:
             try:
                 await bot.send_friend_message(event.member.id,random.choice(sendTemp).replace("botName",botName))
             except:
+
                 logger.error("向新入群成员"+str(event.member.id)+"发送消息失败")
 
     @bot.on(BotJoinGroupEvent)
