@@ -3,7 +3,7 @@ import asyncio
 import httpx
 import requests
 import websockets
-from gradio_client import Client
+#from gradio_client import Client
 
 url="http://127.0.0.1:8000/chat/completions"
 async def rwkvHelper(text):
@@ -14,7 +14,7 @@ async def rwkvHelper(text):
         #print(r.json().get("response"))
         return r.json().get("response")
 
-async def onlineRWKV(text):
+'''async def onlineRWKV(text):
     client = Client(src="https://3aabd0bfae0d9019cf.gradio.live/",proxies={"http": "http://127.0.0.1:1080"})
     result = client.predict(
                     'null',	# str (Option from: []) in '请选择角色' Dropdown component
@@ -30,4 +30,4 @@ if __name__ == '__main__':
     re=client.submit("hello")
 
     print(re)
-    #asyncio.run(onlineRWKV("你好"))
+    #asyncio.run(onlineRWKV("你好"))'''
