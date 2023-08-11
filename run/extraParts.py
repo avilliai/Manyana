@@ -68,7 +68,7 @@ def main(bot,api_KEY,app_id,app_key,nasa_api,proxy,logger):
             for i in userdict.keys():
                 data3 = userdict.get(i)
                 times = int(str(data3.get('sts')))
-                if times > 8:
+                if times > 20:
                     trustUser.append(str(i))
 
     @bot.on(GroupMessage)
