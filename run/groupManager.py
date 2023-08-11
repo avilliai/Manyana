@@ -113,10 +113,10 @@ def main(bot,config,moderateKey,logger):
         while True:
             await sleep(60)
             # 读取用户数据
-            logger.info("更新用户数据")
+            logger.info("更新数据")
             global moderateK
             moderateK = moderateKey
-            logger.info("读取群管设置")
+            #logger.info("读取群管设置")
             with open('config/autoSettings.yaml', 'r', encoding='utf-8') as f:
                 result = yaml.load(f.read(), Loader=yaml.FullLoader)
             global ModerateApiKeys
@@ -126,7 +126,7 @@ def main(bot,config,moderateKey,logger):
             global banWords
             banWords = result.get("moderate").get("banWords")
             # 读取用户数据
-            logger.info("读取用户数据")
+            #logger.info("读取用户数据")
             with open('data/userData.yaml', 'r', encoding='utf-8') as file:
                 data = yaml.load(file, Loader=yaml.FullLoader)
             global userdict
