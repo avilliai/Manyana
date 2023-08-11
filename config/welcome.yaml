@@ -1,0 +1,4 @@
+memberJoin: #加群欢迎
+  - \n欢迎哦，这里是botName(*≧︶≦))(￣▽￣* )ゞ\n项目源地址与文档：https://github.com/avilliai/Manyana\n也可以发送@bot 帮助 以查看功能列表
+sendTemp:   #加群之后向加群者私聊发送临时消息
+  - 你好哦

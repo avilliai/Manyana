@@ -24,6 +24,10 @@ def main(bot,config,moderateKey,logger):
     global moderateK
     moderateK=moderateKey
     logger.info("读取群管设置")
+    with open('config/welcome.yaml', 'r', encoding='utf-8') as f:
+        welcome = yaml.load(f.read(), Loader=yaml.FullLoader)
+    memberJoinWelcome=welcome.get("memberJoin")
+    sendTemp = welcome.get("sendTemp")
     with open('config/autoSettings.yaml', 'r', encoding='utf-8') as f:
         result = yaml.load(f.read(), Loader=yaml.FullLoader)
     global ModerateApiKeys
@@ -78,7 +82,14 @@ def main(bot,config,moderateKey,logger):
 
     @bot.on(MemberJoinEvent)
     async def MemberJoinHelper(event:MemberJoinEvent):
-        await bot.send_group_message(event.member.group.id,(At(event.member.id),"\n欢迎哦，这里是"+botName+'(*≧︶≦))(￣▽￣* )ゞ\n项目源地址与文档：https://github.com/avilliai/Manyana\n也可以发送@bot 帮助 以查看功能列表'))
+        await bot.send_group_message(event.member.group.id,(At(event.member.id),random.choice(memberJoinWelcome).replace("botName",botName)))
+        try:
+            await bot.send_temp_message(event.member.id,random.choice(sendTemp).replace("botName",botName))
+        except:
+            try:
+                await bot.send_friend_message(event.member.id,random.choice(sendTemp).replace("botName",botName))
+            except:
+                logger.error("向新入群成员"+str(event.member.id)+"发送消息失败")
 
     @bot.on(BotJoinGroupEvent)
     async def botJoin(event:BotJoinGroupEvent):

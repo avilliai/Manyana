@@ -156,13 +156,13 @@ def main(bot,config,sizhiKey,app_id, app_key,logger):
                 mohukey = str(lst_img[0].url)
                 print(mohukey)
                 await bot.send(event, '已记录关键词,请发送回复(发送over结束添加)')
-                mohustatus = 2'''
+                mohustatus = 2
             checkResult=await checkIfOk(str(event.message_chain),event)
             if checkResult==False:
                 await bot.send(event,"检测到违禁词")
-            else:
-                await bot.send(event, '已记录关键词,请发送回复(发送over结束添加)\n文本回复前缀 语音 可以设置为语音回复')
-                process1[event.sender.id] = {"process": 2, "mohukey": str(event.message_chain)}
+            else:'''
+            await bot.send(event, '已记录关键词,请发送回复(发送over结束添加)\n文本回复前缀 语音 可以设置为语音回复')
+            process1[event.sender.id] = {"process": 2, "mohukey": str(event.message_chain)}
 
 
     @bot.on(GroupMessage)
@@ -170,10 +170,11 @@ def main(bot,config,sizhiKey,app_id, app_key,logger):
         global ban
         if event.sender.id in process1 and process1.get(event.sender.id).get("process") == 2:
             if event.sender.id in process1 and str(event.message_chain)!="over":
-                checkResult = await checkIfOk(str(event.message_chain),event)
+                '''checkResult = await checkIfOk(str(event.message_chain),event)
                 if checkResult == False:
                     await bot.send(event, "检测到违禁词")
-                else:
+                else:'''
+                if 1:
                     if str(event.message_chain).startswith("语音"):
                         logger.info("增加语音回复")
                         ranpath = random_str()
