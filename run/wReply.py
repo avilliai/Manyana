@@ -242,7 +242,7 @@ def main(bot,config,sizhiKey,app_id, app_key,logger):
                             lock=1
                             break
                     if lock==0:
-                        if At(bot.qq) in event.message_chain and random.randint(0,100)<likeindex:
+                        if At(bot.qq) in event.message_chain or random.randint(0,100)<likeindex:
                             best_matches = process.extractBests(getStr, superDict.get("public").keys(), limit=3)
                             logger.info("获取匹配结果：key:" + getStr + "|" + str(best_matches))
                             replyssssss = random.choice(superDict.get("public").get(str((best_matches)[0][0])))
