@@ -1,11 +1,8 @@
-defaultModel:
-  modelSelect:
-  - voiceModel/nene/1374_epochsm.pth
-  - voiceModel/nene/config.json
-  speaker: 2
+
 signTimes: 3    # 签到几天后可以邀请加群
+GroupSensor: False    #开启后，将拒绝无授权群的加群邀请
 wReply:
-  banWords:
+  banWords:       #违禁词
   - 妈
   - 主人
   - 狗
@@ -21,8 +18,8 @@ wReply:
   - 牛
   - 国
   - 批
-  chineseVoiceRate: 30
-  replyRate: 3
-  sizhi: false
-  turnMessage: true
-  voiceRate: 30
+  chineseVoiceRate: 30     #中文回复几率
+  replyRate: 100         #不艾特时的回复几率
+  sizhi: false          #是否启用思知ai
+  turnMessage: true    #是否开启私聊转发
+  voiceRate: 40        #语音回复几率，过高将增大设备负担
