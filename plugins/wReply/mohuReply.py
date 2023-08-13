@@ -13,6 +13,7 @@ import openpyxl
 
 
 def mohuaddReplys(ass,groupid):
+    print(ass)
     message=ass[2:]
     messageS=message.split('#')
     #读取字典

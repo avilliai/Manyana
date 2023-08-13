@@ -235,9 +235,10 @@ def main(bot,config,sizhiKey,app_id, app_key,logger):
                         for patts in pat:
                             pattern+=".*"+patts
                         pattern+=".*"
-                        logger.warning("生成正则表达式"+pattern)
+
                         match = re.search(pattern, getStr)
                         if match:
+                            logger.warning("生成正则表达式" + pattern)
                             replyssssss=random.choice(superDict.get(str(event.group.id)).get(str((i))))
                             lock=1
                             break
