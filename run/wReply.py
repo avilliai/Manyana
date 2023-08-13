@@ -211,16 +211,19 @@ def main(bot,config,sizhiKey,app_id, app_key,logger):
             getStr = str(event.message_chain)
 
         if sizhi==True:
-            sess = requests.get('https://api.ownthink.com/bot?spoken=' + getStr + '&appid='+random.choice(sizhiKey))
-            answer = sess.text
-            try:
-                answer = json.loads(answer)
-            except:
-                logger.warning("在调用思知ai时出现了一个问题，但似乎又没啥问题，请忽略")
+            if random.randint(0,100)<likeindex or At(bot.qq) in event.message_chain:
+                sess = requests.get('https://api.ownthink.com/bot?spoken=' + getStr + '&appid='+random.choice(sizhiKey))
+                answer = sess.text
+                try:
+                    answer = json.loads(answer)
+                except:
+                    logger.warning("在调用思知ai时出现了一个问题，但似乎又没啥问题，请忽略")
+                    return
+                logger.info("ASK:"+getStr)
+                logger.info("bot(思知):" + answer.get("data").get("info").get("text"))
+                replyssssss=answer.get("data").get("info").get("text")
+            else:
                 return
-            logger.info("ASK:"+getStr)
-            logger.info("bot(思知):" + answer.get("data").get("info").get("text"))
-            replyssssss=answer.get("data").get("info").get("text")
         else:
             #优先匹配本词库
             if str(event.group.id) in superDict.keys():
