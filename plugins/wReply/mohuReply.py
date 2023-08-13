@@ -76,7 +76,9 @@ def mohuadd(key,value,group):
     #print(dict)
     #print('---------')
     file.close()
-    dict[group]={key:value}
+    dag=dict.get(group)
+    dag[key]=value
+    dict[group]=dag
         #print(dict)
     #重新写入
     #print(dict)
