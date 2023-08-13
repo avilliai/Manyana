@@ -12,47 +12,63 @@ import json
 import openpyxl
 
 
-def mohuaddReplys(ass):
+def mohuaddReplys(ass,groupid):
     message=ass[2:]
     messageS=message.split('#')
     #读取字典
     file = open('config/superDict.txt', 'r')
     js = file.read()
     dict = json.loads(js)
-    print(datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')+ '| 已读取字典')
+    file.close()
+    print(datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S') + '| 已读取字典')
+    if str(groupid) not in dict:
+        print(datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')+ '| 创建新文件'+groupid+".xlsx")
+        dict1={messageS[0]:messageS[1]}
+
+        wb = openpyxl.Workbook()
+        sheet=wb.active
+        sheet.append(["key","value"])
+
     #print(dict)
     #print('---------')
-    file.close()
-
-    #对传入的字符串进行处理并加入字典
-    #如果已经有关键字
-    if (messageS[0] in dict):
-        replyValue = dict.get(messageS[0])
-        replyValue.append(messageS[1])
-        print(datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')+ '| 已有关键字，追加')
-        # print(replyValue)
-    # 没有关键字则创建
     else:
-        dict[messageS[0]] = [messageS[1], ]
-        #print(dict)
+        dict1=dict.get(groupid)
+        #对传入的字符串进行处理并加入字典
+        #如果已经有关键字
+        if (messageS[0] in dict1):
+            replyValue = dict1.get(messageS[0])
+            replyValue.append(messageS[1])
+            print(datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')+ '| 已有关键字，追加')
+            # print(replyValue)
+        # 没有关键字则创建
+        else:
+            dict1[messageS[0]] = [messageS[1], ]
+        wb = openpyxl.load_workbook("data/autoReply/lexicon/" + groupid + ".xlsx")
+        sheet = wb.active
+            #print(dict)
     #重新写入
+    #print(dict1)
+    #print(dict)
+    dict={"public":dict.get("public"),groupid:dict1}
 
     #写入excel
-    wb = openpyxl.load_workbook("config/词库.xlsx")
-    sheet = wb.active
+
+
+
     sheet.append([messageS[0], messageS[1]])  # 插入一行数据
-    wb.save("config/词库.xlsx")  # 保存,传入原文件则在
+    wb.save("data/autoReply/lexicon/"+groupid+".xlsx")  # 保存,传入原文件则在
 
 
 
     #print(dict)
+    #print(type(dict))
     js = json.dumps(dict)
     file = open('config/superDict.txt', 'w')
     file.write(js)
     file.close()
     #print(type(dict))
     return dict
-def mohuadd(key,value):
+def mohuadd(key,value,group):
     file = open('config/superDict.txt', 'r')
     js = file.read()
     dict = json.loads(js)
@@ -60,8 +76,7 @@ def mohuadd(key,value):
     #print(dict)
     #print('---------')
     file.close()
-
-    dict[key] = value
+    dict[group]={key:value}
         #print(dict)
     #重新写入
     #print(dict)

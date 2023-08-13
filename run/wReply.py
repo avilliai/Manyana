@@ -140,6 +140,8 @@ def main(bot,config,sizhiKey,app_id, app_key,logger):
         if str(event.message_chain) == '开始添加':
             if (str(event.sender.id) in trustUser or event.sender.id==master) and event.sender.id not in blUser:
                 global process1
+                if str(event.sender.group.id) not in superDict.keys():
+                    await bot.send(event,"无本群专有词库，创建中.....")
                 await bot.send(event, '请输入关键词')
                 process1[event.sender.id] = {"process": 1}
             else:
@@ -162,12 +164,13 @@ def main(bot,config,sizhiKey,app_id, app_key,logger):
                 await bot.send(event,"检测到违禁词")
             else:'''
             await bot.send(event, '已记录关键词,请发送回复(发送over结束添加)\n文本回复前缀 语音 可以设置为语音回复')
-            process1[event.sender.id] = {"process": 2, "mohukey": str(event.message_chain)}
+            process1[event.sender.id] = {"process": 2, "mohukey": str(event.message_chain),"groupId":event.group.id}
 
 
     @bot.on(GroupMessage)
     async def handle_group_message(event: GroupMessage):
         global ban
+        global process1
         if event.sender.id in process1 and process1.get(event.sender.id).get("process") == 2:
             if event.sender.id in process1 and str(event.message_chain)!="over":
                 '''checkResult = await checkIfOk(str(event.message_chain),event)
@@ -198,9 +201,9 @@ def main(bot,config,sizhiKey,app_id, app_key,logger):
                         value = str(event.message_chain)
                     global superDict
                     addStr = '添加' + process1.get(event.sender.id).get("mohukey") + '#' + value
-                    superDict = mohuaddReplys(addStr)
+                    superDict = mohuaddReplys(addStr,str(event.group.id))
                     await bot.send(event, '已添加至词库')
-                    outPutDic()
+                    outPutDic(str(event.group.id))
 
     @bot.on(GroupMessage)
     async def init(event: GroupMessage):
@@ -224,8 +227,6 @@ def main(bot,config,sizhiKey,app_id, app_key,logger):
             getStr = str(event.message_chain)
         else:
             return
-        if event.sender.id in blUser:
-            return
         if sizhi==True:
             sess = requests.get('https://api.ownthink.com/bot?spoken=' + getStr + '&appid='+random.choice(sizhiKey))
             answer = sess.text
@@ -238,11 +239,36 @@ def main(bot,config,sizhiKey,app_id, app_key,logger):
             logger.info("bot(思知):" + answer.get("data").get("info").get("text"))
             replyssssss=answer.get("data").get("info").get("text")
         else:
-            #best_match = process.extractOne(getStr, superDict.keys())
-            best_matches = process.extractBests(getStr, superDict.keys(), limit=3)
-            logger.info("获取匹配结果：key:" + getStr + "|" + str(best_matches))
-            replyssssss =random.choice(superDict.get(str((best_matches)[0][0])))
-            logger.info("key:："+getStr+" 选择回复：" + replyssssss)
+            #优先匹配本词库
+            if str(event.group.id) in superDict.keys():
+                keys1=superDict.get(str(event.group.id)).keys()
+                lock=0
+                for i in keys1:
+                    pat=i.split("/")
+                    pattern=""
+                    for patts in pat:
+                        pattern+=".*"+patts
+                    pattern+=".*"
+                    logger.warning("生成正则表达式"+pattern)
+                    match = re.search(pattern, getStr)
+                    if match:
+                        replyssssss=random.choice(superDict.get(str(event.group.id)).get(str((i))))
+                        lock=1
+                        break
+                if lock==0:
+                    if At(bot.qq) in event.message_chain:
+                        best_matches = process.extractBests(getStr, superDict.get("public").keys(), limit=3)
+                        logger.info("获取匹配结果：key:" + getStr + "|" + str(best_matches))
+                        replyssssss = random.choice(superDict.get("public").get(str((best_matches)[0][0])))
+                    else:
+                        return
+
+            else:
+                #best_match = process.extractOne(getStr, superDict.keys())
+                best_matches = process.extractBests(getStr, superDict.get("public").keys(), limit=3)
+                logger.info("获取匹配结果：key:" + getStr + "|" + str(best_matches))
+                replyssssss =random.choice(superDict.get("public").get(str((best_matches)[0][0])))
+        logger.info("key:："+getStr+" 选择回复：" + replyssssss)
 
         if str(replyssssss).endswith('.png') or str(replyssssss).endswith('.jpg'):
             await bot.send(event, Image(path='data/autoReply/imageReply/' + replyssssss))
@@ -309,11 +335,12 @@ def main(bot,config,sizhiKey,app_id, app_key,logger):
             logger.info("bot(私聊):" + answer.get("data").get("info").get("text"))
             replyssssss = answer.get("data").get("info").get("text")
         else:
+
             if event.sender.id==bot.qq:
                 return
-            best_matches = process.extractBests(getStr, superDict.keys(), limit=3)
+            best_matches = process.extractBests(getStr, superDict.get("public").keys(), limit=3)
             logger.info("获取匹配结果：key:" + getStr + "|" + str(best_matches))
-            replyssssss = random.choice(superDict.get(str((best_matches)[0][0])))
+            replyssssss = random.choice(superDict.get("public").get(str((best_matches)[0][0])))
             logger.info("key:：" + getStr + " 选择回复：" + replyssssss)
 
         if str(replyssssss).endswith('.png') or str(replyssssss).endswith('.jpg'):
@@ -357,12 +384,15 @@ def main(bot,config,sizhiKey,app_id, app_key,logger):
     @bot.on(GroupMessage)
     async def dele(event: GroupMessage):
         if str(event.message_chain).startswith('删除#'):
-            if str(event.sender.id) in trustUser or event.sender.id==master:
+            global superDict
+            if str(event.sender.id) in trustUser or event.sender.id==master or str(event.sender.group.id) in superDict.keys():
+                logger.warning("准备删除")
                 s1 = str(event.message_chain).split('#')
                 aimStr = s1[1]
-                global superDict
-                if aimStr in superDict.keys():
-                    replyMes = superDict.get(aimStr)
+                lis1=[]
+
+                if aimStr in superDict.get(str(event.group.id)).keys():
+                    replyMes = superDict.get(str(event.group.id)).get(aimStr)
                     number = 0
                     for i in replyMes:
 
@@ -377,6 +407,7 @@ def main(bot,config,sizhiKey,app_id, app_key,logger):
                     global inprocess1
                     inprocess1[event.sender.id]={"delStr":aimStr,"step":1}
                     await bot.send(event, '请发送要删除的序号')
+
             else:
                 await bot.send(event, event.sender.member_name + '似乎没有删除的权限呢...')
 
@@ -387,7 +418,7 @@ def main(bot,config,sizhiKey,app_id, app_key,logger):
         global superDict
         global inprocess1
         if event.sender.id in inprocess1 and inprocess1.get(event.sender.id).get("step") == 1:
-                replyMes = superDict.get(inprocess1.get(event.sender.id).get("delStr"))
+                replyMes = superDict.get(str(event.group.id)).get(inprocess1.get(event.sender.id).get("delStr"))
                 try:
                     logger.warning("执行自定义回复删除操作")
                     '''i=replyMes[int(str(event.message_chain))]
@@ -397,13 +428,13 @@ def main(bot,config,sizhiKey,app_id, app_key,logger):
                         path='data/autoReply/voiceReply/' + i'''
                     del replyMes[int(str(event.message_chain))]
                     #os.remove(path)
-                    superDict = mohuadd(inprocess1.get(event.sender.id).get("delStr"), replyMes)
+                    superDict = mohuadd(inprocess1.get(event.sender.id).get("delStr"), replyMes,str(event.group.id))
                     logger.info("完成删除回复操作")
                     await bot.send(event, '已删除')
                 except:
                     await bot.send(event, '下标不合法')
                 inprocess1.pop(event.sender.id)
-                outPutDic()
+                outPutDic(str(event.group.id))
 
 
 
@@ -423,11 +454,11 @@ def main(bot,config,sizhiKey,app_id, app_key,logger):
 
 
 
-    @bot.on(GroupMessage)
+    '''@bot.on(GroupMessage)
     async def restarts(event: GroupMessage):
         if str(event.message_chain) == '导出词库' and str(event.sender.id) == str(master):
             outPutDic()
-            await bot.send(event, '已导出')
+            await bot.send(event, '已导出')'''
     @bot.on(Startup)
     async def updateData(event: Startup):
         while True:

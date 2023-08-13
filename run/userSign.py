@@ -190,10 +190,10 @@ def main(bot,api_KEY,master,config,logger):
         imageFile = fileName
         # 导入数据
         tp = Image.open(imageFile)
-        font = ImageFont.truetype('config/H-TTF-BuMing-B-2.ttf', 110)
+        font = ImageFont.truetype('data/fonts/H-TTF-BuMing-B-2.ttf', 110)
         draw = ImageDraw.Draw(tp)
         draw.text((423, 773), id, (12, 0, 6), font=font)
-        font = ImageFont.truetype('config/H-TTF-BuMing-B-2.ttf', 73)
+        font = ImageFont.truetype('data/fonts/H-TTF-BuMing-B-2.ttf', 73)
         draw.text((2000, 716), weather, (12, 0, 6), font=font)
         draw.text((509, 1100), nowTime, (12, 0, 6), font=font)
         draw.text((509, 1258), times, (12, 0, 6), font=font)

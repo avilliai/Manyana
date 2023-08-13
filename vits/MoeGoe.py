@@ -3,6 +3,7 @@ import asyncio
 import datetime
 from asyncio import sleep
 
+import httpx
 from scipy.io.wavfile import write
 
 
@@ -167,9 +168,9 @@ def voice_conversion(sourcepath,speaker=0):
         escape = True
     else:
         escape = False
-
-    model = 'voiceModel\\1374_epochsm.pth'#input('Path of a VITS model: ')
-    config ='voiceModel\\config.json'#input('Path of a config file: ')
+    afd=['voiceModel/nene/1374_epochsm.pth', 'voiceModel/nene/config.json']
+    model = afd[0]
+    config = afd[1]
 
     hps_ms = utils.get_hparams_from_file(config)
     n_speakers = hps_ms.data.n_speakers if 'n_speakers' in hps_ms.data.keys() else 0
@@ -187,14 +188,14 @@ def voice_conversion(sourcepath,speaker=0):
         **hps_ms.model)
     _ = net_g_ms.eval()
     utils.load_checkpoint(model, net_g_ms)
-
     audio_path = sourcepath
+    print_speakers(speakers)
     audio = utils.load_audio_to_torch(
         audio_path, hps_ms.data.sampling_rate)
 
-    originnal_id = speaker
-    target_id = 3
-    out_path = 'plugins\\voices\\sing\\out.wav'
+    originnal_id = 0
+    target_id = 0
+    out_path = 'wa.wav'
 
     y = audio.unsqueeze(0)
 
@@ -210,18 +211,21 @@ def voice_conversion(sourcepath,speaker=0):
             0][0, 0].data.cpu().float().numpy()
     write(out_path, hps_ms.data.sampling_rate, audio)
     print('Successfully saved!')
-    return out_path
-
-
+async def ttsOnline(txt):
+    url='https://api.oick.cn/txt/apiz.php'
+    data={"text":txt,"spd":6}
+    async with httpx.AsyncClient(timeout=100) as client:
+        r = await client.get(url,params=data)
+        with open('song.mp3', 'wb') as f:
+            f.write(r.content)
+        voice_conversion("song.mp3")
+        #return url
 if __name__ == '__main__':
     #voice_conversion("plugins/voices/sing/rest.wav")
+    asyncio.run(voiceGenerate('[JA]先生,ちょっとお時間..いただけますか1?[JA]', '1.wav'))
+    print("任务1")
+    #asyncio.run(ttsOnline("你好，我是派大星"))
 
-    print("任务1")
-    asyncio.run(voiceGenerate('[JA]先生,ちょっとお時間..いただけますか1?[JA]', 'voices/'+random_str()+'1.wav'))
-    print("任务1")
-    asyncio.run(voiceGenerate('[JA]先生,ちょっとお時間..いただけますか2?[JA]', 'voices/'+random_str()+'1.wav'))
-    print("任务1")
-    asyncio.run(voiceGenerate('[JA]先生,ちょっとお時間..いただけますか3?[JA]', 'voices/'+random_str()+'1.wav'))
 
 
 
