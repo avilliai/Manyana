@@ -132,7 +132,7 @@ def main(bot,api_KEY,master,config,logger):
                 if event.sender.id==master:
                     setN="99"
                 else:
-                    setN="9"
+                    setN="15"
 
             except:
                 return
