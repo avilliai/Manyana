@@ -51,14 +51,14 @@ def main(bot,master,botName,logger):
 
                             for ia in live.get(i).get("group"):
                                 try:
-                                    await bot.send_group_message(int(ia), AtAll())
+                                    #await bot.send_group_message(int(ia), AtAll())
                                     await bot.send_group_message(int(ia), "主播下播了，明天见ヾ(≧▽≦*)o")
                                 except:
                                     await bot.send_group_message(int(ia), "主播下播了，明天见ヾ(≧▽≦*)o")
                         if asf.get("data").get("live_status") == 1:
                             for ia in live.get(i).get("group"):
                                 try:
-                                    await bot.send_group_message(int(ia), AtAll() )
+                                    #await bot.send_group_message(int(ia), AtAll() )
                                     await bot.send_group_message(int(ia),"主播正在直播φ(゜▽゜*)♪")
                                     logger.info("检测到直播进行中")
 
