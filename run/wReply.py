@@ -478,10 +478,7 @@ def main(bot,config,sizhiKey,app_id, app_key,logger):
             global turnMess
             turnMess = yamlData.get("turnMessage")
 
-            global modelSelect
-            global speaker
-            speaker=result.get("defaultModel").get("speaker")
-            modelSelect=result.get("defaultModel").get("modelSelect")
+
 
             file = open('config/superDict.txt', 'r')
             jss = file.read()
