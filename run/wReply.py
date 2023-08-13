@@ -52,6 +52,8 @@ def main(bot,config,sizhiKey,app_id, app_key,logger):
     # 不艾特回复的几率
     global likeindex
     likeindex = yamlData.get("replyRate")
+    global groupLexicon
+    groupLexicon=yamlData.get("groupLexicon")
     global sizhi
     sizhi = yamlData.get("sizhi")
     global turnMess
@@ -205,11 +207,9 @@ def main(bot,config,sizhiKey,app_id, app_key,logger):
                 if i in str(event.message_chain):
                     return
             getStr = str(event.message_chain).replace("@"+str(bot.qq)+" ", '')
-
-        elif random.randint(0,100)<likeindex:
-            getStr = str(event.message_chain)
         else:
-            return
+            getStr = str(event.message_chain)
+
         if sizhi==True:
             sess = requests.get('https://api.ownthink.com/bot?spoken=' + getStr + '&appid='+random.choice(sizhiKey))
             answer = sess.text
@@ -224,33 +224,38 @@ def main(bot,config,sizhiKey,app_id, app_key,logger):
         else:
             #优先匹配本词库
             if str(event.group.id) in superDict.keys():
-                keys1=superDict.get(str(event.group.id)).keys()
-                lock=0
-                for i in keys1:
-                    pat=i.split("/")
-                    pattern=""
-                    for patts in pat:
-                        pattern+=".*"+patts
-                    pattern+=".*"
-                    logger.warning("生成正则表达式"+pattern)
-                    match = re.search(pattern, getStr)
-                    if match:
-                        replyssssss=random.choice(superDict.get(str(event.group.id)).get(str((i))))
-                        lock=1
-                        break
-                if lock==0:
-                    if At(bot.qq) in event.message_chain:
-                        best_matches = process.extractBests(getStr, superDict.get("public").keys(), limit=3)
-                        logger.info("获取匹配结果：key:" + getStr + "|" + str(best_matches))
-                        replyssssss = random.choice(superDict.get("public").get(str((best_matches)[0][0])))
-                    else:
-                        return
+                if random.randint(0,100)<groupLexicon:
+                    keys1=superDict.get(str(event.group.id)).keys()
+                    lock=0
+                    for i in keys1:
+                        pat=i.split("/")
+                        pattern=""
+                        for patts in pat:
+                            pattern+=".*"+patts
+                        pattern+=".*"
+                        logger.warning("生成正则表达式"+pattern)
+                        match = re.search(pattern, getStr)
+                        if match:
+                            replyssssss=random.choice(superDict.get(str(event.group.id)).get(str((i))))
+                            lock=1
+                            break
+                    if lock==0:
+                        if At(bot.qq) in event.message_chain and random.randint(0,100)<likeindex:
+                            best_matches = process.extractBests(getStr, superDict.get("public").keys(), limit=3)
+                            logger.info("获取匹配结果：key:" + getStr + "|" + str(best_matches))
+                            replyssssss = random.choice(superDict.get("public").get(str((best_matches)[0][0])))
+                        else:
+                            return
+                else:
+                    return
 
-            else:
+            elif random.randint(0,100)<likeindex:
                 #best_match = process.extractOne(getStr, superDict.keys())
                 best_matches = process.extractBests(getStr, superDict.get("public").keys(), limit=3)
                 logger.info("获取匹配结果：key:" + getStr + "|" + str(best_matches))
                 replyssssss =random.choice(superDict.get("public").get(str((best_matches)[0][0])))
+            else:
+                return
         logger.info("key:："+getStr+" 选择回复：" + replyssssss)
 
         if str(replyssssss).endswith('.png') or str(replyssssss).endswith('.jpg'):
