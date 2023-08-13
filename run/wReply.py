@@ -235,7 +235,6 @@ def main(bot,config,sizhiKey,app_id, app_key,logger):
                         for patts in pat:
                             pattern+=".*"+patts
                         pattern+=".*"
-
                         match = re.search(pattern, getStr)
                         if match:
                             logger.warning("生成正则表达式" + pattern)
@@ -477,8 +476,6 @@ def main(bot,config,sizhiKey,app_id, app_key,logger):
             sizhi = yamlData.get("sizhi")
             global turnMess
             turnMess = yamlData.get("turnMessage")
-
-
 
             file = open('config/superDict.txt', 'r')
             jss = file.read()
