@@ -122,6 +122,8 @@ def main(bot,api_KEY,master,config,logger):
             path=await signPicMaker(imgurl,id,weather,nowTime,times,exp,startTime)
             logger.info("完成，发送签到图片")
             await bot.send(event,Im(path=path),True)
+
+
     @bot.on(GroupMessage)
     async def accessGiver(event:GroupMessage):
         global userdict

@@ -44,6 +44,7 @@ def main(bot,config,moderateKey,logger):
     userdict = data
     with open('config/settings.yaml', 'r', encoding='utf-8') as f:
         result1 = yaml.load(f.read(), Loader=yaml.FullLoader)
+    GroupSensor = result1.get("GroupSensor")
     global qiandaoT
     qiandaoT=result1.get("signTimes")
 
@@ -91,6 +92,21 @@ def main(bot,config,moderateKey,logger):
             except:
 
                 logger.error("向新入群成员"+str(event.member.id)+"发送消息失败")
+    @bot.on(GroupMessage)
+    async def accessGiver(event:GroupMessage):
+        if str(event.message_chain).startswith("授权群#") and event.sender.id==master:
+            with open('config/autoSettings.yaml', 'r', encoding='utf-8') as f:
+                result98 = yaml.load(f.read(), Loader=yaml.FullLoader)
+            trustG=result98.get("trustGroups")
+            try:
+                trustG.append(int(str(event.message_chain).split("#")[1]))
+                result98["trustGroups"]=trustG
+                with open('config/autoSettings.yaml', 'w', encoding="utf-8") as file:
+                    yaml.dump(result98, file, allow_unicode=True)
+                await bot.send(event,"授权群完成")
+            except:
+                logger.warning("不合规的授权")
+                await bot.send(event,"不合规的授权，请严格按照指令格式，例如 授权群#699455559")
 
     @bot.on(BotJoinGroupEvent)
     async def botJoin(event:BotJoinGroupEvent):
@@ -119,6 +135,7 @@ def main(bot,config,moderateKey,logger):
             #logger.info("读取群管设置")
             with open('config/autoSettings.yaml', 'r', encoding='utf-8') as f:
                 result = yaml.load(f.read(), Loader=yaml.FullLoader)
+
             global ModerateApiKeys
             ModerateApiKeys = result.get("moderate").get('apiKeys')
             global mainGroup
@@ -169,24 +186,48 @@ def main(bot,config,moderateKey,logger):
     async def allowStranger(event: BotInvitedJoinGroupRequestEvent):
         logger.info("接收来自 "+str(event.from_id)+" 的加群邀请")
         if str(event.from_id) in userdict.keys():
-            if int(userdict.get(str(event.from_id)).get("sts"))>qiandaoT:
+            with open('config/autoSettings.yaml', 'r', encoding='utf-8') as f:
+                result23 = yaml.load(f.read(), Loader=yaml.FullLoader)
+            youquan = result23.get("trustGroups")
+            if int(userdict.get(str(event.from_id)).get("sts"))>qiandaoT or event.group_id in youquan:
                 if event.group_id in blGroups:
                     await bot.send_friend_message(event.from_id,"该群在黑名单内.\n解除拉黑请前往本bot用户群"+str(mainGroup)+"在群内发送\n/blgroup remove 群号")
                     return
-                logger.info("同意")
-                al = '同意'
-                sdf="请先向目标群群员确认是否愿意接受bot加群"
-                await bot.send_friend_message(event.from_id,sdf)
-                await bot.send_friend_message(event.from_id,"40秒后自动同意")
-                await sleep(40)
-                await bot.allow(event)
+                if GroupSensor==True:
+                    if event.group_id in youquan:
+                        logger.info("同意")
+                        al = '同意'
+                        sdf="请先向目标群群员确认是否愿意接受bot加群"
+                        await bot.send_friend_message(event.from_id,sdf)
+                        await bot.send_friend_message(event.from_id,"40秒后自动同意")
+                        await sleep(40)
+                        await bot.allow(event)
+                    else:
+                        logger.info("无授权的群，拒绝")
+                        al = '拒绝'
+                        await bot.send_friend_message(event.from_id,"请前往bot用户群联系master获取bot授权，群号"+str(mainGroup))
+                else:
+                    if event.group_id in youquan:
+                        logger.info("同意")
+                        al = '同意'
+                        sdf="请先向目标群群员确认是否愿意接受bot加群"
+                        await bot.send_friend_message(event.from_id,sdf)
+                        await bot.send_friend_message(event.from_id,"40秒后自动同意")
+                        await sleep(40)
+                        await bot.allow(event)
             else:
-                logger.info("签到天数不够，拒绝")
-                al = '拒绝'
-                await bot.send_friend_message(event.from_id,"群内签到天数不够呢，再签到(群内)几天再来试试吧。\n也可前往用户群"+str(mainGroup)+" 获取授权\n在该群内发送:\n授权#你的QQ")
+                if GroupSensor==False:
+                    logger.info("签到天数不够，拒绝")
+                    al = '拒绝'
+                    await bot.send_friend_message(event.from_id,"群内签到天数不够呢，再签到(群内)几天再来试试吧。\n也可前往用户群"+str(mainGroup)+" 获取授权\n在该群内发送:\n授权#你的QQ")
+                else:
+                    logger.info("无授权的群，拒绝")
+                    al = '拒绝'
+                    await bot.send_friend_message(event.from_id, "请前往bot用户群联系master获取bot授权，群号" + str(mainGroup))
         else:
             logger.info("非用户，拒绝")
             al = '拒绝'
+            await bot.send_friend_message(event.from_id,"您没有用户记录....请在任意群内发送 签到")
         await bot.send_friend_message(master, '有新的加群申请\n来自：' + str(event.from_id) + '\n目标群：' + str(event.group_id) + '\n昵称：' + event.nick + '\n状态：' + al)
 
 

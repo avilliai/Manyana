@@ -3,6 +3,8 @@ banGroups:
 banUser:
 - 1
 - 4564949845
+trustGroups:
+  - 699455559
 moderate:
   banTime: 300
   banWords:

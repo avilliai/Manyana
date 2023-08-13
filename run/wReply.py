@@ -57,11 +57,6 @@ def main(bot,config,sizhiKey,app_id, app_key,logger):
     global turnMess
     turnMess = yamlData.get("turnMessage")
 
-    global modelSelect
-    global speaker
-    speaker = result.get("defaultModel").get("speaker")
-    modelSelect = result.get("defaultModel").get("modelSelect")
-    logger.info("当前语音模型设定："+str(speaker)+"\n模型"+str(modelSelect))
 
 
     file = open('config/superDict.txt', 'r')
@@ -91,41 +86,29 @@ def main(bot,config,sizhiKey,app_id, app_key,logger):
     #你的QQ
     global master
     master=int(config.get('master'))
+
+    with open('config/nudgeReply.yaml', 'r', encoding='utf-8') as f:
+        result232 = yaml.load(f.read(), Loader=yaml.FullLoader)
+
+    global modelSelect
+    global speaker
+    speaker = result232.get("defaultModel").get("speaker")
+    modelSelect = result232.get("defaultModel").get("modelSelect")
+
+    logger.info("当前语音模型设定："+str(speaker)+"\n模型"+str(modelSelect))
     global models
     global characters
     models, default, characters = modelLoader()  # 读取模型
 
     @bot.on(GroupMessage)
-    async def setDefaultModel(event:GroupMessage):
-        if event.sender.id==master and str(event.message_chain).startswith("设定角色#"):
+    async def setDefaultModel(event: GroupMessage):
+        if event.sender.id == master and str(event.message_chain).startswith("设定角色#"):
             global speaker
             global modelSelect
             if str(event.message_chain).split("#")[1] in characters:
                 speaker1 = str(event.message_chain).split("#")[1]
-                logger.info("尝试设定角色#"+speaker1)
-                speaker=int(characters.get(speaker1)[0])
-                modelSelect=characters.get(speaker1)[1]
-                logger.info("设置了语音生成_speaker" + str(speaker))
-                logger.info("设置了语音生成_模型:" + str(modelSelect))
-                with open('config/settings.yaml', 'r', encoding='utf-8') as f:
-                    result = yaml.load(f.read(), Loader=yaml.FullLoader)
-                defaultModel=result.get("defaultModel")
-                defaultModel["speaker"]=speaker
-                defaultModel["modelSelect"]=modelSelect
-                result["defaultModel"]=defaultModel
-                with open('config/settings.yaml', 'w', encoding="utf-8") as file:
-                    yaml.dump(result, file, allow_unicode=True)
-
-                await bot.send(event, "成功设置了语音生成默认角色为："+speaker1)
-            else:
-                await bot.send(event,"不存在的角色")
-
-
-
-
-
-
-
+                speaker = int(characters.get(speaker1)[0])
+                modelSelect = characters.get(speaker1)[1]
 
     #下面的是一堆乱七八糟的变量
 
