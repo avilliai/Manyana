@@ -211,7 +211,7 @@ def main(bot,config,sizhiKey,app_id, app_key,logger):
             getStr = str(event.message_chain)
 
         if sizhi==True:
-            if random.randint(0,100)<likeindex or At(bot.qq) in event.message_chain:
+            if At(bot.qq) in event.message_chain:
                 sess = requests.get('https://api.ownthink.com/bot?spoken=' + getStr + '&appid='+random.choice(sizhiKey))
                 answer = sess.text
                 try:
