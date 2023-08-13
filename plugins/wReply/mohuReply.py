@@ -23,7 +23,7 @@ def mohuaddReplys(ass,groupid):
     print(datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S') + '| 已读取字典')
     if str(groupid) not in dict:
         print(datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')+ '| 创建新文件'+groupid+".xlsx")
-        dict1={messageS[0]:messageS[1]}
+        dict1={messageS[0]:[messageS[1]]}
 
         wb = openpyxl.Workbook()
         sheet=wb.active
