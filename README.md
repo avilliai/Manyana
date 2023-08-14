@@ -69,7 +69,7 @@ ping[图片]
 删除#关键词         #例如　删除#孙笑川   用于删除指定回复　
 del#关键词         #直接删除整个关键词以及所有回复
 导入词库　　　　　　　#从config/词库.xlsx导入词库
-nameXXX           #设定bot对你的特殊称谓为XXX，例如 name吴彦祖　
+nameXXX           #设定bot对你的特殊称谓为XXX，例如 name丁真珍珠　
 ```
 除此之外，你也可以打开data/autoReply/lexicon进行修改，完成后在群内发送 导入词库
 
