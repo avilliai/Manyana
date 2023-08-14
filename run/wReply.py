@@ -133,8 +133,12 @@ def main(bot,config,sizhiKey,app_id, app_key,logger):
                                     'data/autoReply/lexicon/' + str(event.group.id) + ".xlsx")
                 await bot.send(event, '请输入关键词')
                 if str(event.message_chain) == '*开始添加':
-                    process1[event.sender.id] = {"process": 1,"global":True}
-                    await bot.send(event,"请注意，本次添加的回复将被添加到所有群")
+                    if str(event.sender.id) in trustUser:
+                        process1[event.sender.id] = {"process": 1,"global":True}
+                        await bot.send(event,"请注意，本次添加的回复将被添加到所有群")
+                    else:
+                        process1[event.sender.id] = {"process": 1}
+                        await bot.send(event,"用户信任等级不足，无权操作全局词库")
                 else:
                     process1[event.sender.id] = {"process": 1}
             else:
