@@ -124,7 +124,8 @@ def main(bot,config,sizhiKey,app_id, app_key,logger):
     @bot.on(GroupMessage)
     async def handle_group_message(event: GroupMessage):
         if str(event.message_chain) == '开始添加':
-            if (str(event.sender.id) in trustUser or event.sender.id==master) and event.sender.id not in blUser:
+            #str(event.sender.id) in trustUser or
+            if (event.sender.id==master) and event.sender.id not in blUser:
                 global process1
                 if str(event.sender.group.id) not in superDict.keys():
                     await bot.send(event,"将根据初始词库为该群创建专有词库")
@@ -389,7 +390,8 @@ def main(bot,config,sizhiKey,app_id, app_key,logger):
     async def dele(event: GroupMessage):
         if str(event.message_chain).startswith('删除#'):
             global superDict
-            if str(event.sender.id) in trustUser or event.sender.id==master or str(event.sender.group.id) in superDict.keys():
+            #str(event.sender.id) in trustUser or
+            if event.sender.id==master or str(event.sender.group.id) in superDict.keys():
                 logger.warning("准备删除")
                 s1 = str(event.message_chain).split('#')
                 aimStr = s1[1]
@@ -423,6 +425,7 @@ def main(bot,config,sizhiKey,app_id, app_key,logger):
             if aim1 in superDict.get(str(event.group.id)).keys():
                 dicss=mohudels(aim1,str(event.group.id))
                 superDict=dicss
+                await bot.send(event,"已移除关键词")
             else:
                 await bot.send(event,"没有该关键词")
     # 删除指定下标执行部分
