@@ -446,6 +446,7 @@ def main(bot,config,sizhiKey,app_id, app_key,logger):
                 dicss=mohudels(aim1,str(event.group.id))
                 superDict=dicss
                 await bot.send(event,"已移除关键词")
+                outPutDic()
             else:
                 await bot.send(event,"没有该关键词")
     # 删除指定下标执行部分
