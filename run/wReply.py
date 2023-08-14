@@ -238,11 +238,12 @@ def main(bot,config,sizhiKey,app_id, app_key,logger):
                         pattern+=".*"
                         match = re.search(pattern, getStr)
                         if match:
-                            logger.warning("生成正则表达式" + pattern)
+                            logger.warning("成功匹配正则表达式：" + pattern)
                             replyssssss=random.choice(superDict.get(str(event.group.id)).get(str((i))))
                             lock=1
                             break
                     if lock==0:
+                        #正则匹配失败，尝试从public.xlsx获取回复
                         if At(bot.qq) in event.message_chain or random.randint(0,100)<likeindex:
                             best_matches = process.extractBests(getStr, superDict.get("public").keys(), limit=3)
                             logger.info("获取匹配结果：key:" + getStr + "|" + str(best_matches))
