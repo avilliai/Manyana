@@ -110,6 +110,49 @@ def main(bot,config,moderateKey,logger):
             await bot.send_group_message(event.group.id,Voice(path=path[3:]))
         #await bot.send_group_message(event.group.id,"发送 帮助 获取功能列表哦")
 
+    @bot.on(BotInvitedJoinGroupRequestEvent)
+    async def checkAllowGroup(event: BotInvitedJoinGroupRequestEvent):
+        logger.info("接收来自 " + str(event.from_id) + " 的加群邀请")
+        if GroupSensor==True:
+            with open('config/autoSettings.yaml', 'r', encoding='utf-8') as f:
+                result23 = yaml.load(f.read(), Loader=yaml.FullLoader)
+            youquan = result23.get("trustGroups")
+            if event.group_id in youquan:
+                logger.info("同意")
+                al = '同意'
+                sdf = "请先向目标群群员确认是否愿意接受bot加群"
+                await bot.send_friend_message(event.from_id, sdf)
+                await bot.send_friend_message(event.from_id, "40秒后自动同意")
+                await sleep(40)
+                await bot.allow(event)
+            else:
+                logger.info("拒绝")
+                al="拒绝"
+                await bot.send_friend_message(event.from_id,"该群无授权，请联系master"+str(master))
+        else:
+            if str(event.from_id) in userdict.keys():
+                if int(userdict.get(str(event.from_id)).get("sts")) > qiandaoT:
+                    if event.group_id in blGroups:
+                        await bot.send_friend_message(event.from_id, "该群在黑名单内.\n解除拉黑请前往本bot用户群" + str(
+                            mainGroup) + "在群内发送\n/blgroup remove 群号")
+                        return
+                    logger.info("同意")
+                    al = '同意'
+                    sdf = "请先向目标群群员确认是否愿意接受bot加群"
+                    await bot.send_friend_message(event.from_id, sdf)
+                    await bot.send_friend_message(event.from_id, "40秒后自动同意")
+                    await sleep(40)
+                    await bot.allow(event)
+                else:
+                    logger.info("签到天数不够，拒绝")
+                    al = '拒绝'
+                    await bot.send_friend_message(event.from_id, "群内签到天数不够呢，再签到(群内)几天再来试试吧。\n也可前往用户群" + str(
+                        mainGroup) + " 获取授权\n在该群内发送:\n授权#你的QQ")
+            else:
+                logger.info("非用户，拒绝")
+                al = '拒绝'
+        await bot.send_friend_message(master, '有新的加群申请\n来自：' + str(event.from_id) + '\n目标群：' + str(
+            event.group_id) + '\n昵称：' + event.nick + '\n状态：' + al)
 
     @bot.on(Startup)
     async def updateData(event: Startup):
@@ -169,7 +212,7 @@ def main(bot,config,moderateKey,logger):
             global banTime
             banTime = moderate.get("banTime")
 
-    @bot.on(BotInvitedJoinGroupRequestEvent)
+    '''@bot.on(BotInvitedJoinGroupRequestEvent)
     async def allowStranger(event: BotInvitedJoinGroupRequestEvent):
         logger.info("接收来自 "+str(event.from_id)+" 的加群邀请")
         if str(event.from_id) in userdict.keys():
@@ -194,14 +237,13 @@ def main(bot,config,moderateKey,logger):
                         al = '拒绝'
                         await bot.send_friend_message(event.from_id,"请前往bot用户群联系master获取bot授权，群号"+str(mainGroup))
                 else:
-                    if event.group_id in youquan:
-                        logger.info("同意")
-                        al = '同意'
-                        sdf="请先向目标群群员确认是否愿意接受bot加群"
-                        await bot.send_friend_message(event.from_id,sdf)
-                        await bot.send_friend_message(event.from_id,"40秒后自动同意")
-                        await sleep(40)
-                        await bot.allow(event)
+                    logger.info("同意")
+                    al = '同意'
+                    sdf="请先向目标群群员确认是否愿意接受bot加群"
+                    await bot.send_friend_message(event.from_id,sdf)
+                    await bot.send_friend_message(event.from_id,"40秒后自动同意")
+                    await sleep(40)
+                    await bot.allow(event)
             else:
                 if GroupSensor==False:
                     logger.info("签到天数不够，拒绝")
@@ -215,7 +257,7 @@ def main(bot,config,moderateKey,logger):
             logger.info("非用户，拒绝")
             al = '拒绝'
             await bot.send_friend_message(event.from_id,"您没有用户记录....请在任意群内发送 签到")
-        await bot.send_friend_message(master, '有新的加群申请\n来自：' + str(event.from_id) + '\n目标群：' + str(event.group_id) + '\n昵称：' + event.nick + '\n状态：' + al)
+        await bot.send_friend_message(master, '有新的加群申请\n来自：' + str(event.from_id) + '\n目标群：' + str(event.group_id) + '\n昵称：' + event.nick + '\n状态：' + al)'''
 
 
     @bot.on(NewFriendRequestEvent)
