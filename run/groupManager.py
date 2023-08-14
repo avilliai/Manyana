@@ -94,29 +94,6 @@ def main(bot,config,moderateKey,logger):
             except:
 
                 logger.error("向新入群成员"+str(event.member.id)+"发送消息失败")
-    @bot.on(GroupMessage)
-    async def accessGiver(event:GroupMessage):
-        if str(event.message_chain).startswith("授权群#") and event.sender.id==master:
-            with open('config/autoSettings.yaml', 'r', encoding='utf-8') as f:
-                result98 = yaml.load(f.read(), Loader=yaml.FullLoader)
-            trustG=result98.get("trustGroups")
-            try:
-                trustG.append(int(str(event.message_chain).split("#")[1]))
-                result98["trustGroups"]=trustG
-                with open('config/autoSettings.yaml', 'w', encoding="utf-8") as file:
-                    yaml.dump(result98, file, allow_unicode=True)
-                await bot.send(event,"授权群完成")
-            except:
-                logger.warning("不合规的授权")
-                await bot.send(event,"不合规的授权，请严格按照指令格式，例如 授权群#699455559")
-            if str(event.message_chain).split("#")[1]+".xlsx" in  os.listdir("data/autoReply/lexicon"):
-                await bot.send(event,"已有词库，不再进行创建")
-            else:
-                await bot.send(event,"将根据初始词库为该群创建专有词库")
-                shutil.copyfile('data/autoReply/lexicon/init.xlsx', 'data/autoReply/lexicon/'+str(event.message_chain).split("#")[1]+".xlsx")
-                await bot.send(event,"创建词库完成，即将执行自动更新，期间请勿进行词库添加操作")
-                importDict()
-                await bot.send(event,"完成")
 
     @bot.on(BotJoinGroupEvent)
     async def botJoin(event:BotJoinGroupEvent):
