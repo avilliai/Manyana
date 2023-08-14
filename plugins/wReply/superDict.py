@@ -84,32 +84,35 @@ def clearSheet(filename= "data/autoReply/lexicon/public.xlsx"):
     time1 = datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')
     print(time1 + '| clear，已清除xlsx')
 #导出到xlsx
-def outPutDic(groupId):
-    filename=groupId+".xlsx"
-    filename="data/autoReply/lexicon/"+filename
-    clearSheet(filename)
-    file = open('Config\\superDict.txt', 'r')
-    jss = file.read()
-    dict = json.loads(jss)
-    dict=dict.get(groupId)
-    Keys = dict.keys()
-    time1 = datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')
-    print(time1 + '| 已读取字典')
-    wb = openpyxl.load_workbook(filename)
-    sheet = wb.active
-    sheet.append(['key', 'value'])  # 插入一行数据
-    for d in Keys:
-        key=d
-        values=dict.get(d)
+def outPutDic():
+    las=os.listdir("data/autoReply/lexicon")
+    for ias in las:
+        filename="data/autoReply/lexicon/"+ias
+        groupId=ias.split(".")[0]
+        filename="data/autoReply/lexicon/"+filename
+        clearSheet(filename)
+        file = open('Config\\superDict.txt', 'r')
+        jss = file.read()
+        dict = json.loads(jss)
+        dict=dict.get(groupId)
+        Keys = dict.keys()
+        time1 = datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')
+        print(time1 + '| 已读取字典')
+        wb = openpyxl.load_workbook(filename)
+        sheet = wb.active
+        sheet.append(['key', 'value'])  # 插入一行数据
+        for d in Keys:
+            key=d
+            values=dict.get(d)
 
-        for value in values:
+            for value in values:
 
-            #print(str(key)+str(value))
+                #print(str(key)+str(value))
 
-            sheet.append([key, value])  # 插入一行数据
-    wb.save(filename)  # 保存,传入原文件则在
-    time1 = datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')
-    print(time1 + '| 词库已同步至xlsx')
+                sheet.append([key, value])  # 插入一行数据
+        wb.save(filename)  # 保存,传入原文件则在
+        time1 = datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')
+        print(time1 + '| 词库已同步至xlsx')
 
 
 

@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
 import datetime
+import os
 import random
 import sys
 
@@ -12,53 +13,53 @@ import json
 import openpyxl
 
 
-def mohuaddReplys(ass,groupid):
+def mohuaddReplys(ass,groupid,mode=0):
     message=ass[2:]
     messageS=message.split('#')
-    #读取字典
     file = open('config/superDict.txt', 'r')
     js = file.read()
     dict = json.loads(js)
     file.close()
     print(datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S') + '| 已读取字典')
     if str(groupid) not in dict:
-        print(datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')+ '| 创建新文件'+groupid+".xlsx")
-        dict1={messageS[0]:[messageS[1]]}
+        print(datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S') + '| 创建新文件' + groupid + ".xlsx")
+        dict1 = {messageS[0]: [messageS[1]]}
 
         wb = openpyxl.Workbook()
-        sheet=wb.active
-        sheet.append(["key","value"])
-
-    #print(dict)
-    #print('---------')
+        sheet = wb.active
+        sheet.append(["key", "value"])
     else:
-        dict1=dict.get(groupid)
-        #对传入的字符串进行处理并加入字典
-        #如果已经有关键字
-        if (messageS[0] in dict1):
-            replyValue = dict1.get(messageS[0])
-            replyValue.append(messageS[1])
-            print(datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')+ '| 已有关键字，追加')
-            # print(replyValue)
-        # 没有关键字则创建
-        else:
-            dict1[messageS[0]] = [messageS[1], ]
+        dict1 = dict.get(groupid)
+    #对传入的字符串进行处理并加入字典
+    #如果已经有关键字
+    if (messageS[0] in dict1):
+        replyValue = dict1.get(messageS[0])
+        replyValue.append(messageS[1])
+        print(datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')+ '| 已有关键字，追加')
+        # print(replyValue)
+    # 没有关键字则创建
+    else:
+        dict1[messageS[0]] = [messageS[1], ]
+    if mode==1:
+        lisas=os.listdir("data/autoReply/lexicon")
+        for sas in lisas:
+            wb = openpyxl.load_workbook("data/autoReply/lexicon/" + sas)
+            sheet = wb.active
+            sheet.append([messageS[0], messageS[1]])
+            wb.save("data/autoReply/lexicon/" +sas)
+    else:
         wb = openpyxl.load_workbook("data/autoReply/lexicon/" + groupid + ".xlsx")
         sheet = wb.active
             #print(dict)
-    #重新写入
-    #print(dict1)
-    #print(dict)
-    dict={"public":dict.get("public"),groupid:dict1}
+        #重新写入
+        #print(dict1)
+        #print(dict)
 
-    #写入excel
+        #写入excel
+        sheet.append([messageS[0], messageS[1]])  # 插入一行数据
+        wb.save("data/autoReply/lexicon/"+groupid+".xlsx")  # 保存,传入原文件则在
 
-
-
-    sheet.append([messageS[0], messageS[1]])  # 插入一行数据
-    wb.save("data/autoReply/lexicon/"+groupid+".xlsx")  # 保存,传入原文件则在
-
-
+    dict[str(groupid)] = dict1
 
     #print(dict)
     #print(type(dict))

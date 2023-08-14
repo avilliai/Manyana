@@ -123,7 +123,7 @@ def main(bot,config,sizhiKey,app_id, app_key,logger):
 
     @bot.on(GroupMessage)
     async def handle_group_message(event: GroupMessage):
-        if str(event.message_chain) == '开始添加':
+        if str(event.message_chain) == '开始添加' or str(event.message_chain) == '*开始添加':
             #str(event.sender.id) in trustUser or
             if (event.sender.id==master) and event.sender.id not in blUser:
                 global process1
@@ -132,7 +132,10 @@ def main(bot,config,sizhiKey,app_id, app_key,logger):
                     shutil.copyfile('data/autoReply/lexicon/init.xlsx',
                                     'data/autoReply/lexicon/' + str(event.message_chain).split("#")[1] + ".xlsx")
                 await bot.send(event, '请输入关键词')
-                process1[event.sender.id] = {"process": 1}
+                if str(event.message_chain) == '*开始添加':
+                    process1[event.sender.id] = {"process": 1,"global":True}
+                else:
+                    process1[event.sender.id] = {"process": 1}
             else:
                 await bot.send(event,event.sender.member_name+'没有添加的权限哦....')
 
@@ -153,7 +156,11 @@ def main(bot,config,sizhiKey,app_id, app_key,logger):
                 await bot.send(event,"检测到违禁词")
             else:'''
             await bot.send(event, '已记录关键词,请发送回复(发送over结束添加)\n文本回复前缀 语音 可以设置为语音回复')
-            process1[event.sender.id] = {"process": 2, "mohukey": str(event.message_chain),"groupId":event.group.id}
+            if "global" in process1.get(event.sender.id):
+                process1[event.sender.id] = {"process": 2, "mohukey": str(event.message_chain),
+                                             "groupId": event.group.id,"global":True}
+            else:
+                process1[event.sender.id] = {"process": 2, "mohukey": str(event.message_chain),"groupId":event.group.id}
 
 
     @bot.on(GroupMessage)
@@ -190,8 +197,13 @@ def main(bot,config,sizhiKey,app_id, app_key,logger):
                         value = str(event.message_chain)
                     global superDict
                     addStr = '添加' + process1.get(event.sender.id).get("mohukey") + '#' + value
-                    superDict = mohuaddReplys(addStr,str(event.group.id))
+                    if "global" in process1.get(event.sender.id):
+                        superDict = mohuaddReplys(addStr, str(event.group.id),mode=1)
+                    else:
+                        superDict = mohuaddReplys(addStr,str(event.group.id))
                     await bot.send(event, '已添加至词库')
+
+
                     outPutDic(str(event.group.id))
 
     @bot.on(GroupMessage)
