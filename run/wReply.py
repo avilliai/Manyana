@@ -246,6 +246,9 @@ def main(bot,config,sizhiKey,app_id, app_key,logger):
 
         else:
             #优先匹配本词库
+            if event.message_chain.count(At):
+                if At.target!=bot.qq:
+                    return
             if str(event.group.id) in superDict.keys():
                 if random.randint(0,100)<groupLexicon or At(bot.qq) in event.message_chain:
                     keys1=superDict.get(str(event.group.id)).keys()
