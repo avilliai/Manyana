@@ -125,7 +125,7 @@ def main(bot,config,sizhiKey,app_id, app_key,logger):
     async def handle_group_message(event: GroupMessage):
         if str(event.message_chain) == '开始添加' or str(event.message_chain) == '*开始添加':
             #str(event.sender.id) in trustUser or
-            if (event.sender.id==master) and event.sender.id not in blUser:
+            if (event.sender.id==master) or event.sender.id not in blUser:
                 global process1
                 if str(event.sender.group.id) not in superDict.keys():
                     await bot.send(event,"正在创建本群专有词库")
