@@ -61,7 +61,7 @@ def main(bot,config,sizhiKey,app_id, app_key,logger):
     turnMess = yamlData.get("turnMessage")
 
 
-
+    importDict()
     file = open('config/superDict.txt', 'r')
     jss = file.read()
     file.close()
@@ -547,7 +547,7 @@ def main(bot,config,sizhiKey,app_id, app_key,logger):
             sizhi = yamlData.get("sizhi")
             global turnMess
             turnMess = yamlData.get("turnMessage")
-
+            importDict()
             file = open('config/superDict.txt', 'r')
             jss = file.read()
             file.close()
