@@ -127,7 +127,9 @@ def main(bot,config,sizhiKey,app_id, app_key,logger):
             if (str(event.sender.id) in trustUser or event.sender.id==master) and event.sender.id not in blUser:
                 global process1
                 if str(event.sender.group.id) not in superDict.keys():
-                    await bot.send(event,"无本群专有词库，创建中.....")
+                    await bot.send(event,"将根据初始词库为该群创建专有词库")
+                    shutil.copyfile('data/autoReply/lexicon/init.xlsx',
+                                    'data/autoReply/lexicon/' + str(event.message_chain).split("#")[1] + ".xlsx")
                 await bot.send(event, '请输入关键词')
                 process1[event.sender.id] = {"process": 1}
             else:
