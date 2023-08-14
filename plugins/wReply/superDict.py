@@ -89,7 +89,6 @@ def outPutDic():
     for ias in las:
         filename="data/autoReply/lexicon/"+ias
         groupId=ias.split(".")[0]
-        filename="data/autoReply/lexicon/"+filename
         clearSheet(filename)
         file = open('Config\\superDict.txt', 'r')
         jss = file.read()
