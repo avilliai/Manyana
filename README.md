@@ -69,7 +69,17 @@ ping[图片]
 导入词库　　　　　　　#从config/词库.xlsx导入词库
 nameXXX           #设定bot对你的特殊称谓为XXX，例如 name吴彦祖　
 ```
-除此之外，你也可以打开config/词库.xlsx进行修改，完成后在群内发送 导入词库
+除此之外，你也可以打开data/autoReply/lexicon进行修改，完成后在群内发送 导入词库
+
+在这个文件夹下，分为三类词库
+
+| 共有词库            | 专有词库   | 初始词库           |
+|-----------------|--------|----------------|
+| public.xlsx     | 群号.xlsx | init.xlsx      |
+| 专有词库无匹配结果时使用共有词库 | 各群群内专用 | 各群创建专有词库时的初始添加内容 |
+| 字符串相似度匹配        | 正则匹配   | /              |
+
+
 
 你可以添加语音回复，但回复本身就有一定几率转为语音回复。
 ## vits语音合成
@@ -159,6 +169,7 @@ meme         #抽取一张meme图
 ```
 设定角色#角色名   #为语音功能设置一个默认的角色
 授权#qq号       #给一个用户授权(群内发送)
+授权群#群号      #授权群的同时会自动创建一个词库
 退群#群号       #退出指定群
 /bl add qq号   #拉黑一个用户
 /bl remove qq号   #取消拉黑
@@ -176,7 +187,7 @@ BeatNudge:         #戳一戳反击的第一条消息
 - 生气了哦！
 BeatNudge1:       #戳一戳反击后的消息
 - 你是笨蛋吗
-chineseVoiceRate: 30    #中文回复几率
+chineseVoiceRate: 30    #中文语音回复几率
 defaultModel:         #默认语音模型
   modelSelect:        
   - voiceModel/nene/1374_epochsm.pth
@@ -190,23 +201,23 @@ voiceReply: 50    # 戳一戳转语音几率
 
 ```
 ## 自定义回复相关
-由于对config/settings.yaml读写比较频繁，所以这个文件的注释写在了这里
 你可以对它进行修改，但一般建议使用默认设置
-```angular2html
-defaultModel:      #默认语音模型
-  modelSelect:       # 模型与配置文件路径
-  - voiceModel/nene/1374_epochsm.pth
-  - voiceModel/nene/config.json
-  speaker: 2          # 默认的speaker，一般单角色语音模型默认为0
-signTimes: 3    # 签到几天后可以邀请加群
+```
+
+signTimes: 3    # 签到几天后可以邀请加群，需保持GroupSensor关闭
+GroupSensor: False    #开启后，将拒绝无授权群的加群邀请，signTimes将失效
 wReply:
-  banWords:          # 自定义回复敏感词
-  - 妈
-  chineseVoiceRate: 30  #自定义回复语音使用中文的几率
-  replyRate: 3          # 自定义回复不艾特的触发几率
-  sizhi: false         # 是否开启思知ai，(没太大必要有一说一)
-  turnMessage: true    #是否开启私聊转发，打开bot会把收到的私聊转发给你，很吵建议关闭
-  voiceRate: 30      #语音回复几率
+  banWords:       #违禁词
+  - 废物
+  - 主人
+  chineseVoiceRate: 30     #中文回复几率
+  replyRate: 3         #共有词库不艾特时的回复几率
+  groupLexicon: 100    #各群专有词库不艾特时的回复几率（调这个就行，没有匹配到时，根据replyRate调用共有词库进行回复）
+  sizhi: false          #是否启用思知ai
+  turnMessage: true    #是否开启私聊转发
+  voiceRate: 40        #语音回复几率，过高将增大设备负担
+
+
 ```
 # 使用思知ai
 这比我写的自定义回复更好用，推荐。release有对应的知识库(sizhi.rar)用以导入思知控制台
