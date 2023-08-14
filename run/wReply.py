@@ -241,7 +241,11 @@ def main(bot,config,sizhiKey,app_id, app_key,logger):
                         match = re.search(pattern, getStr)
                         if match:
                             logger.warning("成功匹配正则表达式：" + pattern)
-                            replyssssss=random.choice(superDict.get(str(event.group.id)).get(str((i))))
+                            try:
+                                replyssssss=random.choice(superDict.get(str(event.group.id)).get(str((i))))
+                            except:
+                                logger.error("当前关键词回复为空")
+                                return
                             lock=1
                             break
                     if lock==0:
