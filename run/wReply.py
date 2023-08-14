@@ -247,6 +247,9 @@ def main(bot,config,sizhiKey,app_id, app_key,logger):
                         if At(bot.qq) in event.message_chain or random.randint(0,100)<likeindex:
                             best_matches = process.extractBests(getStr, superDict.get("public").keys(), limit=3)
                             logger.info("获取匹配结果：key:" + getStr + "|" + str(best_matches))
+                            if int((best_matches)[0][1])<50:
+                                logger.warning("匹配相似度过低，不发送")
+                                return
                             replyssssss = random.choice(superDict.get("public").get(str((best_matches)[0][0])))
                         else:
                             return
@@ -257,6 +260,9 @@ def main(bot,config,sizhiKey,app_id, app_key,logger):
                 #best_match = process.extractOne(getStr, superDict.keys())
                 best_matches = process.extractBests(getStr, superDict.get("public").keys(), limit=3)
                 logger.info("获取匹配结果：key:" + getStr + "|" + str(best_matches))
+                if int((best_matches)[0][1]) < 50:
+                    logger.warning("匹配相似度过低，不发送")
+                    return
                 replyssssss =random.choice(superDict.get("public").get(str((best_matches)[0][0])))
             else:
                 return
