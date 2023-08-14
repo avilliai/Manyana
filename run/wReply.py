@@ -128,7 +128,7 @@ def main(bot,config,sizhiKey,app_id, app_key,logger):
             if (event.sender.id==master) and event.sender.id not in blUser:
                 global process1
                 if str(event.sender.group.id) not in superDict.keys():
-                    await bot.send(event,"将根据初始词库为该群创建专有词库")
+                    await bot.send(event,"正在创建本群专有词库")
                     shutil.copyfile('data/autoReply/lexicon/init.xlsx',
                                     'data/autoReply/lexicon/' + str(event.group.id) + ".xlsx")
                 await bot.send(event, '请输入关键词')
@@ -500,7 +500,7 @@ def main(bot,config,sizhiKey,app_id, app_key,logger):
             if str(event.message_chain).split("#")[1] + ".xlsx" in os.listdir("data/autoReply/lexicon"):
                 await bot.send(event, "已有词库，不再进行创建")
             else:
-                await bot.send(event, "将根据初始词库为该群创建专有词库")
+                await bot.send(event, "正在创建本群专有词库.....")
                 shutil.copyfile('data/autoReply/lexicon/init.xlsx',
                                 'data/autoReply/lexicon/' + str(event.message_chain).split("#")[1] + ".xlsx")
                 await bot.send(event, "创建词库完成，即将执行自动更新，期间请勿进行词库添加操作")
