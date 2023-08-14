@@ -415,7 +415,16 @@ def main(bot,config,sizhiKey,app_id, app_key,logger):
             else:
                 await bot.send(event, event.sender.member_name + '似乎没有删除的权限呢...')
 
-
+    @bot.on(GroupMessage)
+    async def delKeyAndValue(event:GroupMessage):
+        global superDict
+        if str(event.message_chain).startswith("del#"):
+            aim1=str(event.message_chain).split("#")[1]
+            if aim1 in superDict.get(str(event.group.id)).keys():
+                dicss=mohudels(aim1,str(event.group.id))
+                superDict=dicss
+            else:
+                await bot.send(event,"没有该关键词")
     # 删除指定下标执行部分
     @bot.on(GroupMessage)
     async def handle_group_message(event: GroupMessage):

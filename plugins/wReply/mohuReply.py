@@ -94,16 +94,15 @@ def mohuadd(key,value,group):
 
 
 
-def mohudels(messagess):
+def mohudels(messagess,group2):
     file = open('config/superDict.txt', 'r')
     js = file.read()
     dict = json.loads(js)
-    messageS=messagess[4:]
-    try:
-        dict.pop(messageS)
-    except:
-        print(datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')+ '| 没有指定的关键词')
-        return 1
+    dicaa=dict.get(str(group2))
+    dicaa.pop(messagess)
+    dict[str(group2)]=dicaa
+
+
 
     js = json.dumps(dict)
     file = open('config/superDict.txt', 'w')
