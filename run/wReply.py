@@ -134,6 +134,7 @@ def main(bot,config,sizhiKey,app_id, app_key,logger):
                 await bot.send(event, '请输入关键词')
                 if str(event.message_chain) == '*开始添加':
                     process1[event.sender.id] = {"process": 1,"global":True}
+                    await bot.send(event,"请注意，本次添加的回复将被添加到所有群")
                 else:
                     process1[event.sender.id] = {"process": 1}
             else:
@@ -204,7 +205,7 @@ def main(bot,config,sizhiKey,app_id, app_key,logger):
                     await bot.send(event, '已添加至词库')
 
 
-                    outPutDic(str(event.group.id))
+                    #outPutDic(str(event.group.id))
 
     @bot.on(GroupMessage)
     async def init(event: GroupMessage):
@@ -461,8 +462,9 @@ def main(bot,config,sizhiKey,app_id, app_key,logger):
                     await bot.send(event, '已删除')
                 except:
                     await bot.send(event, '下标不合法')
+                await bot.send(event,"正在更新词库，请稍候")
                 inprocess1.pop(event.sender.id)
-                outPutDic(str(event.group.id))
+                outPutDic()
 
 
 
@@ -513,11 +515,11 @@ def main(bot,config,sizhiKey,app_id, app_key,logger):
                 await bot.send(event, '词库更新完成')
 
 
-    '''@bot.on(GroupMessage)
+    @bot.on(GroupMessage)
     async def restarts(event: GroupMessage):
         if str(event.message_chain) == '导出词库' and str(event.sender.id) == str(master):
             outPutDic()
-            await bot.send(event, '已导出')'''
+            await bot.send(event, '已导出')
     @bot.on(Startup)
     async def updateData(event: Startup):
         while True:
