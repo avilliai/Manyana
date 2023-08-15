@@ -237,7 +237,7 @@ def main(bot,config,sizhiKey,app_id, app_key,logger):
             global superDict
             superDict = json.loads(jss)
 
-            print('已读取模糊匹配字典')
+            logger.info('已读取模糊匹配字典')
             await bot.send(event, '已导入')
 
 
@@ -516,7 +516,7 @@ def main(bot,config,sizhiKey,app_id, app_key,logger):
             global superDict
             superDict = json.loads(jss)
 
-            print('已读取模糊匹配字典')
+            logger.info('已读取模糊匹配字典')
             await bot.send(event, '已导入')
 
     @bot.on(GroupMessage)
@@ -548,7 +548,7 @@ def main(bot,config,sizhiKey,app_id, app_key,logger):
                 global superDict
                 superDict = json.loads(jss)
 
-                print('已读取模糊匹配字典')
+                logger.info('已读取模糊匹配字典')
                 await bot.send(event, '词库更新完成')
 
 
