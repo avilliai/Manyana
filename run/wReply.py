@@ -145,11 +145,13 @@ def main(bot,config,sizhiKey,app_id, app_key,logger):
                 await bot.send(event, '请输入关键词')
                 if str(event.message_chain) == '*开始添加':
                     if str(event.sender.id) in trustUser:
-                        process1[event.sender.id] = {"process": 1,"global":True}
+
                         await bot.send(event,"请注意，本次添加的回复将被添加到所有群")
+                        process1[event.sender.id] = {"process": 1, "global": True}
                     else:
+
+                        await bot.send(event,"用户信任等级不足，无权操作全局词库。添加内容将仅在本群生效")
                         process1[event.sender.id] = {"process": 1}
-                        await bot.send(event,"用户信任等级不足，无权操作全局词库")
                 else:
                     process1[event.sender.id] = {"process": 1}
             else:
@@ -228,6 +230,7 @@ def main(bot,config,sizhiKey,app_id, app_key,logger):
         if event.sender.id in process1 and str(event.message_chain) == "over":
             process1.pop(event.sender.id)
             await bot.send(event,"结束添加")
+            importDict()
 
 
     # 模糊词库触发回复
@@ -276,7 +279,7 @@ def main(bot,config,sizhiKey,app_id, app_key,logger):
                         match = re.search(pattern, getStr)
                         if match:
                             logger.warning("成功匹配正则表达式：" + pattern)
-                            if len(str(event.message_chain))>len(pat)*MaxAllowableLength:
+                            if len(getStr)>len(pat)*MaxAllowableLength:
                                 logger.warning("源字符总长过长，为提高匹配准确度不进行匹配")
                                 continue
                             if len(pat)>lenth1:
