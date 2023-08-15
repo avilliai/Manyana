@@ -54,6 +54,9 @@ def main(bot,api_KEY,app_id,app_key,nasa_api,proxy,logger):
         times = int(str(data2.get('sts')))
         if times > 8:
             trustUser.append(str(i))
+    with open('config/settings.yaml', 'r', encoding='utf-8') as f:
+        result1 = yaml.load(f.read(), Loader=yaml.FullLoader)
+    r18 = result1.get("r18Pic")
 
     @bot.on(Startup)
     async def update(event:Startup):
@@ -124,7 +127,7 @@ def main(bot,api_KEY,app_id,app_key,nasa_api,proxy,logger):
                 logger.info("提取图片关键字。 数量: "+str(match1.group(1))+" 关键字: "+match1.group(2))
                 data={"tag":""}
                 if "r18" in str(event.message_chain) or "色图" in str(event.message_chain) or "涩图" in str(event.message_chain):
-                    if str(event.sender.id) in trustUser:
+                    if str(event.sender.id) in trustUser and r18==True :
                         data["r18"]=1
                     else:
                         await bot.send(event,"r18模式已关闭")
