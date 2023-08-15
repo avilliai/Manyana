@@ -47,6 +47,7 @@ def main(bot,config,sizhiKey,app_id, app_key,logger):
     chineseVoiceRate = yamlData.get("chineseVoiceRate")
     global voiceRate
     voiceRate = yamlData.get("voiceRate")
+    MaxAllowableLength=yamlData.get("MaxAllowableLength")
     # 过滤词库
     global ban
     ban = yamlData.get("banWords")
@@ -266,16 +267,17 @@ def main(bot,config,sizhiKey,app_id, app_key,logger):
                         match = re.search(pattern, getStr)
                         if match:
                             logger.warning("成功匹配正则表达式：" + pattern)
+                            if len(str(event.message_chain))>len(pat)*MaxAllowableLength:
+                                logger.warning("源字符总长过长，为提高匹配准确度不进行匹配")
+                                continue
                             if len(pat)>lenth1:
                                 lenth1=len(pat)
-                            try:
-                                replyssssss=random.choice(superDict.get(str(event.group.id)).get(str((i))))
-                                lock = 1
-                            except:
-                                logger.error("当前关键词回复为空")
-                                continue
-
-
+                                try:
+                                    replyssssss=random.choice(superDict.get(str(event.group.id)).get(str((i))))
+                                    lock = 1
+                                except:
+                                    logger.error("当前关键词回复为空")
+                                    continue
                     if lock==0:
                         #正则匹配失败，尝试从public.xlsx获取回复
                         if At(bot.qq) in event.message_chain or random.randint(0,100)<likeindex:

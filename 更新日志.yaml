@@ -24,3 +24,5 @@
   - data/autoReply/lexicon新增一个init.xlsx，其中的内容将写入各群初始化词库
   - 增加指令 *开始添加 可以添加回复到所有群共享词库中
   - 增加指令 del#关键词  可以完全删除关键词以及所有回复
+2023/8/15:
+  - config/settings中新增配置项MaxAllowableLength，详情请查看文件注释
