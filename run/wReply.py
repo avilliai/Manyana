@@ -133,6 +133,14 @@ def main(bot,config,sizhiKey,app_id, app_key,logger):
                     shutil.copyfile('data/autoReply/lexicon/init.xlsx',
                                     'data/autoReply/lexicon/' + str(event.group.id) + ".xlsx")
                     importDict()
+                    file = open('config/superDict.txt', 'r')
+                    jss = file.read()
+                    file.close()
+                    global superDict
+                    superDict = json.loads(jss)
+
+                    logger.warning("创建专有词库中："+str(event.group.id) + ".xlsx")
+                    await bot.send(event, '已创建本群专有词库')
                 await bot.send(event, '请输入关键词')
                 if str(event.message_chain) == '*开始添加':
                     if str(event.sender.id) in trustUser:
