@@ -194,14 +194,14 @@ def main(bot,config,sizhiKey,app_id, app_key,logger):
                         url = lst_img[0].url
                         imgname = dict_download_img(url,"data/autoReply/imageReply")
                         value = imgname.replace("data/autoReply/imageReply/","")
-                        if value.endswith(".jpg"):
-                            pass
-                        else:
-                            value+=".jpg"
+                        value=value.split(".")[0]+".jpg"
+
+
                     else:
                         logger.info("增加文本回复")
                         value = str(event.message_chain)
                     global superDict
+                    value=value.replace("#","yu")
                     addStr = '添加' + process1.get(event.sender.id).get("mohukey") + '#' + value
                     if "global" in process1.get(event.sender.id):
                         superDict = mohuaddReplys(addStr, str(event.group.id),mode=1)
