@@ -124,6 +124,7 @@ def main(bot,config,sizhiKey,app_id, app_key,logger):
 
     @bot.on(GroupMessage)
     async def handle_group_message(event: GroupMessage):
+        global superDict
         if str(event.message_chain) == '开始添加' or str(event.message_chain) == '*开始添加':
             #str(event.sender.id) in trustUser or
             if (event.sender.id==master) or event.sender.id not in blUser:
@@ -136,7 +137,7 @@ def main(bot,config,sizhiKey,app_id, app_key,logger):
                     file = open('config/superDict.txt', 'r')
                     jss = file.read()
                     file.close()
-                    global superDict
+
                     superDict = json.loads(jss)
 
                     logger.warning("创建专有词库中："+str(event.group.id) + ".xlsx")
