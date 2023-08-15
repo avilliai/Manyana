@@ -231,6 +231,14 @@ def main(bot,config,sizhiKey,app_id, app_key,logger):
             process1.pop(event.sender.id)
             await bot.send(event,"结束添加")
             importDict()
+            file = open('config/superDict.txt', 'r')
+            jss = file.read()
+            file.close()
+            global superDict
+            superDict = json.loads(jss)
+
+            print('已读取模糊匹配字典')
+            await bot.send(event, '已导入')
 
 
     # 模糊词库触发回复
