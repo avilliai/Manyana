@@ -131,6 +131,7 @@ def main(bot,config,sizhiKey,app_id, app_key,logger):
                     await bot.send(event,"正在创建本群专有词库")
                     shutil.copyfile('data/autoReply/lexicon/init.xlsx',
                                     'data/autoReply/lexicon/' + str(event.group.id) + ".xlsx")
+                    importDict()
                 await bot.send(event, '请输入关键词')
                 if str(event.message_chain) == '*开始添加':
                     if str(event.sender.id) in trustUser:
@@ -253,22 +254,28 @@ def main(bot,config,sizhiKey,app_id, app_key,logger):
                 if random.randint(0,100)<groupLexicon or At(bot.qq) in event.message_chain:
                     keys1=superDict.get(str(event.group.id)).keys()
                     lock=0
+                    lenth1 = 0
+                    replyssssss = ""
                     for i in keys1:
                         pat=i.split("/")
                         pattern=""
+
                         for patts in pat:
                             pattern+=".*"+patts
                         pattern+=".*"
                         match = re.search(pattern, getStr)
                         if match:
                             logger.warning("成功匹配正则表达式：" + pattern)
+                            if len(pat)>lenth1:
+                                lenth1=len(pat)
                             try:
                                 replyssssss=random.choice(superDict.get(str(event.group.id)).get(str((i))))
+                                lock = 1
                             except:
                                 logger.error("当前关键词回复为空")
-                                return
-                            lock=1
-                            break
+                                continue
+
+
                     if lock==0:
                         #正则匹配失败，尝试从public.xlsx获取回复
                         if At(bot.qq) in event.message_chain or random.randint(0,100)<likeindex:
