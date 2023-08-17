@@ -61,8 +61,9 @@ def main(bot,config,sizhiKey,app_id, app_key,logger):
     global turnMess
     turnMess = yamlData.get("turnMessage")
 
-
+    logger.info("读取词库文件中")
     importDict()
+    logger.info("读取完成")
     file = open('config/superDict.txt', 'r')
     jss = file.read()
     file.close()
@@ -133,7 +134,9 @@ def main(bot,config,sizhiKey,app_id, app_key,logger):
                     await bot.send(event,"正在创建本群专有词库")
                     shutil.copyfile('data/autoReply/lexicon/init.xlsx',
                                     'data/autoReply/lexicon/' + str(event.group.id) + ".xlsx")
+                    logger.info("读取词库文件中")
                     importDict()
+                    logger.info("读取完成")
                     file = open('config/superDict.txt', 'r')
                     jss = file.read()
                     file.close()
@@ -230,15 +233,15 @@ def main(bot,config,sizhiKey,app_id, app_key,logger):
         if event.sender.id in process1 and str(event.message_chain) == "over":
             process1.pop(event.sender.id)
             await bot.send(event,"结束添加")
+            logger.info("读取词库文件中")
             importDict()
+            logger.info("读取完成")
             file = open('config/superDict.txt', 'r')
             jss = file.read()
             file.close()
             global superDict
             superDict = json.loads(jss)
 
-            logger.info('已读取模糊匹配字典')
-            await bot.send(event, '已导入')
 
 
     # 模糊词库触发回复
@@ -475,7 +478,9 @@ def main(bot,config,sizhiKey,app_id, app_key,logger):
                 dicss=mohudels(aim1,str(event.group.id))
                 superDict=dicss
                 await bot.send(event,"已移除关键词")
+                logger.info("导出词库中")
                 outPutDic()
+                logger.info("导出词库完成")
             else:
                 await bot.send(event,"没有该关键词")
     # 删除指定下标执行部分
@@ -501,7 +506,9 @@ def main(bot,config,sizhiKey,app_id, app_key,logger):
                     await bot.send(event, '下标不合法')
                 await bot.send(event,"正在更新词库，请稍候")
                 inprocess1.pop(event.sender.id)
+                logger.info("导出词库中")
                 outPutDic()
+                logger.info("导出词库完成")
 
 
 
@@ -509,7 +516,9 @@ def main(bot,config,sizhiKey,app_id, app_key,logger):
     @bot.on(GroupMessage)
     async def restarts(event: GroupMessage):
         if str(event.message_chain)=='导入词库' and str(event.sender.id)==str(master):
+            logger.info("读取词库文件中")
             importDict()
+            logger.info("读取完成")
             file = open('config/superDict.txt', 'r')
             jss = file.read()
             file.close()
@@ -537,11 +546,13 @@ def main(bot,config,sizhiKey,app_id, app_key,logger):
             if str(event.message_chain).split("#")[1] + ".xlsx" in os.listdir("data/autoReply/lexicon"):
                 await bot.send(event, "已有词库，不再进行创建")
             else:
-                await bot.send(event, "正在创建本群专有词库.....")
+                await bot.send(event, "正在创建群专有词库.....")
                 shutil.copyfile('data/autoReply/lexicon/init.xlsx',
                                 'data/autoReply/lexicon/' + str(event.message_chain).split("#")[1] + ".xlsx")
                 await bot.send(event, "创建词库完成，即将执行自动更新，期间请勿进行词库添加操作")
+                logger.info("读取词库文件中")
                 importDict()
+                logger.info("读取完成")
                 file = open('config/superDict.txt', 'r')
                 jss = file.read()
                 file.close()
@@ -555,7 +566,9 @@ def main(bot,config,sizhiKey,app_id, app_key,logger):
     @bot.on(GroupMessage)
     async def restarts(event: GroupMessage):
         if str(event.message_chain) == '导出词库' and str(event.sender.id) == str(master):
+            logger.info("导出词库中")
             outPutDic()
+            logger.info("导出词库完成")
             await bot.send(event, '已导出')
     @bot.on(Startup)
     async def updateData(event: Startup):
@@ -584,7 +597,9 @@ def main(bot,config,sizhiKey,app_id, app_key,logger):
             sizhi = yamlData.get("sizhi")
             global turnMess
             turnMess = yamlData.get("turnMessage")
+            logger.info("读取词库文件中")
             importDict()
+            logger.info("读取完成")
             file = open('config/superDict.txt', 'r')
             jss = file.read()
             file.close()

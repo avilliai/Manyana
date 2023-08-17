@@ -25,7 +25,7 @@ def importDict(xlsxPath = 'data/autoReply/lexicon/public.xlsx'):
             rows_data = list(sheet.rows)
             # 获取表单的表头信息(第一行)，也就是列表的第一个元素
             titles = [title.value for title in rows_data.pop(0)]
-            print(titles)
+            #print(titles)
 
 
             all_row_dict = []
@@ -63,7 +63,7 @@ def importDict(xlsxPath = 'data/autoReply/lexicon/public.xlsx'):
                     newDict[key] = [value,]
                 #print('key:'+key+' '+'value:'+value)
             diss[isa.split(".")[0]]=newDict
-            print(isa+"导入完成")
+            #print(isa+"导入完成")
     js = json.dumps(diss)
 
     file = open('config\superDict.txt', 'w')
