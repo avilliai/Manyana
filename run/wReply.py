@@ -141,10 +141,10 @@ def main(bot,config,sizhiKey,app_id, app_key,logger):
             jss = file.read()
             file.close()
             superDict = json.loads(jss)
-
+            osa.append(str(event.group.id) + ".xlsx")
             logger.warning("创建专有词库中：" + str(event.group.id) + ".xlsx")
             await bot.send(event, '已创建本群专有词库\n发送 开始添加 即可进行添加')
-            osa.append(str(event.group.id)+".xlsx")
+
 
 
     @bot.on(GroupMessage)
