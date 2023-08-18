@@ -26,3 +26,6 @@
   - 增加指令 del#关键词  可以完全删除关键词以及所有回复
 2023/8/15:
   - config/settings中新增配置项MaxAllowableLength，详情请查看文件注释
+2023/8/18:
+  - config/settings中新增配置项AutoCreatLexicon，详情请查看文件注释
+  - 增加指令 *del#关键词 与 *开始添加 相对应

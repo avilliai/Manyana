@@ -48,6 +48,9 @@ def main(bot,config,sizhiKey,app_id, app_key,logger):
     global voiceRate
     voiceRate = yamlData.get("voiceRate")
     MaxAllowableLength=yamlData.get("MaxAllowableLength")
+    AutoCreatLexicon=yamlData.get("AutoCreatLexicon")
+    global osa
+    osa=os.listdir("data/autoReply/lexicon")
     # 过滤词库
     global ban
     ban = yamlData.get("banWords")
@@ -122,6 +125,27 @@ def main(bot,config,sizhiKey,app_id, app_key,logger):
     process1={}
     global inprocess1
     inprocess1={}
+
+    @bot.on(GroupMessage)
+    async def autoCreatNewLexion(event:GroupMessage):
+        global osa
+        global superDict
+        if AutoCreatLexicon==True and str(event.group.id)+".xlsx" not in osa:
+            await bot.send(event, "正在创建本群专有词库")
+            shutil.copyfile('data/autoReply/lexicon/init.xlsx',
+                            'data/autoReply/lexicon/' + str(event.group.id) + ".xlsx")
+            logger.info("读取词库文件中")
+            importDict()
+            logger.info("读取完成")
+            file = open('config/superDict.txt', 'r')
+            jss = file.read()
+            file.close()
+            superDict = json.loads(jss)
+
+            logger.warning("创建专有词库中：" + str(event.group.id) + ".xlsx")
+            await bot.send(event, '已创建本群专有词库\n发送 开始添加 即可进行添加')
+            osa.append(str(event.group.id)+".xlsx")
+
 
     @bot.on(GroupMessage)
     async def handle_group_message(event: GroupMessage):
@@ -483,6 +507,30 @@ def main(bot,config,sizhiKey,app_id, app_key,logger):
                 logger.info("导出词库完成")
             else:
                 await bot.send(event,"没有该关键词")
+
+    @bot.on(GroupMessage)
+    async def delKeyAndValue(event: GroupMessage):
+        global superDict
+        if str(event.message_chain).startswith("*del#"):
+            aim1 = str(event.message_chain).split("#")[1]
+            sasf=0
+            for isas in superDict.keys():
+                if aim1 in superDict.get(isas).keys():
+                    dicss = mohudels(aim1, isas)
+                    sasf=1
+                    superDict = dicss
+
+
+                else:
+                    continue
+            if sasf==1:
+                logger.info("导出词库中")
+                outPutDic()
+                logger.info("导出词库完成")
+                await bot.send(event,"删除成功")
+            else:
+                logger.info("没有关键词"+aim1)
+                await bot.send(event,"没有关键词"+aim1)
     # 删除指定下标执行部分
     @bot.on(GroupMessage)
     async def handle_group_message(event: GroupMessage):
