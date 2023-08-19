@@ -221,6 +221,9 @@ wReply:
   sizhi: false          #是否启用思知ai
   turnMessage: true    #是否开启私聊转发
   voiceRate: 40        #语音回复几率，过高将增大设备负担
+  MaxAllowableLength: 7   #最大允许字符长度倍数,该参数为7时,如果字符串总长为关键字长度的7倍以上，则不进行匹配。如关键词是 早 ,可以匹配 早上好 ,不会匹配 我早就把作业做完了
+  AutoCreatLexicon: False #加群之后是否自动创建群专属词库(根据init.xlsx),常规的创建方式是 master发送 授权群#群号 或者有群员在群里发送 开始添加。如果你的群比较多(100以上，不建议开启，除非是广告机器人)
+
 
 
 ```
