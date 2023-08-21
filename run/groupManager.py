@@ -488,7 +488,7 @@ def main(bot,config,moderateKey,logger):
             logger.info("测试密钥:" + a)
 
             try:
-                url='http://gchat.qpic.cn/gchatpic_new/1840094972/732096208-2692656462-9F4724505A26A9CC596C96C371D7E185/0?term=2&is_origin=0'
+                url='https://mirai.mamoe.net/assets/uploads/files/1687160800071-%E5%BE%AE%E4%BF%A1%E5%9B%BE%E7%89%87_20230619154621.jpg'
                 logger.info("图片审核:url:" + url + " key:" + moderateK)
                 rate = await setuModerate(url, a)
             except:

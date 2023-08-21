@@ -107,6 +107,8 @@ def main(bot,config,sizhiKey,app_id, app_key,logger):
     global models
     global characters
     models, default, characters = modelLoader()  # 读取模型
+    global lock
+    lock=False
 
     @bot.on(GroupMessage)
     async def setDefaultModel(event: GroupMessage):
