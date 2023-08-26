@@ -202,7 +202,7 @@ if __name__ == '__main__':
             LiveMonitor.main(bot, master, botName, logger)
             bot.run()
         except:
-            logger.error("出错，20秒后重启bot")
-            await sleep(20)
+            logger.error("Manyana连接出错，30秒后重启bot，请在此期间完成bot登录：/login 你的bot账号 你的bot密码 ANDROID_PAD")
+            await sleep(30)
             await run1(bot)
     asyncio.run(run1(bot))
