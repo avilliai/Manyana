@@ -206,8 +206,6 @@ if __name__ == '__main__':
             await sleep(30)
             await run1(bot)
     def runBot():
-        bot = Mirai(qq, adapter=WebSocketAdapter(
-            verify_key=key, host='localhost', port=port
-        ))
+
         bot.run()
     asyncio.run(run1(bot))
