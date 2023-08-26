@@ -186,10 +186,10 @@ if __name__ == '__main__':
         imgSearch.main(bot, result.get("sauceno-api"), result.get("proxy"), logger)
     else:
         logger.warning("未设置代理，禁用poe-api与搜图")
-    logger.info("30秒后开始建立连接，请在此期间完成bot登录\n/login 你的bot账号 你的bot密码 ANDROID_PAD")
+    logger.info("60秒后开始建立连接，请在此期间完成bot登录\n/login 你的bot账号 你的bot密码 ANDROID_PAD")
 
 
-    sleep(30)
+    sleep(60)
 
 
     startVer()
