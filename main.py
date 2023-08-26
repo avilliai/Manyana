@@ -208,4 +208,6 @@ if __name__ == '__main__':
     def runBot():
 
         bot.run()
+    logger.info("30秒后开始建立连接，请在此期间完成bot登录\n/login 你的bot账号 你的bot密码 ANDROID_PAD")
+    sleep(30)
     run1(bot)
