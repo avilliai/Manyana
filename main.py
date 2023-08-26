@@ -208,4 +208,4 @@ if __name__ == '__main__':
     def runBot():
 
         bot.run()
-    asyncio.run(run1(bot))
+    run1(bot)
