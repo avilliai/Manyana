@@ -191,26 +191,28 @@ if __name__ == '__main__':
 
     sleep(60)
 
-
+    nudgeReply.main(bot, master, app_id, app_key, logger)  # 戳一戳
+    extraParts.main(bot, result.get("weatherXinZhi"), app_id, app_key, nasa_api, proxy, logger)  # 额外小功能
+    wReply.main(bot, config, sizhiKey, app_id, app_key, logger)
+    wikiHelper.main(bot, app_id, app_key, logger)
+    userSign.main(bot, result.get("weatherXinZhi"), master, config, logger)
+    groupManager.main(bot, config, moderate, logger)
+    PicRandom.main(bot, proxy, logger)
+    musicShare.main(bot, master, botName, logger)
+    LiveMonitor.main(bot, master, botName, logger)
     startVer()
     def run1(bot):
         try:
-            nudgeReply.main(bot, master, app_id, app_key, logger)  # 戳一戳
-            extraParts.main(bot, result.get("weatherXinZhi"), app_id, app_key, nasa_api, proxy, logger)  # 额外小功能
-            wReply.main(bot, config, sizhiKey, app_id, app_key, logger)
-            wikiHelper.main(bot, app_id, app_key, logger)
-            userSign.main(bot, result.get("weatherXinZhi"), master, config, logger)
-            groupManager.main(bot, config, moderate, logger)
-            PicRandom.main(bot, proxy, logger)
-            musicShare.main(bot, master, botName, logger)
-            LiveMonitor.main(bot, master, botName, logger)
+
             runBot()
         except:
             logger.error("Manyana连接出错，30秒后重启bot，请在此期间完成bot登录：/login 你的bot账号 你的bot密码 ANDROID_PAD")
             sleep(30)
             run1(bot)
     def runBot():
-
+        bot = Mirai(qq, adapter=WebSocketAdapter(
+            verify_key=key, host='localhost', port=port
+        ))
         bot.run()
 
     run1(bot)
