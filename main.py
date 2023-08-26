@@ -202,7 +202,7 @@ if __name__ == '__main__':
             LiveMonitor.main(bot, master, botName, logger)
             bot.run()
         except:
-            logger.error("出错，15秒后重启bot")
-            await sleep(15)
+            logger.error("出错，20秒后重启bot")
+            await sleep(20)
             await run1(bot)
     asyncio.run(run1(bot))
