@@ -177,10 +177,6 @@ if __name__ == '__main__':
         print(all_the_text)
 
 
-    logger.warning("120秒后开始建立连接，请在此期间完成bot登录\n/login 你的bot账号 你的bot密码 ANDROID_PAD")
-
-
-    sleep(120)
     voiceReply.main(bot, master, app_id, app_key, logger)  # 语音生成
     if proxy != "":
         try:
