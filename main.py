@@ -204,5 +204,5 @@ if __name__ == '__main__':
         except:
             logger.error("出错，15秒后重启bot")
             await sleep(15)
-            asyncio.run(run1(bot))
+            await run1(bot)
     asyncio.run(run1(bot))
