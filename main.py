@@ -193,9 +193,7 @@ if __name__ == '__main__':
             sleep(30)
             run1(bot)
     def runBot():
-        bot = Mirai(qq, adapter=WebSocketAdapter(
-            verify_key=key, host='localhost', port=port
-        ))
+
         voiceReply.main(bot, master, app_id, app_key, logger)  # 语音生成
         if proxy != "":
             try:
