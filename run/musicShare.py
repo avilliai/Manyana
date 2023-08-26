@@ -50,22 +50,13 @@ def main(bot,master,botName,logger):
             global sender
             global times
 
-            ia=0
-            for i in userdict.keys():
+            temp={}
+            temp["step"]=0
+            sender[str(event.sender.id)]=temp
 
 
-                if userdict.get(i).get("userid")==str(event.sender.id):
-                    ia=1
-            if ia==1:
-                await bot.send(event, "最近点过歌了哦....")
-            else:
-                temp={}
-                temp["step"]=0
-                sender[str(event.sender.id)]=temp
-
-
-                await bot.send(event,"请依次发送留言和音乐链接哦.....")
-                await bot.send_friend_message(int(master),"有新的点歌任务")
+            await bot.send(event,"请依次发送留言和音乐链接哦.....")
+            await bot.send_friend_message(int(master),"有新的点歌任务")
 
     @bot.on(FriendMessage)
     async def music2(event: FriendMessage):
