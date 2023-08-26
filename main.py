@@ -201,5 +201,6 @@ if __name__ == '__main__':
         try:
             bot.run()
         except:
+            logger.error("出错，重启bot")
             run1(bot)
     run1(bot)
