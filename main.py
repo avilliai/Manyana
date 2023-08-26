@@ -198,11 +198,5 @@ if __name__ == '__main__':
     LiveMonitor.main(bot, master, botName, logger)
 
     startVer()
-    try:
-        bot.run()
-    except Exception as e:
-        print(e)
-        logger.error("Manyana启动失败，请进入Manyana文件夹手动启动main.py")
-        logger.error("Manyana启动失败，请进入Manyana文件夹手动启动main.py")
-        logger.error("Manyana启动失败，请进入Manyana文件夹手动启动main.py")
-        exit(1)
+    bot.run()
+
