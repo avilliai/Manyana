@@ -197,4 +197,9 @@ if __name__ == '__main__':
     LiveMonitor.main(bot,master,botName,logger)
 
     startVer()
-    bot.run()
+    def run1(bot):
+        try:
+            bot.run()
+        except:
+            run1(bot)
+    run1(bot)
