@@ -200,9 +200,14 @@ if __name__ == '__main__':
             PicRandom.main(bot, proxy, logger)
             musicShare.main(bot, master, botName, logger)
             LiveMonitor.main(bot, master, botName, logger)
-            bot.run()
+            runBot()
         except:
             logger.error("Manyana连接出错，30秒后重启bot，请在此期间完成bot登录：/login 你的bot账号 你的bot密码 ANDROID_PAD")
             await sleep(30)
             await run1(bot)
+    def runBot():
+        bot = Mirai(qq, adapter=WebSocketAdapter(
+            verify_key=key, host='localhost', port=port
+        ))
+        bot.run()
     asyncio.run(run1(bot))
