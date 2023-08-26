@@ -6,8 +6,8 @@ import json
 import os
 import random
 import subprocess
-from asyncio import sleep
-
+from asyncio import sleep as sleep1
+from time import sleep
 
 import httpx
 import requests
@@ -68,7 +68,7 @@ if __name__ == '__main__':
             severGroupsa = json.loads(js)
             dat = []
             for i in severGroupsa:
-                await sleep(random.randint(2,10))
+                await sleep1(random.randint(2,10))
                 logger.info("向群："+i +" 推送公告")
                 try:
                     if event.message_chain.count(Image):
@@ -187,6 +187,8 @@ if __name__ == '__main__':
     else:
         logger.warning("未设置代理，禁用poe-api与搜图")
     logger.info("30秒后开始建立连接，请在此期间完成bot登录\n/login 你的bot账号 你的bot密码 ANDROID_PAD")
+
+
     sleep(30)
 
 
