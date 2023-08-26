@@ -186,23 +186,23 @@ if __name__ == '__main__':
         imgSearch.main(bot, result.get("sauceno-api"), result.get("proxy"), logger)
     else:
         logger.warning("未设置代理，禁用poe-api与搜图")
-    nudgeReply.main(bot,master,app_id,app_key,logger)#戳一戳
-    extraParts.main(bot,result.get("weatherXinZhi"),app_id,app_key,nasa_api,proxy,logger)#额外小功能
-    wReply.main(bot,config,sizhiKey,app_id,app_key,logger)
-    asyncio.run(wikiHelper.main(bot,app_id,app_key,logger))
-    userSign.main(bot,result.get("weatherXinZhi"),master,config,logger)
-    groupManager.main(bot,config,moderate,logger)
-    PicRandom.main(bot,proxy,logger)
-    musicShare.main(bot,master,botName,logger)
-    LiveMonitor.main(bot,master,botName,logger)
+
 
     startVer()
-    def run1(bot):
+    async def run1(bot):
         try:
+            nudgeReply.main(bot, master, app_id, app_key, logger)  # 戳一戳
+            extraParts.main(bot, result.get("weatherXinZhi"), app_id, app_key, nasa_api, proxy, logger)  # 额外小功能
+            wReply.main(bot, config, sizhiKey, app_id, app_key, logger)
+            asyncio.run(wikiHelper.main(bot, app_id, app_key, logger))
+            userSign.main(bot, result.get("weatherXinZhi"), master, config, logger)
+            groupManager.main(bot, config, moderate, logger)
+            PicRandom.main(bot, proxy, logger)
+            musicShare.main(bot, master, botName, logger)
+            LiveMonitor.main(bot, master, botName, logger)
             bot.run()
         except:
-
             logger.error("出错，15秒后重启bot")
-            sleep(15)
-            run1(bot)
-    run1(bot)
+            await sleep(15)
+            asyncio.run(run1(bot))
+    asyncio.run(run1(bot))
