@@ -176,30 +176,13 @@ if __name__ == '__main__':
             file_object.close()
         print(all_the_text)
 
-    voiceReply.main(bot,master,app_id,app_key,logger)#语音生成
-    if proxy!="":
-        try:
-            #logger.info("开发过程中暂不启动poe-api")
-            poeAi.main(bot,master,result.get("poe-api"),result.get("proxy"),logger)#poe-api
-        except:
-            logger.error("poe-api启动失败")
-        imgSearch.main(bot, result.get("sauceno-api"), result.get("proxy"), logger)
-    else:
-        logger.warning("未设置代理，禁用poe-api与搜图")
+
     logger.info("60秒后开始建立连接，请在此期间完成bot登录\n/login 你的bot账号 你的bot密码 ANDROID_PAD")
 
 
     sleep(60)
 
-    nudgeReply.main(bot, master, app_id, app_key, logger)  # 戳一戳
-    extraParts.main(bot, result.get("weatherXinZhi"), app_id, app_key, nasa_api, proxy, logger)  # 额外小功能
-    wReply.main(bot, config, sizhiKey, app_id, app_key, logger)
-    wikiHelper.main(bot, app_id, app_key, logger)
-    userSign.main(bot, result.get("weatherXinZhi"), master, config, logger)
-    groupManager.main(bot, config, moderate, logger)
-    PicRandom.main(bot, proxy, logger)
-    musicShare.main(bot, master, botName, logger)
-    LiveMonitor.main(bot, master, botName, logger)
+
     startVer()
     def run1(bot):
         try:
@@ -213,6 +196,25 @@ if __name__ == '__main__':
         bot = Mirai(qq, adapter=WebSocketAdapter(
             verify_key=key, host='localhost', port=port
         ))
+        voiceReply.main(bot, master, app_id, app_key, logger)  # 语音生成
+        if proxy != "":
+            try:
+                # logger.info("开发过程中暂不启动poe-api")
+                poeAi.main(bot, master, result.get("poe-api"), result.get("proxy"), logger)  # poe-api
+            except:
+                logger.error("poe-api启动失败")
+            imgSearch.main(bot, result.get("sauceno-api"), result.get("proxy"), logger)
+        else:
+            logger.warning("未设置代理，禁用poe-api与搜图")
+        nudgeReply.main(bot, master, app_id, app_key, logger)  # 戳一戳
+        extraParts.main(bot, result.get("weatherXinZhi"), app_id, app_key, nasa_api, proxy, logger)  # 额外小功能
+        wReply.main(bot, config, sizhiKey, app_id, app_key, logger)
+        wikiHelper.main(bot, app_id, app_key, logger)
+        userSign.main(bot, result.get("weatherXinZhi"), master, config, logger)
+        groupManager.main(bot, config, moderate, logger)
+        PicRandom.main(bot, proxy, logger)
+        musicShare.main(bot, master, botName, logger)
+        LiveMonitor.main(bot, master, botName, logger)
         bot.run()
 
     run1(bot)
