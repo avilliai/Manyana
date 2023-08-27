@@ -41,7 +41,7 @@ git clone https://github.com/avilliai/Manyana.git
 - 进入python安装目录，找到Lib/site-packages，用release的site-packages替换它
 ## 不管你用哪种搭建方式
 - 填写config.json(必做)与config/api.yaml(建议填写)
-- 然后运行main.py(如使用搭建工具，launcher内置了启动Manyana的脚本,无需手动启动main.py)
+- 然后运行main.py(如使用搭建工具部署，launcher内置了启动Manyana的脚本,无需手动启动main.py)
 ```
 {"botName": "机器人名字", "botQQ": "机器人QQ", "master": "你的QQ", "mainGroup": "你自己群的群号","vertify_key": "这里写你http-api的key,尖括号不用带", "port": "httpapi的运行端口"}
 下面是一个填写示例实例
