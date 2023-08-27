@@ -274,115 +274,116 @@ def main(bot,config,sizhiKey,app_id, app_key,logger):
     @bot.on(GroupMessage)
     async def mohu(event: GroupMessage):
         global superDict,botName,likeindex,temp,sizhi
-        if At(bot.qq) in event.message_chain:
-            for i in noRes:
-                if i in str(event.message_chain):
+        if random.randint(0,100)<groupLexicon:
+            if At(bot.qq) in event.message_chain:
+                for i in noRes:
+                    if i in str(event.message_chain):
+                        return
+                getStr = str(event.message_chain).replace("@"+str(bot.qq)+" ", '')
+            else:
+                getStr = str(event.message_chain)
+
+            if sizhi==True and At(bot.qq) in event.message_chain:
+
+                sess = requests.get('https://api.ownthink.com/bot?spoken=' + getStr + '&appid='+random.choice(sizhiKey))
+                answer = sess.text
+                try:
+                    answer = json.loads(answer)
+                except:
+                    logger.warning("在调用思知ai时出现了一个问题，但似乎又没啥问题，请忽略")
                     return
-            getStr = str(event.message_chain).replace("@"+str(bot.qq)+" ", '')
-        else:
-            getStr = str(event.message_chain)
+                logger.info("ASK:"+getStr)
+                logger.info("bot(思知):" + answer.get("data").get("info").get("text"))
+                replyssssss=answer.get("data").get("info").get("text")
 
-        if sizhi==True and At(bot.qq) in event.message_chain:
+            else:
+                #优先匹配本词库
+                if event.message_chain.count(At):
+                    if At(bot.qq) not in event.message_chain:
+                        return
+                if str(event.group.id) in superDict.keys():
+                    if random.randint(0,100)<groupLexicon or At(bot.qq) in event.message_chain:
+                        keys1=superDict.get(str(event.group.id)).keys()
+                        lock=0
+                        lenth1 = 0
+                        replyssssss = ""
+                        for i in keys1:
+                            pat=i.split("/")
+                            pattern=""
 
-            sess = requests.get('https://api.ownthink.com/bot?spoken=' + getStr + '&appid='+random.choice(sizhiKey))
-            answer = sess.text
-            try:
-                answer = json.loads(answer)
-            except:
-                logger.warning("在调用思知ai时出现了一个问题，但似乎又没啥问题，请忽略")
-                return
-            logger.info("ASK:"+getStr)
-            logger.info("bot(思知):" + answer.get("data").get("info").get("text"))
-            replyssssss=answer.get("data").get("info").get("text")
-
-        else:
-            #优先匹配本词库
-            if event.message_chain.count(At):
-                if At(bot.qq) not in event.message_chain:
-                    return
-            if str(event.group.id) in superDict.keys():
-                if random.randint(0,100)<groupLexicon or At(bot.qq) in event.message_chain:
-                    keys1=superDict.get(str(event.group.id)).keys()
-                    lock=0
-                    lenth1 = 0
-                    replyssssss = ""
-                    for i in keys1:
-                        pat=i.split("/")
-                        pattern=""
-
-                        for patts in pat:
-                            pattern+=".*"+patts
-                        pattern+=".*"
-                        match = re.search(pattern, getStr)
-                        if match:
-                            logger.warning("成功匹配正则表达式：" + pattern)
-                            if len(getStr)>len(pat)*MaxAllowableLength:
-                                logger.warning("源字符总长过长，为提高匹配准确度不进行匹配")
-                                continue
-                            if len(pat)>lenth1:
-                                lenth1=len(pat)
-                                try:
-                                    replyssssss=random.choice(superDict.get(str(event.group.id)).get(str((i))))
-                                    lock = 1
-                                except:
-                                    logger.error("当前关键词回复为空")
+                            for patts in pat:
+                                pattern+=".*"+patts
+                            pattern+=".*"
+                            match = re.search(pattern, getStr)
+                            if match:
+                                logger.warning("成功匹配正则表达式：" + pattern)
+                                if len(getStr)>len(pat)*MaxAllowableLength:
+                                    logger.warning("源字符总长过长，为提高匹配准确度不进行匹配")
                                     continue
-                    if lock==0:
-                        #正则匹配失败，尝试从public.xlsx获取回复
-                        if At(bot.qq) in event.message_chain or random.randint(0,100)<likeindex:
-                            best_matches = process.extractBests(getStr, superDict.get("public").keys(), limit=3)
-                            logger.info("获取匹配结果：key:" + getStr + "|" + str(best_matches))
-                            if int((best_matches)[0][1])<50:
-                                logger.warning("匹配相似度过低，不发送")
+                                if len(pat)>lenth1:
+                                    lenth1=len(pat)
+                                    try:
+                                        replyssssss=random.choice(superDict.get(str(event.group.id)).get(str((i))))
+                                        lock = 1
+                                    except:
+                                        logger.error("当前关键词回复为空")
+                                        continue
+                        if lock==0:
+                            #正则匹配失败，尝试从public.xlsx获取回复
+                            if At(bot.qq) in event.message_chain or random.randint(0,100)<likeindex:
+                                best_matches = process.extractBests(getStr, superDict.get("public").keys(), limit=3)
+                                logger.info("获取匹配结果：key:" + getStr + "|" + str(best_matches))
+                                if int((best_matches)[0][1])<50:
+                                    logger.warning("匹配相似度过低，不发送")
+                                    return
+                                replyssssss = random.choice(superDict.get("public").get(str((best_matches)[0][0])))
+                            else:
                                 return
-                            replyssssss = random.choice(superDict.get("public").get(str((best_matches)[0][0])))
-                        else:
-                            return
+                    else:
+                        return
+
+                elif At(bot.qq) in event.message_chain or random.randint(0,100)<likeindex:
+                    #best_match = process.extractOne(getStr, superDict.keys())
+                    best_matches = process.extractBests(getStr, superDict.get("public").keys(), limit=3)
+                    logger.info("获取匹配结果：key:" + getStr + "|" + str(best_matches))
+                    if int((best_matches)[0][1]) < 50:
+                        logger.warning("匹配相似度过低，不发送")
+                        return
+                    replyssssss =random.choice(superDict.get("public").get(str((best_matches)[0][0])))
                 else:
                     return
+            logger.info("key:："+getStr+" 选择回复：" + replyssssss)
 
-            elif At(bot.qq) in event.message_chain or random.randint(0,100)<likeindex:
-                #best_match = process.extractOne(getStr, superDict.keys())
-                best_matches = process.extractBests(getStr, superDict.get("public").keys(), limit=3)
-                logger.info("获取匹配结果：key:" + getStr + "|" + str(best_matches))
-                if int((best_matches)[0][1]) < 50:
-                    logger.warning("匹配相似度过低，不发送")
-                    return
-                replyssssss =random.choice(superDict.get("public").get(str((best_matches)[0][0])))
-            else:
-                return
-        logger.info("key:："+getStr+" 选择回复：" + replyssssss)
-
-        if str(replyssssss).endswith('.png') or str(replyssssss).endswith('.jpg'):
-            await bot.send(event, Image(path='data/autoReply/imageReply/' + replyssssss))
-        elif str(replyssssss).endswith('.wav'):
-            await bot.send(event, Voice(path='data/autoReply/voiceReply/' + replyssssss))
-        else:
-
-            replyssssss = replyssssss.replace("{me}", botName).replace("yucca", botName).replace("小思",  botName).replace("{segment}", ',')
-
-            if str(event.sender.id) not in userdict:
-                replyssssss = replyssssss.replace("name", str(event.sender.member_name)).replace("{name}", str(event.sender.member_name)).replace("哥哥", str(event.sender.member_name)).replace("您", str(event.sender.member_name))
+            if str(replyssssss).endswith('.png') or str(replyssssss).endswith('.jpg'):
+                await bot.send(event, Image(path='data/autoReply/imageReply/' + replyssssss))
+            elif str(replyssssss).endswith('.wav'):
+                await bot.send(event, Voice(path='data/autoReply/voiceReply/' + replyssssss))
             else:
 
-                setName = userdict.get(str(event.sender.id)).get("userName")
-                if setName==None:
-                    setName=event.sender.member_name
-                replyssssss = replyssssss.replace("name", setName).replace("{name}", setName).replace("哥哥", setName).replace("您", setName)
+                replyssssss = replyssssss.replace("{me}", botName).replace("yucca", botName).replace("小思",  botName).replace("{segment}", ',')
 
-            if random.randint(1, 100) > voiceRate:
-                await bot.send(event, replyssssss)
-            else:
-                replyssssss = replyssssss.replace(botName, "我")
-                path = '../data/voices/' + random_str() + '.wav'
-                if random.randint(1,100)>chineseVoiceRate:
-                    text=await translate(str(replyssssss), app_id, app_key)
-                    tex = '[JA]' + text + '[JA]'
+                if str(event.sender.id) not in userdict:
+                    replyssssss = replyssssss.replace("name", str(event.sender.member_name)).replace("{name}", str(event.sender.member_name)).replace("哥哥", str(event.sender.member_name)).replace("您", str(event.sender.member_name))
                 else:
-                    tex="[ZH]"+replyssssss+"[ZH]"
-                logger.info("启动文本转语音：text: "+tex+" path: "+path[3:])
-                await voiceGenerate({"text": tex, "out": path,"speaker":speaker,"modelSelect":modelSelect})
-                await bot.send(event,Voice(path=path[3:]))
+
+                    setName = userdict.get(str(event.sender.id)).get("userName")
+                    if setName==None:
+                        setName=event.sender.member_name
+                    replyssssss = replyssssss.replace("name", setName).replace("{name}", setName).replace("哥哥", setName).replace("您", setName)
+
+                if random.randint(1, 100) > voiceRate:
+                    await bot.send(event, replyssssss)
+                else:
+                    replyssssss = replyssssss.replace(botName, "我")
+                    path = '../data/voices/' + random_str() + '.wav'
+                    if random.randint(1,100)>chineseVoiceRate:
+                        text=await translate(str(replyssssss), app_id, app_key)
+                        tex = '[JA]' + text + '[JA]'
+                    else:
+                        tex="[ZH]"+replyssssss+"[ZH]"
+                    logger.info("启动文本转语音：text: "+tex+" path: "+path[3:])
+                    await voiceGenerate({"text": tex, "out": path,"speaker":speaker,"modelSelect":modelSelect})
+                    await bot.send(event,Voice(path=path[3:]))
     # 开启和关闭思知ai
     @bot.on(GroupMessage)
     async def sizhiOpener(event:GroupMessage):

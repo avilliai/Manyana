@@ -58,7 +58,7 @@ def main(bot,master,app_id,app_key,logger):
         msg = "".join(map(str, event.message_chain[Plain]))
         # 匹配指令
         m = re.match(r'^说\s*(.*)\s*$', msg.strip())
-        if m and str(event.message_chain).split("说")[0] not in characters:
+        if m and str(event.message_chain).split("说")[0] not in characters and len(str(event.message_chain).split("说")[0])<6:
             # 取出指令中的地名
             text = m.group(1)
             path = '../data/voices/' + random_str() + '.wav'
@@ -73,7 +73,7 @@ def main(bot,master,app_id,app_key,logger):
         msg = "".join(map(str, event.message_chain[Plain]))
         # 匹配指令
         m = re.match(r'^中文\s*(.*)\s*$', msg.strip())
-        if m and str(event.message_chain).split("中文")[0] not in characters:
+        if m and str(event.message_chain).split("中文")[0] not in characters and len(str(event.message_chain).split("说")[0])<6:
             # 取出指令中的地名
             text = m.group(1)
             path = '../data/voices/' + random_str() + '.wav'
@@ -88,7 +88,7 @@ def main(bot,master,app_id,app_key,logger):
         msg = "".join(map(str, event.message_chain[Plain]))
         # 匹配指令
         m = re.match(r'^日文\s*(.*)\s*$', msg.strip())
-        if m and str(event.message_chain).split("日文")[0] not in characters:
+        if m and str(event.message_chain).split("日文")[0] not in characters and len(str(event.message_chain).split("说")[0])<6:
             # 取出指令中的地名
             text = m.group(1)
             path = '../data/voices/' + random_str() + '.wav'
