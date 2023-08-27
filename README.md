@@ -18,19 +18,19 @@ Manyana指
 
 - 项目使用了CjangCjengh的[MoeGoe](https://github.com/CjangCjengh/MoeGoe) 以及他的语音模型
 - 基于[Yiri-mirai](https://github.com/YiriMiraiProject/YiriMirai) 实现
-- 请确保py版本为3.9
 - 请确保已安装[fireFox浏览器](https://www.firefox.com.cn/)
-- 请确保已安装[mirai-api-http](https://github.com/project-mirai/mirai-api-http) 并[正确配置](https://github.com/avilliai/wReply/blob/master/setting.yml)
-- 可选安装[mirai-login-solver-sakura](https://github.com/KasukuSakura/mirai-login-solver-sakura)
-- 可选安装[Mirai点歌插件](https://github.com/khjxiaogu/MiraiSongPlugin)
-- 可选安装[PetPet](https://github.com/Dituon/petpet)
-
 # 部署
 ## 搭建工具部署(推荐)
 **如果你觉得搭建bot过于困难，请使用此方案**
 - 从release下载ManyanaLauncher.rar并解压(rar是一种压缩文件格式，不知道怎么用自己去下个winrar)
 - 从release下载HowToUse.mp4
 ## 自行部署(如果你有一定bot搭建经验)
+- 请确保py版本为3.9
+- 请确保已安装[mirai-api-http](https://github.com/project-mirai/mirai-api-http) 并[正确配置](https://github.com/avilliai/wReply/blob/master/setting.yml)
+- 可选安装[mirai-login-solver-sakura](https://github.com/KasukuSakura/mirai-login-solver-sakura)
+- 可选安装[Mirai点歌插件](https://github.com/khjxiaogu/MiraiSongPlugin)
+- 可选安装[PetPet](https://github.com/Dituon/petpet)
+### 操作步骤
 - 从release下载setUps.rar并解压，依次安装，一般默认下一步就行(**安装python的第一步一定要先勾选add to path**)。apk安装到手机。
 - 特别地，对于watt Toolkit，开始加速前一定要勾选上加速github。不过你既然都到这里了，想必也用不到它。
 - 克隆本仓库。找一个你喜欢的目录(**不要带中文**)打开cmd或git bash执行
