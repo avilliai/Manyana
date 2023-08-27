@@ -274,7 +274,7 @@ def main(bot,config,sizhiKey,app_id, app_key,logger):
     @bot.on(GroupMessage)
     async def mohu(event: GroupMessage):
         global superDict,botName,likeindex,temp,sizhi
-        if random.randint(0,100)<groupLexicon or At(bot.qq) not in event.message_chain:
+        if random.randint(0,100)<groupLexicon or At(bot.qq) in event.message_chain:
             if At(bot.qq) in event.message_chain:
                 for i in noRes:
                     if i in str(event.message_chain):
