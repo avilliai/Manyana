@@ -26,6 +26,11 @@ Manyana指
 - 可选安装[PetPet](https://github.com/Dituon/petpet)
 
 # 部署
+## 搭建工具部署(推荐)
+**如果你觉得搭建bot过于困难，请使用此方案**
+- 从release下载ManyanaLauncher.rar并解压(rar是一种压缩文件格式，不知道怎么用自己去下个winrar)
+- 从release下载HowToUse.mp4
+## 自行部署(如果你有一定bot搭建经验)
 - 从release下载setUps.rar并解压，依次安装，一般默认下一步就行(**安装python的第一步一定要先勾选add to path**)。apk安装到手机。
 - 特别地，对于watt Toolkit，开始加速前一定要勾选上加速github。不过你既然都到这里了，想必也用不到它。
 - 克隆本仓库。找一个你喜欢的目录(**不要带中文**)打开cmd或git bash执行
@@ -34,8 +39,9 @@ git clone https://github.com/avilliai/Manyana.git
 ```
 - 解压release中的site-packages.rar，打开cmd输入where python查看你的python安装目录
 - 进入python安装目录，找到Lib/site-packages，用release的site-packages替换它
+## 这些是两种搭建方式通用的
 - 填写config.json与config/api.yaml，完成后运行main.py即可。
-```js
+```
 {"botName": "机器人名字", "botQQ": "机器人QQ", "master": "你的QQ", "mainGroup": "你自己群的群号","vertify_key": "这里写你http-api的key,尖括号不用带", "port": "httpapi的运行端口"}
 下面是一个填写示例实例
 {"botName": "Manyana", "botQQ": "1283992481", "master": "1840094972","mainGroup": "628763673", "vertify_key": "1234567890", "port": "23456"}
