@@ -27,11 +27,7 @@ def main(bot,master,apikey,proxy,logger):
     except:
         logger.error("poeAi启动失败，请检查代理或重试")
     logger.info("正在启动rwkv对话模型")
-    try:
-        logger.info("rwkv接收信息：" + "测试消息")
-        s = await rwkvHelper("你好")
-    except:
-        logger.error("rwkv对话模型启动失败，未找到对应的本地服务")
+
     logger.info("正在启动pandora_ChatGPT")
     try:
         parent_message_id = None
