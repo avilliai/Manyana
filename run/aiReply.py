@@ -73,8 +73,12 @@ def main(bot,master,apikey,proxy,logger):
                     conversation_id=pandoraData.get(event.group.id).get("conversation_id")
                     parent_message_id=pandoraData.get(event.group.id).get("parent_message_id")
                 else:
-                    conversation_id=None
-                    parent_message_id="f0bf0ebe-1cd6-4067-9264-8a40af76d00e"
+                    if len(pandoraData.keys())<10:
+                        conversation_id=None
+                        parent_message_id="f0bf0ebe-1cd6-4067-9264-8a40af76d00e"
+                    else:
+                        conversation_id = pandoraData.get(random.choice(pandoraData.keys())).get("conversation_id")
+                        parent_message_id = "f0bf0ebe-1cd6-4067-9264-8a40af76d00e"
                 try:
                     parent_message_id, conversation_id,response_message = ask_chatgpt(prompt, model, message_id, parent_message_id,
                                                                      conversation_id)
