@@ -50,15 +50,21 @@ def main(bot,master,apikey,proxy,logger):
         pandoraData = yaml.load(file, Loader=yaml.FullLoader)
     global totallink
     totallink=0
+    with open('config/settings.yaml', 'r', encoding='utf-8') as f:
+        result = yaml.load(f.read(), Loader=yaml.FullLoader)
+    gptReply=result.get("gptReply")
 
     @bot.on(GroupMessage)
     async def pandoraSever(event:GroupMessage):
         global pandoraData
         global totallink
-        if str(event.message_chain).startswith("/p"):
+        if str(event.message_chain).startswith("/p") or (gptReply==True and At(bot.qq) in event.message_chain):
             if totallink<4:
                 totallink+=1
-                prompt=str(event.message_chain)[2:]
+                if gptReply==False:
+                    prompt=str(event.message_chain)[2:]
+                else:
+                    prompt=str(event.message_chain).replace("@"+str(bot.qq)+"", '')
                 message_id = str(uuid.uuid4())
                 model = "text-davinci-002-render-sha"
                 logger.info("ask:"+prompt)

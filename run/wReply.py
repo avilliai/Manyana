@@ -41,6 +41,7 @@ def main(bot,config,sizhiKey,app_id, app_key,logger):
         noRes=noRes1.get("noRes")
     with open('config/settings.yaml', 'r', encoding='utf-8') as f:
         result = yaml.load(f.read(), Loader=yaml.FullLoader)
+    gptReply=result.get("gptReply")
     global yamlData
     yamlData = result.get("wReply")
     global chineseVoiceRate
@@ -274,7 +275,7 @@ def main(bot,config,sizhiKey,app_id, app_key,logger):
     @bot.on(GroupMessage)
     async def mohu(event: GroupMessage):
         global superDict,botName,likeindex,temp,sizhi
-        if random.randint(0,100)<groupLexicon or At(bot.qq) in event.message_chain:
+        if random.randint(0,100)<groupLexicon or At(bot.qq) in event.message_chain and gptReply==False:
             if At(bot.qq) in event.message_chain:
                 for i in noRes:
                     if i in str(event.message_chain):

@@ -2,6 +2,7 @@
 signTimes: 3    # 签到几天后可以邀请加群
 GroupSensor: False    #开启后，将拒绝无授权群的加群邀请
 r18Pic: False
+gptReply: False       #是否使用gpt3.5替代原有词库
 wReply:
   banWords:       #违禁词
   - 妈
