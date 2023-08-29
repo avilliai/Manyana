@@ -40,7 +40,8 @@ def main(bot,master,apikey,proxy,logger):
             parent_message_id = "f0bf0ebe-1cd6-4067-9264-8a40af76d00e"
         conversation_id = None
         # conversation_id = None
-        parent_message_id,conversation_id = ask_chatgpt(prompt, model, message_id, parent_message_id, conversation_id)
+        parent_message_id,conversation_id,reply = ask_chatgpt(prompt, model, message_id, parent_message_id, conversation_id)
+        print(reply)
         print("当前会话的id:", parent_message_id)
     except:
         logger.error("未找到可用的pandora服务")
