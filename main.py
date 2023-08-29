@@ -18,7 +18,7 @@ from mirai.models import NudgeEvent, MemberHonorChangeEvent, MemberCardChangeEve
 from plugins.RandomStr import random_str
 from plugins.newLogger import newLogger
 from plugins.translater import translate
-from run import poeAi, voiceReply, nudgeReply, wikiHelper, imgSearch, extraParts, wReply, userSign, groupManager, \
+from run import aiReply, voiceReply, nudgeReply, wikiHelper, imgSearch, extraParts, wReply, userSign, groupManager, \
     PicRandom, musicShare, LiveMonitor
 
 if __name__ == '__main__':
@@ -167,7 +167,10 @@ if __name__ == '__main__':
     subprocess.Popen(["python.exe", "flask_voice.py"],cwd="vits")
     #asyncio.run(os.system("cd vits && python flask_voice.py"))
     logger.info(" 语音合成sever启动....")
-
+    try:
+        subprocess.Popen(["pandora", "-t", "config/token.txt","-s", "127.0.0.1:23459", "-p", proxy], cwd="vits")
+    except:
+        logger.error("pandora服务端启动失败，请检查代理或token")
     def startVer():
         file_object = open("config/mylog.log")
         try:
@@ -181,7 +184,7 @@ if __name__ == '__main__':
     if proxy != "":
         try:
             # logger.info("开发过程中暂不启动poe-api")
-            poeAi.main(bot, master, result.get("poe-api"), result.get("proxy"), logger)  # poe-api
+            aiReply.main(bot, master, result.get("poe-api"), result.get("proxy"), logger)  # poe-api
         except:
             logger.error("poe-api启动失败")
         imgSearch.main(bot, result.get("sauceno-api"), result.get("proxy"), logger)

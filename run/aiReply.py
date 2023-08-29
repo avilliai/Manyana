@@ -1,38 +1,15 @@
 # -*- coding: utf-8 -*-
 import json
 import random
+import uuid
 
 import poe
+import yaml
 from mirai import Image, Voice
 from mirai import Mirai, WebSocketAdapter, FriendMessage, GroupMessage, At, Plain
 
+from plugins.PandoraChatGPT import ask_chatgpt
 from plugins.rwkvHelper import rwkvHelper
-
-
-def gptHelper():
-    client = poe.Client(token="BHai3yLdvOcKajS6UnIX6A%3D%3D", proxy="http://127.0.0.1:1080")
-    json.dumps(client.bot_names, indent=2)
-    while True:
-        message = input("you:")
-        s=""
-        for chunk in client.send_message("capybara", message):
-            #print(chunk["text_new"],end="", flush=True)
-            s+=chunk["text_new"]
-        print(s)
-
-"""
-{
-  "capybara": "Sage",
-  "a2": "Claude-instant",
-  "nutria": "Dragonfly",
-  "a2_100k": "Claude-instant-100k",
-  "beaver": "GPT-4",
-  "chinchilla": "ChatGPT",
-  "a2_2": "Claude+"
-}
-"""
-
-
 
 
 
@@ -50,6 +27,51 @@ def main(bot,master,apikey,proxy,logger):
     except:
         logger.error("poeAi启动失败，请检查代理或重试")
     logger.info("正在启动rwkv对话模型")
+    try:
+        logger.info("rwkv接收信息：" + "测试消息")
+        s = await rwkvHelper("你好")
+    except:
+        logger.error("rwkv对话模型启动失败，未找到对应的本地服务")
+    logger.info("正在启动pandora_ChatGPT")
+    try:
+        parent_message_id = None
+        prompt = "我爱你啊！！！！！！！！！"
+
+        # 向ChatGPT提问，等待其回复
+        model = "text-davinci-002-render-sha"  # 选择一个可用的模型Default (GPT-3.5)：text-davinci-002-render-sha
+        message_id = str(uuid.uuid4())  # 随机生成一个消息ID
+        if parent_message_id is None:
+            parent_message_id = "f0bf0ebe-1cd6-4067-9264-8a40af76d00e"
+        conversation_id = None
+        # conversation_id = None
+        parent_message_id,conversation_id = ask_chatgpt(prompt, model, message_id, parent_message_id, conversation_id)
+        print("当前会话的id:", parent_message_id)
+    except:
+        logger.error("未找到可用的pandora服务")
+    global pandoraData
+    with open('data/pandora_ChatGPT.yaml', 'r', encoding='utf-8') as file:
+        pandoraData = yaml.load(file, Loader=yaml.FullLoader)
+
+    @bot.on(GroupMessage)
+    async def pandoraSever(event:GroupMessage):
+        global pandoraData
+        if str(event.message_chain).startswith("/p"):
+            prompt=str(event.message_chain)[2:]
+            message_id = str(uuid.uuid4())
+            model = "text-davinci-002-render-sha"
+            if event.group.id in pandoraData.keys():
+                conversation_id=pandoraData.get(event.group.id).get("conversation_id")
+                parent_message_id=pandoraData.get(event.group.id).get("parent_message_id")
+            else:
+                conversation_id=None
+                parent_message_id="f0bf0ebe-1cd6-4067-9264-8a40af76d00e"
+            parent_message_id, conversation_id = ask_chatgpt(prompt, model, message_id, parent_message_id,
+                                                             conversation_id)
+            pandoraData[event.group.id]={"parent_message_id":parent_message_id, "conversation_id":conversation_id}
+            with open('data/pandora_ChatGPT.yaml', 'w', encoding="utf-8") as file:
+                yaml.dump(pandoraData, file, allow_unicode=True)
+
+
 
     @bot.on(GroupMessage)
     async def rwkv(event:GroupMessage):
