@@ -17,6 +17,7 @@ Manyana指
 </div>
 
 - 项目使用了CjangCjengh的[MoeGoe](https://github.com/CjangCjengh/MoeGoe) 以及他的语音模型
+- 项目使用了pengzhile的[pandora](https://github.com/pengzhile/pandora)
 - 基于[Yiri-mirai](https://github.com/YiriMiraiProject/YiriMirai) 实现
 - 请确保已安装[fireFox浏览器](https://www.firefox.com.cn/)
 # 部署
