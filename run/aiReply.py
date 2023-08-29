@@ -59,7 +59,7 @@ def main(bot,master,apikey,proxy,logger):
     async def pandoraSever(event:GroupMessage):
         global pandoraData
         global totallink
-        if (str(event.message_chain).startswith("/p") or (gptReply==True and At(bot.qq) in event.message_chain)):
+        if (str(event.message_chain).startswith("/p") or (gptReply==True and At(bot.qq) in event.message_chain)) and str(event.message_chain).startswith("/poe")==False:
             if pandoraa:
                 if totallink==False:
                     totallink+=True
