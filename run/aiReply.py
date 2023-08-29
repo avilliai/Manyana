@@ -68,7 +68,7 @@ def main(bot,master,apikey,proxy,logger):
                                                              conversation_id)
             logger.info("answer:"+response_message)
             logger.info("conversation_id:" + conversation_id)
-            await bot.send(event,response_message)
+            await bot.send(event,response_message,True)
             pandoraData[event.group.id]={"parent_message_id":parent_message_id, "conversation_id":conversation_id}
             with open('data/pandora_ChatGPT.yaml', 'w', encoding="utf-8") as file:
                 yaml.dump(pandoraData, file, allow_unicode=True)
@@ -83,7 +83,7 @@ def main(bot,master,apikey,proxy,logger):
                 logger.info("rwkv接收信息："+s)
                 s=await rwkvHelper(s)
                 logger.info("rwkv:"+s)
-                await bot.send(event,s)
+                await bot.send(event,s,True)
             except:
                 logger.error("调用rwkv失败，请检查本地rwkv是否启动或端口是否配置正确(8000)")
                 await bot.send(event,"无法连接到本地rwkv")
