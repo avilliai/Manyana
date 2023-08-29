@@ -56,7 +56,7 @@ def main(bot,master,apikey,proxy,logger):
         global pandoraData
         global totallink
         if str(event.message_chain).startswith("/p"):
-            if totallink<5:
+            if totallink<4:
                 totallink+=1
                 prompt=str(event.message_chain)[2:]
                 message_id = str(uuid.uuid4())
