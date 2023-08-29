@@ -29,3 +29,6 @@
 2023/8/18:
   - config/settings中新增配置项AutoCreatLexicon，详情请查看文件注释
   - 增加指令 *del#关键词 与 *开始添加 相对应
+2023/8/29:
+  - 支持通过pandora接入chatGPT3.5
+  - config/token.txt中填写你的token，获取方式见https://ai-20230626.fakeopen.com/auth

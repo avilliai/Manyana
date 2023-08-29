@@ -17,6 +17,8 @@ def main():
         logger = newLogger()
         logger.warning("更新python库")
         logger.warning("更新可能包含setUp.py自身更新。一般建议运行两次setUp.py")
+        os.system("pip config set global.index-url https://mirrors.aliyun.com/pypi/simple/")
+        os.system("pip install pandora")
         #os.system("pip install --upgrade poe-api")
         #os.system("pip install --upgrade requests")
         #os.system("pip install --upgrade urllib3[socks]")
