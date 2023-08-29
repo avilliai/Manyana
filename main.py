@@ -168,9 +168,9 @@ if __name__ == '__main__':
     #asyncio.run(os.system("cd vits && python flask_voice.py"))
     logger.info(" 语音合成sever启动....")
     try:
-        subprocess.Popen(["pandora", "-t", "config/token.txt","-s", "127.0.0.1:23459", "-p", proxy], cwd="vits")
+        subprocess.Popen(["pandora", "-t", "config/token.txt","-s", "127.0.0.1:23459", "-p", proxy])
     except:
-        logger.error("pandora服务端启动失败，请检查代理或token")
+        logger.error("pandora启动失败")
     def startVer():
         file_object = open("config/mylog.log")
         try:
