@@ -72,14 +72,17 @@ def main(bot,master,apikey,proxy,logger):
                     logger.info("ask:"+prompt)
 
                     if event.group.id in pandoraData.keys():
+                        pub=event.group.id
                         conversation_id=pandoraData.get(event.group.id).get("conversation_id")
                         parent_message_id=pandoraData.get(event.group.id).get("parent_message_id")
                     else:
                         if len(pandoraData.keys())<10:
+                            pub=event.group.id
                             conversation_id=None
                             parent_message_id="f0bf0ebe-1cd6-4067-9264-8a40af76d00e"
                         else:
-                            conversation_id = pandoraData.get(random.choice(pandoraData.keys())).get("conversation_id")
+                            pub=random.choice(pandoraData.keys())
+                            conversation_id = pandoraData.get(pub).get("conversation_id")
                             parent_message_id = "f0bf0ebe-1cd6-4067-9264-8a40af76d00e"
                     try:
                         parent_message_id, conversation_id,response_message = ask_chatgpt(prompt, model, message_id, parent_message_id,
@@ -88,7 +91,8 @@ def main(bot,master,apikey,proxy,logger):
                         logger.info("conversation_id:" + conversation_id)
                         await bot.send(event,response_message,True)
                         totallink=False
-                        pandoraData[event.group.id]={"parent_message_id":parent_message_id, "conversation_id":conversation_id}
+
+                        pandoraData[pub]={"parent_message_id":parent_message_id, "conversation_id":conversation_id}
                         with open('data/pandora_ChatGPT.yaml', 'w', encoding="utf-8") as file:
                             yaml.dump(pandoraData, file, allow_unicode=True)
                     except:
