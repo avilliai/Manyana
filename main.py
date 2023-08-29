@@ -47,6 +47,9 @@ if __name__ == '__main__':
     proxy=result.get("proxy")
     moderate=result.get("moderate")
     nasa_api=result.get("nasa_api")
+    with open('config/settings.yaml', 'r', encoding='utf-8') as f:
+        resulta = yaml.load(f.read(), Loader=yaml.FullLoader)
+    pandora=resulta.get("pandora")
     logger.info("读取到apiKey列表")
 
     global notice
@@ -167,10 +170,13 @@ if __name__ == '__main__':
     subprocess.Popen(["python.exe", "flask_voice.py"],cwd="vits")
     #asyncio.run(os.system("cd vits && python flask_voice.py"))
     logger.info(" 语音合成sever启动....")
-    try:
-        subprocess.Popen(["pandora", "-t", "config/token.txt","-s", "127.0.0.1:23459", "-p", proxy])
-    except:
-        logger.error("pandora启动失败")
+    if pandora:
+        try:
+            subprocess.Popen(["pandora", "-t", "config/token.txt","-s", "127.0.0.1:23459", "-p", proxy])
+        except:
+            logger.error("pandora启动失败")
+    else:
+        logger.warning("未启用pandora，如需启用请修改setting.yaml并完成相关配置")
     def startVer():
         file_object = open("config/mylog.log")
         try:

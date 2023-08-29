@@ -2,6 +2,7 @@
 signTimes: 3    # 签到几天后可以邀请加群
 GroupSensor: False    #开启后，将拒绝无授权群的加群邀请
 r18Pic: False
+pandora: False        #是否启用pandora_chatGPT，如未正确配置相关内容可能导致bot卡死
 gptReply: False       #是否使用gpt3.5替代原有词库，开启后，bot被艾特将优先使用gpt回复
 wReply:
   banWords:       #违禁词
