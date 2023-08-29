@@ -55,6 +55,7 @@ def main(bot,master,apikey,proxy,logger):
             prompt=str(event.message_chain)[2:]
             message_id = str(uuid.uuid4())
             model = "text-davinci-002-render-sha"
+            logger.info("ask:"+prompt)
             if event.group.id in pandoraData.keys():
                 conversation_id=pandoraData.get(event.group.id).get("conversation_id")
                 parent_message_id=pandoraData.get(event.group.id).get("parent_message_id")
@@ -63,6 +64,7 @@ def main(bot,master,apikey,proxy,logger):
                 parent_message_id="f0bf0ebe-1cd6-4067-9264-8a40af76d00e"
             parent_message_id, conversation_id,response_message = ask_chatgpt(prompt, model, message_id, parent_message_id,
                                                              conversation_id)
+            logger.info("answer:"+response_message)
             await bot.send(event,response_message)
             pandoraData[event.group.id]={"parent_message_id":parent_message_id, "conversation_id":conversation_id}
             with open('data/pandora_ChatGPT.yaml', 'w', encoding="utf-8") as file:

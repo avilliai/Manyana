@@ -30,16 +30,19 @@ def ask_chatgpt(prompt, model, message_id, parent_message_id, conversation_id=No
     #print("会话列表：",r.json())
 
     if len(response_data.split("\n")) > 1:
-        print("继续之前的会话", response_data)
+        #print("继续之前的会话", response_data)
         response_data = json.loads(response_data)
     else:
         response_data = json.loads(response_data)
-        print("创建会话", response_data)
+
+        #print("创建会话", response_data)
     parts = response_data['message']['content']['parts']
     # 将 parts 中的字符串连接起来形成完整的回复
     response_message = ''.join(parts)
-    print(response_message)
-    return response_data["message"]['id'],r.json().get("items")[0].get("id"),response_message
+    #print(response_message)
+    if conversation_id==None:
+        conversation_id = r.json().get("items")[0].get("id")
+    return response_data["message"]['id'],conversation_id,response_message
 if __name__ == '__main__':
     parent_message_id = None
     prompt = "我爱你啊！！！！！！！！！"
