@@ -49,7 +49,7 @@ def main(bot,master,apikey,proxy,logger):
     with open('data/pandora_ChatGPT.yaml', 'r', encoding='utf-8') as file:
         pandoraData = yaml.load(file, Loader=yaml.FullLoader)
     global totallink
-    totallink=0
+    totallink=False
     with open('config/settings.yaml', 'r', encoding='utf-8') as f:
         result = yaml.load(f.read(), Loader=yaml.FullLoader)
     gptReply=result.get("gptReply")
@@ -59,8 +59,8 @@ def main(bot,master,apikey,proxy,logger):
         global pandoraData
         global totallink
         if str(event.message_chain).startswith("/p") or (gptReply==True and At(bot.qq) in event.message_chain):
-            if totallink<4:
-                totallink+=1
+            if totallink==False:
+                totallink+=True
                 if gptReply==False:
                     prompt=str(event.message_chain)[2:]
                 else:
@@ -81,13 +81,13 @@ def main(bot,master,apikey,proxy,logger):
                     logger.info("answer:"+response_message)
                     logger.info("conversation_id:" + conversation_id)
                     await bot.send(event,response_message,True)
-                    totallink-=1
+                    totallink=False
                     pandoraData[event.group.id]={"parent_message_id":parent_message_id, "conversation_id":conversation_id}
                     with open('data/pandora_ChatGPT.yaml', 'w', encoding="utf-8") as file:
                         yaml.dump(pandoraData, file, allow_unicode=True)
                 except:
                     await bot.send(event,"当前服务器负载过大，请稍后再试",True)
-                    totallink-=1
+                    totallink=False
             else:
                 await bot.send(event, "当前服务器负载过大，请稍后再试", True)
 
