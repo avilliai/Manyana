@@ -29,7 +29,7 @@ def main(bot,master,apikey,proxy,logger):
     logger.info("正在启动rwkv对话模型")
 
     logger.info("正在启动pandora_ChatGPT")
-    try:
+    '''try:
         parent_message_id = None
         prompt = "我爱你啊！！！！！！！！！"
 
@@ -44,7 +44,7 @@ def main(bot,master,apikey,proxy,logger):
         print(reply)
         print("当前会话的id:", parent_message_id)
     except:
-        logger.error("未找到可用的pandora服务")
+        logger.error("未找到可用的pandora服务")'''
     global pandoraData
     with open('data/pandora_ChatGPT.yaml', 'r', encoding='utf-8') as file:
         pandoraData = yaml.load(file, Loader=yaml.FullLoader)
