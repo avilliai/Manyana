@@ -64,14 +64,17 @@ def main(bot,master,apikey,proxy,logger):
             else:
                 conversation_id=None
                 parent_message_id="f0bf0ebe-1cd6-4067-9264-8a40af76d00e"
-            parent_message_id, conversation_id,response_message = ask_chatgpt(prompt, model, message_id, parent_message_id,
-                                                             conversation_id)
-            logger.info("answer:"+response_message)
-            logger.info("conversation_id:" + conversation_id)
-            await bot.send(event,response_message,True)
-            pandoraData[event.group.id]={"parent_message_id":parent_message_id, "conversation_id":conversation_id}
-            with open('data/pandora_ChatGPT.yaml', 'w', encoding="utf-8") as file:
-                yaml.dump(pandoraData, file, allow_unicode=True)
+            try:
+                parent_message_id, conversation_id,response_message = ask_chatgpt(prompt, model, message_id, parent_message_id,
+                                                                 conversation_id)
+                logger.info("answer:"+response_message)
+                logger.info("conversation_id:" + conversation_id)
+                await bot.send(event,response_message,True)
+                pandoraData[event.group.id]={"parent_message_id":parent_message_id, "conversation_id":conversation_id}
+                with open('data/pandora_ChatGPT.yaml', 'w', encoding="utf-8") as file:
+                    yaml.dump(pandoraData, file, allow_unicode=True)
+            except:
+                await bot.send(event,"当前服务器负载过大，请稍后再试",True)
 
 
 
