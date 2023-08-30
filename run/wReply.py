@@ -331,43 +331,43 @@ def main(bot,config,sizhiKey,app_id, app_key,logger):
                                 except:
                                     logger.error("当前关键词回复为空")
                                     continue
-                        #专有词库没有匹配到，匹配共有词库
-                        if lock==0:
-                            keys2 = superDict.get("publicLexicon").keys()
-                            lock1 = 0
-                            lenth1 = 0
-                            replyssssss = ""
-                            for i in keys2:
-                                pat = i.split("/")
-                                pattern = ""
+                    #专有词库没有匹配到，匹配共有词库
+                    if lock==0:
+                        keys2 = superDict.get("publicLexicon").keys()
+                        lock1 = 0
+                        lenth1 = 0
+                        replyssssss = ""
+                        for i in keys2:
+                            pat = i.split("/")
+                            pattern = ""
 
-                                for patts in pat:
-                                    pattern += ".*" + patts
-                                pattern += ".*"
-                                match = re.search(pattern, getStr)
-                                if match:
-                                    logger.warning("成功匹配正则表达式：" + pattern)
-                                    if len(getStr) > len(pat) * MaxAllowableLength:
-                                        logger.warning("源字符总长过长，为提高匹配准确度不进行匹配")
+                            for patts in pat:
+                                pattern += ".*" + patts
+                            pattern += ".*"
+                            match = re.search(pattern, getStr)
+                            if match:
+                                logger.warning("成功匹配正则表达式：" + pattern)
+                                if len(getStr) > len(pat) * MaxAllowableLength:
+                                    logger.warning("源字符总长过长，为提高匹配准确度不进行匹配")
+                                    continue
+                                if len(pat) > lenth1:
+                                    lenth1 = len(pat)
+                                    try:
+                                        replyssssss = random.choice(
+                                            superDict.get(str(event.group.id)).get(str((i))))
+                                        lock1 = 1
+                                    except:
+                                        logger.error("当前关键词回复为空")
                                         continue
-                                    if len(pat) > lenth1:
-                                        lenth1 = len(pat)
-                                        try:
-                                            replyssssss = random.choice(
-                                                superDict.get(str(event.group.id)).get(str((i))))
-                                            lock1 = 1
-                                        except:
-                                            logger.error("当前关键词回复为空")
-                                            continue
-                            if lock1==0:
-                                #正则匹配失败，尝试从public.xlsx获取回复
-                                if At(bot.qq) in event.message_chain:
-                                    best_matches = process.extractBests(getStr, superDict.get("public").keys(), limit=3)
-                                    logger.info("获取匹配结果：key:" + getStr + "|" + str(best_matches))
-                                    if int((best_matches)[0][1])<50:
-                                        logger.warning("匹配相似度过低，不发送")
-                                        return
-                                    replyssssss = random.choice(superDict.get("public").get(str((best_matches)[0][0])))
+                        if lock1==0:
+                            #正则匹配失败，尝试从public.xlsx获取回复
+                            if At(bot.qq) in event.message_chain:
+                                best_matches = process.extractBests(getStr, superDict.get("public").keys(), limit=3)
+                                logger.info("获取匹配结果：key:" + getStr + "|" + str(best_matches))
+                                if int((best_matches)[0][1])<50:
+                                    logger.warning("匹配相似度过低，不发送")
+                                    return
+                                replyssssss = random.choice(superDict.get("public").get(str((best_matches)[0][0])))
                 elif At(bot.qq) in event.message_chain:
                     best_matches = process.extractBests(getStr, superDict.get("public").keys(), limit=3)
                     logger.info("获取匹配结果：key:" + getStr + "|" + str(best_matches))
