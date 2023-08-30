@@ -383,37 +383,39 @@ def main(bot,config,sizhiKey,app_id, app_key,logger):
             except:
                 logger.error("回复出现异常，请忽略")
                 return
-
-            if str(replyssssss).endswith('.png') or str(replyssssss).endswith('.jpg'):
-                await bot.send(event, Image(path='data/autoReply/imageReply/' + replyssssss))
-            elif str(replyssssss).endswith('.wav'):
-                await bot.send(event, Voice(path='data/autoReply/voiceReply/' + replyssssss))
-            else:
-
-                replyssssss = replyssssss.replace("{me}", botName).replace("yucca", botName).replace("小思",  botName).replace("{segment}", ',')
-
-                if str(event.sender.id) not in userdict:
-                    replyssssss = replyssssss.replace("name", str(event.sender.member_name)).replace("{name}", str(event.sender.member_name)).replace("哥哥", str(event.sender.member_name)).replace("您", str(event.sender.member_name))
+            try:
+                if str(replyssssss).endswith('.png') or str(replyssssss).endswith('.jpg'):
+                    await bot.send(event, Image(path='data/autoReply/imageReply/' + replyssssss))
+                elif str(replyssssss).endswith('.wav'):
+                    await bot.send(event, Voice(path='data/autoReply/voiceReply/' + replyssssss))
                 else:
 
-                    setName = userdict.get(str(event.sender.id)).get("userName")
-                    if setName==None:
-                        setName=event.sender.member_name
-                    replyssssss = replyssssss.replace("name", setName).replace("{name}", setName).replace("哥哥", setName).replace("您", setName)
+                    replyssssss = replyssssss.replace("{me}", botName).replace("yucca", botName).replace("小思",  botName).replace("{segment}", ',')
 
-                if random.randint(1, 100) > voiceRate:
-                    await bot.send(event, replyssssss)
-                else:
-                    replyssssss = replyssssss.replace(botName, "我")
-                    path = '../data/voices/' + random_str() + '.wav'
-                    if random.randint(1,100)>chineseVoiceRate:
-                        text=await translate(str(replyssssss), app_id, app_key)
-                        tex = '[JA]' + text + '[JA]'
+                    if str(event.sender.id) not in userdict:
+                        replyssssss = replyssssss.replace("name", str(event.sender.member_name)).replace("{name}", str(event.sender.member_name)).replace("哥哥", str(event.sender.member_name)).replace("您", str(event.sender.member_name))
                     else:
-                        tex="[ZH]"+replyssssss+"[ZH]"
-                    logger.info("启动文本转语音：text: "+tex+" path: "+path[3:])
-                    await voiceGenerate({"text": tex, "out": path,"speaker":speaker,"modelSelect":modelSelect})
-                    await bot.send(event,Voice(path=path[3:]))
+
+                        setName = userdict.get(str(event.sender.id)).get("userName")
+                        if setName==None:
+                            setName=event.sender.member_name
+                        replyssssss = replyssssss.replace("name", setName).replace("{name}", setName).replace("哥哥", setName).replace("您", setName)
+
+                    if random.randint(1, 100) > voiceRate:
+                        await bot.send(event, replyssssss)
+                    else:
+                        replyssssss = replyssssss.replace(botName, "我")
+                        path = '../data/voices/' + random_str() + '.wav'
+                        if random.randint(1,100)>chineseVoiceRate:
+                            text=await translate(str(replyssssss), app_id, app_key)
+                            tex = '[JA]' + text + '[JA]'
+                        else:
+                            tex="[ZH]"+replyssssss+"[ZH]"
+                        logger.info("启动文本转语音：text: "+tex+" path: "+path[3:])
+                        await voiceGenerate({"text": tex, "out": path,"speaker":speaker,"modelSelect":modelSelect})
+                        await bot.send(event,Voice(path=path[3:]))
+            except:
+                logger.error("发送失败，回复消息为空。关键词："+getStr+" 回复："+replyssssss)
     # 开启和关闭思知ai
     @bot.on(GroupMessage)
     async def sizhiOpener(event:GroupMessage):
