@@ -378,7 +378,7 @@ def main(bot,config,sizhiKey,app_id, app_key,logger):
                 else:
                     return
             if replyssssss=="":
-                logger.error("发送失败，回复消息为空。关键词：" + getStr + " 回复：" + replyssssss)
+                pass
                 return
             try:
                 logger.info("key:："+getStr+" 选择回复：" + replyssssss)
@@ -418,7 +418,7 @@ def main(bot,config,sizhiKey,app_id, app_key,logger):
                         await voiceGenerate({"text": tex, "out": path,"speaker":speaker,"modelSelect":modelSelect})
                         await bot.send(event,Voice(path=path[3:]))
             except:
-                logger.error("发送失败，回复消息为空。关键词："+getStr+" 回复："+replyssssss)
+                logger.error("发送失败，群号"+str(event.group.id)+"关键词："+getStr+" 回复："+replyssssss)
     # 开启和关闭思知ai
     @bot.on(GroupMessage)
     async def sizhiOpener(event:GroupMessage):
