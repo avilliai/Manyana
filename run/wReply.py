@@ -377,12 +377,15 @@ def main(bot,config,sizhiKey,app_id, app_key,logger):
                     replyssssss = random.choice(superDict.get("public").get(str((best_matches)[0][0])))
                 else:
                     return
-
+            if replyssssss=="":
+                logger.error("发送失败，回复消息为空。关键词：" + getStr + " 回复：" + replyssssss)
+                return
             try:
                 logger.info("key:："+getStr+" 选择回复：" + replyssssss)
             except:
                 logger.error("回复出现异常，请忽略")
                 return
+
             try:
                 if str(replyssssss).endswith('.png') or str(replyssssss).endswith('.jpg'):
                     await bot.send(event, Image(path='data/autoReply/imageReply/' + replyssssss))
