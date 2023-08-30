@@ -275,7 +275,7 @@ def main(bot,config,sizhiKey,app_id, app_key,logger):
     @bot.on(GroupMessage)
     async def mohu(event: GroupMessage):
         global superDict,botName,likeindex,temp,sizhi
-        if random.randint(0,100)<groupLexicon or At(bot.qq) in event.message_chain and gptReply==False:
+        if (random.randint(0,100)<groupLexicon or At(bot.qq) in event.message_chain) and gptReply==False:
             if At(bot.qq) in event.message_chain:
                 for i in noRes:
                     if i in str(event.message_chain):
@@ -361,13 +361,22 @@ def main(bot,config,sizhiKey,app_id, app_key,logger):
                                             continue
                             if lock1==0:
                                 #正则匹配失败，尝试从public.xlsx获取回复
-                                if At(bot.qq) in event.message_chain or random.randint(0,100)<likeindex:
+                                if At(bot.qq) in event.message_chain:
                                     best_matches = process.extractBests(getStr, superDict.get("public").keys(), limit=3)
                                     logger.info("获取匹配结果：key:" + getStr + "|" + str(best_matches))
                                     if int((best_matches)[0][1])<50:
                                         logger.warning("匹配相似度过低，不发送")
                                         return
                                     replyssssss = random.choice(superDict.get("public").get(str((best_matches)[0][0])))
+                elif At(bot.qq) in event.message_chain:
+                    best_matches = process.extractBests(getStr, superDict.get("public").keys(), limit=3)
+                    logger.info("获取匹配结果：key:" + getStr + "|" + str(best_matches))
+                    if int((best_matches)[0][1]) < 50:
+                        logger.warning("匹配相似度过低，不发送")
+                        return
+                    replyssssss = random.choice(superDict.get("public").get(str((best_matches)[0][0])))
+                else:
+                    return
 
             try:
                 logger.info("key:："+getStr+" 选择回复：" + replyssssss)
