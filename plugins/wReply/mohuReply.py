@@ -41,12 +41,10 @@ def mohuaddReplys(ass,groupid,mode=0):
     else:
         dict1[messageS[0]] = [messageS[1], ]
     if mode==1:
-        lisas=os.listdir("data/autoReply/lexicon")
-        for sas in lisas:
-            wb = openpyxl.load_workbook("data/autoReply/lexicon/" + sas)
-            sheet = wb.active
-            sheet.append([messageS[0], messageS[1]])
-            wb.save("data/autoReply/lexicon/" +sas)
+        wb = openpyxl.load_workbook("data/autoReply/lexicon/" +"publicLexicon.xlsx")
+        sheet = wb.active
+        sheet.append([messageS[0], messageS[1]])
+        wb.save("data/autoReply/lexicon/" +"publicLexicon.xlsx")
     else:
         wb = openpyxl.load_workbook("data/autoReply/lexicon/" + groupid + ".xlsx")
         sheet = wb.active

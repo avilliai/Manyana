@@ -298,62 +298,82 @@ def main(bot,config,sizhiKey,app_id, app_key,logger):
                 replyssssss=answer.get("data").get("info").get("text")
 
             else:
-                #优先匹配本词库
+                #筛选，不是艾特bot就不匹配
                 if event.message_chain.count(At):
                     if At(bot.qq) not in event.message_chain:
                         return
-                if str(event.group.id) in superDict.keys():
-                    if random.randint(0,100)<groupLexicon or At(bot.qq) in event.message_chain:
-                        keys1=superDict.get(str(event.group.id)).keys()
-                        lock=0
-                        lenth1 = 0
-                        replyssssss = ""
-                        for i in keys1:
-                            pat=i.split("/")
-                            pattern=""
+                #优先从专有词库匹配
+                elif str(event.group.id) in superDict.keys():
+                    #获取专有词库所有key
+                    keys1=superDict.get(str(event.group.id)).keys()
 
-                            for patts in pat:
-                                pattern+=".*"+patts
-                            pattern+=".*"
-                            match = re.search(pattern, getStr)
-                            if match:
-                                logger.warning("成功匹配正则表达式：" + pattern)
-                                if len(getStr)>len(pat)*MaxAllowableLength:
-                                    logger.warning("源字符总长过长，为提高匹配准确度不进行匹配")
+                    lock=0
+                    lenth1 = 0
+                    replyssssss = ""
+                    for i in keys1:
+                        pat=i.split("/")
+                        pattern=""
+
+                        for patts in pat:
+                            pattern+=".*"+patts
+                        pattern+=".*"
+                        match = re.search(pattern, getStr)
+                        if match:
+                            logger.warning("成功匹配正则表达式：" + pattern)
+                            if len(getStr)>len(pat)*MaxAllowableLength:
+                                logger.warning("源字符总长过长，为提高匹配准确度不进行匹配")
+                                continue
+                            if len(pat)>lenth1:
+                                lenth1=len(pat)
+                                try:
+                                    replyssssss=random.choice(superDict.get(str(event.group.id)).get(str((i))))
+                                    lock = 1
+                                except:
+                                    logger.error("当前关键词回复为空")
                                     continue
-                                if len(pat)>lenth1:
-                                    lenth1=len(pat)
-                                    try:
-                                        replyssssss=random.choice(superDict.get(str(event.group.id)).get(str((i))))
-                                        lock = 1
-                                    except:
-                                        logger.error("当前关键词回复为空")
-                                        continue
+                        #专有词库没有匹配到，匹配共有词库
                         if lock==0:
-                            #正则匹配失败，尝试从public.xlsx获取回复
-                            if At(bot.qq) in event.message_chain or random.randint(0,100)<likeindex:
-                                best_matches = process.extractBests(getStr, superDict.get("public").keys(), limit=3)
-                                logger.info("获取匹配结果：key:" + getStr + "|" + str(best_matches))
-                                if int((best_matches)[0][1])<50:
-                                    logger.warning("匹配相似度过低，不发送")
-                                    return
-                                replyssssss = random.choice(superDict.get("public").get(str((best_matches)[0][0])))
-                            else:
-                                return
-                    else:
-                        return
+                            keys2 = superDict.get("publicLexicon").keys()
+                            lock1 = 0
+                            lenth1 = 0
+                            replyssssss = ""
+                            for i in keys2:
+                                pat = i.split("/")
+                                pattern = ""
 
-                elif At(bot.qq) in event.message_chain or random.randint(0,100)<likeindex:
-                    #best_match = process.extractOne(getStr, superDict.keys())
-                    best_matches = process.extractBests(getStr, superDict.get("public").keys(), limit=3)
-                    logger.info("获取匹配结果：key:" + getStr + "|" + str(best_matches))
-                    if int((best_matches)[0][1]) < 50:
-                        logger.warning("匹配相似度过低，不发送")
-                        return
-                    replyssssss =random.choice(superDict.get("public").get(str((best_matches)[0][0])))
-                else:
-                    return
-            logger.info("key:："+getStr+" 选择回复：" + replyssssss)
+                                for patts in pat:
+                                    pattern += ".*" + patts
+                                pattern += ".*"
+                                match = re.search(pattern, getStr)
+                                if match:
+                                    logger.warning("成功匹配正则表达式：" + pattern)
+                                    if len(getStr) > len(pat) * MaxAllowableLength:
+                                        logger.warning("源字符总长过长，为提高匹配准确度不进行匹配")
+                                        continue
+                                    if len(pat) > lenth1:
+                                        lenth1 = len(pat)
+                                        try:
+                                            replyssssss = random.choice(
+                                                superDict.get(str(event.group.id)).get(str((i))))
+                                            lock1 = 1
+                                        except:
+                                            logger.error("当前关键词回复为空")
+                                            continue
+                            if lock1==0:
+                                #正则匹配失败，尝试从public.xlsx获取回复
+                                if At(bot.qq) in event.message_chain or random.randint(0,100)<likeindex:
+                                    best_matches = process.extractBests(getStr, superDict.get("public").keys(), limit=3)
+                                    logger.info("获取匹配结果：key:" + getStr + "|" + str(best_matches))
+                                    if int((best_matches)[0][1])<50:
+                                        logger.warning("匹配相似度过低，不发送")
+                                        return
+                                    replyssssss = random.choice(superDict.get("public").get(str((best_matches)[0][0])))
+
+            try:
+                logger.info("key:："+getStr+" 选择回复：" + replyssssss)
+            except:
+                logger.error("回复出现异常，请忽略")
+                return
 
             if str(replyssssss).endswith('.png') or str(replyssssss).endswith('.jpg'):
                 await bot.send(event, Image(path='data/autoReply/imageReply/' + replyssssss))
@@ -517,16 +537,15 @@ def main(bot,config,sizhiKey,app_id, app_key,logger):
         global superDict
         if str(event.message_chain).startswith("*del#"):
             aim1 = str(event.message_chain).split("#")[1]
-            sasf=0
-            for isas in superDict.keys():
-                if aim1 in superDict.get(isas).keys():
-                    dicss = mohudels(aim1, isas)
-                    sasf=1
-                    superDict = dicss
-
-
-                else:
-                    continue
+            logger.info("尝试删除关键词："+aim1)
+            if aim1 in superDict.get("publicLexicon").keys():
+                dicss = mohudels(aim1, "publicLexicon")
+                sasf=1
+                superDict = dicss
+            else:
+                await bot.send(event,"没有该关键词")
+                logger.error("无关键词:"+aim1)
+                return
             if sasf==1:
                 logger.info("导出词库中")
                 outPutDic()
