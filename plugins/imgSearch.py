@@ -42,7 +42,7 @@ async def superSearch(url,proxies):
         resp = await iqdb.search(url=url)
         #resp = await iqdb.search(file=file)
         fs=f"模式: {resp.raw[0].content}"+"\n"+f"来源地址: {resp.raw[0].url}"+"\n"+f"相似度: {resp.raw[0].similarity}"+"\n"+f"图片大小: {resp.raw[0].size}"+"\n"+f"图片来源: {resp.raw[0].source}"+"\n"+f"其他图片来源: {resp.raw[0].other_source}"+"\n"+f"SauceNAO搜图链接: {resp.saucenao_url}"+"\n"+f"Ascii2d搜图链接: {resp.ascii2d_url}"+"\n"+f"TinEye搜图链接: {resp.tineye_url}"+"\n"+f"Google搜图链接: {resp.google_url}"
-        print(fs)
+        #print(fs)
         return fs,str(resp.raw[0].thumbnail)
 
 async def test2(url,proxies,cookies):
