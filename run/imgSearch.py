@@ -42,6 +42,7 @@ def main(bot,api_key,proxy,logger):
             # Replace the key with your own
             dataa = {"url": img_url, "db": "999", "api_key": api_key, "output_type": "2", "numres": "3"}
             logger.info("发起搜图请求")
+            await bot.send(event,"正在检索....请稍候")
             #sauceno搜图
             lisas=[]
             try:
