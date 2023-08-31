@@ -35,7 +35,7 @@ def main(bot,api_key,proxy,logger):
     async def startYourSearch(event:GroupMessage):
         global dataGet
         if str(event.message_chain)=="搜图":
-            await bot.send("请发送要搜索的图片")
+            await bot.send(event,"请发送要搜索的图片")
             dataGet[event.sender.id]=[]
     @bot.on(GroupMessage)
     async def imgSearcher(event:GroupMessage):
