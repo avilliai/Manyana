@@ -12,5 +12,6 @@ siZhiAi: #思知ai    从https://console.ownthink.com/login
   - 6f628cf3622767516a3f8030a98342182bd6    # 第一个apiKey
   - 06f0ebeb99aa2e92f33bb2c12182883224456    # 第二个，你有几个就填几个，按照如下格式即可。多删少补
 nasa_api: dfafhalsdfalfdj              # nasa相关天文api 从https://api.nasa.gov/index.html#main-content申请
+e-hentai: ipb_session_id=bc46d5c21d; ipb_member_id=7584785; ipb_pass_hash=8e9aac17; sk=wo63 #抓取ehentai的cookies,方式https://pic-image-search.kituin.fun/wiki/picimagesearch/E-hentai/DataStructure/#cookies%E8%8E%B7%E5%8F%96
 proxy: 'http://127.0.0.1:1080'  #代理 自己设置对应的端口，没有就不填
 

@@ -33,3 +33,5 @@
   - 支持通过pandora接入chatGPT3.5
   - config/token.txt中填写你的token，获取方式见https://ai-20230626.fakeopen.com/auth
   - 如需使用请在settings.yaml中打开pandora
+2023/8/31:
+  - 搜图全面升级
