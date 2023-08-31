@@ -4,14 +4,14 @@ import asyncio
 from PicImageSearch import Network, TraceMoe, Ascii2D, Iqdb, Google, EHentai
 from PicImageSearch.model import Ascii2DResponse, IqdbResponse, TraceMoeResponse, GoogleResponse, EHentaiResponse
 
-from newLogger import newLogger
+
 
 
 proxies = "http://127.0.0.1:1080"
 #proxies = None
 url = 'https://i.pixiv.re/img-master/img/2023/06/22/18/18/45/109241038_p0_master1200.jpg'
 
-logger=newLogger()
+
 async def test(url,proxies):
     async with Network(proxies=proxies) as client:
         tracemoe = TraceMoe(client=client, mute=False, size=None)
