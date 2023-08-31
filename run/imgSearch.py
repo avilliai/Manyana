@@ -73,7 +73,7 @@ def main(bot,api_key,proxy,logger):
             except:
                 logger.error("sauceno搜图失败，无结果或访问次数过多，请稍后再试")
                 b1 = ForwardMessageNode(sender_id=bot.qq, sender_name="Manyana",
-                                        message_chain=MessageChain(["sauceno搜图失败，无结果或访问次数过多，请稍后再试",Image(url="https://mirai.mamoe.net/assets/uploads/files/1614995053404-5e0e66a9fdadee27.jpg")]))
+                                        message_chain=MessageChain(["sauceno搜图失败，无结果或访问次数过多，请稍后再试",Image(path="data/autoReply/imageReply/axaAaRaUaaafa7a.png")]))
                 # b1 = ForwardMessageNode(sender_id=bot.qq, sender_name="Manyana",message_chain=MessageChain([result, Image(url=urlss]))
                 dataGet.get(event.sender.id).append(b1)
 
@@ -93,7 +93,7 @@ def main(bot,api_key,proxy,logger):
                 logger.error("TraceMoe未获取到结果" )
                 b1 = ForwardMessageNode(sender_id=bot.qq, sender_name="Manyana",
                                         message_chain=MessageChain(["TraceMoe搜图失败，无结果或访问次数过多，请稍后再试", Image(
-                                            url="https://mirai.mamoe.net/assets/uploads/files/1614995053404-5e0e66a9fdadee27.jpg")]))
+                                            path="data/autoReply/imageReply/axaAaRaUaaafa7a.png")]))
                 # b1 = ForwardMessageNode(sender_id=bot.qq, sender_name="Manyana",message_chain=MessageChain([result, Image(url=urlss]))
                 dataGet.get(event.sender.id).append(b1)
             #使用Ascii2D
@@ -112,7 +112,7 @@ def main(bot,api_key,proxy,logger):
                 logger.error("Ascii2D未获取到结果" )
                 b1 = ForwardMessageNode(sender_id=bot.qq, sender_name="Manyana",
                                         message_chain=MessageChain(["Ascii2D搜图失败，无结果或访问次数过多，请稍后再试", Image(
-                                            url="https://mirai.mamoe.net/assets/uploads/files/1614995053404-5e0e66a9fdadee27.jpg")]))
+                                            path="data/autoReply/imageReply/axaAaRaUaaafa7a.png")]))
                 # b1 = ForwardMessageNode(sender_id=bot.qq, sender_name="Manyana",message_chain=MessageChain([result, Image(url=urlss]))
                 dataGet.get(event.sender.id).append(b1)
 
@@ -132,7 +132,7 @@ def main(bot,api_key,proxy,logger):
                 logger.error("iqdb未获取到结果")
                 b1 = ForwardMessageNode(sender_id=bot.qq, sender_name="Manyana",
                                         message_chain=MessageChain(["iqdb搜图失败，无结果或访问次数过多，请稍后再试", Image(
-                                            url="https://mirai.mamoe.net/assets/uploads/files/1614995053404-5e0e66a9fdadee27.jpg")]))
+                                            path="data/autoReply/imageReply/axaAaRaUaaafa7a.png")]))
                 # b1 = ForwardMessageNode(sender_id=bot.qq, sender_name="Manyana",message_chain=MessageChain([result, Image(url=urlss]))
                 dataGet.get(event.sender.id).append(b1)
             # 使用E-hentai
@@ -151,7 +151,7 @@ def main(bot,api_key,proxy,logger):
                 logger.error("E-hentai未获取到结果")
                 b1 = ForwardMessageNode(sender_id=bot.qq, sender_name="Manyana",
                                         message_chain=MessageChain(["E-hentai搜图失败，无结果或访问次数过多，请稍后再试", Image(
-                                            url="https://mirai.mamoe.net/assets/uploads/files/1614995053404-5e0e66a9fdadee27.jpg")]))
+                                            path="data/autoReply/imageReply/axaAaRaUaaafa7a.png")]))
                 # b1 = ForwardMessageNode(sender_id=bot.qq, sender_name="Manyana",message_chain=MessageChain([result, Image(url=urlss]))
                 dataGet.get(event.sender.id).append(b1)
             await bot.send(event,Forward(node_list=dataGet.get(event.sender.id)))
