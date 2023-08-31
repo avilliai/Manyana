@@ -248,3 +248,5 @@ wReply:
 - 在settings.yaml打开思知ai回复
 # 最后
 如果觉得项目还不错的话给个star喵，给个star谢谢喵
+![Star History Chart](https://api.star-history.com/svg?repos=avilliai/Manyana&type=Date)
+
