@@ -33,7 +33,7 @@ def main(bot,api_key,proxy,logger):
     @bot.on(GroupMessage)
     async def imgSearcher(event:GroupMessage):
         if "搜图" in str(event.message_chain) and event.message_chain.count(Image):
-            if event.group.id in dataGet:
+            if event.group.id not in dataGet:
                 logger.info("接收来自群："+str(event.group.id)+" 用户："+str(event.sender.id)+" 的搜图指令")
                 dataGet[event.group.id]=[]
                 lst_img = event.message_chain.get(Image)
