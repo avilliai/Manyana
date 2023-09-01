@@ -377,8 +377,10 @@ def main(bot,config,sizhiKey,app_id, app_key,logger):
                     replyssssss = random.choice(superDict.get("public").get(str((best_matches)[0][0])))
                 else:
                     return
-            if replyssssss=="":
-                pass
+            try:
+                if replyssssss=="":
+                    return
+            except:
                 return
             try:
                 logger.info("key:："+getStr+" 选择回复：" + replyssssss)
