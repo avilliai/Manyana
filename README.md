@@ -21,11 +21,12 @@ Manyana指
 - 基于[Yiri-mirai](https://github.com/YiriMiraiProject/YiriMirai) 实现
 - 请确保已安装[fireFox浏览器](https://www.firefox.com.cn/)
 # 部署
-## 搭建工具部署(推荐)
+## 方法1：搭建工具部署(推荐)
 **如果你觉得搭建bot过于困难，请使用此方案**
 - 从release下载ManyanaLauncher.rar并解压(rar是一种压缩文件格式，不知道怎么用自己去下个winrar)
-- 从release下载HowToUse.mp4
-## 自行部署(如果你有一定bot搭建经验)
+- 从release下载HowToUse.mp4，如有疑问参考视频即可
+- **使用搭建工具搭建完成后请务必运行一次Manyana/setUp.py补全最近更新的内容**
+## 方法2：自行部署(如果你有一定bot搭建经验)
 - 请确保py版本为3.9
 - 请确保已安装[mirai-api-http](https://github.com/project-mirai/mirai-api-http) 并[正确配置](https://github.com/avilliai/wReply/blob/master/setting.yml)
 - 可选安装[mirai-login-solver-sakura](https://github.com/KasukuSakura/mirai-login-solver-sakura)
