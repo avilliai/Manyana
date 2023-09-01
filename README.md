@@ -41,6 +41,7 @@ git clone https://github.com/avilliai/Manyana.git
 ```
 - 解压release中的site-packages.rar，打开cmd输入where python查看你的python安装目录
 - 进入python安装目录，找到Lib/site-packages，用release的site-packages替换它
+- 运行一次Manyana/setUp.py以补全最近更新的内容
 ## 不管你用哪种搭建方式
 - 填写config.json(必做)与config/api.yaml(建议填写)
 - 然后运行main.py(如使用搭建工具部署，launcher内置了启动Manyana的脚本,无需手动启动main.py)
