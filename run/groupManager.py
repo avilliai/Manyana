@@ -573,7 +573,7 @@ def main(bot,config,moderateKey,logger):
                         #await bot.quit(event.group.id)
                         global blackList
                         global blGroups
-                        if event.sender.group in blGroups:
+                        if event.group.id in blGroups:
                             logger.info("已有黑名单群"+str(event.sender.group))
                         else:
                             blGroups.append(event.group.id)
