@@ -29,6 +29,10 @@ def main(bot,master,app_id,app_key,logger):
     special_Reply1 = result.get("BeatNudge1")
     voiceReply = result.get("voiceReply")
     chineseVoiceRate=result.get("chineseVoiceRate")
+    global transLateData
+    with open('data/autoReply/transLateData.yaml', 'r', encoding='utf-8') as file:
+        transLateData = yaml.load(file, Loader=yaml.FullLoader)
+
     global modelSelect
     global speaker
     speaker = result.get("defaultModel").get("speaker")
@@ -67,6 +71,7 @@ def main(bot,master,app_id,app_key,logger):
 
     @bot.on(NudgeEvent)
     async def NudgeReply(event:NudgeEvent):
+        global transLateData
         if event.target==bot.qq:
             logger.info("接收到来自" + str(event.from_id) + "的戳一戳")
             if random.randint(0,100)>100-prob:
@@ -88,7 +93,14 @@ def main(bot,master,app_id,app_key,logger):
                 else:
                     path = '../data/voices/' + random_str() + '.wav'
                     if random.randint(1,100)>chineseVoiceRate:
-                        text = await translate(str(rep), app_id, app_key)
+                        if rep in transLateData:
+                            text = transLateData.get(rep).get("ja")
+                        else:
+                            text = await translate(str(rep), app_id, app_key)
+                            transLateData[rep] = text
+                            with open('ddata/autoReply/transLateData.yaml', 'w', encoding="utf-8") as file:
+                                yaml.dump(transLateData, file, allow_unicode=True)
+                            logger.info("写入参照数据:" + rep + "| " + text)
                         tex = '[JA]' + text + '[JA]'
                     else:
                         tex="[ZH]"+rep+"[ZH]"
