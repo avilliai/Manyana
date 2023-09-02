@@ -124,6 +124,8 @@ def main(bot,config,moderateKey,logger):
             else:
                 logger.info("非用户，拒绝")
                 al = '拒绝'
+                await bot.send_friend_message(event.from_id, "无用户签到记录，请在任意bot共同群聊内发送 签到 达到三天以上\n也可前往用户群" + str(
+                    mainGroup) + " 获取授权\n在该群内发送:\n授权#你的QQ")
         await bot.send_friend_message(master, '有新的加群申请\n来自：' + str(event.from_id) + '\n目标群：' + str(
             event.group_id) + '\n昵称：' + event.nick + '\n状态：' + al)
     @bot.on(MemberJoinEvent)
