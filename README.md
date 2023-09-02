@@ -20,8 +20,8 @@ Manyana指
 - 项目使用了pengzhile的[pandora](https://github.com/pengzhile/pandora)
 - 基于[Yiri-mirai](https://github.com/YiriMiraiProject/YiriMirai) 实现
 - 请确保已安装[fireFox浏览器](https://www.firefox.com.cn/)
+- 如果遇到使用问题，请在QQ群628763673反馈
 # 部署
-如果遇到使用问题，请在QQ群628763673反馈
 ## 方法1：搭建工具部署(推荐)
 **如果你觉得搭建bot过于困难，请使用此方案**
 - 从release下载ManyanaLauncher.rar并解压(rar是一种压缩文件格式，不知道怎么用自己去下个winrar)
