@@ -94,7 +94,7 @@ def main(bot,master,app_id,app_key,logger):
                     path = '../data/voices/' + random_str() + '.wav'
                     if random.randint(1,100)>chineseVoiceRate:
                         if rep in transLateData:
-                            text = transLateData.get(rep).get("ja")
+                            text = transLateData.get(rep)
                         else:
                             text = await translate(str(rep), app_id, app_key)
                             transLateData[rep] = text
