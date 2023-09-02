@@ -421,7 +421,7 @@ def main(bot,config,sizhiKey,app_id, app_key,logger):
                             else:
                                 text=await translate(str(replyssssss), app_id, app_key)
                                 transLateData[replyssssss]=text
-                                with open('ddata/autoReply/transLateData.yaml', 'w', encoding="utf-8") as file:
+                                with open('data/autoReply/transLateData.yaml', 'w', encoding="utf-8") as file:
                                     yaml.dump(transLateData, file, allow_unicode=True)
                                 logger.info("写入参照数据:"+replyssssss+"| "+text)
                             tex = '[JA]' + text + '[JA]'
