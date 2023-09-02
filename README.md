@@ -101,15 +101,17 @@ nameXXX           #设定bot对你的特殊称谓为XXX，例如 name丁真珍�
 你可以添加语音回复，但回复本身就有一定几率转为语音回复。
 ## vits语音合成
 使用sp查看所有可用角色，或@bot 可用角色
-```angular2html
+```
 xx说 yourText             # 通过角色名，指定一个角色模型
 xx中文yourText            # 此模式下输出为中文
 xx日文yourText            #输入日文，输出日文
+设定角色#角色名             #指定一个默认语音合成角色
 你也可以不带角色名直接@bot 说 或者使用其他两个指令
 ```
 ### 导入模型：
 在vits/voiceModel文件夹下新建一个文件夹放置.pth文件和config.json文件，重启main.py即可
 
+**注意，如果你的语音模型只支持一种语言，请将模型名称从XXX.ptj改为XXXI.pth**，以I.pth结尾是项目辨别此类模型的方式
 ![img.png](data/pictures/img.png)
 ## 信息查询
 ### 碧蓝档案wiki
