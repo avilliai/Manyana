@@ -27,7 +27,7 @@ from plugins.imgDownload import dict_download_img
 from plugins.jokeMaker import get_joke
 
 from plugins.modelsLoader import modelLoader
-from plugins.newsEveryDay import news, moyu
+from plugins.newsEveryDay import news, moyu, xingzuo
 from plugins.picGet import pic, setuGet, picDwn
 from plugins.tarot import tarotChoice
 from plugins.translater import translate
@@ -184,6 +184,14 @@ def main(bot,api_KEY,app_id,app_key,nasa_api,proxy,logger):
             logger.info("获取摸鱼人日历")
             path = await moyu()
             logger.info("成功获取到摸鱼人日历")
+            await bot.send(event, Image(path=path))
+
+    @bot.on(GroupMessage)
+    async def moyuToday(event: GroupMessage):
+        if ("星座" in str(event.message_chain) and At(bot.qq) in event.message_chain) or str(event.message_chain) == "星座":
+            logger.info("获取星座运势")
+            path = await xingzuo()
+            logger.info("成功获取到星座运势")
             await bot.send(event, Image(path=path))
 
     @bot.on(GroupMessage)
