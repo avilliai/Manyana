@@ -111,7 +111,10 @@ def main(bot,master,botName,logger):
 
             sender.pop(str(event.sender.id))
             await bot.send(event, "已经了解" + str(event.sender.nickname) + "的需求啦(/▽＼)")
+            logger.info("点歌数据构建完成：\n日期:"+str(today)+"\n留言："+sender.get(str(event.sender.id)).get("message")+"点歌人："+str(event.sender.nickname)+str(event.sender.id))
             await bot.send(event, "成功，您的点歌已加入序列，将在" + str(today) + "播放")
+            await bot.send_friend_message(int(master), "点歌数据构建完成：\n日期:" + str(today) + "\n留言：" + sender.get(
+                str(event.sender.id)).get("message") + "点歌人：" + str(event.sender.nickname) + str(event.sender.id))
 
 
 
