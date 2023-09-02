@@ -74,6 +74,9 @@ def main(bot,config,sizhiKey,app_id, app_key,logger):
 
     global superDict
     superDict = json.loads(jss)
+    global transLateData
+    with open('data/autoReply/transLateData.yaml', 'r',encoding='utf-8') as file:
+        transLateData = yaml.load(file, Loader=yaml.FullLoader)
 
     with open('data/userData.yaml', 'r',encoding='utf-8') as file:
         data = yaml.load(file, Loader=yaml.FullLoader)
@@ -274,7 +277,7 @@ def main(bot,config,sizhiKey,app_id, app_key,logger):
     # 模糊词库触发回复
     @bot.on(GroupMessage)
     async def mohu(event: GroupMessage):
-        global superDict,botName,likeindex,temp,sizhi
+        global superDict,botName,likeindex,temp,sizhi,transLateData
         if (random.randint(0,100)<groupLexicon or At(bot.qq) in event.message_chain) and gptReply==False:
             if At(bot.qq) in event.message_chain:
                 for i in noRes:
@@ -410,14 +413,23 @@ def main(bot,config,sizhiKey,app_id, app_key,logger):
                         await bot.send(event, replyssssss)
                     else:
                         replyssssss = replyssssss.replace(botName, "我")
+
                         path = '../data/voices/' + random_str() + '.wav'
                         if random.randint(1,100)>chineseVoiceRate:
-                            text=await translate(str(replyssssss), app_id, app_key)
+                            if replyssssss in transLateData:
+                                text=transLateData.get(replyssssss).get("ja")
+                            else:
+                                text=await translate(str(replyssssss), app_id, app_key)
+                                transLateData[replyssssss]=text
+                                with open('ddata/autoReply/transLateData.yaml', 'w', encoding="utf-8") as file:
+                                    yaml.dump(transLateData, file, allow_unicode=True)
+                                logger.info("写入参照数据:"+replyssssss+"| "+text)
                             tex = '[JA]' + text + '[JA]'
                         else:
                             tex="[ZH]"+replyssssss+"[ZH]"
                         logger.info("启动文本转语音：text: "+tex+" path: "+path[3:])
                         await voiceGenerate({"text": tex, "out": path,"speaker":speaker,"modelSelect":modelSelect})
+
                         await bot.send(event,Voice(path=path[3:]))
             except:
                 logger.error("发送失败，群号"+str(event.group.id)+"关键词："+getStr+" 回复："+replyssssss)
