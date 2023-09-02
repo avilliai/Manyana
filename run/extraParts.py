@@ -147,6 +147,12 @@ def main(bot,api_KEY,app_id,app_key,nasa_api,proxy,logger):
                     path=await setuGet(data)
                     logger.info("发送图片: "+path)
                     try:
+                        await bot.send(event, Image(url=path))
+                        logger.info("图片发送成功")
+                    except:
+                        logger.error("图片发送失败")
+                        await bot.send(event,path)
+                    '''try:
                         b1 = ForwardMessageNode(sender_id=bot.qq, sender_name="Manyana",
                                                 message_chain=MessageChain([" " , Image(url=path)]))
                         picData.get(event.sender.id).append(b1)
@@ -155,10 +161,10 @@ def main(bot,api_KEY,app_id,app_key,nasa_api,proxy,logger):
                         b1 = ForwardMessageNode(sender_id=bot.qq, sender_name="Manyana",
                                                 message_chain=MessageChain([" " , path]))
                         picData.get(event.sender.id).append(b1)
-                    #await bot.send(event,Image(url=path))
+                    
                 await bot.send(event, Forward(node_list=picData.get(event.sender.id)))
-                picData.pop(event.sender.id)
-                logger.info("图片发送成功")
+                picData.pop(event.sender.id)'''
+
 
     @bot.on(GroupMessage)
     async def historyToday(event:GroupMessage):
