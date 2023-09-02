@@ -16,7 +16,7 @@ def main():
     elif a=="2":
         logger = newLogger()
         logger.warning("更新python库，按1跳过，如果最近没有更新过，不建议跳过，可能错过某些更新。")
-        if input("在这里输入")!="1":
+        if input("在这里输入:")!="1":
             logger.warning("更新可能包含setUp.py自身更新。一般建议运行两次setUp.py")
             os.system("pip config set global.index-url https://mirrors.aliyun.com/pypi/simple/")
             os.system("pip install pandora-chatgpt")
