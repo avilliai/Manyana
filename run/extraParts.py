@@ -144,7 +144,12 @@ def main(bot,api_KEY,app_id,app_key,nasa_api,proxy,logger):
                     a=5
                     await bot.send(event,"api访问限制，修改获取张数为 5")
                 for i in range(a):
-                    path=await setuGet(data)
+                    try:
+                        path=await setuGet(data)
+                    except:
+                        logger.error("涩图请求出错")
+                        await bot.send(event,"请求出错，请稍后再试")
+                        return
                     logger.info("发送图片: "+path)
                     try:
                         await bot.send(event, Image(url=path))
