@@ -14,8 +14,9 @@ import httpx
 import requests
 import utils
 import yaml
-from mirai import Image, Voice, Startup
+from mirai import Image, Voice, Startup, MessageChain
 from mirai import Mirai, WebSocketAdapter, FriendMessage, GroupMessage, At, Plain
+from mirai.models import ForwardMessageNode, Forward
 
 from plugins import weatherQuery
 from plugins.RandomStr import random_str
@@ -57,6 +58,8 @@ def main(bot,api_KEY,app_id,app_key,nasa_api,proxy,logger):
     with open('config/settings.yaml', 'r', encoding='utf-8') as f:
         result1 = yaml.load(f.read(), Loader=yaml.FullLoader)
     r18 = result1.get("r18Pic")
+    global picData
+    picData={}
 
     @bot.on(Startup)
     async def update(event:Startup):
@@ -120,6 +123,7 @@ def main(bot,api_KEY,app_id,app_key,nasa_api,proxy,logger):
     @bot.on(GroupMessage)
     async def setuHelper(event:GroupMessage):
         pattern1 = r'(\d+)张(\w+)'
+        global picData
         if At(bot.qq) in event.message_chain:
             text1=str(event.message_chain).replace("壁纸","").replace("涩图","").replace("色图","").replace("图","").replace("r18","")
             match1 = re.search(pattern1, text1)
@@ -131,7 +135,7 @@ def main(bot,api_KEY,app_id,app_key,nasa_api,proxy,logger):
                         data["r18"]=1
                     else:
                         await bot.send(event,"r18模式已关闭")
-
+                picData[event.sender.id]=[]
                 data["tag"]=match1.group(2)
                 data["size"] = "regular"
                 logger.info("组装数据完成："+str(data))
@@ -142,8 +146,19 @@ def main(bot,api_KEY,app_id,app_key,nasa_api,proxy,logger):
                 for i in range(a):
                     path=await setuGet(data)
                     logger.info("发送图片: "+path)
-                    await bot.send(event,Image(url=path))
-                    logger.info("图片发送成功")
+                    try:
+                        b1 = ForwardMessageNode(sender_id=bot.qq, sender_name="Manyana",
+                                                message_chain=MessageChain([" " , Image(url=path)]))
+                        picData.get(event.sender.id).append(b1)
+                    except:
+                        logger.error("出错，转为url文本")
+                        b1 = ForwardMessageNode(sender_id=bot.qq, sender_name="Manyana",
+                                                message_chain=MessageChain([" " , path]))
+                        picData.get(event.sender.id).append(b1)
+                    #await bot.send(event,Image(url=path))
+                await bot.send(event, Forward(node_list=picData.get(event.sender.id)))
+                picData.pop(event.sender.id)
+                logger.info("图片发送成功")
 
     @bot.on(GroupMessage)
     async def historyToday(event:GroupMessage):
