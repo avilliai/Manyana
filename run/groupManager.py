@@ -47,6 +47,7 @@ def main(bot,config,moderateKey,logger):
     with open('config/settings.yaml', 'r', encoding='utf-8') as f:
         result1 = yaml.load(f.read(), Loader=yaml.FullLoader)
     GroupSensor = result1.get("GroupSensor")
+    autoallowFriend=result1.get("autoallowFriend")
     global qiandaoT
     qiandaoT=result1.get("signTimes")
 
@@ -266,7 +267,7 @@ def main(bot,config,moderateKey,logger):
     @bot.on(NewFriendRequestEvent)
     async def allowStranger(event: NewFriendRequestEvent):
         logger.info("新的好友申请，来自"+str(event.from_id))
-        if str(event.from_id) in userdict.keys() or event.group_id==mainGroup:
+        if str(event.from_id) in userdict.keys() or event.group_id==mainGroup or autoallowFriend==True:
             logger.info("有用户记录，同意")
             al='同意'
             await bot.allow(event)

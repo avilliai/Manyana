@@ -1,5 +1,6 @@
 
 signTimes: 3    # 签到几天后可以邀请加群
+autoallowFriend: False  #是否自动允许好友申请
 GroupSensor: False    #开启后，将拒绝无授权群的加群邀请
 r18Pic: False
 pandora: False        #是否启用pandora_chatGPT，如未正确配置相关内容可能导致bot卡死
