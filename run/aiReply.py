@@ -63,10 +63,12 @@ def main(bot,master,apikey,proxy,logger):
             if pandoraa:
                 if totallink==False:
                     totallink+=True
-                    if gptReply==False:
+                    if gptReply==False or str(event.message_chain).startswith("/p"):
                         prompt=str(event.message_chain)[2:]
                     else:
+
                         prompt=str(event.message_chain).replace("@"+str(bot.qq)+"", '')
+
                     message_id = str(uuid.uuid4())
                     model = "text-davinci-002-render-sha"
                     logger.info("ask:"+prompt)
