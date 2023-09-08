@@ -53,7 +53,8 @@ def importDict(xlsxPath = 'data/autoReply/lexicon/public.xlsx'):
                 if (key in newDict):
                     replyValue=newDict.get(key)
                     if value in replyValue:
-                        print('已存在该回复，不添加')
+                        pass
+                        #print('已存在该回复，不添加')
                     else:
                         replyValue.append(value)
                         #print('已有关键字，追加')
