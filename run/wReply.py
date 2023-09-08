@@ -357,7 +357,7 @@ def main(bot,config,sizhiKey,app_id, app_key,logger):
                                     lenth1 = len(pat)
                                     try:
                                         replyssssss = random.choice(
-                                            superDict.get(str(event.group.id)).get(str((i))))
+                                            superDict.get(str("publicLexicon")).get(str((i))))
                                         lock1 = 1
                                     except:
                                         logger.error("当前关键词回复为空")
