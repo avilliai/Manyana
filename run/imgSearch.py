@@ -130,9 +130,14 @@ def main(bot,api_key,proxy,logger):
                     await bot.send(event, result)
             except:
                 logger.error("iqdb未获取到结果")
-                b1 = ForwardMessageNode(sender_id=bot.qq, sender_name="Manyana",
-                                        message_chain=MessageChain(["iqdb搜图失败，无结果或访问次数过多，请稍后再试", Image(
-                                            path="data/autoReply/imageReply/axaAaRaUaaafa7a.png")]))
+                try:
+                    b1 = ForwardMessageNode(sender_id=bot.qq, sender_name="Manyana",
+                                            message_chain=MessageChain([result, Image(
+                                                path="data/autoReply/imageReply/axaAaRaUaaafa7a.png")]))
+                except:
+                    b1 = ForwardMessageNode(sender_id=bot.qq, sender_name="Manyana",
+                                            message_chain=MessageChain(["iqdb搜图失败，无结果或访问次数过多，请稍后再试", Image(
+                                                path="data/autoReply/imageReply/axaAaRaUaaafa7a.png")]))
                 # b1 = ForwardMessageNode(sender_id=bot.qq, sender_name="Manyana",message_chain=MessageChain([result, Image(url=urlss]))
                 dataGet.get(event.sender.id).append(b1)
             # 使用E-hentai
