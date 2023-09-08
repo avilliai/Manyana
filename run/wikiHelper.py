@@ -41,9 +41,13 @@ def main(bot,app_id,app_key,logger):
                     if 'detail' in punishing.get(i):
                         logger.info("存在本地数据文件，直接发送")
                         path = punishing.get(i).get("detail")
-                        await bot.send(event, Image(path=path))
-                        return
-                    else:
+                        try:
+                            await bot.send(event, Image(path=path))
+                            return
+                        except:
+                            logger.error("失败，重新抓取")
+
+                    if True:
                         logger.warning("没有本地数据文件，启用下载")
                         await bot.send(event,"抓取数据中....初次查询将耗费较长时间。")
                         url = 'https://wiki.biligame.com' + punishing.get(i).get('url')
@@ -95,9 +99,13 @@ def main(bot,app_id,app_key,logger):
                     if 'detail' in newResult.get(i):
                         logger.info("存在本地数据文件，直接发送")
                         path=newResult.get(i).get("detail")
-                        await bot.send(event,Image(path=path))
-                        return
-                    else:
+                        try:
+                            await bot.send(event,Image(path=path))
+                            return
+                        except:
+                            logger.error("失败，重新抓取")
+
+                    if True:
                         logger.warning("没有本地数据文件，启用下载")
                         await bot.send(event, "抓取数据中....初次查询将耗费较长时间。")
                         url='https://blue-utils.me/'+newResult.get(i).get('url')
@@ -148,9 +156,13 @@ def main(bot,app_id,app_key,logger):
             if aimCharacter+".png" in cha:
                 logger.info("存在本地数据文件，直接发送")
                 path = "data/arknights/"+aimCharacter+".png"
-                await bot.send(event, Image(path=path))
-                return
-            else:
+                try:
+                    await bot.send(event, Image(path=path))
+                    return
+                except:
+                    logger.error("失败，重新抓取")
+
+            if True:
                 logger.warning("没有本地数据文件，启用下载")
                 await bot.send(event, "抓取数据中....初次查询将耗费较长时间。")
                 url = 'https://prts.wiki/w/' + aimCharacter
