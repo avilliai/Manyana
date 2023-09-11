@@ -198,7 +198,15 @@ def main(bot,app_id,app_key,logger):
                 logger.info("存在本地数据文件，直接发送")
                 path = "data/Elo/" + aimCharacter + ".png"
                 try:
-                    await bot.send(event, Image(path=path))
+                    st1=" "
+                    try:
+                        r = requests.get(
+                            url="https://www.sapi.run/hero/select.php?hero=" + aimCharacter + "&type=aqq").json()
+                        logger.info("王者战力查询：" + str(r.get("data")).replace(",", "\n"))
+                        st1 = str(r.get("data")).replace(",", "\n")
+                    except:
+                        logger.error("战力查询error")
+                    await bot.send(event, (Image(path=path),st1))
                     return
                 except:
                     logger.error("失败，重新抓取")
@@ -208,13 +216,14 @@ def main(bot,app_id,app_key,logger):
                 await bot.send(event, "抓取数据中....初次查询将耗费较长时间。")
                 url = 'https://xiaoapi.cn/API/wzry_pic.php?msg=' + aimCharacter
                 path = "data/Elo/" + aimCharacter + ".png"
-
+                st1=" "
                 try:
                     # webScreenShoot(url,path,1200,9500)
                     await nong(url,aimCharacter)
                     r=requests.get(url="https://www.sapi.run/hero/select.php?hero="+aimCharacter+"&type=aqq").json()
                     logger.info("王者战力查询："+str(r.get("data")).replace(",", "\n"))
-                    await bot.send(event,str(r.get("data")).replace(",", "\n"))
+                    st1=str(r.get("data")).replace(",", "\n")
+                    #await bot.send(event,str(r.get("data")).replace(",", "\n"))
                 except:
                     logger.warning("查询农角色:" + aimCharacter + " 失败，未收录对应数据")
                     logger.info("发送语音()：数据库里好像没有这个角色呢,要再检查一下吗？")
@@ -227,6 +236,6 @@ def main(bot,app_id,app_key,logger):
                         await bot.send(event, Voice(path="data/autoReply/voiceReply/queryFalse.wav"))
                         return
 
-                await bot.send(event, Image(path=path))
+                await bot.send(event, (Image(path=path),st1))
                 logger.info("发送成功")
                 return
