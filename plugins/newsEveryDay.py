@@ -90,5 +90,32 @@ async def xingzuo():
             img.save(path)  # 使用PIL库保存图片
             #rint(path)
             return path
+async def nong(url,name):
+    # path="./news.png"
+    path = "data/Elo/"+name+".png"
+    # path="./xingzuo.png"
+    if os.path.exists(path):
+        return path
+    else:
+
+        # print(r.json().get("data").get("image")) # 从二进制数据创建图片对象
+        async with httpx.AsyncClient(timeout=200, headers=get_headers()) as client:
+            r = await client.get(url)
+            img = Image.open(BytesIO(r.content))  # 从二进制数据创建图片对象
+            img.save(path)  # 使用PIL库保存图片
+            # rint(path)
+            return path
+async def sd(url,path):
+    # path="./news.png"
+
+    # path="./xingzuo.png"
+    # print(r.json().get("data").get("image")) # 从二进制数据创建图片对象
+
+    async with httpx.AsyncClient(timeout=200, headers=get_headers()) as client:
+        r = await client.get(url)
+        img = Image.open(BytesIO(r.content))  # 从二进制数据创建图片对象
+        img.save(path)  # 使用PIL库保存图片
+        # rint(path)
+        return path
 if __name__ == '__main__':
     asyncio.run(xingzuo())

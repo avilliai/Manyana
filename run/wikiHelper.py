@@ -16,6 +16,7 @@ from mirai import Mirai, WebSocketAdapter, FriendMessage, GroupMessage, At, Plai
 
 from plugins.RandomStr import random_str
 from plugins.modelsLoader import modelLoader
+from plugins.newsEveryDay import nong
 from plugins.translater import translate
 from plugins.vitsGenerate import voiceGenerate
 from plugins.webScreenShoot import webScreenShoot, screenshot_to_pdf_and_png
@@ -187,3 +188,45 @@ def main(bot,app_id,app_key,logger):
                 logger.info("发送成功")
                 return
 
+    @bot.on(GroupMessage)
+    async def CharacterQuery(event: GroupMessage):
+        if "王者查询" in str(event.message_chain) or "农查询" in str(event.message_chain) or "王者荣耀查询" in str(event.message_chain):
+            aimCharacter = str(event.message_chain).split("查询")[1]
+            logger.info("查询王者荣耀角色:" + aimCharacter)
+            cha = os.listdir("data/Elo")
+            if aimCharacter + ".png" in cha:
+                logger.info("存在本地数据文件，直接发送")
+                path = "data/Elo/" + aimCharacter + ".png"
+                try:
+                    await bot.send(event, Image(path=path))
+                    return
+                except:
+                    logger.error("失败，重新抓取")
+
+            if True:
+                logger.warning("没有本地数据文件，启用下载")
+                await bot.send(event, "抓取数据中....初次查询将耗费较长时间。")
+                url = 'https://xiaoapi.cn/API/wzry_pic.php?msg=' + aimCharacter
+                path = "data/Elo/" + aimCharacter + ".png"
+
+                try:
+                    # webScreenShoot(url,path,1200,9500)
+                    await nong(url,aimCharacter)
+                    r=requests.get(url="https://www.sapi.run/hero/select.php?hero="+aimCharacter+"&type=aqq").json()
+                    logger.info("王者战力查询："+str(r.get("data")).replace(",", "\n"))
+                    await bot.send(event,str(r.get("data")).replace(",", "\n"))
+                except:
+                    logger.warning("查询农角色:" + aimCharacter + " 失败，未收录对应数据")
+                    logger.info("发送语音()：数据库里好像没有这个角色呢,要再检查一下吗？")
+                    if os.path.exists("data/autoReply/voiceReply/queryFalse.wav") == False:
+                        data = {"text": "[ZH]数据库里好像没有这个角色呢,要再检查一下吗？[ZH]",
+                                "out": "../data/autoReply/voiceReply/queryFalse.wav"}
+                        await voiceGenerate(data)
+                        await bot.send(event, Voice(path="data/autoReply/voiceReply/queryFalse.wav"))
+                    else:
+                        await bot.send(event, Voice(path="data/autoReply/voiceReply/queryFalse.wav"))
+                        return
+
+                await bot.send(event, Image(path=path))
+                logger.info("发送成功")
+                return

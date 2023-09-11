@@ -28,7 +28,8 @@ from plugins.imgDownload import dict_download_img
 from plugins.jokeMaker import get_joke
 
 from plugins.modelsLoader import modelLoader
-from plugins.newsEveryDay import news, moyu, xingzuo
+from plugins.newLogger import newLogger
+from plugins.newsEveryDay import news, moyu, xingzuo, sd
 from plugins.picGet import pic, setuGet, picDwn
 from plugins.tarot import tarotChoice
 from plugins.translater import translate
@@ -339,5 +340,29 @@ def main(bot,api_KEY,app_id,app_key,nasa_api,proxy,logger):
                 logger.error("截图失败!")
             await bot.send(event, Image(path=path), True)
 
+    @bot.on(GroupMessage)
+    async def NasaHelper(event: GroupMessage):
+        if str(event.message_chain).startswith("/sd"):
+            try:
 
+                ls=str(event.message_chain)[3:].replace("，",",").split(",")
+            except:
+                await bot.send("未传递合法的prompt")
+                return
+            logger.info("拆分获取prompt:"+str(ls))
+            try:
+                url = "https://api.pearktrue.cn/api/stablediffusion/?prompt=" + str(ls) + "&model=normal"
+                url=requests.get(url).json().get("imgurl")
+            except:
+                logger.error("出错")
+                await bot.send(event, "出错，请稍后再试")
+                return 
+            path = "data/pictures/cache/" + random_str() + ".png"
+            try:
+                p=sd(url,path)
+            except:
+                logger.error("出错")
+                await bot.send(event,"出错，请稍后再试")
+                return
+            await bot.send(event, Image(path=p),True)
 
