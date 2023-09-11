@@ -359,7 +359,7 @@ def main(bot,api_KEY,app_id,app_key,nasa_api,proxy,logger):
                 return 
             path = "data/pictures/cache/" + random_str() + ".png"
             try:
-                p=sd(url,path)
+                p=await sd(url,path)
             except:
                 logger.error("出错")
                 await bot.send(event,"出错，请稍后再试")
