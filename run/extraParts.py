@@ -365,4 +365,14 @@ def main(bot,api_KEY,app_id,app_key,nasa_api,proxy,logger):
                 await bot.send(event,"出错，请稍后再试")
                 return
             await bot.send(event, Image(path=p),True)
+    @bot.on(GroupMessage)
+    async def jiangzhuang(event:GroupMessage):
+        if str(event.message_chain).startswith("/奖状"):
+            try:
+                t=str(event.message_chain)[3:].split("#")
+                url="https://api.pearktrue.cn/api/certcommend/?name="+t[0]+"&title="+t[1]+"&classname="+t[2]
 
+                p=await sd(url,"data/pictures/cache/"+random_str()+".png")
+                await bot.send(event,Image(path=p))
+            except:
+                await bot.send(event,"出错，格式请按照/奖状 孙笑川#天皇#阳光小学一年级2班")
