@@ -345,7 +345,7 @@ def main(bot,api_KEY,app_id,app_key,nasa_api,proxy,logger):
         if str(event.message_chain).startswith("/sd"):
             try:
 
-                ls=str(event.message_chain)[3:].replace("，",",").split(",")
+                ls=str(event.message_chain)[3:]
             except:
                 await bot.send("未传递合法的prompt")
                 return
