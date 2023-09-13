@@ -39,3 +39,5 @@
   - 记录每次调用有道翻译的结果，避免同一文本重复调用翻译带来的大量(一般几块钱)api限额损耗。
 2023/9/11:
   - 更新指令：王者荣耀查询
+2023/9/13:
+  - setUp.py支持导出群列表，制作一个chatLearning可用的配置文件(https://mirai.mamoe.net/topic/1018/chatlearning-%E8%AE%A9bot%E5%AD%A6%E4%BC%9A%E4%BD%A0%E7%9A%84%E7%BE%A4%E8%81%8A/8)
