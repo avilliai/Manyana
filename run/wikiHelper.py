@@ -239,3 +239,43 @@ def main(bot,app_id,app_key,logger):
                 await bot.send(event, (Image(path=path),st1))
                 logger.info("发送成功")
                 return
+
+    @bot.on(GroupMessage)
+    async def CharacterQuery(event: GroupMessage):
+        if "后室查询" in str(event.message_chain) or "br查询" in str(event.message_chain):
+            aimCharacter = str(event.message_chain).split("查询")[1]
+            logger.info("查询后室层级:" + aimCharacter)
+            cha = os.listdir("data/backrooms")
+            if aimCharacter + ".png" in cha:
+                logger.info("存在本地数据文件，直接发送")
+                path = "data/backrooms/" + aimCharacter + ".png"
+                try:
+                    await bot.send(event, Image(path=path))
+                    return
+                except:
+                    logger.error("失败，重新抓取")
+
+            if True:
+                logger.warning("没有本地数据文件，启用下载")
+                await bot.send(event, "抓取数据中....初次查询将耗费较长时间。")
+                url = 'http://backrooms-wiki-cn.wikidot.com//' + aimCharacter
+                path = "data/backrooms/" + aimCharacter + ".png"
+
+                try:
+                    # webScreenShoot(url,path,1200,9500)
+                    await screenshot_to_pdf_and_png(url, path, 5)
+                except:
+                    logger.warning("查询后室层级:" + aimCharacter + " 失败，未收录对应数据")
+                    logger.info("发送语音()：数据库里好像没有这个层级呢,要再检查一下吗？")
+                    if os.path.exists("data/autoReply/voiceReply/queryFalse.wav") == False:
+                        data = {"text": "[ZH]数据库里好像没有这个层级呢,要再检查一下吗？[ZH]",
+                                "out": "../data/autoReply/voiceReply/queryFalse.wav"}
+                        await voiceGenerate(data)
+                        await bot.send(event, Voice(path="data/autoReply/voiceReply/queryFalse.wav"))
+                    else:
+                        await bot.send(event, Voice(path="data/autoReply/voiceReply/queryFalse.wav"))
+                        return
+
+                await bot.send(event, Image(path=path))
+                logger.info("发送成功")
+                return
