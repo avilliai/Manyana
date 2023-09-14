@@ -64,6 +64,9 @@ def main(bot,config,sizhiKey,app_id, app_key,logger):
     sizhi = yamlData.get("sizhi")
     global turnMess
     turnMess = yamlData.get("turnMessage")
+    global colorfulCharacter
+    colorfulCharacter=yamlData.get("colorfulCharacter")
+    colorfulCharacterList=os.listdir("data/colorfulAnimeCharacter")
 
     logger.info("读取词库文件中")
     importDict()
@@ -289,16 +292,22 @@ def main(bot,config,sizhiKey,app_id, app_key,logger):
 
             if sizhi==True and At(bot.qq) in event.message_chain:
 
-                sess = requests.get('https://api.ownthink.com/bot?spoken=' + getStr + '&appid='+random.choice(sizhiKey))
-                answer = sess.text
-                try:
-                    answer = json.loads(answer)
-                except:
-                    logger.warning("在调用思知ai时出现了一个问题，但似乎又没啥问题，请忽略")
+                if random.randint(0,100)<colorfulCharacter:
+                    logger.info("彩色小人，启动！")
+                    c=random.choice(colorfulCharacterList)
+                    await bot.send(event,Image(path="data/colorfulAnimeCharacter/"+c))
                     return
-                logger.info("ASK:"+getStr)
-                logger.info("bot(思知):" + answer.get("data").get("info").get("text"))
-                replyssssss=answer.get("data").get("info").get("text")
+                else:
+                    sess = requests.get('https://api.ownthink.com/bot?spoken=' + getStr + '&appid='+random.choice(sizhiKey))
+                    answer = sess.text
+                    try:
+                        answer = json.loads(answer)
+                    except:
+                        logger.warning("在调用思知ai时出现了一个问题，但似乎又没啥问题，请忽略")
+                        return
+                    logger.info("ASK:"+getStr)
+                    logger.info("bot(思知):" + answer.get("data").get("info").get("text"))
+                    replyssssss=answer.get("data").get("info").get("text")
 
             else:
                 #筛选，不是艾特bot就不匹配
@@ -380,6 +389,11 @@ def main(bot,config,sizhiKey,app_id, app_key,logger):
                     replyssssss = random.choice(superDict.get("public").get(str((best_matches)[0][0])))
                 else:
                     return
+            if random.randint(0, 100) < colorfulCharacter:
+                logger.info("彩色小人，启动！")
+                c = random.choice(colorfulCharacterList)
+                await bot.send(event, Image(path="data/colorfulAnimeCharacter/" + c))
+                return
             try:
                 if replyssssss=="":
                     return

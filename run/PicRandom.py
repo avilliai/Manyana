@@ -19,6 +19,7 @@ from PIL import Image as Image1
 
 def main(bot,proxy,logger):
     logger.info("抽卡/运势模块启动")
+    colorfulCharacterList = os.listdir("data/colorfulAnimeCharacter")
     @bot.on(GroupMessage)
     async def meme(event: GroupMessage):
         global memeData
@@ -66,5 +67,14 @@ def main(bot,proxy,logger):
             logger.info("成功获取到今日塔罗")
             await bot.send(event, txt)
             await bot.send(event, Image(path=img))
+
+    @bot.on(GroupMessage)
+    async def tarotToday(event: GroupMessage):
+        if ("彩色小人" in str(event.message_chain) and At(bot.qq) in event.message_chain) or str(
+                event.message_chain) == "彩色小人":
+            logger.info("彩色小人，启动！")
+            c = random.choice(colorfulCharacterList)
+            await bot.send(event, Image(path="data/colorfulAnimeCharacter/" + c))
+
 
 
