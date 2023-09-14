@@ -66,7 +66,7 @@ def main():
         import json
         print("chatLearning： https://mirai.mamoe.net/topic/1018/chatlearning-%E8%AE%A9bot%E5%AD%A6%E4%BC%9A%E4%BD%A0%E7%9A%84%E7%BE%A4%E8%81%8A/8")
         if os.path.exists("config.clc"):
-            with open("config.clc", "r", encoding="utf-8") as ass:
+            with open("config.clc", "r", encoding="utf_8_sig") as ass:
                 p = json.loads(ass.read())
         else:
             p = {
@@ -130,8 +130,8 @@ def main():
         print(list(da), type(list(da)))
         p["replygrouplist"] = list(da)
         p["learninggrouplist"] = list(da)
-        ja = json.dumps(p)
-        with open("config.clc", "w", encoding="utf-8") as fp:
+        ja = json.dumps(p,ensure_ascii=False,indent=1)
+        with open("config.clc", "w", encoding="utf_8_sig",newline='\n') as fp:
             fp.write(ja)
         print("完毕，请用config.clc覆盖chatLearning文件夹下同名文件")
     else:
