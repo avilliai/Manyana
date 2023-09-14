@@ -389,11 +389,7 @@ def main(bot,config,sizhiKey,app_id, app_key,logger):
                     replyssssss = random.choice(superDict.get("public").get(str((best_matches)[0][0])))
                 else:
                     return
-            if random.randint(0, 100) < colorfulCharacter:
-                logger.info("彩色小人，启动！")
-                c = random.choice(colorfulCharacterList)
-                await bot.send(event, Image(path="data/colorfulAnimeCharacter/" + c))
-                return
+
             try:
                 if replyssssss=="":
                     return
@@ -404,7 +400,11 @@ def main(bot,config,sizhiKey,app_id, app_key,logger):
             except:
                 logger.error("回复出现异常，请忽略")
                 return
-
+            if random.randint(0, 100) < colorfulCharacter:
+                logger.info("彩色小人，启动！")
+                c = random.choice(colorfulCharacterList)
+                await bot.send(event, Image(path="data/colorfulAnimeCharacter/" + c))
+                return
             try:
                 if str(replyssssss).endswith('.png') or str(replyssssss).endswith('.jpg'):
                     await bot.send(event, Image(path='data/autoReply/imageReply/' + replyssssss))
