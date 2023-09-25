@@ -184,7 +184,7 @@ def main(bot, master, apikey, chatGLM_api_key, proxy, logger):
                 await bot.send(event, "chatGLM启动出错，请联系检查apiKey或重试")
                 return
             chatGLMapikeys[event.group.id]=key12
-            with open('config/autoSettings.yaml', 'w', encoding="utf-8") as file:
+            with open('config/chatGLM.yaml', 'w', encoding="utf-8") as file:
                 yaml.dump(result, file, allow_unicode=True)
             await bot.send(event, "设置apiKey成功")
 
@@ -193,7 +193,7 @@ def main(bot, master, apikey, chatGLM_api_key, proxy, logger):
         global chatGLMapikeys
         if str(event.message_chain).startswith("取消密钥") and event.group.id in chatGLMapikeys:
             chatGLMapikeys.pop(event.group.id)
-            with open('config/autoSettings.yaml', 'w', encoding="utf-8") as file:
+            with open('config/chatGLM.yaml', 'w', encoding="utf-8") as file:
                 yaml.dump(result, file, allow_unicode=True)
             await bot.send(event, "设置apiKey成功")
     @bot.on(GroupMessage)
