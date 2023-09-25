@@ -165,12 +165,8 @@ def main(bot, master, apikey, chatGLM_api_key, proxy, logger):
             print(type(tep))
             #获取以往的prompt
             if event.sender.id in chatGLMData:
-                prompt1=chatGLMData.get(event.sender.id)
-                print(type(prompt1),prompt1)
-                prompt = prompt1.append(1)
-                logger.info("当前已有prompt" + str(prompt))
-                print(type(prompt))
-                prompt=list(prompt).append({"role": "user","content": text})
+                prompt=chatGLMData.get(event.sender.id)
+                prompt.append({"role": "user","content": text})
 
             #没有该用户，以本次对话作为prompt
             else:
@@ -186,10 +182,11 @@ def main(bot, master, apikey, chatGLM_api_key, proxy, logger):
                 #更新该用户prompt
                 prompt.append({"role": "assistant","content": st1})
                 #超过10，移除第一个元素
-                #logger.error("glm prompt超限，移除元素")
+                #
                 logger.info("当前prompt" + str(prompt))
-                #if len(prompt)>10:
-                    #del prompt[0]
+                if len(prompt)>10:
+                    logger.error("glm prompt超限，移除元素")
+                    del prompt[0]
                 chatGLMData[event.sender.id]=prompt
                 #写入文件
                 with open('data/chatGLMData.yaml', 'w', encoding="utf-8") as file:
@@ -209,9 +206,7 @@ def main(bot, master, apikey, chatGLM_api_key, proxy, logger):
             # 获取以往的prompt
             if event.sender.id in chatGLMData:
                 prompt = chatGLMData.get(event.sender.id)
-                logger.info("当前已有prompt" + str(prompt))
-                print(type(prompt))
-                prompt = list(prompt).append({"role": "user","content": text})
+                prompt.append({"role": "user","content": text})
             # 没有该用户，以本次对话作为prompt
             else:
                 prompt = [tep]
@@ -231,9 +226,10 @@ def main(bot, master, apikey, chatGLM_api_key, proxy, logger):
                 # 更新该用户prompt
                 prompt.append({"role": "assistant", "content": st1})
                 # 超过10，移除第一个元素
-                #logger.error("glm prompt超限，移除元素")
-                #if len(prompt) > 10:
-                    #del prompt[0]
+
+                if len(prompt) > 10:
+                    logger.error("glm prompt超限，移除元素")
+                    del prompt[0]
                 chatGLMData[event.sender.id]= prompt
                 # 写入文件
                 with open('data/chatGLMData.yaml', 'w', encoding="utf-8") as file:
