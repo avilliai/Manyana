@@ -73,7 +73,9 @@ def main(bot,master,apikey,chatGLM_api_key,proxy,logger):
         if times > 20:
             trustUser.append(str(i))
 
-    logger.info('已读取信任用户' + str(len(trustUser)) + '个')
+
+    logger.info('chatglm部分已读取信任用户' + str(len(trustUser)) + '个')
+    print(trustUser)
 
     @bot.on(Startup)
     async def upDate(event: Startup):

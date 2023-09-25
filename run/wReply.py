@@ -92,7 +92,7 @@ def main(bot,config,sizhiKey,app_id, app_key,logger):
     for i in userdict.keys():
         data = userdict.get(i)
         times = int(str(data.get('sts')))
-        if times > 14:
+        if times > 20:
             trustUser.append(str(i))
 
     logger.info('已读取信任用户' + str(len(trustUser)) + '个')
@@ -282,10 +282,10 @@ def main(bot,config,sizhiKey,app_id, app_key,logger):
     # 模糊词库触发回复
     @bot.on(GroupMessage)
     async def mohu(event: GroupMessage):
-        global superDict,botName,likeindex,temp,sizhi,transLateData
+        global superDict,botName,likeindex,temp,sizhi,transLateData,trustuser
         if (random.randint(0,100)<groupLexicon or At(bot.qq) in event.message_chain) and gptReply==False:
             if At(bot.qq) in event.message_chain:
-                if gptReply==True or glmReply==True or trustglmReply==True:
+                if gptReply==True or glmReply==True or (trustglmReply==True and event.sender.id in trustUser):
                     return
                 for i in noRes:
                     if i in str(event.message_chain):
