@@ -163,6 +163,7 @@ def main(bot, master, apikey, chatGLM_api_key, proxy, logger):
             if event.sender.id in chatGLMData:
                 prompt=chatGLMData.get(event.sender.id)
                 logger.info("当前已有prompt" + str(prompt))
+                print(type(prompt))
                 prompt=prompt.append(temp)
             #没有该用户，以本次对话作为prompt
             else:
@@ -200,6 +201,7 @@ def main(bot, master, apikey, chatGLM_api_key, proxy, logger):
             if event.sender.id in chatGLMData:
                 prompt = chatGLMData.get(event.sender.id)
                 logger.info("当前已有prompt" + str(prompt))
+                print(type(prompt))
                 prompt = prompt.append(temp)
             # 没有该用户，以本次对话作为prompt
             else:
