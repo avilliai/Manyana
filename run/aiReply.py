@@ -20,9 +20,11 @@ def main(bot, master, apikey, chatGLM_api_key, proxy, logger):
     global chatGLMapikeys
     chatGLMapikeys = result222
 
-    global chatGLMData
+
     with open('data/chatGLMData.yaml', 'r', encoding='utf-8') as f:
-        chatGLMData = yaml.load(f.read(), Loader=yaml.FullLoader)
+        cha = yaml.load(f.read(), Loader=yaml.FullLoader)
+    global chatGLMData
+    chatGLMData=cha
     logger.info(chatGLMData)
 
     try:
@@ -163,8 +165,9 @@ def main(bot, master, apikey, chatGLM_api_key, proxy, logger):
             print(type(tep))
             #获取以往的prompt
             if event.sender.id in chatGLMData:
-                prompt=chatGLMData.get(event.sender.id)
-                prompt = prompt.append(1)
+                prompt1=chatGLMData.get(event.sender.id)
+                print(type(prompt1),prompt1)
+                prompt = prompt1.append(1)
                 logger.info("当前已有prompt" + str(prompt))
                 print(type(prompt))
                 prompt=list(prompt).append({"role": "user","content": text})
