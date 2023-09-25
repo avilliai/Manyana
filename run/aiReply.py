@@ -19,6 +19,11 @@ def main(bot, master, apikey, chatGLM_api_key, proxy, logger):
         result222 = yaml.load(f.read(), Loader=yaml.FullLoader)
     global chatGLMapikeys
     chatGLMapikeys = result222
+
+    global chatGLMData
+    with open('data/chatGLMData.yaml', 'r', encoding='utf-8') as f:
+        chatGLMData = yaml.load(f.read(), Loader=yaml.FullLoader)
+
     try:
         logger.info("正在启动poe-AI")
         global apiKey
@@ -108,7 +113,7 @@ def main(bot, master, apikey, chatGLM_api_key, proxy, logger):
 
     @bot.on(GroupMessage)
     async def atReply(event: GroupMessage):
-        global trustUser, chatGLMapikeys
+        global trustUser, chatGLMapikeys,chatGLMData
         if gptReply == True and At(bot.qq) in event.message_chain:
             prompt = str(event.message_chain).replace("@" + str(bot.qq) + "", '')
 
@@ -149,10 +154,34 @@ def main(bot, master, apikey, chatGLM_api_key, proxy, logger):
         elif (glmReply == True or (trustglmReply == True and str(event.sender.id) in trustUser)) and At(
                 bot.qq) in event.message_chain:
             text = str(event.message_chain).replace("@" + str(bot.qq) + "", '')
+            if text=="" or text==" ":
+                text="在吗"
+            #构建新的prompt
+            temp={"role": "user","content": text}
+            #获取以往的prompt
+            if event.sender.id in chatGLMData:
+                prompt=chatGLMData.get(event.sender.id).get("prompt").append(temp)
+            #没有该用户，以本次对话作为prompt
+            else:
+                prompt=[temp]
+
             try:
-                st1 = await chatGLM(chatGLM_api_key, meta, text)
+                st1 = await chatGLM(chatGLM_api_key, meta, prompt)
                 st1 = st1.replace("yucca", botName).replace("amore", str(event.sender.member_name)).replace("阿莫雷", str(event.sender.member_name)).replace("阿莫尔", str(event.sender.member_name))
                 await bot.send(event, st1, True)
+                logger.info("chatGLM接收提问:"+text)
+                logger.info("chatGLM:"+st1)
+                #更新该用户prompt
+                prompt.append({"role": "assistant","content": st1})
+                #超过10，移除第一个元素
+                logger.error("glm prompt超限，移除元素")
+                if len(prompt)>10:
+                    del prompt[0]
+                chatGLMData[event.sender.id]["prompt"]=prompt
+                #写入文件
+                with open('data/chatGLMData.yaml', 'w', encoding="utf-8") as file:
+                    yaml.dump(chatGLMData, file, allow_unicode=True)
+
             except:
                 await bot.send(event, "chatGLM启动出错，请联系master检查apiKey或重试")
         elif (str(event.group.id) == str(mainGroup) or (event.group.id in chatGLMapikeys)) and At(
@@ -160,14 +189,37 @@ def main(bot, master, apikey, chatGLM_api_key, proxy, logger):
             text = str(event.message_chain).replace("@" + str(bot.qq) + "", '')
             if text=="" or text==" ":
                 text="在吗"
+            # 构建新的prompt
+            temp = {"role": "user", "content": text}
+            # 获取以往的prompt
+            if event.sender.id in chatGLMData:
+                prompt = chatGLMData.get(event.sender.id).get("prompt").append(temp)
+            # 没有该用户，以本次对话作为prompt
+            else:
+                prompt = [temp]
+
+
+
             if str(event.group.id) == str(mainGroup):
                 key1 = chatGLM_api_key
             else:
                 key1 = chatGLMapikeys.get(event.group.id)
             try:
-                st1 = await chatGLM(key1, meta, text)
+                st1 = await chatGLM(key1, meta, prompt)
                 st1 = st1.replace("yucca", botName).replace("liris", str(event.sender.member_name))
                 await bot.send(event, st1, True)
+                logger.info("chatGLM接收提问:" + text)
+                logger.info("chatGLM:" + st1)
+                # 更新该用户prompt
+                prompt.append({"role": "assistant", "content": st1})
+                # 超过10，移除第一个元素
+                logger.error("glm prompt超限，移除元素")
+                if len(prompt) > 10:
+                    del prompt[0]
+                chatGLMData[event.sender.id]["prompt"] = prompt
+                # 写入文件
+                with open('data/chatGLMData.yaml', 'w', encoding="utf-8") as file:
+                    yaml.dump(chatGLMData, file, allow_unicode=True)
             except:
                 await bot.send(event, "chatGLM启动出错，请联系master检查apiKey或重试")
 
@@ -185,7 +237,7 @@ def main(bot, master, apikey, chatGLM_api_key, proxy, logger):
                 return
             chatGLMapikeys[event.group.id]=key12
             with open('config/chatGLM.yaml', 'w', encoding="utf-8") as file:
-                yaml.dump(result, file, allow_unicode=True)
+                yaml.dump(chatGLMapikeys, file, allow_unicode=True)
             await bot.send(event, "设置apiKey成功")
 
     @bot.on(GroupMessage)
@@ -194,7 +246,7 @@ def main(bot, master, apikey, chatGLM_api_key, proxy, logger):
         if str(event.message_chain).startswith("取消密钥") and event.group.id in chatGLMapikeys:
             chatGLMapikeys.pop(event.group.id)
             with open('config/chatGLM.yaml', 'w', encoding="utf-8") as file:
-                yaml.dump(result, file, allow_unicode=True)
+                yaml.dump(chatGLMapikeys, file, allow_unicode=True)
             await bot.send(event, "设置apiKey成功")
     @bot.on(GroupMessage)
     async def pandoraSever(event: GroupMessage):

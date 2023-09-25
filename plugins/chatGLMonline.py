@@ -2,17 +2,12 @@
 import asyncio
 
 import zhipuai
-async def chatGLM(api_key,bot_info,text):
+async def chatGLM(api_key,bot_info,prompt):
     zhipuai.api_key = api_key
     response = zhipuai.model_api.sse_invoke(
         model="characterglm",
         meta= bot_info,
-        prompt= [
-            {
-                "role": "user",
-                "content": text
-            }
-        ],
+        prompt= prompt,
         incremental=True
     )
     str1=""
