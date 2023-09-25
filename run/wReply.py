@@ -97,7 +97,7 @@ def main(bot,config,sizhiKey,app_id, app_key,logger):
     for i in userdict.keys():
         data = userdict.get(i)
         times = int(str(data.get('sts')))
-        if times > 20:
+        if times > 28:
             trustUser.append(str(i))
 
     logger.info('已读取信任用户' + str(len(trustUser)) + '个')
@@ -743,7 +743,7 @@ def main(bot,config,sizhiKey,app_id, app_key,logger):
             for i in userdict.keys():
                 data = userdict.get(i)
                 times = int(str(data.get('sts')))
-                if times > 10:
+                if times > 28:
                     trustUser.append(str(i))
 
             logger.info('已读取信任用户' + str(len(trustUser)) + '个')
