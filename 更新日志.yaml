@@ -45,3 +45,5 @@
 2023/9/14:
   - 指令：彩色小人
   - setting.yaml，可设置彩色小人回复几率
+2023/9/25:
+  - 更新chatGLM，请配置api.yaml与settings.yaml
