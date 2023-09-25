@@ -158,6 +158,8 @@ def main(bot, master, apikey, chatGLM_api_key, proxy, logger):
         elif (str(event.group.id) == str(mainGroup) or (event.group.id in chatGLMapikeys)) and At(
                 bot.qq) in event.message_chain:
             text = str(event.message_chain).replace("@" + str(bot.qq) + "", '')
+            if text=="" or text==" ":
+                text="在吗"
             if str(event.group.id) == str(mainGroup):
                 key1 = chatGLM_api_key
             else:
@@ -173,7 +175,7 @@ def main(bot, master, apikey, chatGLM_api_key, proxy, logger):
     async def setChatGLMKey(event:GroupMessage):
         global chatGLMapikeys
         if str(event.message_chain).startswith("设置密钥#"):
-            key12=str(event.message_chain).split("#")[1]
+            key12=str(event.message_chain).split("#")[1]+""
             try:
                 st1 = await chatGLM(key12, meta, "你好呀")
                 st1 = st1.replace("yucca", botName).replace("liris", str(event.sender.member_name))
