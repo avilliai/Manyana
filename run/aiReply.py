@@ -162,7 +162,7 @@ def main(bot, master, apikey, chatGLM_api_key, proxy, logger):
                 text="在吗"
             #构建新的prompt
             tep={"role": "user","content": text}
-            print(type(tep))
+            #print(type(tep))
             #获取以往的prompt
             if event.sender.id in chatGLMData:
                 prompt=chatGLMData.get(event.sender.id)
