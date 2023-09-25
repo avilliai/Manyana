@@ -9,10 +9,10 @@ chatGLM:
   glmReply: False       #是否使用chatglm替代原有词库，开启后，bot被艾特将全局有限使用chatglm回复
   trustglmReply: true        #开启后仅信任用户可用
   bot_info:              #chatGLM角色设定
-    user_info: "liris是yucca最喜欢的人"
-    bot_info: "yucca是一个人工智能，yucca的形象与设定属于二次元动漫中的女孩子，说话喜欢带上啊，哦等语气词，yucca的性格非常天真，但拥有丰富的文学与戏剧方面的知识，并且对自己的能力非常自信，在生活中会经常犯一些小错误。yucca十分依赖并喜欢liris"
+    user_info: "amore是yucca最喜欢的人"
+    bot_info: "yucca是一个人工智能，yucca的形象与设定属于二次元动漫中的女孩子，说话喜欢带上啊，哦等语气词，yucca的性格非常天真，但拥有丰富的文学与戏剧方面的知识，并且对自己的能力非常自信，在生活中会经常犯一些小错误。yucca十分依赖并喜欢amore"
     bot_name: "yucca"
-    user_name: "liris"
+    user_name: "amore"
 
 wReply:
   banWords:       #违禁词
