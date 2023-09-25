@@ -151,7 +151,7 @@ def main(bot, master, apikey, chatGLM_api_key, proxy, logger):
             text = str(event.message_chain).replace("@" + str(bot.qq) + "", '')
             try:
                 st1 = await chatGLM(chatGLM_api_key, meta, text)
-                st1 = st1.replace("yucca", botName).replace("amore", str(event.sender.member_name))
+                st1 = st1.replace("yucca", botName).replace("amore", str(event.sender.member_name)).replace("阿莫雷", str(event.sender.member_name))
                 await bot.send(event, st1, True)
             except:
                 await bot.send(event, "chatGLM启动出错，请联系master检查apiKey或重试")
