@@ -61,6 +61,10 @@ def main(bot,master,apikey,chatGLM_api_key,proxy,logger):
     meta=result.get("chatGLM").get("bot_info")
 
 
+    with open('config.json','r',encoding='utf-8') as fp:
+        data=fp.read()
+    config=json.loads(data)
+    mainGroup=int(config.get("mainGroup"))
     with open('data/userData.yaml', 'r',encoding='utf-8') as file:
         data = yaml.load(file, Loader=yaml.FullLoader)
     global trustUser
@@ -135,7 +139,7 @@ def main(bot,master,apikey,chatGLM_api_key,proxy,logger):
                     yaml.dump(pandoraData, file, allow_unicode=True)
             except:
                 await bot.send(event, "当前服务器负载过大，请稍后再试", True)
-        elif (glmReply==True or (trustglmReply==True and str(event.sender.id) in trustUser)) and At(bot.qq) in event.message_chain:
+        elif ((glmReply==True or (trustglmReply==True and str(event.sender.id) in trustUser)) or event.group.id==mainGroup) and At(bot.qq) in event.message_chain:
             text=str(event.message_chain).replace("@" + str(bot.qq) + "", '')
             try:
                 st1=await chatGLM(chatGLM_api_key,meta,text)
