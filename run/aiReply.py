@@ -161,7 +161,8 @@ def main(bot, master, apikey, chatGLM_api_key, proxy, logger):
             temp={"role": "user","content": text}
             #获取以往的prompt
             if event.sender.id in chatGLMData:
-                prompt=chatGLMData.get(event.sender.id).append(temp)
+                prompt=chatGLMData.get(event.sender.id)
+                prompt=prompt.append(temp)
             #没有该用户，以本次对话作为prompt
             else:
                 prompt=[temp]
@@ -196,9 +197,8 @@ def main(bot, master, apikey, chatGLM_api_key, proxy, logger):
             temp = {"role": "user", "content": text}
             # 获取以往的prompt
             if event.sender.id in chatGLMData:
-                pro=chatGLMData.get(event.sender.id)
-                logger.info("当前prompt1:"+pro)
-                prompt = chatGLMData.get(event.sender.id).append(temp)
+                prompt = chatGLMData.get(event.sender.id)
+                prompt = prompt.append(temp)
             # 没有该用户，以本次对话作为prompt
             else:
                 prompt = [temp]
