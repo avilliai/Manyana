@@ -155,6 +155,7 @@ def main(bot, master, apikey, chatGLM_api_key, proxy, logger):
         elif (glmReply == True or (trustglmReply == True and str(event.sender.id) in trustUser)) and At(
                 bot.qq) in event.message_chain:
             text = str(event.message_chain).replace("@" + str(bot.qq) + "", '')
+            logger.info("分支1")
             if text=="" or text==" ":
                 text="在吗"
             #构建新的prompt
@@ -179,10 +180,10 @@ def main(bot, master, apikey, chatGLM_api_key, proxy, logger):
                 #更新该用户prompt
                 prompt.append({"role": "assistant","content": st1})
                 #超过10，移除第一个元素
-                logger.error("glm prompt超限，移除元素")
+                #logger.error("glm prompt超限，移除元素")
                 logger.info("当前prompt" + str(prompt))
-                if len(prompt)>10:
-                    del prompt[0]
+                #if len(prompt)>10:
+                    #del prompt[0]
                 chatGLMData[event.sender.id]=prompt
                 #写入文件
                 with open('data/chatGLMData.yaml', 'w', encoding="utf-8") as file:
@@ -193,6 +194,7 @@ def main(bot, master, apikey, chatGLM_api_key, proxy, logger):
         elif (str(event.group.id) == str(mainGroup) or (event.group.id in chatGLMapikeys)) and At(
                 bot.qq) in event.message_chain:
             text = str(event.message_chain).replace("@" + str(bot.qq) + "", '')
+            logger.info("分支2")
             if text=="" or text==" ":
                 text="在吗"
             # 构建新的prompt
@@ -222,9 +224,9 @@ def main(bot, master, apikey, chatGLM_api_key, proxy, logger):
                 # 更新该用户prompt
                 prompt.append({"role": "assistant", "content": st1})
                 # 超过10，移除第一个元素
-                logger.error("glm prompt超限，移除元素")
-                if len(prompt) > 10:
-                    del prompt[0]
+                #logger.error("glm prompt超限，移除元素")
+                #if len(prompt) > 10:
+                    #del prompt[0]
                 chatGLMData[event.sender.id]= prompt
                 # 写入文件
                 with open('data/chatGLMData.yaml', 'w', encoding="utf-8") as file:
