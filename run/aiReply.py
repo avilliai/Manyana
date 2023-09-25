@@ -161,11 +161,11 @@ def main(bot, master, apikey, chatGLM_api_key, proxy, logger):
             temp={"role": "user","content": text}
             #获取以往的prompt
             if event.sender.id in chatGLMData:
-                prompt=chatGLMData.get(event.sender.id).get("prompt").append(temp)
+                prompt=chatGLMData.get(event.sender.id).append(temp)
             #没有该用户，以本次对话作为prompt
             else:
                 prompt=[temp]
-                chatGLMData[event.sender.id] ={"prompt":prompt}
+                chatGLMData[event.sender.id] =prompt
             logger.info("当前prompt"+str(prompt))
             try:
                 st1 = await chatGLM(chatGLM_api_key, meta, prompt)
@@ -180,7 +180,7 @@ def main(bot, master, apikey, chatGLM_api_key, proxy, logger):
                 logger.info("当前prompt" + str(prompt))
                 if len(prompt)>10:
                     del prompt[0]
-                chatGLMData[event.sender.id]["prompt"]=prompt
+                chatGLMData[event.sender.id]=prompt
                 #写入文件
                 with open('data/chatGLMData.yaml', 'w', encoding="utf-8") as file:
                     yaml.dump(chatGLMData, file, allow_unicode=True)
@@ -196,13 +196,13 @@ def main(bot, master, apikey, chatGLM_api_key, proxy, logger):
             temp = {"role": "user", "content": text}
             # 获取以往的prompt
             if event.sender.id in chatGLMData:
-                pro=chatGLMData.get(event.sender.id).get("prompt")
+                pro=chatGLMData.get(event.sender.id)
                 logger.info("当前prompt1:"+pro)
-                prompt = chatGLMData.get(event.sender.id).get("prompt").append(temp)
+                prompt = chatGLMData.get(event.sender.id).append(temp)
             # 没有该用户，以本次对话作为prompt
             else:
                 prompt = [temp]
-                chatGLMData[event.sender.id] = {"prompt": prompt}
+                chatGLMData[event.sender.id] = prompt
             logger.info("当前prompt" + str(prompt))
 
             if str(event.group.id) == str(mainGroup):
@@ -221,7 +221,7 @@ def main(bot, master, apikey, chatGLM_api_key, proxy, logger):
                 logger.error("glm prompt超限，移除元素")
                 if len(prompt) > 10:
                     del prompt[0]
-                chatGLMData[event.sender.id]["prompt"] = prompt
+                chatGLMData[event.sender.id]= prompt
                 # 写入文件
                 with open('data/chatGLMData.yaml', 'w', encoding="utf-8") as file:
                     yaml.dump(chatGLMData, file, allow_unicode=True)
