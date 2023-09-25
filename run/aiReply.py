@@ -158,16 +158,16 @@ def main(bot, master, apikey, chatGLM_api_key, proxy, logger):
             if text=="" or text==" ":
                 text="在吗"
             #构建新的prompt
-            temp={"role": "user","content": text}
+            tep={"role": "user","content": text}
             #获取以往的prompt
             if event.sender.id in chatGLMData:
                 prompt=chatGLMData.get(event.sender.id)
                 logger.info("当前已有prompt" + str(prompt))
                 print(type(prompt))
-                prompt=prompt.append(temp)
+                prompt=list(prompt).append(tep)
             #没有该用户，以本次对话作为prompt
             else:
-                prompt=[temp]
+                prompt=[tep]
                 chatGLMData[event.sender.id] =prompt
             logger.info("当前prompt"+str(prompt))
             try:
@@ -196,16 +196,16 @@ def main(bot, master, apikey, chatGLM_api_key, proxy, logger):
             if text=="" or text==" ":
                 text="在吗"
             # 构建新的prompt
-            temp = {"role": "user", "content": text}
+            tep = {"role": "user", "content": text}
             # 获取以往的prompt
             if event.sender.id in chatGLMData:
                 prompt = chatGLMData.get(event.sender.id)
                 logger.info("当前已有prompt" + str(prompt))
                 print(type(prompt))
-                prompt = prompt.append(temp)
+                prompt = list(prompt).append(tep)
             # 没有该用户，以本次对话作为prompt
             else:
-                prompt = [temp]
+                prompt = [tep]
                 chatGLMData[event.sender.id] = prompt
             logger.info("当前prompt" + str(prompt))
 
