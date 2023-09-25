@@ -70,6 +70,7 @@ def main(bot, master, apikey, chatGLM_api_key, proxy, logger):
     glmReply = result.get("chatGLM").get("glmReply")
     trustglmReply = result.get("chatGLM").get("trustglmReply")
     meta = result.get("chatGLM").get("bot_info")
+    context= result.get("chatGLM").get("context")
 
     with open('config.json', 'r', encoding='utf-8') as fp:
         data = fp.read()
@@ -164,7 +165,7 @@ def main(bot, master, apikey, chatGLM_api_key, proxy, logger):
             tep={"role": "user","content": text}
             #print(type(tep))
             #获取以往的prompt
-            if event.sender.id in chatGLMData:
+            if event.sender.id in chatGLMData and context==True:
                 prompt=chatGLMData.get(event.sender.id)
                 prompt.append({"role": "user","content": text})
 
@@ -179,19 +180,20 @@ def main(bot, master, apikey, chatGLM_api_key, proxy, logger):
                 await bot.send(event, st1, True)
                 logger.info("chatGLM接收提问:"+text)
                 logger.info("chatGLM:"+st1)
-                #更新该用户prompt
-                prompt.append({"role": "assistant","content": st1})
-                #超过10，移除第一个元素
-                #
-                logger.info("当前prompt" + str(prompt))
-                if len(prompt)>10:
-                    logger.error("glm prompt超限，移除元素")
-                    del prompt[0]
-                    del prompt[0]
-                chatGLMData[event.sender.id]=prompt
-                #写入文件
-                with open('data/chatGLMData.yaml', 'w', encoding="utf-8") as file:
-                    yaml.dump(chatGLMData, file, allow_unicode=True)
+                if context==True:
+                    #更新该用户prompt
+                    prompt.append({"role": "assistant","content": st1})
+                    #超过10，移除第一个元素
+                    #
+                    logger.info("当前prompt" + str(prompt))
+                    if len(prompt)>10:
+                        logger.error("glm prompt超限，移除元素")
+                        del prompt[0]
+                        del prompt[0]
+                    chatGLMData[event.sender.id]=prompt
+                    #写入文件
+                    with open('data/chatGLMData.yaml', 'w', encoding="utf-8") as file:
+                        yaml.dump(chatGLMData, file, allow_unicode=True)
 
             except:
                 await bot.send(event, "chatGLM启动出错，请联系master检查apiKey或重试")
@@ -205,7 +207,7 @@ def main(bot, master, apikey, chatGLM_api_key, proxy, logger):
             tep = {"role": "user", "content": text}
 
             # 获取以往的prompt
-            if event.sender.id in chatGLMData:
+            if event.sender.id in chatGLMData and context==True:
                 prompt = chatGLMData.get(event.sender.id)
                 prompt.append({"role": "user","content": text})
             # 没有该用户，以本次对话作为prompt
@@ -224,18 +226,19 @@ def main(bot, master, apikey, chatGLM_api_key, proxy, logger):
                 await bot.send(event, st1, True)
                 logger.info("chatGLM接收提问:" + text)
                 logger.info("chatGLM:" + st1)
-                # 更新该用户prompt
-                prompt.append({"role": "assistant", "content": st1})
-                # 超过10，移除第一个元素
+                if context==True:
+                    # 更新该用户prompt
+                    prompt.append({"role": "assistant", "content": st1})
+                    # 超过10，移除第一个元素
 
-                if len(prompt) > 10:
-                    logger.error("glm prompt超限，移除元素")
-                    del prompt[0]
-                    del prompt[0]
-                chatGLMData[event.sender.id]= prompt
-                # 写入文件
-                with open('data/chatGLMData.yaml', 'w', encoding="utf-8") as file:
-                    yaml.dump(chatGLMData, file, allow_unicode=True)
+                    if len(prompt) > 10:
+                        logger.error("glm prompt超限，移除元素")
+                        del prompt[0]
+                        del prompt[0]
+                    chatGLMData[event.sender.id]= prompt
+                    # 写入文件
+                    with open('data/chatGLMData.yaml', 'w', encoding="utf-8") as file:
+                        yaml.dump(chatGLMData, file, allow_unicode=True)
             except:
                 await bot.send(event, "chatGLM启动出错，请联系master检查apiKey或重试")
 
