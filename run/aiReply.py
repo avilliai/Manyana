@@ -23,6 +23,7 @@ def main(bot, master, apikey, chatGLM_api_key, proxy, logger):
     global chatGLMData
     with open('data/chatGLMData.yaml', 'r', encoding='utf-8') as f:
         chatGLMData = yaml.load(f.read(), Loader=yaml.FullLoader)
+    logger.info(chatGLMData)
 
     try:
         logger.info("正在启动poe-AI")
