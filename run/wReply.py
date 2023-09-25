@@ -70,6 +70,11 @@ def main(bot,config,sizhiKey,app_id, app_key,logger):
     colorfulCharacter=yamlData.get("colorfulCharacter")
     colorfulCharacterList=os.listdir("data/colorfulAnimeCharacter")
 
+    with open('config/chatGLM.yaml', 'r', encoding='utf-8') as f:
+        result222 = yaml.load(f.read(), Loader=yaml.FullLoader)
+    global chatGLMapikeys
+    chatGLMapikeys = result222
+
     logger.info("读取词库文件中")
     importDict()
     logger.info("读取完成")
@@ -282,10 +287,10 @@ def main(bot,config,sizhiKey,app_id, app_key,logger):
     # 模糊词库触发回复
     @bot.on(GroupMessage)
     async def mohu(event: GroupMessage):
-        global superDict,botName,likeindex,temp,sizhi,transLateData,trustuser
+        global superDict,botName,likeindex,temp,sizhi,transLateData,trustuser,chatGLMapikeys
         if (random.randint(0,100)<groupLexicon or At(bot.qq) in event.message_chain) and gptReply==False:
             if At(bot.qq) in event.message_chain:
-                if gptReply==True or glmReply==True or (trustglmReply==True and str(event.sender.id) in trustUser):
+                if gptReply==True or glmReply==True or (trustglmReply==True and str(event.sender.id) in trustUser) or event.group.id in chatGLMapikeys:
                     return
                 for i in noRes:
                     if i in str(event.message_chain):
@@ -691,6 +696,10 @@ def main(bot,config,sizhiKey,app_id, app_key,logger):
     async def updateData(event: Startup):
         while True:
             await sleep(360)
+            with open('config/chatGLM.yaml', 'r', encoding='utf-8') as f:
+                result222 = yaml.load(f.read(), Loader=yaml.FullLoader)
+            global chatGLMapikeys
+            chatGLMapikeys = result222
             logger.info("开始更新数据")
             with open('config/autoSettings.yaml', 'r', encoding='utf-8') as f:
                 result = yaml.load(f.read(), Loader=yaml.FullLoader)
