@@ -187,6 +187,7 @@ def main(bot, master, apikey, chatGLM_api_key, proxy, logger):
                 if len(prompt)>10:
                     logger.error("glm prompt超限，移除元素")
                     del prompt[0]
+                    del prompt[0]
                 chatGLMData[event.sender.id]=prompt
                 #写入文件
                 with open('data/chatGLMData.yaml', 'w', encoding="utf-8") as file:
@@ -229,6 +230,7 @@ def main(bot, master, apikey, chatGLM_api_key, proxy, logger):
 
                 if len(prompt) > 10:
                     logger.error("glm prompt超限，移除元素")
+                    del prompt[0]
                     del prompt[0]
                 chatGLMData[event.sender.id]= prompt
                 # 写入文件
