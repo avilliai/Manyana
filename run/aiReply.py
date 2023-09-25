@@ -163,7 +163,9 @@ def main(bot, master, apikey, chatGLM_api_key, proxy, logger):
                 prompt=chatGLMData.get(event.sender.id).get("prompt").append(temp)
             #没有该用户，以本次对话作为prompt
             else:
+
                 prompt=[temp]
+                chatGLMData[event.sender.id] ={"prompt":prompt}
 
             try:
                 st1 = await chatGLM(chatGLM_api_key, meta, prompt)
@@ -197,7 +199,7 @@ def main(bot, master, apikey, chatGLM_api_key, proxy, logger):
             # 没有该用户，以本次对话作为prompt
             else:
                 prompt = [temp]
-
+                chatGLMData[event.sender.id] = {"prompt": prompt}
 
 
             if str(event.group.id) == str(mainGroup):
