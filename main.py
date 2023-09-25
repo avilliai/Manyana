@@ -47,9 +47,11 @@ if __name__ == '__main__':
     proxy=result.get("proxy")
     moderate=result.get("moderate")
     nasa_api=result.get("nasa_api")
+    chatglm=result.get("chatGLM")
     with open('config/settings.yaml', 'r', encoding='utf-8') as f:
         resulta = yaml.load(f.read(), Loader=yaml.FullLoader)
     pandora=resulta.get("pandora")
+
     logger.info("读取到apiKey列表")
 
     global notice
@@ -190,7 +192,7 @@ if __name__ == '__main__':
     if proxy != "":
         try:
             # logger.info("开发过程中暂不启动poe-api")
-            aiReply.main(bot, master, result.get("poe-api"), result.get("proxy"), logger)  # poe-api
+            aiReply.main(bot, master, result.get("poe-api"),chatglm, result.get("proxy"), logger)  # poe-api
         except:
             logger.error("poe-api启动失败")
         imgSearch.main(bot, result.get("sauceno-api"), result.get("proxy"), logger)

@@ -42,6 +42,8 @@ def main(bot,config,sizhiKey,app_id, app_key,logger):
     with open('config/settings.yaml', 'r', encoding='utf-8') as f:
         result = yaml.load(f.read(), Loader=yaml.FullLoader)
     gptReply=result.get("gptReply")
+    glmReply = result.get("chatGLM").get("glmReply")
+    trustglmReply = result.get("chatGLM").get("trustglmReply")
     global yamlData
     yamlData = result.get("wReply")
     global chineseVoiceRate
@@ -283,6 +285,8 @@ def main(bot,config,sizhiKey,app_id, app_key,logger):
         global superDict,botName,likeindex,temp,sizhi,transLateData
         if (random.randint(0,100)<groupLexicon or At(bot.qq) in event.message_chain) and gptReply==False:
             if At(bot.qq) in event.message_chain:
+                if gptReply==True or glmReply==True or trustglmReply==True:
+                    return
                 for i in noRes:
                     if i in str(event.message_chain):
                         return

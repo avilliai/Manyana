@@ -2,18 +2,20 @@
 import json
 import random
 import uuid
+from asyncio import sleep
 
 import poe
 import yaml
-from mirai import Image, Voice
+from mirai import Image, Voice, Startup
 from mirai import Mirai, WebSocketAdapter, FriendMessage, GroupMessage, At, Plain
 
 from plugins.PandoraChatGPT import ask_chatgpt
+from plugins.chatGLMonline import chatGLM
 from plugins.rwkvHelper import rwkvHelper
 
 
 
-def main(bot,master,apikey,proxy,logger):
+def main(bot,master,apikey,chatGLM_api_key,proxy,logger):
     try:
         logger.info("正在启动poe-AI")
         global apiKey
@@ -54,12 +56,97 @@ def main(bot,master,apikey,proxy,logger):
         result = yaml.load(f.read(), Loader=yaml.FullLoader)
     gptReply=result.get("gptReply")
     pandoraa=result.get("pandora")
+    glmReply=result.get("chatGLM").get("glmReply")
+    trustglmReply=result.get("chatGLM").get("trustglmReply")
+    meta=result.get("chatGLM").get("bot_info")
+
+
+    with open('data/userData.yaml', 'r',encoding='utf-8') as file:
+        data = yaml.load(file, Loader=yaml.FullLoader)
+    global trustUser
+    global userdict
+    userdict = data
+    trustUser = []
+    for i in userdict.keys():
+        data = userdict.get(i)
+        times = int(str(data.get('sts')))
+        if times > 20:
+            trustUser.append(str(i))
+
+    logger.info('已读取信任用户' + str(len(trustUser)) + '个')
+
+    @bot.on(Startup)
+    async def upDate(event: Startup):
+        while True:
+            await sleep(360)
+            with open('data/userData.yaml', 'r', encoding='utf-8') as file:
+                data = yaml.load(file, Loader=yaml.FullLoader)
+            global trustUser
+            global userdict
+            userdict = data
+            trustUser = []
+            for i in userdict.keys():
+                data = userdict.get(i)
+                times = int(str(data.get('sts')))
+                if times > 20:
+                    trustUser.append(str(i))
+
+            logger.info('已读取信任用户' + str(len(trustUser)) + '个')
+
+    @bot.on(GroupMessage)
+    async def atReply(event:GroupMessage):
+        global trustUser
+        if gptReply==True and At(bot.qq) in event.message_chain:
+            prompt = str(event.message_chain).replace("@" + str(bot.qq) + "", '')
+
+            message_id = str(uuid.uuid4())
+            model = "text-davinci-002-render-sha"
+            logger.info("ask:" + prompt)
+
+            if event.group.id in pandoraData.keys():
+                pub = event.group.id
+                conversation_id = pandoraData.get(event.group.id).get("conversation_id")
+                parent_message_id = pandoraData.get(event.group.id).get("parent_message_id")
+            else:
+                if len(pandoraData.keys()) < 10:
+                    pub = event.group.id
+                    conversation_id = None
+                    parent_message_id = "f0bf0ebe-1cd6-4067-9264-8a40af76d00e"
+                else:
+                    try:
+                        pub = random.choice(pandoraData.keys())
+                        conversation_id = pandoraData.get(pub).get("conversation_id")
+                        parent_message_id = pandoraData.get(pub).get("parent_message_id")
+                    except:
+                        await bot.send(event, "当前服务器负载过大，请稍后再试", True)
+                        return
+            try:
+                parent_message_id, conversation_id, response_message = ask_chatgpt(prompt, model, message_id,
+                                                                                   parent_message_id,
+                                                                                   conversation_id)
+                logger.info("answer:" + response_message)
+                logger.info("conversation_id:" + conversation_id)
+                await bot.send(event, response_message, True)
+
+                pandoraData[pub] = {"parent_message_id": parent_message_id, "conversation_id": conversation_id}
+                with open('data/pandora_ChatGPT.yaml', 'w', encoding="utf-8") as file:
+                    yaml.dump(pandoraData, file, allow_unicode=True)
+            except:
+                await bot.send(event, "当前服务器负载过大，请稍后再试", True)
+        elif (glmReply==True or (trustglmReply==True and event.sender.id in trustUser)) and At(bot.qq) in event.message_chain:
+            text=str(event.message_chain).replace("@" + str(bot.qq) + "", '')
+            try:
+                st1=await chatGLM(chatGLM_api_key,meta,text)
+                await bot.send(event,st1,True)
+            except:
+                await bot.send(event,"chatGLM启动出错，请联系master检查apiKey或重试")
+
 
     @bot.on(GroupMessage)
     async def pandoraSever(event:GroupMessage):
         global pandoraData
         global totallink
-        if (str(event.message_chain).startswith("/p") or (gptReply==True and At(bot.qq) in event.message_chain)) and str(event.message_chain).startswith("/poe")==False and str(event.message_chain).startswith("/pic")==False:
+        if str(event.message_chain).startswith("/p")  and str(event.message_chain).startswith("/poe")==False and str(event.message_chain).startswith("/pic")==False:
             if pandoraa:
                 if totallink==False:
                     totallink+=True
