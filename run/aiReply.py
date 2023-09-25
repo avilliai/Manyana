@@ -75,7 +75,7 @@ def main(bot,master,apikey,chatGLM_api_key,proxy,logger):
 
 
     logger.info('chatglm部分已读取信任用户' + str(len(trustUser)) + '个')
-    print(trustUser)
+    #print(trustUser)
 
     @bot.on(Startup)
     async def upDate(event: Startup):
@@ -135,7 +135,7 @@ def main(bot,master,apikey,chatGLM_api_key,proxy,logger):
                     yaml.dump(pandoraData, file, allow_unicode=True)
             except:
                 await bot.send(event, "当前服务器负载过大，请稍后再试", True)
-        elif (glmReply==True or (trustglmReply==True and event.sender.id in trustUser)) and At(bot.qq) in event.message_chain:
+        elif (glmReply==True or (trustglmReply==True and str(event.sender.id) in trustUser)) and At(bot.qq) in event.message_chain:
             text=str(event.message_chain).replace("@" + str(bot.qq) + "", '')
             try:
                 st1=await chatGLM(chatGLM_api_key,meta,text)
