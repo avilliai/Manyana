@@ -323,9 +323,8 @@ def main(bot,config,sizhiKey,app_id, app_key,logger):
 
             else:
                 #筛选，不是艾特bot就不匹配
-                if event.message_chain.count(At):
-                    if At(bot.qq) not in event.message_chain:
-                        return
+                if event.message_chain.count(At) and At(bot.qq) not in event.message_chain:
+                    return
                 #优先从专有词库匹配
                 elif str(event.group.id) in superDict.keys():
                     #获取专有词库所有key
