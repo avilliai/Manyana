@@ -204,12 +204,12 @@ def main(bot, master, apikey, chatGLM_api_key, proxy, logger):
                 chatGLMData[event.sender.id] =prompt
             logger.info("当前prompt"+str(prompt))
             if event.sender.id in chatGLMCharacters:
-                meta=chatGLMCharacters.get(event.sender.id)
+                meta1=chatGLMCharacters.get(event.sender.id)
             else:
-                meta=allcharacters.get("default")
+                meta1=meta
             try:
-                logger.info("当前meta:"+str(meta))
-                st1 = await chatGLM(chatGLM_api_key, meta, prompt)
+                logger.info("当前meta:"+str(meta1))
+                st1 = await chatGLM(chatGLM_api_key, meta1, prompt)
                 st1 = st1.replace("yucca", botName).replace("amore", str(event.sender.member_name)).replace("阿莫", str(event.sender.member_name)).replace("阿莫尔", str(event.sender.member_name))
                 await bot.send(event, st1, True)
                 logger.info("chatGLM接收提问:"+text)
@@ -251,17 +251,17 @@ def main(bot, master, apikey, chatGLM_api_key, proxy, logger):
             logger.info("当前prompt" + str(prompt))
             #获取专属meta
             if event.sender.id in chatGLMCharacters:
-                meta=chatGLMCharacters.get(event.sender.id)
+                meta1=chatGLMCharacters.get(event.sender.id)
             else:
-                meta = allcharacters.get("default")
+                meta1 = meta
             #获取apiKey
-            logger.info("当前meta:"+str(meta))
+            logger.info("当前meta:"+str(meta1))
             if str(event.group.id) == str(mainGroup):
                 key1 = chatGLM_api_key
             else:
                 key1 = chatGLMapikeys.get(event.group.id)
             try:
-                st1 = await chatGLM(key1, meta, prompt)
+                st1 = await chatGLM(key1, meta1, prompt)
                 st1 = st1.replace("yucca", botName).replace("liris", str(event.sender.member_name))
                 await bot.send(event, st1, True)
                 logger.info("chatGLM接收提问:" + text)
