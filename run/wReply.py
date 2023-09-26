@@ -45,7 +45,6 @@ def main(bot,config,sizhiKey,app_id, app_key,logger):
     gptReply=result.get("gptReply")
     glmReply = result.get("chatGLM").get("glmReply")
     trustglmReply = result.get("chatGLM").get("trustglmReply")
-    openOrFalse=result.get("chatGLM").get("open")
     global yamlData
     yamlData = result.get("wReply")
     global chineseVoiceRate
@@ -290,31 +289,19 @@ def main(bot,config,sizhiKey,app_id, app_key,logger):
     @bot.on(GroupMessage)
     async def mohu(event: GroupMessage):
         global superDict,botName,likeindex,temp,sizhi,transLateData,trustuser,chatGLMapikeys
-        if random.randint(0,100)<groupLexicon or At(bot.qq) in event.message_chain:
+        if (random.randint(0,100)<groupLexicon or At(bot.qq) in event.message_chain) and gptReply==False:
             if At(bot.qq) in event.message_chain:
-                logger.info("12")
-                if openOrFalse==True:
-                    # 如果开启gptReply或者glmReply则不回复
-                    if gptReply==True or glmReply==True:
+                if gptReply==True or glmReply==True or (trustglmReply==True and str(event.sender.id) in trustUser):
+                    return
+                elif event.group.id in chatGLMapikeys:
+                    return
+                for i in noRes:
+                    if i in str(event.message_chain):
                         return
-                    # 开启了trustglmReply信任用户回复 且包含艾特 且为信任用户
-                    elif trustglmReply==True and str(event.sender.id) in trustUser and At(bot.qq) in event.message_chain:
-                        return
-                    # 群已经设置了chatGLM的apiKey
-                    elif event.group.id in chatGLMapikeys:
-                        return
-                    else:
-                        getStr = str(event.message_chain).replace("@" + str(bot.qq) + " ", '')
-                else:
-                    logger.info("13")
-                    # 违禁词检查
-                    '''for i in noRes:
-                        if i in str(event.message_chain):
-                            return'''
-                    getStr = str(event.message_chain).replace("@"+str(bot.qq)+" ", '')
+                getStr = str(event.message_chain).replace("@"+str(bot.qq)+" ", '')
             else:
                 getStr = str(event.message_chain)
-            #logger.info("关键词"+getStr)
+
             if sizhi==True and At(bot.qq) in event.message_chain:
 
                 if random.randint(0,100)<colorfulCharacter:
@@ -335,16 +322,12 @@ def main(bot,config,sizhiKey,app_id, app_key,logger):
                     replyssssss=answer.get("data").get("info").get("text")
 
             else:
-                logger.info("调用本地词库")
                 #筛选，不是艾特bot就不匹配
                 if event.message_chain.count(At):
                     if At(bot.qq) not in event.message_chain:
-                        logger.info("不是艾特bot，退出匹配")
                         return
-
                 #优先从专有词库匹配
                 elif str(event.group.id) in superDict.keys():
-                    logger.info("专有词库进行匹配")
                     #获取专有词库所有key
                     keys1=superDict.get(str(event.group.id)).keys()
 
@@ -401,7 +384,6 @@ def main(bot,config,sizhiKey,app_id, app_key,logger):
                                         logger.error("当前关键词回复为空")
                                         continue
                         if lock1==0:
-                            logger.info("正则匹配失败，尝试从public.xlsx获取回复")
                             #正则匹配失败，尝试从public.xlsx获取回复
                             if At(bot.qq) in event.message_chain:
                                 best_matches = process.extractBests(getStr, superDict.get("public").keys(), limit=3)
@@ -410,15 +392,15 @@ def main(bot,config,sizhiKey,app_id, app_key,logger):
                                     logger.warning("匹配相似度过低，不发送")
                                     return
                                 replyssssss = random.choice(superDict.get("public").get(str((best_matches)[0][0])))
-                else:
-                    logger.info("陌生群，模糊匹配")
+                elif At(bot.qq) in event.message_chain:
                     best_matches = process.extractBests(getStr, superDict.get("public").keys(), limit=3)
                     logger.info("获取匹配结果：key:" + getStr + "|" + str(best_matches))
                     if int((best_matches)[0][1]) < 50:
                         logger.warning("匹配相似度过低，不发送")
                         return
                     replyssssss = random.choice(superDict.get("public").get(str((best_matches)[0][0])))
-
+                else:
+                    return
 
             try:
                 if replyssssss=="":
