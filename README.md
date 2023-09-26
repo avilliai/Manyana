@@ -73,6 +73,8 @@ ping[图片]
 chatGLM 详情查看配置文件，将取代艾特回复
      设置密钥#apiKey       #从https://open.bigmodel.cn/usercenter/apikeys复制apiKey
      取消密钥              #取消本群的密钥
+     可用角色模板          #查看所有可用角色预设，需要填写setting.yaml
+     设定#角色名           #设置特定角色回复
 /p[你的文本，不要带括号]    config/token.txt中填写你的token，获取方式见https://ai-20230626.fakeopen.com/auth
 /poe[你的文本，不要带括号]  你需要填写api.yaml中的内容，抓取方式看https://github.com/avilliai/Poe_QQ
 /rwkv[你的文本，不要带括号]    需要在本地部署rwkv模型，具体看https://www.bilibili.com/video/BV1hM4y1v76R/?vd_source=b41b8c06d400241b8d0badbe1f821ec9
