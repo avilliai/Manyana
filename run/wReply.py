@@ -335,10 +335,13 @@ def main(bot,config,sizhiKey,app_id, app_key,logger):
                     replyssssss=answer.get("data").get("info").get("text")
 
             else:
+                logger.info("调用本地词库")
                 #筛选，不是艾特bot就不匹配
                 if event.message_chain.count(At):
                     if At(bot.qq) not in event.message_chain:
+                        logger.info("不是艾特bot，退出匹配")
                         return
+
                 #优先从专有词库匹配
                 elif str(event.group.id) in superDict.keys():
                     logger.info("专有词库进行匹配")
@@ -416,6 +419,7 @@ def main(bot,config,sizhiKey,app_id, app_key,logger):
                         return
                     replyssssss = random.choice(superDict.get("public").get(str((best_matches)[0][0])))
                 else:
+                    logger.info("啥也没有，退出了")
                     return
 
             try:
