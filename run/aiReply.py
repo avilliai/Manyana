@@ -231,7 +231,7 @@ def main(bot, master, apikey, chatGLM_api_key, proxy, logger):
 
             except:
                 await bot.send(event, "chatGLM启动出错，请联系master检查apiKey或重试")
-        elif (str(event.group.id) == str(mainGroup) or (event.group.id in chatGLMapikeys)) and At(
+        elif ((str(event.group.id) == str(mainGroup) and chatGLM_api_key!="sdfafjsadlf;aldf") or (event.group.id in chatGLMapikeys)) and At(
                 bot.qq) in event.message_chain:
             text = str(event.message_chain).replace("@" + str(bot.qq) + "", '')
             logger.info("分支2")
