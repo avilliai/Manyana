@@ -8,7 +8,7 @@ pandora: False        #是否启用pandora_chatGPT，如未正确配置相关内
 gptReply: False       #是否使用gpt3.5替代原有词库，开启后，bot被艾特将优先使用gpt回复
 chatGLM:
   glmReply: False       #是否使用chatglm替代原有词库，开启后，bot被艾特将全局有限使用chatglm回复
-  trustglmReply: true        #开启后仅信任用户可用
+  trustglmReply: False        #开启后仅信任用户可用
   context: False         #chatGLM上下文模式，开启后将加速消耗token，不是富哥不建议开
   bot_info:              #chatGLM角色设定
     default:
