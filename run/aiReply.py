@@ -4,6 +4,7 @@ import random
 import uuid
 from asyncio import sleep
 
+import httpx
 import poe
 import yaml
 from mirai import Image, Voice, Startup
@@ -364,6 +365,23 @@ def main(bot, master, apikey, chatGLM_api_key, proxy, logger):
             else:
                 await bot.send(event, "系统未启用pandora_chatGPT,可能是没有token了", True)
 
+    @bot.on(GroupMessage)
+    async def gpt3(event: GroupMessage):
+        if str(event.message_chain).startswith("/chat"):
+            s = str(event.message_chain).replace("/chat", "")
+            try:
+                logger.info("gpt3.5接收信息：" + s)
+                url = "https://api.lolimi.cn/API/AI/mfcat3.5.php?sx=你是一个可爱萝莉&msg="+s+"&type=json"
+                async with httpx.AsyncClient(timeout=40) as client:
+                    # 用get方法发送请求
+                    response = await client.get(url=url)
+                s=response.json().get("data")
+
+                logger.info("gpt3.5:" + s)
+                await bot.send(event, s, True)
+            except:
+                logger.error("调用gpt3.5失败，请检查网络或重试")
+                await bot.send(event, "无法连接到gpt3.5，请检查网络或重试")
     @bot.on(GroupMessage)
     async def rwkv(event: GroupMessage):
         if str(event.message_chain).startswith("/rwkv"):
