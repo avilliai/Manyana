@@ -45,6 +45,7 @@ def main(bot,config,sizhiKey,app_id, app_key,logger):
     gptReply=result.get("gptReply")
     glmReply = result.get("chatGLM").get("glmReply")
     trustglmReply = result.get("chatGLM").get("trustglmReply")
+    openOrFalse=result.get("chatGLM").get("open")
     global yamlData
     yamlData = result.get("wReply")
     global chineseVoiceRate
@@ -291,16 +292,22 @@ def main(bot,config,sizhiKey,app_id, app_key,logger):
         global superDict,botName,likeindex,temp,sizhi,transLateData,trustuser,chatGLMapikeys
         if (random.randint(0,100)<groupLexicon or At(bot.qq) in event.message_chain) and gptReply==False:
             if At(bot.qq) in event.message_chain:
-                if gptReply==True or glmReply==True:
-                    return
-                elif trustglmReply==True and str(event.sender.id) in trustUser and At(bot.qq) in event.message_chain:
-                    return
-                elif event.group.id in chatGLMapikeys:
-                    return
-                for i in noRes:
-                    if i in str(event.message_chain):
+                if openOrFalse==True:
+                    # 如果开启gptReply或者glmReply则不回复
+                    if gptReply==True or glmReply==True:
                         return
-                getStr = str(event.message_chain).replace("@"+str(bot.qq)+" ", '')
+                    # 开启了trustglmReply信任用户回复 且包含艾特 且为信任用户
+                    elif trustglmReply==True and str(event.sender.id) in trustUser and At(bot.qq) in event.message_chain:
+                        return
+                    # 群已经设置了chatGLM的apiKey
+                    elif event.group.id in chatGLMapikeys:
+                        return
+                else:
+                    # 违禁词检查
+                    for i in noRes:
+                        if i in str(event.message_chain):
+                            return
+                    getStr = str(event.message_chain).replace("@"+str(bot.qq)+" ", '')
             else:
                 getStr = str(event.message_chain)
 
