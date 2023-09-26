@@ -302,6 +302,8 @@ def main(bot,config,sizhiKey,app_id, app_key,logger):
                     # 群已经设置了chatGLM的apiKey
                     elif event.group.id in chatGLMapikeys:
                         return
+                    else:
+                        getStr = str(event.message_chain).replace("@" + str(bot.qq) + " ", '')
                 else:
                     # 违禁词检查
                     for i in noRes:
