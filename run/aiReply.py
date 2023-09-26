@@ -205,11 +205,12 @@ def main(bot, master, apikey, chatGLM_api_key, proxy, logger):
             logger.info("当前prompt"+str(prompt))
             if event.sender.id in chatGLMCharacters:
                 meta=chatGLMCharacters.get(event.sender.id)
-
+            else:
+                meta=allcharacters.get("default")
             try:
                 logger.info("当前meta:"+str(meta))
                 st1 = await chatGLM(chatGLM_api_key, meta, prompt)
-                st1 = st1.replace("yucca", botName).replace("amore", str(event.sender.member_name)).replace("阿莫雷", str(event.sender.member_name)).replace("阿莫尔", str(event.sender.member_name))
+                st1 = st1.replace("yucca", botName).replace("amore", str(event.sender.member_name)).replace("阿莫", str(event.sender.member_name)).replace("阿莫尔", str(event.sender.member_name))
                 await bot.send(event, st1, True)
                 logger.info("chatGLM接收提问:"+text)
                 logger.info("chatGLM:"+st1)
@@ -251,6 +252,8 @@ def main(bot, master, apikey, chatGLM_api_key, proxy, logger):
             #获取专属meta
             if event.sender.id in chatGLMCharacters:
                 meta=chatGLMCharacters.get(event.sender.id)
+            else:
+                meta = allcharacters.get("default")
             #获取apiKey
             logger.info("当前meta:"+str(meta))
             if str(event.group.id) == str(mainGroup):
