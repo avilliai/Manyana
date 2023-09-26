@@ -1,5 +1,6 @@
 
 signTimes: 3    # 签到几天后可以邀请加群
+trustDays: 28  #签到几天后算信任用户
 autoallowFriend: False  #是否自动允许好友申请
 GroupSensor: False    #开启后，将拒绝无授权群的加群邀请
 r18Pic: False
