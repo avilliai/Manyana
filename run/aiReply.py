@@ -15,6 +15,12 @@ from plugins.rwkvHelper import rwkvHelper
 
 
 def main(bot, master, apikey, chatGLM_api_key, proxy, logger):
+    #读取个性化角色设定
+    with open('data/chatGLMCharacters.yaml', 'r', encoding='utf-8') as f:
+        result2223 = yaml.load(f.read(), Loader=yaml.FullLoader)
+    global chatGLMCharacters
+    chatGLMCharacters = result2223
+
     with open('config/chatGLM.yaml', 'r', encoding='utf-8') as f:
         result222 = yaml.load(f.read(), Loader=yaml.FullLoader)
     global chatGLMapikeys
@@ -69,8 +75,9 @@ def main(bot, master, apikey, chatGLM_api_key, proxy, logger):
     pandoraa = result.get("pandora")
     glmReply = result.get("chatGLM").get("glmReply")
     trustglmReply = result.get("chatGLM").get("trustglmReply")
-    meta = result.get("chatGLM").get("bot_info")
+    meta = result.get("chatGLM").get("bot_info").get("default")
     context= result.get("chatGLM").get("context")
+    allcharacters=result.get("chatGLM").get("bot_info")
 
     with open('config.json', 'r', encoding='utf-8') as fp:
         data = fp.read()
@@ -92,6 +99,25 @@ def main(bot, master, apikey, chatGLM_api_key, proxy, logger):
     logger.info('chatglm部分已读取信任用户' + str(len(trustUser)) + '个')
 
     # print(trustUser)
+    @bot.on(GroupMessage)
+    async def showCharacter(event:GroupMessage):
+        if str(event.message_chain)=="可用角色模板" or (At(bot.qq) in event.message_chain and "角色模板" in str(event.message_chain)):
+            st1=""
+            for isa in allcharacters:
+                st1+=isa+"\n"
+            await bot.send(event,"对话可用角色模板：\n"+st1+"\n发送：设定#角色名 以设定角色")
+    @bot.on(GroupMessage)
+    async def setCharacter(event:GroupMessage):
+        global chatGLMCharacters
+        if str(event.message_chain).startswith("设定#"):
+            if str(event.message_chain).split("#")[1] in allcharacters:
+                chatGLMCharacters[event.sender.id]=allcharacters.get(str(event.message_chain).split("#")[1])
+                logger.info("当前：",chatGLMCharacters)
+                with open('data/chatGLMCharacters.yaml', 'w', encoding="utf-8") as file:
+                    yaml.dump(chatGLMCharacters, file, allow_unicode=True)
+                await bot.send(event,"设定成功")
+            else:
+                await bot.send(event,"不存在的角色")
 
     @bot.on(Startup)
     async def upDate(event: Startup):
@@ -115,9 +141,11 @@ def main(bot, master, apikey, chatGLM_api_key, proxy, logger):
 
             logger.info('已读取信任用户' + str(len(trustUser)) + '个')
 
+
+
     @bot.on(GroupMessage)
     async def atReply(event: GroupMessage):
-        global trustUser, chatGLMapikeys,chatGLMData
+        global trustUser, chatGLMapikeys,chatGLMData,chatGLMCharacters
         if gptReply == True and At(bot.qq) in event.message_chain:
             prompt = str(event.message_chain).replace("@" + str(bot.qq) + "", '')
 
@@ -174,7 +202,11 @@ def main(bot, master, apikey, chatGLM_api_key, proxy, logger):
                 prompt=[tep]
                 chatGLMData[event.sender.id] =prompt
             logger.info("当前prompt"+str(prompt))
+            if event.sender.id in chatGLMCharacters:
+                meta=chatGLMCharacters.get(event.sender.id)
+
             try:
+                logger.info("当前meta:"+str(meta))
                 st1 = await chatGLM(chatGLM_api_key, meta, prompt)
                 st1 = st1.replace("yucca", botName).replace("amore", str(event.sender.member_name)).replace("阿莫雷", str(event.sender.member_name)).replace("阿莫尔", str(event.sender.member_name))
                 await bot.send(event, st1, True)
@@ -215,7 +247,11 @@ def main(bot, master, apikey, chatGLM_api_key, proxy, logger):
                 prompt = [tep]
                 chatGLMData[event.sender.id] = prompt
             logger.info("当前prompt" + str(prompt))
-
+            #获取专属meta
+            if event.sender.id in chatGLMCharacters:
+                meta=chatGLMCharacters.get(event.sender.id)
+            #获取apiKey
+            logger.info("当前meta:"+str(meta))
             if str(event.group.id) == str(mainGroup):
                 key1 = chatGLM_api_key
             else:
