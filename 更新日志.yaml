@@ -47,5 +47,6 @@
   - setting.yaml，可设置彩色小人回复几率
 2023/9/25:
   - 更新chatGLM，请配置api.yaml与settings.yaml
+  - setting.yaml新增配置项，手动切换上下文模式与问答模式
 2023/9/26:
   - 支持多角色预设
