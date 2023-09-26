@@ -291,7 +291,9 @@ def main(bot,config,sizhiKey,app_id, app_key,logger):
         global superDict,botName,likeindex,temp,sizhi,transLateData,trustuser,chatGLMapikeys
         if (random.randint(0,100)<groupLexicon or At(bot.qq) in event.message_chain) and gptReply==False:
             if At(bot.qq) in event.message_chain:
-                if gptReply==True or glmReply==True or (trustglmReply==True and str(event.sender.id) in trustUser):
+                if gptReply==True or glmReply==True:
+                    return
+                elif trustglmReply==True and str(event.sender.id) in trustUser and At(bot.qq) in event.message_chain:
                     return
                 elif event.group.id in chatGLMapikeys:
                     return
