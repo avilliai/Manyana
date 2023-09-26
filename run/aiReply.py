@@ -71,6 +71,7 @@ def main(bot, master, apikey, chatGLM_api_key, proxy, logger):
     totallink = False
     with open('config/settings.yaml', 'r', encoding='utf-8') as f:
         result = yaml.load(f.read(), Loader=yaml.FullLoader)
+    trustDays=result.get("trustDays")
     gptReply = result.get("gptReply")
     pandoraa = result.get("pandora")
     glmReply = result.get("chatGLM").get("glmReply")
@@ -93,7 +94,7 @@ def main(bot, master, apikey, chatGLM_api_key, proxy, logger):
     for i in userdict.keys():
         data = userdict.get(i)
         times = int(str(data.get('sts')))
-        if times > 28:
+        if times > trustDays:
             trustUser.append(str(i))
 
     logger.info('chatglm部分已读取信任用户' + str(len(trustUser)) + '个')
@@ -136,7 +137,7 @@ def main(bot, master, apikey, chatGLM_api_key, proxy, logger):
             for i in userdict.keys():
                 data = userdict.get(i)
                 times = int(str(data.get('sts')))
-                if times > 28:
+                if times > trustDays:
                     trustUser.append(str(i))
 
             logger.info('已读取信任用户' + str(len(trustUser)) + '个')
