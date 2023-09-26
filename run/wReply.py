@@ -314,7 +314,7 @@ def main(bot,config,sizhiKey,app_id, app_key,logger):
                     getStr = str(event.message_chain).replace("@"+str(bot.qq)+" ", '')
             else:
                 getStr = str(event.message_chain)
-            logger.info("关键词"+getStr)
+            #logger.info("关键词"+getStr)
             if sizhi==True and At(bot.qq) in event.message_chain:
 
                 if random.randint(0,100)<colorfulCharacter:
@@ -410,7 +410,7 @@ def main(bot,config,sizhiKey,app_id, app_key,logger):
                                     logger.warning("匹配相似度过低，不发送")
                                     return
                                 replyssssss = random.choice(superDict.get("public").get(str((best_matches)[0][0])))
-                elif At(bot.qq) in event.message_chain:
+                else:
                     logger.info("陌生群，模糊匹配")
                     best_matches = process.extractBests(getStr, superDict.get("public").keys(), limit=3)
                     logger.info("获取匹配结果：key:" + getStr + "|" + str(best_matches))
@@ -418,9 +418,7 @@ def main(bot,config,sizhiKey,app_id, app_key,logger):
                         logger.warning("匹配相似度过低，不发送")
                         return
                     replyssssss = random.choice(superDict.get("public").get(str((best_matches)[0][0])))
-                else:
-                    logger.info("啥也没有，退出了")
-                    return
+
 
             try:
                 if replyssssss=="":
