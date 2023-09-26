@@ -314,7 +314,7 @@ def main(bot,config,sizhiKey,app_id, app_key,logger):
                     getStr = str(event.message_chain).replace("@"+str(bot.qq)+" ", '')
             else:
                 getStr = str(event.message_chain)
-
+            logger.info("关键词"+getStr)
             if sizhi==True and At(bot.qq) in event.message_chain:
 
                 if random.randint(0,100)<colorfulCharacter:
@@ -341,6 +341,7 @@ def main(bot,config,sizhiKey,app_id, app_key,logger):
                         return
                 #优先从专有词库匹配
                 elif str(event.group.id) in superDict.keys():
+                    logger.info("专有词库进行匹配")
                     #获取专有词库所有key
                     keys1=superDict.get(str(event.group.id)).keys()
 
@@ -397,6 +398,7 @@ def main(bot,config,sizhiKey,app_id, app_key,logger):
                                         logger.error("当前关键词回复为空")
                                         continue
                         if lock1==0:
+                            logger.info("正则匹配失败，尝试从public.xlsx获取回复")
                             #正则匹配失败，尝试从public.xlsx获取回复
                             if At(bot.qq) in event.message_chain:
                                 best_matches = process.extractBests(getStr, superDict.get("public").keys(), limit=3)
@@ -406,6 +408,7 @@ def main(bot,config,sizhiKey,app_id, app_key,logger):
                                     return
                                 replyssssss = random.choice(superDict.get("public").get(str((best_matches)[0][0])))
                 elif At(bot.qq) in event.message_chain:
+                    logger.info("陌生群，模糊匹配")
                     best_matches = process.extractBests(getStr, superDict.get("public").keys(), limit=3)
                     logger.info("获取匹配结果：key:" + getStr + "|" + str(best_matches))
                     if int((best_matches)[0][1]) < 50:
