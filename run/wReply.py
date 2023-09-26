@@ -290,8 +290,9 @@ def main(bot,config,sizhiKey,app_id, app_key,logger):
     @bot.on(GroupMessage)
     async def mohu(event: GroupMessage):
         global superDict,botName,likeindex,temp,sizhi,transLateData,trustuser,chatGLMapikeys
-        if (random.randint(0,100)<groupLexicon or At(bot.qq) in event.message_chain) and gptReply==False:
+        if random.randint(0,100)<groupLexicon or At(bot.qq) in event.message_chain:
             if At(bot.qq) in event.message_chain:
+                logger.info("12")
                 if openOrFalse==True:
                     # 如果开启gptReply或者glmReply则不回复
                     if gptReply==True or glmReply==True:
@@ -305,10 +306,11 @@ def main(bot,config,sizhiKey,app_id, app_key,logger):
                     else:
                         getStr = str(event.message_chain).replace("@" + str(bot.qq) + " ", '')
                 else:
+                    logger.info("13")
                     # 违禁词检查
-                    for i in noRes:
+                    '''for i in noRes:
                         if i in str(event.message_chain):
-                            return
+                            return'''
                     getStr = str(event.message_chain).replace("@"+str(bot.qq)+" ", '')
             else:
                 getStr = str(event.message_chain)
