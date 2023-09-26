@@ -31,7 +31,7 @@ def main(bot, master, apikey, chatGLM_api_key, proxy, logger):
         cha = yaml.load(f.read(), Loader=yaml.FullLoader)
     global chatGLMData
     chatGLMData=cha
-    logger.info(chatGLMData)
+    #logger.info(chatGLMData)
 
     try:
         logger.info("正在启动poe-AI")
