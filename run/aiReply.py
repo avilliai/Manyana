@@ -357,6 +357,8 @@ def main(bot, master, apikey, chatGLM_api_key, proxy, logger):
             elif str(event.sender.id) in trustUser and trustglmReply == True:
                 logger.info("信任用户进行chatGLM提问")
                 selfApiKey = chatGLM_api_key
+            else:
+                selfApiKey = chatGLM_api_key
 
             #获取角色设定
             if event.sender.id in chatGLMCharacters:
