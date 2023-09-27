@@ -85,6 +85,7 @@ def main(bot, master, apikey, chatGLM_api_key, proxy, logger):
     context= result.get("chatGLM").get("context")
     maxPrompt = result.get("chatGLM").get("maxPrompt")
     allcharacters=result.get("chatGLM").get("bot_info")
+    turnMessage=result.get("wReply").get("turnMessage")
 
     with open('config.json', 'r', encoding='utf-8') as fp:
         data = fp.read()
@@ -160,8 +161,8 @@ def main(bot, master, apikey, chatGLM_api_key, proxy, logger):
             await bot.send(event, st1, True)
 
             logger.info("chatGLM:" + st1)
-            if str(event.sender.id)!=str(master):
-                await bot.send_friend_message(int(master),"私聊chatGLM接收提问:\n" + text+"\n"+"chatGLM:\n" + st1)
+            if str(event.sender.id)!=str(master) and turnMessage==True:
+                await bot.send_friend_message(int(master),"私聊chatGLM:\n"+str(event.sender.id)+"提问:\n" + text+"\n"+"chatGLM:\n" + st1)
             try:
                 addStr = '添加' + text + '#' + st11
                 mohuaddReplys(addStr, str("chatGLMReply"))
