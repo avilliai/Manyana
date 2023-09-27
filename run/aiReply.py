@@ -101,6 +101,129 @@ def main(bot, master, apikey, chatGLM_api_key, proxy, logger):
 
     logger.info('chatglm部分已读取信任用户' + str(len(trustUser)) + '个')
 
+    with open('config/chatGLMSingelUser.yaml', 'r', encoding='utf-8') as f:
+        result224 = yaml.load(f.read(), Loader=yaml.FullLoader)
+    global chatGLMsingelUserKey
+    chatGLMsingelUserKey=result224
+    #私聊使用chatGLM,对信任用户或配置了apiKey的用户开启
+    @bot.on(FriendMessage)
+    async def GLMFriendChat(event:FriendMessage):
+        global chatGLMData,chatGLMCharacters,trustUser,chatGLMsingelUserKey
+        #如果用户有自己的key
+        if event.sender.id in chatGLMsingelUserKey:
+            selfApiKey=chatGLMsingelUserKey.get(event.sender.id)
+            #构建prompt
+        #或者开启了信任用户回复且为信任用户
+        elif event.sender.id in trustUser and trustglmReply==True:
+            selfApiKey=chatGLM_api_key
+        else:
+            return
+        text = str(event.message_chain)
+        #logger.info("私聊glm接收消息：")
+        # 构建新的prompt
+        tep = {"role": "user", "content": text}
+        # print(type(tep))
+        # 获取以往的prompt
+        if event.sender.id in chatGLMData:
+            prompt = chatGLMData.get(event.sender.id)
+            prompt.append({"role": "user", "content": text})
+        # 没有该用户，以本次对话作为prompt
+        else:
+            prompt = [tep]
+            chatGLMData[event.sender.id] = prompt
+        if event.sender.id in chatGLMCharacters:
+            meta1 = chatGLMCharacters.get(event.sender.id)
+        else:
+            meta1 = meta
+        try:
+            logger.info("当前meta:" + str(meta1))
+            st1 = await chatGLM(selfApiKey, meta1, prompt)
+            st1 = st1.replace("yucca", botName).replace("amore", str(event.sender.nickname)).replace("阿莫",
+                                                                                                        str(event.sender.nickname)).replace(
+                "阿莫尔", str(event.sender.nickname))
+            await bot.send(event, st1, True)
+            logger.info("私聊chatGLM接收提问:" + text)
+            logger.info("chatGLM:" + st1)
+            await bot.send(int(master),"私聊chatGLM接收提问:\n" + text+"\n"+"chatGLM:\n" + st1)
+            # 更新该用户prompt
+            prompt.append({"role": "assistant", "content": st1})
+            # 超过10，移除第一个元素
+            #
+            logger.info("当前prompt" + str(prompt))
+            if len(prompt) > maxPrompt:
+                logger.error("glm prompt超限，移除元素")
+                del prompt[0]
+                del prompt[0]
+            chatGLMData[event.sender.id] = prompt
+            # 写入文件
+            with open('data/chatGLMData.yaml', 'w', encoding="utf-8") as file:
+                yaml.dump(chatGLMData, file, allow_unicode=True)
+
+        except:
+            await bot.send(event, "chatGLM启动出错，请联系master检查apiKey或重试")
+
+    # 私聊中chatGLM清除本地缓存
+    @bot.on(FriendMessage)
+    async def clearPrompt(event: FriendMessage):
+        global chatGLMData
+        if str(event.message_chain) == "/clearGLM":
+            try:
+                chatGLMData.pop(event.sender.id)
+                # 写入文件
+                with open('data/chatGLMData.yaml', 'w', encoding="utf-8") as file:
+                    yaml.dump(chatGLMData, file, allow_unicode=True)
+            except:
+                await bot.send(event, "清理缓存出错，无本地对话记录")
+
+    @bot.on(FriendMessage)
+    async def setChatGLMKey(event: FriendMessage):
+        global chatGLMsingelUserKey
+        if str(event.message_chain).startswith("设置密钥#"):
+            key12 = str(event.message_chain).split("#")[1] + ""
+            try:
+                st1 = await chatGLM(key12, meta, "你好呀")
+                st1 = st1.replace("yucca", botName).replace("liris", str(event.sender.nickname))
+                await bot.send(event, st1, True)
+            except:
+                await bot.send(event, "chatGLM启动出错，请联系检查apiKey或重试")
+                return
+            chatGLMsingelUserKey[event.sender.id] = key12
+            with open('config/chatGLMSingelUser.yaml', 'w', encoding="utf-8") as file:
+                yaml.dump(chatGLMsingelUserKey, file, allow_unicode=True)
+            await bot.send(event, "设置apiKey成功")
+
+    @bot.on(FriendMessage)
+    async def setChatGLMKey(event: FriendMessage):
+        global chatGLMsingelUserKey
+        if str(event.message_chain).startswith("取消密钥") and event.sender.id in chatGLMsingelUserKey:
+            chatGLMsingelUserKey.pop(event.sender.id)
+            with open('config/chatGLMSingelUser.yaml', 'w', encoding="utf-8") as file:
+                yaml.dump(chatGLMsingelUserKey, file, allow_unicode=True)
+            await bot.send(event, "设置apiKey成功")
+    #私聊设置bot角色
+    # print(trustUser)
+    @bot.on(FriendMessage)
+    async def showCharacter(event:FriendMessage):
+        if str(event.message_chain)=="可用角色模板" or "角色模板" in str(event.message_chain):
+            st1=""
+            for isa in allcharacters:
+                st1+=isa+"\n"
+            await bot.send(event,"对话可用角色模板：\n"+st1+"\n发送：设定#角色名 以设定角色")
+    @bot.on(FriendMessage)
+    async def setCharacter(event:FriendMessage):
+        global chatGLMCharacters
+        if str(event.message_chain).startswith("设定#"):
+            if str(event.message_chain).split("#")[1] in allcharacters:
+                chatGLMCharacters[event.sender.id]=allcharacters.get(str(event.message_chain).split("#")[1])
+                logger.info("当前：",chatGLMCharacters)
+                with open('data/chatGLMCharacters.yaml', 'w', encoding="utf-8") as file:
+                    yaml.dump(chatGLMCharacters, file, allow_unicode=True)
+                await bot.send(event,"设定成功")
+            else:
+                await bot.send(event,"不存在的角色")
+
+
+
     # print(trustUser)
     @bot.on(GroupMessage)
     async def showCharacter(event:GroupMessage):
@@ -141,11 +264,10 @@ def main(bot, master, apikey, chatGLM_api_key, proxy, logger):
                 times = int(str(data.get('sts')))
                 if times > trustDays:
                     trustUser.append(str(i))
-
             logger.info('已读取信任用户' + str(len(trustUser)) + '个')
 
 
-
+    #群内chatGLM回复
     @bot.on(GroupMessage)
     async def atReply(event: GroupMessage):
         global trustUser, chatGLMapikeys,chatGLMData,chatGLMCharacters

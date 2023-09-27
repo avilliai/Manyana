@@ -76,6 +76,11 @@ def main(bot,config,sizhiKey,app_id, app_key,logger):
     global chatGLMapikeys
     chatGLMapikeys = result222
 
+    with open('config/chatGLMSingelUser.yaml', 'r', encoding='utf-8') as f:
+        result224 = yaml.load(f.read(), Loader=yaml.FullLoader)
+    global chatGLMsingelUserKey
+    chatGLMsingelUserKey=result224
+
     with open('config/api.yaml', 'r', encoding='utf-8') as f:
         result = yaml.load(f.read(), Loader=yaml.FullLoader)
     chatglm = result.get("chatGLM")
@@ -482,10 +487,21 @@ def main(bot,config,sizhiKey,app_id, app_key,logger):
         global superDict
         global botName
         global sizhi
-        if event.sender.id in blUser:
+        global chatGLMsingelUserKey
+        #if event.sender.id in blUser:
+            #return
+        #开启信任用户回复，且为信任用户
+        if trustglmReply == True and str(event.sender.id) in trustUser:
+            return
+        #配置了自己的apiKey
+        elif event.sender.id in chatGLMsingelUserKey.keys():
             return
         getStr=str(event.message_chain)
         if sizhi==True:
+            if str(event.message_chain)=="[图片]":
+                c = random.choice(colorfulCharacterList)
+                await bot.send(event, Image(path="data/colorfulAnimeCharacter/" + c))
+                return
             sess = requests.get(
                 'https://api.ownthink.com/bot?spoken=' + getStr + '&appid='+random.choice(sizhiKey))
 
@@ -739,7 +755,10 @@ def main(bot,config,sizhiKey,app_id, app_key,logger):
             file.close()
             global superDict
             superDict = json.loads(jss)
-
+            with open('config/chatGLMSingelUser.yaml', 'r', encoding='utf-8') as f:
+                result224 = yaml.load(f.read(), Loader=yaml.FullLoader)
+            global chatGLMsingelUserKey
+            chatGLMsingelUserKey = result224
             with open('data/userData.yaml', 'r',encoding='utf-8') as file:
                 data = yaml.load(file, Loader=yaml.FullLoader)
             global trustUser
