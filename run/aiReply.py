@@ -35,6 +35,9 @@ def main(bot, master, apikey, chatGLM_api_key, proxy, logger):
     chatGLMData=cha
     #logger.info(chatGLMData)
 
+    #读取用户别称
+
+
     try:
         logger.info("正在启动poe-AI")
         global apiKey
@@ -109,7 +112,7 @@ def main(bot, master, apikey, chatGLM_api_key, proxy, logger):
     #私聊使用chatGLM,对信任用户或配置了apiKey的用户开启
     @bot.on(FriendMessage)
     async def GLMFriendChat(event:FriendMessage):
-        global chatGLMData,chatGLMCharacters,trustUser,chatGLMsingelUserKey
+        global chatGLMData,chatGLMCharacters,trustUser,chatGLMsingelUserKey,userdict
         #如果用户有自己的key
         if event.sender.id in chatGLMsingelUserKey:
             selfApiKey=chatGLMsingelUserKey.get(event.sender.id)
@@ -142,16 +145,18 @@ def main(bot, master, apikey, chatGLM_api_key, proxy, logger):
         try:
             logger.info("当前meta:" + str(meta1))
             st1 = await chatGLM(selfApiKey, meta1, prompt)
-            st1 = st1.replace("yucca", botName).replace("amore", str(event.sender.nickname)).replace("阿莫",
-                                                                                                        str(event.sender.nickname)).replace(
-                "阿莫尔", str(event.sender.nickname))
+            st11=st1
+            setName = userdict.get(str(event.sender.id)).get("userName")
+            if setName == None:
+                setName = event.sender.nickname
+            st1 = st1.replace("yucca", botName).replace("amore", str(setName)).replace("阿莫",str(setName)).replace("阿莫尔", str(setName)).replace("阿莫雷",str(setName)).replace("amor",str(setName))
             await bot.send(event, st1, True)
 
             logger.info("chatGLM:" + st1)
             if str(event.sender.id)!=str(master):
                 await bot.send_friend_message(int(master),"私聊chatGLM接收提问:\n" + text+"\n"+"chatGLM:\n" + st1)
             try:
-                addStr = '添加' + text + '#' + st1
+                addStr = '添加' + text + '#' + st11
                 mohuaddReplys(addStr, str("chatGLMReply"))
             except:
                 logger.error("写入本地词库失败")
@@ -345,13 +350,20 @@ def main(bot, master, apikey, chatGLM_api_key, proxy, logger):
             try:
                 logger.info("当前meta:"+str(meta1))
                 st1 = await chatGLM(chatGLM_api_key, meta1, prompt)
-                st1 = st1.replace("yucca", botName).replace("amore", str(event.sender.member_name)).replace("阿莫", str(event.sender.member_name)).replace("阿莫尔", str(event.sender.member_name))
+
+                st11 = st1
+                setName = userdict.get(str(event.sender.id)).get("userName")
+                if setName == None:
+                    setName = event.sender.member_name
+                st1 = st1.replace("yucca", botName).replace("amore", str(setName)).replace("阿莫", str(setName)).replace(
+                    "阿莫尔", str(setName)).replace("阿莫雷",str(setName)).replace("amor",str(setName))
                 await bot.send(event, st1, True)
+
                 logger.info("chatGLM接收提问:"+text)
                 logger.info("chatGLM:"+st1)
                 #将chatGLM写入本地词库
                 try:
-                    addStr = '添加' + text + '#' + st1
+                    addStr = '添加' + text + '#' + st11
                     mohuaddReplys(addStr, str("chatGLMReply"))
                 except:
                     logger.error("写入本地词库失败")
@@ -403,12 +415,19 @@ def main(bot, master, apikey, chatGLM_api_key, proxy, logger):
                 key1 = chatGLMapikeys.get(event.group.id)
             try:
                 st1 = await chatGLM(key1, meta1, prompt)
-                st1 = st1.replace("yucca", botName).replace("liris", str(event.sender.member_name))
+
+                st11 = st1
+                setName = userdict.get(str(event.sender.id)).get("userName")
+                if setName == None:
+                    setName = event.sender.member_name
+                st1 = st1.replace("yucca", botName).replace("amore", str(setName)).replace("阿莫", str(setName)).replace(
+                    "阿莫尔", str(setName)).replace("阿莫雷",str(setName)).replace("amor",str(setName))
                 await bot.send(event, st1, True)
+
                 logger.info("chatGLM接收提问:" + text)
                 logger.info("chatGLM:" + st1)
                 try:
-                    addStr = '添加' + text + '#' + st1
+                    addStr = '添加' + text + '#' + st11
                     mohuaddReplys(addStr, str("chatGLMReply"))
                 except:
                     logger.error("写入本地词库失败")
