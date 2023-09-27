@@ -142,10 +142,10 @@ def main(bot, master, apikey, chatGLM_api_key, proxy, logger):
             meta1 = chatGLMCharacters.get(event.sender.id)
         else:
             meta1 = meta
-
-        setName = userdict.get(str(event.sender.id)).get("userName")
-        if setName == None:
-            setName = event.sender.member_name
+        try:
+            setName = userdict.get(str(event.sender.id)).get("userName")
+        except:
+            setName = event.sender.nickname
         meta1["user_info"] = meta1.get("user_info").replace("amore", setName)
         meta1["bot_info"] = meta1.get("bot_info").replace("amore", setName)
         meta1["bot_name"] = botName
@@ -361,8 +361,9 @@ def main(bot, master, apikey, chatGLM_api_key, proxy, logger):
                 meta1=chatGLMCharacters.get(event.sender.id)
             else:
                 meta1=meta
-            setName = userdict.get(str(event.sender.id)).get("userName")
-            if setName == None:
+            try:
+                setName = userdict.get(str(event.sender.id)).get("userName")
+            except:
                 setName = event.sender.member_name
             meta1["user_info"] = meta1.get("user_info").replace("amore", setName)
             meta1["bot_info"]=meta1.get("bot_info").replace("amore",setName)
@@ -424,8 +425,9 @@ def main(bot, master, apikey, chatGLM_api_key, proxy, logger):
                 meta1=chatGLMCharacters.get(event.sender.id)
             else:
                 meta1 = meta
-            setName = userdict.get(str(event.sender.id)).get("userName")
-            if setName == None:
+            try:
+                setName = userdict.get(str(event.sender.id)).get("userName")
+            except:
                 setName = event.sender.member_name
             meta1["user_info"] = meta1.get("user_info").replace("amore", setName)
             meta1["bot_info"] = meta1.get("bot_info").replace("amore", setName)
