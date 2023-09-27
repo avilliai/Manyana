@@ -283,7 +283,17 @@ def main(bot, master, apikey, chatGLM_api_key, proxy, logger):
                         yaml.dump(chatGLMData, file, allow_unicode=True)
             except:
                 await bot.send(event, "chatGLM启动出错，请联系master检查apiKey或重试")
-
+    @bot.on(GroupMessage)
+    async def clearPrompt(event:GroupMessage):
+        global chatGLMData
+        if str(event.message_chain)=="/clearGLM":
+            try:
+                chatGLMData.pop(event.sender.id)
+                # 写入文件
+                with open('data/chatGLMData.yaml', 'w', encoding="utf-8") as file:
+                    yaml.dump(chatGLMData, file, allow_unicode=True)
+            except:
+                await bot.send(event,"清理缓存出错，无本地对话记录")
     @bot.on(GroupMessage)
     async def setChatGLMKey(event:GroupMessage):
         global chatGLMapikeys
