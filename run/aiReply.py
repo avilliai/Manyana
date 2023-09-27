@@ -114,7 +114,7 @@ def main(bot, master, apikey, chatGLM_api_key, proxy, logger):
             selfApiKey=chatGLMsingelUserKey.get(event.sender.id)
             #构建prompt
         #或者开启了信任用户回复且为信任用户
-        elif event.sender.id in trustUser and trustglmReply==True:
+        elif str(event.sender.id) in trustUser and trustglmReply==True:
             logger.info("信任用户进行chatGLM提问")
             selfApiKey=chatGLM_api_key
         else:
