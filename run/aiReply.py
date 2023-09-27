@@ -118,11 +118,10 @@ def main(bot, master, apikey, chatGLM_api_key, proxy, logger):
         elif str(event.sender.id) in trustUser and trustglmReply==True:
             logger.info("信任用户进行chatGLM提问")
             selfApiKey=chatGLM_api_key
-        elif str(event.message_chain)=="/clearGLM":
-            return
         else:
             return
-
+        if str(event.message_chain) == "/clearGLM":
+            return
         text = str(event.message_chain)
         logger.info("私聊glm接收消息："+text)
         # 构建新的prompt
