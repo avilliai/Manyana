@@ -146,6 +146,8 @@ def main(bot, master, apikey, chatGLM_api_key, proxy, logger):
             setName = userdict.get(str(event.sender.id)).get("userName")
         except:
             setName = event.sender.nickname
+        if setName == None:
+            setName = event.sender.nickname
         meta1["user_info"] = meta1.get("user_info").replace("amore", setName)
         meta1["bot_info"] = meta1.get("bot_info").replace("amore", setName)
         meta1["bot_name"] = botName
@@ -291,7 +293,7 @@ def main(bot, master, apikey, chatGLM_api_key, proxy, logger):
     #群内chatGLM回复
     @bot.on(GroupMessage)
     async def atReply(event: GroupMessage):
-        global trustUser, chatGLMapikeys,chatGLMData,chatGLMCharacters,chatGLMsingelUserKey
+        global trustUser, chatGLMapikeys,chatGLMData,chatGLMCharacters,chatGLMsingelUserKey,userdict
         if gptReply == True and At(bot.qq) in event.message_chain:
             prompt = str(event.message_chain).replace("@" + str(bot.qq) + "", '')
 
@@ -365,6 +367,8 @@ def main(bot, master, apikey, chatGLM_api_key, proxy, logger):
                 setName = userdict.get(str(event.sender.id)).get("userName")
             except:
                 setName = event.sender.member_name
+            if setName == None:
+                setName = event.sender.member_name
             meta1["user_info"] = meta1.get("user_info").replace("amore", setName)
             meta1["bot_info"]=meta1.get("bot_info").replace("amore",setName)
             meta1["bot_name"]=botName
@@ -428,6 +432,8 @@ def main(bot, master, apikey, chatGLM_api_key, proxy, logger):
             try:
                 setName = userdict.get(str(event.sender.id)).get("userName")
             except:
+                setName = event.sender.member_name
+            if setName==None:
                 setName = event.sender.member_name
             meta1["user_info"] = meta1.get("user_info").replace("amore", setName)
             meta1["bot_info"] = meta1.get("bot_info").replace("amore", setName)
