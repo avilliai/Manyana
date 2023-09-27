@@ -118,8 +118,9 @@ def main(bot, master, apikey, chatGLM_api_key, proxy, logger):
             selfApiKey=chatGLM_api_key
         else:
             return
+
         text = str(event.message_chain)
-        #logger.info("私聊glm接收消息：")
+        logger.info("私聊glm接收消息："+text)
         # 构建新的prompt
         tep = {"role": "user", "content": text}
         # print(type(tep))
@@ -142,9 +143,9 @@ def main(bot, master, apikey, chatGLM_api_key, proxy, logger):
                                                                                                         str(event.sender.nickname)).replace(
                 "阿莫尔", str(event.sender.nickname))
             await bot.send(event, st1, True)
-            logger.info("私聊chatGLM接收提问:" + text)
+
             logger.info("chatGLM:" + st1)
-            await bot.send(int(master),"私聊chatGLM接收提问:\n" + text+"\n"+"chatGLM:\n" + st1)
+            await bot.send_friend_message(int(master),"私聊chatGLM接收提问:\n" + text+"\n"+"chatGLM:\n" + st1)
             # 更新该用户prompt
             prompt.append({"role": "assistant", "content": st1})
             # 超过10，移除第一个元素
