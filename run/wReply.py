@@ -717,6 +717,14 @@ def main(bot,config,sizhiKey,app_id, app_key,logger):
             logger.info("导出词库完成")
             await bot.send(event, '已导出')
     @bot.on(Startup)
+    async def updadd(event:Startup):
+        while True:
+            await sleep(60)
+            with open('config/chatGLMSingelUser.yaml', 'r', encoding='utf-8') as f:
+                result224 = yaml.load(f.read(), Loader=yaml.FullLoader)
+            global chatGLMsingelUserKey
+            chatGLMsingelUserKey = result224
+    @bot.on(Startup)
     async def updateData(event: Startup):
         while True:
             await sleep(360)
