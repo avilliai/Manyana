@@ -79,6 +79,7 @@ def main(bot, master, apikey, chatGLM_api_key, proxy, logger):
     trustglmReply = result.get("chatGLM").get("trustglmReply")
     meta = result.get("chatGLM").get("bot_info").get("default")
     context= result.get("chatGLM").get("context")
+    maxPrompt = result.get("chatGLM").get("maxPrompt")
     allcharacters=result.get("chatGLM").get("bot_info")
 
     with open('config.json', 'r', encoding='utf-8') as fp:
@@ -221,7 +222,7 @@ def main(bot, master, apikey, chatGLM_api_key, proxy, logger):
                     #超过10，移除第一个元素
                     #
                     logger.info("当前prompt" + str(prompt))
-                    if len(prompt)>10:
+                    if len(prompt)>maxPrompt:
                         logger.error("glm prompt超限，移除元素")
                         del prompt[0]
                         del prompt[0]
@@ -272,7 +273,7 @@ def main(bot, master, apikey, chatGLM_api_key, proxy, logger):
                     prompt.append({"role": "assistant", "content": st1})
                     # 超过10，移除第一个元素
 
-                    if len(prompt) > 10:
+                    if len(prompt) > maxPrompt:
                         logger.error("glm prompt超限，移除元素")
                         del prompt[0]
                         del prompt[0]

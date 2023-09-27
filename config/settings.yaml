@@ -10,6 +10,7 @@ chatGLM:
   glmReply: False       #是否使用chatglm替代原有词库，开启后，bot被艾特将全局有限使用chatglm回复
   trustglmReply: False        #开启后仅信任用户可用
   context: False         #chatGLM上下文模式，开启后将加速消耗token，不是富哥不建议开
+  maxPrompt: 10              #上下文模式开启时，最多记录的问答数量，默认10，即记录5对问答
   bot_info:              #chatGLM角色设定
     default:
       user_info: "amore是yucca最喜欢的人"
