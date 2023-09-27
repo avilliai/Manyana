@@ -283,6 +283,7 @@ def main(bot, master, apikey, chatGLM_api_key, proxy, logger):
                         yaml.dump(chatGLMData, file, allow_unicode=True)
             except:
                 await bot.send(event, "chatGLM启动出错，请联系master检查apiKey或重试")
+    #用于chatGLM清除本地缓存
     @bot.on(GroupMessage)
     async def clearPrompt(event:GroupMessage):
         global chatGLMData
@@ -393,6 +394,44 @@ def main(bot, master, apikey, chatGLM_api_key, proxy, logger):
             except:
                 logger.error("调用gpt3.5失败，请检查网络或重试")
                 await bot.send(event, "无法连接到gpt3.5，请检查网络或重试")
+    #科大讯飞星火ai
+    @bot.on(GroupMessage)
+    async def gpt3(event: GroupMessage):
+        if str(event.message_chain).startswith("/xh"):
+            s = str(event.message_chain).replace("/xh", "")
+            try:
+                logger.info("讯飞星火接收信息：" + s)
+                url = "https://api.lolimi.cn/API/AI/xh.php?msg=" + s
+                async with httpx.AsyncClient(timeout=40) as client:
+                    # 用get方法发送请求
+                    response = await client.get(url=url)
+                s = response.json().get("data").get("output")
+
+                logger.info("讯飞星火:" + s)
+                await bot.send(event, s, True)
+            except:
+                logger.error("调用讯飞星火失败，请检查网络或重试")
+                await bot.send(event, "无法连接到讯飞星火，请检查网络或重试")
+
+    # 文心一言
+    @bot.on(GroupMessage)
+    async def gpt3(event: GroupMessage):
+        if str(event.message_chain).startswith("/wx"):
+            s = str(event.message_chain).replace("/wx", "")
+            try:
+                logger.info("文心一言接收信息：" + s)
+                url = "https://api.lolimi.cn/API/AI/wx.php?msg=" + s
+                async with httpx.AsyncClient(timeout=40) as client:
+                    # 用get方法发送请求
+                    response = await client.get(url=url)
+                s = response.json().get("data").get("output")
+
+                logger.info("文心一言:" + s)
+                await bot.send(event, s, True)
+            except:
+                logger.error("调用文心一言失败，请检查网络或重试")
+                await bot.send(event, "无法连接到文心一言，请检查网络或重试")
+
     @bot.on(GroupMessage)
     async def rwkv(event: GroupMessage):
         if str(event.message_chain).startswith("/rwkv"):
