@@ -13,6 +13,7 @@ from mirai import Mirai, WebSocketAdapter, FriendMessage, GroupMessage, At, Plai
 from plugins.PandoraChatGPT import ask_chatgpt
 from plugins.chatGLMonline import chatGLM
 from plugins.rwkvHelper import rwkvHelper
+from plugins.wReply.mohuReply import mohuaddReplys
 
 
 def main(bot, master, apikey, chatGLM_api_key, proxy, logger):
@@ -146,7 +147,13 @@ def main(bot, master, apikey, chatGLM_api_key, proxy, logger):
             await bot.send(event, st1, True)
 
             logger.info("chatGLM:" + st1)
-            await bot.send_friend_message(int(master),"私聊chatGLM接收提问:\n" + text+"\n"+"chatGLM:\n" + st1)
+            if str(event.sender.id)!=str(master):
+                await bot.send_friend_message(int(master),"私聊chatGLM接收提问:\n" + text+"\n"+"chatGLM:\n" + st1)
+            try:
+                addStr = '添加' + text + '#' + st1
+                mohuaddReplys(addStr, str("public"))
+            except:
+                logger.error("写入本地词库失败")
             # 更新该用户prompt
             prompt.append({"role": "assistant", "content": st1})
             # 超过10，移除第一个元素
@@ -340,6 +347,12 @@ def main(bot, master, apikey, chatGLM_api_key, proxy, logger):
                 await bot.send(event, st1, True)
                 logger.info("chatGLM接收提问:"+text)
                 logger.info("chatGLM:"+st1)
+                #将chatGLM写入本地词库
+                try:
+                    addStr = '添加' + text + '#' + st1
+                    mohuaddReplys(addStr, str("public"))
+                except:
+                    logger.error("写入本地词库失败")
                 if context==True:
                     #更新该用户prompt
                     prompt.append({"role": "assistant","content": st1})
@@ -392,6 +405,11 @@ def main(bot, master, apikey, chatGLM_api_key, proxy, logger):
                 await bot.send(event, st1, True)
                 logger.info("chatGLM接收提问:" + text)
                 logger.info("chatGLM:" + st1)
+                try:
+                    addStr = '添加' + text + '#' + st1
+                    mohuaddReplys(addStr, str("public"))
+                except:
+                    logger.error("写入本地词库失败")
                 if context==True:
                     # 更新该用户prompt
                     prompt.append({"role": "assistant", "content": st1})
