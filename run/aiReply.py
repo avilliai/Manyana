@@ -286,7 +286,7 @@ def main(bot, master, apikey, chatGLM_api_key, proxy, logger):
     #群内chatGLM回复
     @bot.on(GroupMessage)
     async def atReply(event: GroupMessage):
-        global trustUser, chatGLMapikeys,chatGLMData,chatGLMCharacters
+        global trustUser, chatGLMapikeys,chatGLMData,chatGLMCharacters,chatGLMsingelUserKey
         if gptReply == True and At(bot.qq) in event.message_chain:
             prompt = str(event.message_chain).replace("@" + str(bot.qq) + "", '')
 
@@ -324,8 +324,7 @@ def main(bot, master, apikey, chatGLM_api_key, proxy, logger):
                     yaml.dump(pandoraData, file, allow_unicode=True)
             except:
                 await bot.send(event, "当前服务器负载过大，请稍后再试", True)
-        elif (glmReply == True or (trustglmReply == True and str(event.sender.id) in trustUser)) and At(
-                bot.qq) in event.message_chain:
+        elif (glmReply == True or (trustglmReply == True and str(event.sender.id) in trustUser) or event.sender.id in chatGLMsingelUserKey.keys()) and At(bot.qq) in event.message_chain:
             text = str(event.message_chain).replace("@" + str(bot.qq) + "", '')
             logger.info("分支1")
             if text=="" or text==" ":
@@ -343,13 +342,23 @@ def main(bot, master, apikey, chatGLM_api_key, proxy, logger):
                 prompt=[tep]
                 chatGLMData[event.sender.id] =prompt
             logger.info("当前prompt"+str(prompt))
+
+            if event.sender.id in chatGLMsingelUserKey:
+                selfApiKey = chatGLMsingelUserKey.get(event.sender.id)
+                # 构建prompt
+            # 或者开启了信任用户回复且为信任用户
+            elif str(event.sender.id) in trustUser and trustglmReply == True:
+                logger.info("信任用户进行chatGLM提问")
+                selfApiKey = chatGLM_api_key
+
+            #获取角色设定
             if event.sender.id in chatGLMCharacters:
                 meta1=chatGLMCharacters.get(event.sender.id)
             else:
                 meta1=meta
             try:
                 logger.info("当前meta:"+str(meta1))
-                st1 = await chatGLM(chatGLM_api_key, meta1, prompt)
+                st1 = await chatGLM(selfApiKey, meta1, prompt)
 
                 st11 = st1
                 setName = userdict.get(str(event.sender.id)).get("userName")
