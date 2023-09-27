@@ -76,6 +76,10 @@ def main(bot,config,sizhiKey,app_id, app_key,logger):
     global chatGLMapikeys
     chatGLMapikeys = result222
 
+    with open('config/api.yaml', 'r', encoding='utf-8') as f:
+        result = yaml.load(f.read(), Loader=yaml.FullLoader)
+    chatglm = result.get("chatGLM")
+
     logger.info("读取词库文件中")
     importDict()
     logger.info("读取完成")
@@ -294,6 +298,8 @@ def main(bot,config,sizhiKey,app_id, app_key,logger):
                 if gptReply==True or glmReply==True or (trustglmReply==True and str(event.sender.id) in trustUser):
                     return
                 elif event.group.id in chatGLMapikeys:
+                    return
+                elif str(event.group.id)==str(config.get("mainGroup")) and chatglm!="sdfafjsadlf;aldf":
                     return
                 for i in noRes:
                     if i in str(event.message_chain):
