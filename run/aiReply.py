@@ -142,14 +142,19 @@ def main(bot, master, apikey, chatGLM_api_key, proxy, logger):
             meta1 = chatGLMCharacters.get(event.sender.id)
         else:
             meta1 = meta
+
+        setName = userdict.get(str(event.sender.id)).get("userName")
+        if setName == None:
+            setName = event.sender.member_name
+        meta1["user_info"] = meta1.get("user_info").replace("amore", setName)
+        meta1["bot_info"] = meta1.get("bot_info").replace("amore", setName)
+        meta1["bot_name"] = botName
+        meta1["user_name"] = setName
         try:
             logger.info("当前meta:" + str(meta1))
             st1 = await chatGLM(selfApiKey, meta1, prompt)
-            st11=st1
-            setName = userdict.get(str(event.sender.id)).get("userName")
-            if setName == None:
-                setName = event.sender.nickname
-            st1 = st1.replace("yucca", botName).replace("amore", str(setName)).replace("阿莫",str(setName)).replace("阿莫尔", str(setName)).replace("阿莫雷",str(setName)).replace("amor",str(setName))
+            st11=st1.replace(setName,"amore")
+
             await bot.send(event, st1, True)
 
             logger.info("chatGLM:" + st1)
@@ -356,16 +361,19 @@ def main(bot, master, apikey, chatGLM_api_key, proxy, logger):
                 meta1=chatGLMCharacters.get(event.sender.id)
             else:
                 meta1=meta
+            setName = userdict.get(str(event.sender.id)).get("userName")
+            if setName == None:
+                setName = event.sender.member_name
+            meta1["user_info"] = meta1.get("user_info").replace("amore", setName)
+            meta1["bot_info"]=meta1.get("bot_info").replace("amore",setName)
+            meta1["bot_name"]=botName
+            meta1["user_name"]=setName
             try:
                 logger.info("当前meta:"+str(meta1))
                 st1 = await chatGLM(selfApiKey, meta1, prompt)
 
-                st11 = st1
-                setName = userdict.get(str(event.sender.id)).get("userName")
-                if setName == None:
-                    setName = event.sender.member_name
-                st1 = st1.replace("yucca", botName).replace("amore", str(setName)).replace("阿莫", str(setName)).replace(
-                    "阿莫尔", str(setName)).replace("阿莫雷",str(setName)).replace("amor",str(setName))
+                st11 = st1.replace(setName,"amore")
+
                 await bot.send(event, st1, True)
 
                 logger.info("chatGLM接收提问:"+text)
@@ -416,6 +424,13 @@ def main(bot, master, apikey, chatGLM_api_key, proxy, logger):
                 meta1=chatGLMCharacters.get(event.sender.id)
             else:
                 meta1 = meta
+            setName = userdict.get(str(event.sender.id)).get("userName")
+            if setName == None:
+                setName = event.sender.member_name
+            meta1["user_info"] = meta1.get("user_info").replace("amore", setName)
+            meta1["bot_info"] = meta1.get("bot_info").replace("amore", setName)
+            meta1["bot_name"] = botName
+            meta1["user_name"] = setName
             #获取apiKey
             logger.info("当前meta:"+str(meta1))
             if str(event.group.id) == str(mainGroup):
@@ -425,12 +440,8 @@ def main(bot, master, apikey, chatGLM_api_key, proxy, logger):
             try:
                 st1 = await chatGLM(key1, meta1, prompt)
 
-                st11 = st1
-                setName = userdict.get(str(event.sender.id)).get("userName")
-                if setName == None:
-                    setName = event.sender.member_name
-                st1 = st1.replace("yucca", botName).replace("amore", str(setName)).replace("阿莫", str(setName)).replace(
-                    "阿莫尔", str(setName)).replace("阿莫雷",str(setName)).replace("amor",str(setName))
+                st11 = st1.replace(setName,"amore")
+
                 await bot.send(event, st1, True)
 
                 logger.info("chatGLM接收提问:" + text)
