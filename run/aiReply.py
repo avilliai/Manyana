@@ -5,7 +5,7 @@ import uuid
 from asyncio import sleep
 
 import httpx
-import poe
+#import poe
 import yaml
 from mirai import Image, Voice, Startup
 from mirai import Mirai, WebSocketAdapter, FriendMessage, GroupMessage, At, Plain
@@ -38,7 +38,7 @@ def main(bot, master, apikey, chatGLM_api_key, proxy, logger):
     #读取用户别称
 
 
-    try:
+    '''try:
         logger.info("正在启动poe-AI")
         global apiKey
         apiKey = apikey
@@ -49,7 +49,7 @@ def main(bot, master, apikey, chatGLM_api_key, proxy, logger):
         client = poe.Client(KEY, proxy=proxy)
         json.dumps(client.bot_names, indent=2)
     except:
-        logger.error("poeAi启动失败，请检查代理或重试")
+        logger.error("poeAi启动失败，请检查代理或重试")'''
     logger.info("正在启动rwkv对话模型")
 
     logger.info("正在启动pandora_ChatGPT")
@@ -636,7 +636,7 @@ def main(bot, master, apikey, chatGLM_api_key, proxy, logger):
                 logger.error("调用rwkv失败，请检查本地rwkv是否启动或端口是否配置正确(8000)")
                 await bot.send(event, "无法连接到本地rwkv")
 
-    @bot.on(GroupMessage)
+    '''@bot.on(GroupMessage)
     async def AiHelper(event: GroupMessage):
         global client
         global KEY
@@ -682,7 +682,7 @@ def main(bot, master, apikey, chatGLM_api_key, proxy, logger):
         if str(event.message_chain) == "/reload" and str(event.sender.id) == str(master):
             client = poe.Client(token=random.choice(apiKey), proxy=proxy)
             json.dumps(client.bot_names, indent=2)
-            await bot.send(event, "已重启")
+            await bot.send(event, "已重启")'''
 
 
 if __name__ == '__main__':
