@@ -151,7 +151,7 @@ def main(bot, master, apikey, chatGLM_api_key, proxy, logger):
                 await bot.send_friend_message(int(master),"私聊chatGLM接收提问:\n" + text+"\n"+"chatGLM:\n" + st1)
             try:
                 addStr = '添加' + text + '#' + st1
-                mohuaddReplys(addStr, str("public"))
+                mohuaddReplys(addStr, str("chatGLMReply"))
             except:
                 logger.error("写入本地词库失败")
             # 更新该用户prompt
@@ -350,7 +350,7 @@ def main(bot, master, apikey, chatGLM_api_key, proxy, logger):
                 #将chatGLM写入本地词库
                 try:
                     addStr = '添加' + text + '#' + st1
-                    mohuaddReplys(addStr, str("public"))
+                    mohuaddReplys(addStr, str("chatGLMReply"))
                 except:
                     logger.error("写入本地词库失败")
                 if context==True:
@@ -407,7 +407,7 @@ def main(bot, master, apikey, chatGLM_api_key, proxy, logger):
                 logger.info("chatGLM:" + st1)
                 try:
                     addStr = '添加' + text + '#' + st1
-                    mohuaddReplys(addStr, str("public"))
+                    mohuaddReplys(addStr, str("chatGLMReply"))
                 except:
                     logger.error("写入本地词库失败")
                 if context==True:
