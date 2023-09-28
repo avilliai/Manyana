@@ -149,8 +149,8 @@ def main(bot, master, apikey, chatGLM_api_key, proxy, logger):
             setName = event.sender.nickname
         if setName == None:
             setName = event.sender.nickname
-        meta1["user_info"] = meta1.get("user_info").replace("amore", setName)
-        meta1["bot_info"] = meta1.get("bot_info").replace("amore", setName)
+        meta1["user_info"] = meta1.get("user_info").replace("amore", setName).replace("yucca",botName)
+        meta1["bot_info"] = meta1.get("bot_info").replace("amore", setName).replace("yucca",botName)
         meta1["bot_name"] = botName
         meta1["user_name"] = setName
         try:
@@ -372,8 +372,8 @@ def main(bot, master, apikey, chatGLM_api_key, proxy, logger):
                 setName = event.sender.member_name
             if setName == None:
                 setName = event.sender.member_name
-            meta1["user_info"] = meta1.get("user_info").replace("amore", setName)
-            meta1["bot_info"]=meta1.get("bot_info").replace("amore",setName)
+            meta1["user_info"] = meta1.get("user_info").replace("amore", setName).replace("yucca",botName)
+            meta1["bot_info"]=meta1.get("bot_info").replace("amore",setName).replace("yucca",botName)
             meta1["bot_name"]=botName
             meta1["user_name"]=setName
             try:
@@ -438,8 +438,8 @@ def main(bot, master, apikey, chatGLM_api_key, proxy, logger):
                 setName = event.sender.member_name
             if setName==None:
                 setName = event.sender.member_name
-            meta1["user_info"] = meta1.get("user_info").replace("amore", setName)
-            meta1["bot_info"] = meta1.get("bot_info").replace("amore", setName)
+            meta1["user_info"] = meta1.get("user_info").replace("amore", setName).replace("yucca",botName)
+            meta1["bot_info"] = meta1.get("bot_info").replace("amore", setName).replace("yucca",botName)
             meta1["bot_name"] = botName
             meta1["user_name"] = setName
             #获取apiKey
