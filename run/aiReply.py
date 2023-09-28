@@ -487,6 +487,7 @@ def main(bot, master, apikey, chatGLM_api_key, proxy, logger):
                 # 写入文件
                 with open('data/chatGLMData.yaml', 'w', encoding="utf-8") as file:
                     yaml.dump(chatGLMData, file, allow_unicode=True)
+                await bot.send(event,"已清除近期记忆")
             except:
                 await bot.send(event,"清理缓存出错，无本地对话记录")
     @bot.on(GroupMessage)
