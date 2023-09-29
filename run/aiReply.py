@@ -396,8 +396,9 @@ def main(bot, master, apikey, chatGLM_api_key, proxy, logger):
                 meta1 = chatGLMCharacters.get(event.sender.id)
             else:
                 meta1 = meta
-                meta1["user_info"] = meta1.get("user_info").replace("amore", setName).replace("yucca", botName)
-                meta1["bot_info"] = meta1.get("bot_info").replace("amore", setName).replace("yucca", botName)
+                logger.info("原始meta"+str(meta))
+                meta1["user_info"] = meta.get("user_info").replace("amore", setName).replace("yucca", botName)
+                meta1["bot_info"] = meta.get("bot_info").replace("amore", setName).replace("yucca", botName)
                 meta1["bot_name"] = botName
                 meta1["user_name"] = setName
             chatGLMCharacters[event.sender.id]=meta1
@@ -482,8 +483,8 @@ def main(bot, master, apikey, chatGLM_api_key, proxy, logger):
                 meta1 = chatGLMCharacters.get(event.sender.id)
             else:
                 meta1 = meta
-                meta1["user_info"] = meta1.get("user_info").replace("amore", setName)
-                meta1["bot_info"] = meta1.get("bot_info").replace("amore", setName)
+                meta1["user_info"] = meta.get("user_info").replace("amore", setName)
+                meta1["bot_info"] = meta.get("bot_info").replace("amore", setName)
                 meta1["user_name"] = setName
             chatGLMCharacters[event.sender.id]=meta1
 
