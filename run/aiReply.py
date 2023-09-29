@@ -162,7 +162,7 @@ def main(bot, master, apikey, chatGLM_api_key, proxy, logger):
             meta1 = chatGLMCharacters.get(event.sender.id)
         else:
             meta1 = meta
-        try:
+        '''try:
             setName = userdict.get(str(event.sender.id)).get("userName")
         except:
             setName = event.sender.nickname
@@ -171,11 +171,12 @@ def main(bot, master, apikey, chatGLM_api_key, proxy, logger):
         meta1["user_info"] = meta1.get("user_info").replace("amore", setName).replace("yucca",botName)
         meta1["bot_info"] = meta1.get("bot_info").replace("amore", setName).replace("yucca",botName)
         meta1["bot_name"] = botName
-        meta1["user_name"] = setName
+        meta1["user_name"] = setName'''
         try:
             logger.info("当前meta:" + str(meta1))
             #st1 = await chatGLM(selfApiKey, meta1, prompt)
-            asyncio.run_coroutine_threadsafe(asyncchatGLM(selfApiKey, meta1, prompt, event, setName, text), newLoop)
+            asyncio.run_coroutine_threadsafe(asyncchatGLM(selfApiKey, meta1, prompt, event, text), newLoop)
+            #asyncio.run_coroutine_threadsafe(asyncchatGLM(selfApiKey, meta1, prompt, event, setName, text), newLoop)
             '''st11=st1.replace(setName,"amore")
 
             await bot.send(event, st1, True)
@@ -258,7 +259,7 @@ def main(bot, master, apikey, chatGLM_api_key, proxy, logger):
             await bot.send(event,"对话可用角色模板：\n"+st1+"\n发送：设定#角色名 以设定角色")
     @bot.on(FriendMessage)
     async def setCharacter(event:FriendMessage):
-        global chatGLMCharacters
+        global chatGLMCharacters,userdict
         if str(event.message_chain).startswith("设定#"):
             if str(event.message_chain).split("#")[1] in allcharacters:
 
@@ -270,8 +271,8 @@ def main(bot, master, apikey, chatGLM_api_key, proxy, logger):
                     setName = event.sender.nickname
                 if setName == None:
                     setName = event.sender.nickname
-                meta1["user_info"] = meta1.get("user_info").replace("amore", setName).replace("yucca", botName)
-                meta1["bot_info"] = meta1.get("bot_info").replace("amore", setName).replace("yucca", botName)
+                meta1["user_info"] = meta1.get("user_info").replace("指挥", setName).replace("yucca", botName)
+                meta1["bot_info"] = meta1.get("bot_info").replace("指挥", setName).replace("yucca", botName)
                 meta1["bot_name"] = botName
                 meta1["user_name"] = setName
                 chatGLMCharacters[event.sender.id] = meta1
@@ -306,8 +307,8 @@ def main(bot, master, apikey, chatGLM_api_key, proxy, logger):
                     setName = event.sender.member_name
                 if setName == None:
                     setName = event.sender.member_name
-                meta1["user_info"] = meta1.get("user_info").replace("amore", setName).replace("yucca", botName)
-                meta1["bot_info"] = meta1.get("bot_info").replace("amore", setName).replace("yucca", botName)
+                meta1["user_info"] = meta1.get("user_info").replace("指挥", setName).replace("yucca", botName)
+                meta1["bot_info"] = meta1.get("bot_info").replace("指挥", setName).replace("yucca", botName)
                 meta1["bot_name"] = botName
                 meta1["user_name"] = setName
                 chatGLMCharacters[event.sender.id] =meta1
@@ -396,12 +397,12 @@ def main(bot, master, apikey, chatGLM_api_key, proxy, logger):
                 meta1 = chatGLMCharacters.get(event.sender.id)
             else:
                 meta1 = meta
-                logger.info("原始meta"+str(meta))
+                '''logger.info("原始meta"+str(meta))
                 meta1["user_info"] = meta.get("user_info").replace("amore", setName).replace("yucca", botName)
                 meta1["bot_info"] = meta.get("bot_info").replace("amore", setName).replace("yucca", botName)
                 meta1["bot_name"] = botName
                 meta1["user_name"] = setName
-            chatGLMCharacters[event.sender.id]=meta1
+            chatGLMCharacters[event.sender.id]=meta1'''
             if text=="" or text==" ":
                 text="在吗"
             #构建新的prompt
@@ -432,7 +433,8 @@ def main(bot, master, apikey, chatGLM_api_key, proxy, logger):
             logger.info("chatGLM接收提问:" + text)
             try:
                 logger.info("当前meta:"+str(meta1))
-                asyncio.run_coroutine_threadsafe(asyncchatGLM(selfApiKey, meta1, prompt, event, setName, text), newLoop)
+                asyncio.run_coroutine_threadsafe(asyncchatGLM(selfApiKey, meta1, prompt, event,  text), newLoop)
+                #asyncio.run_coroutine_threadsafe(asyncchatGLM(selfApiKey, meta1, prompt, event, setName, text), newLoop)
                 #st1 = await chatGLM(selfApiKey, meta1, prompt)
 
                 '''st11 = st1.replace(setName,"amore")
@@ -483,10 +485,10 @@ def main(bot, master, apikey, chatGLM_api_key, proxy, logger):
                 meta1 = chatGLMCharacters.get(event.sender.id)
             else:
                 meta1 = meta
-                meta1["user_info"] = meta.get("user_info").replace("amore", setName)
+                '''meta1["user_info"] = meta.get("user_info").replace("amore", setName)
                 meta1["bot_info"] = meta.get("bot_info").replace("amore", setName)
                 meta1["user_name"] = setName
-            chatGLMCharacters[event.sender.id]=meta1
+            chatGLMCharacters[event.sender.id]=meta1'''
 
             if text=="" or text==" ":
                 text="在吗"
@@ -515,7 +517,8 @@ def main(bot, master, apikey, chatGLM_api_key, proxy, logger):
 
 
                 #分界线
-                asyncio.run_coroutine_threadsafe(asyncchatGLM(key1, meta1, prompt,event,setName,text), newLoop)
+                asyncio.run_coroutine_threadsafe(asyncchatGLM(key1, meta1, prompt, event, text), newLoop)
+                #asyncio.run_coroutine_threadsafe(asyncchatGLM(key1, meta1, prompt,event,setName,text), newLoop)
                 '''st1 = await chatGLM(key1, meta1, prompt)
 
                 st11 = st1.replace(setName,"amore")
@@ -795,7 +798,7 @@ def main(bot, master, apikey, chatGLM_api_key, proxy, logger):
         st1 = await loop.run_in_executor(None, chatGLM,apiKey,bot_info,prompt)
         # 打印结果
         #print(result)
-        st11 = st1.replace(setName, "amore")
+        st11 = st1#.replace(setName, "amore")
 
         await bot.send(event, st1, True)
         if len(st1) > 670:
