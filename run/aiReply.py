@@ -163,6 +163,9 @@ def main(bot, master, apikey, chatGLM_api_key, proxy, logger):
             logger.info("chatGLM:" + st1)
             if str(event.sender.id)!=str(master) and turnMessage==True:
                 await bot.send_friend_message(int(master),"私聊chatGLM:\n"+str(event.sender.id)+"提问:\n" + text+"\n"+"chatGLM:\n" + st1)
+            if len(st1)>1000:
+                await bot.send(event,"system:当前prompt过长，建议发送 /clearGLM 以清除聊天内容")
+                return
             try:
                 addStr = '添加' + text + '#' + st11
                 mohuaddReplys(addStr, str("chatGLMReply"))
@@ -238,7 +241,21 @@ def main(bot, master, apikey, chatGLM_api_key, proxy, logger):
         global chatGLMCharacters
         if str(event.message_chain).startswith("设定#"):
             if str(event.message_chain).split("#")[1] in allcharacters:
-                chatGLMCharacters[event.sender.id]=allcharacters.get(str(event.message_chain).split("#")[1])
+
+                meta1 = allcharacters.get(str(event.message_chain).split("#")[1])
+
+                try:
+                    setName = userdict.get(str(event.sender.id)).get("userName")
+                except:
+                    setName = event.sender.nickname
+                if setName == None:
+                    setName = event.sender.nickname
+                meta1["user_info"] = meta1.get("user_info").replace("amore", setName).replace("yucca", botName)
+                meta1["bot_info"] = meta1.get("bot_info").replace("amore", setName).replace("yucca", botName)
+                meta1["bot_name"] = botName
+                meta1["user_name"] = setName
+                chatGLMCharacters[event.sender.id] = meta1
+
                 logger.info("当前：",chatGLMCharacters)
                 with open('data/chatGLMCharacters.yaml', 'w', encoding="utf-8") as file:
                     yaml.dump(chatGLMCharacters, file, allow_unicode=True)
@@ -258,10 +275,22 @@ def main(bot, master, apikey, chatGLM_api_key, proxy, logger):
             await bot.send(event,"对话可用角色模板：\n"+st1+"\n发送：设定#角色名 以设定角色")
     @bot.on(GroupMessage)
     async def setCharacter(event:GroupMessage):
-        global chatGLMCharacters
+        global chatGLMCharacters,userdict
         if str(event.message_chain).startswith("设定#"):
             if str(event.message_chain).split("#")[1] in allcharacters:
-                chatGLMCharacters[event.sender.id]=allcharacters.get(str(event.message_chain).split("#")[1])
+                meta1=allcharacters.get(str(event.message_chain).split("#")[1])
+
+                try:
+                    setName = userdict.get(str(event.sender.id)).get("userName")
+                except:
+                    setName = event.sender.member_name
+                if setName == None:
+                    setName = event.sender.member_name
+                meta1["user_info"] = meta1.get("user_info").replace("amore", setName).replace("yucca", botName)
+                meta1["bot_info"] = meta1.get("bot_info").replace("amore", setName).replace("yucca", botName)
+                meta1["bot_name"] = botName
+                meta1["user_name"] = setName
+                chatGLMCharacters[event.sender.id] =meta1
                 logger.info("当前：",chatGLMCharacters)
                 with open('data/chatGLMCharacters.yaml', 'w', encoding="utf-8") as file:
                     yaml.dump(chatGLMCharacters, file, allow_unicode=True)
@@ -349,7 +378,7 @@ def main(bot, master, apikey, chatGLM_api_key, proxy, logger):
             else:
                 prompt=[tep]
                 chatGLMData[event.sender.id] =prompt
-            logger.info("当前prompt"+str(prompt))
+            #logger.info("当前prompt"+str(prompt))
 
             if event.sender.id in chatGLMsingelUserKey:
                 selfApiKey = chatGLMsingelUserKey.get(event.sender.id)
@@ -376,6 +405,7 @@ def main(bot, master, apikey, chatGLM_api_key, proxy, logger):
             meta1["bot_info"]=meta1.get("bot_info").replace("amore",setName).replace("yucca",botName)
             meta1["bot_name"]=botName
             meta1["user_name"]=setName
+            logger.info("chatGLM接收提问:" + text)
             try:
                 logger.info("当前meta:"+str(meta1))
                 st1 = await chatGLM(selfApiKey, meta1, prompt)
@@ -383,8 +413,10 @@ def main(bot, master, apikey, chatGLM_api_key, proxy, logger):
                 st11 = st1.replace(setName,"amore")
 
                 await bot.send(event, st1, True)
+                if len(st1) > 1000:
+                    await bot.send(event, "system:当前prompt过长，建议发送 /clearGLM 以清除聊天内容")
+                    return
 
-                logger.info("chatGLM接收提问:"+text)
                 logger.info("chatGLM:"+st1)
                 #将chatGLM写入本地词库
                 try:
@@ -426,7 +458,7 @@ def main(bot, master, apikey, chatGLM_api_key, proxy, logger):
             else:
                 prompt = [tep]
                 chatGLMData[event.sender.id] = prompt
-            logger.info("当前prompt" + str(prompt))
+            #logger.info("当前prompt" + str(prompt))
             #获取专属meta
             if event.sender.id in chatGLMCharacters:
                 meta1=chatGLMCharacters.get(event.sender.id)
@@ -442,6 +474,7 @@ def main(bot, master, apikey, chatGLM_api_key, proxy, logger):
             meta1["bot_info"] = meta1.get("bot_info").replace("amore", setName).replace("yucca",botName)
             meta1["bot_name"] = botName
             meta1["user_name"] = setName
+            logger.info("chatGLM接收提问:" + text)
             #获取apiKey
             logger.info("当前meta:"+str(meta1))
             if str(event.group.id) == str(mainGroup):
@@ -454,8 +487,10 @@ def main(bot, master, apikey, chatGLM_api_key, proxy, logger):
                 st11 = st1.replace(setName,"amore")
 
                 await bot.send(event, st1, True)
+                if len(st1) > 1000:
+                    await bot.send(event, "system:当前prompt过长，建议发送 /clearGLM 以清除聊天内容")
+                    return
 
-                logger.info("chatGLM接收提问:" + text)
                 logger.info("chatGLM:" + st1)
                 try:
                     addStr = '添加' + text + '#' + st11
