@@ -789,8 +789,13 @@ def main(bot, master, apikey, chatGLM_api_key, proxy, logger):
         st11 = st1.replace(setName, "amore")
 
         await bot.send(event, st1, True)
-        if len(st1) > 1000:
-            await bot.send(event, "system:当前prompt过长，建议发送 /clearGLM 以清除聊天内容")
+        if len(st1) > 670:
+            await bot.send(event, "system:当前prompt过长，将不记录本次回复\n建议发送 /clearGLM 以清除聊天内容")
+            try:
+                prompt.pop(prompt[-1])
+                chatGLMData[event.sender.id]=prompt
+            except:
+                logger.error("chatGLM删除上一次对话失败")
             return
 
         logger.info("chatGLM:" + st1)
