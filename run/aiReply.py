@@ -785,7 +785,7 @@ def main(bot, master, apikey, chatGLM_api_key, proxy, logger):
         #result=chatGLM(apiKey,bot_info,prompt)
         st1 = await loop.run_in_executor(None, chatGLM,apiKey,bot_info,prompt)
         # 打印结果
-        print(result)
+        #print(result)
         st11 = st1.replace(setName, "amore")
 
         await bot.send(event, st1, True)
