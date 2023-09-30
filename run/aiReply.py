@@ -168,8 +168,8 @@ def main(bot, master, apikey, chatGLM_api_key, proxy, logger):
             setName = event.sender.nickname
         if setName == None:
             setName = event.sender.nickname
-        meta1["user_info"] = meta1.get("user_info").replace("amore", setName).replace("yucca",botName)
-        meta1["bot_info"] = meta1.get("bot_info").replace("amore", setName).replace("yucca",botName)
+        meta1["user_info"] = meta1.get("user_info").replace("指挥", setName).replace("yucca",botName)
+        meta1["bot_info"] = meta1.get("bot_info").replace("指挥", setName).replace("yucca",botName)
         meta1["bot_name"] = botName
         meta1["user_name"] = setName
         try:
@@ -271,8 +271,8 @@ def main(bot, master, apikey, chatGLM_api_key, proxy, logger):
                     setName = event.sender.nickname
                 if setName == None:
                     setName = event.sender.nickname
-                meta1["user_info"] = meta1.get("user_info").replace("amore", setName).replace("yucca", botName)
-                meta1["bot_info"] = meta1.get("bot_info").replace("amore", setName).replace("yucca", botName)
+                meta1["user_info"] = meta1.get("user_info").replace("指挥", setName).replace("yucca", botName)
+                meta1["bot_info"] = meta1.get("bot_info").replace("指挥", setName).replace("yucca", botName)
                 meta1["bot_name"] = botName
                 meta1["user_name"] = setName
                 chatGLMCharacters[event.sender.id] = meta1
@@ -307,8 +307,8 @@ def main(bot, master, apikey, chatGLM_api_key, proxy, logger):
                     setName = event.sender.member_name
                 if setName == None:
                     setName = event.sender.member_name
-                meta1["user_info"] = meta1.get("user_info").replace("amore", setName).replace("yucca", botName)
-                meta1["bot_info"] = meta1.get("bot_info").replace("amore", setName).replace("yucca", botName)
+                meta1["user_info"] = meta1.get("user_info").replace("指挥", setName).replace("yucca", botName)
+                meta1["bot_info"] = meta1.get("bot_info").replace("指挥", setName).replace("yucca", botName)
                 meta1["bot_name"] = botName
                 meta1["user_name"] = setName
                 chatGLMCharacters[event.sender.id] =meta1
@@ -422,8 +422,8 @@ def main(bot, master, apikey, chatGLM_api_key, proxy, logger):
                 setName = event.sender.member_name
             if setName == None:
                 setName = event.sender.member_name
-            meta1["user_info"] = meta1.get("user_info").replace("amore", setName).replace("yucca",botName)
-            meta1["bot_info"]=meta1.get("bot_info").replace("amore",setName).replace("yucca",botName)
+            meta1["user_info"] = meta1.get("user_info").replace("指挥", setName).replace("yucca",botName)
+            meta1["bot_info"]=meta1.get("bot_info").replace("指挥",setName).replace("yucca",botName)
             meta1["bot_name"]=botName
             meta1["user_name"]=setName
             logger.info("chatGLM接收提问:" + text)
@@ -492,8 +492,8 @@ def main(bot, master, apikey, chatGLM_api_key, proxy, logger):
                 setName = event.sender.member_name
             if setName==None:
                 setName = event.sender.member_name
-            meta1["user_info"] = meta1.get("user_info").replace("amore", setName).replace("yucca",botName)
-            meta1["bot_info"] = meta1.get("bot_info").replace("amore", setName).replace("yucca",botName)
+            meta1["user_info"] = meta1.get("user_info").replace("指挥", setName).replace("yucca",botName)
+            meta1["bot_info"] = meta1.get("bot_info").replace("指挥", setName).replace("yucca",botName)
             meta1["bot_name"] = botName
             meta1["user_name"] = setName
             logger.info("chatGLM接收提问:" + text)
@@ -789,7 +789,7 @@ def main(bot, master, apikey, chatGLM_api_key, proxy, logger):
         st1 = await loop.run_in_executor(None, chatGLM,apiKey,bot_info,prompt)
         # 打印结果
         #print(result)
-        st11 = st1.replace(setName, "amore")
+        st11 = st1.replace(setName, "指挥")
 
         await bot.send(event, st1, True)
         if len(st1) > 670:
