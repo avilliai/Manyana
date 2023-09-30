@@ -63,21 +63,29 @@ async def starRailGacha():
    character = []
 
    while i < 10:
-     ass = random.randint(1, 150)
-     if ass < 4:
+     if i==0:
+        ass = random.randint(1, 150)
+        if ass < 75:
+            cha = random.choice(list(students.get("四星角色").keys()))
+        else:
+            cha = random.choice(list(students.get("四星光锥").keys()))
+        character.append(cha)
+     else:
+        ass = random.randint(1, 150)
+        if ass < 4:
          if ass < 2:
              cha = random.choice(list(students.get("五星角色").keys()))
          else:
              cha = random.choice(list(students.get("五星光锥").keys()))
          # print(cha)
          character.append(cha)
-     if ass > 3 and ass < 40:
+        if ass > 3 and ass < 40:
          if ass < 20:
              cha = random.choice(list(students.get("四星角色").keys()))
          else:
              cha = random.choice(list(students.get("四星光锥").keys()))
          character.append(cha)
-     if ass > 39:
+        if ass > 39:
          cha = random.choice(list(students.get("三星光锥").keys()))
          # print(cha)
          character.append(cha)
