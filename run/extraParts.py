@@ -22,6 +22,7 @@ from plugins import weatherQuery
 from plugins.RandomStr import random_str
 from plugins.arkOperator import arkOperator
 from plugins.cpGenerate import get_cp_mesg
+from plugins.gacha import arkGacha
 from plugins.genshinGo import genshinDraw, qianCao
 from plugins.historicalToday import hisToday
 from plugins.imgDownload import dict_download_img
@@ -376,3 +377,10 @@ def main(bot,api_KEY,app_id,app_key,nasa_api,proxy,logger):
                 await bot.send(event,Image(path=p))
             except:
                 await bot.send(event,"出错，格式请按照/奖状 孙笑川#天皇#阳光小学一年级2班")
+    @bot.on(GroupMessage)
+    async def moyuToday(event: GroupMessage):
+        if ("方舟十连" in str(event.message_chain) and At(bot.qq) in event.message_chain) or str(event.message_chain) == "方舟十连":
+            logger.info("获取方舟抽卡结果")
+            path = await arkGacha()
+            logger.info("成功获取到抽卡结果")
+            await bot.send(event, Image(path=path))

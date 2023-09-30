@@ -31,6 +31,9 @@ class CListen(threading.Thread):
 
         self.mLoop.run_forever()
 def main(bot, master, apikey, chatGLM_api_key, proxy, logger):
+    with open('config/noResponse.yaml', 'r', encoding='utf-8') as f:
+        noRes = yaml.load(f.read(), Loader=yaml.FullLoader)
+        noRes1=noRes.get("noRes")
     #读取个性化角色设定
     with open('data/chatGLMCharacters.yaml', 'r', encoding='utf-8') as f:
         result2223 = yaml.load(f.read(), Loader=yaml.FullLoader)
@@ -390,6 +393,9 @@ def main(bot, master, apikey, chatGLM_api_key, proxy, logger):
             except:
                 await bot.send(event, "当前服务器负载过大，请稍后再试", True)
         elif (glmReply == True or (trustglmReply == True and str(event.sender.id) in trustUser) or event.sender.id in chatGLMsingelUserKey.keys()) and At(bot.qq) in event.message_chain:
+            for lsa in noRes1:
+                if lsa in str(event.message_chain):
+                    return
             text = str(event.message_chain).replace("@" + str(bot.qq) + "", '')
             logger.info("分支1")
             if text=="" or text==" ":
@@ -476,6 +482,9 @@ def main(bot, master, apikey, chatGLM_api_key, proxy, logger):
                 await bot.send(event, "chatGLM启动出错，请联系master检查apiKey或重试")
         elif ((str(event.group.id) == str(mainGroup) and chatGLM_api_key!="sdfafjsadlf;aldf") or (event.group.id in chatGLMapikeys)) and At(
                 bot.qq) in event.message_chain:
+            for lsa in noRes1:
+                if lsa in str(event.message_chain):
+                    return
             text = str(event.message_chain).replace("@" + str(bot.qq) + "", '')
             logger.info("分支2")
             if text=="" or text==" ":
