@@ -168,10 +168,11 @@ def main(bot, master, apikey, chatGLM_api_key, proxy, logger):
             setName = event.sender.nickname
         if setName == None:
             setName = event.sender.nickname
+        meta1["user_name"] = meta1.get("user_name").replace("指挥", setName)
         meta1["user_info"] = meta1.get("user_info").replace("指挥", setName).replace("yucca",botName)
         meta1["bot_info"] = meta1.get("bot_info").replace("指挥", setName).replace("yucca",botName)
         meta1["bot_name"] = botName
-        meta1["user_name"] = meta1.get("user_name").replace("指挥", setName)
+
         try:
             logger.info("当前meta:" + str(meta1))
             #st1 = await chatGLM(selfApiKey, meta1, prompt)
@@ -307,10 +308,11 @@ def main(bot, master, apikey, chatGLM_api_key, proxy, logger):
                     setName = event.sender.member_name
                 if setName == None:
                     setName = event.sender.member_name
+                meta1["user_name"] = meta1.get("user_name").replace("指挥", setName)
                 meta1["user_info"] = meta1.get("user_info").replace("指挥", setName).replace("yucca", botName)
                 meta1["bot_info"] = meta1.get("bot_info").replace("指挥", setName).replace("yucca", botName)
                 meta1["bot_name"] = botName
-                meta1["user_name"] = meta1.get("user_name").replace("指挥", setName)
+
                 chatGLMCharacters[event.sender.id] =meta1
                 logger.info("当前：",chatGLMCharacters)
                 with open('data/chatGLMCharacters.yaml', 'w', encoding="utf-8") as file:
@@ -422,10 +424,11 @@ def main(bot, master, apikey, chatGLM_api_key, proxy, logger):
                 setName = event.sender.member_name
             if setName == None:
                 setName = event.sender.member_name
+            meta1["user_name"] = meta1.get("user_name").replace("指挥", setName)
             meta1["user_info"] = meta1.get("user_info").replace("指挥", setName).replace("yucca",botName)
             meta1["bot_info"]=meta1.get("bot_info").replace("指挥",setName).replace("yucca",botName)
             meta1["bot_name"]=botName
-            meta1["user_name"] = meta1.get("user_name").replace("指挥", setName)
+
             logger.info("chatGLM接收提问:" + text)
             try:
                 logger.info("当前meta:"+str(meta1))
@@ -492,10 +495,11 @@ def main(bot, master, apikey, chatGLM_api_key, proxy, logger):
                 setName = event.sender.member_name
             if setName==None:
                 setName = event.sender.member_name
+            meta1["user_name"] = meta1.get("user_name").replace("指挥", setName)
             meta1["user_info"] = meta1.get("user_info").replace("指挥", setName).replace("yucca",botName)
             meta1["bot_info"] = meta1.get("bot_info").replace("指挥", setName).replace("yucca",botName)
             meta1["bot_name"] = botName
-            meta1["user_name"] = meta1.get("user_name").replace("指挥", setName)
+
             logger.info("chatGLM接收提问:" + text)
             #获取apiKey
             logger.info("当前meta:"+str(meta1))
