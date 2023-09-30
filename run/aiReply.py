@@ -161,7 +161,7 @@ def main(bot, master, apikey, chatGLM_api_key, proxy, logger):
         if event.sender.id in chatGLMCharacters:
             meta1 = chatGLMCharacters.get(event.sender.id)
         else:
-            meta1 = meta
+            meta1 = result.get("chatGLM").get("bot_info").get("default")
         try:
             setName = userdict.get(str(event.sender.id)).get("userName")
         except:
@@ -228,8 +228,9 @@ def main(bot, master, apikey, chatGLM_api_key, proxy, logger):
         if str(event.message_chain).startswith("设置密钥#"):
             key12 = str(event.message_chain).split("#")[1] + ""
             try:
-                st1 = await chatGLM(key12, meta, "你好呀")
-                st1 = st1.replace("yucca", botName).replace("liris", str(event.sender.nickname))
+                prompt = [{"user": "你好"}]
+                st1 = chatGLM(key12, meta, prompt)
+                #st1 = st1.replace("yucca", botName).replace("liris", str(event.sender.nickname))
                 await bot.send(event, st1, True)
             except:
                 await bot.send(event, "chatGLM启动出错，请联系检查apiKey或重试")
@@ -414,7 +415,7 @@ def main(bot, master, apikey, chatGLM_api_key, proxy, logger):
             if event.sender.id in chatGLMCharacters:
                 meta1=chatGLMCharacters.get(event.sender.id)
             else:
-                meta1=meta
+                meta1=result.get("chatGLM").get("bot_info").get("default")
             try:
                 setName = userdict.get(str(event.sender.id)).get("userName")
             except:
@@ -484,7 +485,7 @@ def main(bot, master, apikey, chatGLM_api_key, proxy, logger):
             if event.sender.id in chatGLMCharacters:
                 meta1=chatGLMCharacters.get(event.sender.id)
             else:
-                meta1 = meta
+                meta1 = result.get("chatGLM").get("bot_info").get("default")
             try:
                 setName = userdict.get(str(event.sender.id)).get("userName")
             except:
@@ -556,7 +557,9 @@ def main(bot, master, apikey, chatGLM_api_key, proxy, logger):
         if str(event.message_chain).startswith("设置密钥#"):
             key12=str(event.message_chain).split("#")[1]+""
             try:
-                st1 = await chatGLM(key12, meta, "你好呀")
+                prompt=[{"user":"你好"}]
+                st1 = chatGLM(key12, meta,prompt)
+                #asyncio.run_coroutine_threadsafe(asyncchatGLM(key1, meta1, prompt, event, setName, text), newLoop)
                 st1 = st1.replace("yucca", botName).replace("liris", str(event.sender.member_name))
                 await bot.send(event, st1, True)
             except:
