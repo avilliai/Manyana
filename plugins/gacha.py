@@ -44,7 +44,7 @@ async def arkGacha():
 
     path="data/pictures/cache/"+random_str()+".png"
     #path="moyu.png"
-    print(path)
+    #print(path)
     if os.path.exists(path):
         return path
     else:
