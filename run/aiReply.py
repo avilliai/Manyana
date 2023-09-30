@@ -161,13 +161,18 @@ def main(bot, master, apikey, chatGLM_api_key, proxy, logger):
         if event.sender.id in chatGLMCharacters:
             meta1 = chatGLMCharacters.get(event.sender.id)
         else:
-            meta1 = result.get("chatGLM").get("bot_info").get("default")
+            logger.warning("读取meta模板")
+            with open('config/settings.yaml', 'r', encoding='utf-8') as f:
+                resy = yaml.load(f.read(), Loader=yaml.FullLoader)
+            meta1 = resy.get("chatGLM").get("bot_info").get("default")
+
         try:
             setName = userdict.get(str(event.sender.id)).get("userName")
         except:
             setName = event.sender.nickname
         if setName == None:
             setName = event.sender.nickname
+
         meta1["user_name"] = meta1.get("user_name").replace("指挥", setName)
         meta1["user_info"] = meta1.get("user_info").replace("指挥", setName).replace("yucca",botName)
         meta1["bot_info"] = meta1.get("bot_info").replace("指挥", setName).replace("yucca",botName)
@@ -417,7 +422,10 @@ def main(bot, master, apikey, chatGLM_api_key, proxy, logger):
             if event.sender.id in chatGLMCharacters:
                 meta1=chatGLMCharacters.get(event.sender.id)
             else:
-                meta1=result.get("chatGLM").get("bot_info").get("default")
+                logger.warning("读取meta模板")
+                with open('config/settings.yaml', 'r', encoding='utf-8') as f:
+                    resy = yaml.load(f.read(), Loader=yaml.FullLoader)
+                meta1 = resy.get("chatGLM").get("bot_info").get("default")
             try:
                 setName = userdict.get(str(event.sender.id)).get("userName")
             except:
@@ -488,7 +496,10 @@ def main(bot, master, apikey, chatGLM_api_key, proxy, logger):
             if event.sender.id in chatGLMCharacters:
                 meta1=chatGLMCharacters.get(event.sender.id)
             else:
-                meta1 = result.get("chatGLM").get("bot_info").get("default")
+                logger.warning("读取meta模板")
+                with open('config/settings.yaml', 'r', encoding='utf-8') as f:
+                    resy = yaml.load(f.read(), Loader=yaml.FullLoader)
+                meta1 = resy.get("chatGLM").get("bot_info").get("default")
             try:
                 setName = userdict.get(str(event.sender.id)).get("userName")
             except:
