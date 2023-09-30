@@ -6,6 +6,7 @@ import httpx
 import asyncio
 
 import requests
+import yaml
 from PIL import Image
 from io import BytesIO
 
@@ -54,5 +55,62 @@ async def arkGacha():
             img.save(path)  # 使用PIL库保存图片
             #print(path)
             return path
+async def starRailGacha():
+   with open('data/GachaData/StarRail.yaml', 'r', encoding='utf-8') as file:
+     students= yaml.load(file, Loader=yaml.FullLoader)
+
+   i = 0
+   character = []
+
+   while i < 10:
+     ass = random.randint(1, 150)
+     if ass < 4:
+         if ass < 2:
+             cha = random.choice(list(students.get("五星角色").keys()))
+         else:
+             cha = random.choice(list(students.get("五星光锥").keys()))
+         # print(cha)
+         character.append(cha)
+     if ass > 3 and ass < 40:
+         if ass < 20:
+             cha = random.choice(list(students.get("四星角色").keys()))
+         else:
+             cha = random.choice(list(students.get("四星光锥").keys()))
+         character.append(cha)
+     if ass > 39:
+         cha = random.choice(list(students.get("三星光锥").keys()))
+         # print(cha)
+         character.append(cha)
+     i += 1
+
+   # print(character)
+   a = 193
+   b = 221
+   count = 0
+   st = Image.open('data/GachaData/StarRail/bg.png')
+   path ="data/pictures/cache/"+random_str() + '.png'
+   for i in character:
+     # 剪切图像
+     # 发起超级融合
+
+     st2 = Image.open("data/GachaData/StarRail/" + i + ".png")
+
+     im = st
+     mark = st2
+     layer = Image.new('RGBA', im.size, (0, 0, 0, 0))
+     # print(str(a)+'------'+str(b))
+     layer.paste(mark, (a, b))
+     a += 473
+     count += 1
+     if count == 5:
+         b += 689
+         a = 193
+     out = Image.composite(layer, im, layer)
+     st=out
+   #st.show()
+   st.save(path)
+   #print(path)
+   return path
 if __name__ == '__main__':
-    asyncio.run(arkGacha())
+    #asyncio.run(arkGacha())
+    asyncio.run(starRailGacha())
