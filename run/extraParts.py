@@ -381,6 +381,10 @@ def main(bot,api_KEY,app_id,app_key,nasa_api,proxy,logger):
     async def moyuToday(event: GroupMessage):
         if ("方舟十连" in str(event.message_chain) and At(bot.qq) in event.message_chain) or str(event.message_chain) == "方舟十连":
             logger.info("获取方舟抽卡结果")
-            path = await arkGacha()
-            logger.info("成功获取到抽卡结果")
-            await bot.send(event, Image(path=path))
+            try:
+                path = await arkGacha()
+                logger.info("成功获取到抽卡结果")
+                await bot.send(event, Image(path=path))
+            except:
+                logger.error("皱皮衮")
+                await bot.send(event,"获取抽卡结果失败，请稍后再试")
