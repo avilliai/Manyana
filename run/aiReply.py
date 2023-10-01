@@ -718,7 +718,7 @@ def main(bot, master, apikey, chatGLM_api_key, proxy, logger):
             return
 
         logger.info("chatGLM:" + st1)
-        if turnMessage==True:
+        if turnMessage==True and event.type=='FriendMessage':
             await bot.send_friend_message(int(master),"chatGLM接收消息：\n来源:"+str(event.sender.id)+"\n提问:"+text+"\n回复:"+st1)
         try:
             addStr = '添加' + text + '#' + st11
