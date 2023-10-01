@@ -182,34 +182,6 @@ def main(bot, master, apikey, chatGLM_api_key, proxy, logger):
             logger.info("当前meta:" + str(meta1))
             #st1 = await chatGLM(selfApiKey, meta1, prompt)
             asyncio.run_coroutine_threadsafe(asyncchatGLM(selfApiKey, meta1, prompt, event, setName, text), newLoop)
-            '''st11=st1.replace(setName,"amore")
-
-            await bot.send(event, st1, True)
-
-            logger.info("chatGLM:" + st1)
-            if str(event.sender.id)!=str(master) and turnMessage==True:
-                await bot.send_friend_message(int(master),"私聊chatGLM:\n"+str(event.sender.id)+"提问:\n" + text+"\n"+"chatGLM:\n" + st1)
-            if len(st1)>1000:
-                await bot.send(event,"system:当前prompt过长，建议发送 /clearGLM 以清除聊天内容")
-                return
-            try:
-                addStr = '添加' + text + '#' + st11
-                mohuaddReplys(addStr, str("chatGLMReply"))
-            except:
-                logger.error("写入本地词库失败")
-            # 更新该用户prompt
-            prompt.append({"role": "assistant", "content": st1})
-            # 超过10，移除第一个元素
-            #
-            logger.info("当前prompt" + str(prompt))
-            if len(prompt) > maxPrompt:
-                logger.error("glm prompt超限，移除元素")
-                del prompt[0]
-                del prompt[0]
-            chatGLMData[event.sender.id] = prompt
-            # 写入文件
-            with open('data/chatGLMData.yaml', 'w', encoding="utf-8") as file:
-                yaml.dump(chatGLMData, file, allow_unicode=True)'''
 
         except:
             await bot.send(event, "chatGLM启动出错，请联系master检查apiKey或重试")
@@ -443,34 +415,6 @@ def main(bot, master, apikey, chatGLM_api_key, proxy, logger):
                 asyncio.run_coroutine_threadsafe(asyncchatGLM(selfApiKey, meta1, prompt, event, setName, text), newLoop)
                 #st1 = await chatGLM(selfApiKey, meta1, prompt)
 
-                '''st11 = st1.replace(setName,"amore")
-
-                await bot.send(event, st1, True)
-                if len(st1) > 1000:
-                    await bot.send(event, "system:当前prompt过长，建议发送 /clearGLM 以清除聊天内容")
-                    return
-
-                logger.info("chatGLM:"+st1)
-                #将chatGLM写入本地词库
-                try:
-                    addStr = '添加' + text + '#' + st11
-                    mohuaddReplys(addStr, str("chatGLMReply"))
-                except:
-                    logger.error("写入本地词库失败")
-                if context==True:
-                    #更新该用户prompt
-                    prompt.append({"role": "assistant","content": st1})
-                    #超过10，移除第一个元素
-                    #
-                    logger.info("当前prompt" + str(prompt))
-                    if len(prompt)>maxPrompt:
-                        logger.error("glm prompt超限，移除元素")
-                        del prompt[0]
-                        del prompt[0]
-                    chatGLMData[event.sender.id]=prompt
-                    #写入文件
-                    with open('data/chatGLMData.yaml', 'w', encoding="utf-8") as file:
-                        yaml.dump(chatGLMData, file, allow_unicode=True)'''
 
             except:
                 await bot.send(event, "chatGLM启动出错，请联系master检查apiKey或重试")
@@ -523,34 +467,6 @@ def main(bot, master, apikey, chatGLM_api_key, proxy, logger):
 
                 #分界线
                 asyncio.run_coroutine_threadsafe(asyncchatGLM(key1, meta1, prompt,event,setName,text), newLoop)
-                '''st1 = await chatGLM(key1, meta1, prompt)
-
-                st11 = st1.replace(setName,"amore")
-
-                await bot.send(event, st1, True)
-                if len(st1) > 1000:
-                    await bot.send(event, "system:当前prompt过长，建议发送 /clearGLM 以清除聊天内容")
-                    return
-
-                logger.info("chatGLM:" + st1)
-                try:
-                    addStr = '添加' + text + '#' + st11
-                    mohuaddReplys(addStr, str("chatGLMReply"))
-                except:
-                    logger.error("写入本地词库失败")
-                if context==True:
-                    # 更新该用户prompt
-                    prompt.append({"role": "assistant", "content": st1})
-                    # 超过10，移除第一个元素
-
-                    if len(prompt) > maxPrompt:
-                        logger.error("glm prompt超限，移除元素")
-                        del prompt[0]
-                        del prompt[0]
-                    chatGLMData[event.sender.id]= prompt
-                    # 写入文件
-                    with open('data/chatGLMData.yaml', 'w', encoding="utf-8") as file:
-                        yaml.dump(chatGLMData, file, allow_unicode=True)'''
             except:
                 await bot.send(event, "chatGLM启动出错，请联系master检查apiKey或重试")
     #用于chatGLM清除本地缓存
@@ -718,63 +634,47 @@ def main(bot, master, apikey, chatGLM_api_key, proxy, logger):
                 logger.error("调用rwkv失败，请检查本地rwkv是否启动或端口是否配置正确(8000)")
                 await bot.send(event, "无法连接到本地rwkv")
 
-    '''@bot.on(GroupMessage)
-    async def AiHelper(event: GroupMessage):
-        global client
-        global KEY
-        if str(event.message_chain).startswith("/poe"):
-            mes = str(event.message_chain).replace("/poe", "")
-            s = ""
-            logger.info("poe接收消息：" + mes)
-            try:
-                for chunk in client.send_message("capybara", mes):
-                    # print(chunk["text_new"],end="", flush=True)
-                    s += chunk["text_new"]
-                logger.info("bot:" + s)
-                await bot.send(event, s)
-            except:
-                logger.warning("出错，达到每分钟限制或token已失效。")
-
-                if len(apiKey) == 0:
-                    await bot.send(event, "令牌已全部失效，请联系master重新获取")
-                    return
-                else:
-                    logger.error("移出token:" + KEY)
-                    try:
-
-                        apiKey.remove(KEY)
-                        if len(apiKey) == 0:
-                            apiKey.append(KEY)
-                    except:
-                        logger.error("移出token失败")
-                    logger.info("当前token:" + str(apiKey))
-                logger.warning("执行poe-api 重载指令")
-                await bot.send(event, "出错，达到每分钟限制或token已失效。")
-                try:
-                    KEY = random.choice(apiKey)
-                    client = poe.Client(token=KEY, proxy=proxy)
-                    json.dumps(client.bot_names, indent=2)
-                    logger.info("poe-api重载完成")
-                    await bot.send(event, "poe重启完成")
-                except:
-                    logger.error("poe-api重载失败，请检查代理或更新token")
-        if str(event.message_chain) == "/clear" and str(event.sender.id) == str(master):
-            client.send_chat_break("capybara")
-            await bot.send(event, "已清除对话上下文。")
-        if str(event.message_chain) == "/reload" and str(event.sender.id) == str(master):
-            client = poe.Client(token=random.choice(apiKey), proxy=proxy)
-            json.dumps(client.bot_names, indent=2)
-            await bot.send(event, "已重启")'''
-
-    #chatGLM部分
-    def chatGLM(api_key,bot_info,prompt):
+    def chatGlm_pro(api_key,prompt,model1):
         zhipuai.api_key = api_key
-        response = zhipuai.model_api.sse_invoke(
-            model="characterglm",
-            meta= bot_info,
-            prompt= prompt,
-            incremental=True
-        )
+
+
+
+
+
+    #CharacterchatGLM部分
+    def chatGLM(api_key,bot_info,prompt,model1):
+        logger.info("当前模式:"+model1)
+        zhipuai.api_key = api_key
+        if model1=="chatglm_pro":
+            response = zhipuai.model_api.sse_invoke(
+                model="chatglm_pro",
+                prompt=prompt,
+                temperature=0.95,
+                top_p=0.7,
+                incremental=True
+            )
+        elif model1=="chatglm_std":
+            response = zhipuai.model_api.sse_invoke(
+                model="chatglm_std",
+                prompt=prompt,
+                temperature=0.95,
+                top_p=0.7,
+                incremental=True
+            )
+        elif model1=="chatglm_lite":
+            response = zhipuai.model_api.sse_invoke(
+                model="chatglm_lite",
+                prompt=prompt,
+                temperature=0.95,
+                top_p=0.7,
+            )
+        else:
+            response = zhipuai.model_api.sse_invoke(
+                model="characterglm",
+                meta= bot_info,
+                prompt= prompt,
+                incremental=True
+            )
         str1=""
         for event in response.events():
           if event.event == "add":
@@ -801,7 +701,8 @@ def main(bot, master, apikey, chatGLM_api_key, proxy, logger):
         # 第一个参数是执行器，可以是 None、ThreadPoolExecutor 或 ProcessPoolExecutor
         # 第二个参数是同步函数名，后面跟着任何你需要传递的参数
         #result=chatGLM(apiKey,bot_info,prompt)
-        st1 = await loop.run_in_executor(None, chatGLM,apiKey,bot_info,prompt)
+        model1 = result.get("chatGLM").get("model")
+        st1 = await loop.run_in_executor(None, chatGLM,apiKey,bot_info,prompt,model1)
         # 打印结果
         #print(result)
         st11 = st1.replace(setName, "指挥")
@@ -817,6 +718,8 @@ def main(bot, master, apikey, chatGLM_api_key, proxy, logger):
             return
 
         logger.info("chatGLM:" + st1)
+        if turnMessage==True:
+            await bot.send_friend_message(int(master),"chatGLM接收消息：\n来源:"+str(event.sender.id)+"\n提问:"+text+"\n回复:"+st1)
         try:
             addStr = '添加' + text + '#' + st11
             mohuaddReplys(addStr, str("chatGLMReply"))
