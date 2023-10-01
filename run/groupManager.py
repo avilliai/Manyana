@@ -275,6 +275,8 @@ def main(bot,config,moderateKey,logger):
             await bot.send_friend_message(event.from_id,"你好ヾ(≧▽≦*)o，bot项目地址：https://github.com/avilliai/Manyana\n觉得还不错的话可以点个star哦")
             await bot.send_friend_message(event.from_id, "群内发送 @bot 帮助 获取功能列表")
             await bot.send_friend_message(event.from_id,"本bot用户群"+str(mainGroup))
+            await bot.send_friend_message(event.from_id,("近期支持了ChatGLM，更智能的ai聊天。但我的个人apiKey不足以供给所有用户使用，请自行设置apiKey，随后即可使用yucca的chatGLM功能。(注册送的18大概够用半年)\n==============\n1、注册并登录https://open.bigmodel.cn/overview\n2、点击图中内容，复制apiKey.\n3、在群内或者私聊发送\n设置密钥#apiKey\n(群内发送则全群可用，私聊发送则仅个人使用",Image(path="data/fonts/1.jpg"),Image(path="data/fonts/2.jpg")))
+
         else:
             logger.info("无用户记录，拒绝")
             al='拒绝'
