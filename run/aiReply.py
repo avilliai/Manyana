@@ -325,42 +325,10 @@ def main(bot, master, apikey, chatGLM_api_key, proxy, logger):
     async def atReply(event: GroupMessage):
         global trustUser, chatGLMapikeys,chatGLMData,chatGLMCharacters,chatGLMsingelUserKey,userdict
         if gptReply == True and At(bot.qq) in event.message_chain:
-            prompt = str(event.message_chain).replace("@" + str(bot.qq) + "", '')
 
-            message_id = str(uuid.uuid4())
-            model = "text-davinci-002-render-sha"
-            logger.info("ask:" + prompt)
+            asyncio.run_coroutine_threadsafe(askGPTT(event),newLoop)
 
-            if event.group.id in pandoraData.keys():
-                pub = event.group.id
-                conversation_id = pandoraData.get(event.group.id).get("conversation_id")
-                parent_message_id = pandoraData.get(event.group.id).get("parent_message_id")
-            else:
-                if len(pandoraData.keys()) < 10:
-                    pub = event.group.id
-                    conversation_id = None
-                    parent_message_id = "f0bf0ebe-1cd6-4067-9264-8a40af76d00e"
-                else:
-                    try:
-                        pub = random.choice(pandoraData.keys())
-                        conversation_id = pandoraData.get(pub).get("conversation_id")
-                        parent_message_id = pandoraData.get(pub).get("parent_message_id")
-                    except:
-                        await bot.send(event, "当前服务器负载过大，请稍后再试", True)
-                        return
-            try:
-                parent_message_id, conversation_id, response_message = ask_chatgpt(prompt, model, message_id,
-                                                                                   parent_message_id,
-                                                                                   conversation_id)
-                logger.info("answer:" + response_message)
-                logger.info("conversation_id:" + conversation_id)
-                await bot.send(event, response_message, True)
 
-                pandoraData[pub] = {"parent_message_id": parent_message_id, "conversation_id": conversation_id}
-                with open('data/pandora_ChatGPT.yaml', 'w', encoding="utf-8") as file:
-                    yaml.dump(pandoraData, file, allow_unicode=True)
-            except:
-                await bot.send(event, "当前服务器负载过大，请稍后再试", True)
         elif (glmReply == True or (trustglmReply == True and str(event.sender.id) in trustUser) or event.sender.id in chatGLMsingelUserKey.keys()) and At(bot.qq) in event.message_chain:
             text = str(event.message_chain).replace("@" + str(bot.qq) + "", '')
             logger.info("分支1")
@@ -512,59 +480,16 @@ def main(bot, master, apikey, chatGLM_api_key, proxy, logger):
     @bot.on(GroupMessage)
     async def pandoraSever(event: GroupMessage):
         global pandoraData
-        global totallink
+
         if str(event.message_chain).startswith("/p") and str(event.message_chain).startswith("/poe") == False and str(
                 event.message_chain).startswith("/pic") == False:
             if pandoraa:
-                if totallink == False:
-                    totallink += True
-                    if gptReply == False or str(event.message_chain).startswith("/p"):
-                        prompt = str(event.message_chain)[2:]
-                    else:
 
-                        prompt = str(event.message_chain).replace("@" + str(bot.qq) + "", '')
+                asyncio.run_coroutine_threadsafe(askGPTT(event), newLoop)
 
-                    message_id = str(uuid.uuid4())
-                    model = "text-davinci-002-render-sha"
-                    logger.info("ask:" + prompt)
 
-                    if event.group.id in pandoraData.keys():
-                        pub = event.group.id
-                        conversation_id = pandoraData.get(event.group.id).get("conversation_id")
-                        parent_message_id = pandoraData.get(event.group.id).get("parent_message_id")
-                    else:
-                        if len(pandoraData.keys()) < 10:
-                            pub = event.group.id
-                            conversation_id = None
-                            parent_message_id = "f0bf0ebe-1cd6-4067-9264-8a40af76d00e"
-                        else:
-                            try:
-                                pub = random.choice(pandoraData.keys())
-                                conversation_id = pandoraData.get(pub).get("conversation_id")
-                                parent_message_id = pandoraData.get(pub).get("parent_message_id")
-                            except:
-                                await bot.send(event, "当前服务器负载过大，请稍后再试", True)
-                                totallink = False
-                                return
-                    try:
-                        parent_message_id, conversation_id, response_message = ask_chatgpt(prompt, model, message_id,
-                                                                                           parent_message_id,
-                                                                                           conversation_id)
-                        logger.info("answer:" + response_message)
-                        logger.info("conversation_id:" + conversation_id)
-                        await bot.send(event, response_message, True)
-                        totallink = False
-
-                        pandoraData[pub] = {"parent_message_id": parent_message_id, "conversation_id": conversation_id}
-                        with open('data/pandora_ChatGPT.yaml', 'w', encoding="utf-8") as file:
-                            yaml.dump(pandoraData, file, allow_unicode=True)
-                    except:
-                        await bot.send(event, "当前服务器负载过大，请稍后再试", True)
-                        totallink = False
-                else:
-                    await bot.send(event, "当前服务器负载过大，请稍后再试", True)
             else:
-                await bot.send(event, "系统未启用pandora_chatGPT,可能是没有token了", True)
+                await bot.send(event, "当前未启用pandora_chatGPT", True)
 
     @bot.on(GroupMessage)
     async def gpt3(event: GroupMessage):
@@ -634,8 +559,48 @@ def main(bot, master, apikey, chatGLM_api_key, proxy, logger):
                 logger.error("调用rwkv失败，请检查本地rwkv是否启动或端口是否配置正确(8000)")
                 await bot.send(event, "无法连接到本地rwkv")
 
-    def chatGlm_pro(api_key,prompt,model1):
-        zhipuai.api_key = api_key
+    async def askGPTT(event):
+        global trustUser, chatGLMapikeys, chatGLMData, chatGLMCharacters, chatGLMsingelUserKey, userdict
+        prompt = str(event.message_chain).replace("@" + str(bot.qq) + "", '').replace("/p","")
+
+        message_id = str(uuid.uuid4())
+        model = "text-davinci-002-render-sha"
+        logger.info("ask:" + prompt)
+        if event.group.id in pandoraData.keys():
+            pub = event.group.id
+            conversation_id = pandoraData.get(event.group.id).get("conversation_id")
+            parent_message_id = pandoraData.get(event.group.id).get("parent_message_id")
+        else:
+            if len(pandoraData.keys()) < 10:
+                pub = event.group.id
+                conversation_id = None
+                parent_message_id = "f0bf0ebe-1cd6-4067-9264-8a40af76d00e"
+            else:
+                try:
+                    pub = random.choice(pandoraData.keys())
+                    conversation_id = pandoraData.get(pub).get("conversation_id")
+                    parent_message_id = pandoraData.get(pub).get("parent_message_id")
+                except:
+                    await bot.send(event, "当前服务器负载过大，请稍后再试", True)
+                    return
+
+        try:
+            loop = asyncio.get_event_loop()
+            # 使用 loop.run_in_executor() 方法来将同步函数转换为异步非阻塞的方式进行处理
+            # 第一个参数是执行器，可以是 None、ThreadPoolExecutor 或 ProcessPoolExecutor
+            # 第二个参数是同步函数名，后面跟着任何你需要传递的参数
+            # result=chatGLM(apiKey,bot_info,prompt)
+            parent_message_id, conversation_id, response_message = await loop.run_in_executor(None, ask_chatgpt, prompt, model, message_id,parent_message_id,conversation_id)
+
+            logger.info("answer:" + response_message)
+            logger.info("conversation_id:" + conversation_id)
+            await bot.send(event, response_message, True)
+
+            pandoraData[pub] = {"parent_message_id": parent_message_id, "conversation_id": conversation_id}
+            with open('data/pandora_ChatGPT.yaml', 'w', encoding="utf-8") as file:
+                yaml.dump(pandoraData, file, allow_unicode=True)
+        except:
+            await bot.send(event, "当前服务器负载过大，请稍后再试", True)
 
 
 
