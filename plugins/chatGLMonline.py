@@ -33,7 +33,7 @@ def chatGLM1(api_key,bot_info,prompt):
 async def main(apiKey,bot_info,prompt):
 
     '''# 获取事件循环
-    apiKey = "a917043b7ea630e311169a95d12c9230.28IZrQLuRi8peQqV"
+    apiKey = "a
     print("接收提问:"+text)
     prompt = [
         {
