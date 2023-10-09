@@ -52,9 +52,9 @@ async def main(apiKey,bot_info,prompt):
     # 第一个参数是执行器，可以是 None、ThreadPoolExecutor 或 ProcessPoolExecutor
     # 第二个参数是同步函数名，后面跟着任何你需要传递的参数
     #result=chatGLM(apiKey,bot_info,prompt)
-    result = await loop.run_in_executor(None, chatGLM,apiKey,bot_info,prompt)
+    #result = await loop.run_in_executor(None, chatGLM,apiKey,bot_info,prompt)
     # 打印结果
-    print(result)
+    #print(result)
 
 # 运行异步函数
 
