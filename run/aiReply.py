@@ -16,6 +16,7 @@ from asyncio import sleep
 import zhipuai
 
 from plugins.PandoraChatGPT import ask_chatgpt
+from plugins.chatGLMonline import chatGLM1
 
 from plugins.rwkvHelper import rwkvHelper
 from plugins.wReply.mohuReply import mohuaddReplys
@@ -207,7 +208,7 @@ def main(bot, master, apikey, chatGLM_api_key, proxy, logger):
             key12 = str(event.message_chain).split("#")[1] + ""
             try:
                 prompt = [{"user": "你好"}]
-                st1 = chatGLM(key12, meta, prompt)
+                st1 = chatGLM1(key12, meta, prompt)
                 #st1 = st1.replace("yucca", botName).replace("liris", str(event.sender.nickname))
                 await bot.send(event, st1, True)
             except:
@@ -457,7 +458,7 @@ def main(bot, master, apikey, chatGLM_api_key, proxy, logger):
             key12=str(event.message_chain).split("#")[1]+""
             try:
                 prompt=[{"user":"你好"}]
-                st1 = chatGLM(key12, meta,prompt)
+                st1 = chatGLM1(key12, meta,prompt)
                 #asyncio.run_coroutine_threadsafe(asyncchatGLM(key1, meta1, prompt, event, setName, text), newLoop)
                 st1 = st1.replace("yucca", botName).replace("liris", str(event.sender.member_name))
                 await bot.send(event, st1, True)
