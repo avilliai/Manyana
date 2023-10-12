@@ -49,6 +49,9 @@ def main(bot, master, apikey, chatGLM_api_key, proxy, logger):
     global chatGLMData
     chatGLMData=cha
     #logger.info(chatGLMData)
+    with open('config/noResponse.yaml', 'r', encoding='utf-8') as f:
+        noRes1 = yaml.load(f.read(), Loader=yaml.FullLoader)
+    noRes=noRes1.get("noRes")
 
     #读取用户别称
 
@@ -331,8 +334,12 @@ def main(bot, master, apikey, chatGLM_api_key, proxy, logger):
 
 
         elif (glmReply == True or (trustglmReply == True and str(event.sender.id) in trustUser) or event.sender.id in chatGLMsingelUserKey.keys()) and At(bot.qq) in event.message_chain:
-            text = str(event.message_chain).replace("@" + str(bot.qq) + "", '')
+            text = str(event.message_chain).replace("@" + str(bot.qq) + "", '').replace(" ","")
             logger.info("分支1")
+            for saa in noRes:
+                if text==saa:
+                    logger.warning("与屏蔽词匹配，chatGLM不回复")
+                    return
             if text=="" or text==" ":
                 text="在吗"
             #构建新的prompt
@@ -389,8 +396,12 @@ def main(bot, master, apikey, chatGLM_api_key, proxy, logger):
                 await bot.send(event, "chatGLM启动出错，请联系master检查apiKey或重试")
         elif ((str(event.group.id) == str(mainGroup) and chatGLM_api_key!="sdfafjsadlf;aldf") or (event.group.id in chatGLMapikeys)) and At(
                 bot.qq) in event.message_chain:
-            text = str(event.message_chain).replace("@" + str(bot.qq) + "", '')
+            text = str(event.message_chain).replace("@" + str(bot.qq) + "", '').replace(" ","")
             logger.info("分支2")
+            for saa in noRes:
+                if text==saa:
+                    logger.warning("与屏蔽词匹配，chatGLM不回复")
+                    return
             if text=="" or text==" ":
                 text="在吗"
             # 构建新的prompt
