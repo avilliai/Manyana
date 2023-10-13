@@ -131,6 +131,8 @@ def main(bot,config,moderateKey,logger):
             event.group_id) + '\n昵称：' + event.nick + '\n状态：' + al)
     @bot.on(MemberJoinEvent)
     async def MemberJoinHelper(event:MemberJoinEvent):
+        if random.choice(memberJoinWelcome)==1:
+            return
         await bot.send_group_message(event.member.group.id,(At(event.member.id),random.choice(memberJoinWelcome).replace("botName",botName).replace(r"\n","\n")))
         try:
             await bot.send_temp_message(event.member.id,random.choice(sendTemp).replace("botName",botName).replace(r"\n","\n"))
