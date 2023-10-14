@@ -21,8 +21,10 @@ Manyana指
 - 基于[Yiri-mirai](https://github.com/YiriMiraiProject/YiriMirai) 实现
 - 请确保已安装[fireFox浏览器](https://www.firefox.com.cn/)
 - 如果遇到使用问题，请在QQ群628763673反馈
+- **如果遇到code45问题，请使用[NTManyana(NTQQ)](https://github.com/avilliai/NTManyana)**
 # 部署
-**请注意，为便于后续更新，请按照搭建教程进行，如下载源码压缩包进行部署操作不当将无法获取到更新**
+**请注意，为便于后续更新，请按照搭建教程进行，如下载源码压缩包进行部署操作不当将无法获取到更新**<br>
+mirai版本(本贴)与[NTManyana(NTQQ)](https://github.com/avilliai/NTManyana)
 ## 方法1：搭建工具部署(推荐)
 **如果你觉得搭建bot过于困难，请使用此方案**
 - 从release下载ManyanaLauncher.rar并解压(rar是一种压缩文件格式，不知道怎么用自己去下个winrar)
