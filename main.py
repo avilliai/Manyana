@@ -173,7 +173,8 @@ if __name__ == '__main__':
     except:
         logger.error("取消github更新")'''
     if "venv" in os.listdir():
-        logger.info("检测到存在虚拟环境(venv)请手动启动 语音合成sever.bat")
+        logger.info("检测到存在虚拟环境(venv) 即将启动 语音合成sever.bat")
+        subprocess.Popen(["语音合成sever.bat"], cwd="./")
     else:
         subprocess.Popen(["python.exe", "flask_voice.py"],cwd="vits")
     #asyncio.run(os.system("cd vits && python flask_voice.py"))

@@ -39,8 +39,8 @@ def main(bot, master, cur_dir,apikey, chatGLM_api_key, proxy, logger):
     chatGLMCharacters = result2223
     with open('config/settings.yaml', 'r', encoding='utf-8') as f:
         result289 = yaml.load(f.read(), Loader=yaml.FullLoader)
-    voide=result289.get("voiceMode")
-
+    maxTextLen=result289.get("chatGLM").get("maxLen")
+    voiceRate = result289.get("chatGLM").get("maxLen")
     with open('config/chatGLM.yaml', 'r', encoding='utf-8') as f:
         result222 = yaml.load(f.read(), Loader=yaml.FullLoader)
     global chatGLMapikeys
