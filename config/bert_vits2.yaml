@@ -1,0 +1,18 @@
+塔菲:             #触发名，可自定义
+  speaker: taffy       #以模型配置文件为准
+  model:
+    - logs/Taffy/G_15800.pth   #以bert_vits为根目录的相对路径
+    - logs/Taffy/config.json
+  lang: "[ZH]"              #语言类型
+阿梓:
+  speaker: Azusa
+  model:
+    - logs/azusa/G_2800.pth
+    - logs/azusa/config.json
+  lang: "[ZH]"
+otto:
+  speaker: otto
+  model:
+    - logs/otto/G_5900.pth
+    - logs/otto/config.json
+  lang: "[ZH]"

@@ -15,6 +15,7 @@ import yaml
 from mirai import Mirai, FriendMessage, WebSocketAdapter, Poke, GroupMessage, Image, Voice, At, Startup
 from mirai.models import NudgeEvent, MemberHonorChangeEvent, MemberCardChangeEvent, MemberSpecialTitleChangeEvent
 
+from plugins import bertVits2
 from plugins.RandomStr import random_str
 from plugins.newLogger import newLogger
 from plugins.translater import translate
@@ -210,7 +211,8 @@ if __name__ == '__main__':
     PicRandom.main(bot, proxy, logger)
     musicShare.main(bot, master, botName, logger)
     LiveMonitor.main(bot, master, botName, logger)
-
+    current_dir = os.path.dirname(os.path.abspath(__file__))
+    bertVits2.main(bot,current_dir,logger)
     startVer()
     bot.run()
 
