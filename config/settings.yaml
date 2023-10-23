@@ -6,12 +6,17 @@ GroupSensor: False    #开启后，将拒绝无授权群的加群邀请
 r18Pic: False          #涩图r18模式
 pandora: False        #是否启用pandora_chatGPT，如未正确配置相关内容可能导致bot卡死
 gptReply: False       #是否使用gpt3.5替代原有词库，开启后，bot被艾特将优先使用gpt回复
+
+#适用于chatGLM与Wreply两个功能
+
 chatGLM:
   model: characterglm    #chatGLM模式，可选填：characterglm(超拟人大模型),chatglm_pro(pro版),chatglm_std(标准版),chatglm_lite(轻量版)
   glmReply: False       #是否使用chatglm替代原有词库，开启后，bot被艾特将全局优先使用chatglm回复
   trustglmReply: False        #开启后仅信任用户可用
   context: False         #chatGLM上下文模式，开启后将加速消耗token，不是富哥不建议开
   maxPrompt: 10              #上下文模式开启时，最多记录的问答数量，默认10，即记录5对问答
+  maxLen: 40    #语音合成最大长度限制，超出则返回文本。
+  voiceRate: 0 #语音回复几率
   bot_info:              #chatGLM角色设定
     default:
       user_info: "指挥是yucca最喜欢的人"
