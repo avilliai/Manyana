@@ -19,12 +19,8 @@ def main():
         logger.warning("更新python库，按1跳过，如果最近没有更新过，不建议跳过，可能错过某些更新。")
         if input("在这里输入:")!="1":
 
-            os.system("pip config set global.index-url https://mirrors.aliyun.com/pypi/simple/")
-            os.system("pip install pandora-chatgpt")
-            os.system("pip install --upgrade pandora-chatgpt")
-            os.system("pip install PicImageSearch")
-            os.system("pip install zhipuai")
-            os.system("pip install numpy --upgrade")
+            os.system("update.bat")
+
             #os.system("pip install --upgrade poe-api")
             #os.system("pip install --upgrade requests")
             #os.system("pip install --upgrade urllib3[socks]")
