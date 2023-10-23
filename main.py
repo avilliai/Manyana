@@ -172,8 +172,10 @@ if __name__ == '__main__':
         logger.info("over")
     except:
         logger.error("取消github更新")'''
-
-    #subprocess.Popen(["python.exe", "flask_voice.py"],cwd="vits")
+    if "venv" in os.listdir():
+        logger.info("检测到存在虚拟环境(venv)请手动启动 语音合成sever.bat")
+    else:
+        subprocess.Popen(["python.exe", "flask_voice.py"],cwd="vits")
     #asyncio.run(os.system("cd vits && python flask_voice.py"))
     logger.info(" 语音合成sever启动....")
     if pandora:
