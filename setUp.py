@@ -24,6 +24,7 @@ def main():
             os.system("pip install --upgrade pandora-chatgpt")
             os.system("pip install PicImageSearch")
             os.system("pip install zhipuai")
+            os.system("pip install numpy --upgrade")
             #os.system("pip install --upgrade poe-api")
             #os.system("pip install --upgrade requests")
             #os.system("pip install --upgrade urllib3[socks]")
