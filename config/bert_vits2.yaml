@@ -1,6 +1,6 @@
 #新增角色按照这个模式即可
 塔菲:             #触发名，可自定义
-  speaker: taffy       #以模型配置文件为准
+  speaker: taffy       #以模型配置文件为准，例如 taffy模型的config.json里面有这样一段 "spk2id": {"taffy": 0}，那么这里的speaker就写taffy，
   model:
     - logs/Taffy/G_15800.pth   #以bert_vits为根目录的相对路径。它的意思是，你的bert_vits2_sever的logs文件夹里需要有你在这里写的这两个文件
     - logs/Taffy/config.json
