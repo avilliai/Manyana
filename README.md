@@ -37,18 +37,13 @@ Manyana指
 ## 方法2：自行部署(如果你有一定bot搭建经验)
 - 请确保py版本为3.9
 - 请确保已安装[mirai-api-http](https://github.com/project-mirai/mirai-api-http) 并[正确配置](https://github.com/avilliai/wReply/blob/master/setting.yml)
-- 可选安装[mirai-login-solver-sakura](https://github.com/KasukuSakura/mirai-login-solver-sakura)
-- 可选安装[Mirai点歌插件](https://github.com/khjxiaogu/MiraiSongPlugin)
-- 可选安装[PetPet](https://github.com/Dituon/petpet)
 ### 操作步骤
 - 从release下载setUps.rar并解压，依次安装，一般默认下一步就行(**安装python的第一步一定要先勾选add to path**)。apk安装到手机。
-- 特别地，对于watt Toolkit，开始加速前一定要勾选上加速github。不过你既然都到这里了，想必也用不到它。
 - 克隆本仓库。找一个你喜欢的目录(**不要带中文**)打开cmd或git bash执行
 ```
 git clone https://github.com/avilliai/Manyana.git
 ```
-- 解压release中的site-packages.rar，打开cmd输入where python查看你的python安装目录
-- 进入python安装目录，找到Lib/site-packages，用release的site-packages替换它
+- 双击Manyana/一键部署脚本.bat即可
 - 运行一次Manyana/setUp.py以补全最近更新的内容
 ## 不管你用哪种搭建方式
 - 填写config.json(必做)与config/api.yaml(建议填写)
@@ -63,6 +58,8 @@ Launcher内置了启动bot的功能，但实际上<br>**用Launcher启动与你�
 - qsign/sever.cmd
 - miraibot/内存溢出用这个启动.cmd
 - Manyana/启动脚本.bat
+
+前两个，即qsign和miraibot和你自己搭建的qsign和MiraiBot并无区别
 # 功能
 发送@bot 帮助 以查看功能列表，readme的更新并不及时
 ## 图片相关
