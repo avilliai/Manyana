@@ -58,7 +58,11 @@ git clone https://github.com/avilliai/Manyana.git
 下面是一个填写示例实例
 {"botName": "Manyana", "botQQ": "1283992481", "master": "1840094972","mainGroup": "628763673", "vertify_key": "1234567890", "port": "23456"}
 ```
-
+# 启动bot
+Launcher内置了启动bot的功能，但实际上<br>**用Launcher启动与你手动依次启动下面三个文件是一样的**
+- qsign/sever.cmd
+- miraibot/内存溢出用这个启动.cmd
+- Manyana/启动脚本.bat
 # 功能
 发送@bot 帮助 以查看功能列表，readme的更新并不及时
 ## 图片相关
