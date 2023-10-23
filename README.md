@@ -25,6 +25,9 @@ Manyana指
 # 部署
 **请注意，为便于后续更新，请按照搭建教程进行，如下载源码压缩包进行部署操作不当将无法获取到更新**<br>
 mirai版本(本贴)与[NTManyana(NTQQ)](https://github.com/avilliai/NTManyana)
+### dlc
+- [bert_vits2_sever](https://github.com/avilliai/Bert_Vits2_Sever)
+  - 更强大的中文语音合成
 ## 方法1：搭建工具部署(推荐)
 **如果你觉得搭建bot过于困难，请使用此方案**
 - 从release下载ManyanaLauncher.rar并解压(rar是一种压缩文件格式，不知道怎么用自己去下个winrar)

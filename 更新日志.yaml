@@ -59,3 +59,5 @@
   - 使用多线程解决chatGLM卡顿问题
 2023/10/2:
   - 增加一个ChatGlmWeb.exe，web版本的chatGLM，双击即可执行
+2023/10/23:
+  - 支持bert_vits2
