@@ -31,12 +31,15 @@ class CListen(threading.Thread):
         asyncio.set_event_loop(self.mLoop)  # 在新线程中开启一个事件循环
 
         self.mLoop.run_forever()
-def main(bot, master, apikey, chatGLM_api_key, proxy, logger):
+def main(bot, master, cur_dir,apikey, chatGLM_api_key, proxy, logger):
     #读取个性化角色设定
     with open('data/chatGLMCharacters.yaml', 'r', encoding='utf-8') as f:
         result2223 = yaml.load(f.read(), Loader=yaml.FullLoader)
     global chatGLMCharacters
     chatGLMCharacters = result2223
+    with open('config/settings.yaml', 'r', encoding='utf-8') as f:
+        result289 = yaml.load(f.read(), Loader=yaml.FullLoader)
+    voide=result289.get("voiceMode")
 
     with open('config/chatGLM.yaml', 'r', encoding='utf-8') as f:
         result222 = yaml.load(f.read(), Loader=yaml.FullLoader)

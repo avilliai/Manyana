@@ -15,7 +15,7 @@ async def taffySayTest(data):
 
 async def voiceGenerate(data):
     # 向本地 API 发送 POST 请求
-    url = 'http://localhost:9080/synthesize'
+    url = 'http://localhost:9081/synthesize'
     data = json.dumps(data)
     try:
         async with httpx.AsyncClient(timeout=200) as client:
