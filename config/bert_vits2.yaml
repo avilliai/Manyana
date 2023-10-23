@@ -2,7 +2,7 @@
 塔菲:             #触发名，可自定义
   speaker: taffy       #以模型配置文件为准
   model:
-    - logs/Taffy/G_15800.pth   #以bert_vits为根目录的相对路径，意思是，你的bert_vits2_sever的logs文件夹里需要有你在这里写的东西
+    - logs/Taffy/G_15800.pth   #以bert_vits为根目录的相对路径。它的意思是，你的bert_vits2_sever的logs文件夹里需要有你在这里写的这两个文件
     - logs/Taffy/config.json
   lang: "[ZH]"              #语言类型，一般写"[ZH]"即可
 # 以下为一个新增角色示例
