@@ -17,6 +17,7 @@ chatGLM:
   maxPrompt: 10              #上下文模式开启时，最多记录的问答数量，默认10，即记录5对问答
   maxLen: 40    #语音合成最大长度限制，超出则返回文本。
   voiceRate: 0 #语音回复几率
+  speaker: "塔菲"     #config/bert_vits2.yaml里面的角色名
   bot_info:              #chatGLM角色设定
     default:
       user_info: "指挥是yucca最喜欢的人"
