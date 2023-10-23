@@ -44,6 +44,7 @@ Manyana指
 git clone https://github.com/avilliai/Manyana.git
 ```
 - 双击Manyana/一键部署脚本.bat即可
+- 把release的模型(1374_epochsm.pth)文件放置在Manyana/vits/voiceModel/nene
 - 运行一次Manyana/setUp.py以补全最近更新的内容
 ## 不管你用哪种搭建方式
 - 填写config.json(必做)与config/api.yaml(建议填写)
