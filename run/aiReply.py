@@ -16,9 +16,11 @@ from asyncio import sleep
 import zhipuai
 
 from plugins.PandoraChatGPT import ask_chatgpt
+from plugins.RandomStr import random_str
 from plugins.chatGLMonline import chatGLM1
 
 from plugins.rwkvHelper import rwkvHelper
+from plugins.vitsGenerate import taffySayTest
 from plugins.wReply.mohuReply import mohuaddReplys
 
 
@@ -37,10 +39,8 @@ def main(bot, master, cur_dir,apikey, chatGLM_api_key, proxy, logger):
         result2223 = yaml.load(f.read(), Loader=yaml.FullLoader)
     global chatGLMCharacters
     chatGLMCharacters = result2223
-    with open('config/settings.yaml', 'r', encoding='utf-8') as f:
-        result289 = yaml.load(f.read(), Loader=yaml.FullLoader)
-    maxTextLen=result289.get("chatGLM").get("maxLen")
-    voiceRate = result289.get("chatGLM").get("maxLen")
+
+
     with open('config/chatGLM.yaml', 'r', encoding='utf-8') as f:
         result222 = yaml.load(f.read(), Loader=yaml.FullLoader)
     global chatGLMapikeys
@@ -107,6 +107,9 @@ def main(bot, master, cur_dir,apikey, chatGLM_api_key, proxy, logger):
     maxPrompt = result.get("chatGLM").get("maxPrompt")
     allcharacters=result.get("chatGLM").get("bot_info")
     turnMessage=result.get("wReply").get("turnMessage")
+    maxTextLen = result.get("chatGLM").get("maxLen")
+    voiceRate = result.get("chatGLM").get("voiceRate")
+    speaker = result.get("chatGLM").get("speaker")
 
     with open('config.json', 'r', encoding='utf-8') as fp:
         data = fp.read()
@@ -681,13 +684,26 @@ def main(bot, master, cur_dir,apikey, chatGLM_api_key, proxy, logger):
         # 第一个参数是执行器，可以是 None、ThreadPoolExecutor 或 ProcessPoolExecutor
         # 第二个参数是同步函数名，后面跟着任何你需要传递的参数
         #result=chatGLM(apiKey,bot_info,prompt)
+        with open('config/settings.yaml', 'r', encoding='utf-8') as f:
+            result = yaml.load(f.read(), Loader=yaml.FullLoader)
         model1 = result.get("chatGLM").get("model")
         st1 = await loop.run_in_executor(None, chatGLM,apiKey,bot_info,prompt,model1)
         # 打印结果
         #print(result)
         st11 = st1.replace(setName, "指挥")
-
-        await bot.send(event, st1, True)
+        if len(st1)<maxTextLen and random.randint(0,100)<voiceRate:
+            with open('config/bert_vits2.yaml', 'r', encoding='utf-8') as f:
+                result = yaml.load(f.read(), Loader=yaml.FullLoader)
+            data1=result.get(speaker)
+            logger.info("调用bert_vits语音回复")
+            path = cur_dir.replace("\\", "/") + "/data/voices/" + random_str() + ".wav"
+            print(path)
+            data1["text"] = st1
+            data1["out"] = path
+            await taffySayTest(data1)
+            await bot.send(event, Voice(path=path))
+        else:
+            await bot.send(event, st1, True)
         if len(st1) > 670:
             await bot.send(event, "system:当前prompt过长，将不记录本次回复\n建议发送 /clearGLM 以清除聊天内容")
             try:

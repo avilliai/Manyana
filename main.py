@@ -1,5 +1,4 @@
 # -*- coding:utf-8 -*-
-import asyncio
 import datetime
 import json
 
@@ -7,20 +6,14 @@ import os
 import random
 import subprocess
 from asyncio import sleep as sleep1
-from time import sleep
 
-import httpx
-import requests
 import yaml
-from mirai import Mirai, FriendMessage, WebSocketAdapter, Poke, GroupMessage, Image, Voice, At, Startup
-from mirai.models import NudgeEvent, MemberHonorChangeEvent, MemberCardChangeEvent, MemberSpecialTitleChangeEvent
+from mirai import Mirai, WebSocketAdapter, GroupMessage, Image, At, Startup
 
-from plugins import bertVits2
 from plugins.RandomStr import random_str
 from plugins.newLogger import newLogger
-from plugins.translater import translate
 from run import aiReply, voiceReply, nudgeReply, wikiHelper, imgSearch, extraParts, wReply, userSign, groupManager, \
-    PicRandom, musicShare, LiveMonitor
+    PicRandom, musicShare, LiveMonitor, bertVits2
 
 if __name__ == '__main__':
     with open('config.json','r',encoding='utf-8') as fp:
@@ -216,7 +209,7 @@ if __name__ == '__main__':
     musicShare.main(bot, master, botName, logger)
     LiveMonitor.main(bot, master, botName, logger)
 
-    bertVits2.main(bot,current_dir,logger)
+    bertVits2.main(bot, current_dir, logger)
     startVer()
     bot.run()
 
