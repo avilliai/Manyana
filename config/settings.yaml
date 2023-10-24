@@ -10,6 +10,7 @@ gptReply: False       #是否使用gpt3.5替代原有词库，开启后，bot被
 #适用于chatGLM与Wreply两个功能
 
 chatGLM:
+  helpUser: false    #是否引导用户自行设置apiKey
   model: characterglm    #chatGLM模式，可选填：characterglm(超拟人大模型),chatglm_pro(pro版),chatglm_std(标准版),chatglm_lite(轻量版)
   glmReply: False       #是否使用chatglm替代原有词库，开启后，bot被艾特将全局优先使用chatglm回复
   trustglmReply: False        #开启后仅信任用户可用
