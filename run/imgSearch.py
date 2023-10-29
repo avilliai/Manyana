@@ -159,7 +159,10 @@ def main(bot,api_key,proxy,logger):
                                             path="data/autoReply/imageReply/axaAaRaUaaafa7a.png")]))
                 # b1 = ForwardMessageNode(sender_id=bot.qq, sender_name="Manyana",message_chain=MessageChain([result, Image(url=urlss]))
                 dataGet.get(event.sender.id).append(b1)
-            await bot.send(event,Forward(node_list=dataGet.get(event.sender.id)))
+            try:
+                await bot.send(event,Forward(node_list=dataGet.get(event.sender.id)))
+            except:
+                await bot.send(event,"出错，请稍后再试")
             dataGet.pop(event.sender.id)
 
 
