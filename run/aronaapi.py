@@ -28,8 +28,12 @@ def main(bot,logger):
         if str(event.message_chain).startswith("/攻略 "):
             url=str(event.message_chain).replace("/攻略 ","")
             logger.info("查询攻略："+url)
-            p=await stageStrategy(url)
-            await bot.send(event,Image(path=p))
+            try:
+                p=await stageStrategy(url)
+                await bot.send(event,Image(path=p))
+            except:
+                logger.error("无效的角色或网络连接错误")
+                await bot.send(event,"无效的角色 或网络连接出错")
     @bot.on(Startup)
     async def pushAronaData(event: Startup):
         while True:
