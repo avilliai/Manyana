@@ -27,13 +27,17 @@ def main(bot,logger):
     async def selectMission(event:GroupMessage):
         if str(event.message_chain).startswith("/攻略 "):
             url=str(event.message_chain).replace("/攻略 ","")
-            logger.info("查询攻略："+url)
-            try:
-                p=await stageStrategy(url)
-                await bot.send(event,Image(path=p))
-            except:
-                logger.error("无效的角色或网络连接错误")
-                await bot.send(event,"无效的角色 或网络连接出错")
+        elif str(event.message_chain).startswith("/arona "):
+            url = str(event.message_chain).replace("/arona ", "")
+        else:
+            return
+        logger.info("查询攻略："+url)
+        try:
+            p=await stageStrategy(url)
+            await bot.send(event,Image(path=p))
+        except:
+            logger.error("无效的角色或网络连接错误")
+            await bot.send(event,"无效的角色 或网络连接出错")
     @bot.on(Startup)
     async def pushAronaData(event: Startup):
         while True:
@@ -87,3 +91,14 @@ def main(bot,logger):
                 await bot.send(event, ("获取到"+i+"数据",Image(path=p)))
             logger.info(str(event.group.id)+"新增订阅")
             await bot.send(event,"成功订阅")
+    @bot.on(GroupMessage)
+    async def aronad(event:GroupMessage):
+        if str(event.message_chain)==("/arona"):
+            url="杂图"
+            logger.info("查询攻略："+url)
+            try:
+                p=await stageStrategy(url)
+                await bot.send(event,("根据图中列出的项目，发送/arona 项目 即可查询，不需要艾特\n示例如下：\n/arona 国服人权\n/arona H11-2",Image(path=p)))
+            except:
+                logger.error("无效的角色或网络连接错误")
+                await bot.send(event,"无效的角色 或网络连接出错")
