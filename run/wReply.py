@@ -498,6 +498,8 @@ def main(bot,config,sizhiKey,app_id, app_key,logger):
         #配置了自己的apiKey
         elif event.sender.id in chatGLMsingelUserKey.keys():
             return
+        elif glmReply==True:
+            return
         getStr=str(event.message_chain)
         if sizhi==True:
             if str(event.message_chain)=="[图片]":
