@@ -378,6 +378,17 @@ def main(bot,api_KEY,app_id,app_key,nasa_api,proxy,logger):
             except:
                 await bot.send(event,"出错，格式请按照/奖状 孙笑川#天皇#阳光小学一年级2班")
     @bot.on(GroupMessage)
+    async def jiangzhuang(event:GroupMessage):
+        if str(event.message_chain).startswith("/ba") and "#" in str(event.message_chain):
+            try:
+                t=str(event.message_chain).replace("/ba").split("#")
+                url="https://oiapi.net/API/BlueArchive?startText="+t[0]+"&endText="+t[1]
+
+                p=await sd(url,"data/pictures/cache/"+random_str()+".png")
+                await bot.send(event,Image(path=p))
+            except:
+                await bot.send(event,"出错，格式请按照/ba Blue#Archive")
+    @bot.on(GroupMessage)
     async def moyuToday(event: GroupMessage):
         if ("方舟十连" in str(event.message_chain) and At(bot.qq) in event.message_chain) or str(event.message_chain) == "方舟十连":
             logger.info("获取方舟抽卡结果")
