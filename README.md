@@ -18,6 +18,7 @@ Manyana指
 
 - 项目使用了CjangCjengh的[MoeGoe](https://github.com/CjangCjengh/MoeGoe) 以及他的语音模型
 - 项目使用了pengzhile的[pandora](https://github.com/pengzhile/pandora)
+- 感谢[arona api](https://doc.arona.diyigemt.com/) 提供的blueArchive数据
 - 基于[Yiri-mirai](https://github.com/YiriMiraiProject/YiriMirai) 实现
 - 请确保已安装[fireFox浏览器](https://www.firefox.com.cn/)
 - 如果遇到使用问题，请在QQ群628763673反馈
