@@ -13,7 +13,7 @@ from mirai import Mirai, WebSocketAdapter, GroupMessage, Image, At, Startup
 from plugins.RandomStr import random_str
 from plugins.newLogger import newLogger
 from run import aiReply, voiceReply, nudgeReply, wikiHelper, imgSearch, extraParts, wReply, userSign, groupManager, \
-    PicRandom, musicShare, LiveMonitor, bertVits2
+    PicRandom, musicShare, LiveMonitor, bertVits2, aronaapi
 
 if __name__ == '__main__':
     with open('config.json','r',encoding='utf-8') as fp:
@@ -208,8 +208,9 @@ if __name__ == '__main__':
     PicRandom.main(bot, proxy, logger)
     musicShare.main(bot, master, botName, logger)
     LiveMonitor.main(bot, master, botName, logger)
-
     bertVits2.main(bot, current_dir, logger)
+    aronaapi.main(bot,logger)
     startVer()
+
     bot.run()
 
