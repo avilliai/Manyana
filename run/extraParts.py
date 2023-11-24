@@ -379,9 +379,9 @@ def main(bot,api_KEY,app_id,app_key,nasa_api,proxy,logger):
                 await bot.send(event,"出错，格式请按照/奖状 孙笑川#天皇#阳光小学一年级2班")
     @bot.on(GroupMessage)
     async def jiangzhuang(event:GroupMessage):
-        if str(event.message_chain).startswith("/ba") and "#" in str(event.message_chain):
+        if str(event.message_chain).startswith("/ba ") and "#" in str(event.message_chain):
             try:
-                t=str(event.message_chain).replace("/ba").split("#")
+                t=str(event.message_chain).replace("/ba ","").split("#")
                 url="https://oiapi.net/API/BlueArchive?startText="+t[0]+"&endText="+t[1]
 
                 p=await sd(url,"data/pictures/cache/"+random_str()+".png")
