@@ -142,7 +142,7 @@ def main(bot, master, cur_dir,apikey, chatGLM_api_key, proxy, logger):
     #私聊使用chatGLM,对信任用户或配置了apiKey的用户开启
     @bot.on(FriendMessage)
     async def GLMFriendChat(event:FriendMessage):
-        global chatGLMData,chatGLMCharacters,trustUser,chatGLMsingelUserKey,userdict,glmReply
+        global chatGLMData,chatGLMCharacters,trustUser,chatGLMsingelUserKey,userdict
         #如果用户有自己的key
         if event.sender.id in chatGLMsingelUserKey:
             selfApiKey=chatGLMsingelUserKey.get(event.sender.id)
