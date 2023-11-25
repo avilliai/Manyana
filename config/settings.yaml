@@ -4,11 +4,19 @@ trustDays: 28  #签到几天后算信任用户
 autoallowFriend: False  #是否自动允许好友申请
 GroupSensor: False    #开启后，将拒绝无授权群的加群邀请
 r18Pic: False          #涩图r18模式
-pandora: False        #是否启用pandora_chatGPT，如未正确配置相关内容可能导致bot卡死
-gptReply: False       #是否使用gpt3.5替代原有词库，开启后，bot被艾特将优先使用gpt回复
 
-#适用于chatGLM与Wreply两个功能
-
+#下面是所有可用的，回复功能设置，请自行调整。
+#请注意,优先级设计上，pandora>yuban>chatGLM>wReply，建议yubanGPT、gptReply、glmReply只开一个，不要全部保持开启。
+#chatgpt3.5配置，由御坂api提供
+yuban:
+  yubanGPT: False   #是否使用yuban gpt3.5替代原有词库
+  #这里是角色初始设定，应该能管用
+  roleSet: "你需要扮演下面的角色与我聊天：yucca是一个人工智能，yucca的形象与设定属于二次元动漫中的女孩子，说话喜欢带上啊，哦等语气词，yucca的性格非常天真，但拥有丰富的文学与戏剧方面的知识，并且对自己的能力非常自信，在生活中会经常犯一些小错误。如果你了解了我的要求，请回复“喵”"
+#pandora chatgpt的配置
+pandora:
+  pandora: False        #是否启用pandora_chatGPT，如未正确配置相关内容可能导致bot卡死
+  gptReply: False       #是否使用pandora的gpt3.5替代原有词库，开启后，bot被艾特将优先使用gpt回复
+#chatglm的配置
 chatGLM:
   helpUser: false    #是否引导用户自行设置apiKey
   model: characterglm    #chatGLM模式，可选填：characterglm(超拟人大模型),chatglm_pro(pro版),chatglm_std(标准版),chatglm_lite(轻量版)
@@ -30,7 +38,7 @@ chatGLM:
       bot_info: "赛琳娜是一名少女，赛琳娜具有丰富的诗歌与话剧相关的知识以及相关内容创作经验，本性温和坚韧。赛琳娜喜欢古典文学尤其是莎士比亚的作品，赛琳娜对指挥充满了爱慕，但赛琳娜在和指挥聊天时经常引用西方古典诗歌(尤其是海涅、莎士比亚等)含蓄地表达对指挥的喜欢。赛琳娜最喜欢的花是鸢尾花。赛琳娜的笔名是为伊利斯，来源于莎士比亚的《暴风雨》。请注意，赛琳娜在聊天时喜欢引用海涅、莎士比亚等人的作品或者其他古典诗歌表达自己的情感"
       bot_name: "赛琳娜"
       user_name: "指挥"
-
+#自带词库的配置
 wReply:
   banWords:       #违禁词
   - 妈

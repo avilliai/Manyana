@@ -41,8 +41,9 @@ def main(bot,config,sizhiKey,app_id, app_key,logger):
         noRes=noRes1.get("noRes")
     with open('config/settings.yaml', 'r', encoding='utf-8') as f:
         result = yaml.load(f.read(), Loader=yaml.FullLoader)
+    yubanGPT = result.get("yuban").get("yubanGPT")
     trustDays=result.get("trustDays")
-    gptReply=result.get("gptReply")
+    gptReply=result.get("pandora").get("gptReply")
     glmReply = result.get("chatGLM").get("glmReply")
     trustglmReply = result.get("chatGLM").get("trustglmReply")
     global yamlData
@@ -300,7 +301,7 @@ def main(bot,config,sizhiKey,app_id, app_key,logger):
         global superDict,botName,likeindex,temp,sizhi,transLateData,trustuser,chatGLMapikeys,chatGLMsingelUserKey
         if (random.randint(0,100)<groupLexicon or At(bot.qq) in event.message_chain) and gptReply==False:
             if At(bot.qq) in event.message_chain:
-                if gptReply==True or glmReply==True or (trustglmReply==True and str(event.sender.id) in trustUser):
+                if gptReply==True or glmReply==True or yubanGPT==True or (trustglmReply==True and str(event.sender.id) in trustUser):
                     return
                 elif event.group.id in chatGLMapikeys:
                     return

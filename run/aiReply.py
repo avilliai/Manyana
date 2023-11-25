@@ -22,6 +22,7 @@ from plugins.chatGLMonline import chatGLM1
 from plugins.rwkvHelper import rwkvHelper
 from plugins.vitsGenerate import taffySayTest
 from plugins.wReply.mohuReply import mohuaddReplys
+from plugins.yubanGPT import yubanGPTReply
 
 
 class CListen(threading.Thread):
@@ -56,40 +57,10 @@ def main(bot, master, cur_dir,apikey, chatGLM_api_key, proxy, logger):
         noRes1 = yaml.load(f.read(), Loader=yaml.FullLoader)
     noRes=noRes1.get("noRes")
 
-    #读取用户别称
-
-
-    '''try:
-        logger.info("正在启动poe-AI")
-        global apiKey
-        apiKey = apikey
-        global KEY
-        KEY = apiKey[0]
-        logger.info("选择key:" + KEY)
-        global client
-        client = poe.Client(KEY, proxy=proxy)
-        json.dumps(client.bot_names, indent=2)
-    except:
-        logger.error("poeAi启动失败，请检查代理或重试")'''
     logger.info("正在启动rwkv对话模型")
 
     logger.info("正在启动pandora_ChatGPT")
-    '''try:
-        parent_message_id = None
-        prompt = "我爱你啊！！！！！！！！！"
 
-        # 向ChatGPT提问，等待其回复
-        model = "text-davinci-002-render-sha"  # 选择一个可用的模型Default (GPT-3.5)：text-davinci-002-render-sha
-        message_id = str(uuid.uuid4())  # 随机生成一个消息ID
-        if parent_message_id is None:
-            parent_message_id = "f0bf0ebe-1cd6-4067-9264-8a40af76d00e"
-        conversation_id = None
-        # conversation_id = None
-        parent_message_id,conversation_id,reply = ask_chatgpt(prompt, model, message_id, parent_message_id, conversation_id)
-        print(reply)
-        print("当前会话的id:", parent_message_id)
-    except:
-        logger.error("未找到可用的pandora服务")'''
     global pandoraData
     with open('data/pandora_ChatGPT.yaml', 'r', encoding='utf-8') as file:
         pandoraData = yaml.load(file, Loader=yaml.FullLoader)
@@ -98,8 +69,8 @@ def main(bot, master, cur_dir,apikey, chatGLM_api_key, proxy, logger):
     with open('config/settings.yaml', 'r', encoding='utf-8') as f:
         result = yaml.load(f.read(), Loader=yaml.FullLoader)
     trustDays=result.get("trustDays")
-    gptReply = result.get("gptReply")
-    pandoraa = result.get("pandora")
+    gptReply = result.get("pandora").get("gptReply")
+    pandoraa = result.get("pandora").get("pandora")
     glmReply = result.get("chatGLM").get("glmReply")
     trustglmReply = result.get("chatGLM").get("trustglmReply")
     meta = result.get("chatGLM").get("bot_info").get("default")
@@ -110,7 +81,8 @@ def main(bot, master, cur_dir,apikey, chatGLM_api_key, proxy, logger):
     maxTextLen = result.get("chatGLM").get("maxLen")
     voiceRate = result.get("chatGLM").get("voiceRate")
     speaker = result.get("chatGLM").get("speaker")
-
+    yubanGPT = result.get("yuban").get("yubanGPT")
+    roleSet=result.get("yuban").get("roleSet")
     with open('config.json', 'r', encoding='utf-8') as fp:
         data = fp.read()
     config = json.loads(data)
@@ -134,6 +106,11 @@ def main(bot, master, cur_dir,apikey, chatGLM_api_key, proxy, logger):
         result224 = yaml.load(f.read(), Loader=yaml.FullLoader)
     global chatGLMsingelUserKey
     chatGLMsingelUserKey=result224
+    with open('data/yubanGPT.yaml', 'r', encoding='utf-8') as f:
+        resultyuban = yaml.load(f.read(), Loader=yaml.FullLoader)
+    global yubanid
+    yubanid=resultyuban
+
     #线程预备
     newLoop = asyncio.new_event_loop()
     listen = CListen(newLoop)
@@ -335,12 +312,22 @@ def main(bot, master, cur_dir,apikey, chatGLM_api_key, proxy, logger):
     #群内chatGLM回复
     @bot.on(GroupMessage)
     async def atReply(event: GroupMessage):
-        global trustUser, chatGLMapikeys,chatGLMData,chatGLMCharacters,chatGLMsingelUserKey,userdict
+        global trustUser, chatGLMapikeys,chatGLMData,chatGLMCharacters,chatGLMsingelUserKey,userdict,yubanid
         if gptReply == True and At(bot.qq) in event.message_chain:
 
             asyncio.run_coroutine_threadsafe(askGPTT(event),newLoop)
 
-
+        elif (yubanGPT==True and At(bot.qq) in event.message_chain) or str(event.message_chain).startswith("/y"):
+            text=str(event.message_chain).replace("/y","").replace("@" + str(bot.qq) + "", '').replace(" ","")
+            if event.sender.id in yubanid:
+                rrr=await yubanGPTReply(text,yubanid.get(event.sender.id))
+                await bot.send(event,rrr[0])
+            else:
+                rrr=await yubanGPTReply(text)
+                await bot.send(event,rrr[0])
+                yubanid[event.sender.id]=rrr[1]
+                with open('data/yubanGPT.yaml', 'w', encoding="utf-8") as file:
+                    yaml.dump(yubanid, file, allow_unicode=True)
         elif (glmReply == True or (trustglmReply == True and str(event.sender.id) in trustUser) or event.sender.id in chatGLMsingelUserKey.keys()) and At(bot.qq) in event.message_chain:
             text = str(event.message_chain).replace("@" + str(bot.qq) + "", '').replace(" ","")
             logger.info("分支1")
@@ -500,14 +487,10 @@ def main(bot, master, cur_dir,apikey, chatGLM_api_key, proxy, logger):
     @bot.on(GroupMessage)
     async def pandoraSever(event: GroupMessage):
         global pandoraData
-
         if str(event.message_chain).startswith("/p") and str(event.message_chain).startswith("/poe") == False and str(
                 event.message_chain).startswith("/pic") == False:
             if pandoraa:
-
                 asyncio.run_coroutine_threadsafe(askGPTT(event), newLoop)
-
-
             else:
                 await bot.send(event, "当前未启用pandora_chatGPT", True)
 
