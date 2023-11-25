@@ -21,6 +21,7 @@ async def voiceGenerate(data):
         # 解析请求中的参数
         text = data['text']
         out = data["out"]
+
         try:
             speaker = data['speaker']
             modelSelect = data['modelSelect']

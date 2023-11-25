@@ -91,7 +91,10 @@ def main(bot,master,app_id,app_key,logger):
                 if random.randint(1, 100) > voiceReply:
                     await bot.send_group_message(event.subject.id, rep)
                 else:
-                    path = '../data/voices/' + random_str() + '.wav'
+                    if "MoeGoe.py" in os.listdir():
+                        path = 'data/voices/' + random_str() + '.wav'
+                    else:
+                        path = '../data/voices/' + random_str() + '.wav'
                     if random.randint(1,100)>chineseVoiceRate:
                         if rep in transLateData:
                             text = transLateData.get(rep)

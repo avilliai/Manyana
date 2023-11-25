@@ -249,7 +249,10 @@ def main(bot,config,sizhiKey,app_id, app_key,logger):
                     if str(event.message_chain).startswith("语音"):
                         logger.info("增加语音回复")
                         ranpath = random_str()
-                        path ='../data/autoReply/voiceReply/' + ranpath + '.wav'
+                        if "MoeGoe.py" in os.listdir():
+                            path='data/autoReply/voiceReply/' + ranpath + '.wav'
+                        else:
+                            path ='../data/autoReply/voiceReply/' + ranpath + '.wav'
                         text = await translate(str(event.message_chain)[2:], app_id, app_key)
                         tex = '[JA]' + text + '[JA]'
                         await voiceGenerate({"text":tex,"out":path,"speaker":speaker,"modelSelect":modelSelect})
@@ -452,8 +455,10 @@ def main(bot,config,sizhiKey,app_id, app_key,logger):
                         await bot.send(event, replyssssss)
                     else:
                         replyssssss = replyssssss.replace(botName, "我")
-
-                        path = '../data/voices/' + random_str() + '.wav'
+                        if "MoeGoe.py" in os.listdir():
+                            path='data/voices/' + random_str() + '.wav'
+                        else:
+                            path ='../data/voices/' + random_str() + '.wav'
                         if random.randint(1,100)>chineseVoiceRate:
                             if replyssssss in transLateData:
                                 text=transLateData.get(replyssssss)

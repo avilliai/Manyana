@@ -61,7 +61,10 @@ def main(bot,master,app_id,app_key,logger):
         if m and str(event.message_chain).split("说")[0] not in characters and At(bot.qq) in event.message_chain:
             # 取出指令中的地名
             text = m.group(1)
-            path = '../data/voices/' + random_str() + '.wav'
+            if "MoeGoe.py" in os.listdir():
+                path = 'data/voices/' + random_str() + '.wav'
+            else:
+                path = '../data/voices/' + random_str() + '.wav'
             text = await translate(text, app_id, app_key)
             tex = '[JA]' + text + '[JA]'
             logger.info("启动文本转语音：text: " + tex + " path: " + path[3:])
@@ -76,7 +79,10 @@ def main(bot,master,app_id,app_key,logger):
         if m and str(event.message_chain).split("中文")[0] not in characters and At(bot.qq) in event.message_chain:
             # 取出指令中的地名
             text = m.group(1)
-            path = '../data/voices/' + random_str() + '.wav'
+            if "MoeGoe.py" in os.listdir():
+                path = 'data/voices/' + random_str() + '.wav'
+            else:
+                path = '../data/voices/' + random_str() + '.wav'
             #text = await translate(text, app_id, app_key)
             tex = '[ZH]' + text + '[ZH]'
             logger.info("启动文本转语音：text: " + tex + " path: " + path[3:])
@@ -91,7 +97,10 @@ def main(bot,master,app_id,app_key,logger):
         if m and str(event.message_chain).split("日文")[0] not in characters and At(bot.qq) in event.message_chain:
             # 取出指令中的地名
             text = m.group(1)
-            path = '../data/voices/' + random_str() + '.wav'
+            if "MoeGoe.py" in os.listdir():
+                path = 'data/voices/' + random_str() + '.wav'
+            else:
+                path = '../data/voices/' + random_str() + '.wav'
             # text = await translate(text, app_id, app_key)
             tex = '[JA]' + text + '[JA]'
             logger.info("启动文本转语音：text: " + tex + " path: " + path[3:])
@@ -104,12 +113,15 @@ def main(bot,master,app_id,app_key,logger):
             speaker=str(event.message_chain).split("说")[0]
             text = str(event.message_chain).split("说")[1]
             text =await translate(text, app_id, app_key)
-            out = '../data/voices/' + random_str() + '.wav'
+            if "MoeGoe.py" in os.listdir():
+                path = 'data/voices/' + random_str() + '.wav'
+            else:
+                path = '../data/voices/' + random_str() + '.wav'
             logger.info("语音生成_文本" + text)
             logger.info("语音生成_模型:"+speaker + str(characters.get(speaker)[1]))
-            data = {"text": "[JA]" + text + "[JA]", "out": out,'speaker':characters.get(speaker)[0],'modelSelect':characters.get(speaker)[1]}
+            data = {"text": "[JA]" + text + "[JA]", "out": path,'speaker':characters.get(speaker)[0],'modelSelect':characters.get(speaker)[1]}
             await voiceGenerate(data)
-            await bot.send(event, Voice(path=out[3:]))
+            await bot.send(event, Voice(path=path[3:]))
 
     @bot.on(GroupMessage)
     async def characterSpeake(event: GroupMessage):
@@ -117,13 +129,16 @@ def main(bot,master,app_id,app_key,logger):
             speaker = str(event.message_chain).split("中文")[0]
             text = str(event.message_chain).split("中文")[1]
             #text = translate(text, app_id, app_key)不用翻译
-            out = '../data/voices/' + random_str() + '.wav'
+            if "MoeGoe.py" in os.listdir():
+                path = 'data/voices/' + random_str() + '.wav'
+            else:
+                path = '../data/voices/' + random_str() + '.wav'
             logger.info("语音生成_文本" + text)
             logger.info("语音生成_模型:" + speaker + str(characters.get(speaker)[1]))
-            data = {"text": "[ZH]" + text + "[ZH]", "out": out, 'speaker': characters.get(speaker)[0],
+            data = {"text": "[ZH]" + text + "[ZH]", "out": path, 'speaker': characters.get(speaker)[0],
                     'modelSelect': characters.get(speaker)[1]}
             await voiceGenerate(data)
-            await bot.send(event, Voice(path=out[3:]))
+            await bot.send(event, Voice(path=path[3:]))
 
     @bot.on(GroupMessage)
     async def characterSpeake(event: GroupMessage):
@@ -132,12 +147,15 @@ def main(bot,master,app_id,app_key,logger):
             text = str(event.message_chain).split("日文")[1]
             # text = translate(text, app_id, app_key)不用翻译
             logger.info("语音生成_文本"+text)
-            out = '../data/voices/' + random_str() + '.wav'
+            if "MoeGoe.py" in os.listdir():
+                path = 'data/voices/' + random_str() + '.wav'
+            else:
+                path = '../data/voices/' + random_str() + '.wav'
             logger.info("语音生成_模型:" + speaker + str(characters.get(speaker)[1]))
-            data = {"text": "[JA]" + text + "[JA]", "out": out, 'speaker': characters.get(speaker)[0],
+            data = {"text": "[JA]" + text + "[JA]", "out": path, 'speaker': characters.get(speaker)[0],
                     'modelSelect': characters.get(speaker)[1]}
             await voiceGenerate(data)
-            await bot.send(event, Voice(path=out[3:]))
+            await bot.send(event, Voice(path=path[3:]))
     @bot.on(GroupMessage)
     async def checkCharacters(event:GroupMessage):
         if "角色" in str(event.message_chain) and At(bot.qq) in event.message_chain:
