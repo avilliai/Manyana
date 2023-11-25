@@ -320,11 +320,14 @@ def main(bot, master, cur_dir,apikey, chatGLM_api_key, proxy, logger):
         elif (yubanGPT==True and At(bot.qq) in event.message_chain) or str(event.message_chain).startswith("/y"):
             text=str(event.message_chain).replace("/y","").replace("@" + str(bot.qq) + "", '').replace(" ","")
             if event.sender.id in yubanid:
-                rrr=await yubanGPTReply(text,yubanid.get(event.sender.id))
-                await bot.send(event,rrr[0])
+                logger.info("id:"+yubanid.get(event.sender.id))
+                idd=yubanid.get(event.sender.id)
+                rrr=await yubanGPTReply(text,idd)
+                await bot.send(event,rrr[0],True)
             else:
                 rrr=await yubanGPTReply(text)
-                await bot.send(event,rrr[0])
+                await bot.send(event,rrr[0],True)
+                logger.info("为用户"+str(event.sender.id)+"设置新的id："+rrr[1])
                 yubanid[event.sender.id]=rrr[1]
                 with open('data/yubanGPT.yaml', 'w', encoding="utf-8") as file:
                     yaml.dump(yubanid, file, allow_unicode=True)
