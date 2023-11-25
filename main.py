@@ -44,7 +44,7 @@ if __name__ == '__main__':
     chatglm=result.get("chatGLM")
     with open('config/settings.yaml', 'r', encoding='utf-8') as f:
         resulta = yaml.load(f.read(), Loader=yaml.FullLoader)
-    pandora=resulta.get("pandora")
+    pandora=resulta.get("pandora").get("pandora")
 
     logger.info("读取到apiKey列表")
 
