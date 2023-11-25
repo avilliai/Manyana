@@ -165,13 +165,16 @@ if __name__ == '__main__':
         logger.info("over")
     except:
         logger.error("取消github更新")'''
-    if "venv" in os.listdir():
-        logger.info("检测到存在虚拟环境(venv) 即将启动 语音合成sever.bat")
-        subprocess.Popen(["语音合成sever.bat"], cwd="./")
+    if "MoeGoe.py" in os.listdir():
+        logger.warning("语音合成目录变动，语音合成将改为直接调用")
     else:
-        subprocess.Popen(["python.exe", "flask_voice.py"],cwd="vits")
-    #asyncio.run(os.system("cd vits && python flask_voice.py"))
-    logger.info(" 语音合成sever启动....")
+        if "venv" in os.listdir():
+            logger.info("检测到存在虚拟环境(venv) 即将启动 语音合成sever.bat")
+            subprocess.Popen(["语音合成sever.bat"], cwd="./")
+        else:
+            subprocess.Popen(["python.exe", "flask_voice.py"],cwd="vits")
+        #asyncio.run(os.system("cd vits && python flask_voice.py"))
+        logger.info(" 语音合成sever启动....")
     if pandora:
         try:
             subprocess.Popen(["pandora", "-t", "config/token.txt","-s", "127.0.0.1:23459", "-p", proxy])
