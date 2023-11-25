@@ -47,6 +47,8 @@ Manyana指
 - 克隆本仓库。找一个你喜欢的目录(**不要带中文**)打开cmd或git bash执行
 ```
 git clone https://github.com/avilliai/Manyana.git
+或使用镜像源
+git clone https://gitclone.com/github.com/avilliai/Manyana
 ```
 - 双击Manyana/一键部署脚本.bat即可
 - 把release的模型(1374_epochsm.pth)文件放置在Manyana/vits/voiceModel/nene
