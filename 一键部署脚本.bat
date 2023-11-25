@@ -1,4 +1,5 @@
 @echo off
+pip config set global.index-url https://mirrors.aliyun.com/pypi/simple/
 pip install virtualenv
 virtualenv -p python3.9 venv
 rem 进入虚拟环境的目录
