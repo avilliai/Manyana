@@ -20,6 +20,7 @@ def main():
         if input("在这里输入:")!="1":
 
             os.system("pip install numpy==1.23.0")
+            #os.system("pip install aspose-words")
 
             #os.system("pip install --upgrade poe-api")
             #os.system("pip install --upgrade requests")
@@ -27,7 +28,12 @@ def main():
             #os.system("pip install selenium")
         logger.info("拉取bot代码\n--------------------")
         logger.warning("如出现 Merge冲突 例如：Your local changes to the following files would be overwritten by merge:\n请重命名本地的对应文件，拉取后将你的数据重新导入\n--------------------")
-        os.system("git pull https://github.com/avilliai/Manyana.git")
+        logger.info("选择更新源：\n1 git源\n2 镜像源(没有代理的话用这个)")
+        sfsff=input("选择更新源(输入数字)：")
+        if sfsff=="1":
+            os.system("git pull https://github.com/avilliai/Manyana.git")
+        else:
+            os.system("git pull https://gitclone.com/github.com/avilliai/Manyana")
         logger.info("结束")
         logger.info("如更新成功请自行查看 更新日志.yaml")
     elif a=="3":
