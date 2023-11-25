@@ -28,7 +28,7 @@ def main():
             #os.system("pip install selenium")
         logger.info("拉取bot代码\n--------------------")
         logger.warning("如出现 Merge冲突 例如：Your local changes to the following files would be overwritten by merge:\n请重命名本地的对应文件，拉取后将你的数据重新导入\n--------------------")
-        logger.info("选择更新源：\n1 git源\n2 镜像源(没有代理的话用这个)")
+        logger.info("选择更新源()：\n1 git源\n2 镜像源(没有代理的话用这个)")
         sfsff=input("选择更新源(输入数字)：")
         if sfsff=="1":
             os.system("git pull https://github.com/avilliai/Manyana.git")

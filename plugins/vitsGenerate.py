@@ -17,7 +17,7 @@ async def taffySayTest(data):
 async def voiceGenerate(data):
     # 向本地 API 发送 POST 请求
     if "MoeGoe.py" in os.listdir():
-        import MoeGoe.voiceGenerate as vg
+        from MoeGoe import voiceGenerate as vg
         # 解析请求中的参数
         text = data['text']
         out = data["out"]
