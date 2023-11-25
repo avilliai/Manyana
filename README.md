@@ -34,7 +34,9 @@ Manyana指
   - 基于官方api的版本，需要先在 https://q.qq.com/qqbot/#/developer/developer-setting 获取token和secret
 ## 方法1：搭建工具部署(推荐)
 **如果你觉得搭建bot过于困难，请使用此方案**
-- 从release下载ManyanaLauncher.rar并解压(rar是一种压缩文件格式，不知道怎么用自己去下个winrar)
+- 从release下载ManyanaLauncher.rar并解压
+- 从release下载最新的launcher(一般命名为launcher_v114514.exe)
+- 用launcher_v114514.exe替换ManyanaLauncher/launcher.exe
 - 从release下载HowToUse.mp4，如有疑问参考视频即可
 - **使用搭建工具搭建完成后请务必运行一次Manyana/setUp.py补全最近更新的内容**
 ## 方法2：自行部署(如果你有一定bot搭建经验)
@@ -59,13 +61,22 @@ git clone https://github.com/avilliai/Manyana.git
 ```
 # 启动bot
 Launcher内置了启动bot的功能，但实际上<br>**用Launcher启动与你手动依次启动下面三个文件是一样的**
-- qsign/sever.cmd
+- qsign
 - miraibot/内存溢出用这个启动.cmd
 - Manyana/启动脚本.bat
 
 前两个，即qsign和miraibot和你自己搭建的qsign和MiraiBot并无区别
+# 可能遇到的问题
+## 内存不够用
+>服务器内存2G一般完全够用，但不排除你想整点其他的，导致内存可能不够用
+- 确保更新到了最新版Manyana
+- 把vits文件夹中的所有内容(所有文件和文件夹)复制到Manyana根目录
+- 重新启动bot
+
 # 功能
-发送@bot 帮助 以查看功能列表，readme的更新并不及时
+readme的更新并不及时，每次更新都重写readme太累了
+- 查看config文件夹下的几个help.png，它们是bot的菜单
+- 或搭建后在群内发送@bot 帮助 以查看功能列表
 ## 图片相关
 ### 获取壁纸
 ```
