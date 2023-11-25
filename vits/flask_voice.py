@@ -13,7 +13,7 @@ async def synthesize():
     data = request.get_json()
     data=json.loads(data)
     text = data['text']
-    out=data["out"]
+    out="../"+data["out"]
     try:
         speaker = data['speaker']
         modelSelect = data['modelSelect']

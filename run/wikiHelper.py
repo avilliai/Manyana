@@ -61,13 +61,8 @@ def main(bot,app_id,app_key,logger):
                             logger.warning("查询战双角色:" + aimCharacter + " 失败，未收录对应数据")
                             logger.info("发送语音()：数据库里好像没有这个角色呢,要再检查一下吗？")
                             if os.path.exists("data/autoReply/voiceReply/queryFalse.wav") == False:
-                                if "MoeGoe.py" in os.listdir():
-                                    data = {"text": "[ZH]数据库里好像没有这个角色呢,要再检查一下吗？[ZH]",
-                                            "out": "data/autoReply/voiceReply/queryFalse.wav"}
-                                else:
-                                    data = {"text": "[ZH]数据库里好像没有这个角色呢,要再检查一下吗？[ZH]",
-                                            "out": "../data/autoReply/voiceReply/queryFalse.wav"}
-
+                                data = {"text": "[ZH]数据库里好像没有这个角色呢,要再检查一下吗？[ZH]",
+                                        "out": "data/autoReply/voiceReply/queryFalse.wav"}
                                 await voiceGenerate(data)
                                 await bot.send(event, Voice(path="data/autoReply/voiceReply/queryFalse.wav"))
                             else:
@@ -88,11 +83,7 @@ def main(bot,app_id,app_key,logger):
             logger.warning("查询战双角色:" + aimCharacter + " 失败，未收录对应数据")
             logger.info("发送语音(日)：数据库里好像没有这个角色呢,要再检查一下吗？")
             if os.path.exists("data/autoReply/voiceReply/queryFalse.wav") == False:
-                if "MoeGoe.py" in os.listdir():
-                    data = {"text": "[ZH]数据库里好像没有这个角色呢,要再检查一下吗？[ZH]",
-                            "out": "data/autoReply/voiceReply/queryFalse.wav"}
-                else:
-                    data = {"text": "[ZH]数据库里好像没有这个角色呢,要再检查一下吗？[ZH]", "out": "../data/autoReply/voiceReply/queryFalse.wav"}
+                data = {"text": "[ZH]数据库里好像没有这个角色呢,要再检查一下吗？[ZH]", "out": "data/autoReply/voiceReply/queryFalse.wav"}
                 await voiceGenerate(data)
                 await bot.send(event, Voice(path="data/autoReply/voiceReply/queryFalse.wav"))
             else:
@@ -128,12 +119,8 @@ def main(bot,app_id,app_key,logger):
                             logger.warning("查询ba角色:" + aimCharacter + " 失败，未收录对应数据")
                             logger.info("发送语音()：数据库里好像没有这个角色呢,要再检查一下吗？")
                             if os.path.exists("data/autoReply/voiceReply/queryFalse.wav") == False:
-                                if "MoeGoe.py" in os.listdir():
-                                    data = {"text": "[ZH]数据库里好像没有这个角色呢,要再检查一下吗？[ZH]",
-                                            "out": "data/autoReply/voiceReply/queryFalse.wav"}
-                                else:
-                                    data = {"text": "[ZH]数据库里好像没有这个角色呢,要再检查一下吗？[ZH]",
-                                            "out": "../data/autoReply/voiceReply/queryFalse.wav"}
+                                data = {"text": "[ZH]数据库里好像没有这个角色呢,要再检查一下吗？[ZH]",
+                                        "out": "data/autoReply/voiceReply/queryFalse.wav"}
                                 await voiceGenerate(data)
                                 await bot.send(event, Voice(path="data/autoReply/voiceReply/queryFalse.wav"))
                             else:
@@ -155,12 +142,7 @@ def main(bot,app_id,app_key,logger):
             logger.warning("查询ba角色:" + aimCharacter + " 失败，未收录对应数据")
             logger.info("发送语音(日)：数据库里好像没有这个角色呢,要再检查一下吗？")
             if os.path.exists("data/autoReply/voiceReply/queryFalse.wav") == False:
-                if "MoeGoe.py" in os.listdir():
-                    data = {"text": "[ZH]数据库里好像没有这个角色呢,要再检查一下吗？[ZH]",
-                            "out": "data/autoReply/voiceReply/queryFalse.wav"}
-                else:
-                    data = {"text": "[ZH]数据库里好像没有这个角色呢,要再检查一下吗？[ZH]",
-                            "out": "../data/autoReply/voiceReply/queryFalse.wav"}
+                data = {"text": "[ZH]数据库里好像没有这个角色呢,要再检查一下吗？[ZH]", "out": "data/autoReply/voiceReply/queryFalse.wav"}
                 await voiceGenerate(data)
                 await bot.send(event, Voice(path="data/autoReply/voiceReply/queryFalse.wav"))
             else:
@@ -194,12 +176,8 @@ def main(bot,app_id,app_key,logger):
                     logger.warning("查询方舟角色:" + aimCharacter + " 失败，未收录对应数据")
                     logger.info("发送语音()：数据库里好像没有这个角色呢,要再检查一下吗？")
                     if os.path.exists("data/autoReply/voiceReply/queryFalse.wav") == False:
-                        if "MoeGoe.py" in os.listdir():
-                            data = {"text": "[ZH]数据库里好像没有这个角色呢,要再检查一下吗？[ZH]",
-                                    "out": "data/autoReply/voiceReply/queryFalse.wav"}
-                        else:
-                            data = {"text": "[ZH]数据库里好像没有这个角色呢,要再检查一下吗？[ZH]",
-                                    "out": "../data/autoReply/voiceReply/queryFalse.wav"}
+                        data = {"text": "[ZH]数据库里好像没有这个角色呢,要再检查一下吗？[ZH]",
+                                "out": "data/autoReply/voiceReply/queryFalse.wav"}
                         await voiceGenerate(data)
                         await bot.send(event, Voice(path="data/autoReply/voiceReply/queryFalse.wav"))
                     else:
@@ -250,12 +228,8 @@ def main(bot,app_id,app_key,logger):
                     logger.warning("查询农角色:" + aimCharacter + " 失败，未收录对应数据")
                     logger.info("发送语音()：数据库里好像没有这个角色呢,要再检查一下吗？")
                     if os.path.exists("data/autoReply/voiceReply/queryFalse.wav") == False:
-                        if "MoeGoe.py" in os.listdir():
-                            data = {"text": "[ZH]数据库里好像没有这个角色呢,要再检查一下吗？[ZH]",
-                                    "out": "data/autoReply/voiceReply/queryFalse.wav"}
-                        else:
-                            data = {"text": "[ZH]数据库里好像没有这个角色呢,要再检查一下吗？[ZH]",
-                                    "out": "../data/autoReply/voiceReply/queryFalse.wav"}
+                        data = {"text": "[ZH]数据库里好像没有这个角色呢,要再检查一下吗？[ZH]",
+                                "out": "data/autoReply/voiceReply/queryFalse.wav"}
                         await voiceGenerate(data)
                         await bot.send(event, Voice(path="data/autoReply/voiceReply/queryFalse.wav"))
                     else:
@@ -294,12 +268,8 @@ def main(bot,app_id,app_key,logger):
                     logger.warning("查询后室层级:" + aimCharacter + " 失败，未收录对应数据")
                     logger.info("发送语音()：数据库里好像没有这个层级呢,要再检查一下吗？")
                     if os.path.exists("data/autoReply/voiceReply/queryFalse.wav") == False:
-                        if "MoeGoe.py" in os.listdir():
-                            data = {"text": "[ZH]数据库里好像没有这个角色呢,要再检查一下吗？[ZH]",
-                                    "out": "data/autoReply/voiceReply/queryFalse.wav"}
-                        else:
-                            data = {"text": "[ZH]数据库里好像没有这个角色呢,要再检查一下吗？[ZH]",
-                                    "out": "../data/autoReply/voiceReply/queryFalse.wav"}
+                        data = {"text": "[ZH]数据库里好像没有这个层级呢,要再检查一下吗？[ZH]",
+                                "out": "data/autoReply/voiceReply/queryFalse.wav"}
                         await voiceGenerate(data)
                         await bot.send(event, Voice(path="data/autoReply/voiceReply/queryFalse.wav"))
                     else:

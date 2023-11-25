@@ -249,10 +249,7 @@ def main(bot,config,sizhiKey,app_id, app_key,logger):
                     if str(event.message_chain).startswith("语音"):
                         logger.info("增加语音回复")
                         ranpath = random_str()
-                        if "MoeGoe.py" in os.listdir():
-                            path='data/autoReply/voiceReply/' + ranpath + '.wav'
-                        else:
-                            path ='../data/autoReply/voiceReply/' + ranpath + '.wav'
+                        path='data/autoReply/voiceReply/' + ranpath + '.wav'
                         text = await translate(str(event.message_chain)[2:], app_id, app_key)
                         tex = '[JA]' + text + '[JA]'
                         await voiceGenerate({"text":tex,"out":path,"speaker":speaker,"modelSelect":modelSelect})
@@ -455,10 +452,7 @@ def main(bot,config,sizhiKey,app_id, app_key,logger):
                         await bot.send(event, replyssssss)
                     else:
                         replyssssss = replyssssss.replace(botName, "我")
-                        if "MoeGoe.py" in os.listdir():
-                            path='data/voices/' + random_str() + '.wav'
-                        else:
-                            path ='../data/voices/' + random_str() + '.wav'
+                        path='data/voices/' + random_str() + '.wav'
                         if random.randint(1,100)>chineseVoiceRate:
                             if replyssssss in transLateData:
                                 text=transLateData.get(replyssssss)
@@ -471,10 +465,10 @@ def main(bot,config,sizhiKey,app_id, app_key,logger):
                             tex = '[JA]' + text + '[JA]'
                         else:
                             tex="[ZH]"+replyssssss+"[ZH]"
-                        logger.info("启动文本转语音：text: "+tex+" path: "+path[3:])
+                        logger.info("启动文本转语音：text: "+tex+" path: "+path)
                         await voiceGenerate({"text": tex, "out": path,"speaker":speaker,"modelSelect":modelSelect})
 
-                        await bot.send(event,Voice(path=path[3:]))
+                        await bot.send(event,Voice(path=path))
             except:
                 logger.error("发送失败，群号"+str(event.group.id)+"关键词："+getStr+" 回复："+replyssssss)
     # 开启和关闭思知ai

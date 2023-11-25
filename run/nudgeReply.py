@@ -91,10 +91,8 @@ def main(bot,master,app_id,app_key,logger):
                 if random.randint(1, 100) > voiceReply:
                     await bot.send_group_message(event.subject.id, rep)
                 else:
-                    if "MoeGoe.py" in os.listdir():
-                        path = 'data/voices/' + random_str() + '.wav'
-                    else:
-                        path = '../data/voices/' + random_str() + '.wav'
+
+                    path = 'data/voices/' + random_str() + '.wav'
                     if random.randint(1,100)>chineseVoiceRate:
                         if rep in transLateData:
                             text = transLateData.get(rep)
@@ -107,9 +105,9 @@ def main(bot,master,app_id,app_key,logger):
                         tex = '[JA]' + text + '[JA]'
                     else:
                         tex="[ZH]"+rep+"[ZH]"
-                    logger.info("启动文本转语音：text: " + tex + " path: " + path[3:])
+                    logger.info("启动文本转语音：text: " + tex + " path: " + path)
                     await voiceGenerate({"text": tex, "out": path,"speaker":speaker,"modelSelect":modelSelect})
-                    await bot.send_group_message(event.subject.id, Voice(path=path[3:]))
+                    await bot.send_group_message(event.subject.id, Voice(path=path))
 
 
 
