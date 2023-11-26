@@ -196,14 +196,14 @@ def main(bot,api_KEY,master,config,logger):
         font = ImageFont.truetype('data/fonts/H-TTF-BuMing-B-2.ttf', 110)
         draw = ImageDraw.Draw(tp)
         font = ImageFont.truetype('data/fonts/Caerulaarbor.ttf', 115)
-        draw.text((423, 743), id, (12, 0, 6), font=font)
+        draw.text((423, 743), id.replace("-","a"), (12, 0, 6), font=font)
         font = ImageFont.truetype('data/fonts/H-TTF-BuMing-B-2.ttf', 73)
         draw.text((2000, 716), weather, (12, 0, 6), font=font)
         draw.text((509, 1419), '当前exp:' + exp, (12, 0, 6), font=font)
 
-        draw.text((509, 1090), nowTime.replace("-", "a").replace(":", "b"), (12, 0, 6), font=font)
-        draw.text((509, 1243), times.replace("-", "a").replace(":", "b"), (12, 0, 6), font=font)
-        draw.text((1395, 1188), startTime.replace("-", "a").replace(":", "b"), (12, 0, 6), font=font)
+        draw.text((509, 1090), nowTime, (12, 0, 6), font=font)
+        draw.text((509, 1243), times, (12, 0, 6), font=font)
+        draw.text((1395, 1188), startTime, (12, 0, 6), font=font)
         fileName = 'data/pictures/cache/' + random_str() + ".png"
         tp.save(fileName)
         return fileName
