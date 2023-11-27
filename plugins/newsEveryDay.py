@@ -9,6 +9,8 @@ import requests
 from PIL import Image
 from io import BytesIO
 
+from plugins.RandomStr import random_str
+
 
 def get_headers():
     user_agent_list = [
@@ -58,6 +60,16 @@ async def news():
             img.save(path)  # 使用PIL库保存图片
             #print(path)
             return path
+async def chaijun():
+    headers=get_headers()
+    url="http://api.yujn.cn/api/chaijun.php?"
+    path=path="data/pictures/cache/"+random_str()+".png"
+    async with httpx.AsyncClient(timeout=20, headers=headers) as client:
+        r = await client.get(url)
+        img = Image.open(BytesIO(r.content))  # 从二进制数据创建图片对象
+        img.save(path)  # 使用PIL库保存图片
+        # print(path)
+        return path
 async def moyu():
     headers = get_headers()
     url="https://moyu.qqsuu.cn/"

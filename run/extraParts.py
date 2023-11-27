@@ -30,7 +30,7 @@ from plugins.jokeMaker import get_joke
 
 from plugins.modelsLoader import modelLoader
 from plugins.newLogger import newLogger
-from plugins.newsEveryDay import news, moyu, xingzuo, sd
+from plugins.newsEveryDay import news, moyu, xingzuo, sd, chaijun
 from plugins.picGet import pic, setuGet, picDwn
 from plugins.tarot import tarotChoice
 from plugins.translater import translate
@@ -78,7 +78,12 @@ def main(bot,api_KEY,app_id,app_key,nasa_api,proxy,logger):
                 times = int(str(data3.get('sts')))
                 if times > 20:
                     trustUser.append(str(i))
-
+    @bot.on(GroupMessage)
+    async def chaijunmaomao(event: GroupMessage):
+        if str(event.message_chain)=="柴郡" or (At(bot.qq) in event.message_chain and "柴郡" in str(event.message_chain)):
+            logger.info("有楠桐调用了柴郡猫猫图")
+            asffd=await chaijun()
+            await bot.send(event,Image(path=asffd))
     @bot.on(GroupMessage)
     async def handle_group_message(event: GroupMessage):
         # if str(event.message_chain) == '/pic':
