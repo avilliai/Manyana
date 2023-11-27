@@ -38,7 +38,6 @@ Manyana指
 - 从release下载最新的launcher(一般命名为launcher_v114514.exe)
 - 用launcher_v114514.exe替换ManyanaLauncher/launcher.exe
 - 从release下载HowToUse.mp4，如有疑问参考视频即可
-- **使用搭建工具搭建完成后请务必运行一次Manyana/setUp.py补全最近更新的内容**
 ## 方法2：自行部署(如果你有一定bot搭建经验)
 - 请确保py版本为3.9
 - 请确保已安装[mirai-api-http](https://github.com/project-mirai/mirai-api-http) 并[正确配置](https://github.com/avilliai/wReply/blob/master/setting.yml)
@@ -52,22 +51,24 @@ git clone https://gitclone.com/github.com/avilliai/Manyana
 ```
 - 双击Manyana/一键部署脚本.bat即可
 - 把release的模型(1374_epochsm.pth)文件放置在Manyana/vits/voiceModel/nene
-- 运行一次Manyana/setUp.py以补全最近更新的内容
+- 运行一次Manyana/更新脚本.bat 以补全最近更新的内容
 ## 不管你用哪种搭建方式
 - 填写config.json(必做)与config/api.yaml(建议填写)
-- 然后运行main.py(如使用搭建工具部署，launcher内置了启动Manyana的脚本,无需手动启动main.py)
+- 启动bot
+  - 工具搭建：Launcher.exe会帮助你启动
+  - 自行搭建：启动你自己的mirai，以及Manyana/启动脚本.bat
 ```
 {"botName": "机器人名字", "botQQ": "机器人QQ", "master": "你的QQ", "mainGroup": "你自己群的群号","vertify_key": "这里写你http-api的key,尖括号不用带", "port": "httpapi的运行端口"}
 下面是一个填写示例实例
 {"botName": "Manyana", "botQQ": "1283992481", "master": "1840094972","mainGroup": "628763673", "vertify_key": "1234567890", "port": "23456"}
 ```
 # 启动bot
-Launcher内置了启动bot的功能，但实际上<br>**用Launcher启动与你手动依次启动下面三个文件是一样的**
+Launcher内置了启动bot的功能，但实际上<br>**用Launcher启动与你手动依次启动下面三个部分是一样的**
 - qsign
 - miraibot/内存溢出用这个启动.cmd
 - Manyana/启动脚本.bat
 
-前两个，即qsign和miraibot和你自己搭建的qsign和MiraiBot并无区别
+qsign和miraibot和你自己搭的qsign和Mirai并无区别
 # 可能遇到的问题
 ## 内存不够用
 >服务器内存2G一般完全够用，但不排除你想整点其他的，导致内存可能不够用
