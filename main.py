@@ -57,7 +57,7 @@ if __name__ == '__main__':
 
             await bot.send(event,"请发送要推送的消息")
             notice = 1
-        if str(event.message_chain)=="/sub" or str(event.message_chain)=="/unsub":
+        if str(event.message_chain).startswith("/sub") or str(event.message_chain).startswith("/unsub"):
 
             await bot.send(event,"该指令可能已经失效\n请发送@"+str(botName)+"帮助\n以查看菜单3/B站动态推送v2")
             notice = 1
