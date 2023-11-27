@@ -60,7 +60,6 @@ if __name__ == '__main__':
         if str(event.message_chain).startswith("/sub") or str(event.message_chain).startswith("/unsub"):
 
             await bot.send(event,"该指令可能已经失效\n请发送@"+str(botName)+"帮助\n以查看菜单3/B站动态推送v2")
-            notice = 1
     @bot.on(GroupMessage)
     async def sendNotice(event:GroupMessage):
         global notice
