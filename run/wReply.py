@@ -606,7 +606,7 @@ def main(bot,config,sizhiKey,app_id, app_key,logger):
                 superDict=dicss
                 await bot.send(event,"已移除关键词")
                 logger.info("导出词库中")
-                outPutDic()
+                outPutDic(str(event.group.id))
                 logger.info("导出词库完成")
             else:
                 await bot.send(event,"没有该关键词")
