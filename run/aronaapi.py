@@ -50,7 +50,11 @@ def main(bot,logger):
                         await sleep(5)
                         url1 = "https://arona.diyigemt.com/api/v2/image?name=" + ia
                         async with httpx.AsyncClient(timeout=100) as client:  # 100s超时
-                            r = await client.get(url1)  # 发起请求
+                            try:
+                                r = await client.get(url1)  # 发起请求
+                            except Exception as e:
+                                logger.error(e)
+                                continue
                             r = r.json()
                             newHash = r.get("data")[0].get("hash")
                         if str(newHash)!=result9.get(i).get("hash").get(ia):
