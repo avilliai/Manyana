@@ -322,6 +322,7 @@ def main(bot, master, cur_dir,apikey, chatGLM_api_key, proxy, logger):
             asyncio.run_coroutine_threadsafe(askGPTT(event),newLoop)
         elif (luoyueGPT==True and At(bot.qq) in event.message_chain) or str(event.message_chain).startswith("/l"):
             text=str(event.message_chain).replace("/l","").replace("@" + str(bot.qq) + "", '').replace(" ","")
+            logger.info("user:"+text)
             if event.sender.id in luoyueid:
                 logger.info("id:"+luoyueid.get(event.sender.id))
                 idd=luoyueid.get(event.sender.id)
@@ -336,6 +337,7 @@ def main(bot, master, cur_dir,apikey, chatGLM_api_key, proxy, logger):
                     yaml.dump(luoyueid, file, allow_unicode=True)
         elif (yubanGPT==True and At(bot.qq) in event.message_chain) or str(event.message_chain).startswith("/y"):
             text=str(event.message_chain).replace("/y","").replace("@" + str(bot.qq) + "", '').replace(" ","")
+            logger.info("user:" + text)
             if event.sender.id in yubanid:
                 logger.info("id:"+yubanid.get(event.sender.id))
                 idd=yubanid.get(event.sender.id)
