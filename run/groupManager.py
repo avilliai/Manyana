@@ -526,7 +526,7 @@ def main(bot,config,moderateKey,logger):
 
     @bot.on(GroupMessage)
     async def exitBadGroup(event:GroupMessage):
-        ls=["你妈","傻逼","艹逼","你妈","死你","垃圾","nm","狗东西","废物","低能"]
+        ls=["你妈","傻逼","艹逼","你妈","死你","垃圾","nm","狗东西","废物","低能","沙比","啥比","沙壁","啥必","辣鸡","腊鸡"]
         if At(bot.qq) in event.message_chain:
             for i in ls:
                 if i in str(event.message_chain):
