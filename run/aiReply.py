@@ -22,7 +22,7 @@ from plugins.chatGLMonline import chatGLM1
 from plugins.rwkvHelper import rwkvHelper
 from plugins.vitsGenerate import taffySayTest
 from plugins.wReply.mohuReply import mohuaddReplys
-from plugins.yubanGPT import yubanGPTReply
+from plugins.yubanGPT import yubanGPTReply, luoyueGPTReply
 
 
 class CListen(threading.Thread):
@@ -82,6 +82,7 @@ def main(bot, master, cur_dir,apikey, chatGLM_api_key, proxy, logger):
     voiceRate = result.get("chatGLM").get("voiceRate")
     speaker = result.get("chatGLM").get("speaker")
     yubanGPT = result.get("yuban").get("yubanGPT")
+    luoyueGPT=result.get("luoyue").get("luoyue")
     roleSet=result.get("yuban").get("roleSet")
     with open('config.json', 'r', encoding='utf-8') as fp:
         data = fp.read()
@@ -110,7 +111,10 @@ def main(bot, master, cur_dir,apikey, chatGLM_api_key, proxy, logger):
         resultyuban = yaml.load(f.read(), Loader=yaml.FullLoader)
     global yubanid
     yubanid=resultyuban
-
+    with open('data/luoyueGPT.yaml', 'r', encoding='utf-8') as f:
+        resultyuban1 = yaml.load(f.read(), Loader=yaml.FullLoader)
+    global luoyueid
+    luoyueid=resultyuban1
     #线程预备
     newLoop = asyncio.new_event_loop()
     listen = CListen(newLoop)
@@ -316,7 +320,20 @@ def main(bot, master, cur_dir,apikey, chatGLM_api_key, proxy, logger):
         if gptReply == True and At(bot.qq) in event.message_chain:
 
             asyncio.run_coroutine_threadsafe(askGPTT(event),newLoop)
-
+        elif (luoyueGPT==True and At(bot.qq) in event.message_chain) or str(event.message_chain).startswith("/l"):
+            text=str(event.message_chain).replace("/y","").replace("@" + str(bot.qq) + "", '').replace(" ","")
+            if event.sender.id in luoyueid:
+                logger.info("id:"+luoyueid.get(event.sender.id))
+                idd=luoyueid.get(event.sender.id)
+                rrr=await luoyueGPTReply(text,idd)
+                await bot.send(event,rrr[0],True)
+            else:
+                rrr=await luoyueGPTReply(text)
+                await bot.send(event,rrr[0],True)
+                logger.info("落月gpt:为用户"+str(event.sender.id)+"设置新的id："+rrr[1])
+                luoyueid[event.sender.id]=rrr[1]
+                with open('data/luoyueGPT.yaml', 'w', encoding="utf-8") as file:
+                    yaml.dump(luoyueid, file, allow_unicode=True)
         elif (yubanGPT==True and At(bot.qq) in event.message_chain) or str(event.message_chain).startswith("/y"):
             text=str(event.message_chain).replace("/y","").replace("@" + str(bot.qq) + "", '').replace(" ","")
             if event.sender.id in yubanid:
@@ -327,7 +344,7 @@ def main(bot, master, cur_dir,apikey, chatGLM_api_key, proxy, logger):
             else:
                 rrr=await yubanGPTReply(text)
                 await bot.send(event,rrr[0],True)
-                logger.info("为用户"+str(event.sender.id)+"设置新的id："+rrr[1])
+                logger.info("御坂gpt:为用户"+str(event.sender.id)+"设置新的id："+rrr[1])
                 yubanid[event.sender.id]=rrr[1]
                 with open('data/yubanGPT.yaml', 'w', encoding="utf-8") as file:
                     yaml.dump(yubanid, file, allow_unicode=True)

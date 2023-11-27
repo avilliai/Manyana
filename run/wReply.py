@@ -44,6 +44,7 @@ def main(bot,config,sizhiKey,app_id, app_key,logger):
     yubanGPT = result.get("yuban").get("yubanGPT")
     trustDays=result.get("trustDays")
     gptReply=result.get("pandora").get("gptReply")
+    luoyueGPT = result.get("luoyue").get("luoyue")
     glmReply = result.get("chatGLM").get("glmReply")
     trustglmReply = result.get("chatGLM").get("trustglmReply")
     global yamlData
@@ -303,7 +304,7 @@ def main(bot,config,sizhiKey,app_id, app_key,logger):
             if At(bot.qq) in event.message_chain:
                 if gptReply==True or glmReply==True or yubanGPT==True or (trustglmReply==True and str(event.sender.id) in trustUser):
                     return
-                elif event.group.id in chatGLMapikeys:
+                elif event.group.id in chatGLMapikeys or luoyueGPT==True:
                     return
                 elif str(event.group.id)==str(config.get("mainGroup")) and chatglm!="sdfafjsadlf;aldf":
                     return
