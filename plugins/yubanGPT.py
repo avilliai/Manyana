@@ -24,7 +24,7 @@ if __name__ == '__main__':
     while True:
         text=input("textHere:")
         print(id)
-        text1,id1=asyncio.run(yubanGPTReply(text,id))
+        text1,id1=asyncio.run(luoyueGPTReply(text,id))
         if id==None:
             id=id1
         print(text1)

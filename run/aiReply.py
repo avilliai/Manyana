@@ -316,12 +316,12 @@ def main(bot, master, cur_dir,apikey, chatGLM_api_key, proxy, logger):
     #群内chatGLM回复
     @bot.on(GroupMessage)
     async def atReply(event: GroupMessage):
-        global trustUser, chatGLMapikeys,chatGLMData,chatGLMCharacters,chatGLMsingelUserKey,userdict,yubanid
+        global trustUser, chatGLMapikeys,chatGLMData,chatGLMCharacters,chatGLMsingelUserKey,userdict,yubanid,luoyueid
         if gptReply == True and At(bot.qq) in event.message_chain:
 
             asyncio.run_coroutine_threadsafe(askGPTT(event),newLoop)
         elif (luoyueGPT==True and At(bot.qq) in event.message_chain) or str(event.message_chain).startswith("/l"):
-            text=str(event.message_chain).replace("/y","").replace("@" + str(bot.qq) + "", '').replace(" ","")
+            text=str(event.message_chain).replace("/l","").replace("@" + str(bot.qq) + "", '').replace(" ","")
             if event.sender.id in luoyueid:
                 logger.info("id:"+luoyueid.get(event.sender.id))
                 idd=luoyueid.get(event.sender.id)
