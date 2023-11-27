@@ -1,30 +1,31 @@
 
-signTimes: 3    # 签到几天后可以邀请加群
-trustDays: 28  #签到几天后算信任用户
+signTimes: 3         # 签到几天后可以邀请加群
+trustDays: 28        #签到几天后算信任用户
+allowFriendstimes: 1 #签到几天后可以添加好友
 autoallowFriend: False  #是否自动允许好友申请
-GroupSensor: False    #开启后，将拒绝无授权群的加群邀请
-r18Pic: False          #涩图r18模式
+GroupSensor: False   #开启后，将拒绝无授权群的加群邀请
+r18Pic: False        #涩图r18模式
 
 #下面是所有可用的，回复功能设置，请自行调整。
-#请注意,全局回复的优先级设计上，pandora>luoyue>yuban>chatGLM>wReply，建议yubanGPT、gptReply、glmReply只开一个，不要全部保持开启。
+#请注意,全局回复的优先级设计上，pandora>luoyue>yuban>chatGLM>wReply，建议luoyueGPT,yubanGPT、gptReply、glmReply只开一个，不要全部保持开启。
 
-#pandora chatgpt的配置
+#pandora chatgpt的配置，需获取openai.token
 pandora:
-  pandora: False        #是否启用pandora_chatGPT，如未正确配置相关内容可能导致bot卡死
-  gptReply: False       #是否使用pandora的gpt3.5替代原有词库，开启后，bot被艾特将优先使用gpt回复
-#落月api 提供的gpt3.5
+  pandora: False         #是否启用pandora_chatGPT，如未正确配置相关内容可能导致bot卡死
+  gptReply: False        #是否使用pandora的gpt3.5替代原有词库，开启后，bot被艾特将优先使用gpt回复
+#落月api 提供的gpt3.5，无需配置api.yaml
 luoyue:
-  luoyueGPT: False       #是否启用艾特回复
-#御坂api 提供的chatgpt3.5
+  luoyueGPT: False       #是否使用luoyue gpt3.5替代原有词库
+#御坂api 提供的chatgpt3.5，无需配置api.yaml
 yuban:
-  yubanGPT: False   #是否使用yuban gpt3.5替代原有词库
-  #这里是角色初始设定，应该能管用
+  yubanGPT: False        #是否使用yuban gpt3.5替代原有词库
+  #这里是角色初始设定，暂时没用
   roleSet: "你需要扮演下面的角色与我聊天：yucca是一个人工智能，yucca的形象与设定属于二次元动漫中的女孩子，说话喜欢带上啊，哦等语气词，yucca的性格非常天真，但拥有丰富的文学与戏剧方面的知识，并且对自己的能力非常自信，在生活中会经常犯一些小错误。如果你了解了我的要求，请回复“喵”"
-#chatglm的配置
+#chatglm,需配置api.yaml
 chatGLM:
   helpUser: false    #是否引导用户自行设置apiKey
   model: characterglm    #chatGLM模式，可选填：characterglm(超拟人大模型),chatglm_pro(pro版),chatglm_std(标准版),chatglm_lite(轻量版)
-  glmReply: False       #是否使用chatglm替代原有词库，开启后，bot被艾特将全局优先使用chatglm回复
+  glmReply: False        #是否使用chatglm替代原有词库，开启后，bot被艾特将全局优先使用chatglm回复
   trustglmReply: False        #开启后仅信任用户可用
   context: True         #chatGLM上下文模式，开启后将加速消耗token，不是富哥不建议开
   maxPrompt: 10              #上下文模式开启时，最多记录的问答数量，默认10，即记录5对问答
