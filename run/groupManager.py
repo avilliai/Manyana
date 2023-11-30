@@ -153,7 +153,7 @@ def main(bot,config,moderateKey,logger):
         if helpUser:
             await bot.send_group_message(event.group.id, ("近期支持了ChatGLM，更智能的ai聊天。\n您可以自行设置apiKey，随后可在本群启用\n(注册送的18大概够用半年)\n==============\n1、注册并登录https://open.bigmodel.cn/overview\n2、点击图2中内容，复制完整apiKey.\n3、在群内或者私聊发送\n设置密钥#apiKey\n\n(群内发送则全群可用，私聊发送则仅个人使用)",Image(path="data/fonts/1.jpg"),Image(path="data/fonts/2.jpg")))
 
-        path="data/autoReply/voiceReply/joinGroup.wav"
+        '''path="data/autoReply/voiceReply/joinGroup.wav"
 
         ok=os.path.exists(path)
         if ok:
@@ -161,7 +161,7 @@ def main(bot,config,moderateKey,logger):
         else:
             data={'text':"[JA]みなさん、こんにちは、私はこのグループのメンバーになりました、将来もっとアドバイスしてください![JA]","out":path}
             await voiceGenerate(data)
-            await bot.send_group_message(event.group.id,Voice(path=path))
+            await bot.send_group_message(event.group.id,Voice(path=path))'''
         #await bot.send_group_message(event.group.id,"发送 帮助 获取功能列表哦")
 
 
