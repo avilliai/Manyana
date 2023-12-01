@@ -298,7 +298,7 @@ def main(bot,config,sizhiKey,app_id, app_key,logger):
     @bot.on(GroupMessage)
     async def mohu(event: GroupMessage):
         global superDict,botName,likeindex,temp,sizhi,transLateData,trustuser,chatGLMapikeys,chatGLMsingelUserKey
-        if At(bot.qq) in event.message_chain:
+        if True:
             if At(bot.qq) in event.message_chain:
                 if gptReply==True or glmReply==True or yubanGPT==True or (trustglmReply==True and str(event.sender.id) in trustUser):
                     return
