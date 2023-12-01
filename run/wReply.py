@@ -760,12 +760,12 @@ def main(bot,config,sizhiKey,app_id, app_key,logger):
             sizhi = yamlData.get("sizhi")
             global turnMess
             turnMess = yamlData.get("turnMessage")
-            logger.info("读取词库文件中")
-            importDict()
-            logger.info("读取完成")
-            file = open('config/superDict.txt', 'r')
-            jss = file.read()
-            file.close()
+            #logger.info("读取词库文件中")
+            #importDict()
+            #logger.info("读取完成")
+            #file = open('config/superDict.txt', 'r')
+            #jss = file.read()
+            #file.close()
             global superDict
             superDict = json.loads(jss)
             with open('config/chatGLMSingelUser.yaml', 'r', encoding='utf-8') as f:
@@ -784,7 +784,7 @@ def main(bot,config,sizhiKey,app_id, app_key,logger):
                 if times > trustDays:
                     trustUser.append(str(i))
 
-            logger.info('已读取信任用户' + str(len(trustUser)) + '个')
+            #logger.info('已读取信任用户' + str(len(trustUser)) + '个')
     @bot.on(GroupMessage)
     async def nameChangeOperatot(event:GroupMessage):
         global userdict
