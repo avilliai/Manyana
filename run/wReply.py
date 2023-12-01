@@ -628,7 +628,7 @@ def main(bot,config,sizhiKey,app_id, app_key,logger):
                 return
             if sasf==1:
                 logger.info("导出词库中")
-                outPutDic()
+                outPutDic("publicLexicon")
                 logger.info("导出词库完成")
                 await bot.send(event,"删除成功")
             else:
@@ -658,7 +658,7 @@ def main(bot,config,sizhiKey,app_id, app_key,logger):
                 await bot.send(event,"正在更新词库，请稍候")
                 inprocess1.pop(event.sender.id)
                 logger.info("导出词库中")
-                outPutDic()
+                outPutDic(str(event.group.id))
                 logger.info("导出词库完成")
 
 
@@ -732,7 +732,7 @@ def main(bot,config,sizhiKey,app_id, app_key,logger):
     @bot.on(Startup)
     async def updateData(event: Startup):
         while True:
-            await sleep(360)
+            await sleep(60)
             with open('config/chatGLM.yaml', 'r', encoding='utf-8') as f:
                 result222 = yaml.load(f.read(), Loader=yaml.FullLoader)
             global chatGLMapikeys
