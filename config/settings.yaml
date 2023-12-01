@@ -62,8 +62,7 @@ wReply:
   - 国
   - 批
   chineseVoiceRate: 30     #中文回复几率
-  replyRate: 3         #共有词库不艾特时的回复几率
-  groupLexicon: 100    #各群专有词库不艾特时的回复几率（调这个就行）
+  replyRate: 80         #共有词库不艾特时的回复几率
   colorfulCharacter: 30  # 彩色小人回复的机率，彩色小人替代原有回复
   sizhi: false          #是否启用思知ai
   turnMessage: true    #是否开启私聊转发

@@ -63,8 +63,6 @@ def main(bot,config,sizhiKey,app_id, app_key,logger):
     # 不艾特回复的几率
     global likeindex
     likeindex = yamlData.get("replyRate")
-    global groupLexicon
-    groupLexicon=yamlData.get("groupLexicon")
     global sizhi
     sizhi = yamlData.get("sizhi")
     global turnMess
@@ -300,7 +298,7 @@ def main(bot,config,sizhiKey,app_id, app_key,logger):
     @bot.on(GroupMessage)
     async def mohu(event: GroupMessage):
         global superDict,botName,likeindex,temp,sizhi,transLateData,trustuser,chatGLMapikeys,chatGLMsingelUserKey
-        if (random.randint(0,100)<groupLexicon or At(bot.qq) in event.message_chain) and gptReply==False:
+        if At(bot.qq) in event.message_chain:
             if At(bot.qq) in event.message_chain:
                 if gptReply==True or glmReply==True or yubanGPT==True or (trustglmReply==True and str(event.sender.id) in trustUser):
                     return
@@ -338,12 +336,15 @@ def main(bot,config,sizhiKey,app_id, app_key,logger):
 
             else:
                 #筛选，不是艾特bot就不匹配
-                if event.message_chain.count(At) and At(bot.qq) not in event.message_chain:
+                if event.message_chain.count(At) and At(bot.qq) not in event.message_chain :
                     return
                 #优先从专有词库匹配
-                elif str(event.group.id) in superDict.keys():
+                elif str(event.group.id) in superDict.keys() or random.randint(0,100)<likeindex:
                     #获取专有词库所有key
-                    keys1=superDict.get(str(event.group.id)).keys()
+                    if str(event.group.id) in superDict.keys():
+                        keys1=superDict.get(str(event.group.id)).keys()
+                    else:
+                        keys1 = superDict.get("publicLexicon").keys()
 
                     lock=0
                     lenth1 = 0
