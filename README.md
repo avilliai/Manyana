@@ -292,3 +292,5 @@ wReply:
 如果觉得项目还不错的话给个star喵，给个star谢谢喵
 ![Star History Chart](https://api.star-history.com/svg?repos=avilliai/Manyana&type=Date)
 
+## 快速克隆
+<a href='https://gitclone.com'><img src='https://gitclone.com/img/title.ico' style='width:300px;'/></a>
