@@ -41,6 +41,7 @@ def main(bot,api_KEY,master,config,logger):
         result1 = yaml.load(f.read(), Loader=yaml.FullLoader)
     masterPermissionDays=result1.get("masterPermissionDays")
     userSelfPermissonDays=result1.get("userSelfPermissonDays")
+    trustDays = result1.get("trustDays")
 
     @bot.on(GroupMessage)
     async def handle_group_message(event: GroupMessage):
@@ -54,8 +55,8 @@ def main(bot,api_KEY,master,config,logger):
                     city = data.get('city')
                     startTime = data.get('st')
                     times = str(int(data.get('sts')) + 1)
-                    if times=='14':
-                        await bot.send(event,'词库自动授权完成,发送 开始添加 试试吧',True)
+                    if times==trustDays:
+                        await bot.send(event,'已对您开启邀请bot加群与私聊chatglm权限',True)
                     exp = str(int(data.get('exp')) + random.randint(1, 20))
                     nowTime = datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')
                     id = data.get('id')

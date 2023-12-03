@@ -49,6 +49,7 @@ def main(bot,config,moderateKey,logger):
     allowFriendstimes=result1.get("allowFriendstimes")
     GroupSensor = result1.get("GroupSensor")
     autoallowFriend=result1.get("autoallowFriend")
+    trustDays = result1.get("trustDays")
     global qiandaoT
     qiandaoT=result1.get("signTimes")
 
@@ -123,12 +124,12 @@ def main(bot,config,moderateKey,logger):
                 else:
                     logger.info("签到天数不够，拒绝")
                     al = '拒绝'
-                    await bot.send_friend_message(event.from_id, "群内签到天数不够呢，再签到(群内)几天再来试试吧。\n也可前往用户群" + str(
+                    await bot.send_friend_message(event.from_id, "群内签到天数不够呢，需要的签到天数"+str(qiandaoT)+"。\n也可前往用户群" + str(
                         mainGroup) + " 获取授权\n在该群内发送:\n授权#你的QQ")
             else:
                 logger.info("非用户，拒绝")
                 al = '拒绝'
-                await bot.send_friend_message(event.from_id, "无用户签到记录，请在任意bot共同群聊内发送 签到 达到三天以上\n也可前往用户群" + str(
+                await bot.send_friend_message(event.from_id, "无用户签到记录，请在任意bot共同群聊内发送 签到 达到"+str(qiandaoT)+"天以上\n也可前往用户群" + str(
                     mainGroup) + " 获取授权\n在该群内发送:\n授权#你的QQ")
         await bot.send_friend_message(master, '有新的加群申请\n来自：' + str(event.from_id) + '\n目标群：' + str(
             event.group_id) + '\n昵称：' + event.nick + '\n状态：' + al)
@@ -237,6 +238,7 @@ def main(bot,config,moderateKey,logger):
             await bot.send_friend_message(event.from_id,"你好ヾ(≧▽≦*)o，bot项目地址：https://github.com/avilliai/Manyana\n觉得还不错的话可以点个star哦")
             await bot.send_friend_message(event.from_id, "群内发送 @bot 帮助 获取功能列表")
             await bot.send_friend_message(event.from_id,"本bot用户群"+str(mainGroup))
+            await bot.send_friend_message(event.from_id,"在任意群内发送 签到 "+str(trustDays)+"天后将为您开放私聊chatglm权限")
             if helpUser:
                 await bot.send_friend_message(event.from_id,("近期支持了ChatGLM，更智能的ai聊天。\n您可以自行设置apiKey\n(注册送的18大概够用半年)\n==============\n1、注册并登录https://open.bigmodel.cn/overview\n2、点击图2中内容，复制完整apiKey.\n3、在群内或者私聊发送\n设置密钥#apiKey\n\n(群内发送则全群可用，私聊发送则仅个人使用)",Image(path="data/fonts/1.jpg"),Image(path="data/fonts/2.jpg")))
 
