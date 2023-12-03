@@ -151,7 +151,7 @@ def main(bot,api_KEY,master,config,logger):
             if userId in userdict:
                 data=userdict.get(userId)
                 if "selfAdded" in data and fsf==1:
-                    await bot.send(event,"拒绝授权，您已自授权过",True)
+                    await bot.send(event,"拒绝授权，您已为自己授权过",True)
                     return
                 data["sts"]=str(int(data.get("sts"))+int(setN))
                 if fsf==1:
