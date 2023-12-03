@@ -295,7 +295,7 @@ def main(bot, master, cur_dir,apikey, chatGLM_api_key, proxy, logger):
     @bot.on(Startup)
     async def upDate(event: Startup):
         while True:
-            await sleep(360)
+            await sleep(60)
             with open('config/chatGLM.yaml', 'r', encoding='utf-8') as f:
                 result222 = yaml.load(f.read(), Loader=yaml.FullLoader)
             global chatGLMapikeys

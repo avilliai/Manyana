@@ -60,7 +60,7 @@ def main(bot,config,moderateKey,logger):
     for i in userdict.keys():
         data = userdict.get(i)
         times = int(str(data.get('sts')))
-        if times > 98:
+        if times > trustDays:
             superUser.append(str(i))
 
 
@@ -201,7 +201,7 @@ def main(bot,config,moderateKey,logger):
             for i in userdict.keys():
                 data = userdict.get(i)
                 times = int(str(data.get('sts')))
-                if times > 98:
+                if times > trustDays:
                     superUser.append(str(i))
 
             global blackList
@@ -564,7 +564,7 @@ def main(bot,config,moderateKey,logger):
     @bot.on(GroupMessage)
     async def removeBl(event: GroupMessage):
         global superUser
-        if event.sender.id == master or event.sender.id in superUser:
+        if event.sender.id == master :
             global blackList
             if str(event.message_chain).startswith("/bl add ") or str(event.message_chain).startswith("添加黑名单用户 "):
                 groupId = int(str(event.message_chain).split(" ")[-1])
