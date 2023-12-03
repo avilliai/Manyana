@@ -136,6 +136,9 @@ def main(bot,api_KEY,master,config,logger):
                 if event.sender.id==master:
                     setN=str(masterPermissionDays)
                 else:
+                    if str(event.sender.id)!=str(event.message_chain).split("#")[1]:
+                        await bot.send(event,"不匹配的账号，请发送 授权#你自己的QQ")
+                        return
                     setN=str(userSelfPermissonDays)
 
             except:
