@@ -106,7 +106,7 @@ def main(bot,config,moderateKey,logger):
             else:
                 logger.info("拒绝")
                 al = "拒绝"
-                await bot.send_friend_message(event.from_id, "该群无授权，请在bot用户群："+str(mainGroup)+"\n或联系master：" + str(master)+"获取授权")
+                await bot.send_friend_message(event.from_id, "该群无授权，请在bot用户群："+str(mainGroup)+"\n联系机器人管理员获取授权")
         else:
             if str(event.from_id) in userdict.keys():
                 if int(userdict.get(str(event.from_id)).get("sts")) > qiandaoT:
