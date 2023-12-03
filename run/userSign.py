@@ -136,11 +136,13 @@ def main(bot,api_KEY,master,config,logger):
             try:
                 if event.sender.id==master:
                     setN=str(masterPermissionDays)
+                    fsf=0
                 else:
                     if str(event.sender.id)!=str(event.message_chain).split("#")[1]:
                         await bot.send(event,"不匹配的账号，请发送 授权#你自己的QQ")
                         return
                     setN=str(userSelfPermissonDays)
+                    fsf=1
 
             except:
                 return
@@ -148,7 +150,12 @@ def main(bot,api_KEY,master,config,logger):
             userId=str(event.message_chain).split("#")[1]
             if userId in userdict:
                 data=userdict.get(userId)
+                if "selfAdded" in data and fsf==1:
+                    await bot.send(event,"拒绝授权，您已自授权过",True)
+                    return
                 data["sts"]=str(int(data.get("sts"))+int(setN))
+                if fsf==1:
+                    data["selfAdded"]="True"
                 userdict[userId]=data
             else:
                 time = datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')
