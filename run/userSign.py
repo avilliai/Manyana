@@ -37,6 +37,10 @@ def main(bot,api_KEY,master,config,logger):
     logger.info("读取用户数据完成")
     global newUser
     newUser={}
+    with open('config/settings.yaml', 'r', encoding='utf-8') as f:
+        result1 = yaml.load(f.read(), Loader=yaml.FullLoader)
+    masterPermissionDays=result1.get("masterPermissionDays")
+    userSelfPermissonDays=result1.get("userSelfPermissonDays")
 
     @bot.on(GroupMessage)
     async def handle_group_message(event: GroupMessage):
@@ -130,9 +134,9 @@ def main(bot,api_KEY,master,config,logger):
         if str(event.message_chain).startswith("授权#") and (event.group.id==mainGroup or event.sender.id==master):
             try:
                 if event.sender.id==master:
-                    setN="99"
+                    setN=str(masterPermissionDays)
                 else:
-                    setN="15"
+                    setN=str(userSelfPermissonDays)
 
             except:
                 return
@@ -140,7 +144,7 @@ def main(bot,api_KEY,master,config,logger):
             userId=str(event.message_chain).split("#")[1]
             if userId in userdict:
                 data=userdict.get(userId)
-                data["sts"]=setN
+                data["sts"]=str(int(data.get("sts"))+int(setN))
                 userdict[userId]=data
             else:
                 time = datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')

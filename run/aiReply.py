@@ -72,6 +72,7 @@ def main(bot, master, cur_dir,apikey, chatGLM_api_key, proxy, logger):
     gptReply = result.get("pandora").get("gptReply")
     pandoraa = result.get("pandora").get("pandora")
     glmReply = result.get("chatGLM").get("glmReply")
+    privateGlmReply=result.get("chatGLM").get("privateGlmReply")
     trustglmReply = result.get("chatGLM").get("trustglmReply")
     meta = result.get("chatGLM").get("bot_info").get("default")
     context= result.get("chatGLM").get("context")
@@ -132,7 +133,7 @@ def main(bot, master, cur_dir,apikey, chatGLM_api_key, proxy, logger):
         elif str(event.sender.id) in trustUser and trustglmReply==True:
             logger.info("信任用户进行chatGLM提问")
             selfApiKey=chatGLM_api_key
-        elif glmReply==True:
+        elif privateGlmReply==True:
             selfApiKey = chatGLM_api_key
         else:
             return

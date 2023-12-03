@@ -46,6 +46,7 @@ def main(bot,config,sizhiKey,app_id, app_key,logger):
     gptReply=result.get("pandora").get("gptReply")
     luoyueGPT = result.get("luoyue").get("luoyue")
     glmReply = result.get("chatGLM").get("glmReply")
+    privateGlmReply=result.get("chatGLM").get("privateGlmReply")
     trustglmReply = result.get("chatGLM").get("trustglmReply")
     global yamlData
     yamlData = result.get("wReply")
@@ -500,7 +501,7 @@ def main(bot,config,sizhiKey,app_id, app_key,logger):
         #配置了自己的apiKey
         elif event.sender.id in chatGLMsingelUserKey.keys():
             return
-        elif glmReply==True:
+        elif privateGlmReply==True:
             return
         getStr=str(event.message_chain)
         if sizhi==True:
