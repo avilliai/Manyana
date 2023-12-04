@@ -18,7 +18,6 @@ import random
 import yaml
 from PIL import Image
 
-from test import ba
 
 async def bbbgacha(bbb):
 
