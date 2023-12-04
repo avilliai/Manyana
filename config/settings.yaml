@@ -64,6 +64,7 @@ wReply:
   - 牛
   - 国
   - 批
+  editPermission: 1       #签到几天后可以编辑词库
   chineseVoiceRate: 30     #中文回复几率
   replyRate: 80         #共有词库不艾特时的回复几率
   colorfulCharacter: 30  # 彩色小人回复的机率，彩色小人替代原有回复
