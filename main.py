@@ -136,7 +136,7 @@ if __name__ == '__main__':
             except:
                 continue
         logger.info("清理语音缓存完成")
-        logger.info("请定期执行launcher.exe或者setUp.py的更新功能以获取最新版Manyana")
+        logger.info("请定期执行launcher.exe或者Manyana/更新脚本.bat 的更新功能以获取最新版Manyana")
 
         file = open('data/music/groups.txt', 'r')
         js = file.read()
@@ -157,8 +157,6 @@ if __name__ == '__main__':
         await bot.send_friend_message(master,time1 + '\n功能已加载完毕，欢迎使用')
 
 
-
-    logger.warning("请定期通过setUp.py进行更新")
    # logger.info("如果遇到卡顿请按ctrl+c | 如成功更新了某些文件，请重启main.py以应用更新")
 
     '''try:
@@ -168,6 +166,7 @@ if __name__ == '__main__':
         logger.info("over")
     except:
         logger.error("取消github更新")'''
+    logger.info("如果内存不够可以把vits文件夹内内容转移到Manyana根目录")
     if "MoeGoe.py" in os.listdir():
         logger.warning("语音合成目录变动，语音合成将改为直接调用")
     else:
