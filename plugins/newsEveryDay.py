@@ -63,7 +63,7 @@ async def news():
 async def chaijun():
     headers=get_headers()
     url="http://api.yujn.cn/api/chaijun.php?"
-    path=path="data/pictures/cache/"+random_str()+".png"
+    path="data/pictures/cache/"+random_str()+".png"
     async with httpx.AsyncClient(timeout=20, headers=headers) as client:
         r = await client.get(url)
         img = Image.open(BytesIO(r.content))  # 从二进制数据创建图片对象

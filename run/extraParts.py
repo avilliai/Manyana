@@ -22,7 +22,7 @@ from plugins import weatherQuery
 from plugins.RandomStr import random_str
 from plugins.arkOperator import arkOperator
 from plugins.cpGenerate import get_cp_mesg
-from plugins.gacha import arkGacha, starRailGacha
+from plugins.gacha import arkGacha, starRailGacha, bbbgacha
 from plugins.genshinGo import genshinDraw, qianCao
 from plugins.historicalToday import hisToday
 from plugins.imgDownload import dict_download_img
@@ -62,7 +62,7 @@ def main(bot,api_KEY,app_id,app_key,nasa_api,proxy,logger):
     r18 = result1.get("r18Pic")
     global picData
     picData={}
-
+    bbb=result1.get("blueArchiveGacha")
     @bot.on(Startup)
     async def update(event:Startup):
         while True:
@@ -417,4 +417,15 @@ def main(bot,api_KEY,app_id,app_key,nasa_api,proxy,logger):
                 await bot.send(event, Image(path=path),True)
             except:
                 logger.error("穹批衮")
+                await bot.send(event,"获取抽卡结果失败，请稍后再试")
+    @bot.on(GroupMessage)
+    async def moyuToday(event: GroupMessage):
+        if ("ba十连" in str(event.message_chain) and At(bot.qq) in event.message_chain) or str(event.message_chain) == "ba十连":
+            logger.info("获取ba抽卡结果")
+            try:
+                path = await bbbgacha(bbb)
+                logger.info("成功获取到ba抽卡结果")
+                await bot.send(event, Image(path=path),True)
+            except:
+                logger.error("碧批衮")
                 await bot.send(event,"获取抽卡结果失败，请稍后再试")
