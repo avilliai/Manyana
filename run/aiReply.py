@@ -528,6 +528,7 @@ def main(bot, master, cur_dir,apikey, chatGLM_api_key, proxy, logger):
                     # 用get方法发送请求
                     response = await client.get(url=url)
                 s=response.json().get("data")
+                s = s.replace(r"\n", "\n")
 
                 logger.info("gpt3.5:" + s)
                 await bot.send(event, s, True)
@@ -546,7 +547,7 @@ def main(bot, master, cur_dir,apikey, chatGLM_api_key, proxy, logger):
                     # 用get方法发送请求
                     response = await client.get(url=url)
                 s = response.json().get("data").get("output")
-
+                s = s.replace(r"\n", "\n")
                 logger.info("讯飞星火:" + s)
                 await bot.send(event, s, True)
             except:
@@ -565,6 +566,7 @@ def main(bot, master, cur_dir,apikey, chatGLM_api_key, proxy, logger):
                     # 用get方法发送请求
                     response = await client.get(url=url)
                 s = response.json().get("data").get("output")
+                s=s.replace(r"\n","\n")
 
                 logger.info("文心一言:" + s)
                 await bot.send(event, s, True)
