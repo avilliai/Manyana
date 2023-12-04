@@ -183,7 +183,7 @@ def main(bot,config,sizhiKey,app_id, app_key,logger):
             if editPermission!=0 and event.sender.id!=master:
                 if str(event.sender.id) not in userdict or int(userdict.get(str(event.sender.id)).get("sts"))<editPermission:
                     logger.info("当前用户签到天数："+userdict.get(str(event.sender.id)).get("sts"))
-                    await bot.send(event, "签到天数不足，请发送 签到 以完善用户信息，签到天数达到"+str(editPermission)+"后将开放词库权限")
+                    await bot.send(event, "签到天数不足，请发送 签到 以增加签到天数\n签到天数达到"+str(editPermission)+"天后将开放词库权限")
                     return
 
             if (event.sender.id==master) or event.sender.id not in blUser:
