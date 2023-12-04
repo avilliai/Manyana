@@ -1,6 +1,6 @@
 
 signTimes: 3         # 签到几天后可以邀请加群
-trustDays: 28        #签到几天后算信任用户
+trustDays: 28        #签到几天后算【信任用户】
 allowFriendstimes: 1 #签到几天后可以添加好友
 masterPermissionDays: 99  #master使用授权#QQ 时为用户增加的签到天数
 userSelfPermissonDays: 15 #用户自己在用户群中授权，可以获取的签到天数
@@ -29,7 +29,7 @@ chatGLM:
   model: characterglm    #chatGLM模式，可选填：characterglm(超拟人大模型),chatglm_pro(pro版),chatglm_std(标准版),chatglm_lite(轻量版)
   glmReply: False          #开放群聊chatglm，chatglm替代原有词库，开启后，bot被艾特将全局优先使用chatglm回复
   privateGlmReply: false   #开放私聊chatglm
-  trustglmReply: False        #开启后仅信任用户可用
+  trustglmReply: False        #开启后仅【信任用户】可用
   context: True         #chatGLM上下文模式，开启后将加速消耗token，不是富哥不建议开
   maxPrompt: 10              #上下文模式开启时，最多记录的问答数量，默认10，即记录5对问答
   maxLen: 40    #语音合成最大长度限制，超出则返回文本。
