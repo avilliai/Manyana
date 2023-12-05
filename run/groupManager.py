@@ -93,30 +93,30 @@ def main(bot,config,moderateKey,logger):
     @bot.on(MemberMuteEvent)
     async def whenMute(event: MemberMuteEvent):
         try:
-            men=str(json.loads(event.json()).get("member").get("memberName"))
-            opn=str(json.loads(event.json()).get("operator").get("memberName"))
-            await bot.send_group_message(int(json.loads(event.json()).get("member").get("group").get("id")),random.choice(welcome.get("muteEvent")).replace("%被动%",men).replace("%主动%",opn))
+            men=str(json.loads(event.json()).get("member").get("id"))
+            opn=str(json.loads(event.json()).get("operator").get("id"))
+            await bot.send_group_message(int(json.loads(event.json()).get("member").get("group").get("id")),random.choice(welcome.get("muteEvent")).replace("%被动%",'@'+men).replace("%主动%",'@'+opn))
         except:
             pass
     # 群成员解除禁言
     @bot.on(MemberUnmuteEvent)
     async def whenunMute(event: MemberUnmuteEvent):
-        await bot.send_group_message(int(json.loads(event.json()).get("member").get("group").get("id")), random.choice(welcome.get("UnMute").get("memberUnmuteMessage")).replace("%被动%",str(event.member.member_name)).replace("%主动%",str(event.operator.member_name)))
+        await bot.send_group_message(int(json.loads(event.json()).get("member").get("group").get("id")), random.choice(welcome.get("UnMute").get("memberUnmuteMessage")).replace("%被动%",'@'+str(event.member.id)).replace("%主动%",'@'+str(event.operator.id)))
     #bot被解除禁言
     @bot.on(BotUnmuteEvent)
     async def botUUUUU(event: BotUnmuteEvent):
         await bot.send_group_message(int(json.loads(event.json()).get("member").get("group").get("id")), random.choice(welcome.get("UnMute").get("botUnmuteMessage")).replace(
-            "%主动%", str(event.operator.member_name)))
+            "%主动%", '@'+str(event.operator.id)))
     #成员被踢出
     @bot.on(MemberLeaveEventKick)
     async def memberKikkk(event: MemberLeaveEventKick):
         await bot.send_group_message(int(json.loads(event.json()).get("member").get("group").get("id")), random.choice(welcome.get("quitGroup").get("kickMessage")).replace("%被动%",
-                                                                                                      str(event.member.member_name)).replace(
-            "%主动%", str(event.operator.member_name)))
+                                                                                                      '@'+str(event.member.id)).replace(
+            "%主动%", '@'+str(event.operator.id)))
     #成员自动退群
     @bot.on(MemberLeaveEventQuit)
     async def elfLeave(event: MemberLeaveEventQuit):
-        await bot.send_group_message(int(json.loads(event.json()).get("member").get("group").get("id")), random.choice(welcome.get("quitGroup").get("quitMessage")).replace("%主动%", str(event.member.member_name)))
+        await bot.send_group_message(int(json.loads(event.json()).get("member").get("group").get("id")), random.choice(welcome.get("quitGroup").get("quitMessage")).replace("%主动%", '@'+str(event.member.id)))
 
     #bot被踢出群聊
     @bot.on(BotLeaveEventKick)
