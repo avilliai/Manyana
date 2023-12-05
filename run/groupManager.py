@@ -89,34 +89,50 @@ def main(bot,config,moderateKey,logger):
     severGroups=moderate.get("groups")
     global banTime
     banTime=moderate.get("banTime")
+
     #群成员遭到禁言
     @bot.on(MemberMuteEvent)
     async def whenMute(event: MemberMuteEvent):
         try:
-            men=str(json.loads(event.json()).get("member").get("memberName"))
-            opn=str(json.loads(event.json()).get("operator").get("memberName"))
-            await bot.send_group_message(int(json.loads(event.json()).get("member").get("group").get("id")),random.choice(welcome.get("muteEvent")).replace("%被动%",men).replace("%主动%",opn))
+            men=int(json.loads(event.json()).get("member").get("id"))
+            opn=int(json.loads(event.json()).get("operator").get("id"))
+            text=random.choice(welcome.get("muteEvent"))
+            await seeeeeee(bot, men, opn, text, int(json.loads(event.json()).get("member").get("group").get("id")))
         except:
-            pass
+            logger.warning("没事，请忽略")
+
     # 群成员解除禁言
     @bot.on(MemberUnmuteEvent)
     async def whenunMute(event: MemberUnmuteEvent):
-        await bot.send_group_message(int(json.loads(event.json()).get("member").get("group").get("id")), random.choice(welcome.get("UnMute").get("memberUnmuteMessage")).replace("%被动%",str(event.member.member_name)).replace("%主动%",str(event.operator.member_name)))
+        men=event.member.id
+        opn=event.operator.id
+        text=random.choice(welcome.get("UnMute").get("memberUnmuteMessage"))
+        await seeeeeee(bot, men, opn, text, int(json.loads(event.json()).get("member").get("group").get("id")))
+        #await bot.send_group_message(int(json.loads(event.json()).get("member").get("group").get("id")), .replace("%被动%",str(event.member.member_name)).replace("%主动%",str(event.operator.member_name)))
     #bot被解除禁言
     @bot.on(BotUnmuteEvent)
     async def botUUUUU(event: BotUnmuteEvent):
-        await bot.send_group_message(int(json.loads(event.json()).get("member").get("group").get("id")), random.choice(welcome.get("UnMute").get("botUnmuteMessage")).replace(
-            "%主动%", str(event.operator.member_name)))
+        text=random.choice(welcome.get("UnMute").get("botUnmuteMessage"))
+        opn=event.operator.id
+        men=bot.qq
+        await seeeeeee(bot, men, opn, text, int(json.loads(event.json()).get("member").get("group").get("id")))
+
     #成员被踢出
     @bot.on(MemberLeaveEventKick)
     async def memberKikkk(event: MemberLeaveEventKick):
-        await bot.send_group_message(int(json.loads(event.json()).get("member").get("group").get("id")), random.choice(welcome.get("quitGroup").get("kickMessage")).replace("%被动%",
-                                                                                                      str(event.member.member_name)).replace(
-            "%主动%", str(event.operator.member_name)))
+        men=event.member.id
+        opn=event.operator.id
+        text=random.choice(welcome.get("quitGroup").get("kickMessage"))
+        await seeeeeee(bot, men, opn, text, event.member.group.id)
+
     #成员自动退群
     @bot.on(MemberLeaveEventQuit)
     async def elfLeave(event: MemberLeaveEventQuit):
-        await bot.send_group_message(int(json.loads(event.json()).get("member").get("group").get("id")), random.choice(welcome.get("quitGroup").get("quitMessage")).replace("%主动%", str(event.member.member_name)))
+        men = event.member.id
+        opn = 123
+        text = random.choice(welcome.get("quitGroup").get("quitMessage"))
+        await seeeeeee(bot, men, opn, text, int(json.loads(event.json()).get("member").get("group").get("id")))
+        #await bot.send_group_message(int(json.loads(event.json()).get("member").get("group").get("id")), .replace("%主动%", str(event.member.member_name)))
 
     #bot被踢出群聊
     @bot.on(BotLeaveEventKick)
@@ -672,4 +688,21 @@ def main(bot,config,moderateKey,logger):
                 except:
                     logger.error("移除失败，该用户不在黑名单中")
                     await bot.send(event,"移除失败，该用户不在黑名单中")
-
+    async def seeeeeee(bot,men,opn,text,groupid):
+        ta = text.split("%")
+        #print(ta)
+        while "" in ta:
+            ta.remove("")
+        #print(ta)
+        p = 0
+        for i in ta:
+            if i == "主动":
+                ta[p] = At(opn)
+            elif i == "被动":
+                ta[p] = At(men)
+            else:
+                if i == "":
+                    ta.remove("")
+            p += 1
+        #print(ta)
+        await bot.send_group_message(groupid,ta)
