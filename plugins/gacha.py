@@ -1,3 +1,4 @@
+# -*- coding:utf-8 -*-
 import datetime
 import os.path
 import random
@@ -34,8 +35,8 @@ async def bbbgacha(bbb):
                 cha=random.choice(po)
             #print(cha)
             character.append(cha)
-        if random.randint(1,101)<bbb.get("3star"):
-            if random.randint(1,101)<bbb.get("3up"):
+        if random.randint(1,101)<bbb.get("2star"):
+            if random.randint(1,101)<bbb.get("2up"):
                 cha=bbb.get("2starUp")
             else:
                 po=pool.get('2')
@@ -50,7 +51,7 @@ async def bbbgacha(bbb):
 
     #print(character)
     a = 60
-    b = 220
+    b = 250
     count = 0
     st = Image.open('data/blueArchive/back.png')
 
