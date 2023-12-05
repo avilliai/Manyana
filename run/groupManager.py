@@ -14,7 +14,8 @@ from mirai import Image, Voice, Startup
 from mirai import Mirai, WebSocketAdapter, FriendMessage, GroupMessage, At, Plain
 from mirai.models.events import BotInvitedJoinGroupRequestEvent, NewFriendRequestEvent, MemberJoinRequestEvent, \
     MemberHonorChangeEvent, MemberCardChangeEvent, BotMuteEvent, MemberSpecialTitleChangeEvent, BotJoinGroupEvent, \
-    MemberJoinEvent
+    MemberJoinEvent, MemberMuteEvent, MemberUnmuteEvent, BotUnmuteEvent, BotLeaveEventKick, MemberLeaveEventKick, \
+    MemberLeaveEventQuit
 
 from plugins.setuModerate import setuModerate
 from plugins.vitsGenerate import voiceGenerate
@@ -88,7 +89,55 @@ def main(bot,config,moderateKey,logger):
     severGroups=moderate.get("groups")
     global banTime
     banTime=moderate.get("banTime")
+    #群成员遭到禁言
+    @bot.on(MemberMuteEvent)
+    async def whenMute(event: MemberMuteEvent):
+        men=str(json.loads(event.json()).get("member").get("memberName"))
+        opn=str(json.loads(event.json()).get("operator").get("memberName"))
+        await bot.send_group_message(int(json.loads(event.json()).get("member").get("group").get("id")),random.choice(welcome.get("muteEvent")).replace("%被动%",men).replace("%主动%",opn))
 
+    # 群成员解除禁言
+    @bot.on(MemberUnmuteEvent)
+    async def whenunMute(event: MemberUnmuteEvent):
+        await bot.send_group_message(int(json.loads(event.json()).get("member").get("group").get("id")), random.choice(welcome.get("UnMute").get("memberUnmuteMessage")).replace("%被动%",str(event.member.member_name)).replace("%主动%",str(event.operator.member_name)))
+    #bot被解除禁言
+    @bot.on(BotUnmuteEvent)
+    async def botUUUUU(event: BotUnmuteEvent):
+        await bot.send_group_message(int(json.loads(event.json()).get("member").get("group").get("id")), random.choice(welcome.get("UnMute").get("botUnmuteMessage")).replace(
+            "%主动%", str(event.operator.member_name)))
+    #成员被踢出
+    @bot.on(MemberLeaveEventKick)
+    async def memberKikkk(event: MemberLeaveEventKick):
+        await bot.send_group_message(int(json.loads(event.json()).get("member").get("group").get("id")), random.choice(welcome.get("quitGroup").get("kickMessage")).replace("%被动%",
+                                                                                                      str(event.member.member_name)).replace(
+            "%主动%", str(event.operator.member_name)))
+    #成员自动退群
+    @bot.on(MemberLeaveEventQuit)
+    async def elfLeave(event: MemberLeaveEventQuit):
+        await bot.send_group_message(int(json.loads(event.json()).get("member").get("group").get("id")), random.choice(welcome.get("quitGroup").get("quitMessage")).replace("%主动%", str(event.member.member_name)))
+
+    #bot被踢出群聊
+    @bot.on(BotLeaveEventKick)
+    async def botKICKED(event: BotLeaveEventKick):
+        await bot.send_friend_message(master,"bot被踢出群聊\n群号:"+str(event.group.id)+"\n群名:"+str(event.group.name)+"\n操作者:"+str(event.operator.member_name)+str(event.operator.id))
+        global blackList
+        global blGroups
+        if event.group.id in blGroups:
+            logger.info("已有黑名单群" + str(event.group.id))
+        else:
+            blGroups.append(event.group.id)
+
+        if event.operator.id in blackList:
+            logger.info("已有黑名单用户" + str(event.operator.id))
+        else:
+            blackList.append(event.operator.id)
+
+        with open('config/autoSettings.yaml', 'r', encoding='utf-8') as f:
+            result = yaml.load(f.read(), Loader=yaml.FullLoader)
+        result["banUser"] = blackList
+        result["banGroups"] = blGroups
+        with open('config/autoSettings.yaml', 'w', encoding="utf-8") as file:
+            yaml.dump(result, file, allow_unicode=True)
     @bot.on(BotInvitedJoinGroupRequestEvent)
     async def checkAllowGroup(event: BotInvitedJoinGroupRequestEvent):
         logger.info("接收来自 " + str(event.from_id) + " 的加群邀请")
