@@ -69,3 +69,6 @@
   - 增加一个新指令 ba十连
 2023/12/6:
   - 新增指令 /赌 数字
+  - 如使用了ManyanaLauncher整合包请手动删除miraiBot/plugins/AutoGroup.jar 其功能已经基本在本次更新中实现和完善
+  - 请查看config/welcome.yaml
+  - 请查看config/GroupGameSettings.yaml
