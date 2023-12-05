@@ -162,7 +162,7 @@ async def starRailGacha():
    a = 193
    b = 221
    count = 0
-   st = Image.open('data/GachaData/StarRail/bg.png')
+   st = Image.open('data/GachaData/StarRail/bg.jpg')
    path ="data/pictures/cache/"+random_str() + '.png'
    for i in character:
      # 剪切图像
