@@ -275,7 +275,10 @@ def main(bot,config,sizhiKey,app_id, app_key,logger):
                         value = str(event.message_chain)
                     global superDict
                     value=value.replace("#","yu")
+                    from openpyxl.cell.cell import ILLEGAL_CHARACTERS_RE
+                    value = ILLEGAL_CHARACTERS_RE.sub(r'', value)
                     addStr = '添加' + process1.get(event.sender.id).get("mohukey") + '#' + value
+
                     if "global" in process1.get(event.sender.id):
                         superDict = mohuaddReplys(addStr, str(event.group.id),mode=1)
                     else:
