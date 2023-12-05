@@ -92,10 +92,12 @@ def main(bot,config,moderateKey,logger):
     #群成员遭到禁言
     @bot.on(MemberMuteEvent)
     async def whenMute(event: MemberMuteEvent):
-        men=str(json.loads(event.json()).get("member").get("memberName"))
-        opn=str(json.loads(event.json()).get("operator").get("memberName"))
-        await bot.send_group_message(int(json.loads(event.json()).get("member").get("group").get("id")),random.choice(welcome.get("muteEvent")).replace("%被动%",men).replace("%主动%",opn))
-
+        try:
+            men=str(json.loads(event.json()).get("member").get("memberName"))
+            opn=str(json.loads(event.json()).get("operator").get("memberName"))
+            await bot.send_group_message(int(json.loads(event.json()).get("member").get("group").get("id")),random.choice(welcome.get("muteEvent")).replace("%被动%",men).replace("%主动%",opn))
+        except:
+            pass
     # 群成员解除禁言
     @bot.on(MemberUnmuteEvent)
     async def whenunMute(event: MemberUnmuteEvent):
