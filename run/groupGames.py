@@ -65,7 +65,10 @@ def main(bot,logger):
                 logger.info("不禁言")
                 await bot.send(event, random.choice(RouletteGGS.get("unmute")))
             lia = Roulette.get(event.group.id)
-            lia.remove(a)
+            try:
+                lia.remove(a)
+            except:
+                pass
             logger.info(lia)
 
 
