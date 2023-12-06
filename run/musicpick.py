@@ -20,7 +20,7 @@ from plugins.cloudMusic import cccdddm
 
 
 def main(bot,logger):
-    logger.warning("测试功能，极其不稳定")
+    logger.warning("语音点歌 loaded")
     @bot.on(GroupMessage)
     async def selectMusic(event: GroupMessage):
         if str(event.message_chain).startswith("点歌 "):
