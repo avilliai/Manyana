@@ -72,3 +72,6 @@
   - 如使用了ManyanaLauncher整合包请手动删除miraiBot/plugins/AutoGroup.jar 其功能已经基本在本次更新中实现和完善
   - 请查看config/welcome.yaml
   - 请查看config/GroupGameSettings.yaml
+2023/12/6.5:
+  - 新指令 点歌 歌曲名
+  - 由于未进行silk转码(音质下降)，除了android_phone之外的用户无法听到点歌语音
