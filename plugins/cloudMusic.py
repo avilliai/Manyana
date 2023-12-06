@@ -1,16 +1,12 @@
 import httpx
 import requests
 import json
-import execjs
 # 定义请求的URL
 from punishingHelper import get_headers
 import asyncio
 from asyncio import sleep
 
-from selenium import webdriver
-from selenium.webdriver.common.by import By
-from selenium.webdriver.firefox.options import Options
-import pysilk
+
 
 
 
@@ -37,7 +33,7 @@ async def musicDown(url, path):
     with open(path, "wb") as f:
         f.write(waf)
 
-import os, pilk
+'''import os, pilk
 from pydub import AudioSegment
 
 async def convert_to_silk(media_path: str) -> str:
@@ -54,7 +50,7 @@ async def convert_to_silk(media_path: str) -> str:
     media.export(pcm_path, 's16le', parameters=['-ar', str(media.frame_rate), '-ac', '1']).close()
     pilk.encode(pcm_path, silk_path, pcm_rate=media.frame_rate, tencent=True)
 
-    return silk_path
+    return silk_path'''
 
 #asyncio.run(cccdddm("starlight delight"))
 # musicDown("http://music.163.com/song/media/outer/url?id=1940303073.mp3")
