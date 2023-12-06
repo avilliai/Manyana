@@ -29,7 +29,7 @@ Manyana指
    <img width="70%" height="70%" src="https://moe-counter.glitch.me/get/@:manyana" alt="logo"></br>
 </div>
 
-
+---
 # 部署
 **请注意，为便于后续更新，请按照搭建教程进行，如下载源码压缩包进行部署操作不当将无法获取到更新**<br>
 ### dlc
@@ -83,6 +83,7 @@ qsign和miraibot和你自己搭的qsign和Mirai并无区别
 - 把vits文件夹中的所有内容(所有文件和文件夹)复制到Manyana根目录
 - 重新启动bot
 
+---
 # 功能
 readme的更新并不及时，每次更新都重写readme太累了
 - 查看config文件夹下的几个help.png，它们是bot的菜单
