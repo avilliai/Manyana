@@ -2,12 +2,7 @@ import httpx
 import requests
 import json
 # 定义请求的URL
-from punishingHelper import get_headers
-import asyncio
-from asyncio import sleep
-
-
-
+from plugins.newsEveryDay import get_headers
 
 
 async def cccdddm(musicname):

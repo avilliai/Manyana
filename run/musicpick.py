@@ -15,7 +15,7 @@ import yaml
 from mirai import Image, Voice
 from mirai import Mirai, WebSocketAdapter, FriendMessage, GroupMessage, At, Plain
 
-from plugins.RandomStr import random_str
+
 from plugins.cloudMusic import cccdddm
 
 
