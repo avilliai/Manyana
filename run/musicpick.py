@@ -35,7 +35,7 @@ def main(bot,logger):
                     await bot.send(event,"连接出错，或无对应歌曲")
                 else:
                     musicTask[event.sender.id]=ffs
-                    print(ffs)
+                    #print(ffs)
                     t="请发送序号："
                     i=0
                     for sf in ffs:
