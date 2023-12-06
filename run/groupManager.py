@@ -115,7 +115,7 @@ def main(bot,config,moderateKey,logger):
         text=random.choice(welcome.get("UnMute").get("botUnmuteMessage"))
         opn=event.operator.id
         men=bot.qq
-        await seeeeeee(bot, men, opn, text, int(json.loads(event.json()).get("member").get("group").get("id")))
+        await seeeeeee(bot, men, opn, text, event.operator.group.id)
 
     #成员被踢出
     @bot.on(MemberLeaveEventKick)
@@ -131,7 +131,7 @@ def main(bot,config,moderateKey,logger):
         men = event.member.id
         opn = 123
         text = random.choice(welcome.get("quitGroup").get("quitMessage"))
-        await seeeeeee(bot, men, opn, text, int(json.loads(event.json()).get("member").get("group").get("id")))
+        await seeeeeee(bot, men, opn, text, event.member.group.id)
         #await bot.send_group_message(int(json.loads(event.json()).get("member").get("group").get("id")), .replace("%主动%", str(event.member.member_name)))
 
     #bot被踢出群聊
