@@ -1,7 +1,7 @@
 <div align="center">
    <img width="160" src="config/Manyana.jpg" alt="logo"></br>
 
-   
+
 
 ----
 
@@ -23,6 +23,12 @@ Manyana指
 - 基于[Yiri-mirai](https://github.com/YiriMiraiProject/YiriMirai) 实现
 - 请确保已安装[fireFox浏览器](https://www.firefox.com.cn/)
 - 如果遇到使用问题，请在QQ群628763673反馈
+
+<div>
+    <div align="center">
+   <img width="260" src="https://moe-counter.glitch.me/get/@:manyana" alt="logo"></br>
+</div>
+
 # 部署
 **请注意，为便于后续更新，请按照搭建教程进行，如下载源码压缩包进行部署操作不当将无法获取到更新**<br>
 ### dlc
