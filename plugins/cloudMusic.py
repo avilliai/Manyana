@@ -1,3 +1,5 @@
+import asyncio
+
 import httpx
 import requests
 import json
@@ -7,7 +9,7 @@ from plugins.newsEveryDay import get_headers
 
 async def cccdddm(musicname):
     # 导入selenium库
-    url='https://music.163.com/api/search/get/web?csrf_token=hlpretag=&hlposttag=&s='+musicname+'&type=1&offset=0&total=true&limit=5'
+    url='https://music.163.com/api/search/get/web?csrf_token=hlpretag=&hlposttag=&s='+musicname+'&type=1&offset=1&total=true&limit=7'
     #DAT={'s': musicname,'offset': 1,'limit': 1,'type': 1}
     #url = "http://music.wandhi.com/?name=" + musicname + "&type=netease"
     #header=get_headers()
@@ -16,17 +18,28 @@ async def cccdddm(musicname):
     #print(r.text)
     async with httpx.AsyncClient(timeout=None,headers=get_headers()) as client:
         r = await client.post(url)
+        #print(r.json().get("result").get("songs"))
         #print(r.json().get("result").get("songs")[0].get("id"))
-        id=r.json().get("result").get("songs")[0].get("id")
-        path='data/music/' + r.json().get("result").get("songs")[0].get("name") + '.mp3'
-        url="http://music.163.com/song/media/outer/url?id="+str(id)+".mp3"
-        await musicDown(url,path)
-        #path=await convert_to_silk(path)
-        return path
-async def musicDown(url, path):
+        newa=[]
+        for i in r.json().get("result").get("songs"):
+            newa.append([i.get("name"),i.get("id")])
+            if len(newa)>7:
+                return newa
+        return newa
+        #id=r.json().get("result").get("songs")[0]
+        #name=r.json().get("result").get("songs")[0].get("name")
+
+async def musicDown(id, name):
+    url = "http://music.163.com/song/media/outer/url?id=" + str(id) + ".mp3"
     waf = requests.get(url).content
+    path = 'data/music/musicCache/' + name + '.mp3'
+
+
+    # path=await convert_to_silk(path)
+
     with open(path, "wb") as f:
         f.write(waf)
+    return path
 
 '''import os, pilk
 from pydub import AudioSegment
@@ -47,5 +60,5 @@ async def convert_to_silk(media_path: str) -> str:
 
     return silk_path'''
 
-#asyncio.run(cccdddm("starlight delight"))
+asyncio.run(cccdddm("iridescent"))
 # musicDown("http://music.163.com/song/media/outer/url?id=1940303073.mp3")

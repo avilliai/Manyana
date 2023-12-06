@@ -16,13 +16,16 @@ from mirai import Image, Voice
 from mirai import Mirai, WebSocketAdapter, FriendMessage, GroupMessage, At, Plain
 
 
-from plugins.cloudMusic import cccdddm
+from plugins.cloudMusic import cccdddm, musicDown
 
 
 def main(bot,logger):
     logger.warning("语音点歌 loaded")
+    global musicTask
+    musicTask={}
     @bot.on(GroupMessage)
     async def selectMusic(event: GroupMessage):
+        global musicTask
         if str(event.message_chain).startswith("点歌 "):
             musicName=str(event.message_chain).replace("点歌 ","")
             logger.info("点歌："+musicName)
@@ -31,6 +34,27 @@ def main(bot,logger):
                 if ffs==None:
                     await bot.send(event,"连接出错，或无对应歌曲")
                 else:
-                    await bot.send(event,Voice(path=ffs))
+                    musicTask[event.sender.id]=ffs
+                    print(ffs)
+                    t="请发送序号："
+                    i=0
+                    for sf in ffs:
+                        t=t+"\n"+str(i)+" "+sf[0]
+                        i+=1
+                    await bot.send(event,t,True)
             except:
                 await bot.send(event, "连接出错，或无对应歌曲")
+
+    @bot.on(GroupMessage)
+    async def select11Music(event: GroupMessage):
+        global musicTask
+        if event.sender.id in musicTask:
+            try:
+                ass=musicTask.get(event.sender.id)[int(str(event.message_chain))]
+                p=await musicDown(ass[1],ass[0])
+                logger.info("获取歌曲："+ass[0])
+                await bot.send(event,Voice(path=p))
+                musicTask.pop(event.sender.id)
+            except:
+                await bot.send("意外的参数，请输入想要点歌的数字")
+
