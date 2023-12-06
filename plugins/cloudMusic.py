@@ -23,7 +23,7 @@ async def cccdddm(musicname):
         newa=[]
         for i in r.json().get("result").get("songs"):
             newa.append([i.get("name"),i.get("id")])
-            if len(newa)>7:
+            if len(newa)>10:
                 return newa
         return newa
         #id=r.json().get("result").get("songs")[0]
