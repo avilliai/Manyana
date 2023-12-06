@@ -56,5 +56,5 @@ def main(bot,logger):
                 await bot.send(event,Voice(path=p))
                 musicTask.pop(event.sender.id)
             except:
-                await bot.send("意外的参数，请输入想要点歌的数字")
+                await bot.send(event,"意外的参数，请输入想要点歌的数字")
 
