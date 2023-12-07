@@ -714,8 +714,8 @@ def main(bot, master, cur_dir,apikey, chatGLM_api_key, proxy, logger):
             await bot.send(event, Voice(path=path))
         else:
             await bot.send(event, st1, True)
-        if len(st1) > 670:
-            await bot.send(event, "system:当前prompt过长，将不记录本次回复\n建议发送 /clearGLM 以清除聊天内容")
+        if len(st1) > 400:
+            await bot.send(event, "🐱‍💻回复可能存在异常\n请发送 /clearGLM 以清理当前聊天(无需艾特)",True)
             try:
                 prompt.remove(prompt[-1])
                 chatGLMData[event.sender.id]=prompt
