@@ -18,7 +18,7 @@ async def cccdddm(musicname):
     #print(r.text)
     async with httpx.AsyncClient(timeout=None,headers=get_headers()) as client:
         r = await client.post(url)
-        print(r.json().get("result").get("songs"))
+        #print(r.json().get("result").get("songs"))
         #print(r.json().get("result").get("songs")[0].get("id"))
         newa=[]
         for i in r.json().get("result").get("songs"):
