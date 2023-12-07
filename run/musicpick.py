@@ -14,7 +14,7 @@ import utils
 import yaml
 from mirai import Image, Voice
 from mirai import Mirai, WebSocketAdapter, FriendMessage, GroupMessage, At, Plain
-
+from mirai.models import MusicShare
 
 from plugins.cloudMusic import cccdddm, musicDown
 
@@ -51,9 +51,17 @@ def main(bot,logger):
         if event.sender.id in musicTask:
             try:
                 ass=musicTask.get(event.sender.id)[int(str(event.message_chain))]
-                p=await musicDown(ass[1],ass[0])
+                #p=await musicDown(ass[1],ass[0])
                 logger.info("获取歌曲："+ass[0])
-                await bot.send(event,Voice(path=p))
+                await bot.send(event, MusicShare(kind="NeteaseCloudMusic", title=ass[0],
+                                                                  summary=ass[0],
+                                                                  jump_url="http://music.163.com/song/media/outer/url?id=" + str(ass[1]) + ".mp3",
+                                                                  picture_url=ass[2],
+                                                                  music_url="http://music.163.com/song/media/outer/url?id=" + str(ass[1]) + ".mp3",
+                                                                  brief=ass[0]))
+
+
+                #await bot.send(event,Voice(path=p))
                 musicTask.pop(event.sender.id)
             except:
                 await bot.send(event,"意外的参数，请输入想要点歌的数字")

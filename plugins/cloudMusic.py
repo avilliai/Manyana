@@ -18,11 +18,11 @@ async def cccdddm(musicname):
     #print(r.text)
     async with httpx.AsyncClient(timeout=None,headers=get_headers()) as client:
         r = await client.post(url)
-        #print(r.json().get("result").get("songs"))
+        print(r.json().get("result").get("songs"))
         #print(r.json().get("result").get("songs")[0].get("id"))
         newa=[]
         for i in r.json().get("result").get("songs"):
-            newa.append([i.get("name"),i.get("id")])
+            newa.append([i.get("name"),i.get("id"),i.get("artists")[0].get("img1v1Url")])
             if len(newa)>10:
                 return newa
         return newa
@@ -60,5 +60,5 @@ async def convert_to_silk(media_path: str) -> str:
 
     return silk_path'''
 
-asyncio.run(cccdddm("iridescent"))
+#asyncio.run(cccdddm("iridescent"))
 # musicDown("http://music.163.com/song/media/outer/url?id=1940303073.mp3")
