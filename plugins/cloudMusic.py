@@ -9,7 +9,7 @@ from plugins.newsEveryDay import get_headers
 
 async def cccdddm(musicname):
     # 导入selenium库
-    url='https://music.163.com/api/search/get/web?csrf_token=hlpretag=&hlposttag=&s='+musicname+'&type=1&offset=1&total=true&limit=7'
+    url='https://music.163.com/api/search/get/web?csrf_token=hlpretag=&hlposttag=&s='+musicname+'&type=1&offset=1&total=true&limit=11'
     #DAT={'s': musicname,'offset': 1,'limit': 1,'type': 1}
     #url = "http://music.wandhi.com/?name=" + musicname + "&type=netease"
     #header=get_headers()
@@ -22,7 +22,7 @@ async def cccdddm(musicname):
         #print(r.json().get("result").get("songs")[0].get("id"))
         newa=[]
         for i in r.json().get("result").get("songs"):
-            newa.append([i.get("name"),i.get("id"),i.get("artists")[0].get("img1v1Url")])
+            newa.append([i.get("name"),i.get("id"),i.get("artists")[0].get("img1v1Url"),i.get("artists")[0].get("name")])
             if len(newa)>10:
                 return newa
         return newa

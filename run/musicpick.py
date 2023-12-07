@@ -39,7 +39,7 @@ def main(bot,logger):
                     t="请发送序号："
                     i=0
                     for sf in ffs:
-                        t=t+"\n"+str(i)+" "+sf[0]
+                        t=t+"\n"+str(i)+" "+sf[0]+" | "+sf[3]
                         i+=1
                     await bot.send(event,t,True)
             except:
@@ -54,11 +54,11 @@ def main(bot,logger):
                 #p=await musicDown(ass[1],ass[0])
                 logger.info("获取歌曲："+ass[0])
                 await bot.send(event, MusicShare(kind="NeteaseCloudMusic", title=ass[0],
-                                                                  summary=ass[0],
+                                                                  summary=ass[3],
                                                                   jump_url="http://music.163.com/song/media/outer/url?id=" + str(ass[1]) + ".mp3",
                                                                   picture_url=ass[2],
                                                                   music_url="http://music.163.com/song/media/outer/url?id=" + str(ass[1]) + ".mp3",
-                                                                  brief=ass[0]))
+                                                                  brief=ass[3]))
 
 
                 #await bot.send(event,Voice(path=p))
