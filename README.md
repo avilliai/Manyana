@@ -1,26 +1,20 @@
+
 <div align="center">
-   <img width="160" src="config/Manyana.jpg" alt="logo"></br>
+   <img src="https://socialify.git.ci/avilliai/Manyana/image?description=1&descriptionEditable=Based%20on%20Mirai%2C%20Versatile%2C%20easy%20to%20use&font=Rokkitt&forks=1&language=1&logo=https%3A%2F%2Fs2.loli.net%2F2023%2F12%2F08%2FJVkmicDZUrB8Ofs.jpg&name=1&owner=1&pattern=Circuit%20Board&pulls=1&stargazers=1&theme=Light" alt="logo"></br>
+</div>
+
 
 
 
 ----
+# 🎆鸣谢
 
-
-Manyana基于[Mirai框架](https://github.com/mamoe/mirai) ，使用了[YiriMirai](https://github.com/YiriMiraiProject/YiriMirai) 以进行更便捷的开发。
-
-封面图片来源于[stella](https://www.pixiv.net/artworks/109772665) ,很漂亮的ai绘画。
-
-Manyana指
-     <p>佛教中的末那识，它是介于意识(第六识)与阿赖耶识(第八识)之间的第七识</p>
-     <p>它是当下的感官经验与更本原性的阿赖耶识——一切现象的种子之间的桥梁。这很抽象所以我用它做了新项目的名字</p>
-
-</div>
-
-- 项目使用了CjangCjengh的[MoeGoe](https://github.com/CjangCjengh/MoeGoe) 以及他的语音模型
-- 项目使用了pengzhile的[pandora](https://github.com/pengzhile/pandora)
-- 项目使用了[MrXiaoM](https://github.com/MrXiaoM) 发布的插件 
-- 感谢[arona api](https://doc.arona.diyigemt.com/) 提供的blueArchive数据
-- 基于[Yiri-mirai](https://github.com/YiriMiraiProject/YiriMirai) 实现
+- [Mirai框架](https://github.com/mamoe/mirai)
+- [CjangCjengh-MoeGoe](https://github.com/CjangCjengh/MoeGoe) vits语音合成功能来源
+- [pandora-chatgpt](https://github.com/pengzhile/pandora)    好像已经没了
+- [MrXiaoM](https://github.com/MrXiaoM)      提供登陆解决方案
+- [arona api](https://doc.arona.diyigemt.com/)  提供blueArchive数据支持
+- [Yiri-mirai](https://github.com/YiriMiraiProject/YiriMirai)  很好的python sdk
 - 请确保已安装[fireFox浏览器](https://www.firefox.com.cn/)
 - 如果遇到使用问题，请在QQ群628763673反馈
 
@@ -30,7 +24,7 @@ Manyana指
 </div>
 
 ---
-# 部署
+# 🚀部署
 **请注意，为便于后续更新，请按照搭建教程进行，如下载源码压缩包进行部署操作不当将无法获取到更新**<br>
 ### dlc
 - [bert_vits2_sever](https://github.com/avilliai/Bert_Vits2_Sever)
@@ -69,14 +63,7 @@ git clone https://gitclone.com/github.com/avilliai/Manyana
 下面是一个填写示例实例
 {"botName": "Manyana", "botQQ": "1283992481", "master": "1840094972","mainGroup": "628763673", "vertify_key": "1234567890", "port": "23456"}
 ```
-# 启动bot
-Launcher内置了启动bot的功能，但实际上<br>**用Launcher启动与你手动依次启动下面三个部分是一样的**
-- qsign
-- miraibot/内存溢出用这个启动.cmd
-- Manyana/启动脚本.bat
-
-qsign和miraibot和你自己搭的qsign和Mirai并无区别
-# 可能遇到的问题
+# 🚑可能遇到的问题
 ## 内存不够用
 >服务器内存2G一般完全够用，但不排除你想整点其他的，导致内存可能不够用
 - 确保更新到了最新版Manyana
@@ -84,7 +71,7 @@ qsign和miraibot和你自己搭的qsign和Mirai并无区别
 - 重新启动bot
 
 ---
-# 功能
+# 🍩功能
 readme的更新并不及时，每次更新都重写readme太累了
 - 查看config文件夹下的几个help.png，它们是bot的菜单
 - 或搭建后在群内发送@bot 帮助 以查看功能列表
@@ -109,8 +96,11 @@ chatGLM 详情查看配置文件，将取代艾特回复
      取消密钥              #取消本群的密钥
      可用角色模板          #查看所有可用角色预设，需要填写setting.yaml
      设定#角色名           #设置特定角色回复
-/xh你好      #讯飞星火
-/wx你好      #文心一言
+/xh你好      #讯飞星火，无需配置
+/wx你好      #文心一言，无需配置
+/l你好       #无需配置的chatgpt3.5
+/y你好       #无需配置的chatgpt3.5
+/chat你好    #无需配置的chatgpt3.5
 /p[你的文本，不要带括号]    config/token.txt中填写你的token，获取方式见https://ai-20230626.fakeopen.com/auth
 /poe[你的文本，不要带括号]  你需要填写api.yaml中的内容，抓取方式看https://github.com/avilliai/Poe_QQ
 /rwkv[你的文本，不要带括号]    需要在本地部署rwkv模型，具体看https://www.bilibili.com/video/BV1hM4y1v76R/?vd_source=b41b8c06d400241b8d0badbe1f821ec9
@@ -153,24 +143,15 @@ xx日文yourText            #输入日文，输出日文
 ### 导入模型：
 在vits/voiceModel文件夹下新建一个文件夹放置.pth文件和config.json文件，重启main.py即可
 
-**注意，如果你的语音模型只支持一种语言，请将模型名称从XXX.ptj改为XXXI.pth**，以I.pth结尾是项目辨别此类模型的方式
+**注意，如果你的语音模型只支持一种语言，请将模型名称从XXX.ptj改为XXXI.pth**，以I.pth结尾是项目辨别此类模型的方式<br>
 ![img.png](data/pictures/img.png)
-## 信息查询
-### 碧蓝档案wiki
-```angular2html
+## 各种信息查询服务
+```
+/arona            #查看可查询项目，随后使用例如 /arona项目名来使用。
 ba查询[角色名]      # ba查询优香 查询一个角色信息
-```
-### 战双wiki
-```
 战双查询[角色名]
-```
-### 明日方舟wiki
-```
 方舟查询[角色名]
-```
-### 王者荣耀查战力/英雄
-```js
-王者荣耀查询
+王者荣耀查询[角色名]
 ```
 ### 历史上的今天
 ```
@@ -229,6 +210,10 @@ meme         #抽取一张meme图
 原神，启动       # 原神抽签
 @bot 诗经      #获取一篇诗经
 @bot 周易     #高科技算命
+/赌 3       #轮盘赌
+星铁十连
+方舟十连
+ba十连
 ```
 ## master指令
 ```
@@ -243,8 +228,7 @@ meme         #抽取一张meme图
 notice         # 群发通知用
 ```
 # 可选配置
-## 设置api_key
-打开config/api.yaml填写对应信息即可，有道必须填，其他的你随意。
+有关配置文件的填写，config文件夹每个yaml文件基本都有注释
 ## 戳一戳回复
 打开config/nudgeReply.yaml即可
 ```
@@ -265,29 +249,8 @@ prob: 9            #反击几率
 voiceReply: 50    # 戳一戳转语音几率
 
 ```
-## 自定义回复相关
-你可以对它进行修改，但一般建议使用默认设置
-```
-
-signTimes: 3    # 签到几天后可以邀请加群，需保持GroupSensor关闭
-GroupSensor: False    #开启后，将拒绝无授权群的加群邀请，signTimes将失效
-wReply:
-  banWords:       #违禁词
-  - 废物
-  - 主人
-  chineseVoiceRate: 30     #中文回复几率
-  replyRate: 3         #共有词库不艾特时的回复几率
-  groupLexicon: 100    #各群专有词库不艾特时的回复几率（调这个就行，没有匹配到时，根据replyRate调用共有词库进行回复）
-  sizhi: false          #是否启用思知ai
-  turnMessage: true    #是否开启私聊转发
-  voiceRate: 40        #语音回复几率，过高将增大设备负担
-  MaxAllowableLength: 7   #最大允许字符长度倍数,该参数为7时,如果字符串总长为关键字长度的7倍以上，则不进行匹配。如关键词是 早 ,可以匹配 早上好 ,不会匹配 我早就把作业做完了
-  AutoCreatLexicon: False #加群之后是否自动创建群专属词库(根据init.xlsx),常规的创建方式是 master发送 授权群#群号 或者有群员在群里发送 开始添加。如果你的群比较多(100以上，不建议开启，除非是广告机器人)
-
-
-
-```
 # 使用思知ai
+(现在更推荐用chatglm,具体申请看config/api.yaml)<br>
 这比我写的自定义回复更好用，推荐。release有对应的知识库(sizhi.rar)用以导入思知控制台
 - [登录并创建多个bot](https://console.ownthink.com/login)
 - ![img.png](data/autoReply/imageReply/sizhi1.png)
@@ -301,4 +264,6 @@ wReply:
 ![Star History Chart](https://api.star-history.com/svg?repos=avilliai/Manyana&type=Date)
 
 ## 快速克隆
-<a href='https://gitclone.com'><img src='https://gitclone.com/img/title.ico' style='width:300px;'/></a>
+<div>
+    <a href='https://gitclone.com'><img src='https://gitclone.com/img/title.ico' style='width:300px;'/></a>
+</div>
