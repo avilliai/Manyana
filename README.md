@@ -220,7 +220,6 @@ ba查询[角色名]      # ba查询优香 查询一个角色信息
 
 <details markdown='1'><summary>master指令</summary>
 
-建议在mcl的窗口输入一次/perm permit u1840094972 *:*  （把1840094972换成你自己的qq）
 ## master指令
 ```
 设定角色#角色名   #为语音功能设置一个默认的角色
