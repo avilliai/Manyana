@@ -262,7 +262,7 @@ ba十连
 - [ ] 能够白嫖的ai绘图
 </details>
 
-# 可选配置
+# 🧅可选配置
 有关配置文件的填写，config文件夹每个yaml文件基本都有注释
 ## 戳一戳回复
 打开config/nudgeReply.yaml即可
@@ -284,7 +284,7 @@ prob: 9            #反击几率
 voiceReply: 50    # 戳一戳转语音几率
 
 ```
-# 使用思知ai
+# 🎊使用思知ai
 (现在更推荐用chatglm,具体申请看config/api.yaml)<br>
 这比我写的自定义回复更好用，推荐。release有对应的知识库(sizhi.rar)用以导入思知控制台
 - [登录并创建多个bot](https://console.ownthink.com/login)
@@ -294,7 +294,7 @@ voiceReply: 50    # 戳一戳转语音几率
 - 点击上传txt文本，选择解压后的sizhi.rar中的任一个。每个创建的bot对应一个知识库，完成后点击训练。
 - 记录你所有的的Appid，回到Manyana/api.yaml，填入siZhiAi中
 - 在settings.yaml打开思知ai回复
-# 最后
+# 🎄最后
 如果觉得项目还不错的话给个star喵，给个star谢谢喵
 ![Star History Chart](https://api.star-history.com/svg?repos=avilliai/Manyana&type=Date)
 
