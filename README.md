@@ -75,7 +75,10 @@ git clone https://gitclone.com/github.com/avilliai/Manyana
 readme的更新并不及时，每次更新都重写readme太累了
 - 查看config文件夹下的几个help.png，它们是bot的菜单
 - 或搭建后在群内发送@bot 帮助 以查看功能列表
-## 图片相关
+
+
+<details markdown='1'><summary>图片相关</summary>
+
 ### 获取壁纸
 ```
 @bot [数量]张[tag]             #获取[数量]张标签为[tag]的图，可传r18参数但可能发不出    
@@ -89,9 +92,12 @@ ping[图片]
 ```
 搜图[图片]
 ```
-## ai回复
+</details>
+
+<details markdown='1'><summary>ai类功能</summary>
+
 ```
-chatGLM 详情查看配置文件，将取代艾特回复
+chatGLM 配置文件打开glmReply或trustglmReply，将取代艾特回复
      设置密钥#apiKey       #从https://open.bigmodel.cn/usercenter/apikeys复制apiKey
      取消密钥              #取消本群的密钥
      可用角色模板          #查看所有可用角色预设，需要填写setting.yaml
@@ -105,6 +111,11 @@ chatGLM 详情查看配置文件，将取代艾特回复
 /poe[你的文本，不要带括号]  你需要填写api.yaml中的内容，抓取方式看https://github.com/avilliai/Poe_QQ
 /rwkv[你的文本，不要带括号]    需要在本地部署rwkv模型，具体看https://www.bilibili.com/video/BV1hM4y1v76R/?vd_source=b41b8c06d400241b8d0badbe1f821ec9
 ```
+
+</details>
+
+<details markdown='1'><summary>自定义词库</summary>
+
 ## 自定义回复
 ```
 开始添加            #此指令用于开始词库添加，仅在当前群生效
@@ -131,6 +142,10 @@ nameXXX           #设定bot对你的特殊称谓为XXX，例如 name丁真珍�
 **总之就是所有群创建专有词库的时候，都是从init.xlsx复制, 而共有词库是bot在所有群通用的词库。**
 
 你可以添加语音回复，但回复本身就有一定几率转为语音回复。
+</details>
+
+<details markdown='1'><summary>vits语音合成</summary>
+
 ## vits语音合成
 使用sp查看所有可用角色，或@bot 可用角色
 ```
@@ -145,7 +160,11 @@ xx日文yourText            #输入日文，输出日文
 
 **注意，如果你的语音模型只支持一种语言，请将模型名称从XXX.ptj改为XXXI.pth**，以I.pth结尾是项目辨别此类模型的方式<br>
 ![img.png](data/pictures/img.png)
-## 各种信息查询服务
+</details>
+
+<details markdown='1'><summary>信息查询</summary>
+
+### 游戏攻略/游戏信息查询
 ```
 /arona            #查看可查询项目，随后使用例如 /arona项目名来使用。
 ba查询[角色名]      # ba查询优香 查询一个角色信息
@@ -173,8 +192,11 @@ ba查询[角色名]      # ba查询优香 查询一个角色信息
 ```
 @bot 天文
 ```
+</details>
 
-## 好友与加群管理
+<details markdown='1'><summary>群管与好友</summary>
+
+这部分可以操作config/settings.yaml
 ### 加好友与加群
 ```
 群内发送 签到     #跟随指引完成签到后大概一分钟后可添加好友，签到2天后可邀请bot加群
@@ -194,10 +216,27 @@ ba查询[角色名]      # ba查询优香 查询一个角色信息
 /moderate       #开启/关闭本群涩图审核
 /阈值50          #设置撤回阈值为50，越涩的图对应的数值越高。阈值越小越容易撤回图片
 ```
-## 定时任务
-```
+</details>
 
+<details markdown='1'><summary>master指令</summary>
+
+建议在mcl的窗口输入一次/perm permit u1840094972 *:*  （把1840094972换成你自己的qq）
+## master指令
 ```
+设定角色#角色名   #为语音功能设置一个默认的角色
+授权#qq号       #给一个用户授权(群内发送)
+授权群#群号      #授权群的同时会自动创建一个词库
+退群#群号       #退出指定群
+/bl add qq号   #拉黑一个用户
+/bl remove qq号   #取消拉黑
+/blgroup add 群号
+/blgroup remove 群号
+notice         # 群发通知用
+```
+</details>
+
+<details markdown='1'><summary>其他</summary>
+
 ## 小功能
 ```
 截图#url     #打开指定网页并截图
@@ -214,19 +253,15 @@ meme         #抽取一张meme图
 星铁十连
 方舟十连
 ba十连
+点歌 歌曲名
 ```
-## master指令
+</details>
+
+## 定时任务
 ```
-设定角色#角色名   #为语音功能设置一个默认的角色
-授权#qq号       #给一个用户授权(群内发送)
-授权群#群号      #授权群的同时会自动创建一个词库
-退群#群号       #退出指定群
-/bl add qq号   #拉黑一个用户
-/bl remove qq号   #取消拉黑
-/blgroup add 群号
-/blgroup remove 群号
-notice         # 群发通知用
+
 ```
+
 # 可选配置
 有关配置文件的填写，config文件夹每个yaml文件基本都有注释
 ## 戳一戳回复
