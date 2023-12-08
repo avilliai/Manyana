@@ -12,7 +12,7 @@
 - [Mirai框架](https://github.com/mamoe/mirai)
 - [CjangCjengh-MoeGoe](https://github.com/CjangCjengh/MoeGoe) vits语音合成功能来源
 - [pandora-chatgpt](https://github.com/pengzhile/pandora)    好像已经没了
-- [MrXiaoM](https://github.com/MrXiaoM)      提供登陆解决方案
+- [MrXiaoM](https://github.com/MrXiaoM)     你懂的
 - [arona api](https://doc.arona.diyigemt.com/)  提供blueArchive数据支持
 - [Yiri-mirai](https://github.com/YiriMiraiProject/YiriMirai)  很好的python sdk
 - 请确保已安装[fireFox浏览器](https://www.firefox.com.cn/)
