@@ -256,10 +256,11 @@ ba十连
 ```
 </details>
 
-## 定时任务
-```
+<details markdown='1'><summary>TODO</summary>
 
-```
+- [ ] 定时任务
+- [ ] 能够白嫖的ai绘图
+</details>
 
 # 可选配置
 有关配置文件的填写，config文件夹每个yaml文件基本都有注释
