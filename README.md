@@ -63,12 +63,6 @@ git clone https://gitclone.com/github.com/avilliai/Manyana
 下面是一个填写示例实例
 {"botName": "Manyana", "botQQ": "1283992481", "master": "1840094972","mainGroup": "628763673", "vertify_key": "1234567890", "port": "23456"}
 ```
-# 🚑可能遇到的问题
-## 内存不够用
->服务器内存2G一般完全够用，但不排除你想整点其他的，导致内存可能不够用
-- 确保更新到了最新版Manyana
-- 把vits文件夹中的所有内容(所有文件和文件夹)复制到Manyana根目录
-- 重新启动bot
 
 ---
 # 🍩功能
@@ -116,7 +110,6 @@ chatGLM 配置文件打开glmReply或trustglmReply，将取代艾特回复
 
 <details markdown='1'><summary>自定义词库</summary>
 
-## 自定义回复
 ```
 开始添加            #此指令用于开始词库添加，仅在当前群生效
 删除#关键词         #例如　删除#孙笑川   用于删除指定回复　
@@ -146,7 +139,6 @@ nameXXX           #设定bot对你的特殊称谓为XXX，例如 name丁真珍�
 
 <details markdown='1'><summary>vits语音合成</summary>
 
-## vits语音合成
 使用sp查看所有可用角色，或@bot 可用角色
 ```
 xx说 yourText             # 通过角色名，指定一个角色模型
@@ -155,7 +147,7 @@ xx日文yourText            #输入日文，输出日文
 设定角色#角色名             #指定一个默认语音合成角色
 你也可以不带角色名直接@bot 说 或者使用其他两个指令
 ```
-### 导入模型：
+#### 导入模型：
 在vits/voiceModel文件夹下新建一个文件夹放置.pth文件和config.json文件，重启main.py即可
 
 **注意，如果你的语音模型只支持一种语言，请将模型名称从XXX.ptj改为XXXI.pth**，以I.pth结尾是项目辨别此类模型的方式<br>
@@ -263,7 +255,9 @@ ba十连
 </details>
 
 # 🧅可选配置
-有关配置文件的填写，config文件夹每个yaml文件基本都有注释
+<details markdown='1'><summary>填写配置文件</summary>
+
+有关配置文件的填写，config文件夹每个yaml文件基本都有注释，每个yaml文件几乎都是可供修改的，这里给出部分文件的修改指引，以便于您能够更好的了解如何自定义你的bot
 ## 戳一戳回复
 打开config/nudgeReply.yaml即可
 ```
@@ -284,9 +278,21 @@ prob: 9            #反击几率
 voiceReply: 50    # 戳一戳转语音几率
 
 ```
-# 🎊使用思知ai
-(现在更推荐用chatglm,具体申请看config/api.yaml)<br>
-这比我写的自定义回复更好用，推荐。release有对应的知识库(sizhi.rar)用以导入思知控制台
+</details>
+
+<details markdown='1'><summary>使用ai回复替代词库回复</summary>
+
+> 使用chatglm或gpt3.5
+### chatglm 
+- 根据api.yaml的指引注册并获取apikey,填写进api.yaml中，价格还是比较便宜的注册送的18一般够用半年以上。 
+- 打开setting.yaml 填写chatglm相关配置项即可
+### gpt3.5
+- 无需配置apikey
+- 打开setting.yaml 填写luoyue或yuban的相关配置项即可
+
+### 思知ai
+> 这里是如何使用免费的思知ai进行回复的教程，效果不如上述ai回复
+>release有对应的知识库(sizhi.rar)用以导入思知控制台
 - [登录并创建多个bot](https://console.ownthink.com/login)
 - ![img.png](data/autoReply/imageReply/sizhi1.png)
 - 点击设置旁边的知识库，进入后如下
@@ -294,6 +300,20 @@ voiceReply: 50    # 戳一戳转语音几率
 - 点击上传txt文本，选择解压后的sizhi.rar中的任一个。每个创建的bot对应一个知识库，完成后点击训练。
 - 记录你所有的的Appid，回到Manyana/api.yaml，填入siZhiAi中
 - 在settings.yaml打开思知ai回复
+
+</details>
+
+# 🚑可能遇到的问题
+
+<details markdown='1'><summary>内存不够</summary>
+
+>服务器内存2G一般完全够用，但不排除你想整点其他的，导致内存可能不够用
+- 确保更新到了最新版Manyana
+- 把vits文件夹中的所有内容(所有文件和文件夹)复制到Manyana根目录
+- 重新启动bot
+
+</details>
+
 # 🎄最后
 如果觉得项目还不错的话给个star喵，给个star谢谢喵
 ![Star History Chart](https://api.star-history.com/svg?repos=avilliai/Manyana&type=Date)
