@@ -23,7 +23,7 @@
 ---
 # 🚀部署
 **请注意，为便于后续更新，请按照搭建教程进行，如下载源码压缩包进行部署操作不当将无法获取到更新**<br>
-哥们不是专业学程序设计的，如果你发现了bot存在一些我没有注意到的问题，或者有一些想法和建议请及时提issue🎃
+哥们不是学程序设计的，如果你发现了bot存在一些我没有注意到的问题，或者有一些想法和建议请及时提issue🎃
 ### dlc
 - [bert_vits2_sever](https://github.com/avilliai/Bert_Vits2_Sever)
   - 更强大的中文语音合成
@@ -32,7 +32,7 @@
 - [Cyumis](https://github.com/avilliai/Cyumis)
   - 基于官方api的版本，需要先在 https://q.qq.com/qqbot/#/developer/developer-setting 获取token和secret
 ## 方法1：搭建工具部署(推荐)
-**如果你觉得搭建bot过于困难，请使用此方案**
+**如果你觉得自己从零开始搭建bot比较困难，请使用此方案**
 - 从release下载ManyanaLauncher.rar并解压
 - 从release下载最新的launcher(一般命名为launcher_v114514.exe)
 - 用launcher_v114514.exe替换ManyanaLauncher/launcher.exe
