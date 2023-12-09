@@ -3,9 +3,6 @@
    <img src="https://socialify.git.ci/avilliai/Manyana/image?description=1&descriptionEditable=Based%20on%20Mirai%2C%20Versatile%2C%20easy%20to%20use&font=Rokkitt&forks=1&language=1&logo=https%3A%2F%2Fs2.loli.net%2F2023%2F12%2F08%2FJVkmicDZUrB8Ofs.jpg&name=1&owner=1&pattern=Circuit%20Board&pulls=1&stargazers=1&theme=Light" alt="logo"></br>
 </div>
 
-
-
-
 ----
 # 🎆鸣谢
 
@@ -26,6 +23,7 @@
 ---
 # 🚀部署
 **请注意，为便于后续更新，请按照搭建教程进行，如下载源码压缩包进行部署操作不当将无法获取到更新**<br>
+哥们不是专业学程序设计的，如果你发现了bot存在一些我没有注意到的问题，或者有一些想法和建议请及时提issue🎃
 ### dlc
 - [bert_vits2_sever](https://github.com/avilliai/Bert_Vits2_Sever)
   - 更强大的中文语音合成
@@ -254,10 +252,10 @@ ba十连
 - [ ] 能够白嫖的ai绘图
 </details>
 
-# 🧅可选配置
+# 🎲可选配置
 <details markdown='1'><summary>填写配置文件</summary>
 
-有关配置文件的填写，config文件夹每个yaml文件基本都有注释，每个yaml文件几乎都是可供修改的，这里给出部分文件的修改指引，以便于您能够更好的了解如何自定义你的bot
+有关配置文件的填写，config文件夹每个yaml文件基本都有注释，每个yaml文件几乎都是可供修改的，这里给出部分文件的修改指引，以便于您能够更好的了解如何自定义您的的bot
 ## 戳一戳回复
 打开config/nudgeReply.yaml即可
 ```
@@ -310,7 +308,7 @@ voiceReply: 50    # 戳一戳转语音几率
 >服务器内存2G一般完全够用，但不排除你想整点其他的，导致内存可能不够用
 - 确保更新到了最新版Manyana
 - 把vits文件夹中的所有内容(所有文件和文件夹)复制到Manyana根目录
-- 重新启动bot
+- 重新启动bot即可
 
 </details>
 
