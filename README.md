@@ -34,8 +34,7 @@
 ## 方法1：搭建工具部署(推荐)
 **如果你觉得自己从零开始搭建bot比较困难，请使用此方案**
 - 从release下载ManyanaLauncher.rar并解压
-- 从release下载最新的launcher(一般命名为launcher_v114514.exe)
-- 用launcher_v114514.exe替换ManyanaLauncher/launcher.exe
+- 双击launcher.exe
 - 从release下载HowToUse.mp4，如有疑问参考视频即可
 ## 方法2：自行部署(如果你有一定bot搭建经验)
 - 请确保py版本为3.9
@@ -67,6 +66,7 @@ git clone https://gitclone.com/github.com/avilliai/Manyana
 readme的更新并不及时，每次更新都重写readme太累了
 - 查看config文件夹下的几个help.png，它们是bot的菜单
 - 或搭建后在群内发送@bot 帮助 以查看功能列表
+  (plugins文件夹内的函数基本都可以单独拿出去用)
 
 
 <details markdown='1'><summary>图片相关</summary>
@@ -309,6 +309,9 @@ voiceReply: 50    # 戳一戳转语音几率
 - 确保更新到了最新版Manyana
 - 把vits文件夹中的所有内容(所有文件和文件夹)复制到Manyana根目录
 - 重新启动bot即可
+>launcher启动的时候支持指定内存
+- 你回车就是512mb
+- 可以调小，mirai不用这么多
 
 </details>
 
