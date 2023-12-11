@@ -13,7 +13,7 @@
 - [arona api](https://doc.arona.diyigemt.com/)  提供blueArchive数据支持
 - [Yiri-mirai](https://github.com/YiriMiraiProject/YiriMirai)  很好的python sdk
 - [stella](https://www.pixiv.net/artworks/109772665)
-- [fireFox浏览器](https://www.firefox.com.cn/) 部分查询功能需要，不用的话可以不装
+- 部分查询功能需要[fireFox浏览器](https://www.firefox.com.cn/) ，不用的话可以不装
 - 如果遇到使用问题，请在QQ群628763673反馈
 
 
@@ -159,8 +159,8 @@ xx日文yourText            #输入日文，输出日文
 ```
 /arona            #查看可查询项目，随后使用例如 /arona项目名来使用。
 ba查询[角色名]      # ba查询优香 查询一个角色信息
-战双查询[角色名]
-方舟查询[角色名]
+战双查询[角色名]    需要[fireFox浏览器](https://www.firefox.com.cn/)
+方舟查询[角色名]    需要[fireFox浏览器](https://www.firefox.com.cn/)
 王者荣耀查询[角色名]
 ```
 ### 历史上的今天
