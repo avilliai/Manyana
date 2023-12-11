@@ -13,7 +13,7 @@
 - [arona api](https://doc.arona.diyigemt.com/)  提供blueArchive数据支持
 - [Yiri-mirai](https://github.com/YiriMiraiProject/YiriMirai)  很好的python sdk
 - [stella](https://www.pixiv.net/artworks/109772665)
-- [fireFox浏览器](https://www.firefox.com.cn/) 部分查询部分需要，不用的话可以不装
+- [fireFox浏览器](https://www.firefox.com.cn/) 部分查询功能需要，不用的话可以不装
 - 如果遇到使用问题，请在QQ群628763673反馈
 
 
