@@ -293,18 +293,20 @@ def main(bot,config,sizhiKey,app_id, app_key,logger):
                     #outPutDic(str(event.group.id))
 
     @bot.on(GroupMessage)
-    async def init(event: GroupMessage):
+    async def initee(event: GroupMessage):
         global process1
+        global superDict
         if event.sender.id in process1 and str(event.message_chain) == "over":
             process1.pop(event.sender.id)
             await bot.send(event,"结束添加")
             logger.info("读取词库文件中")
+
+            logger.info("读取完成，正在更新词库")
             importDict()
-            logger.info("读取完成")
+            await sleep(3)
             file = open('config/superDict.txt', 'r')
             jss = file.read()
             file.close()
-            global superDict
             superDict = json.loads(jss)
 
 
@@ -312,7 +314,7 @@ def main(bot,config,sizhiKey,app_id, app_key,logger):
     # 模糊词库触发回复
     @bot.on(GroupMessage)
     async def mohu(event: GroupMessage):
-        global superDict,botName,likeindex,temp,sizhi,transLateData,trustuser,chatGLMapikeys,chatGLMsingelUserKey
+        global botName,likeindex,temp,sizhi,transLateData,trustuser,chatGLMapikeys,chatGLMsingelUserKey
         if True:
             if At(bot.qq) in event.message_chain:
                 if gptReply==True or glmReply==True or yubanGPT==True or (trustglmReply==True and str(event.sender.id) in trustUser):
@@ -391,6 +393,7 @@ def main(bot,config,sizhiKey,app_id, app_key,logger):
                                     continue
                     #专有词库没有匹配到，匹配共有词库
                     if lock==0:
+                        #logger.error("专有词库匹配失败，无匹配词")
                         keys2 = superDict.get("publicLexicon").keys()
                         lock1 = 0
                         lenth1 = 0
@@ -507,7 +510,6 @@ def main(bot,config,sizhiKey,app_id, app_key,logger):
     # 取消注释开放私聊
     @bot.on(FriendMessage)
     async def mohu(event: FriendMessage):
-        global superDict
         global botName
         global sizhi
         global chatGLMsingelUserKey
