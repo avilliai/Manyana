@@ -55,7 +55,7 @@ def main(bot,master,botName,logger):
             sender[str(event.sender.id)]=temp
 
 
-            await bot.send(event,"请依次发送留言和音乐链接哦.....")
+            await bot.send(event,"请依次发送留言和从平台分享的音乐卡片(推荐网易云).....")
             await bot.send_friend_message(int(master),"有新的点歌任务")
 
     @bot.on(FriendMessage)
@@ -187,7 +187,7 @@ def main(bot,master,botName,logger):
         for i in severGroups:
             intTrans = int(i)
 
-            await sleep(3)
+            await sleep(9)
 
             file = open('data/music/music.txt', 'r')
             js = file.read()
