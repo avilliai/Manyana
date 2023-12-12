@@ -355,6 +355,9 @@ def main(bot,config,sizhiKey,app_id, app_key,logger):
                     replyssssss=answer.get("data").get("info").get("text")
 
             else:
+                global process1
+                if event.sender.id in process1:
+                    return
                 #筛选，不是艾特bot就不匹配
                 if event.message_chain.count(At) and At(bot.qq) not in event.message_chain :
                     return
