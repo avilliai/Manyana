@@ -239,7 +239,11 @@ def main(bot,config,sizhiKey,app_id, app_key,logger):
                 process1[event.sender.id] = {"process": 2, "mohukey": str(event.message_chain),
                                              "groupId": event.group.id,"global":True}
             else:
-                process1[event.sender.id] = {"process": 2, "mohukey": str(event.message_chain),"groupId":event.group.id}
+                if event.message_chain.count(Image)==1:
+                    keyyyyyy=event.message_chain.get(Image)[0].image_id
+                else:
+                    keyyyyyy=str(event.message_chain)
+                process1[event.sender.id] = {"process": 2, "mohukey": keyyyyyy,"groupId":event.group.id}
 
 
     @bot.on(GroupMessage)
@@ -324,7 +328,10 @@ def main(bot,config,sizhiKey,app_id, app_key,logger):
                         return
                 getStr = str(event.message_chain).replace("@"+str(bot.qq)+" ", '')
             else:
-                getStr = str(event.message_chain)
+                if event.message_chain.count(Image)==1:
+                    getStr=event.message_chain.get(Image)[0].image_id
+                else:
+                    getStr = str(event.message_chain)
 
             if sizhi==True and At(bot.qq) in event.message_chain:
 
@@ -370,9 +377,10 @@ def main(bot,config,sizhiKey,app_id, app_key,logger):
                         match = re.search(pattern, getStr)
                         if match:
                             logger.warning("成功匹配正则表达式：" + pattern)
-                            if len(getStr)>len(pat)*MaxAllowableLength:
-                                logger.warning("源字符总长过长，为提高匹配准确度不进行匹配")
-                                continue
+                            if event.message_chain.count(Image) != 1:
+                                if len(getStr)>len(pat)*MaxAllowableLength:
+                                    logger.warning("源字符总长过长，为提高匹配准确度不进行匹配")
+                                    continue
                             if len(pat)>lenth1:
                                 lenth1=len(pat)
                                 try:
