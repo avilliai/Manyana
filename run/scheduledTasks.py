@@ -140,7 +140,7 @@ def main(bot,proxy,nasa_api,app_id,app_key,logger):
                 yaml.dump(data, file, allow_unicode=True)
             await bot.send(event,"添加订阅成功，推送时间："+str(data.get(key).get("time")))
         else:
-            await bot.send(event,"添加失败，已经添加过对应的任务")
+            await bot.send(event,"添加失败，已经添加过对应的任务。")
     @bot.on(GroupMessage)
     async def cancelSubds(event: GroupMessage):
         global data
