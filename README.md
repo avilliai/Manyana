@@ -24,6 +24,16 @@
 ---
 # 🚀部署
 **请注意，为便于后续更新，请按照搭建教程进行，如下载源码压缩包进行部署操作不当将无法获取到更新**<br>
+
+<details markdown='1'><summary>git太慢，不得不用源码压缩包，如何确保对接更新？</summary>
+如果你确实用的是下载源码压缩包的方式还想要获取更新，解压后不要做任何修改，执行一次setUp.py的 绑定远程仓库，否则将无法通过 更新脚本 更新
+
+</details>
+<details markdown='1'><summary>镜像源无法更新</summary>
+镜像源似乎都是断头饭，没法更新
+
+</details>
+
 哥们不是学程序设计的，如果你发现了bot存在一些我没有注意到的问题，或者有对项目的建议请及时提issue🎃
 ### dlc
 - [bert_vits2_sever](https://github.com/avilliai/Bert_Vits2_Sever)
