@@ -376,15 +376,18 @@ def main(bot,api_KEY,app_id,app_key,nasa_api,proxy,logger):
             await bot.send(event, Image(path=p),True)
     @bot.on(GroupMessage)
     async def jiangzhuang(event:GroupMessage):
-        if str(event.message_chain).startswith("/奖状"):
+        if str(event.message_chain).startswith("/奖状") or str(event.message_chain).startswith("/证书"):
             try:
                 t=str(event.message_chain)[3:].split("#")
-                url="https://api.pearktrue.cn/api/certcommend/?name="+t[0]+"&title="+t[1]+"&classname="+t[2]
-
+                if str(event.message_chain).startswith("/奖状"):
+                    url="https://api.pearktrue.cn/api/certcommend/?name="+t[0]+"&title="+t[1]+"&classname="+t[2]
+                else:
+                    url="https://api.pearktrue.cn/api/certificate/?name="+t[0]+"&title="+t[1]+"&text="+t[2]
                 p=await sd(url,"data/pictures/cache/"+random_str()+".png")
                 await bot.send(event,Image(path=p))
             except:
-                await bot.send(event,"出错，格式请按照/奖状 孙笑川#天皇#阳光小学一年级2班")
+                await bot.send(event,"出错，格式请按照/奖状(或证书) name#title#text")
+
     @bot.on(GroupMessage)
     async def jiangzhuang(event:GroupMessage):
         if str(event.message_chain).startswith("/ba ") and "#" in str(event.message_chain):
