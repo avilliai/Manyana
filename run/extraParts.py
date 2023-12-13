@@ -24,7 +24,7 @@ from plugins.arkOperator import arkOperator
 from plugins.cpGenerate import get_cp_mesg
 from plugins.gacha import arkGacha, starRailGacha, bbbgacha
 from plugins.genshinGo import genshinDraw, qianCao
-from plugins.historicalToday import hisToday
+from plugins.historicalToday import hisToday, steamEpic
 from plugins.imgDownload import dict_download_img
 from plugins.jokeMaker import get_joke
 
@@ -258,7 +258,7 @@ def main(bot,api_KEY,app_id,app_key,nasa_api,proxy,logger):
     async def NasaHelper(event: GroupMessage):
         global data
         if At(bot.qq) in event.message_chain and "天文" in str(event.message_chain):
-            logger.info(str(data.keys()))
+            #logger.info(str(data.keys()))
             if datetime.datetime.now().strftime('%Y-%m-%d') in data.keys():
                 todayNasa=data.get(datetime.datetime.now().strftime('%Y-%m-%d'))
                 path=todayNasa.get("path")
@@ -432,3 +432,17 @@ def main(bot,api_KEY,app_id,app_key,nasa_api,proxy,logger):
             except:
                 logger.error("碧批衮")
                 await bot.send(event,"获取抽卡结果失败，请稍后再试")
+
+    @bot.on(GroupMessage)
+    async def moyuToday(event: GroupMessage):
+        if ("喜加一" in str(event.message_chain) and At(bot.qq) in event.message_chain) or str(
+                event.message_chain) == "喜加一":
+            logger.info("获取喜加一结果")
+            try:
+                path = await steamEpic()
+                logger.info("获取喜加一结果")
+                await bot.send(event, path, True)
+            except:
+                logger.error("衮")
+                await bot.send(event, "获取喜加一结果失败，请稍后再试")
+
