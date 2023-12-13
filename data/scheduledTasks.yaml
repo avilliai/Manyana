@@ -3,23 +3,23 @@ astronomy:
   - 699455559
   text: 今日nasa天文推送
   time: 18/30
-constellation:
+constellation:         #星座推送任务
   groups:
   - 699455559
-  text: 星座运势更新
+  text: 杂鱼怎么还信星座这种东西啊
   time: 16/30
-moyu:
+moyu:                 #摸鱼人日历
   groups:
   - 699455559
-  text: 你今天摸鱼了吗
+  text: 真没用啊，又在摸鱼了吧，杂鱼❤
   time: 17/30
-news:
+news:                #新闻
   groups:
   - 699455559
-  text: 早上好，这里是今天的新闻
+  text: 早上好杂鱼❤，这里是今天的新闻
   time: 8/2
-steamadd1:
-  groups:
+steamadd1:         #喜加一
+  groups: 杂鱼❤来白嫖游戏了
   - 699455559
-  text: 今日喜加一
+  text:
   time: 12/2

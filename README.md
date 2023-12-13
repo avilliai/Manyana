@@ -257,7 +257,7 @@ ba十连
 <details markdown='1'><summary>填写配置文件</summary>
 
 有关配置文件的填写，config文件夹每个yaml文件基本都有注释，每个yaml文件几乎都是可供修改的，这里给出部分文件的修改指引，以便于您能够更好的了解如何自定义您的的bot
-## 戳一戳回复
+#### 戳一戳回复
 打开config/nudgeReply.yaml即可
 ```
 BeatNudge:         #戳一戳反击的第一条消息
@@ -276,6 +276,14 @@ nudgedReply:        #正常戳一戳的回复
 prob: 9            #反击几率
 voiceReply: 50    # 戳一戳转语音几率
 
+```
+#### 定时任务配置
+```
+news:
+  groups:                           #推送任务的群
+  - 699455559                          
+  text: 早上好，这里是今天的新闻            #推送时的附带信息
+  time: 8/2                             #定时任务的时间，这里意为8:02,写作8/2
 ```
 </details>
 
