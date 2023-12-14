@@ -257,9 +257,25 @@ ba十连
 ```
 </details>
 
+<details markdown='1'><summary>定时任务推送</summary>
+
+```
+- /推送 摸鱼人日历
+- /推送 每日天文
+- /推送 每日新闻
+- /推送 喜加一
+- /推送 每日星座
+- '=========='
+- /取消 摸鱼人日历
+- /取消 每日天文
+- /取消 每日新闻
+- /取消 喜加一
+- /取消 每日星座
+```
+</details>
+
 <details markdown='1'><summary>TODO</summary>
 
-- [ ] 定时任务
 - [ ] 能够白嫖的ai绘图
 </details>
 
