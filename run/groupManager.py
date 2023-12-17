@@ -131,7 +131,7 @@ def main(bot,config,moderateKey,logger):
         men = event.member.id
         opn = 123
         text = random.choice(welcome.get("quitGroup").get("quitMessage"))
-        await seeeeeee(bot, men, opn, text, event.member.group.id)
+        await seeeeeee(bot, men, opn, text, event.member.id)
         #await bot.send_group_message(int(json.loads(event.json()).get("member").get("group").get("id")), .replace("%主动%", str(event.member.member_name)))
 
     #bot被踢出群聊
@@ -705,4 +705,7 @@ def main(bot,config,moderateKey,logger):
                     ta.remove("")
             p += 1
         #print(ta)
-        await bot.send_group_message(groupid,ta)
+        try:
+            await bot.send_group_message(groupid,ta)
+        except:
+            logger.error("群事件监听出错，不影响运行，请忽略")
