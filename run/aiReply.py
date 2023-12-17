@@ -710,10 +710,13 @@ def main(bot, master, apikey, chatGLM_api_key, proxy, logger,berturl):
             #print(path)
             st8 = re.sub(r"（[^）]*）", "", st1)  # 使用r前缀表示原始字符串，避免转义字符的问题
             data1["text"] = st8
-            path=await taffySayTest(data1,berturl,proxy)
-            await bot.send(event, Voice(path=path))
-            if withText==True:
-                await bot.send(event,st1)
+            try:
+                path=await taffySayTest(data1,berturl,proxy)
+                await bot.send(event, Voice(path=path))
+                if withText==True:
+                    await bot.send(event,st1)
+            except:
+                await bot.send(event, st1)
         else:
             await bot.send(event, st1, True)
         if len(st1) > 400:
