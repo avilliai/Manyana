@@ -6,14 +6,36 @@ from asyncio import sleep
 
 import httpx
 
+from plugins.RandomStr import random_str
 from plugins.newLogger import newLogger
 
-async def taffySayTest(data):
-    url = "http://localhost:9080/synthesize"  # 后端服务的地址
-    # 请求参数
-    async with httpx.AsyncClient(timeout=200) as client:
-        await client.post(url, json=json.dumps(data))
+async def taffySayTest(data,url,proxy=None):
+    if url=='':
+        url = "http://localhost:9080/synthesize"  # 后端服务的地址
+        async with httpx.AsyncClient(timeout=200) as client:
+            r = await client.post(url, json=json.dumps(data))
+            p = "data/voices/" + random_str() + '.wav'
+            with open(p, "wb") as f:
+                f.write(r.content)
+            return p
+    else:
+        if str(url).endswith("/synthesize"):
+            pass
+        else:
+            url+="/synthesize"
+        proxies = {
+            "http://": proxy,
+            "https://": proxy
+        }
+        # 请求参数
 
+        async with httpx.AsyncClient(timeout=200,proxies=proxies) as client:
+            r=await client.post(url, json=json.dumps(data))
+            p="data/voices/"+random_str()+'.wav'
+            print(p)
+            with open(p, "wb") as f:
+                f.write(r.content)
+            return p
 async def voiceGenerate(data):
     # 向本地 API 发送 POST 请求
     if "MoeGoe.py" in os.listdir():

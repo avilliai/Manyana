@@ -21,19 +21,19 @@ from plugins.translater import translate
 from plugins.vitsGenerate import voiceGenerate, taffySayTest
 
 
-def main(bot,curdir,logger):
+def main(bot,logger,berturl,proxy):
     logger.info("bert_vits语音合成用户端启动....")
-    with open('config/bert_vits2.yaml', 'r', encoding='utf-8') as f:
+    with open('config/settings.yaml', 'r', encoding='utf-8') as f:
         result = yaml.load(f.read(), Loader=yaml.FullLoader)
+    spe=result.get("bert_speakers")
 
     @bot.on(GroupMessage)
     async def taffySay(event:GroupMessage):
 
-        if "说" in str(event.message_chain) and str(event.message_chain).split("说")[0] in result.keys():
-            data=result.get(str(event.message_chain).split("说")[0])
-            path=curdir.replace("\\","/")+ "/data/voices/"+random_str()+".wav"
-            print(path)
+        if "说" in str(event.message_chain) and str(event.message_chain).split("说")[0] in spe:
+            data={}
+
+            data["speaker"]=str(event.message_chain).split("说")[0]
             data["text"]=str(event.message_chain).replace(str(event.message_chain).split("说")[0]+"说","")
-            data["out"]=path
-            await taffySayTest(data)
+            path=await taffySayTest(data,berturl,proxy)
             await bot.send(event,Voice(path=path))

@@ -34,7 +34,7 @@ class CListen(threading.Thread):
         asyncio.set_event_loop(self.mLoop)  # 在新线程中开启一个事件循环
 
         self.mLoop.run_forever()
-def main(bot, master, cur_dir,apikey, chatGLM_api_key, proxy, logger):
+def main(bot, master, cur_dir,apikey, chatGLM_api_key, proxy, logger,berturl):
     #读取个性化角色设定
     with open('data/chatGLMCharacters.yaml', 'r', encoding='utf-8') as f:
         result2223 = yaml.load(f.read(), Loader=yaml.FullLoader)
@@ -702,15 +702,12 @@ def main(bot, master, cur_dir,apikey, chatGLM_api_key, proxy, logger):
         #print(result)
         st11 = st1.replace(setName, "指挥")
         if len(st1)<maxTextLen and random.randint(0,100)<voiceRate:
-            with open('config/bert_vits2.yaml', 'r', encoding='utf-8') as f:
-                result = yaml.load(f.read(), Loader=yaml.FullLoader)
-            data1=result.get(speaker)
+            data1={}
+            data1['speaker']=speaker
             logger.info("调用bert_vits语音回复")
-            path = cur_dir.replace("\\", "/") + "/data/voices/" + random_str() + ".wav"
-            print(path)
+            #print(path)
             data1["text"] = st1
-            data1["out"] = path
-            await taffySayTest(data1)
+            path=await taffySayTest(data1,berturl,proxy)
             await bot.send(event, Voice(path=path))
         else:
             await bot.send(event, st1, True)

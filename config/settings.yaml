@@ -16,7 +16,13 @@ blueArchiveGacha:
   2starUp: 花子 #二星up
   2up: 30    #二星up出率
 
-
+#bert_vits2语音合成配置
+#根据 bert_vits_sever/characters.yaml填写所有可用的speakers，不填对应的speaker则无法通过Manyana调用
+bert_speakers:
+  - 塔菲
+  - 东雪莲
+  - otto
+  - 阿梓
 #下面是所有可用的，回复功能设置，请自行调整。
 #请注意,全局回复的优先级设计上，pandora>luoyue>yuban>chatGLM>wReply，建议luoyueGPT,yubanGPT、gptReply、glmReply只开一个，不要全部保持开启。
 
@@ -39,11 +45,11 @@ chatGLM:
   glmReply: False          #开放群聊chatglm，chatglm替代原有词库，开启后，bot被艾特将全局优先使用chatglm回复
   privateGlmReply: false   #开放私聊chatglm
   trustglmReply: False        #开启后仅【信任用户】可用
-  context: True         #chatGLM上下文模式，开启后将加速消耗token，不是富哥不建议开
+  context: True         #chatGLM上下文模式，开启后将加速消耗token
   maxPrompt: 10              #上下文模式开启时，最多记录的问答数量，默认10，即记录5对问答
   maxLen: 40    #语音合成最大长度限制，超出则返回文本。
   voiceRate: 0 #语音回复几率
-  speaker: "塔菲"     #config/bert_vits2.yaml里面的角色名
+  speaker: "塔菲"     #bert_vits语音合成默认角色里面的角色名
   bot_info:              #chatGLM角色设定
     default:
       user_info: "指挥是yucca最喜欢的人"
