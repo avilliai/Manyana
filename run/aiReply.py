@@ -2,6 +2,7 @@
 import asyncio
 import json
 import random
+import re
 import uuid
 from asyncio import sleep
 
@@ -82,6 +83,7 @@ def main(bot, master, apikey, chatGLM_api_key, proxy, logger,berturl):
     maxTextLen = result.get("chatGLM").get("maxLen")
     voiceRate = result.get("chatGLM").get("voiceRate")
     speaker = result.get("chatGLM").get("speaker")
+    withText=result.get("chatGLM").get("withText")
     yubanGPT = result.get("yuban").get("yubanGPT")
     luoyueGPT=result.get("luoyue").get("luoyue")
     roleSet=result.get("yuban").get("roleSet")
@@ -706,9 +708,12 @@ def main(bot, master, apikey, chatGLM_api_key, proxy, logger,berturl):
             data1['speaker']=speaker
             logger.info("调用bert_vits语音回复")
             #print(path)
-            data1["text"] = st1
+            st8 = re.sub(r"（[^）]*）", "", st1)  # 使用r前缀表示原始字符串，避免转义字符的问题
+            data1["text"] = st8
             path=await taffySayTest(data1,berturl,proxy)
             await bot.send(event, Voice(path=path))
+            if withText==True:
+                await bot.send(event,st1)
         else:
             await bot.send(event, st1, True)
         if len(st1) > 400:

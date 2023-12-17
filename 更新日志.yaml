@@ -91,3 +91,9 @@
   - /取消 每日新闻
   - /取消 喜加一
   - /取消 每日星座
+2023/12/17:
+  - bert_vits_sever colab部署，不占用本地gpu，实现更好的中文语音合成
+  - https://colab.research.google.com/drive/1n8lI6pOiDtli2zC5fL9PZ9TZqbOafqma?usp=sharing
+  - 此功能需要代理
+  - 请填写config/api.yaml中的bert_colab
+  - 请配置config/settings.yaml中chatglm功能语音合成相关配置项
