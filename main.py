@@ -39,6 +39,7 @@ if __name__ == '__main__':
     app_key=result.get("youdao").get("app_key")#有道翻译api
     sizhiKey=result.get("siZhiAi")
     proxy=result.get("proxy")
+    berturl=result.get("bert_colab")
     moderate=result.get("moderate")
     nasa_api=result.get("nasa_api")
     chatglm=result.get("chatGLM")
@@ -198,7 +199,7 @@ if __name__ == '__main__':
     if proxy != "":
         try:
             # logger.info("开发过程中暂不启动poe-api")
-            aiReply.main(bot, master, current_dir,result.get("poe-api"),chatglm, result.get("proxy"), logger)  # poe-api
+            aiReply.main(bot, master, current_dir,result.get("poe-api"),chatglm, result.get("proxy"), logger,berturl)  # poe-api
         except:
             logger.error("poe-api启动失败")
         imgSearch.main(bot, result.get("sauceno-api"), result.get("proxy"), logger)
@@ -213,7 +214,7 @@ if __name__ == '__main__':
     PicRandom.main(bot, proxy, logger)
     musicShare.main(bot, master, botName, logger)
     LiveMonitor.main(bot, master, botName, logger)
-    bertVits2.main(bot, current_dir, logger)
+    bertVits2.main(bot,  logger,berturl,proxy)
     aronaapi.main(bot,logger)
     scheduledTasks.main(bot,proxy,nasa_api,app_id,app_key,logger)
     groupGames.main(bot,logger)
