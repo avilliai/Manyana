@@ -15,6 +15,7 @@ async def taffySayTest(data,url,proxy=None):
         async with httpx.AsyncClient(timeout=200) as client:
             r = await client.post(url, json=json.dumps(data))
             p = "data/voices/" + random_str() + '.wav'
+            print("bert_vits语音合成路径：" + p)
             with open(p, "wb") as f:
                 f.write(r.content)
             return p
@@ -32,7 +33,7 @@ async def taffySayTest(data,url,proxy=None):
         async with httpx.AsyncClient(timeout=200,proxies=proxies) as client:
             r=await client.post(url, json=json.dumps(data))
             p="data/voices/"+random_str()+'.wav'
-            print(p)
+            print("bert_vits语音合成路径："+p)
             with open(p, "wb") as f:
                 f.write(r.content)
             return p
