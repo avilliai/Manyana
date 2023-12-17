@@ -28,10 +28,12 @@ def main(bot,master,app_id,app_key,logger):
 
     with open('config/nudgeReply.yaml', 'r', encoding='utf-8') as f:
         result = yaml.load(f.read(), Loader=yaml.FullLoader)
+    with open('config/autoSettings.yaml', 'r', encoding='utf-8') as f:
+        result2 = yaml.load(f.read(), Loader=yaml.FullLoader)
     global modelSelect
     global speaker
-    speaker = result.get("defaultModel").get("speaker")
-    modelSelect = result.get("defaultModel").get("modelSelect")
+    speaker = result2.get("defaultModel").get("speaker")
+    modelSelect = result2.get("defaultModel").get("modelSelect")
 
     global models
     global characters

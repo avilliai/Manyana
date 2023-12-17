@@ -123,11 +123,12 @@ def main(bot,config,sizhiKey,app_id, app_key,logger):
 
     with open('config/nudgeReply.yaml', 'r', encoding='utf-8') as f:
         result232 = yaml.load(f.read(), Loader=yaml.FullLoader)
-
+    with open('config/autoSettings.yaml', 'r', encoding='utf-8') as f:
+        resulte = yaml.load(f.read(), Loader=yaml.FullLoader)
     global modelSelect
     global speaker
-    speaker = result232.get("defaultModel").get("speaker")
-    modelSelect = result232.get("defaultModel").get("modelSelect")
+    speaker = resulte.get("defaultModel").get("speaker")
+    modelSelect = resulte.get("defaultModel").get("modelSelect")
 
     logger.info("当前语音模型设定："+str(speaker)+"\n模型"+str(modelSelect))
     global models
