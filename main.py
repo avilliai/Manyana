@@ -194,12 +194,12 @@ if __name__ == '__main__':
         print(all_the_text)
 
 
-    current_dir = os.path.dirname(os.path.abspath(__file__))
+    #current_dir = os.path.dirname(os.path.abspath(__file__))
     voiceReply.main(bot, master, app_id, app_key, logger)  # 语音生成
     if proxy != "":
         try:
             # logger.info("开发过程中暂不启动poe-api")
-            aiReply.main(bot, master, current_dir,result.get("poe-api"),chatglm, result.get("proxy"), logger,berturl)  # poe-api
+            aiReply.main(bot, master,result.get("poe-api"),chatglm, result.get("proxy"), logger,berturl)  # poe-api
         except:
             logger.error("poe-api启动失败")
         imgSearch.main(bot, result.get("sauceno-api"), result.get("proxy"), logger)
