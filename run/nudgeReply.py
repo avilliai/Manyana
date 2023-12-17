@@ -124,11 +124,11 @@ def main(bot,master,app_id,app_key,logger,berturl,proxy):
                           # 使用r前缀表示原始字符串，避免转义字符的问题
                         try:
                             path = await taffySayTest(daf, berturl, proxy)
-                            await bot.send(event, Voice(path=path))
+                            await bot.send_group_message(event.subject.id, Voice(path=path))
                             if withText == True:
-                                await bot.send(event, rep)
+                                await bot.send_group_message(event.subject.id,  rep)
                         except:
-                            await bot.send(event, rep)
+                            await bot.send_group_message(event.subject.id,  rep)
 
 
 
