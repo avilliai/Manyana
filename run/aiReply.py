@@ -714,9 +714,9 @@ def main(bot, master, apikey, chatGLM_api_key, proxy, logger,berturl):
                 path=await taffySayTest(data1,berturl,proxy)
                 await bot.send(event, Voice(path=path))
                 if withText==True:
-                    await bot.send(event,st1)
+                    await bot.send(event,st1, True)
             except:
-                await bot.send(event, st1)
+                await bot.send(event, st1, True)
         else:
             await bot.send(event, st1, True)
         if len(st1) > 400:
