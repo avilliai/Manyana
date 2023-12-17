@@ -128,7 +128,26 @@ def main(bot,master,app_id,app_key,logger,berturl,proxy):
                             if withText == True:
                                 await bot.send_group_message(event.subject.id,  rep)
                         except:
-                            await bot.send_group_message(event.subject.id,  rep)
+                            logger.error("bert_vits2语音合成服务已关闭，改用vits合成语音")
+                            path = 'data/voices/' + random_str() + '.wav'
+                            if random.randint(1, 100) > chineseVoiceRate:
+                                if rep in transLateData:
+                                    text = transLateData.get(rep)
+                                else:
+                                    text = await translate(str(rep), app_id, app_key)
+                                    transLateData[rep] = text
+                                    with open('data/autoReply/transLateData.yaml', 'w', encoding="utf-8") as file:
+                                        yaml.dump(transLateData, file, allow_unicode=True)
+                                    logger.info("写入参照数据:" + rep + "| " + text)
+                                tex = '[JA]' + text + '[JA]'
+                            else:
+                                tex = "[ZH]" + rep + "[ZH]"
+                            logger.info("启动文本转语音：text: " + tex + " path: " + path)
+                            await voiceGenerate(
+                                {"text": tex, "out": path, "speaker": speaker, "modelSelect": modelSelect})
+                            await bot.send_group_message(event.subject.id, Voice(path=path))
+
+                            #await bot.send_group_message(event.subject.id,  rep)
 
 
 

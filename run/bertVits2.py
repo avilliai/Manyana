@@ -35,5 +35,8 @@ def main(bot,logger,berturl,proxy):
 
             data["speaker"]=str(event.message_chain).split("说")[0]
             data["text"]=str(event.message_chain).replace(str(event.message_chain).split("说")[0]+"说","")
-            path=await taffySayTest(data,berturl,proxy)
-            await bot.send(event,Voice(path=path))
+            try:
+                path=await taffySayTest(data,berturl,proxy)
+                await bot.send(event,Voice(path=path))
+            except:
+                pass

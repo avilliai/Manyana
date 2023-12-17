@@ -716,6 +716,7 @@ def main(bot, master, apikey, chatGLM_api_key, proxy, logger,berturl):
                 if withText==True:
                     await bot.send(event,st1, True)
             except:
+                logger.error("bert_vits2语音合成服务已关闭，请重新运行")
                 await bot.send(event, st1, True)
         else:
             await bot.send(event, st1, True)
