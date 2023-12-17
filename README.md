@@ -40,6 +40,8 @@
   - 更强大的中文语音合成
 - [bert_vits2_sever.colab](https://colab.research.google.com/drive/1n8lI6pOiDtli2zC5fL9PZ9TZqbOafqma?usp=sharing)
   - 更强大的中文语音合成，使用colab，不占用本地资源
+- [Berglm](https://github.com/avilliai/Bergml)
+  - 轻量版Manyana，无需部署环境，双击即可运行。仅保留部分功能
 - [NTManyana(NTQQ)](https://github.com/avilliai/NTManyana)
   - 适用于NTQQ的Manyana
 - [Cyumis](https://github.com/avilliai/Cyumis)
