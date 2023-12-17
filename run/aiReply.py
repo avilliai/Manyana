@@ -703,7 +703,7 @@ def main(bot, master, apikey, chatGLM_api_key, proxy, logger,berturl):
         # 打印结果
         #print(result)
         st11 = st1.replace(setName, "指挥")
-        if len(st1)<maxTextLen and random.randint(0,100)<voiceRate:
+        if len(st1)<maxTextLen and random.randint(0,100)<voiceRate and event.type!='FriendMessage':
             data1={}
             data1['speaker']=speaker
             logger.info("调用bert_vits语音回复")
