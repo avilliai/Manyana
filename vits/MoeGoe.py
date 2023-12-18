@@ -173,8 +173,8 @@ async def change_sample_rate(path,new_sample_rate=44100):
 
     new_path = path # 指定输出音频的路径，音频文件与原音频同名
     # new_path = os.path.join(new_dir_path, new_file_name)      #若需要改名则启用此行代码
-    print("?")
-    print(new_path)
+    #print("?")
+    #print(new_path)
 
     # librosa.output.write_wav(new_path, new_signal , new_sample_rate)      #因版本问题，此方法可能用不了
     soundfile.write(new_path, new_signal, new_sample_rate)
