@@ -24,13 +24,13 @@ async def taffySayTest(data,url,proxy=None):
             pass
         else:
             url+="/synthesize"
-        proxies = {
+        '''proxies = {
             "http://": proxy,
             "https://": proxy
-        }
+        }'''
         # 请求参数
 
-        async with httpx.AsyncClient(timeout=200,proxies=proxies) as client:
+        async with httpx.AsyncClient(timeout=200) as client:
             r=await client.post(url, json=json.dumps(data))
             p="data/voices/"+random_str()+'.wav'
             print("bert_vits语音合成路径："+p)
