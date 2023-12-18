@@ -1,9 +1,12 @@
 # -*- coding:utf-8 -*-
 import asyncio
 import datetime
+import os
 from asyncio import sleep
 
 import httpx
+import librosa
+import soundfile
 from scipy.io.wavfile import write
 
 
@@ -159,8 +162,22 @@ async def voiceGenerate(tex,out,speakerID=2,modelSelect=['voiceModel/nene/1374_e
 
 
     write(out_path, hps_ms.data.sampling_rate, audio)#将生成的语音文件写入本地
+    await change_sample_rate(out_path)
+async def change_sample_rate(path,new_sample_rate=44100):
+    #wavfile = path  # 提取音频文件名，如“1.wav"
+    # new_file_name = wavfile.split('.')[0] + '_8k.wav'      #此行代码可用于对转换后的文件进行重命名（如有需要）
 
+    signal, sr = librosa.load(path, sr=None)  # 调用librosa载入音频
 
+    new_signal = librosa.resample(signal, orig_sr=sr, target_sr=new_sample_rate)  # 调用librosa进行音频采样率转换
+
+    new_path = path # 指定输出音频的路径，音频文件与原音频同名
+    # new_path = os.path.join(new_dir_path, new_file_name)      #若需要改名则启用此行代码
+    print("?")
+    print(new_path)
+
+    # librosa.output.write_wav(new_path, new_signal , new_sample_rate)      #因版本问题，此方法可能用不了
+    soundfile.write(new_path, new_signal, new_sample_rate)
 
 
 def voice_conversion(sourcepath,speaker=0):
@@ -222,7 +239,7 @@ async def ttsOnline(txt):
         #return url
 if __name__ == '__main__':
     #voice_conversion("plugins/voices/sing/rest.wav")
-    asyncio.run(voiceGenerate('[JA]先生,ちょっとお時間..いただけますか1?[JA]', '1.wav'))
+    asyncio.run(voiceGenerate('[JA]先生,ちょっとお時間..いただけますか1?[JA]', '2.wav',0,["voiceModel/bolv.pth","voiceModel/config.json"]))
     print("任务1")
     #asyncio.run(ttsOnline("你好，我是派大星"))
 
