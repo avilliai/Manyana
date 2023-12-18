@@ -719,15 +719,17 @@ def main(bot, master, apikey, chatGLM_api_key, proxy, logger,berturl):
                 logger.error("bert_vits2语音合成服务已关闭，请重新运行")
                 await bot.send(event, st1, True)
         else:
+            if len(st1) > 400:
+                await bot.send(event, st1[100:],True)
+                await bot.send(event, "🐱‍💻回复可能存在异常\n请发送 /clearGLM 以清理当前聊天(无需艾特)", True)
+                try:
+                    prompt.remove(prompt[-1])
+                    chatGLMData[event.sender.id] = prompt
+                except:
+                    logger.error("chatGLM删除上一次对话失败")
+                return
             await bot.send(event, st1, True)
-        if len(st1) > 400:
-            await bot.send(event, "🐱‍💻回复可能存在异常\n请发送 /clearGLM 以清理当前聊天(无需艾特)",True)
-            try:
-                prompt.remove(prompt[-1])
-                chatGLMData[event.sender.id]=prompt
-            except:
-                logger.error("chatGLM删除上一次对话失败")
-            return
+
 
         logger.info("chatGLM:" + st1)
         if turnMessage==True and event.type=='FriendMessage' and event.sender.id!=master:
