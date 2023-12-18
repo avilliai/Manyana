@@ -319,16 +319,17 @@ news:
 
 <details markdown='1'><summary>使用ai回复替代词库回复</summary>
 
-> 使用chatglm或gpt3.5
-### chatglm 
+> 使用chatglm或gpt3.5进行回复
+### chatglm(推荐) 
 - 根据api.yaml的指引注册并获取apikey,填写进api.yaml中，价格还是比较便宜的注册送的18一般够用半年以上。 
 - 打开setting.yaml 填写chatglm相关配置项即可
 ### gpt3.5
+- 此api不稳定，请酌情使用
 - 无需配置apikey
 - 打开setting.yaml 填写luoyue或yuban的相关配置项即可
 
 ### 思知ai
-> 这里是如何使用免费的思知ai进行回复的教程，效果不如上述ai回复
+> 这里是如何使用免费的思知ai进行回复的教程，目前已不推荐，推荐使用上面的chatglm
 >release有对应的知识库(sizhi.rar)用以导入思知控制台
 - [登录并创建多个bot](https://console.ownthink.com/login)
 - ![img.png](data/autoReply/imageReply/sizhi1.png)
