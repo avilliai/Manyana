@@ -22,6 +22,8 @@ async def taffySayTest(data,url,proxy=None):
     else:
         if str(url).endswith("/synthesize"):
             pass
+        elif str(url).endswith("/"):
+            url+="synthesize"
         else:
             url+="/synthesize"
         '''proxies = {
