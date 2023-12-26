@@ -720,8 +720,8 @@ def main(bot, master, apikey, chatGLM_api_key, proxy, logger,berturl):
                 await bot.send(event, st1, True)
         else:
             if len(st1) > 400:
-                await bot.send(event, st1[100:],True)
-                await bot.send(event, "🐱‍💻回复可能存在异常\n请发送 /clearGLM 以清理当前聊天(无需艾特)", True)
+                await bot.send(event, st1[:100],True)
+                await bot.send(event, "🐱‍💻回复可能存在异常，\n请发送 /clearGLM 以清理当前聊天(无需艾特)", True)
                 try:
                     prompt.remove(prompt[-1])
                     chatGLMData[event.sender.id] = prompt
