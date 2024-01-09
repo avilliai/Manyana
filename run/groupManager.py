@@ -674,14 +674,14 @@ def main(bot,config,moderateKey,logger):
                 except Exception as e:
                     logger.error(e)
                     continue
-                if sf<setg and gid not in youquan1:
-                    await bot.send_group_message(gid,"无授权小群，自动退出。")
-                    logger.warning("已清退"+str(gid))
-                    try:
+                try:
+                    if sf<setg and gid not in youquan1:
+                        await bot.send_group_message(gid,"无授权小群，自动退出。")
+                        logger.warning("已清退"+str(gid))
                         await bot.quit(gid)
-                    except Exception as e:
-                        logger.error(e)
-                        continue
+                except Exception as e:
+                    logger.error(e)
+                    continue
                     totalquit+=1
             await bot.send(event,"已退出"+str(totalquit)+"个群")
 
