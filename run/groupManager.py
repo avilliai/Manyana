@@ -652,6 +652,36 @@ def main(bot,config,moderateKey,logger):
                 else:
                     await bot.send(event,"该用户已被拉黑")
     @bot.on(GroupMessage)
+    async def quitgrrrr(event: GroupMessage):
+        if event.sender.id==master and (str(event.message_chain).startswith("/quit<") or str(event.message_chain).startswith("/quit＜")):
+            try:
+                setg=int(str(event.message_chain).replace("/quit<","").replace("/quit＜",""))
+            except:
+                await bot.send(event,"不合法的取值")
+                return
+            await bot.send(event,"退出所有人数小于"+str(setg)+"的群....")
+            asf = await bot.group_list()
+            #print(len(asf.data), asf.data)
+            with open('config/autoSettings.yaml', 'r', encoding='utf-8') as f:
+                result23 = yaml.load(f.read(), Loader=yaml.FullLoader)
+            youquan1 = result23.get("trustGroups")
+            totalquit=0
+            for nb in asf:
+                gid=nb.id
+                try:
+                    sf = await bot.member_list(int(gid))
+                    sf=len(sf.data)
+                except Exception as e:
+                    logger.error(e)
+                    continue
+                if sf<setg and gid not in youquan1:
+                    await bot.send_group_message(gid,"无授权小群，自动退出。")
+                    logger.warning("已清退"+str(gid))
+                    await bot.quit(gid)
+                    totalquit+=1
+            await bot.send(event,"已退出"+str(totalquit)+"个群")
+
+    @bot.on(GroupMessage)
     async def removeBl(event:GroupMessage):
         if event.sender.id == master or event.sender.id in superUser or event.group.id==mainGroup:
             global blackList
