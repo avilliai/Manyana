@@ -21,7 +21,7 @@ from plugins.RandomStr import random_str
 from plugins.chatGLMonline import chatGLM1
 
 from plugins.rwkvHelper import rwkvHelper
-from plugins.vitsGenerate import taffySayTest
+from plugins.vitsGenerate import taffySayTest, sovits
 from plugins.wReply.mohuReply import mohuaddReplys
 from plugins.yubanGPT import yubanGPTReply, luoyueGPTReply
 
@@ -69,6 +69,7 @@ def main(bot, master, apikey, chatGLM_api_key, proxy, logger,berturl):
     totallink = False
     with open('config/settings.yaml', 'r', encoding='utf-8') as f:
         result = yaml.load(f.read(), Loader=yaml.FullLoader)
+    voicegg=result.get("voicegenerate")
     trustDays=result.get("trustDays")
     gptReply = result.get("pandora").get("gptReply")
     pandoraa = result.get("pandora").get("pandora")
@@ -710,14 +711,24 @@ def main(bot, master, apikey, chatGLM_api_key, proxy, logger,berturl):
             #print(path)
             st8 = re.sub(r"（[^）]*）", "", st1)  # 使用r前缀表示原始字符串，避免转义字符的问题
             data1["text"] = st8
-            try:
-                path=await taffySayTest(data1,berturl,proxy)
-                await bot.send(event, Voice(path=path))
-                if withText==True:
-                    await bot.send(event,st1, True)
-            except:
-                logger.error("bert_vits2语音合成服务已关闭，请重新运行")
-                await bot.send(event, st1, True)
+            if voicegg=="bert_vits2":
+                try:
+                    path=await taffySayTest(data1,berturl,proxy)
+                    await bot.send(event, Voice(path=path))
+                    if withText==True:
+                        await bot.send(event,st1, True)
+                except:
+                    logger.error("bert_vits2语音合成服务已关闭，请重新运行")
+                    await bot.send(event, st1, True)
+            elif voicegg=="so-vits":
+                try:
+                    path=await sovits(data1)
+                    await bot.send(event, Voice(path=path))
+                    if withText==True:
+                        await bot.send(event,st1, True)
+                except:
+                    logger.error("sovits语音合成服务已关闭，请重新运行")
+                    await bot.send(event, st1, True)
         else:
             if len(st1) > 400:
                 await bot.send(event, st1[:100],True)

@@ -7,8 +7,17 @@ from asyncio import sleep
 import httpx
 
 from plugins.RandomStr import random_str
-from plugins.newLogger import newLogger
 
+async def sovits(data):
+    url = "http://127.0.0.1:5000/synthesize"  # 后端服务的地址
+    params = data  # 请求参数
+    async with httpx.AsyncClient(timeout=200) as client:
+        r=await client.post(url, json=json.dumps(params))
+        p = "data/voices/" + random_str() + '.wav'
+        print("sovits语音合成路径：" + p)
+        with open(p, "wb") as f:
+            f.write(r.content)
+        return p
 async def taffySayTest(data,url,proxy=None):
     if url=='':
         url = "http://localhost:9080/synthesize"  # 后端服务的地址

@@ -36,6 +36,9 @@
 
 哥们不是学程序设计的，如果你发现了bot存在一些我没有注意到的问题，或者有对项目的建议请及时提issue🎃
 ### dlc
+
+- [so-vits-svc语音合成](https://github.com/avilliai/Moe-SVC-api)
+  - 中文语音合成
 - [bert_vits2_sever](https://github.com/avilliai/Bert_Vits2_Sever)
   - 更强大的中文语音合成
 - [bert_vits2_sever.colab](https://colab.research.google.com/drive/1n8lI6pOiDtli2zC5fL9PZ9TZqbOafqma?usp=sharing)

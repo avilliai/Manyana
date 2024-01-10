@@ -7,6 +7,7 @@ userSelfPermissonDays: 15 #用户自己在用户群中授权，可以获取的�
 autoallowFriend: False  #是否自动允许好友申请
 GroupSensor: False   #开启后，将拒绝无授权群的加群邀请
 r18Pic: False        #涩图r18模式
+voicegenerate: so-vits  #语音合成来源so-vits/bert_vits2/vits
 #ba卡池设定
 blueArchiveGacha:
   3star: 10  #三星出率
@@ -23,6 +24,8 @@ bert_speakers:
   - 东雪莲
   - otto
   - 阿梓
+so_vits_speakers:
+  - riri
 #下面是所有可用的，回复功能设置，请自行调整。
 #请注意,全局回复的优先级设计上，pandora>luoyue>yuban>chatGLM>wReply，建议luoyueGPT,yubanGPT、gptReply、glmReply只开一个，不要全部保持开启。
 
@@ -42,15 +45,15 @@ yuban:
 chatGLM:
   helpUser: false    #是否引导用户自行设置apiKey
   model: characterglm    #chatGLM模式，可选填：characterglm(超拟人大模型),chatglm_pro(pro版),chatglm_std(标准版),chatglm_lite(轻量版)
-  glmReply: False          #开放群聊chatglm，chatglm替代原有词库，开启后，bot被艾特将全局优先使用chatglm回复
+  glmReply: false          #开放群聊chatglm，chatglm替代原有词库，开启后，bot被艾特将全局优先使用chatglm回复
   privateGlmReply: false   #开放私聊chatglm
   trustglmReply: False        #开启后仅【信任用户】可用
   context: True         #chatGLM上下文模式，开启后将加速消耗token
   maxPrompt: 10              #上下文模式开启时，最多记录的问答数量，默认10，即记录5对问答
-  #下面是chatglm的语音合成配置部分
+  #语音合成配置部分so-vits和bert_vits2通用设置
   maxLen: 40    #语音合成最大长度限制，超出则返回文本。
   voiceRate: 0 #语音回复几率
-  speaker: "塔菲"     #bert_vits语音合成默认角色里面的角色名
+  speaker: "riri"     #bert_vits语音合成默认角色里面的角色名
   withText: true    #使用语音合成时，发送语音是否附带原始文本(你知道的，塔菲很唐，说话不太清)
   bot_info:              #chatGLM角色设定
     default:
@@ -86,7 +89,7 @@ wReply:
   replyRate: 80         #共有词库不艾特时的回复几率
   colorfulCharacter: 30  # 彩色小人回复的机率，彩色小人替代原有回复
   sizhi: false          #是否启用思知ai
-  turnMessage: true    #是否开启私聊转发
+  turnMessage: false    #是否开启私聊转发
   voiceRate: 40        #语音回复几率，过高将增大设备负担
   MaxAllowableLength: 7   #最大允许字符长度倍数,该参数为7时,如果字符串总长为关键字长度的7倍以上，则不进行匹配。如关键词是 早 ,可以匹配 早上好 ,不会匹配 我早就把作业做完了
   AutoCreatLexicon: False #加群之后是否自动创建群专属词库(根据init.xlsx),常规的创建方式是 master发送 授权群#群号 或者有群员在群里发送 开始添加。如果你的群比较多(100以上，不建议开启，除非是广告机器人)
