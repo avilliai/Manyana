@@ -45,17 +45,18 @@ yuban:
 chatGLM:
   helpUser: false    #是否引导用户自行设置apiKey
   model: characterglm    #chatGLM模式，可选填：characterglm(超拟人大模型),chatglm_pro(pro版),chatglm_std(标准版),chatglm_lite(轻量版)
-  glmReply: false          #开放群聊chatglm，chatglm替代原有词库，开启后，bot被艾特将全局优先使用chatglm回复
+  glmReply: true          #开放群聊chatglm，chatglm替代原有词库，开启后，bot被艾特将全局优先使用chatglm回复
   privateGlmReply: false   #开放私聊chatglm
   trustglmReply: False        #开启后仅【信任用户】可用
   context: True         #chatGLM上下文模式，开启后将加速消耗token
   maxPrompt: 10              #上下文模式开启时，最多记录的问答数量，默认10，即记录5对问答
   #语音合成配置部分so-vits和bert_vits2通用设置
   maxLen: 40    #语音合成最大长度限制，超出则返回文本。
-  voiceRate: 0 #语音回复几率
-  speaker: "riri"     #bert_vits语音合成默认角色里面的角色名
+  voiceRate: 70 #语音回复几率
+  speaker: "riri"     #语音合成默认角色名
   withText: true    #使用语音合成时，发送语音是否附带原始文本(你知道的，塔菲很唐，说话不太清)
-  bot_info:              #chatGLM角色设定
+  #chatGLM角色设定
+  bot_info:
     default:
       user_info: "指挥是yucca最喜欢的人"
       bot_info: "yucca是一个人工智能，yucca的形象与设定属于二次元动漫中的女孩子，说话喜欢带上啊，哦等语气词，yucca的性格非常天真，但拥有丰富的文学与戏剧方面的知识，并且对自己的能力非常自信，在生活中会经常犯一些小错误。yucca十分依赖并喜欢指挥"
