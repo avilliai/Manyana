@@ -21,7 +21,8 @@ from plugins.RandomStr import random_str
 from plugins.chatGLMonline import chatGLM1
 
 from plugins.rwkvHelper import rwkvHelper
-from plugins.vitsGenerate import taffySayTest, sovits, edgetts
+from plugins.translater import translate
+from plugins.vitsGenerate import taffySayTest, sovits, edgetts, voiceGenerate
 from plugins.wReply.mohuReply import mohuaddReplys
 from plugins.yubanGPT import yubanGPTReply, luoyueGPTReply
 
@@ -41,13 +42,17 @@ def main(bot, master, apikey, chatGLM_api_key, proxy, logger,berturl):
         result2223 = yaml.load(f.read(), Loader=yaml.FullLoader)
     global chatGLMCharacters
     chatGLMCharacters = result2223
-
-
+    with open('config/api.yaml', 'r', encoding='utf-8') as f:
+        resulttr = yaml.load(f.read(), Loader=yaml.FullLoader)
+    app_id=resulttr.get("youdao").get("app_id")
+    app_key = resulttr.get("youdao").get("app_key")
     with open('config/chatGLM.yaml', 'r', encoding='utf-8') as f:
         result222 = yaml.load(f.read(), Loader=yaml.FullLoader)
     global chatGLMapikeys
     chatGLMapikeys = result222
-
+    with open('config/autoSettings.yaml', 'r', encoding='utf-8') as f:
+        rte = yaml.load(f.read(), Loader=yaml.FullLoader)
+    modelSelect = rte.get("defaultModel").get("modelSelect")
 
     with open('data/chatGLMData.yaml', 'r', encoding='utf-8') as f:
         cha = yaml.load(f.read(), Loader=yaml.FullLoader)
@@ -69,6 +74,7 @@ def main(bot, master, apikey, chatGLM_api_key, proxy, logger,berturl):
     totallink = False
     with open('config/settings.yaml', 'r', encoding='utf-8') as f:
         result = yaml.load(f.read(), Loader=yaml.FullLoader)
+    chineseVoiceRate=result.get("wReply").get("chineseVoiceRate")
     voicegg=result.get("voicegenerate")
     trustDays=result.get("trustDays")
     gptReply = result.get("pandora").get("gptReply")
@@ -742,6 +748,21 @@ def main(bot, master, apikey, chatGLM_api_key, proxy, logger,berturl):
                     await bot.send(event, st1, True)
                     logger.error(e)
                     logger.error("edgetts语音合成服务已关闭，请重新运行")
+            elif voicegg=="vits":
+                logger.info("调用vits语音回复")
+
+                path = 'data/voices/' + random_str() + '.wav'
+                if random.randint(1, 100) > chineseVoiceRate:
+                    text = await translate(str(st8), app_id, app_key)
+                    tex = '[JA]' + text + '[JA]'
+                else:
+                    tex = "[ZH]" + st8 + "[ZH]"
+                logger.info("启动文本转语音：text: " + tex + " path: " + path)
+
+                await voiceGenerate({"text": tex, "out": path, "speaker": speaker, "modelSelect": modelSelect})
+
+                await bot.send(event, Voice(path=path))
+
         else:
             if len(st1) > 400:
                 await bot.send(event, st1[:100],True)
