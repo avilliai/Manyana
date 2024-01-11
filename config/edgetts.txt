@@ -1,5 +1,6 @@
 所有可用的speaker都在这里，自己试吧，中文的在最下面
-
+settings中voicegenerate换成edgetts模式，chatglm.speaker填写对应的speaker
+也可以用/edgetts这里是语音测试信息  来合成语音
 Name: af-ZA-AdriNeural
 Gender: Female
 
