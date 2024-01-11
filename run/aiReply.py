@@ -738,7 +738,9 @@ def main(bot, master, apikey, chatGLM_api_key, proxy, logger,berturl):
                     await bot.send(event, Voice(path=path))
                     if withText==True:
                         await bot.send(event,st1, True)
-                except:
+                except Exception as e:
+                    await bot.send(event, st1, True)
+                    logger.error(e)
                     logger.error("edgetts语音合成服务已关闭，请重新运行")
         else:
             if len(st1) > 400:

@@ -20,7 +20,7 @@ from plugins.RandomStr import random_str
 from plugins.tarot import tarotChoice
 from PIL import Image as Image1
 
-from plugins.vitsGenerate import sovits
+from plugins.vitsGenerate import sovits, edgetts
 
 
 def main(bot,logger):
@@ -36,6 +36,15 @@ def main(bot,logger):
             logger.info("sovits文本推理任务：" + bsf)
             r=await sovits({"text":bsf,"speaker":"riri"})
             logger.info("tts 完成")
+            await bot.send(event,Voice(path=r))
+    @bot.on(GroupMessage)
+    async def edgettsHelper(event: GroupMessage):
+        if str(event.message_chain).startswith("/edgetts"):
+
+            bsf=str(event.message_chain).replace("/edgetts","")
+            logger.info("edgetts文本推理任务：" + bsf)
+            r=await edgetts({"text":bsf,"speaker":speaker})
+            logger.info("edgetts 完成")
             await bot.send(event,Voice(path=r))
     '''@bot.on(GroupMessage)
     async def voicetrans(event: GroupMessage):
