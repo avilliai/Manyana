@@ -758,8 +758,8 @@ def main(bot, master, apikey, chatGLM_api_key, proxy, logger,berturl):
                     else:
                         tex = "[ZH]" + st8 + "[ZH]"
                     logger.info("启动文本转语音：text: " + tex + " path: " + path)
-
-                    await voiceGenerate({"text": tex, "out": path, "speaker": speaker, "modelSelect": modelSelect})
+                    spe = rte.get("defaultModel").get("speaker")
+                    await voiceGenerate({"text": tex, "out": path, "speaker": spe, "modelSelect": modelSelect})
 
                     await bot.send(event, Voice(path=path))
                     if withText==True:
