@@ -19,7 +19,7 @@ def main():
         logger.warning("更新python库，按1跳过，如果最近没有更新过，不建议跳过，可能错过某些更新。")
         if input("在这里输入:")!="1":
 
-            os.system("pip install edgetts")
+            os.system("pip install edge-tts")
             #os.system("pip install aspose-words")
 
             #os.system("pip install --upgrade poe-api")
