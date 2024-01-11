@@ -15,7 +15,7 @@ async def edgetts(data):
     prf = "data/voices/" + p
     command = f"edge-tts --voice {speaker} --text {text} --write-media {prf}"
     os.system(command)
-    return p
+    return prf
 async def sovits(data):
     url = "http://127.0.0.1:9082/synthesize"  # 后端服务的地址
     params = data  # 请求参数
