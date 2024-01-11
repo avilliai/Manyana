@@ -10,7 +10,7 @@ from plugins.RandomStr import random_str
 async def edgetts(data):
     speaker=data.get("speaker")
     text=data.get("text")
-    os.system("where python")
+    #os.system("where python")
     p = random_str() + ".mp3"
     prf = "data/voices/" + p
     command = f"edge-tts --voice {speaker} --text {text} --write-media {prf}"
