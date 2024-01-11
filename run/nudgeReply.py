@@ -117,13 +117,13 @@ def main(bot,master,app_id,app_key,logger,berturl,proxy):
                             logger.info("调用so-vits语音回复")
                             r = await sovits({"text": st8, "speaker": "riri"})
                             logger.info("tts 完成")
-                            await bot.send(event, Voice(path=r))
+                            await bot.send_group_message(event.subject.id, Voice(path=r))
                             if withText == True:
                                 await bot.send_group_message(event.subject.id, rep)
                         elif voicegg=="edgetts":
                             r = await edgetts({"text": st8, "speaker": speaker92})
                             logger.info("edgetts 完成")
-                            await bot.send(event, Voice(path=r))
+                            await bot.send_group_message(event.subject.id, Voice(path=r))
                             if withText == True:
                                 await bot.send_group_message(event.subject.id, rep)
                     except Exception as e:
