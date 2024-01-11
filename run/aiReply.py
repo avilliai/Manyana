@@ -750,18 +750,23 @@ def main(bot, master, apikey, chatGLM_api_key, proxy, logger,berturl):
                     logger.error("edgetts语音合成服务已关闭，请重新运行")
             elif voicegg=="vits":
                 logger.info("调用vits语音回复")
+                try:
+                    path = 'data/voices/' + random_str() + '.wav'
+                    if random.randint(1, 100) > chineseVoiceRate:
+                        text = await translate(str(st8), app_id, app_key)
+                        tex = '[JA]' + text + '[JA]'
+                    else:
+                        tex = "[ZH]" + st8 + "[ZH]"
+                    logger.info("启动文本转语音：text: " + tex + " path: " + path)
 
-                path = 'data/voices/' + random_str() + '.wav'
-                if random.randint(1, 100) > chineseVoiceRate:
-                    text = await translate(str(st8), app_id, app_key)
-                    tex = '[JA]' + text + '[JA]'
-                else:
-                    tex = "[ZH]" + st8 + "[ZH]"
-                logger.info("启动文本转语音：text: " + tex + " path: " + path)
+                    await voiceGenerate({"text": tex, "out": path, "speaker": speaker, "modelSelect": modelSelect})
 
-                await voiceGenerate({"text": tex, "out": path, "speaker": speaker, "modelSelect": modelSelect})
-
-                await bot.send(event, Voice(path=path))
+                    await bot.send(event, Voice(path=path))
+                    if withText==True:
+                        await bot.send(event,st1, True)
+                except:
+                    logger.error("vits服务运行出错，请检查是否开启或检查配置")
+                    await bot.send(event, st1, True)
 
         else:
             if len(st1) > 400:
