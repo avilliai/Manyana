@@ -144,6 +144,8 @@ def main(bot,master,app_id,app_key,logger,berturl,proxy):
                             await voiceGenerate(
                                 {"text": tex, "out": path, "speaker": speaker, "modelSelect": modelSelect})
                             await bot.send_group_message(event.subject.id, Voice(path=path))
+                            if withText == True:
+                                await bot.send_group_message(event.subject.id, rep)
                     except Exception as e:
                         logger.error(e)
                         logger.error("出错，改用vits合成语音")
