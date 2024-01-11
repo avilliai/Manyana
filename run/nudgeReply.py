@@ -51,6 +51,7 @@ def main(bot,master,app_id,app_key,logger,berturl,proxy):
         result0 = yaml.load(f.read(), Loader=yaml.FullLoader)
     speaker92 = result0.get("chatGLM").get("speaker")
     voicegg=result.get("voicegenerate")
+    logger.info("语音合成模式："+voicegg+" 语音合成speaker："+speaker92)
     @bot.on(GroupMessage)
     async def setDefaultModel(event: GroupMessage):
         if event.sender.id == master and str(event.message_chain).startswith("设定角色#"):
@@ -98,9 +99,37 @@ def main(bot,master,app_id,app_key,logger,berturl,proxy):
                 if random.randint(1, 100) > voiceReply:
                     await bot.send_group_message(event.subject.id, rep)
                 else:
-                    if bert_vits2_mode==False:
+                    daf={}
+                    daf["speaker"]=speaker92
+                    st8 = re.sub(r"（[^）]*）", "", rep)
+                    daf["text"]=st8
+
+                    # print(path)
+                      # 使用r前缀表示原始字符串，避免转义字符的问题
+                    try:
+                        if voicegg=="bert_vits2":
+                            logger.info("调用bert_vits语音回复")
+                            path = await taffySayTest(daf, berturl, proxy)
+                            await bot.send_group_message(event.subject.id, Voice(path=path))
+                            if withText == True:
+                                await bot.send_group_message(event.subject.id,  rep)
+                        elif voicegg=="so-vits":
+                            logger.info("调用so-vits语音回复")
+                            r = await sovits({"text": st8, "speaker": "riri"})
+                            logger.info("tts 完成")
+                            await bot.send(event, Voice(path=r))
+                            if withText == True:
+                                await bot.send_group_message(event.subject.id, rep)
+                        elif voicegg=="edgetts":
+                            r = await edgetts({"text": st8, "speaker": speaker92})
+                            logger.info("edgetts 完成")
+                            await bot.send(event, Voice(path=r))
+                            if withText == True:
+                                await bot.send_group_message(event.subject.id, rep)
+                    except:
+                        logger.error("bert_vits2语音合成服务已关闭，改用vits合成语音")
                         path = 'data/voices/' + random_str() + '.wav'
-                        if random.randint(1,100)>chineseVoiceRate:
+                        if random.randint(1, 100) > chineseVoiceRate:
                             if rep in transLateData:
                                 text = transLateData.get(rep)
                             else:
@@ -111,55 +140,11 @@ def main(bot,master,app_id,app_key,logger,berturl,proxy):
                                 logger.info("写入参照数据:" + rep + "| " + text)
                             tex = '[JA]' + text + '[JA]'
                         else:
-                            tex="[ZH]"+rep+"[ZH]"
+                            tex = "[ZH]" + rep + "[ZH]"
                         logger.info("启动文本转语音：text: " + tex + " path: " + path)
-                        await voiceGenerate({"text": tex, "out": path,"speaker":speaker,"modelSelect":modelSelect})
+                        await voiceGenerate(
+                            {"text": tex, "out": path, "speaker": speaker, "modelSelect": modelSelect})
                         await bot.send_group_message(event.subject.id, Voice(path=path))
-                    else:
-                        daf={}
-                        daf["speaker"]=speaker92
-                        st8 = re.sub(r"（[^）]*）", "", rep)
-                        daf["text"]=st8
-                        logger.info("调用bert_vits语音回复")
-                        # print(path)
-                          # 使用r前缀表示原始字符串，避免转义字符的问题
-                        try:
-                            if voicegg=="bert_vits2":
-                                path = await taffySayTest(daf, berturl, proxy)
-                                await bot.send_group_message(event.subject.id, Voice(path=path))
-                                if withText == True:
-                                    await bot.send_group_message(event.subject.id,  rep)
-                            elif voicegg=="so-vits":
-                                r = await sovits({"text": st8, "speaker": "riri"})
-                                logger.info("tts 完成")
-                                await bot.send(event, Voice(path=r))
-                                if withText == True:
-                                    await bot.send_group_message(event.subject.id, rep)
-                            elif voicegg=="edgetts":
-                                r = await edgetts({"text": st8, "speaker": speaker92})
-                                logger.info("edgetts 完成")
-                                await bot.send(event, Voice(path=r))
-                                if withText == True:
-                                    await bot.send_group_message(event.subject.id, rep)
-                        except:
-                            logger.error("bert_vits2语音合成服务已关闭，改用vits合成语音")
-                            path = 'data/voices/' + random_str() + '.wav'
-                            if random.randint(1, 100) > chineseVoiceRate:
-                                if rep in transLateData:
-                                    text = transLateData.get(rep)
-                                else:
-                                    text = await translate(str(rep), app_id, app_key)
-                                    transLateData[rep] = text
-                                    with open('data/autoReply/transLateData.yaml', 'w', encoding="utf-8") as file:
-                                        yaml.dump(transLateData, file, allow_unicode=True)
-                                    logger.info("写入参照数据:" + rep + "| " + text)
-                                tex = '[JA]' + text + '[JA]'
-                            else:
-                                tex = "[ZH]" + rep + "[ZH]"
-                            logger.info("启动文本转语音：text: " + tex + " path: " + path)
-                            await voiceGenerate(
-                                {"text": tex, "out": path, "speaker": speaker, "modelSelect": modelSelect})
-                            await bot.send_group_message(event.subject.id, Voice(path=path))
 
                             #await bot.send_group_message(event.subject.id,  rep)
 

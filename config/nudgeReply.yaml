@@ -1,7 +1,6 @@
 prob: 9          #戳一戳反击几率
 voiceReply: 50      #语音回复几率
 chineseVoiceRate: 30   #中文语音回复几率
-bert_vits2_mode: false  #bert_vits2模式，需要配置了bert_vits2相关配置项
 withText: true    #语音是否附带原文
 nudgedReply:  #戳一戳回复
 - 这样很有趣吗
