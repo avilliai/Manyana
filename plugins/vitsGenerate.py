@@ -9,7 +9,7 @@ import httpx
 from plugins.RandomStr import random_str
 
 async def sovits(data):
-    url = "http://127.0.0.1:5000/synthesize"  # 后端服务的地址
+    url = "http://127.0.0.1:9082/synthesize"  # 后端服务的地址
     params = data  # 请求参数
     async with httpx.AsyncClient(timeout=200) as client:
         r=await client.post(url, json=json.dumps(params))
