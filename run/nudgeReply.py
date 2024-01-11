@@ -126,8 +126,9 @@ def main(bot,master,app_id,app_key,logger,berturl,proxy):
                             await bot.send(event, Voice(path=r))
                             if withText == True:
                                 await bot.send_group_message(event.subject.id, rep)
-                    except:
-                        logger.error("bert_vits2语音合成服务已关闭，改用vits合成语音")
+                    except Exception as e:
+                        logger.error(e)
+                        logger.error("出错，改用vits合成语音")
                         path = 'data/voices/' + random_str() + '.wav'
                         if random.randint(1, 100) > chineseVoiceRate:
                             if rep in transLateData:
