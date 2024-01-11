@@ -11,7 +11,7 @@ from io import BytesIO
 import httpx
 import requests
 import yaml
-from graiax import silkcoder
+
 from mirai import Image, Voice, Startup
 from mirai import Mirai, WebSocketAdapter, FriendMessage, GroupMessage, At, Plain
 from mirai.models import File
