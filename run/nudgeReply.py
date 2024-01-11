@@ -50,7 +50,7 @@ def main(bot,master,app_id,app_key,logger,berturl,proxy):
     with open('config/settings.yaml', 'r', encoding='utf-8') as f:
         result0 = yaml.load(f.read(), Loader=yaml.FullLoader)
     speaker92 = result0.get("chatGLM").get("speaker")
-    voicegg=result.get("voicegenerate")
+    voicegg=result0.get("voicegenerate")
     logger.info("语音合成模式："+voicegg+" 语音合成speaker："+speaker92)
     @bot.on(GroupMessage)
     async def setDefaultModel(event: GroupMessage):
