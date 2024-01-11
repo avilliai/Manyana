@@ -45,7 +45,7 @@ yuban:
 chatGLM:
   helpUser: false    #是否引导用户自行设置apiKey
   model: characterglm    #chatGLM模式，可选填：characterglm(超拟人大模型),chatglm_pro(pro版),chatglm_std(标准版),chatglm_lite(轻量版)
-  glmReply: true          #开放群聊chatglm，chatglm替代原有词库，开启后，bot被艾特将全局优先使用chatglm回复
+  glmReply: false          #开放群聊chatglm，chatglm替代原有词库，开启后，bot被艾特将全局优先使用chatglm回复
   privateGlmReply: false   #开放私聊chatglm
   trustglmReply: False        #开启后仅【信任用户】可用
   context: True         #chatGLM上下文模式，开启后将加速消耗token
