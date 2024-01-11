@@ -7,7 +7,7 @@ userSelfPermissonDays: 15 #用户自己在用户群中授权，可以获取的�
 autoallowFriend: False  #是否自动允许好友申请
 GroupSensor: False   #开启后，将拒绝无授权群的加群邀请
 r18Pic: False        #涩图r18模式
-voicegenerate: so-vits  #语音合成来源so-vits/bert_vits2/vits
+voicegenerate: so-vits  #语音合成来源so-vits/bert_vits2/vits/edgetts(edgetts可用speaker请参考config/edgetts.txt)
 #ba卡池设定
 blueArchiveGacha:
   3star: 10  #三星出率
@@ -50,10 +50,10 @@ chatGLM:
   trustglmReply: False        #开启后仅【信任用户】可用
   context: True         #chatGLM上下文模式，开启后将加速消耗token
   maxPrompt: 10              #上下文模式开启时，最多记录的问答数量，默认10，即记录5对问答
-  #语音合成配置部分so-vits和bert_vits2通用设置
+  #语音合成配置部分so-vits和bert_vits2和edgetts通用设置
   maxLen: 40    #语音合成最大长度限制，超出则返回文本。
   voiceRate: 70 #语音回复几率
-  speaker: "riri"     #语音合成默认角色名
+  speaker: "riri"     #语音合成默认角色名,edgetts建议使用zh-CN-XiaoyiNeural
   withText: true    #使用语音合成时，发送语音是否附带原始文本(你知道的，塔菲很唐，说话不太清)
   #chatGLM角色设定
   bot_info:

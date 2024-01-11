@@ -7,7 +7,14 @@ from asyncio import sleep
 import httpx
 
 from plugins.RandomStr import random_str
-
+async def edgetts(data):
+    speaker=data.get("speaker")
+    text=data.get("text")
+    p = random_str() + ".mp3"
+    prf = "data/voices/" + p
+    command = f"edge-tts --voice {speaker} --text {text} --write-media {prf}"
+    os.system(command)
+    return p
 async def sovits(data):
     url = "http://127.0.0.1:9082/synthesize"  # 后端服务的地址
     params = data  # 请求参数

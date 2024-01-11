@@ -21,7 +21,7 @@ from plugins.RandomStr import random_str
 from plugins.chatGLMonline import chatGLM1
 
 from plugins.rwkvHelper import rwkvHelper
-from plugins.vitsGenerate import taffySayTest, sovits
+from plugins.vitsGenerate import taffySayTest, sovits, edgetts
 from plugins.wReply.mohuReply import mohuaddReplys
 from plugins.yubanGPT import yubanGPTReply, luoyueGPTReply
 
@@ -731,6 +731,15 @@ def main(bot, master, apikey, chatGLM_api_key, proxy, logger,berturl):
                 except:
                     logger.error("sovits语音合成服务已关闭，请重新运行")
                     await bot.send(event, st1, True)
+            elif voicegg=="edgetts":
+                logger.info("调用edgetts语音回复")
+                try:
+                    path=await edgetts(data1)
+                    await bot.send(event, Voice(path=path))
+                    if withText==True:
+                        await bot.send(event,st1, True)
+                except:
+                    logger.error("edgetts语音合成服务已关闭，请重新运行")
         else:
             if len(st1) > 400:
                 await bot.send(event, st1[:100],True)
