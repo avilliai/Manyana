@@ -707,11 +707,12 @@ def main(bot, master, apikey, chatGLM_api_key, proxy, logger,berturl):
         if len(st1)<maxTextLen and random.randint(0,100)<voiceRate and event.type!='FriendMessage':
             data1={}
             data1['speaker']=speaker
-            logger.info("调用bert_vits语音回复")
+
             #print(path)
             st8 = re.sub(r"（[^）]*）", "", st1)  # 使用r前缀表示原始字符串，避免转义字符的问题
             data1["text"] = st8
             if voicegg=="bert_vits2":
+                logger.info("调用bert_vits语音回复")
                 try:
                     path=await taffySayTest(data1,berturl,proxy)
                     await bot.send(event, Voice(path=path))
@@ -721,6 +722,7 @@ def main(bot, master, apikey, chatGLM_api_key, proxy, logger,berturl):
                     logger.error("bert_vits2语音合成服务已关闭，请重新运行")
                     await bot.send(event, st1, True)
             elif voicegg=="so-vits":
+                logger.info("调用so_vits语音回复")
                 try:
                     path=await sovits(data1)
                     await bot.send(event, Voice(path=path))
