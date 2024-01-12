@@ -56,6 +56,8 @@ def main(bot,proxy,nasa_api,app_id,app_key,logger):
         logger.info("推送今日喜加一列表")
         for i in data.get("steamadd1").get("groups"):
             try:
+                if path==None or path=="":
+                    return
                 await bot.send_group_message(int(i), [data.get("steamadd1").get("text"), path])
             except:
                 logger.error("不存在的群"+str(i))

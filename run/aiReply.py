@@ -761,8 +761,10 @@ def main(bot, master, apikey, chatGLM_api_key, proxy, logger,berturl):
                         tex = "[ZH]" + st8 + "[ZH]"
                     logger.info("启动文本转语音：text: " + tex + " path: " + path)
                     spe = rte.get("defaultModel").get("speaker")
+                    with open('config/autoSettings.yaml', 'r', encoding='utf-8') as f:
+                        resulte = yaml.load(f.read(), Loader=yaml.FullLoader)
+                    modelSelect = resulte.get("defaultModel").get("modelSelect")
                     await voiceGenerate({"text": tex, "out": path, "speaker": spe, "modelSelect": modelSelect})
-
                     await bot.send(event, Voice(path=path))
                     if withText==True:
                         await bot.send(event,st1, True)
