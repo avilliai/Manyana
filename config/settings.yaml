@@ -12,9 +12,9 @@ r18Pic: False        #涩图r18模式
 fuckinggroup: true  #开启后将检测群人数，非授权群直接退出
 fuckingnumber: 13   #低于13人退
 
-#语音合成，小型服务器建议使用edgetts(推荐)和vits，so-vits和bert_vits2需要较好的配置以及另行部署
+#语音合成，小型服务器建议使用edgetts和vits，so-vits和bert_vits2需要较好的配置以及另行部署
 #配置要求bert_vits2>so-vits>vits>edgetts，请根据自身需要配置语音合成服务
-voicegenerate: edgetts  #语音合成来源so-vits/bert_vits2/vits/edgetts(edgetts可用speaker请参考config/edgetts.txt)
+voicegenerate: vits  #语音合成来源so-vits/bert_vits2/vits/edgetts(edgetts可用speaker请参考config/edgetts.txt)
 #ba卡池设定
 blueArchiveGacha:
   3star: 10  #三星出率
