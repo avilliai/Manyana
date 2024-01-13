@@ -95,7 +95,7 @@ def main(bot, master, apikey, chatGLM_api_key, proxy, logger,berturl):
     luoyueGPT=result.get("luoyue").get("luoyue")
     roleSet=result.get("yuban").get("roleSet")
     if autoClearWhenLaunch==True:
-        chatGLMData={"f","f"}
+        chatGLMData={"f":"f"}
         with open('data/chatGLMData.yaml', 'w', encoding="utf-8") as file:
             yaml.dump(chatGLMData, file, allow_unicode=True)
     with open('config.json', 'r', encoding='utf-8') as fp:
