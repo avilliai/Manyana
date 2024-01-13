@@ -163,7 +163,8 @@ def main(bot,api_key,proxy,logger):
             try:
                 #await bot.send(event,Forward(node_list=dataGet.get(event.sender.id)))
                 await bot.send(event,dataGet.get(event.sender.id))
-            except:
+            except Exception as e:
+                logger.error(e)
                 await bot.send(event,"出错，请稍后再试")
             dataGet.pop(event.sender.id)
 
