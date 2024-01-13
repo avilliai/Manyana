@@ -99,8 +99,6 @@
   - 请配置config/settings.yaml中chatglm功能语音合成相关配置项
 2023/12/17.1:
   - 解决了一些过去的遗留问题
-2023/12/18:
-  - 我变成纯真boy了哥们
 2024/1/9:
   - 新年快乐
   - 新增master指令
@@ -113,3 +111,4 @@
   - 增加edgetts语音合成，推荐使用
   - 所有可用的speaker在config/edgetts.txt
   - 已实现chatglm与当前四种语音合成方案的对接
+  - /edgetts你好，这是语音测试
