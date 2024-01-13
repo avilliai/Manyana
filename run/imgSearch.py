@@ -163,7 +163,7 @@ def main(bot,api_key,proxy,logger):
                 #await bot.send(event,Forward(node_list=dataGet.get(event.sender.id)))
                 try:
                     await bot.send_friend_message(event.sender.id,dataGet.get(event.sender.id))
-                    await bot.send(event,"为避免刷屏，搜图结果已经发送到您的私信")
+                    await bot.send(event,"为避免刷屏，搜图结果已经发送到您的私信",True)
                 except:
                     await bot.send(event,dataGet.get(event.sender.id))
             except Exception as e:
