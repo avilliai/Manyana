@@ -68,7 +68,8 @@ def main(bot,api_key,proxy,logger):
                 #聊天记录模式不再可用，因此关闭
                 #b1=ForwardMessageNode(sender_id=bot.qq, sender_name="Manyana",message_chain=MessageChain(["sauceno获取到结果:\n"+result,Image(url=urlss)]))
                 #b1 = ForwardMessageNode(sender_id=bot.qq, sender_name="Manyana",message_chain=MessageChain([result, Image(url=urlss]))
-                dataGet.get(event.sender.id).append("sauceno获取到结果:\n"+result,Image(url=urlss))
+                dataGet.get(event.sender.id).append("sauceno获取到结果:\n"+result)
+                dataGet.get(event.sender.id).append( Image(url=urlss))
 
                 #await bot.send(event,' similarity:'+str(response.json().get("results")[0].get('header').get('similarity'))+"\n"+str(response.json().get("results")[0].get('data')).replace(",","\n").replace("{"," ").replace("}","").replace("'","").replace("[","").replace("]",""),True)
             except:
@@ -84,7 +85,8 @@ def main(bot,api_key,proxy,logger):
                 logger.info("TraceMoe获取到结果：" +result)
                 #b1 = ForwardMessageNode(sender_id=bot.qq, sender_name="Manyana",
                                         #message_chain=MessageChain(["TraceMoe获取到结果：\n" +result, Image(url=piccc)]))
-                dataGet.get(event.sender.id).append("TraceMoe获取到结果：\n" +result, Image(url=piccc))
+                dataGet.get(event.sender.id).append("TraceMoe获取到结果：\n" +result)
+                dataGet.get(event.sender.id).append( Image(url=piccc))
                 try:
                     pass
                     #await bot.send(event,(result,Image(url=piccc)))
@@ -103,12 +105,8 @@ def main(bot,api_key,proxy,logger):
                 logger.info("Ascii2D获取到结果：\n" +result)
                 #b1 = ForwardMessageNode(sender_id=bot.qq, sender_name="Manyana",
                                         #message_chain=MessageChain(["Ascii2D获取到结果：\n" +result, Image(url=piccc)]))
-                dataGet.get(event.sender.id).append("Ascii2D获取到结果：\n" +result, Image(url=piccc))
-                try:
-                    pass
-                    #await bot.send(event,(result,Image(url=piccc)))
-                except:
-                    await bot.send(event, result)
+                dataGet.get(event.sender.id).append("Ascii2D获取到结果：\n" +result)
+                dataGet.get(event.sender.id).append(Image(url=piccc))
             except:
                 logger.error("Ascii2D未获取到结果" )
                 #b1 = ForwardMessageNode(sender_id=bot.qq, sender_name="Manyana",
@@ -123,7 +121,8 @@ def main(bot,api_key,proxy,logger):
                 logger.info("iqdb获取到结果：\n" + result)
                 '''b1 = ForwardMessageNode(sender_id=bot.qq, sender_name="Manyana",
                                         message_chain=MessageChain(["iqdb获取到结果：\n"+result, Image(url=piccc)]))'''
-                dataGet.get(event.sender.id).append("iqdb获取到结果：\n"+result, Image(url=piccc))
+                dataGet.get(event.sender.id).append("iqdb获取到结果：\n"+result)
+                dataGet.get(event.sender.id).append(Image(url=piccc))
                 try:
                     pass
                     #await bot.send(event, (result, Image(url=piccc)))
