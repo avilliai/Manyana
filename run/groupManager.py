@@ -219,10 +219,6 @@ def main(bot,config,moderateKey,logger):
 
     @bot.on(BotJoinGroupEvent)
     async def botJoin(event:BotJoinGroupEvent):
-        await bot.send_group_message(event.group.id,"已加入服务群聊....")
-        await bot.send_group_message(event.group.id,"发送 @"+str(botName)+" 帮助 以获取功能列表\n项目地址：https://github.com/avilliai/Manyana\n喜欢bot的话可以给个star哦(≧∇≦)ﾉ")
-        if helpUser:
-            await bot.send_group_message(event.group.id, ("近期支持了ChatGLM，更智能的ai聊天。\n您可以自行设置apiKey，随后可在本群启用\n(注册送的18大概够用半年)\n==============\n1、注册并登录https://open.bigmodel.cn/overview\n2、点击图2中内容，复制完整apiKey.\n3、在群内或者私聊发送\n设置密钥#apiKey\n\n(群内发送则全群可用，私聊发送则仅个人使用)",Image(path="data/fonts/1.jpg"),Image(path="data/fonts/2.jpg")))
         if fuckinggroup == True:
             gid = event.group.id
 
@@ -243,6 +239,11 @@ def main(bot,config,moderateKey,logger):
                     await bot.quit(gid)
             except Exception as e:
                 logger.error(e)
+        await bot.send_group_message(event.group.id,"已加入服务群聊....")
+        await bot.send_group_message(event.group.id,"发送 @"+str(botName)+" 帮助 以获取功能列表\n项目地址：https://github.com/avilliai/Manyana\n喜欢bot的话可以给个star哦(≧∇≦)ﾉ")
+        if helpUser:
+            await bot.send_group_message(event.group.id, ("近期支持了ChatGLM，更智能的ai聊天。\n您可以自行设置apiKey，随后可在本群启用\n(注册送的18大概够用半年)\n==============\n1、注册并登录https://open.bigmodel.cn/overview\n2、点击图2中内容，复制完整apiKey.\n3、在群内或者私聊发送\n设置密钥#apiKey\n\n(群内发送则全群可用，私聊发送则仅个人使用)",Image(path="data/fonts/1.jpg"),Image(path="data/fonts/2.jpg")))
+
 
         '''path="data/autoReply/voiceReply/joinGroup.wav"
 
