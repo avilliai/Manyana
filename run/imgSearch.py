@@ -65,25 +65,26 @@ def main(bot,api_key,proxy,logger):
                 #filename=dict_download_img(img_url,dirc="data/pictures/imgSearchCache")
                 result=' similarity:'+str(response.json().get("results")[0].get('header').get('similarity'))+"\n"+str(response.json().get("results")[0].get('data')).replace(",","\n").replace("{"," ").replace("}","").replace("'","").replace("[","").replace("]","")
                 urlss=str(response.json().get("results")[0].get('header').get('thumbnail'))
-                b1=ForwardMessageNode(sender_id=bot.qq, sender_name="Manyana",message_chain=MessageChain(["sauceno获取到结果:\n"+result,Image(url=urlss)]))
+                #聊天记录模式不再可用，因此关闭
+                #b1=ForwardMessageNode(sender_id=bot.qq, sender_name="Manyana",message_chain=MessageChain(["sauceno获取到结果:\n"+result,Image(url=urlss)]))
                 #b1 = ForwardMessageNode(sender_id=bot.qq, sender_name="Manyana",message_chain=MessageChain([result, Image(url=urlss]))
-                dataGet.get(event.sender.id).append(b1)
+                dataGet.get(event.sender.id).append("sauceno获取到结果:\n"+result,Image(url=urlss))
 
                 #await bot.send(event,' similarity:'+str(response.json().get("results")[0].get('header').get('similarity'))+"\n"+str(response.json().get("results")[0].get('data')).replace(",","\n").replace("{"," ").replace("}","").replace("'","").replace("[","").replace("]",""),True)
             except:
                 logger.error("sauceno搜图失败，无结果或访问次数过多，请稍后再试")
-                b1 = ForwardMessageNode(sender_id=bot.qq, sender_name="Manyana",
-                                        message_chain=MessageChain(["sauceno搜图失败，无结果或访问次数过多，请稍后再试",Image(path="data/autoReply/imageReply/axaAaRaUaaafa7a.png")]))
-                # b1 = ForwardMessageNode(sender_id=bot.qq, sender_name="Manyana",message_chain=MessageChain([result, Image(url=urlss]))
-                dataGet.get(event.sender.id).append(b1)
+                #b1 = ForwardMessageNode(sender_id=bot.qq, sender_name="Manyana",
+                                        #message_chain=MessageChain(["sauceno搜图失败，无结果或访问次数过多，请稍后再试",Image(path="data/autoReply/imageReply/axaAaRaUaaafa7a.png")]))
+                #聊天记录不再可用，暂时关闭
+                #dataGet.get(event.sender.id).append(b1)
 
             #使用TraceMoe搜图
             try:
                 result,piccc=await test(url=img_url,proxies=proxy)
                 logger.info("TraceMoe获取到结果：" +result)
-                b1 = ForwardMessageNode(sender_id=bot.qq, sender_name="Manyana",
-                                        message_chain=MessageChain(["TraceMoe获取到结果：\n" +result, Image(url=piccc)]))
-                dataGet.get(event.sender.id).append(b1)
+                #b1 = ForwardMessageNode(sender_id=bot.qq, sender_name="Manyana",
+                                        #message_chain=MessageChain(["TraceMoe获取到结果：\n" +result, Image(url=piccc)]))
+                dataGet.get(event.sender.id).append("TraceMoe获取到结果：\n" +result, Image(url=piccc))
                 try:
                     pass
                     #await bot.send(event,(result,Image(url=piccc)))
@@ -91,18 +92,18 @@ def main(bot,api_key,proxy,logger):
                     await bot.send(event, result)
             except:
                 logger.error("TraceMoe未获取到结果" )
-                b1 = ForwardMessageNode(sender_id=bot.qq, sender_name="Manyana",
-                                        message_chain=MessageChain(["TraceMoe搜图失败，无结果或访问次数过多，请稍后再试", Image(
-                                            path="data/autoReply/imageReply/axaAaRaUaaafa7a.png")]))
+                #b1 = ForwardMessageNode(sender_id=bot.qq, sender_name="Manyana",
+                                        #message_chain=MessageChain(["TraceMoe搜图失败，无结果或访问次数过多，请稍后再试", Image(
+                                            #path="data/autoReply/imageReply/axaAaRaUaaafa7a.png")]))
                 # b1 = ForwardMessageNode(sender_id=bot.qq, sender_name="Manyana",message_chain=MessageChain([result, Image(url=urlss]))
-                dataGet.get(event.sender.id).append(b1)
+                #dataGet.get(event.sender.id).append(b1)
             #使用Ascii2D
             try:
                 result,piccc=await test1(url=img_url,proxies=proxy)
                 logger.info("Ascii2D获取到结果：\n" +result)
-                b1 = ForwardMessageNode(sender_id=bot.qq, sender_name="Manyana",
-                                        message_chain=MessageChain(["Ascii2D获取到结果：\n" +result, Image(url=piccc)]))
-                dataGet.get(event.sender.id).append(b1)
+                #b1 = ForwardMessageNode(sender_id=bot.qq, sender_name="Manyana",
+                                        #message_chain=MessageChain(["Ascii2D获取到结果：\n" +result, Image(url=piccc)]))
+                dataGet.get(event.sender.id).append("Ascii2D获取到结果：\n" +result, Image(url=piccc))
                 try:
                     pass
                     #await bot.send(event,(result,Image(url=piccc)))
@@ -110,19 +111,19 @@ def main(bot,api_key,proxy,logger):
                     await bot.send(event, result)
             except:
                 logger.error("Ascii2D未获取到结果" )
-                b1 = ForwardMessageNode(sender_id=bot.qq, sender_name="Manyana",
-                                        message_chain=MessageChain(["Ascii2D搜图失败，无结果或访问次数过多，请稍后再试", Image(
-                                            path="data/autoReply/imageReply/axaAaRaUaaafa7a.png")]))
-                # b1 = ForwardMessageNode(sender_id=bot.qq, sender_name="Manyana",message_chain=MessageChain([result, Image(url=urlss]))
-                dataGet.get(event.sender.id).append(b1)
+                #b1 = ForwardMessageNode(sender_id=bot.qq, sender_name="Manyana",
+                                        #message_chain=MessageChain(["Ascii2D搜图失败，无结果或访问次数过多，请稍后再试", Image(
+                                            #path="data/autoReply/imageReply/axaAaRaUaaafa7a.png")]))
+
+                #dataGet.get(event.sender.id).append(b1)
 
             # 使用IQDB
             try:
                 result, piccc = await superSearch(url=img_url, proxies=proxy)
                 logger.info("iqdb获取到结果：\n" + result)
-                b1 = ForwardMessageNode(sender_id=bot.qq, sender_name="Manyana",
-                                        message_chain=MessageChain(["iqdb获取到结果：\n"+result, Image(url=piccc)]))
-                dataGet.get(event.sender.id).append(b1)
+                '''b1 = ForwardMessageNode(sender_id=bot.qq, sender_name="Manyana",
+                                        message_chain=MessageChain(["iqdb获取到结果：\n"+result, Image(url=piccc)]))'''
+                dataGet.get(event.sender.id).append("iqdb获取到结果：\n"+result, Image(url=piccc))
                 try:
                     pass
                     #await bot.send(event, (result, Image(url=piccc)))
@@ -130,7 +131,7 @@ def main(bot,api_key,proxy,logger):
                     await bot.send(event, result)
             except:
                 logger.error("iqdb未获取到结果")
-                try:
+                '''try:
                     b1 = ForwardMessageNode(sender_id=bot.qq, sender_name="Manyana",
                                             message_chain=MessageChain([result, Image(
                                                 path="data/autoReply/imageReply/axaAaRaUaaafa7a.png")]))
@@ -139,9 +140,9 @@ def main(bot,api_key,proxy,logger):
                                             message_chain=MessageChain(["iqdb搜图失败，无结果或访问次数过多，请稍后再试", Image(
                                                 path="data/autoReply/imageReply/axaAaRaUaaafa7a.png")]))
                 # b1 = ForwardMessageNode(sender_id=bot.qq, sender_name="Manyana",message_chain=MessageChain([result, Image(url=urlss]))
-                dataGet.get(event.sender.id).append(b1)
+                #dataGet.get(event.sender.id).append(b1)'''
             # 使用E-hentai
-            try:
+            '''try:
                 result, piccc = await test2(url=img_url, proxies=proxy,cookies=cookies)
                 logger.info("E-hentai获取到结果：" + result)
                 b1 = ForwardMessageNode(sender_id=bot.qq, sender_name="Manyana",
@@ -158,9 +159,10 @@ def main(bot,api_key,proxy,logger):
                                         message_chain=MessageChain(["E-hentai搜图失败，无结果或访问次数过多，请稍后再试", Image(
                                             path="data/autoReply/imageReply/axaAaRaUaaafa7a.png")]))
                 # b1 = ForwardMessageNode(sender_id=bot.qq, sender_name="Manyana",message_chain=MessageChain([result, Image(url=urlss]))
-                dataGet.get(event.sender.id).append(b1)
+                dataGet.get(event.sender.id).append(b1)'''
             try:
-                await bot.send(event,Forward(node_list=dataGet.get(event.sender.id)))
+                #await bot.send(event,Forward(node_list=dataGet.get(event.sender.id)))
+                await bot.send(event,dataGet.get(event.sender.id))
             except:
                 await bot.send(event,"出错，请稍后再试")
             dataGet.pop(event.sender.id)
