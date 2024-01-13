@@ -51,6 +51,8 @@ def main(bot,config,moderateKey,logger):
     GroupSensor = result1.get("GroupSensor")
     autoallowFriend=result1.get("autoallowFriend")
     trustDays = result1.get("trustDays")
+    fuckinggroup=result1.get("fuckinggroup")
+    fuckingnumber=result1.get("fuckingnumber")  # 低于13人退
     global qiandaoT
     qiandaoT=result1.get("signTimes")
 
@@ -221,6 +223,26 @@ def main(bot,config,moderateKey,logger):
         await bot.send_group_message(event.group.id,"发送 @"+str(botName)+" 帮助 以获取功能列表\n项目地址：https://github.com/avilliai/Manyana\n喜欢bot的话可以给个star哦(≧∇≦)ﾉ")
         if helpUser:
             await bot.send_group_message(event.group.id, ("近期支持了ChatGLM，更智能的ai聊天。\n您可以自行设置apiKey，随后可在本群启用\n(注册送的18大概够用半年)\n==============\n1、注册并登录https://open.bigmodel.cn/overview\n2、点击图2中内容，复制完整apiKey.\n3、在群内或者私聊发送\n设置密钥#apiKey\n\n(群内发送则全群可用，私聊发送则仅个人使用)",Image(path="data/fonts/1.jpg"),Image(path="data/fonts/2.jpg")))
+        if fuckinggroup == True:
+            gid = event.group.id
+
+            with open('config/autoSettings.yaml', 'r', encoding='utf-8') as f:
+                result23 = yaml.load(f.read(), Loader=yaml.FullLoader)
+            youquan1 = result23.get("trustGroups")
+
+            try:
+                sf = await bot.member_list(int(gid))
+                sf = len(sf.data)
+            except Exception as e:
+                logger.error(e)
+                return
+            try:
+                if sf < fuckingnumber and gid not in youquan1:
+                    await bot.send_group_message(gid, "无授权小群，自动退出。")
+                    logger.warning("已清退:" + str(gid))
+                    await bot.quit(gid)
+            except Exception as e:
+                logger.error(e)
 
         '''path="data/autoReply/voiceReply/joinGroup.wav"
 
@@ -684,6 +706,29 @@ def main(bot,config,moderateKey,logger):
                     continue
                     totalquit+=1
             await bot.send(event,"已退出"+str(totalquit)+"个群")
+    @bot.on(GroupMessage)
+    async def quitgrrrrr(event: GroupMessage):
+        if fuckinggroup==True:
+            gid = event.group.id
+
+            with open('config/autoSettings.yaml', 'r', encoding='utf-8') as f:
+                result23 = yaml.load(f.read(), Loader=yaml.FullLoader)
+            youquan1 = result23.get("trustGroups")
+
+            try:
+                sf = await bot.member_list(int(gid))
+                sf=len(sf.data)
+            except Exception as e:
+                logger.error(e)
+                return
+            try:
+                if sf<fuckingnumber and gid not in youquan1:
+                    await bot.send_group_message(gid,"无授权小群，自动退出。")
+                    logger.warning("已清退:"+str(gid))
+                    await bot.quit(gid)
+            except Exception as e:
+                logger.error(e)
+
 
     @bot.on(GroupMessage)
     async def removeBl(event:GroupMessage):
