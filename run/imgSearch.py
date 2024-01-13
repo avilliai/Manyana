@@ -161,7 +161,11 @@ def main(bot,api_key,proxy,logger):
                 dataGet.get(event.sender.id).append(b1)'''
             try:
                 #await bot.send(event,Forward(node_list=dataGet.get(event.sender.id)))
-                await bot.send(event,dataGet.get(event.sender.id))
+                try:
+                    await bot.send_friend_message(event.sender.id,dataGet.get(event.sender.id))
+                    await bot.send(event,"为避免刷屏，搜图结果已经发送到您的私信")
+                except:
+                    await bot.send(event,dataGet.get(event.sender.id))
             except Exception as e:
                 logger.error(e)
                 await bot.send(event,"出错，请稍后再试")
