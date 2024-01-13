@@ -50,6 +50,7 @@ yuban:
   roleSet: "你需要扮演下面的角色与我聊天：yucca是一个人工智能，yucca的形象与设定属于二次元动漫中的女孩子，说话喜欢带上啊，哦等语气词，yucca的性格非常天真，但拥有丰富的文学与戏剧方面的知识，并且对自己的能力非常自信，在生活中会经常犯一些小错误。如果你了解了我的要求，请回复“喵”"
 #chatglm,需配置api.yaml
 chatGLM:
+  autoClearWhenLaunch: false #启动时自动清理所有冗余聊天记录
   helpUser: false    #是否引导用户自行设置apiKey
   model: characterglm    #chatGLM模式，可选填：characterglm(超拟人大模型),chatglm_pro(pro版),chatglm_std(标准版),chatglm_lite(轻量版)
   glmReply: false          #开放群聊chatglm，chatglm替代原有词库，开启后，bot被艾特将全局优先使用chatglm回复

@@ -52,7 +52,6 @@ def main(bot, master, apikey, chatGLM_api_key, proxy, logger,berturl):
     chatGLMapikeys = result222
     with open('config/autoSettings.yaml', 'r', encoding='utf-8') as f:
         rte = yaml.load(f.read(), Loader=yaml.FullLoader)
-    modelSelect = rte.get("defaultModel").get("modelSelect")
 
     with open('data/chatGLMData.yaml', 'r', encoding='utf-8') as f:
         cha = yaml.load(f.read(), Loader=yaml.FullLoader)
@@ -91,9 +90,14 @@ def main(bot, master, apikey, chatGLM_api_key, proxy, logger,berturl):
     voiceRate = result.get("chatGLM").get("voiceRate")
     speaker = result.get("chatGLM").get("speaker")
     withText=result.get("chatGLM").get("withText")
+    autoClearWhenLaunch=result.get("chatGLM").get("autoClearWhenLaunch")
     yubanGPT = result.get("yuban").get("yubanGPT")
     luoyueGPT=result.get("luoyue").get("luoyue")
     roleSet=result.get("yuban").get("roleSet")
+    if autoClearWhenLaunch==True:
+        chatGLMData={"f","f"}
+        with open('data/chatGLMData.yaml', 'w', encoding="utf-8") as file:
+            yaml.dump(chatGLMData, file, allow_unicode=True)
     with open('config.json', 'r', encoding='utf-8') as fp:
         data = fp.read()
     config = json.loads(data)
@@ -487,6 +491,16 @@ def main(bot, master, apikey, chatGLM_api_key, proxy, logger,berturl):
                 with open('data/chatGLMData.yaml', 'w', encoding="utf-8") as file:
                     yaml.dump(chatGLMData, file, allow_unicode=True)
                 await bot.send(event,"已清除近期记忆")
+            except:
+                await bot.send(event,"清理缓存出错，无本地对话记录")
+        if str(event.message_chain)=="/allclear" and event.sender.id==master:
+            try:
+                chatGLMData={"f":"hhh"}
+                #chatGLMData.pop(event.sender.id)
+                # 写入文件
+                with open('data/chatGLMData.yaml', 'w', encoding="utf-8") as file:
+                    yaml.dump(chatGLMData, file, allow_unicode=True)
+                await bot.send(event,"已清除所有用户的prompt")
             except:
                 await bot.send(event,"清理缓存出错，无本地对话记录")
     @bot.on(GroupMessage)

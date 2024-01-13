@@ -240,6 +240,7 @@ ba查询[角色名]      # ba查询优香 查询一个角色信息
 /blgroup remove 群号
 notice         # 群发通知用
 /quit<10      #退出所有10人以下的无授权群，你可以修改人数，比如/quit<7都可以
+/allclear   #把所有人的chatglm聊天记录清除
 ```
 </details>
 
