@@ -239,6 +239,7 @@ def main(bot,config,moderateKey,logger):
                     await bot.send_group_message(gid, "无授权小群，自动退出。")
                     logger.warning("已清退:" + str(gid))
                     await bot.quit(gid)
+                    return
             except Exception as e:
                 logger.error(e)
         await bot.send_group_message(event.group.id,"发送 @"+str(botName)+" 帮助 以获取功能列表\n项目地址：https://github.com/avilliai/Manyana\n喜欢bot的话可以给个star哦(≧∇≦)ﾉ")
