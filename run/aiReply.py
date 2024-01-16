@@ -384,7 +384,7 @@ def main(bot, master, apikey, chatGLM_api_key, proxy, logger,berturl):
 
             #没有该用户，以本次对话作为prompt
             else:
-                await bot.send(event, "即将开始对话，请注意，如果遇到对话异常，请发送 /clearGLM 以清理对话记录(不用艾特)",True)
+                await bot.send(event, ("即将开始对话，请注意，如果遇到对话异常，请发送 /clearGLM 以清理对话记录(不用艾特),如图",Image(path="data/fonts/clear.png")),True)
                 prompt=[tep]
                 chatGLMData[event.sender.id] =prompt
             #logger.info("当前prompt"+str(prompt))
