@@ -117,3 +117,7 @@
   - 更新两个配置项，用于处理bot被强行加入群聊的情况
   - 增加配置项chatglm.autoclear 启动时自动清理所有prompt
   - 增加master专用指令 /allclear 用以清理所有人的聊天记录
+2024/1/23:
+  - glm-4支持如下指令，你也可以在settings.yaml把glm模式设置为glm-4
+  - /glm你好
+  - 设定#glm-4

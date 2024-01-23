@@ -15,6 +15,7 @@ import threading
 from asyncio import sleep
 
 import zhipuai
+from zhipuai import ZhipuAI
 
 from plugins.PandoraChatGPT import ask_chatgpt
 from plugins.RandomStr import random_str
@@ -36,6 +37,10 @@ class CListen(threading.Thread):
         asyncio.set_event_loop(self.mLoop)  # 在新线程中开启一个事件循环
 
         self.mLoop.run_forever()
+
+
+
+
 def main(bot, master, apikey, chatGLM_api_key, proxy, logger,berturl):
     #读取个性化角色设定
     with open('data/chatGLMCharacters.yaml', 'r', encoding='utf-8') as f:
@@ -180,11 +185,11 @@ def main(bot, master, apikey, chatGLM_api_key, proxy, logger,berturl):
             setName = event.sender.nickname
         if setName == None:
             setName = event.sender.nickname
-
-        meta1["user_name"] = meta1.get("user_name").replace("指挥", setName)
-        meta1["user_info"] = meta1.get("user_info").replace("指挥", setName).replace("yucca",botName)
-        meta1["bot_info"] = meta1.get("bot_info").replace("指挥", setName).replace("yucca",botName)
-        meta1["bot_name"] = botName
+        if meta1!="glm-4":
+            meta1["user_name"] = meta1.get("user_name").replace("指挥", setName)
+            meta1["user_info"] = meta1.get("user_info").replace("指挥", setName).replace("yucca",botName)
+            meta1["bot_info"] = meta1.get("bot_info").replace("指挥", setName).replace("yucca",botName)
+            meta1["bot_name"] = botName
 
         try:
             logger.info("当前meta:" + str(meta1))
@@ -267,6 +272,21 @@ def main(bot, master, apikey, chatGLM_api_key, proxy, logger,berturl):
                 with open('data/chatGLMCharacters.yaml', 'w', encoding="utf-8") as file:
                     yaml.dump(chatGLMCharacters, file, allow_unicode=True)
                 await bot.send(event,"设定成功")
+            elif str(event.message_chain).split("#")[1]=="glm-4":
+                chatGLMCharacters[event.sender.id] = "glm-4"
+
+                logger.info("当前：", chatGLMCharacters)
+                with open('data/chatGLMCharacters.yaml', 'w', encoding="utf-8") as file:
+                    yaml.dump(chatGLMCharacters, file, allow_unicode=True)
+                await bot.send(event, "设定成功")
+                try:
+                    chatGLMData.pop(event.sender.id)
+                    # 写入文件
+                    with open('data/chatGLMData.yaml', 'w', encoding="utf-8") as file:
+                        yaml.dump(chatGLMData, file, allow_unicode=True)
+                    await bot.send(event, "已清除近期记忆")
+                except:
+                    await bot.send(event, "清理缓存出错，无本地对话记录")
             else:
                 await bot.send(event,"不存在的角色")
 
@@ -303,6 +323,21 @@ def main(bot, master, apikey, chatGLM_api_key, proxy, logger,berturl):
                 with open('data/chatGLMCharacters.yaml', 'w', encoding="utf-8") as file:
                     yaml.dump(chatGLMCharacters, file, allow_unicode=True)
                 await bot.send(event,"设定成功")
+            elif str(event.message_chain).split("#")[1]=="glm-4":
+                chatGLMCharacters[event.sender.id] = "glm-4"
+
+                logger.info("当前：", chatGLMCharacters)
+                with open('data/chatGLMCharacters.yaml', 'w', encoding="utf-8") as file:
+                    yaml.dump(chatGLMCharacters, file, allow_unicode=True)
+                await bot.send(event, "设定成功")
+                try:
+                    chatGLMData.pop(event.sender.id)
+                    # 写入文件
+                    with open('data/chatGLMData.yaml', 'w', encoding="utf-8") as file:
+                        yaml.dump(chatGLMData, file, allow_unicode=True)
+                    await bot.send(event, "已清除近期记忆")
+                except:
+                    await bot.send(event, "清理缓存出错，无本地对话记录")
             else:
                 await bot.send(event,"不存在的角色")
 
@@ -413,10 +448,11 @@ def main(bot, master, apikey, chatGLM_api_key, proxy, logger,berturl):
                 setName = event.sender.member_name
             if setName == None:
                 setName = event.sender.member_name
-            meta1["user_name"] = meta1.get("user_name").replace("指挥", setName)
-            meta1["user_info"] = meta1.get("user_info").replace("指挥", setName).replace("yucca",botName)
-            meta1["bot_info"]=meta1.get("bot_info").replace("指挥",setName).replace("yucca",botName)
-            meta1["bot_name"]=botName
+            if meta1 != "glm-4":
+                meta1["user_name"] = meta1.get("user_name").replace("指挥", setName)
+                meta1["user_info"] = meta1.get("user_info").replace("指挥", setName).replace("yucca",botName)
+                meta1["bot_info"]=meta1.get("bot_info").replace("指挥",setName).replace("yucca",botName)
+                meta1["bot_name"]=botName
 
             logger.info("chatGLM接收提问:" + text)
             try:
@@ -463,10 +499,11 @@ def main(bot, master, apikey, chatGLM_api_key, proxy, logger,berturl):
                 setName = event.sender.member_name
             if setName==None:
                 setName = event.sender.member_name
-            meta1["user_name"] = meta1.get("user_name").replace("指挥", setName)
-            meta1["user_info"] = meta1.get("user_info").replace("指挥", setName).replace("yucca",botName)
-            meta1["bot_info"] = meta1.get("bot_info").replace("指挥", setName).replace("yucca",botName)
-            meta1["bot_name"] = botName
+            if meta1 != "glm-4":
+                meta1["user_name"] = meta1.get("user_name").replace("指挥", setName)
+                meta1["user_info"] = meta1.get("user_info").replace("指挥", setName).replace("yucca",botName)
+                meta1["bot_info"] = meta1.get("bot_info").replace("指挥", setName).replace("yucca",botName)
+                meta1["bot_name"] = botName
 
             logger.info("chatGLM接收提问:" + text)
             #获取apiKey
@@ -476,12 +513,11 @@ def main(bot, master, apikey, chatGLM_api_key, proxy, logger,berturl):
             else:
                 key1 = chatGLMapikeys.get(event.group.id)
             try:
-
-
                 #分界线
                 asyncio.run_coroutine_threadsafe(asyncchatGLM(key1, meta1, prompt,event,setName,text), newLoop)
             except:
                 await bot.send(event, "chatGLM启动出错，请联系master检查apiKey或重试")
+
     #用于chatGLM清除本地缓存
     @bot.on(GroupMessage)
     async def clearPrompt(event:GroupMessage):
@@ -513,7 +549,6 @@ def main(bot, master, apikey, chatGLM_api_key, proxy, logger,berturl):
             try:
                 prompt=[{"user":"你好"}]
                 st1 = chatGLM1(key12, meta,prompt)
-                #asyncio.run_coroutine_threadsafe(asyncchatGLM(key1, meta1, prompt, event, setName, text), newLoop)
                 st1 = st1.replace("yucca", botName).replace("liris", str(event.sender.member_name))
                 await bot.send(event, st1, True)
             except:
@@ -686,6 +721,18 @@ def main(bot, master, apikey, chatGLM_api_key, proxy, logger,berturl):
                 temperature=0.95,
                 top_p=0.7,
             )
+        elif model1=="glm-4":
+            client = ZhipuAI(api_key=api_key)  # 填写您自己的APIKey
+            response = client.chat.completions.create(
+                model="glm-4",  # 填写需要调用的模型名称
+                messages=prompt,
+                stream=True,
+            )
+
+            str1 = ''
+            for chunk in response:
+                str1 += chunk.choices[0].delta.content
+            return str1
         else:
             response = zhipuai.model_api.sse_invoke(
                 model="characterglm",
@@ -719,9 +766,12 @@ def main(bot, master, apikey, chatGLM_api_key, proxy, logger,berturl):
         # 第一个参数是执行器，可以是 None、ThreadPoolExecutor 或 ProcessPoolExecutor
         # 第二个参数是同步函数名，后面跟着任何你需要传递的参数
         #result=chatGLM(apiKey,bot_info,prompt)
-        with open('config/settings.yaml', 'r', encoding='utf-8') as f:
-            result = yaml.load(f.read(), Loader=yaml.FullLoader)
-        model1 = result.get("chatGLM").get("model")
+        if bot_info=="glm-4":
+            model1="glm-4"
+        else:
+            with open('config/settings.yaml', 'r', encoding='utf-8') as f:
+                result = yaml.load(f.read(), Loader=yaml.FullLoader)
+            model1 = result.get("chatGLM").get("model")
         st1 = await loop.run_in_executor(None, chatGLM,apiKey,bot_info,prompt,model1)
         # 打印结果
         #print(result)
