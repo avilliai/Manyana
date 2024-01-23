@@ -20,7 +20,8 @@ def main():
         if input("在这里输入:")!="1":
 
             os.system("pip install edge-tts")
-            os.system("pip install -U zhipuai")
+            #os.system("pip install -U zhipuai")
+            #os.system("pip install pydantic==1.10.11")
             #os.system("pip install aspose-words")
 
             #os.system("pip install --upgrade poe-api")
