@@ -105,6 +105,6 @@ def get_system_info():
     return system_info
 
 # 调用函数，打印结果
-info = get_system_info()
-for line in info:
-    print(line)
+#info = get_system_info()
+#for line in info:
+    #print(line)
