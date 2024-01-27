@@ -8,10 +8,11 @@ import subprocess
 from asyncio import sleep as sleep1
 
 import yaml
-from mirai import Mirai, WebSocketAdapter, GroupMessage, Image, At, Startup
+from mirai import Mirai, WebSocketAdapter, GroupMessage, Image, At, Startup, FriendMessage
 
 from plugins.RandomStr import random_str
 from plugins.newLogger import newLogger
+from plugins.systeminfo import get_system_info
 from run import aiReply, voiceReply, nudgeReply, wikiHelper, imgSearch, extraParts, wReply, userSign, groupManager, \
     PicRandom, musicShare, LiveMonitor, bertVits2, aronaapi, groupGames, musicpick, scheduledTasks, sovits2
 
@@ -49,6 +50,18 @@ if __name__ == '__main__':
 
     logger.info("读取到apiKey列表")
 
+
+
+    @bot.on(GroupMessage)
+    async def systemiiiiii(event: GroupMessage):
+        if str(event.message_chain) == ".system" and event.sender.id == master:
+            infof=get_system_info()
+            await bot.send(event,infof)
+    @bot.on(FriendMessage)
+    async def systemiiiiii1(event: FriendMessage):
+        if str(event.message_chain) == ".system" and event.sender.id == master:
+            infof=get_system_info()
+            await bot.send(event,infof)
     global notice
     notice=0
     @bot.on(GroupMessage)
@@ -156,6 +169,9 @@ if __name__ == '__main__':
         await bot.send_friend_message(master,time1 + '\n已读取服务群聊:' + str(len(severGroupsa)) + '个')
         await bot.send_friend_message(master,time1 + '\n已读取有记录用户:' + str(len(userCount)) + '个')
         await bot.send_friend_message(master,time1 + '\n功能已加载完毕，欢迎使用')
+        infof = get_system_info()
+        await bot.send_friend_message(master,"当前系统信息如下，可使用.system指令查看当前系统信息")
+        await bot.send_friend_message(master, infof)
 
 
    # logger.info("如果遇到卡顿请按ctrl+c | 如成功更新了某些文件，请重启main.py以应用更新")

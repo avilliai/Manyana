@@ -117,3 +117,6 @@
   - 更新两个配置项，用于处理bot被强行加入群聊的情况
   - 增加配置项chatglm.autoclear 启动时自动清理所有prompt
   - 增加master专用指令 /allclear 用以清理所有人的聊天记录
+2024/1/27:
+  - 更新master指令 .system
+  - 需要完整执行一次更新流程(不跳过依赖安装)
