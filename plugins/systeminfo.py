@@ -17,7 +17,7 @@ def get_system_info():
     # 创建一个空列表，用于存储系统信息
     system_info = []
     # 获取系统信息
-    system_info.append("="*6 + "System Information" + "="*6+"\n")
+    system_info.append("="*6 + "System Info" + "="*6+"\n")
     uname = platform.uname()
     system_info.append(f"System: {uname.system}\n")
     system_info.append(f"Node Name: {uname.node}\n")
@@ -48,7 +48,7 @@ def get_system_info():
         for entry in entries:
             system_info.append(f"    {entry.label or 'N/A'}: {entry.current}°C")'''
     # 获取内存信息
-    system_info.append("="*6 + "Memory Information" + "="*6+"\n")
+    system_info.append("="*6 + "Memory Info" + "="*6+"\n")
     # 获取内存总量，使用量，空闲量和使用百分比
     svmem = psutil.virtual_memory()
     system_info.append(f"Total: {get_size(svmem.total)}\n")
@@ -61,7 +61,7 @@ def get_system_info():
     system_info.append(f"Total Bytes Sent: {get_size(net_io.bytes_sent)}\n")
     system_info.append(f"Total Bytes Received: {get_size(net_io.bytes_recv)}\n")
     # 获取硬盘信息
-    system_info.append("="*6 + "Disk Information" + "="*6+"\n")
+    system_info.append("="*6 + "Disk Info" + "="*6+"\n")
     system_info.append(f"=== Disk IO===\n")
     disk_io = psutil.disk_io_counters()
     system_info.append(f"Total read: {get_size(disk_io.read_bytes)}\n")
