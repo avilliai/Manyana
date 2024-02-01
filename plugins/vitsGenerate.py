@@ -5,6 +5,7 @@ import subprocess
 from asyncio import sleep
 
 import httpx
+import requests
 
 from plugins.RandomStr import random_str
 async def edgetts(data):
@@ -56,6 +57,21 @@ async def taffySayTest(data,url,proxy=None):
             with open(p, "wb") as f:
                 f.write(r.content)
             return p
+async def outVits(data):
+    speaker = data.get("speaker")
+    text = data.get("text")
+    # os.system("where python")
+    p = random_str() + ".mp3"
+    p = "data/voices/" + p
+    url="https://api.lolimi.cn/API/yyhc/y.php?msg="+text+"&speaker="+speaker+"&Length=1&noisew=0.8&sdp=0.4&noise=0.6&type=json"
+    async with httpx.AsyncClient(timeout=200) as client:
+        r = await client.post(url, json=json.dumps(data))
+        newUrl=r.json().get("music")
+        print("outvits语音合成路径：" + p)
+        r1=requests.get(newUrl)
+        with open(p, "wb") as f:
+            f.write(r1.content)
+        return p
 async def voiceGenerate(data):
     # 向本地 API 发送 POST 请求
     if "MoeGoe.py" in os.listdir():

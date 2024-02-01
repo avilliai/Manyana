@@ -18,7 +18,7 @@ from mirai import Mirai, WebSocketAdapter, FriendMessage, GroupMessage, At, Plai
 from plugins.RandomStr import random_str
 from plugins.modelsLoader import modelLoader
 from plugins.translater import translate
-from plugins.vitsGenerate import voiceGenerate, taffySayTest
+from plugins.vitsGenerate import taffySayTest
 
 
 def main(bot,logger,berturl,proxy):

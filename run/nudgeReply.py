@@ -19,7 +19,7 @@ from mirai.models import NudgeEvent
 from plugins.RandomStr import random_str
 from plugins.modelsLoader import modelLoader
 from plugins.translater import translate
-from plugins.vitsGenerate import voiceGenerate, taffySayTest, sovits, edgetts
+from plugins.vitsGenerate import voiceGenerate, taffySayTest, sovits, edgetts, outVits
 
 
 def main(bot,master,app_id,app_key,logger,berturl,proxy):
@@ -34,12 +34,7 @@ def main(bot,master,app_id,app_key,logger,berturl,proxy):
     global transLateData
     with open('data/autoReply/transLateData.yaml', 'r', encoding='utf-8') as file:
         transLateData = yaml.load(file, Loader=yaml.FullLoader)
-    with open('config/autoSettings.yaml', 'r', encoding='utf-8') as f:
-        result2 = yaml.load(f.read(), Loader=yaml.FullLoader)
-    global modelSelect
-    global speaker
-    speaker = result2.get("defaultModel").get("speaker")
-    modelSelect = result2.get("defaultModel").get("modelSelect")
+
     prob=result.get("prob")
     withText=result.get("withText")
     logger.info("读取到apiKey列表")
@@ -52,6 +47,13 @@ def main(bot,master,app_id,app_key,logger,berturl,proxy):
     speaker92 = result0.get("chatGLM").get("speaker")
     voicegg=result0.get("voicegenerate")
     logger.info("语音合成模式："+voicegg+" 语音合成speaker："+speaker92)
+    if voicegg=="vits":
+        with open('config/autoSettings.yaml', 'r', encoding='utf-8') as f:
+            result2 = yaml.load(f.read(), Loader=yaml.FullLoader)
+        global modelSelect
+        global speaker
+        speaker = result2.get("defaultModel").get("speaker")
+        modelSelect = result2.get("defaultModel").get("modelSelect")
     @bot.on(GroupMessage)
     async def setDefaultModel(event: GroupMessage):
         if event.sender.id == master and str(event.message_chain).startswith("设定角色#"):
@@ -126,6 +128,16 @@ def main(bot,master,app_id,app_key,logger,berturl,proxy):
                             await bot.send_group_message(event.subject.id, Voice(path=r))
                             if withText == True:
                                 await bot.send_group_message(event.subject.id, rep)
+                        elif voicegg == "outVits":
+                            logger.info("调用out_vits语音回复")
+                            try:
+                                path = await outVits({"text": st8, "speaker": speaker92})
+                                await bot.send_group_message(event.subject.id, Voice(path=path))
+                                if withText == True:
+                                    await bot.send_group_message(event.subject.id, rep)
+                            except:
+                                logger.error("out_vits语音合成出错")
+                                await bot.send_group_message(event.subject.id, rep)
                         elif voicegg=="vits":
                             path = 'data/voices/' + random_str() + '.wav'
                             if random.randint(1, 100) > chineseVoiceRate:
@@ -148,8 +160,9 @@ def main(bot,master,app_id,app_key,logger,berturl,proxy):
                                 await bot.send_group_message(event.subject.id, rep)
                     except Exception as e:
                         logger.error(e)
-                        logger.error("出错，改用vits合成语音")
-                        path = 'data/voices/' + random_str() + '.wav'
+                        logger.error("出错，发送原文本")
+                        await bot.send_group_message(event.subject.id, rep)
+                        '''path = 'data/voices/' + random_str() + '.wav'
                         if random.randint(1, 100) > chineseVoiceRate:
                             if rep in transLateData:
                                 text = transLateData.get(rep)
@@ -167,7 +180,7 @@ def main(bot,master,app_id,app_key,logger,berturl,proxy):
                             {"text": tex, "out": path, "speaker": speaker, "modelSelect": modelSelect})
                         await bot.send_group_message(event.subject.id, Voice(path=path))
 
-                            #await bot.send_group_message(event.subject.id,  rep)
+                            #await bot.send_group_message(event.subject.id,  rep)'''
 
 
 

@@ -34,7 +34,7 @@ from plugins.newsEveryDay import news, moyu, xingzuo, sd, chaijun
 from plugins.picGet import pic, setuGet, picDwn
 from plugins.tarot import tarotChoice
 from plugins.translater import translate
-from plugins.vitsGenerate import voiceGenerate
+
 from plugins.webScreenShoot import webScreenShoot, screenshot_to_pdf_and_png
 
 
@@ -241,15 +241,8 @@ def main(bot,api_KEY,app_id,app_key,nasa_api,proxy,logger):
             x = str(event.message_chain).replace('/cp ', '', 1)
             x = x.split(' ')
             if len(x) != 2:
-                if "MoeGoe.py" in os.listdir():
-                    path = 'data/voices/' + random_str() + '.wav'
-                else:
-                    path = '../data/voices/' + random_str() + '.wav'
-                text='エラーが発生しました。再入力してください'
-                tex = '[JA]' + text + '[JA]'
-                logger.info("启动文本转语音：text: " + tex + " path: " + path[3:])
-                await voiceGenerate({"text": tex, "out": path})
-                await bot.send(event, Voice(path=path))
+
+                await bot.send(event, 'エラーが発生しました。再入力してください')
                 return
             mesg = get_cp_mesg(x[0], x[1])
             await bot.send(event, mesg, True)

@@ -22,7 +22,7 @@ from plugins.chatGLMonline import chatGLM1
 
 from plugins.rwkvHelper import rwkvHelper
 from plugins.translater import translate
-from plugins.vitsGenerate import taffySayTest, sovits, edgetts, voiceGenerate
+from plugins.vitsGenerate import taffySayTest, sovits, edgetts, voiceGenerate, outVits
 from plugins.wReply.mohuReply import mohuaddReplys
 from plugins.yubanGPT import yubanGPTReply, luoyueGPTReply
 
@@ -749,6 +749,16 @@ def main(bot, master, apikey, chatGLM_api_key, proxy, logger,berturl):
                 logger.info("调用so_vits语音回复")
                 try:
                     path=await sovits(data1)
+                    await bot.send(event, Voice(path=path))
+                    if withText==True:
+                        await bot.send(event,st1, True)
+                except:
+                    logger.error("sovits语音合成服务已关闭，请重新运行")
+                    await bot.send(event, st1, True)
+            elif voicegg=="outVits":
+                logger.info("调用out_vits语音回复")
+                try:
+                    path=await outVits(data1)
                     await bot.send(event, Voice(path=path))
                     if withText==True:
                         await bot.send(event,st1, True)

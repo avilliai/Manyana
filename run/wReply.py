@@ -21,7 +21,7 @@ from plugins.RandomStr import random_str
 from plugins.imgDownload import dict_download_img
 from plugins.modelsLoader import modelLoader
 from plugins.translater import translate
-from plugins.vitsGenerate import voiceGenerate
+from plugins.vitsGenerate import voiceGenerate, outVits
 from plugins.wReply.mohuReply import mohuaddReplys, mohudels, mohuadd
 from plugins.wReply.superDict import outPutDic, importDict
 
@@ -41,6 +41,8 @@ def main(bot,config,sizhiKey,app_id, app_key,logger):
         noRes=noRes1.get("noRes")
     with open('config/settings.yaml', 'r', encoding='utf-8') as f:
         result = yaml.load(f.read(), Loader=yaml.FullLoader)
+    speaker92 = result.get("chatGLM").get("speaker")
+    voicegg = result.get("voicegenerate")
     yubanGPT = result.get("yuban").get("yubanGPT")
     trustDays=result.get("trustDays")
     gptReply=result.get("pandora").get("gptReply")
@@ -260,12 +262,17 @@ def main(bot,config,sizhiKey,app_id, app_key,logger):
                 if 1:
                     if str(event.message_chain).startswith("语音"):
                         logger.info("增加语音回复")
-                        ranpath = random_str()
-                        path='data/autoReply/voiceReply/' + ranpath + '.wav'
-                        text = await translate(str(event.message_chain)[2:], app_id, app_key)
-                        tex = '[JA]' + text + '[JA]'
-                        await voiceGenerate({"text":tex,"out":path,"speaker":speaker,"modelSelect":modelSelect})
-                        value = ranpath + '.wav'
+                        if voicegg=="vits":
+                            ranpath = random_str()
+                            path='data/autoReply/voiceReply/' + ranpath + '.wav'
+                            text = await translate(str(event.message_chain)[2:], app_id, app_key)
+                            tex = '[JA]' + text + '[JA]'
+                            await voiceGenerate({"text":tex,"out":path,"speaker":speaker,"modelSelect":modelSelect})
+                            value = ranpath + '.wav'
+                        elif voicegg=="outVits":
+                            text=str(event.message_chain)[2:]
+                            p=await outVits({"text":text,"speaker":speaker92})
+                            value=p.split("/")[-1]
                     elif event.message_chain.count(Image) == 1:
                         logger.info("增加图片回复")
                         lst_img = event.message_chain.get(Image)
@@ -480,21 +487,26 @@ def main(bot,config,sizhiKey,app_id, app_key,logger):
                         await bot.send(event, replyssssss)
                     else:
                         replyssssss = replyssssss.replace(botName, "我")
-                        path='data/voices/' + random_str() + '.wav'
-                        if random.randint(1,100)>chineseVoiceRate:
-                            if replyssssss in transLateData:
-                                text=transLateData.get(replyssssss)
+                        if voicegg=="vits":
+
+                            path='data/voices/' + random_str() + '.wav'
+                            if random.randint(1,100)>chineseVoiceRate:
+                                if replyssssss in transLateData:
+                                    text=transLateData.get(replyssssss)
+                                else:
+                                    text=await translate(str(replyssssss), app_id, app_key)
+                                    transLateData[replyssssss]=text
+                                    with open('data/autoReply/transLateData.yaml', 'w', encoding="utf-8") as file:
+                                        yaml.dump(transLateData, file, allow_unicode=True)
+                                    logger.info("写入参照数据:"+replyssssss+"| "+text)
+                                tex = '[JA]' + text + '[JA]'
                             else:
-                                text=await translate(str(replyssssss), app_id, app_key)
-                                transLateData[replyssssss]=text
-                                with open('data/autoReply/transLateData.yaml', 'w', encoding="utf-8") as file:
-                                    yaml.dump(transLateData, file, allow_unicode=True)
-                                logger.info("写入参照数据:"+replyssssss+"| "+text)
-                            tex = '[JA]' + text + '[JA]'
-                        else:
-                            tex="[ZH]"+replyssssss+"[ZH]"
-                        logger.info("启动文本转语音：text: "+tex+" path: "+path)
-                        await voiceGenerate({"text": tex, "out": path,"speaker":speaker,"modelSelect":modelSelect})
+                                tex="[ZH]"+replyssssss+"[ZH]"
+                            logger.info("启动文本转语音：text: "+tex+" path: "+path)
+                            await voiceGenerate({"text": tex, "out": path,"speaker":speaker,"modelSelect":modelSelect})
+                        elif voicegg=="outVits":
+
+                            path = await outVits({"text": replyssssss, "speaker": speaker92})
 
                         await bot.send(event,Voice(path=path))
             except:
