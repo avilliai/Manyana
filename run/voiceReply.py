@@ -171,7 +171,7 @@ def main(bot,master,app_id,app_key,logger):
                 await bot.send(event,"可用角色如下：\n"+str1)
             elif voicegg=="outVits":
                 await bot.send(event, "可用角色如下：\n" + str(outVitsSpeakers))
-                await bot.send(event,"可发送 xx说....... 以进行语音合成")
+            await bot.send(event,"可发送 xx说....... 以进行语音合成")
 
 
 
