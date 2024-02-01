@@ -118,7 +118,7 @@ def main(bot,master,app_id,app_key,logger):
     async def characterSpeake(event:GroupMessage):
         if "说" in str(event.message_chain):
 
-            text = str(event.message_chain).split("说")[1]
+            text = str(event.message_chain)[len(str(event.message_chain).split("说")[0])+1:]
             if voicegg=="vits" and str(event.message_chain).split("说")[0] in characters:
                 speaker = str(event.message_chain).split("说")[0]
                 text =await translate(text, app_id, app_key)
@@ -171,6 +171,7 @@ def main(bot,master,app_id,app_key,logger):
                 await bot.send(event,"可用角色如下：\n"+str1)
             elif voicegg=="outVits":
                 await bot.send(event, "可用角色如下：\n" + str(outVitsSpeakers))
+                await bot.send(event,"可发送 xx说....... 以进行语音合成")
 
 
 
