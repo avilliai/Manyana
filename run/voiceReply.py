@@ -129,7 +129,7 @@ def main(bot,master,app_id,app_key,logger):
                 await voiceGenerate(data)
                 await bot.send(event, Voice(path=path))
             elif voicegg=="outVits" and str(event.message_chain).split("说")[0] in outVitsSpeakers:
-                p = await outVits({"text": text, "speaker": outSpeaker})
+                p = await outVits({"text": text, "speaker": str(event.message_chain).split("说")[0]})
                 await bot.send(event, Voice(path=p))
 
     @bot.on(GroupMessage)
