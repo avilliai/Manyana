@@ -13,7 +13,7 @@ from mirai.models import MusicShare
 from mirai import Startup, Shutdown
 
 from plugins.historicalToday import steamEpic
-from plugins.newsEveryDay import news
+from plugins.newsEveryDay import news, danxianglii
 from plugins.picGet import picDwn
 from plugins.translater import translate
 
@@ -27,8 +27,18 @@ def main(bot,proxy,nasa_api,app_id,app_key,logger):
     astronomy=data.get("astronomy").get("time").split("/")
     moyu = data.get("moyu").get("time").split("/")
     constellation=data.get("constellation").get("time").split("/")
+    if "danxiangli" in data:
+        danxiangli=newsT=data.get("danxiangli").get("time").split("/")
+    else:
+        danxiangli="16/10".split("/")
+        data["danxiangli"]={"text":"今日单向历"}
+        data["danxiangli"]["time"]="16/10"
+        data["danxiangli"]["groups"]=[699455559,12345]
+        with open('data/scheduledTasks.yaml', 'w', encoding="utf-8") as file:
+            yaml.dump(data, file, allow_unicode=True)
     global scheduler
     scheduler = AsyncIOScheduler()
+
 
     @bot.on(Startup)
     def start_scheduler(_):
@@ -132,6 +142,8 @@ def main(bot,proxy,nasa_api,app_id,app_key,logger):
             key="steamadd1"
         elif str(event.message_chain)=="/推送 每日星座":
             key="constellation"
+        elif str(event.message_chain)=="/推送 单向历":
+            key="danxiangli"
         else:
             return
         la=data.get(key).get("groups")
@@ -143,6 +155,19 @@ def main(bot,proxy,nasa_api,app_id,app_key,logger):
             await bot.send(event,"添加订阅成功，推送时间："+str(data.get(key).get("time")))
         else:
             await bot.send(event,"添加失败，已经添加过对应的任务。")
+
+    @scheduler.scheduled_job(CronTrigger(hour=int(danxiangli[0]), minute=int(danxiangli[1])))
+    async def danxiangliy():
+        logger.info("获取单向历")
+        path = await danxianglii()
+        logger.info("推送单向历")
+        for i in data.get("danxiangli").get("groups"):
+            try:
+                if path == None or path == "":
+                    return
+                await bot.send_group_message(int(i), [data.get("danxiangli").get("text"), path])
+            except:
+                logger.error("不存在的群" + str(i))
     @bot.on(GroupMessage)
     async def cancelSubds(event: GroupMessage):
         global data
@@ -156,6 +181,8 @@ def main(bot,proxy,nasa_api,app_id,app_key,logger):
             key="steamadd1"
         elif str(event.message_chain)=="/取消 每日星座":
             key="constellation"
+        elif str(event.message_chain)=="/取消 单向历":
+            key="danxiangli"
         else:
             return
         la=data.get(key).get("groups")

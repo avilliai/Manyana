@@ -30,7 +30,7 @@ from plugins.jokeMaker import get_joke
 
 from plugins.modelsLoader import modelLoader
 from plugins.newLogger import newLogger
-from plugins.newsEveryDay import news, moyu, xingzuo, sd, chaijun
+from plugins.newsEveryDay import news, moyu, xingzuo, sd, chaijun, danxianglii
 from plugins.picGet import pic, setuGet, picDwn
 from plugins.tarot import tarotChoice
 from plugins.translater import translate
@@ -210,7 +210,13 @@ def main(bot,api_KEY,app_id,app_key,nasa_api,proxy,logger):
             path=await news()
             logger.info("成功获取到今日新闻")
             await bot.send(event,Image(path=path))
-
+    @bot.on(GroupMessage)
+    async def onedimensionli(event:GroupMessage):
+        if ("单向历" in str(event.message_chain) and At(bot.qq) in event.message_chain) or str(event.message_chain)=="单向历":
+            logger.info("获取单向历")
+            path=await danxianglii()
+            logger.info("成功获取到单向历")
+            await bot.send(event,Image(path=path))
     @bot.on(GroupMessage)
     async def moyuToday(event: GroupMessage):
         if ("摸鱼" in str(event.message_chain) and At(bot.qq) in event.message_chain) or str(event.message_chain)=="摸鱼":
