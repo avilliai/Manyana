@@ -116,14 +116,11 @@ if __name__ == '__main__':
     async def help(event: GroupMessage):
         if ('帮助' in str(event.message_chain) or '菜单' in str(event.message_chain) or "help" in str(event.message_chain)) and At(bot.qq) in event.message_chain:
             logger.info("获取菜单")
-            await bot.send(event, Image(path='config/help1.png'))
-            await bot.send(event, Image(path='config/help2.png'))
-            await bot.send(event, Image(path='config/help3.png'))
-            await bot.send(event, '这是' + botName + '的功能列表\nヾ(≧▽≦*)o')
+            await bot.send(event, [Image(path='data/fonts/help1.png'),Image(path='data/fonts/help2.png'),Image(path='data/fonts/help3.png'),Image(path='data/fonts/help4.png')])
+            await bot.send(event, '这是' + botName + '的功能列表\nヾ(≧▽≦*)o\n发送 pet 以查看制图功能列表')
         if '制图' in str(event.message_chain) and At(bot.qq) in event.message_chain :
-            logger.info("菜单")
-            await bot.send(event, Image(path='config/picMaker.png'))
-            await bot.send(event, '这是' + botName + '的制图功能列表\nヾ(≧▽≦*)o')
+            logger.info("制图菜单")
+            await bot.send(event, '发送 pet 以查看制图功能列表')
 
 
     @bot.on(Startup)
@@ -205,7 +202,7 @@ if __name__ == '__main__':
     else:
         logger.warning("未启用pandora，如需启用请修改setting.yaml并完成相关配置")
     def startVer():
-        file_object = open("config/mylog.log")
+        file_object = open("data/fonts/mylog.log")
         try:
             all_the_text = file_object.read()
         finally:
