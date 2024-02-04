@@ -422,6 +422,10 @@ def main(bot, master, logger):
                     yaml.dump(yubanid, file, allow_unicode=True)
         elif ((replyModel=="gemini" or chatGLMCharacters.get(event.sender.id)=="Gemini") and At(bot.qq) in event.message_chain) or str(event.message_chain).startswith("/g") and (glmReply == True or (trustglmReply == True and str(event.sender.id) in trustUser)):
             text = str(event.message_chain).replace("@" + str(bot.qq) + "", '').replace(" ", "").replace("/g", "")
+            for saa in noRes:
+                if text == saa:
+                    logger.warning("与屏蔽词匹配，Gemini不回复")
+                    return
             logger.info("gemini开始运行")
             if text == "" or text == " ":
                 text = "在吗"
