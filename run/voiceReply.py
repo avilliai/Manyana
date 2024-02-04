@@ -32,8 +32,8 @@ def main(bot,master,app_id,app_key,logger):
         result0 = yaml.load(f.read(), Loader=yaml.FullLoader)
     voicegg=result0.get("voicegenerate")
     outSpeaker=result0.get("chatGLM").get("speaker")
-    if voicegg=="vits":
-
+    viop = result0.get("vits?")
+    if voicegg=="vits" or viop==True:
         with open('config/autoSettings.yaml', 'r', encoding='utf-8') as f:
             result2 = yaml.load(f.read(), Loader=yaml.FullLoader)
         global modelSelect
@@ -164,12 +164,12 @@ def main(bot,master,app_id,app_key,logger):
     @bot.on(GroupMessage)
     async def checkCharacters(event:GroupMessage):
         if "角色" in str(event.message_chain) and At(bot.qq) in event.message_chain:
-            if voicegg=="vits":
+            if voicegg=="vits" or viop==True:
                 str1=""
                 for i in characters:
                     str1+=i+" |"
                 await bot.send(event,"可用角色如下：\n"+str1)
-            elif voicegg=="outVits":
+            if voicegg=="outVits":
                 await bot.send(event, "可用角色如下：\n" + str(outVitsSpeakers))
             await bot.send(event,"可发送 xx说....... 以进行语音合成")
 

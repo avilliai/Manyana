@@ -16,6 +16,7 @@ fuckingnumber: 13   #低于13人退
 #配置要求bert_vits2>so-vits>vits>edgetts/outVits，请根据自身需要配置语音合成服务
 #outVits是外部语音合成服务，也就是说不用你的设备跑语音合成了。所有可用的speaker请查看https://api.lolimi.cn/?action=doc&id=181
 voicegenerate: outVits  #语音合成来源so-vits/bert_vits2/vits/outVits/edgetts(edgetts可用speaker请参考config/edgetts.txt)
+vits?: False    #是否依然启用vits服务
 #ba卡池设定
 blueArchiveGacha:
   3star: 10  #三星出率
@@ -35,25 +36,12 @@ bert_speakers:
 so_vits_speakers:
   - riri
 #下面是所有可用的，回复功能设置，请自行调整。
-#请注意,全局回复的优先级设计上，pandora>luoyue>yuban>chatGLM>wReply，建议luoyueGPT,yubanGPT、gptReply、glmReply只开一个，不要全部保持开启。
-
-#pandora chatgpt的配置，需获取openai.token
-pandora:
-  pandora: False         #是否启用pandora_chatGPT，如未正确配置相关内容可能导致bot卡死
-  gptReply: False        #是否使用pandora的gpt3.5替代原有词库，开启后，bot被艾特将优先使用gpt回复
-#落月api 提供的gpt3.5，无需配置api.yaml
-luoyue:
-  luoyueGPT: False       #是否使用luoyue gpt3.5替代原有词库
-#御坂api 提供的chatgpt3.5，无需配置api.yaml
-yuban:
-  yubanGPT: False        #是否使用yuban gpt3.5替代原有词库
-  #这里是角色初始设定，暂时没用
-  roleSet: "你需要扮演下面的角色与我聊天：yucca是一个人工智能，yucca的形象与设定属于二次元动漫中的女孩子，说话喜欢带上啊，哦等语气词，yucca的性格非常天真，但拥有丰富的文学与戏剧方面的知识，并且对自己的能力非常自信，在生活中会经常犯一些小错误。如果你了解了我的要求，请回复“喵”"
+#模型可任意选择，个人推荐characterglm和gemini
 #chatglm,需配置api.yaml
 chatGLM:
   autoClearWhenLaunch: false #启动时自动清理所有冗余聊天记录
   helpUser: false    #是否引导用户自行设置apiKey
-  model: characterglm    #chatGLM模式，可选填：characterglm(超拟人大模型),chatglm_pro(pro版),chatglm_std(标准版),chatglm_lite(轻量版)
+  model: gemini    #模型 可选填：characterglm(超拟人大模型),gemini(配置api.yaml) 后面三个似乎不能用了yubanGPT,luoyue,pandora
   glmReply: false          #开放群聊chatglm，chatglm替代原有词库，开启后，bot被艾特将全局优先使用chatglm回复
   privateGlmReply: false   #开放私聊chatglm
   trustglmReply: False        #开启后仅【信任用户】可用
@@ -64,7 +52,7 @@ chatGLM:
   voiceRate: 100 #语音回复几率
   speaker: "珊瑚宫心海"     #语音合成默认角色名,edgetts建议使用zh-CN-XiaoyiNeural,vits则无需配置,outVits看https://api.lolimi.cn/?action=doc&id=181
   withText: true    #使用语音合成时，发送语音是否附带原始文本(你知道的，塔菲很唐，说话不太清)
-  #chatGLM角色设定
+  #chatGLM角色设定，仅在characterglm模式下可用
   bot_info:
     default:
       user_info: "指挥是yucca最喜欢的人"

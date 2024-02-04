@@ -43,10 +43,8 @@ def main(bot,config,sizhiKey,app_id, app_key,logger):
         result = yaml.load(f.read(), Loader=yaml.FullLoader)
     speaker92 = result.get("chatGLM").get("speaker")
     voicegg = result.get("voicegenerate")
-    yubanGPT = result.get("yuban").get("yubanGPT")
+    replyModel=result.get("chatGLM").get("model")
     trustDays=result.get("trustDays")
-    gptReply=result.get("pandora").get("gptReply")
-    luoyueGPT = result.get("luoyue").get("luoyue")
     glmReply = result.get("chatGLM").get("glmReply")
     privateGlmReply=result.get("chatGLM").get("privateGlmReply")
     trustglmReply = result.get("chatGLM").get("trustglmReply")
@@ -325,9 +323,9 @@ def main(bot,config,sizhiKey,app_id, app_key,logger):
         global botName,likeindex,temp,sizhi,transLateData,trustuser,chatGLMapikeys,chatGLMsingelUserKey
         if True:
             if At(bot.qq) in event.message_chain:
-                if gptReply==True or glmReply==True or yubanGPT==True or (trustglmReply==True and str(event.sender.id) in trustUser):
+                if replyModel!=None or (trustglmReply==True and str(event.sender.id) in trustUser):
                     return
-                elif event.group.id in chatGLMapikeys or luoyueGPT==True:
+                elif event.group.id in chatGLMapikeys:
                     return
                 elif str(event.group.id)==str(config.get("mainGroup")) and chatglm!="sdfafjsadlf;aldf":
                     return

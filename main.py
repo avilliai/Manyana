@@ -44,10 +44,12 @@ if __name__ == '__main__':
     moderate=result.get("moderate")
     nasa_api=result.get("nasa_api")
     chatglm=result.get("chatGLM")
+
     with open('config/settings.yaml', 'r', encoding='utf-8') as f:
         resulta = yaml.load(f.read(), Loader=yaml.FullLoader)
-    pandora=resulta.get("pandora").get("pandora")
+    pandora = resulta.get("chatGLM").get("model")
     voicegg = resulta.get("voicegenerate")
+    viop = resulta.get("vits?")
     logger.info("读取到apiKey列表")
 
 
@@ -180,7 +182,7 @@ if __name__ == '__main__':
         logger.info("over")
     except:
         logger.error("取消github更新")'''
-    if voicegg=="vits":
+    if voicegg=="vits" or viop==True:
         logger.info("如果内存不够可以把vits文件夹内内容转移到Manyana根目录")
         if "MoeGoe.py" in os.listdir():
             logger.warning("语音合成目录变动，语音合成将改为直接调用")
@@ -194,7 +196,7 @@ if __name__ == '__main__':
             logger.info(" 语音合成sever启动....")
     else:
         logger.info("当前语音合成模式："+voicegg+" ，不启用vits")
-    if pandora:
+    if pandora=="pandora":
         try:
             subprocess.Popen(["pandora", "-t", "config/token.txt","-s", "127.0.0.1:23459", "-p", proxy])
         except:
@@ -215,7 +217,7 @@ if __name__ == '__main__':
     if proxy != "":
         try:
             # logger.info("开发过程中暂不启动poe-api")
-            aiReply.main(bot, master,result.get("poe-api"),chatglm, result.get("proxy"), logger,berturl)  # poe-api
+            aiReply.main(bot, master, logger)  # poe-api
         except:
             logger.error("poe-api启动失败")
         imgSearch.main(bot, result.get("sauceno-api"), result.get("proxy"), logger)
@@ -236,6 +238,7 @@ if __name__ == '__main__':
     groupGames.main(bot,logger)
     musicpick.main(bot,logger)
     sovits2.main(bot,logger)
+    #gemini_ai.main(bot,logger,master)
     startVer()
 
     bot.run()
