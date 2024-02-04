@@ -290,7 +290,7 @@ def main(bot, master, logger):
     @bot.on(FriendMessage)
     async def showCharacter(event:FriendMessage):
         if str(event.message_chain)=="可用角色模板" or "角色模板" in str(event.message_chain):
-            st1="Gemini\n"
+            st1=""
             for isa in allcharacters:
                 st1+=isa+"\n"
             await bot.send(event,"对话可用角色模板：\n"+st1+"\n发送：设定#角色名 以设定角色")
@@ -329,7 +329,7 @@ def main(bot, master, logger):
     @bot.on(GroupMessage)
     async def showCharacter(event:GroupMessage):
         if str(event.message_chain)=="可用角色模板" or (At(bot.qq) in event.message_chain and "角色模板" in str(event.message_chain)):
-            st1="Gemini\n"
+            st1=""
             for isa in allcharacters:
                 st1+=isa+"\n"
             await bot.send(event,"对话可用角色模板：\n"+st1+"\n发送：设定#角色名 以设定角色")
@@ -452,7 +452,7 @@ def main(bot, master, logger):
                     # print(path)
                     st8 = re.sub(r"（[^）]*）", "", r)  # 使用r前缀表示原始字符串，避免转义字符的问题
                     data1["text"] = st8
-                    st1=8
+                    st1=r
                     if voicegg == "bert_vits2":
                         logger.info("调用bert_vits语音回复")
                         try:
