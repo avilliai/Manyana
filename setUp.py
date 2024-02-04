@@ -21,6 +21,7 @@ def main():
 
             os.system("pip install edge-tts")
             os.system("pip install psutil")
+            os.system("pip install -q -U google-generativeai")
             #os.system("pip install -U zhipuai")
             #os.system("pip install pydantic==1.10.11")
             #os.system("pip install aspose-words")
