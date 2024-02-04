@@ -163,7 +163,7 @@ def main(bot,master,app_id,app_key,logger):
                 await bot.send(event, Voice(path=path))
     @bot.on(GroupMessage)
     async def checkCharacters(event:GroupMessage):
-        if "角色" in str(event.message_chain) and At(bot.qq) in event.message_chain:
+        if "角色" in str(event.message_chain) and At(bot.qq) in event.message_chain and "模板" not in str(event.message_chain):
             if voicegg=="vits" or viop==True:
                 str1=""
                 for i in characters:
