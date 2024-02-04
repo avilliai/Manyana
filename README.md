@@ -112,6 +112,7 @@ chatGLM 配置文件打开glmReply或trustglmReply，将取代艾特回复
      取消密钥              #取消本群的密钥
      可用角色模板          #查看所有可用角色预设，需要填写setting.yaml
      设定#角色名           #设置特定角色回复
+/g你好       #谷歌的gemini，需要配置api.yaml
 /xh你好      #讯飞星火，无需配置
 /wx你好      #文心一言，无需配置
 /l你好       #无需配置的chatgpt3.5

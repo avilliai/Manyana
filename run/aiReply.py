@@ -146,7 +146,7 @@ def main(bot, master, logger):
     @bot.on(FriendMessage)
     async def GLMFriendChat(event:FriendMessage):
         global chatGLMData,chatGLMCharacters,trustUser,chatGLMsingelUserKey,userdict,GeminiData
-        if replyModel=="characterglm":
+        if replyModel=="characterglm" and chatGLMCharacters.get(event.sender.id)!="Gemini":
             #如果用户有自己的key
             if event.sender.id in chatGLMsingelUserKey:
                 selfApiKey=chatGLMsingelUserKey.get(event.sender.id)
@@ -202,7 +202,7 @@ def main(bot, master, logger):
 
             except:
                 await bot.send(event, "chatGLM启动出错，请联系master检查apiKey或重试")
-        elif replyModel=="gemini":
+        elif replyModel=="gemini" or chatGLMCharacters.get(event.sender.id)=="Gemini":
             logger.info("gemini开始运行")
             text = str(event.message_chain)
             if text == "" or text == " ":
@@ -290,7 +290,7 @@ def main(bot, master, logger):
     @bot.on(FriendMessage)
     async def showCharacter(event:FriendMessage):
         if str(event.message_chain)=="可用角色模板" or "角色模板" in str(event.message_chain):
-            st1=""
+            st1="Gemini\n"
             for isa in allcharacters:
                 st1+=isa+"\n"
             await bot.send(event,"对话可用角色模板：\n"+st1+"\n发送：设定#角色名 以设定角色")
@@ -301,17 +301,19 @@ def main(bot, master, logger):
             if str(event.message_chain).split("#")[1] in allcharacters:
 
                 meta1 = allcharacters.get(str(event.message_chain).split("#")[1])
-
-                try:
-                    setName = userdict.get(str(event.sender.id)).get("userName")
-                except:
-                    setName = event.sender.nickname
-                if setName == None:
-                    setName = event.sender.nickname
-                meta1["user_info"] = meta1.get("user_info").replace("指挥", setName).replace("yucca", botName)
-                meta1["bot_info"] = meta1.get("bot_info").replace("指挥", setName).replace("yucca", botName)
-                meta1["bot_name"] = botName
-                meta1["user_name"] = setName
+                if meta1=='Gemini':
+                    pass
+                else:
+                    try:
+                        setName = userdict.get(str(event.sender.id)).get("userName")
+                    except:
+                        setName = event.sender.nickname
+                    if setName == None:
+                        setName = event.sender.nickname
+                    meta1["user_info"] = meta1.get("user_info").replace("指挥", setName).replace("yucca", botName)
+                    meta1["bot_info"] = meta1.get("bot_info").replace("指挥", setName).replace("yucca", botName)
+                    meta1["bot_name"] = botName
+                    meta1["user_name"] = setName
                 chatGLMCharacters[event.sender.id] = meta1
 
                 logger.info("当前：",chatGLMCharacters)
@@ -327,7 +329,7 @@ def main(bot, master, logger):
     @bot.on(GroupMessage)
     async def showCharacter(event:GroupMessage):
         if str(event.message_chain)=="可用角色模板" or (At(bot.qq) in event.message_chain and "角色模板" in str(event.message_chain)):
-            st1=""
+            st1="Gemini\n"
             for isa in allcharacters:
                 st1+=isa+"\n"
             await bot.send(event,"对话可用角色模板：\n"+st1+"\n发送：设定#角色名 以设定角色")
@@ -337,17 +339,19 @@ def main(bot, master, logger):
         if str(event.message_chain).startswith("设定#"):
             if str(event.message_chain).split("#")[1] in allcharacters:
                 meta1=allcharacters.get(str(event.message_chain).split("#")[1])
-
-                try:
-                    setName = userdict.get(str(event.sender.id)).get("userName")
-                except:
-                    setName = event.sender.member_name
-                if setName == None:
-                    setName = event.sender.member_name
-                meta1["user_name"] = meta1.get("user_name").replace("指挥", setName)
-                meta1["user_info"] = meta1.get("user_info").replace("指挥", setName).replace("yucca", botName)
-                meta1["bot_info"] = meta1.get("bot_info").replace("指挥", setName).replace("yucca", botName)
-                meta1["bot_name"] = botName
+                if meta1=="Gemini":
+                    pass
+                else:
+                    try:
+                        setName = userdict.get(str(event.sender.id)).get("userName")
+                    except:
+                        setName = event.sender.member_name
+                    if setName == None:
+                        setName = event.sender.member_name
+                    meta1["user_name"] = meta1.get("user_name").replace("指挥", setName)
+                    meta1["user_info"] = meta1.get("user_info").replace("指挥", setName).replace("yucca", botName)
+                    meta1["bot_info"] = meta1.get("bot_info").replace("指挥", setName).replace("yucca", botName)
+                    meta1["bot_name"] = botName
 
                 chatGLMCharacters[event.sender.id] =meta1
                 logger.info("当前：",chatGLMCharacters)
@@ -416,7 +420,7 @@ def main(bot, master, logger):
                 yubanid[event.sender.id]=rrr[1]
                 with open('data/yubanGPT.yaml', 'w', encoding="utf-8") as file:
                     yaml.dump(yubanid, file, allow_unicode=True)
-        elif (replyModel=="gemini" and At(bot.qq) in event.message_chain) or str(event.message_chain).startswith("/g") and (glmReply == True or (trustglmReply == True and str(event.sender.id) in trustUser)):
+        elif ((replyModel=="gemini" or chatGLMCharacters.get(event.sender.id)=="Gemini") and At(bot.qq) in event.message_chain) or str(event.message_chain).startswith("/g") and (glmReply == True or (trustglmReply == True and str(event.sender.id) in trustUser)):
             text = str(event.message_chain).replace("@" + str(bot.qq) + "", '').replace(" ", "").replace("/g", "")
             logger.info("gemini开始运行")
             if text == "" or text == " ":
