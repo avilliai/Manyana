@@ -28,7 +28,7 @@ def main(bot,proxy,nasa_api,app_id,app_key,logger):
     moyu = data.get("moyu").get("time").split("/")
     constellation=data.get("constellation").get("time").split("/")
     if "danxiangli" in data:
-        danxiangli=newsT=data.get("danxiangli").get("time").split("/")
+        danxiangli=data.get("danxiangli").get("time").split("/")
     else:
         danxiangli="16/10".split("/")
         data["danxiangli"]={"text":"今日单向历"}
@@ -163,9 +163,9 @@ def main(bot,proxy,nasa_api,app_id,app_key,logger):
         logger.info("推送单向历")
         for i in data.get("danxiangli").get("groups"):
             try:
-                if path == None or path == "":
+                if path == None:
                     return
-                await bot.send_group_message(int(i), [data.get("danxiangli").get("text"), path])
+                await bot.send_group_message(int(i), [data.get("danxiangli").get("text"),Image(path=path)])
             except:
                 logger.error("不存在的群" + str(i))
     @bot.on(GroupMessage)
