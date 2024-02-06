@@ -100,6 +100,7 @@ async def voiceGenerate(data):
         return out
 
     else:
+        print("start voice generate")
         url = 'http://localhost:9081/synthesize'
         data = json.dumps(data)
         try:
