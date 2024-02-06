@@ -218,7 +218,7 @@ def main(bot, master, logger):
             else:
                 await bot.send(event, "即将开始对话，请注意，如果遇到对话异常，请发送 /cGemini 以清理对话记录(不用艾特)", True)
                 prompt = [tep]
-                GeminiData[event.sender.id] = prompt
+
             logger.info("gemini接收提问:" + text)
             try:
                 # logger.info(geminiapikey)
