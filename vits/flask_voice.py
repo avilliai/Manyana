@@ -28,6 +28,7 @@ async def synthesize():
     # 调用 voiceG() 函数
     if modelSelect[0].endswith("I.pth"):
         text=text.replace("[JA]","").replace("[ZH]","")
+    #print("get")
     await voiceGenerate(tex=text, out=out,speakerID=speaker,modelSelect=modelSelect)
     # 将生成的音频返回给客户端
     return out

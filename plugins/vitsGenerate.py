@@ -105,6 +105,6 @@ async def voiceGenerate(data):
         try:
             async with httpx.AsyncClient(timeout=200) as client:
                 await client.post(url, json=data)
-        except:
-            pass
+        except Exception as e:
+            print(e)
     print("语音生成完成")
