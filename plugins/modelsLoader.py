@@ -26,11 +26,11 @@ def modelLoader():
                     muspeakers = {}
                     for id, name in enumerate(speakers):
                         muspeakers[str(id)] = name
-                        CHOISE[name] = [str(id), ['voiceModel/' + i + '/' + ass, 'voiceModel/' + i + '/config.json']]
+                        CHOISE[name] = [str(id), ['vits/voiceModel/' + i + '/' + ass, 'vits/voiceModel/' + i + '/config.json']]
 
-                    modelDll[str(ind)] = ['voiceModel/' + i + '/' + ass, 'voiceModel/' + i + '/config.json', muspeakers]
+                    modelDll[str(ind)] = ['vits/voiceModel/' + i + '/' + ass, 'vits/voiceModel/' + i + '/config.json', muspeakers]
                     time = datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')
-                    modelSelect = ['voiceModel/' + i + '/' + ass, 'voiceModel/' + i + '/config.json', muspeakers]
+                    modelSelect = ['vits/voiceModel/' + i + '/' + ass, 'vits/voiceModel/' + i + '/config.json', muspeakers]
 
                     #print(time + '| 已读取' + 'voiceModel/' + i + '文件夹下的模型文件' + str(muspeakers))
                     ind += 1

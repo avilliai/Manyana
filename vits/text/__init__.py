@@ -1,5 +1,5 @@
 """ from https://github.com/keithito/tacotron """
-from text import cleaners
+from vits.text import cleaners
 
 
 def text_to_sequence(text, symbols, cleaner_names):

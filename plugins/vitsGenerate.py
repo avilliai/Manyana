@@ -8,6 +8,9 @@ import httpx
 import requests
 
 from plugins.RandomStr import random_str
+from vits.MoeGoe import vG
+
+
 async def edgetts(data):
     speaker=data.get("speaker")
     text=data.get("text")
@@ -101,11 +104,24 @@ async def voiceGenerate(data):
 
     else:
         print("start voice generate")
-        url = 'http://localhost:9081/synthesize'
-        data = json.dumps(data)
+
+        text = data['text']
+        out = data["out"]
         try:
-            async with httpx.AsyncClient(timeout=200) as client:
-                await client.post(url, json=data)
+            speaker = data['speaker']
+            modelSelect = data['modelSelect']
         except Exception as e:
+            speaker = 2
+            modelSelect = ['vits/voiceModel/nene/1374_epochsm.pth', 'vits/voiceModel/nene/config.json']
             print(e)
-    print("语音生成完成")
+            # with open('config/settings.yaml', 'r', encoding='utf-8') as f:
+            # result = yaml.load(f.read(), Loader=yaml.FullLoader)
+            # speaker = result.get("vits").get("speaker")
+            # modelSelect = result.get("vits").get("modelSelect")
+        # 调用 voiceG() 函数
+        if modelSelect[0].endswith("I.pth"):
+            text = text.replace("[JA]", "").replace("[ZH]", "")
+        # print("get")
+        await vG(tex=text, out=out, speakerID=speaker, modelSelect=modelSelect)
+        print("语音生成完成")
+        return out

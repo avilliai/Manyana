@@ -49,7 +49,6 @@ if __name__ == '__main__':
         resulta = yaml.load(f.read(), Loader=yaml.FullLoader)
     pandora = resulta.get("chatGLM").get("model")
     voicegg = resulta.get("voicegenerate")
-    viop = resulta.get("vits?")
     logger.info("读取到apiKey列表")
 
 
@@ -182,20 +181,8 @@ if __name__ == '__main__':
         logger.info("over")
     except:
         logger.error("取消github更新")'''
-    if voicegg=="vits" or viop==True:
-        logger.info("如果内存不够可以把vits文件夹内内容转移到Manyana根目录")
-        if "MoeGoe.py" in os.listdir():
-            logger.warning("语音合成目录变动，语音合成将改为直接调用")
-        else:
-            if "venv" in os.listdir():
-                logger.info("检测到存在虚拟环境(venv) 即将启动 语音合成sever.bat")
-                subprocess.Popen(["语音合成sever.bat"], cwd="./")
-            else:
-                subprocess.Popen(["python.exe", "flask_voice.py"],cwd="vits")
-            #asyncio.run(os.system("cd vits && python flask_voice.py"))
-            logger.info(" 语音合成sever启动....")
-    else:
-        logger.info("当前语音合成模式："+voicegg+" ，不启用vits")
+
+    logger.info("当前语音合成模式："+voicegg)
     if pandora=="pandora":
         try:
             subprocess.Popen(["pandora", "-t", "config/token.txt","-s", "127.0.0.1:23459", "-p", proxy])

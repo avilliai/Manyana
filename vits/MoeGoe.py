@@ -10,12 +10,12 @@ import soundfile
 from scipy.io.wavfile import write
 
 
-from mel_processing import spectrogram_torch
+from vits.mel_processing import spectrogram_torch
 
-from text import text_to_sequence, _clean_text
-from models import SynthesizerTrn
-import utils
-import commons
+from vits.text import text_to_sequence, _clean_text
+from vits.models import SynthesizerTrn
+from vits import utils
+from vits import commons
 import sys
 import re
 from torch import no_grad, LongTensor
@@ -90,7 +90,7 @@ def get_label(text, label):
     else:
         return False, text
 
-async def voiceGenerate(tex,out,speakerID=2,modelSelect=['voiceModel/nene/1374_epochsm.pth','voiceModel/nene/config.json'] ):
+async def vG(tex,out,speakerID=2,modelSelect=['vits/voiceModel/nene/1374_epochsm.pth','vits/voiceModel/nene/config.json'] ):
     if len(tex)>150:
 
         tex='[JA]長すぎるああ、こんなに長い声..... んもう~[JA]'
