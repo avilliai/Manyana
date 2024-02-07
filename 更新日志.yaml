@@ -131,3 +131,6 @@
   - 更新支持谷歌的gemini，目前是免费调用，但对节点要求较高
   - 在https://ai.google.dev/tutorials/setup?hl=zh-cn获取，需要配置代理，否则无法使用
   - 对话模型可选择 gemini
+2024/2/7:
+  - 昨晚flask莫名其妙response[400]，遂修改语音合成导入方式
+  - 新增配置项
