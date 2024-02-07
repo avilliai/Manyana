@@ -59,6 +59,7 @@ def main(bot,master,app_id,app_key,logger):
                 logger.info("设置了语音生成_模型:" + str(modelSelect))
 
 
+
     # modelSelect=['voiceModel/selina/selina.pth','voiceModel/selina/config.json']
     # print('------\n'+str(CHOISE))
     @bot.on(GroupMessage)

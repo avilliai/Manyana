@@ -132,5 +132,5 @@
   - 在https://ai.google.dev/tutorials/setup?hl=zh-cn获取，需要配置代理，否则无法使用
   - 对话模型可选择 gemini
 2024/2/7:
-  - 昨晚flask莫名其妙response[400]，遂修改语音合成导入方式
+  - 昨晚flask莫名其妙response[400]，遂修改语音合成导入方式，倒算得上是一种优化
   - 新增配置项

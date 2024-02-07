@@ -75,9 +75,9 @@ def main(bot,master,app_id,app_key,logger,berturl,proxy):
                 with open('config/autoSettings.yaml', 'w', encoding="utf-8") as file:
                     yaml.dump(result, file, allow_unicode=True)
 
-                await bot.send(event, "成功设置了戳一戳语音生成默认角色为：" + speaker1)
+                await bot.send(event, "成功设置了vits语音生成默认角色为：" + speaker1)
             else:
-                await bot.send(event, "不存在的角色")
+                await bot.send(event, "不存在的vits角色")
 
     @bot.on(NudgeEvent)
     async def NudgeReply(event:NudgeEvent):
@@ -162,7 +162,7 @@ def main(bot,master,app_id,app_key,logger,berturl,proxy):
                         logger.error(e)
                         logger.error("出错，发送原文本")
                         await bot.send_group_message(event.subject.id, rep)
-                        '''path = 'data/voices/' + random_str() + '.wav'
+                        path = 'data/voices/' + random_str() + '.wav'
                         if random.randint(1, 100) > chineseVoiceRate:
                             if rep in transLateData:
                                 text = transLateData.get(rep)
@@ -179,7 +179,8 @@ def main(bot,master,app_id,app_key,logger,berturl,proxy):
                         await voiceGenerate(
                             {"text": tex, "out": path, "speaker": speaker, "modelSelect": modelSelect})
                         await bot.send_group_message(event.subject.id, Voice(path=path))
-
+                        if withText == True:
+                            await bot.send_group_message(event.subject.id, rep)
                             #await bot.send_group_message(event.subject.id,  rep)'''
 
 
