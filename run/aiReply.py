@@ -918,69 +918,76 @@ def main(bot, master, logger):
             st8 = re.sub(r"（[^）]*）", "", st1)  # 使用r前缀表示原始字符串，避免转义字符的问题
             data1["text"] = st8
 
-            if voicegg=="bert_vits2":
-                logger.info("调用bert_vits语音回复")
-                try:
-                    path=await taffySayTest(data1,berturl,proxy)
+            try:
+                if voicegg == "bert_vits2":
+                    logger.info("调用bert_vits语音回复")
+                    path = await taffySayTest(data1, berturl, proxy)
                     await bot.send(event, Voice(path=path))
-                    if withText==True:
-                        await bot.send(event,st1, True)
-                except:
-                    logger.error("bert_vits2语音合成服务已关闭，请重新运行")
-                    await bot.send(event, st1, True)
-            elif voicegg=="so-vits":
-                logger.info("调用so_vits语音回复")
-                try:
-                    path=await sovits(data1)
+                elif voicegg == "so-vits":
+                    logger.info("调用so_vits语音回复")
+                    path = await sovits(data1)
                     await bot.send(event, Voice(path=path))
-                    if withText==True:
-                        await bot.send(event,st1, True)
-                except:
-                    logger.error("sovits语音合成服务已关闭，请重新运行")
-                    await bot.send(event, st1, True)
-            elif voicegg=="outVits":
-                logger.info("调用out_vits语音回复")
-                try:
-                    path=await outVits(data1)
+                elif voicegg == "outVits":
+                    logger.info("调用out_vits语音回复")
+                    path = await outVits(data1)
                     await bot.send(event, Voice(path=path))
-                    if withText==True:
-                        await bot.send(event,st1, True)
-                except:
-                    logger.error("sovits语音合成服务已关闭，请重新运行")
-                    await bot.send(event, st1, True)
-            elif voicegg=="edgetts":
-                logger.info("调用edgetts语音回复")
-                try:
-                    path=await edgetts(data1)
+                elif voicegg == "edgetts":
+                    logger.info("调用edgetts语音回复")
+                    path = await edgetts(data1)
                     await bot.send(event, Voice(path=path))
-                    if withText==True:
-                        await bot.send(event,st1, True)
-                except Exception as e:
-                    await bot.send(event, st1, True)
-                    logger.error(e)
-                    logger.error("edgetts语音合成服务已关闭，请重新运行")
-            elif voicegg=="vits":
-                logger.info("调用vits语音回复")
-                try:
-                    path = 'data/voices/' + random_str() + '.wav'
-                    if random.randint(1, 100) > chineseVoiceRate:
-                        text = await translate(str(st8), app_id, app_key)
-                        tex = '[JA]' + text + '[JA]'
-                    else:
-                        tex = "[ZH]" + st8 + "[ZH]"
-                    logger.info("启动文本转语音：text: " + tex + " path: " + path)
 
-                    with open('config/autoSettings.yaml', 'r', encoding='utf-8') as f:
-                        resulte = yaml.load(f.read(), Loader=yaml.FullLoader)
-                    spe=resulte.get("defaultModel").get("speaker")
-                    modelSelect = resulte.get("defaultModel").get("modelSelect")
-                    await voiceGenerate({"text": tex, "out": path, "speaker": spe, "modelSelect": modelSelect})
-                    await bot.send(event, Voice(path=path))
-                    if withText==True:
-                        await bot.send(event,st1, True)
-                except:
-                    logger.error("vits服务运行出错，请检查是否开启或检查配置")
+                elif voicegg == "vits":
+                    logger.info("调用vits语音回复")
+                    try:
+                        path = 'data/voices/' + random_str() + '.wav'
+                        if random.randint(1, 100) > chineseVoiceRate:
+                            text = await translate(str(st8), app_id, app_key)
+                            tex = '[JA]' + text + '[JA]'
+                        else:
+                            tex = "[ZH]" + st8 + "[ZH]"
+                        logger.info("启动文本转语音：text: " + tex + " path: " + path)
+                        # spe = rte.get("defaultModel").get("speaker")
+                        with open('config/autoSettings.yaml', 'r', encoding='utf-8') as f:
+                            resulte = yaml.load(f.read(), Loader=yaml.FullLoader)
+                        spe = resulte.get("defaultModel").get("speaker")
+                        modelSelect = resulte.get("defaultModel").get("modelSelect")
+                        await voiceGenerate({"text": tex, "out": path, "speaker": spe, "modelSelect": modelSelect})
+                        await bot.send(event, Voice(path=path))
+
+                    except:
+                        logger.error("vits服务运行出错，请检查是否开启或检查配置")
+                        await bot.send(event, st1, True)
+
+                if withText == True:
                     await bot.send(event, st1, True)
+            except Exception as e:
+                logger.error(e)
+                if random.randint(0, 100) < RateIfUnavailable:
+                    logger.info("出错，改用vits")
+                    try:
+                        path = 'data/voices/' + random_str() + '.wav'
+                        if random.randint(1, 100) > chineseVoiceRate:
+                            text = await translate(str(st8), app_id, app_key)
+                            tex = '[JA]' + text + '[JA]'
+                        else:
+                            tex = "[ZH]" + st8 + "[ZH]"
+                        logger.info("启动文本转语音：text: " + tex + " path: " + path)
+                        # spe = rte.get("defaultModel").get("speaker")
+                        with open('config/autoSettings.yaml', 'r', encoding='utf-8') as f:
+                            resulte = yaml.load(f.read(), Loader=yaml.FullLoader)
+                        spe = resulte.get("defaultModel").get("speaker")
+                        modelSelect = resulte.get("defaultModel").get("modelSelect")
+                        await voiceGenerate(
+                            {"text": tex, "out": path, "speaker": spe, "modelSelect": modelSelect})
+                        await bot.send(event, Voice(path=path))
+                        if withText == True:
+                            await bot.send(event, st1, True)
+                    except Exception as e:
+                        logger.error(e)
+                        logger.error("vits服务运行出错，请检查是否开启或检查配置")
+                        await bot.send(event, st1, True)
+
+
 
         else:
             if len(st1) > 400:
