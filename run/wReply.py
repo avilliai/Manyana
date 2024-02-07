@@ -268,9 +268,19 @@ def main(bot,config,sizhiKey,app_id, app_key,logger):
                             await voiceGenerate({"text":tex,"out":path,"speaker":speaker,"modelSelect":modelSelect})
                             value = ranpath + '.wav'
                         elif voicegg=="outVits":
-                            text=str(event.message_chain)[2:]
-                            p=await outVits({"text":text,"speaker":speaker92})
-                            value=p.split("/")[-1]
+                            try:
+                                text=str(event.message_chain)[2:]
+                                p=await outVits({"text":text,"speaker":speaker92})
+                                value=p.split("/")[-1]
+                            except Exception as e:
+                                logger.error(e)
+                                ranpath = random_str()
+                                path = 'data/autoReply/voiceReply/' + ranpath + '.wav'
+                                text = await translate(str(event.message_chain)[2:], app_id, app_key)
+                                tex = '[JA]' + text + '[JA]'
+                                await voiceGenerate(
+                                    {"text": tex, "out": path, "speaker": speaker, "modelSelect": modelSelect})
+                                value = ranpath + '.wav'
                     elif event.message_chain.count(Image) == 1:
                         logger.info("增加图片回复")
                         lst_img = event.message_chain.get(Image)
@@ -323,7 +333,7 @@ def main(bot,config,sizhiKey,app_id, app_key,logger):
         global botName,likeindex,temp,sizhi,transLateData,trustuser,chatGLMapikeys,chatGLMsingelUserKey
         if True:
             if At(bot.qq) in event.message_chain:
-                if replyModel!=None or (trustglmReply==True and str(event.sender.id) in trustUser):
+                if replyModel!=None and ((trustglmReply==True and str(event.sender.id) in trustUser) or glmReply==True):
                     return
                 elif event.group.id in chatGLMapikeys:
                     return
@@ -503,9 +513,25 @@ def main(bot,config,sizhiKey,app_id, app_key,logger):
                             logger.info("启动文本转语音：text: "+tex+" path: "+path)
                             await voiceGenerate({"text": tex, "out": path,"speaker":speaker,"modelSelect":modelSelect})
                         elif voicegg=="outVits":
-
-                            path = await outVits({"text": replyssssss, "speaker": speaker92})
-
+                            try:
+                                path = await outVits({"text": replyssssss, "speaker": speaker92})
+                            except:
+                                path = 'data/voices/' + random_str() + '.wav'
+                                if random.randint(1, 100) > chineseVoiceRate:
+                                    if replyssssss in transLateData:
+                                        text = transLateData.get(replyssssss)
+                                    else:
+                                        text = await translate(str(replyssssss), app_id, app_key)
+                                        transLateData[replyssssss] = text
+                                        with open('data/autoReply/transLateData.yaml', 'w', encoding="utf-8") as file:
+                                            yaml.dump(transLateData, file, allow_unicode=True)
+                                        logger.info("写入参照数据:" + replyssssss + "| " + text)
+                                    tex = '[JA]' + text + '[JA]'
+                                else:
+                                    tex = "[ZH]" + replyssssss + "[ZH]"
+                                logger.info("启动文本转语音：text: " + tex + " path: " + path)
+                                await voiceGenerate(
+                                    {"text": tex, "out": path, "speaker": speaker, "modelSelect": modelSelect})
                         await bot.send(event,Voice(path=path))
             except:
                 logger.error("发送失败，群号"+str(event.group.id)+"关键词："+getStr+" 回复："+replyssssss)

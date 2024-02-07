@@ -104,9 +104,13 @@ async def vG(tex,out,speakerID=2,modelSelect=['vits/voiceModel/nene/1374_epochsm
         escape = True
     else:
         escape = False
+    if modelSelect[0].startswith("vits/"):
 
-    model=modelSelect[0]
-    config=modelSelect[1]
+        model=modelSelect[0]
+        config=modelSelect[1]
+    else:
+        model = "vits/"+modelSelect[0]
+        config = "vits/"+modelSelect[1]
 
     hps_ms = utils.get_hparams_from_file(config)
     n_speakers = hps_ms.data.n_speakers if 'n_speakers' in hps_ms.data.keys() else 0

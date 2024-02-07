@@ -13,7 +13,7 @@ from mirai.models import MusicShare
 from mirai import Startup, Shutdown
 
 from plugins.historicalToday import steamEpic
-from plugins.newsEveryDay import news, danxianglii
+from plugins.newsEveryDay import news, danxianglii, moyu, xingzuo
 from plugins.picGet import picDwn
 from plugins.translater import translate
 
@@ -25,7 +25,7 @@ def main(bot,proxy,nasa_api,app_id,app_key,logger):
     newsT=data.get("news").get("time").split("/")
     steamadd1 = data.get("steamadd1").get("time").split("/")
     astronomy=data.get("astronomy").get("time").split("/")
-    moyu = data.get("moyu").get("time").split("/")
+    moyur = data.get("moyu").get("time").split("/")
     constellation=data.get("constellation").get("time").split("/")
     if "danxiangli" in data:
         danxiangli=data.get("danxiangli").get("time").split("/")
@@ -109,7 +109,7 @@ def main(bot,proxy,nasa_api,app_id,app_key,logger):
                     logger.error("不存在的群" + str(i))
         except:
             logger.warning("获取每日天文图片失败")
-    @scheduler.scheduled_job(CronTrigger(hour=int(moyu[0]), minute=int(moyu[1])))
+    @scheduler.scheduled_job(CronTrigger(hour=int(moyur[0]), minute=int(moyur[1])))
     async def moyuEveryDay():
         logger.info("获取摸鱼人日历")
         path = await moyu()
@@ -122,7 +122,7 @@ def main(bot,proxy,nasa_api,app_id,app_key,logger):
     @scheduler.scheduled_job(CronTrigger(hour=int(constellation[0]), minute=int(constellation[1])))
     async def constellationEveryDay():
         logger.info("获取星座运势")
-        path = await moyu()
+        path = await xingzuo()
         logger.info("推送星座运势")
         for i in data.get("constellation").get("groups"):
             try:
