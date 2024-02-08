@@ -236,7 +236,7 @@ def main(bot, master, logger):
                 # st1 = await chatGLM(selfApiKey, meta1, prompt)
             except Exception as e:
                 logger.error(e)
-                await bot.send(event, "gemini启动出错\n请发送 /cGemini 以清理聊天记录并重试\n如果无法解决请联系master更换apiKey")
+                await bot.send(event, "gemini启动出错\n请发送 /cGemini 以清理聊天记录并重试\n如果无法解决请联系master检查代理或更换apiKey")
 
     # 私聊中chatGLM清除本地缓存
     @bot.on(FriendMessage)
@@ -542,7 +542,7 @@ def main(bot, master, logger):
                 # st1 = await chatGLM(selfApiKey, meta1, prompt)
             except Exception as e:
                 logger.error(e)
-                await bot.send(event, "gemini启动出错\n请发送 /cGemini 以清理聊天记录并重试\n如果无法解决请联系master更换apiKey")
+                await bot.send(event, "gemini启动出错\n请发送 /cGemini 以清理聊天记录并重试\n如果无法解决请联系master检查代理或更换apiKey")
         elif (glmReply == True or (trustglmReply == True and str(event.sender.id) in trustUser) or event.sender.id in chatGLMsingelUserKey.keys()) and At(bot.qq) in event.message_chain:
             text = str(event.message_chain).replace("@" + str(bot.qq) + "", '').replace(" ","")
             logger.info("分支1")
