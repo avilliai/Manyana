@@ -66,7 +66,7 @@ async def outVits(data):
     # os.system("where python")
     p = random_str() + ".mp3"
     p = "data/voices/" + p
-    url="https://api.lolimi.cn/API/yyhc/y.php?msg="+text+"&speaker="+speaker+"&Length=1&noisew=0.8&sdp=0.4&noise=0.6&type=json"
+    url=f"https://api.lolimi.cn/API/yyhc/y.php?msg={text}&speaker={speaker}"
     async with httpx.AsyncClient(timeout=200) as client:
         r = await client.post(url, json=json.dumps(data))
         newUrl=r.json().get("music")
