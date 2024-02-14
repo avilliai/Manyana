@@ -4,7 +4,13 @@ import threading
 from asyncio import sleep
 
 import zhipuai
-def chatGLM1(api_key,bot_info,prompt):
+def chatGLM1(api_key,bot_info,text):
+    prompt = [
+        {
+            "role": "user",
+            "content": text
+        }
+    ]
     zhipuai.api_key = api_key
     response = zhipuai.model_api.sse_invoke(
         model="characterglm",

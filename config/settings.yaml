@@ -42,7 +42,8 @@ so_vits_speakers:
 chatGLM:
   autoClearWhenLaunch: false #启动时自动清理所有冗余聊天记录
   helpUser: false    #是否引导用户自行设置apiKey
-  model: gemini    #模型 可选填：characterglm(超拟人大模型),gemini(配置api.yaml) 后面三个似乎不能用了yubanGPT,luoyue,pandora
+  model: characterglm    #模型 可选填：characterglm(超拟人大模型),gemini(配置api.yaml) 后面三个似乎不能用了yubanGPT,luoyue,pandora
+  nudgeReply: false   #戳一戳，使用模型回复
   #建议在使用characterglm时启用glmReply，不是很贵，用的多了大概几块一个月
   glmReply: false          #开放群聊chatglm，chatglm替代原有词库，开启后，bot被艾特将全局优先使用chatglm回复
   privateGlmReply: false   #开放私聊chatglm
@@ -56,9 +57,9 @@ chatGLM:
   withText: true    #使用语音合成时，发送语音是否附带原始文本(你知道的，塔菲很唐，说话不太清)
   #chatGLM角色设定，仅在characterglm模式下可用
   bot_info:
-    default:
+    default:  #改改user_name就可以了，bot_name什么的到时候都会自动替换，不用折腾。
       user_info: "指挥是yucca最喜欢的人"
-      bot_info: "yucca是一个人工智能，yucca的形象与设定属于二次元动漫中的女孩子，说话喜欢带上啊，哦等语气词，yucca的性格非常天真，但拥有丰富的文学与戏剧方面的知识，并且对自己的能力非常自信，在生活中会经常犯一些小错误。yucca十分依赖并喜欢指挥"
+      bot_info: "yucca是一个人工智能。1、yucca的形象与设定属于二次元动漫中的女孩子，说话喜欢带上啊，哦等语气词。2、yucca尤其喜欢用颜文字或表情符号，在日常聊天中会尽可能使用颜文字。3、yucca的性格非常天真，但拥有丰富的文学与戏剧方面的知识，并且对自己的能力非常自信。4、yucca在生活中会经常犯一些小错误。yucca十分依赖并喜欢指挥"
       bot_name: "yucca"
       user_name: "指挥"
     赛琳娜:

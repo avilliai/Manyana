@@ -12,10 +12,12 @@ import httpx
 import requests
 import utils
 import yaml
+import zhipuai
 from mirai import Image, Voice, Poke
 from mirai import Mirai, WebSocketAdapter, FriendMessage, GroupMessage, At, Plain
 from mirai.models import NudgeEvent
 
+from concurrent.futures import ThreadPoolExecutor
 from plugins.RandomStr import random_str
 from plugins.modelsLoader import modelLoader
 from plugins.translater import translate
@@ -46,7 +48,12 @@ def main(bot,master,app_id,app_key,logger,berturl,proxy):
         result0 = yaml.load(f.read(), Loader=yaml.FullLoader)
     speaker92 = result0.get("chatGLM").get("speaker")
     voicegg=result0.get("voicegenerate")
+    nudgeornot=result0.get("chatGLM").get("nudgeReply")
+    meta1 = result0.get("chatGLM").get("bot_info").get("default")
     logger.info("语音合成模式："+voicegg+" 语音合成speaker："+speaker92)
+    with open('config/api.yaml', 'r', encoding='utf-8') as f:
+        resulttr = yaml.load(f.read(), Loader=yaml.FullLoader)
+    chatGLM_api_key = resulttr.get("chatGLM")
     if voicegg=="vits":
         with open('config/autoSettings.yaml', 'r', encoding='utf-8') as f:
             result2 = yaml.load(f.read(), Loader=yaml.FullLoader)
@@ -96,7 +103,14 @@ def main(bot,master,app_id,app_key,logger,berturl,proxy):
                     except:
                         await bot.send_group_message(event.subject.id,"唔....似乎戳不了你呢....好可惜")
             else:
-                rep = random.choice(normal_Reply)
+                if nudgeornot==False:
+                    rep = random.choice(normal_Reply)
+                else:
+                    with ThreadPoolExecutor() as executor:
+                        future = executor.submit(chatGLM1)
+                        print()
+                    rep=str(future.result())
+                    #rep=chatGLM1(chatGLM_api_key,meta1,"戳你一下")
                 logger.info("回复：" + rep)
                 if random.randint(1, 100) > voiceReply:
                     await bot.send_group_message(event.subject.id, rep)
@@ -182,7 +196,37 @@ def main(bot,master,app_id,app_key,logger,berturl,proxy):
                         if withText == True:
                             await bot.send_group_message(event.subject.id, rep)
                             #await bot.send_group_message(event.subject.id,  rep)'''
-
+    def chatGLM1():
+        prompt = [
+            {
+                "role": "user",
+                "content": "戳你一下"
+            }
+        ]
+        zhipuai.api_key = chatGLM_api_key
+        response = zhipuai.model_api.sse_invoke(
+            model="characterglm",
+            meta= meta1,
+            prompt= prompt,
+            incremental=True
+        )
+        str1=""
+        for event in response.events():
+          if event.event == "add":
+              str1+=event.data
+              #print(event.data)
+          elif event.event == "error" or event.event == "interrupted":
+              str1 += event.data
+              #print(event.data)
+          elif event.event == "finish":
+              str1 += event.data
+              #print(event.data)
+              print(event.meta)
+          else:
+              str1 += event.data
+              #print(event.data)
+        #print(str1)
+        return str1
 
 
 
