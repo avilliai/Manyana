@@ -426,17 +426,26 @@ def main(bot, master, logger):
                 with open('data/yubanGPT.yaml', 'w', encoding="utf-8") as file:
                     yaml.dump(yubanid, file, allow_unicode=True)
         elif (((replyModel=="Cozi" or chatGLMCharacters.get(event.sender.id)=="Cozi") and (At(bot.qq) in event.message_chain) or str(event.message_chain).startswith("/cozi"))) and (glmReply == True or (trustglmReply == True and str(event.sender.id) in trustUser)):
-            text = str(event.message_chain).replace("@" + str(bot.qq) + "", '').replace(" ", "")
-            if event.sender.id in coziData:
-                prompt1=coziData.get(event.sender.id)
-                prompt1.append({"content": text,"role": "user"})
-            else:
-                prompt1=[{"content": text,"role": "user"}]
-            loop = asyncio.get_event_loop()
-            rep = await loop.run_in_executor(None, cozeBotRep,CoziUrl,prompt1,proxy)
-            await bot.send(event,rep.get('content'))
-            prompt1.append(rep)
-            coziData[event.sender.id]=prompt1
+            try:
+                text = str(event.message_chain).replace("@" + str(bot.qq) + "", '').replace(" ", "")
+                if text=="" or text==" ":
+                    text="在吗"
+                if event.sender.id in coziData:
+                    prompt1=coziData.get(event.sender.id)
+                    prompt1.append({"content": text,"role": "user"})
+                else:
+                    prompt1=[{"content": text,"role": "user"}]
+                logger.info("cozi.version bot 接受提问："+text)
+                loop = asyncio.get_event_loop()
+                rep = await loop.run_in_executor(None, cozeBotRep,CoziUrl,prompt1,proxy)
+                #await bot.send(event,rep.get('content'))
+                prompt1.append(rep)
+                coziData[event.sender.id]=prompt1
+                logger.info("cozi.version bot 回复："+rep.get('content'))
+                await tstt(rep.get('content'),event)
+            except Exception as e:
+                logger.error(e)
+                await bot.send(event,"出错，请更换模型，或联系master检查代理或重试")
 
         elif (((replyModel=="gemini" or chatGLMCharacters.get(event.sender.id)=="Gemini") and (At(bot.qq) in event.message_chain) or str(event.message_chain).startswith("/g"))) and (glmReply == True or (trustglmReply == True and str(event.sender.id) in trustUser)):
             text = str(event.message_chain).replace("@" + str(bot.qq) + "", '').replace(" ", "").replace("/g", "")
@@ -466,89 +475,8 @@ def main(bot, master, logger):
                 r = await geminirep(ak=geminiapikey, messages=prompt)
                 # 更新该用户prompt
                 prompt.append({"role": 'model', "parts": [r]})
+                await tstt(r,event)
 
-                if len(r) < maxTextLen and random.randint(0, 100) < voiceRate and event.type != 'FriendMessage':
-                    data1 = {}
-                    data1['speaker'] = speaker
-
-                    # print(path)
-                    st8 = re.sub(r"（[^）]*）", "", r)  # 使用r前缀表示原始字符串，避免转义字符的问题
-                    data1["text"] = st8
-                    st1=r
-                    try:
-                        if voicegg == "bert_vits2":
-                            logger.info("调用bert_vits语音回复")
-                            path = await taffySayTest(data1, berturl, proxy)
-                            await bot.send(event, Voice(path=path))
-                        elif voicegg == "so-vits":
-                            logger.info("调用so_vits语音回复")
-                            path = await sovits(data1)
-                            await bot.send(event, Voice(path=path))
-                        elif voicegg == "outVits":
-                            logger.info("调用out_vits语音回复")
-                            path = await outVits(data1)
-                            await bot.send(event, Voice(path=path))
-                        elif voicegg == "edgetts":
-                            logger.info("调用edgetts语音回复")
-                            path = await edgetts(data1)
-                            await bot.send(event, Voice(path=path))
-
-                        elif voicegg == "vits":
-                            logger.info("调用vits语音回复")
-                            try:
-                                path = 'data/voices/' + random_str() + '.wav'
-                                if random.randint(1, 100) > chineseVoiceRate:
-                                    text = await translate(str(st8), app_id, app_key)
-                                    tex = '[JA]' + text + '[JA]'
-                                else:
-                                    tex = "[ZH]" + st8 + "[ZH]"
-                                logger.info("启动文本转语音：text: " + tex + " path: " + path)
-                                #spe = rte.get("defaultModel").get("speaker")
-                                with open('config/autoSettings.yaml', 'r', encoding='utf-8') as f:
-                                    resulte = yaml.load(f.read(), Loader=yaml.FullLoader)
-                                spe=resulte.get("defaultModel").get("speaker")
-                                modelSelect = resulte.get("defaultModel").get("modelSelect")
-                                await voiceGenerate({"text": tex, "out": path, "speaker": spe, "modelSelect": modelSelect})
-                                await bot.send(event, Voice(path=path))
-
-                            except:
-                                logger.error("vits服务运行出错，请检查是否开启或检查配置")
-                                await bot.send(event, st1, True)
-
-                        if withText == True:
-                            await bot.send(event, st1, True)
-                    except Exception as e:
-                        logger.error(e)
-                        if random.randint(0,100)<RateIfUnavailable:
-                            logger.info("出错，改用vits")
-                            try:
-                                path = 'data/voices/' + random_str() + '.wav'
-                                if random.randint(1, 100) > chineseVoiceRate:
-                                    text = await translate(str(st8), app_id, app_key)
-                                    tex = '[JA]' + text + '[JA]'
-                                else:
-                                    tex = "[ZH]" + st8 + "[ZH]"
-                                logger.info("启动文本转语音：text: " + tex + " path: " + path)
-                                # spe = rte.get("defaultModel").get("speaker")
-                                with open('config/autoSettings.yaml', 'r', encoding='utf-8') as f:
-                                    resulte = yaml.load(f.read(), Loader=yaml.FullLoader)
-                                spe = resulte.get("defaultModel").get("speaker")
-                                modelSelect = resulte.get("defaultModel").get("modelSelect")
-                                await voiceGenerate(
-                                    {"text": tex, "out": path, "speaker": spe, "modelSelect": modelSelect})
-                                await bot.send(event, Voice(path=path))
-                                if withText == True:
-                                    await bot.send(event, st1, True)
-                            except Exception as e:
-                                logger.error(e)
-                                logger.error("vits服务运行出错，请检查是否开启或检查配置")
-                                await bot.send(event, st1, True)
-                                return
-                        else:
-                            await bot.send(event, st1, True)
-
-                else:
-                    await bot.send(event, r,True)
                 GeminiData[event.sender.id] = prompt
                 # 写入文件
                 with open('data/GeminiData.yaml', 'w', encoding="utf-8") as file:
@@ -675,6 +603,89 @@ def main(bot, master, logger):
                 asyncio.run_coroutine_threadsafe(asyncchatGLM(key1, meta1, prompt,event,setName,text), newLoop)
             except:
                 await bot.send(event, "chatGLM启动出错，请联系master检查apiKey或重试")
+    async def tstt(r,event):
+        if len(r) < maxTextLen and random.randint(0, 100) < voiceRate and event.type != 'FriendMessage':
+            data1 = {}
+            data1['speaker'] = speaker
+
+            # print(path)
+            st8 = re.sub(r"（[^）]*）", "", r)  # 使用r前缀表示原始字符串，避免转义字符的问题
+            data1["text"] = st8
+            st1 = r
+            try:
+                if voicegg == "bert_vits2":
+                    logger.info("调用bert_vits语音回复")
+                    path = await taffySayTest(data1, berturl, proxy)
+                    await bot.send(event, Voice(path=path))
+                elif voicegg == "so-vits":
+                    logger.info("调用so_vits语音回复")
+                    path = await sovits(data1)
+                    await bot.send(event, Voice(path=path))
+                elif voicegg == "outVits":
+                    logger.info("调用out_vits语音回复")
+                    path = await outVits(data1)
+                    await bot.send(event, Voice(path=path))
+                elif voicegg == "edgetts":
+                    logger.info("调用edgetts语音回复")
+                    path = await edgetts(data1)
+                    await bot.send(event, Voice(path=path))
+
+                elif voicegg == "vits":
+                    logger.info("调用vits语音回复")
+                    try:
+                        path = 'data/voices/' + random_str() + '.wav'
+                        if random.randint(1, 100) > chineseVoiceRate:
+                            text = await translate(str(st8), app_id, app_key)
+                            tex = '[JA]' + text + '[JA]'
+                        else:
+                            tex = "[ZH]" + st8 + "[ZH]"
+                        logger.info("启动文本转语音：text: " + tex + " path: " + path)
+                        # spe = rte.get("defaultModel").get("speaker")
+                        with open('config/autoSettings.yaml', 'r', encoding='utf-8') as f:
+                            resulte = yaml.load(f.read(), Loader=yaml.FullLoader)
+                        spe = resulte.get("defaultModel").get("speaker")
+                        modelSelect = resulte.get("defaultModel").get("modelSelect")
+                        await voiceGenerate({"text": tex, "out": path, "speaker": spe, "modelSelect": modelSelect})
+                        await bot.send(event, Voice(path=path))
+
+                    except:
+                        logger.error("vits服务运行出错，请检查是否开启或检查配置")
+                        await bot.send(event, st1, True)
+
+                if withText == True:
+                    await bot.send(event, st1, True)
+            except Exception as e:
+                logger.error(e)
+                if random.randint(0, 100) < RateIfUnavailable:
+                    logger.info("出错，改用vits")
+                    try:
+                        path = 'data/voices/' + random_str() + '.wav'
+                        if random.randint(1, 100) > chineseVoiceRate:
+                            text = await translate(str(st8), app_id, app_key)
+                            tex = '[JA]' + text + '[JA]'
+                        else:
+                            tex = "[ZH]" + st8 + "[ZH]"
+                        logger.info("启动文本转语音：text: " + tex + " path: " + path)
+                        # spe = rte.get("defaultModel").get("speaker")
+                        with open('config/autoSettings.yaml', 'r', encoding='utf-8') as f:
+                            resulte = yaml.load(f.read(), Loader=yaml.FullLoader)
+                        spe = resulte.get("defaultModel").get("speaker")
+                        modelSelect = resulte.get("defaultModel").get("modelSelect")
+                        await voiceGenerate(
+                            {"text": tex, "out": path, "speaker": spe, "modelSelect": modelSelect})
+                        await bot.send(event, Voice(path=path))
+                        if withText == True:
+                            await bot.send(event, st1, True)
+                    except Exception as e:
+                        logger.error(e)
+                        logger.error("vits服务运行出错，请检查是否开启或检查配置")
+                        await bot.send(event, st1, True)
+                        return
+                else:
+                    await bot.send(event, st1, True)
+
+        else:
+            await bot.send(event, r, True)
     #用于chatGLM清除本地缓存
     @bot.on(GroupMessage)
     async def clearPrompt(event:GroupMessage):
