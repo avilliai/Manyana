@@ -14,12 +14,13 @@ from mirai import Image, Voice, Startup
 from mirai import Mirai, WebSocketAdapter, FriendMessage, GroupMessage, At, Plain
 import threading
 from asyncio import sleep
-
+from concurrent.futures import ThreadPoolExecutor
 import zhipuai
 
 from plugins.PandoraChatGPT import ask_chatgpt
 from plugins.RandomStr import random_str
 from plugins.chatGLMonline import chatGLM1
+from plugins.cozeBot import cozeBotRep
 from plugins.googleGemini import geminirep
 
 from plugins.rwkvHelper import rwkvHelper
@@ -46,6 +47,7 @@ def main(bot, master, logger):
     chatGLMCharacters = result2223
     with open('config/api.yaml', 'r', encoding='utf-8') as f:
         resulttr = yaml.load(f.read(), Loader=yaml.FullLoader)
+    CoziUrl=resulttr.get("cozi")
     app_id=resulttr.get("youdao").get("app_id")
     app_key = resulttr.get("youdao").get("app_key")
     geminiapikey=resulttr.get("gemini")
@@ -136,6 +138,8 @@ def main(bot, master, logger):
         resultyuban1 = yaml.load(f.read(), Loader=yaml.FullLoader)
     global luoyueid
     luoyueid=resultyuban1
+    global coziData
+    coziData={}
     #线程预备
     newLoop = asyncio.new_event_loop()
     listen = CListen(newLoop)
@@ -302,7 +306,7 @@ def main(bot, master, logger):
             if str(event.message_chain).split("#")[1] in allcharacters:
 
                 meta1 = allcharacters.get(str(event.message_chain).split("#")[1])
-                if meta1=='Gemini':
+                if meta1=='Gemini' or meta1=="Cozi":
                     pass
                 else:
                     try:
@@ -340,7 +344,7 @@ def main(bot, master, logger):
         if str(event.message_chain).startswith("设定#"):
             if str(event.message_chain).split("#")[1] in allcharacters:
                 meta1=allcharacters.get(str(event.message_chain).split("#")[1])
-                if meta1=="Gemini":
+                if meta1=="Gemini" or meta1=="Cozi":
                     pass
                 else:
                     try:
@@ -387,7 +391,7 @@ def main(bot, master, logger):
     #群内chatGLM回复
     @bot.on(GroupMessage)
     async def atReply(event: GroupMessage):
-        global trustUser, chatGLMapikeys,chatGLMData,chatGLMCharacters,chatGLMsingelUserKey,userdict,yubanid,luoyueid,GeminiData
+        global trustUser, chatGLMapikeys,chatGLMData,chatGLMCharacters,chatGLMsingelUserKey,userdict,yubanid,luoyueid,GeminiData,coziData
         if replyModel=="pandora" and At(bot.qq) in event.message_chain:
 
             asyncio.run_coroutine_threadsafe(askGPTT(event),newLoop)
@@ -421,6 +425,19 @@ def main(bot, master, logger):
                 yubanid[event.sender.id]=rrr[1]
                 with open('data/yubanGPT.yaml', 'w', encoding="utf-8") as file:
                     yaml.dump(yubanid, file, allow_unicode=True)
+        elif (((replyModel=="Cozi" or chatGLMCharacters.get(event.sender.id)=="Cozi") and (At(bot.qq) in event.message_chain) or str(event.message_chain).startswith("/cozi"))) and (glmReply == True or (trustglmReply == True and str(event.sender.id) in trustUser)):
+            text = str(event.message_chain).replace("@" + str(bot.qq) + "", '').replace(" ", "")
+            if event.sender.id in coziData:
+                prompt1=coziData.get(event.sender.id)
+                prompt1.append({"content": text,"role": "user"})
+            else:
+                prompt1=[{"content": text,"role": "user"}]
+            loop = asyncio.get_event_loop()
+            rep = await loop.run_in_executor(None, cozeBotRep,CoziUrl,prompt1,proxy)
+            await bot.send(event,rep.get('content'))
+            prompt1.append(rep)
+            coziData[event.sender.id]=prompt1
+
         elif (((replyModel=="gemini" or chatGLMCharacters.get(event.sender.id)=="Gemini") and (At(bot.qq) in event.message_chain) or str(event.message_chain).startswith("/g"))) and (glmReply == True or (trustglmReply == True and str(event.sender.id) in trustUser)):
             text = str(event.message_chain).replace("@" + str(bot.qq) + "", '').replace(" ", "").replace("/g", "")
             for saa in noRes:

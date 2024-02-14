@@ -137,3 +137,4 @@
 2024/2/14:
   - 用ai回复戳一戳消息
   - 新增配置项chatGLM.nudgeReply
+  - 支持通过cozi白嫖gpt4,部署：https://github.com/deanxv/coze-discord-proxy#%E9%83%A8%E7%BD%B2%E5%88%B0%E7%AC%AC%E4%B8%89%E6%96%B9%E5%B9%B3%E5%8F%B0

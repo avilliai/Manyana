@@ -42,7 +42,7 @@ so_vits_speakers:
 chatGLM:
   autoClearWhenLaunch: false #启动时自动清理所有冗余聊天记录
   helpUser: false    #是否引导用户自行设置apiKey
-  model: characterglm    #模型 可选填：characterglm(超拟人大模型),gemini(配置api.yaml) 后面三个似乎不能用了yubanGPT,luoyue,pandora
+  model: characterglm    #模型 可选填：characterglm(超拟人大模型),gemini(配置api.yaml),cozi 后面三个似乎不能用了yubanGPT,luoyue,pandora
   nudgeReply: false   #戳一戳，使用模型回复
   #建议在使用characterglm时启用glmReply，不是很贵，用的多了大概几块一个月
   glmReply: false          #开放群聊chatglm，chatglm替代原有词库，开启后，bot被艾特将全局优先使用chatglm回复
@@ -53,7 +53,7 @@ chatGLM:
   #语音合成配置部分so-vits和bert_vits2和edgetts和vits以及outVits通用设置
   maxLen: 40    #语音合成最大长度限制，超出则返回文本。
   voiceRate: 100 #语音回复几率
-  speaker: "珊瑚宫心海"     #语音合成默认角色名,edgetts建议使用zh-CN-XiaoyiNeural,vits则无需配置,outVits看https://api.lolimi.cn/?action=doc&id=181
+  speaker: "黑塔"     #语音合成默认角色名,edgetts建议使用zh-CN-XiaoyiNeural,vits则无需配置,outVits看https://api.lolimi.cn/?action=doc&id=181
   withText: true    #使用语音合成时，发送语音是否附带原始文本(你知道的，塔菲很唐，说话不太清)
   #chatGLM角色设定，仅在characterglm模式下可用
   bot_info:
@@ -68,6 +68,7 @@ chatGLM:
       bot_name: "赛琳娜"
       user_name: "指挥"
     Gemini: Gemini  #别动这一行
+    Cozi: Cozi  #也别动这一行
 #自带词库的配置
 wReply:
   banWords:       #违禁词
