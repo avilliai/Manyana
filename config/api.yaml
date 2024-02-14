@@ -1,20 +1,21 @@
 # 配置文件，在这里填写api
 
-weatherXinZhi: SeSIadf8hL-BdFfdanhE9MKb #心知天气api   从https://www.seniverse.com/注册获取
+weatherXinZhi: SeSI8hfsfL-BdFhE9fMKb #心知天气api   从https://www.seniverse.com/注册获取
 youdao:
-  app_id: 67edf72f62fda13cdf548       #有道翻译 https://ai.youdao.com/?keyfrom=fanyi-new-nav#/
-  app_key: XzFaBbE9zGdVLtdafapCJHzADWIXhHvdnB0T
-sauceno-api: b1f0saf18dbf8b7c21cdfdafz38b4d9ad0211f8db1c4eaf20 #sauceno搜图api，你可以从https://saucenao.com/user.php注册并获取
-moderate: 207b10178c64089dvzv90ebfcd7f865d97a   #色图审核api 从https://www.moderatecontent.com/获取
+  app_id: 67fsfedf72f6213c548      #有道翻译 https://ai.youdao.com/?keyfrom=fanyi-new-nav#/
+  app_key: XzFaBbE9zGdVLtpCfsdfJHzADWIXhHvdnB0T
+sauceno-api: b1f018dbffsdfsgghj8b7c21jc38b4d9ad0211f8db1c4eaf20 #sauceno搜图api，你可以从https://saucenao.com/user.php注册并获取
+moderate: 1f8e861f89cfsdfd6946bd3f8a82c68afeab   #色图审核api 从https://www.moderatecontent.com/获取
 poe-api:
   - 1P4isHvJEfjgbIII3ALqnQ%3D%3D  #从poe.com抓取到token，可获取多个
 siZhiAi: #思知ai    从https://console.ownthink.com/login
-  - 6f628cf3622767516a3f8030a98342182bd6    # 第一个apiKey
-  - 06f0ebeb99aa2e92f33bb2c12182883224456    # 第二个，你有几个就填几个，按照如下格式即可。多删少补
-nasa_api: dfafhalsdfalfdj              # nasa相关天文api 从https://api.nasa.gov/index.html#main-content申请
-e-hentai: ipb_session_id=bc46d5c21d; ipb_member_id=7584785; ipb_pass_hash=8e9aac17; sk=wo63 #抓取ehentai的cookies,方式https://pic-image-search.kituin.fun/wiki/picimagesearch/E-hentai/DataStructure/#cookies%E8%8E%B7%E5%8F%96
-chatGLM: sdfafjsadlf;aldf #chatGLM的apiKey，从https://open.bigmodel.cn/获取
-gemini: AIzaSyfdCC0Lp-74yD6OfsfssfkjU1TuyI9YqmV-_ZX2kig          #谷歌的gemini api，在https://ai.google.dev/tutorials/setup?hl=zh-cn获取，需要配置代理，否则无法使用
+  - 5298b4b366987f06ab07b9015bb6a5a2    # 第一个apiKey
+  - 806948824e6e559ff64ba689901483be    # 第二个，你有几个就填几个，按照如下格式即可。多删少补
+nasa_api: HSSp7kMHlCLaK8rbufsdfs3Hk4qup77JoKDKKddu2tdmM           # nasa相关天文api 从https://api.nasa.gov/index.html#main-content申请
+e-hentai: ipb_session_id=bcfsdf46d5c21d; ipb_member_id=7584785; ipb_pass_hash=8e9aac17; sk=wo63 #抓取ehentai的cookies,方式https://pic-image-search.kituin.fun/wiki/picimagesearch/E-hentai/DataStructure/#cookies%E8%8E%B7%E5%8F%96
+chatGLM: 69ef2489ea4bd7490fsdfadcbddaada80755.GxN2sfHvsQNjvpXi #chatGLM的apiKey，从https://open.bigmodel.cn/获取
+gemini: AIzaSyCC0Lp-74fsdfsyD6OkjU1TuyI9YqmV-_ZX2kig          #谷歌的gemini api，在https://ai.google.dev/tutorials/setup?hl=zh-cn获取，需要配置代理，否则无法使用
+cozi: https://avillfdsia.zeabur.app/v1/chat/completions
 proxy: 'http://127.0.0.1:10809'  #代理 自己设置对应的端口，没有就不填
 bert_colab: "https://mess-addressed-openings-exposed.trycloudflare.com/synthesize"        #bert_vits_colab版本，不占用本地gpu，部署：https://colab.research.google.com/drive/1n8lI6pOiDtli2zC5fL9PZ9TZqbOafqma?usp=sharing 请注意，使用此功能必须配置上面的proxy项
 
