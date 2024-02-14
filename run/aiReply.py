@@ -148,8 +148,8 @@ def main(bot, master, logger):
     #私聊使用chatGLM,对信任用户或配置了apiKey的用户开启
     @bot.on(FriendMessage)
     async def GLMFriendChat(event:FriendMessage):
-        global chatGLMData,chatGLMCharacters,trustUser,chatGLMsingelUserKey,userdict,GeminiData
-        if replyModel=="characterglm" and chatGLMCharacters.get(event.sender.id)!="Gemini":
+        global chatGLMData,chatGLMCharacters,trustUser,chatGLMsingelUserKey,userdict,GeminiData,coziData
+        if replyModel=="characterglm" and chatGLMCharacters.get(event.sender.id)!="Gemini" and chatGLMCharacters.get(event.sender.id)!="Cozi":
             #如果用户有自己的key
             if event.sender.id in chatGLMsingelUserKey:
                 selfApiKey=chatGLMsingelUserKey.get(event.sender.id)
@@ -208,6 +208,8 @@ def main(bot, master, logger):
         elif replyModel=="gemini" or chatGLMCharacters.get(event.sender.id)=="Gemini":
             if str(event.message_chain)=="/cGemini":
                 return
+            if privateGlmReply!=True:
+                return
             logger.info("gemini开始运行")
             text = str(event.message_chain)
             if text == "" or text == " ":
@@ -241,11 +243,36 @@ def main(bot, master, logger):
             except Exception as e:
                 logger.error(e)
                 await bot.send(event, "gemini启动出错\n请发送 /cGemini 以清理聊天记录并重试\n如果无法解决请联系master检查代理或更换apiKey")
+        elif replyModel=="Cozi" or chatGLMCharacters.get(event.sender.id)=="Cozi":
+            if privateGlmReply!=True:
+                return
+            try:
+                text = str(event.message_chain).replace("@" + str(bot.qq) + "", '').replace(" ", "")
+                if text=="" or text==" ":
+                    text="在吗"
+                elif text=="/clear":
+                    return
+                if event.sender.id in coziData:
+                    prompt1=coziData.get(event.sender.id)
+                    prompt1.append({"content": text,"role": "user"})
+                else:
+                    prompt1=[{"content": text,"role": "user"}]
+                logger.info("cozi.version bot 接受提问："+text)
+                loop = asyncio.get_event_loop()
+                rep = await loop.run_in_executor(None, cozeBotRep,CoziUrl,prompt1,proxy)
+                #await bot.send(event,rep.get('content'))
+                prompt1.append(rep)
+                coziData[event.sender.id]=prompt1
+                logger.info("cozi.version bot 回复："+rep.get('content'))
+                await tstt(rep.get('content'),event)
+            except Exception as e:
+                logger.error(e)
+                await bot.send(event,"出错，请更换模型，或联系master检查代理或重试",True)
 
     # 私聊中chatGLM清除本地缓存
     @bot.on(FriendMessage)
     async def clearPrompt(event: FriendMessage):
-        global chatGLMData,GeminiData
+        global chatGLMData,GeminiData,coziData
         if str(event.message_chain) == "/clearGLM":
             try:
                 chatGLMData.pop(event.sender.id)
@@ -262,6 +289,11 @@ def main(bot, master, logger):
                 with open('data/GeminiData.yaml', 'w', encoding="utf-8") as file:
                     yaml.dump(GeminiData, file, allow_unicode=True)
                 await bot.send(event,"已清除近期记忆")
+            except:
+                await bot.send(event, "清理缓存出错，无本地对话记录")
+        if str(event.message_chain)=="/clear":
+            try:
+                coziData.pop(event.sender.id)
             except:
                 await bot.send(event, "清理缓存出错，无本地对话记录")
     @bot.on(FriendMessage)
@@ -435,6 +467,7 @@ def main(bot, master, logger):
                     prompt1.append({"content": text,"role": "user"})
                 else:
                     prompt1=[{"content": text,"role": "user"}]
+                    await bot.send(event,"即将开始对话，如果遇到异常请发送 /clear 清理对话")
                 logger.info("cozi.version bot 接受提问："+text)
                 loop = asyncio.get_event_loop()
                 rep = await loop.run_in_executor(None, cozeBotRep,CoziUrl,prompt1,proxy)
@@ -445,7 +478,7 @@ def main(bot, master, logger):
                 await tstt(rep.get('content'),event)
             except Exception as e:
                 logger.error(e)
-                await bot.send(event,"出错，请更换模型，或联系master检查代理或重试")
+                await bot.send(event,"出错，请更换模型，或联系master检查代理或重试",True)
 
         elif (((replyModel=="gemini" or chatGLMCharacters.get(event.sender.id)=="Gemini") and (At(bot.qq) in event.message_chain) or str(event.message_chain).startswith("/g"))) and (glmReply == True or (trustglmReply == True and str(event.sender.id) in trustUser)):
             text = str(event.message_chain).replace("@" + str(bot.qq) + "", '').replace(" ", "").replace("/g", "")
@@ -689,7 +722,7 @@ def main(bot, master, logger):
     #用于chatGLM清除本地缓存
     @bot.on(GroupMessage)
     async def clearPrompt(event:GroupMessage):
-        global chatGLMData,GeminiData
+        global chatGLMData,GeminiData,coziData
         if str(event.message_chain)=="/clearGLM":
             try:
                 chatGLMData.pop(event.sender.id)
@@ -718,6 +751,11 @@ def main(bot, master, logger):
                 await bot.send(event,"已清除近期记忆")
             except:
                 await bot.send(event,"清理缓存出错，无本地对话记录")
+        elif str(event.message_chain)=="/clear":
+            try:
+                coziData.pop(event.sender.id)
+            except:
+                await bot.send(event, "清理缓存出错，无本地对话记录")
     @bot.on(GroupMessage)
     async def setChatGLMKey(event:GroupMessage):
         global chatGLMapikeys
