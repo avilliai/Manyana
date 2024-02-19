@@ -462,6 +462,10 @@ def main(bot, master, logger):
                 text = str(event.message_chain).replace("@" + str(bot.qq) + "", '').replace(" ", "").replace("/cozi","")
                 if text=="" or text==" ":
                     text="在吗"
+                for saa in noRes:
+                    if text == saa:
+                        logger.warning("与屏蔽词匹配，Gemini不回复")
+                        return
                 if event.sender.id in coziData:
                     prompt1=coziData.get(event.sender.id)
                     prompt1.append({"content": text,"role": "user"})
