@@ -9,7 +9,7 @@
 - [Mirai框架](https://github.com/mamoe/mirai)
 - [CjangCjengh-MoeGoe](https://github.com/CjangCjengh/MoeGoe) vits语音合成功能来源
 - [pandora-chatgpt](https://github.com/pengzhile/pandora)    好像已经没了
-- [coze-discord-proxy](https://github.com/deanxv/coze-discord-proxy) 通过discord白嫖gpt4
+- [coze-discord-proxy](https://github.com/deanxv/coze-discord-proxy) 通过discord白嫖gpt4(视频教程见release的cozi+discord.mp4)
 - [MrXiaoM](https://github.com/MrXiaoM)     你懂的
 - [arona api](https://doc.arona.diyigemt.com/)  提供blueArchive数据支持
 - [Yiri-mirai](https://github.com/YiriMiraiProject/YiriMirai)  很好的python sdk
@@ -114,6 +114,7 @@ chatGLM 配置文件打开glmReply或trustglmReply，将取代艾特回复
      可用角色模板          #查看所有可用角色预设，需要填写setting.yaml
      设定#角色名           #设置特定角色回复
 /g你好       #谷歌的gemini，需要配置api.yaml
+/cozi你好    #通过cozi白嫖gpt4
 /xh你好      #讯飞星火，无需配置
 /wx你好      #文心一言，无需配置
 /l你好       #无需配置的chatgpt3.5

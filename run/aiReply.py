@@ -459,7 +459,7 @@ def main(bot, master, logger):
                     yaml.dump(yubanid, file, allow_unicode=True)
         elif (((replyModel=="Cozi" or chatGLMCharacters.get(event.sender.id)=="Cozi") and (At(bot.qq) in event.message_chain) or str(event.message_chain).startswith("/cozi"))) and (glmReply == True or (trustglmReply == True and str(event.sender.id) in trustUser)):
             try:
-                text = str(event.message_chain).replace("@" + str(bot.qq) + "", '').replace(" ", "")
+                text = str(event.message_chain).replace("@" + str(bot.qq) + "", '').replace(" ", "").replace("/cozi","")
                 if text=="" or text==" ":
                     text="在吗"
                 if event.sender.id in coziData:
