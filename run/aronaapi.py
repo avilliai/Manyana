@@ -59,11 +59,16 @@ def main(bot,logger):
                             newHash = r.get("data")[0].get("hash")
                         if str(newHash)!=result9.get(i).get("hash").get(ia):
                             p=await stageStrategy(ia)
+                            alreadySend=[]
                             for iss in result9.get(i).get("groups"):
+                                if iss in alreadySend:
+                                    continue
                                 try:
                                     await bot.send_group_message(int(iss),(ia+"数据更新",Image(path=p)))
+                                    alreadySend.append(iss)
                                 except:
                                     logger.error("向"+str(iss)+"推送更新失败")
+                                    alreadySend.append(iss)
                             result9[i]["hash"][ia]=str(newHash)
                             with open('data/aronaSub.yaml', 'w', encoding="utf-8") as file:
                                 yaml.dump(result9, file, allow_unicode=True)
@@ -85,6 +90,9 @@ def main(bot,logger):
         with open("data/aronaSub.yaml", 'r', encoding='utf-8') as f:
             result9 = yaml.load(f.read(), Loader=yaml.FullLoader)
             bsg=result9.get(a).get("groups")
+            if event.group.id in bsg:
+                await bot.send(event,"本群已订阅过")
+                return
             bsg.append(event.group.id)
             result9[a]["groups"]=bsg
             with open('data/aronaSub.yaml', 'w', encoding="utf-8") as file:
