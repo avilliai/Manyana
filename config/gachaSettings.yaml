@@ -1,0 +1,8 @@
+#ba卡池设定
+blueArchiveGacha:
+  3star: 10     #三星出率
+  2star: 40     #二星出率，一星就不设置了吧，减一下得了
+  3starUp: 桔梗  #三星up
+  3up: 30       #up占三星中出率
+  2starUp: 花子  #二星up
+  2up: 30       #二星up出率

@@ -205,8 +205,8 @@ if __name__ == '__main__':
         try:
             # logger.info("开发过程中暂不启动poe-api")
             aiReply.main(bot, master, logger)  # poe-api
-        except:
-            logger.error("poe-api启动失败")
+        except Exception as e:
+            logger.error(e)
         imgSearch.main(bot, result.get("sauceno-api"), result.get("proxy"), logger)
     else:
         logger.warning("未设置代理，禁用poe-api与搜图")

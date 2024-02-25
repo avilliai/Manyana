@@ -99,14 +99,7 @@ def main(bot, master, logger):
     voiceRate = result.get("chatGLM").get("voiceRate")
     speaker = result.get("chatGLM").get("speaker")
     withText=result.get("chatGLM").get("withText")
-    autoClearWhenLaunch=result.get("chatGLM").get("autoClearWhenLaunch")
 
-
-
-    if autoClearWhenLaunch==True:
-        chatGLMData={"f":"f"}
-        with open('data/chatGLMData.yaml', 'w', encoding="utf-8") as file:
-            yaml.dump(chatGLMData, file, allow_unicode=True)
     with open('config.json', 'r', encoding='utf-8') as fp:
         data = fp.read()
     config = json.loads(data)

@@ -62,7 +62,9 @@ def main(bot,api_KEY,app_id,app_key,nasa_api,proxy,logger):
     r18 = result1.get("r18Pic")
     global picData
     picData={}
-    bbb=result1.get("blueArchiveGacha")
+    with open('config/gachaSettings.yaml', 'r', encoding='utf-8') as f:
+        resultp = yaml.load(f.read(), Loader=yaml.FullLoader)
+    bbb = resultp.get("blueArchiveGacha")
     @bot.on(Startup)
     async def update(event:Startup):
         while True:
