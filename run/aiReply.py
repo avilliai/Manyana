@@ -424,6 +424,14 @@ def main(bot, master, logger):
     @bot.on(GroupMessage)
     async def atReply(event: GroupMessage):
         global trustUser, chatGLMapikeys,chatGLMData,chatGLMCharacters,chatGLMsingelUserKey,userdict,yubanid,luoyueid,GeminiData,coziData
+        pattern1 = r'(\d+)张(\w+)'
+        if At(bot.qq) in event.message_chain:
+            text1 = str(event.message_chain).replace("壁纸", "").replace("涩图", "").replace("色图", "").replace("图",
+                                                                                                           "").replace(
+                "r18", "")
+            match1 = re.search(pattern1, text1)
+            if match1:
+                return
         if replyModel=="pandora" and At(bot.qq) in event.message_chain:
 
             asyncio.run_coroutine_threadsafe(askGPTT(event),newLoop)
