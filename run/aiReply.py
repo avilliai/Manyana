@@ -431,7 +431,10 @@ def main(bot, master, logger):
                 "r18", "")
             match1 = re.search(pattern1, text1)
             if match1:
-                return
+                if len(match1.group(2))>5:
+                    pass
+                else:
+                    return
         if replyModel=="pandora" and At(bot.qq) in event.message_chain:
 
             asyncio.run_coroutine_threadsafe(askGPTT(event),newLoop)
