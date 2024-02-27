@@ -221,8 +221,9 @@ def updaat(f=False):
                         conflict_file_dealter("./temp/"+i,"config/"+i)
                     else:
                         continue
+                shutil.rmtree("./temp")
             logger.info("处理冲突文件完成")
-            shutil.rmtree("./temp")
+
             logger.info("你可以关闭此窗口了")
             input()
         # 逐行检查错误信息
