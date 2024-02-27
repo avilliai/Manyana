@@ -53,8 +53,9 @@
 ## 方法1：搭建工具部署(推荐)
 **如果你觉得自己从零开始搭建bot比较困难，请使用此方案**
 - 从release下载ManyanaLauncher.rar并解压
-- 双击launcher.exe
-- 从release下载HowToUse.mp4，如有疑问参考视频即可
+  - 如果下载过慢，你也可以从Q群628763673获得这个压缩包
+- 右键以管理员身份运行launcher.exe
+- 从release下载HowToUse.mp4，如有疑问参考视频即可(较旧，但能用)
 ## 方法2：自行部署(如果你有一定bot搭建经验)
 - 请确保py版本为3.9
 - 请确保已安装[mirai-api-http](https://github.com/project-mirai/mirai-api-http) 并[正确配置](https://github.com/avilliai/wReply/blob/master/setting.yml)
