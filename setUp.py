@@ -177,7 +177,6 @@ def main():
         print("结束")
 def updaat(f=False):
 
-    logger.warning("更新可能包含setUp.py自身更新。一般建议运行两次setUp.py")
     logger.warning("更新python库，按1跳过，如果最近没有更新过，不建议跳过，可能错过某些更新。")
     if input("在这里输入:") != "1":
         os.system("pip install edge-tts")
