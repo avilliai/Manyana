@@ -265,7 +265,7 @@ def updaat(f=False):
             else:
                 logger.warning("无法处理的 " + file)
                 logger.warning("请自行决定删除或修改文件名称，在重新拉取后根据旧文件重新填写新文件")
-
+        logger.warning("如果存在冲突文件，请按任意键，程序将自动处理")
         a=input("即将再次执行拉取操作，输入任意键继续，按1退出：")
         if a==1:
             return
