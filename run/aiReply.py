@@ -29,7 +29,7 @@ from plugins.vitsGenerate import taffySayTest, sovits, edgetts, voiceGenerate, o
 from plugins.wReply.mohuReply import mohuaddReplys
 from plugins.yubanGPT import yubanGPTReply, luoyueGPTReply
 
-
+#1
 class CListen(threading.Thread):
     def __init__(self, loop):
         threading.Thread.__init__(self)
