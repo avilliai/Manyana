@@ -17,7 +17,7 @@ import yaml
 from mirai import Image, Voice, Startup, MessageChain
 from mirai import Mirai, WebSocketAdapter, FriendMessage, GroupMessage, At, Plain
 from mirai.models import ForwardMessageNode, Forward
-
+#1
 from plugins.aronaBa import stageStrategy
 
 
