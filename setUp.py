@@ -217,12 +217,13 @@ def updaat(f=False):
         # 存放冲突文件名的列表
         conflict_files = []
         if f==True:
-            for i in os.listdir("./temp"):
-                logger.info("开始处理"+i)
-                if os.path.exists("config/"+i):
-                    conflict_file_dealter("./temp/"+i,"config/"+i)
-                else:
-                    continue
+            if os.path.exists("./temp"):
+                for i in os.listdir("./temp"):
+                    logger.info("开始处理"+i)
+                    if os.path.exists("config/"+i):
+                        conflict_file_dealter("./temp/"+i,"config/"+i)
+                    else:
+                        continue
             logger.info("处理冲突文件完成")
             shutil.rmtree("./temp")
             logger.info("你可以关闭此窗口了")
