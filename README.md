@@ -82,7 +82,7 @@ git clone --depth 1 https://gh-proxy.com/https://github.com/avilliai/Manyana
 
 ---
 # 🍩功能
-readme的更新并不及时，每次更新都重写readme太累了
+readme的更新并不及时
 - 查看config文件夹下的几个help.png，它们是bot的菜单
 - 或搭建后在群内发送@bot 帮助 以查看功能列表
   (plugins文件夹内的函数基本都可以单独拿出去用)
