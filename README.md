@@ -24,17 +24,14 @@
 
 ---
 # 🚀部署
-**请注意，为便于后续更新，请按照搭建教程进行，如下载源码压缩包进行部署操作不当将无法获取到更新**<br>
+**如果你没有代理，或git连接不稳定，可在搭建时选择【镜像源】，镜像源和git源几乎没有区别，同样可以正常更新。**
 
-<details markdown='1'><summary>git太慢，不得不用源码压缩包，如何确保对接更新？</summary>
-如果你确实用的是下载源码压缩包的方式还想要获取更新，解压后不要做任何修改，执行一次setUp.py的 绑定远程仓库，否则将无法通过 更新脚本 更新
+<details markdown='21'><summary>如何更新</summary>
 
-</details>
-<details markdown='1'><summary>镜像源无法更新</summary>
-镜像源似乎都是断头饭，没法更新
+- 双击更新脚本，或者使用launcher.exe的更新功能
+- 一般建议看到 villia - INFO - Already up to date. 时才算更新成功
 
 </details>
-
 哥们不是学程序设计的，如果你发现了bot存在一些我没有注意到的问题，或者有对项目的建议请及时提issue🎃
 ### dlc
 
@@ -54,6 +51,7 @@
 **如果你觉得自己从零开始搭建bot比较困难，请使用此方案**
 - 从release下载ManyanaLauncher.rar并解压
   - 如果下载过慢，你也可以从Q群628763673获得这个压缩包
+- 从release下载最新的Launcher.exe，覆盖压缩包中的Launcher.exe
 - 右键以管理员身份运行launcher.exe
 - 从release下载HowToUse.mp4，如有疑问参考视频即可(较旧，但能用)
 ## 方法2：自行部署(如果你有一定bot搭建经验)
@@ -63,9 +61,9 @@
 - 从release下载setUps.rar并解压，依次安装，一般默认下一步就行(**安装python的第一步一定要先勾选add to path**)。apk安装到手机。
 - 克隆本仓库。找一个你喜欢的目录(**不要带中文**)打开cmd或git bash执行
 ```
-git clone https://github.com/avilliai/Manyana.git
+git clone --depth 1 https://github.com/avilliai/Manyana.git
 或使用镜像源
-git clone https://gitclone.com/github.com/avilliai/Manyana
+git clone --depth 1 https://gh-proxy.com/https://github.com/avilliai/Manyana
 ```
 - 双击Manyana/一键部署脚本.bat即可
 - 把release的模型(1374_epochsm.pth)文件放置在Manyana/vits/voiceModel/nene
