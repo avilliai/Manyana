@@ -271,7 +271,7 @@ def updaat(f=False):
     logger.warning("如果存在冲突文件，请按任意键，程序将自动处理")
     a=input("即将再次执行拉取操作，输入任意键继续，按1退出：")
     if a==1:
-        return
+        sys.exit()
     updaat(True)
     # 不要忘了等待进程结束
     p.wait()
