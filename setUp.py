@@ -199,79 +199,84 @@ def updaat(f=False):
         # 启动进程
         p = subprocess.Popen(['git', 'pull', 'https://github.com/avilliai/Manyana.git'], stdout=subprocess.PIPE,
                              stderr=subprocess.PIPE)
-
-        # 获取进程的输出和错误信息
-        stdout, stderr = p.communicate()
-
-        # 输出内容和错误信息都是字节串，需要解码为字符串
-        stdout = stdout.decode()
-        logger.info(stdout)
-        stderr = stderr.decode()
-
-        # 标记是否在错误信息中
-        in_error_info = False
-
-        # 存放冲突文件名的列表
-        conflict_files = []
-        if f==True:
-            if os.path.exists("./temp"):
-                for i in os.listdir("./temp"):
-                    logger.info("开始处理"+i)
-                    if os.path.exists("config/"+i):
-                        conflict_file_dealter("./temp/"+i,"config/"+i)
-                    else:
-                        continue
-                shutil.rmtree("./temp")
-            logger.info("处理冲突文件完成")
-
-            logger.info("你可以关闭此窗口了")
-            input()
-        # 逐行检查错误信息
-        for line in stderr.split('\n'):
-            # 标记冲突文件名开始位置
-            if 'error: Your local changes to the following files would be overwritten by merge:' in line:
-                in_error_info = True
-                continue  # 结束当前循环，进入下一个循环
-
-            # 标记冲突文件名结束位置
-            if 'Please commit your changes or stash them before you merge.' in line:
-                in_error_info = False
-
-            # 将冲突文件名添加到列表
-            if in_error_info:
-                conflict_files.append(line.strip())
-
-        # 显示冲突的文件列表
-        for file in conflict_files:
-            print('冲突文件:', file)
-            logger.warning("开始处理冲突文件")
-            if file.endswith(".py"):
-                os.remove(file)
-                logger.warning("移除了" + file)
-            elif file.endswith(".yaml"):
-                logger.info("冲突的配置文件" + file)
-
-                logger.warning("开始处理冲突文件.....读取中")
-
-                if os.path.exists("./temp"):
-                    shutil.copyfile(file, file.replace("config", "temp"))
-                    os.remove(file)
-                else:
-                    os.mkdir("./temp")
-                    shutil.copyfile(file, file.replace("config", "temp"))
-                    os.remove(file)
-            else:
-                logger.warning("无法处理的 " + file)
-                logger.warning("请自行决定删除或修改文件名称，在重新拉取后根据旧文件重新填写新文件")
-        logger.warning("如果存在冲突文件，请按任意键，程序将自动处理")
-        a=input("即将再次执行拉取操作，输入任意键继续，按1退出：")
-        if a==1:
-            return
-        updaat(True)
-        # 不要忘了等待进程结束
-        p.wait()
+    elif sfsff=="2":
+        p = subprocess.Popen(['git', 'pull', 'https://gh-proxy.com/https://github.com/avilliai/Manyana'], stdout=subprocess.PIPE,
+                             stderr=subprocess.PIPE)
     else:
-        os.system("git pull https://gh-proxy.com/https://github.com/avilliai/Manyana")
+        logger.error("无效输入，重新执行")
+        updaat()
+    # 获取进程的输出和错误信息
+    stdout, stderr = p.communicate()
+
+    # 输出内容和错误信息都是字节串，需要解码为字符串
+    stdout = stdout.decode()
+    logger.info(stdout)
+    stderr = stderr.decode()
+
+    # 标记是否在错误信息中
+    in_error_info = False
+
+    # 存放冲突文件名的列表
+    conflict_files = []
+    if f==True:
+        if os.path.exists("./temp"):
+            for i in os.listdir("./temp"):
+                logger.info("开始处理"+i)
+                if os.path.exists("config/"+i):
+                    conflict_file_dealter("./temp/"+i,"config/"+i)
+                else:
+                    continue
+            shutil.rmtree("./temp")
+        logger.info("处理冲突文件完成")
+
+        logger.info("你可以关闭此窗口了")
+        input()
+    # 逐行检查错误信息
+    for line in stderr.split('\n'):
+        # 标记冲突文件名开始位置
+        if 'error: Your local changes to the following files would be overwritten by merge:' in line:
+            in_error_info = True
+            continue  # 结束当前循环，进入下一个循环
+
+        # 标记冲突文件名结束位置
+        if 'Please commit your changes or stash them before you merge.' in line:
+            in_error_info = False
+
+        # 将冲突文件名添加到列表
+        if in_error_info:
+            conflict_files.append(line.strip())
+
+    # 显示冲突的文件列表
+    for file in conflict_files:
+        print('冲突文件:', file)
+        logger.warning("开始处理冲突文件")
+        if file.endswith(".py"):
+            os.remove(file)
+            logger.warning("移除了" + file)
+        elif file.endswith(".yaml"):
+            logger.info("冲突的配置文件" + file)
+
+            logger.warning("开始处理冲突文件.....读取中")
+
+            if os.path.exists("./temp"):
+                shutil.copyfile(file, file.replace("config", "temp"))
+                os.remove(file)
+            else:
+                os.mkdir("./temp")
+                shutil.copyfile(file, file.replace("config", "temp"))
+                os.remove(file)
+        else:
+            logger.warning("无法处理的 " + file)
+            logger.warning("请自行决定删除或修改文件名称，在重新拉取后根据旧文件重新填写新文件")
+    logger.warning("如果存在冲突文件，请按任意键，程序将自动处理")
+    a=input("即将再次执行拉取操作，输入任意键继续，按1退出：")
+    if a==1:
+        return
+    updaat(True)
+    # 不要忘了等待进程结束
+    p.wait()
+
+
     logger.info("结束")
     logger.info("如更新成功请自行查看 更新日志.yaml")
 # 创建一个YAML对象来加载和存储YAML数据
