@@ -271,7 +271,7 @@ def updaat(f=False):
         # 不要忘了等待进程结束
         p.wait()
     else:
-        os.system("git pull https://gitclone.com/github.com/avilliai/Manyana")
+        os.system("git pull https://gh-proxy.com/https://github.com/avilliai/Manyana")
     logger.info("结束")
     logger.info("如更新成功请自行查看 更新日志.yaml")
 # 创建一个YAML对象来加载和存储YAML数据

@@ -1,5 +1,8 @@
 # -*- coding: gbk -*-
+import os.path
 import random
+
+from PIL import Image
 
 tarot=[['愚者 (The Fool)','从零开始; 好赌运; 不墨守成规; 追求新奇的梦想; 冒险; 放浪形骸; 艺术家的气质; 异于常人; 直攻要害、盲点; 爱情狩猎者; 爱情历经沧桑; 不拘形式的自由恋爱','不安定; 孤注一掷会失败; 缺乏责任感; 损失; 脚跟站不稳; 堕落; 没发展; 没计划; 走错路; 行为乖张; 轻浮的恋情; 感情忽冷忽热; 不安定的爱情之旅','The Fool.jpg'],
   ['魔术师 (The Magician)','好的开始; 具独创性; 有发展的; 新计划成功; 想像力丰富或有好点子; 有恋情发生; 拥有默契良好的伴侣; 有新恋人出现; 值得效仿的对象出现','失败; 优柔寡断; 才能平庸; 有被欺诈的危险; 技术不足; 过于消极; 没有判断力; 缺乏创造力; 爱情没有进展','The Magician.jpg'],
@@ -32,8 +35,20 @@ def tarotChoice():
   if ints==1:
     tarots=random.choice(tarot)
     txt=tarots[0]+'\n'+'逆位'+'\n'+tarots[2]
-    img='data/pictures/tarot/TarotSide/'+tarots[3]
-    return txt,img
+    img = 'data/pictures/tarot/TarotSide/' + tarots[3]
+    if os.path.exists(img):
+      return txt, img
+    else:
+      # 打开图像
+      img = Image.open('input_image.jpg')
+
+      # 旋转180度
+      rotated_img = img.rotate(180)
+
+      # 保存旋转后的图像
+      rotated_img.save('data/pictures/tarot/TarotSide/'+tarots[3])
+      return txt, img
+
 
 
 
