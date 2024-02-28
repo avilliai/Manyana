@@ -51,6 +51,7 @@
 **如果你觉得自己从零开始搭建bot比较困难，请使用此方案**
 - 从release下载ManyanaLauncher.rar并解压
   - 如果下载过慢，你也可以从Q群628763673获得这个压缩包
+  - 或者从[百度网盘下载](https://pan.baidu.com/s/1rGw2-Kqpm8bI4toSgIaq1A?pwd=10dv) 提取码：10dv
 - 从release下载最新的Launcher.exe，覆盖压缩包中的Launcher.exe
 - 右键以管理员身份运行launcher.exe
 - 从release下载HowToUse.mp4，如有疑问参考视频即可(较旧，但能用)
