@@ -175,31 +175,34 @@ def main():
 
     else:
         print("结束")
-def updaat(f=False):
+def updaat(f=False,jump=False,source="3"):
+    if jump==False:
+        logger.warning("更新python库，按1跳过，如果最近没有更新过，不建议跳过，可能错过某些更新。")
+        if input("在这里输入:") != "1":
+            os.system("pip install edge-tts")
+            os.system("pip install psutil")
+            os.system("pip install -q -U google-generativeai")
+            os.system("pip install ruamel.yaml")
+            # os.system("pip install -U zhipuai")
+            # os.system("pip install pydantic==1.10.11")
+            # os.system("pip install aspose-words")
 
-    logger.warning("更新python库，按1跳过，如果最近没有更新过，不建议跳过，可能错过某些更新。")
-    if input("在这里输入:") != "1":
-        os.system("pip install edge-tts")
-        os.system("pip install psutil")
-        os.system("pip install -q -U google-generativeai")
-        os.system("pip install ruamel.yaml")
-        # os.system("pip install -U zhipuai")
-        # os.system("pip install pydantic==1.10.11")
-        # os.system("pip install aspose-words")
-
-        # os.system("pip install --upgrade poe-api")
-        # os.system("pip install --upgrade requests")
-        # os.system("pip install --upgrade urllib3[socks]")
-        # os.system("pip install selenium")
-    logger.info("拉取bot代码\n--------------------")
-    logger.info("选择更新源()：\n1 git源\n2 镜像源(无需代理，但版本一般落后于git源)")
-    sfsff = input("选择更新源(输入数字)：")
-    if sfsff == "1":
+            # os.system("pip install --upgrade poe-api")
+            # os.system("pip install --upgrade requests")
+            # os.system("pip install --upgrade urllib3[socks]")
+            # os.system("pip install selenium")
+    if source=="3":
+        logger.info("拉取bot代码\n--------------------")
+        logger.info("选择更新源()：\n1 git源\n2 镜像源(无需代理，但版本一般落后于git源)")
+        source = input("选择更新源(输入数字)：")
+    else:
+        source=str(source)
+    if source == "1":
         # os.system("git pull https://github.com/avilliai/Manyana.git")
         # 启动进程
         p = subprocess.Popen(['git', 'pull', 'https://github.com/avilliai/Manyana.git'], stdout=subprocess.PIPE,
                              stderr=subprocess.PIPE)
-    elif sfsff=="2":
+    elif source=="2":
         p = subprocess.Popen(['git', 'pull', 'https://gh-proxy.com/https://github.com/avilliai/Manyana'], stdout=subprocess.PIPE,
                              stderr=subprocess.PIPE)
     else:
@@ -272,7 +275,7 @@ def updaat(f=False):
     a=input("即将再次执行拉取操作，输入任意键继续，按1退出：")
     if a==1:
         sys.exit()
-    updaat(True)
+    updaat(True,True,str(source))
     # 不要忘了等待进程结束
     p.wait()
 
