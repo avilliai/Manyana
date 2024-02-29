@@ -26,7 +26,7 @@ from plugins.wReply.mohuReply import mohuaddReplys, mohudels, mohuadd
 from plugins.wReply.superDict import outPutDic, importDict
 
 
-def main(bot,config,sizhiKey,app_id, app_key,logger):
+def main(bot,config,sizhiKey,logger):
     logger.info("启动自定义词库")
     logger.info("自定义词库读取配置文件")
     #读取配置文件
@@ -263,7 +263,7 @@ def main(bot,config,sizhiKey,app_id, app_key,logger):
                         if voicegg=="vits":
                             ranpath = random_str()
                             path='data/autoReply/voiceReply/' + ranpath + '.wav'
-                            text = await translate(str(event.message_chain)[2:], app_id, app_key)
+                            text = await translate(str(event.message_chain)[2:])
                             tex = '[JA]' + text + '[JA]'
                             await voiceGenerate({"text":tex,"out":path,"speaker":speaker,"modelSelect":modelSelect})
                             value = ranpath + '.wav'
@@ -276,7 +276,7 @@ def main(bot,config,sizhiKey,app_id, app_key,logger):
                                 logger.error(e)
                                 ranpath = random_str()
                                 path = 'data/autoReply/voiceReply/' + ranpath + '.wav'
-                                text = await translate(str(event.message_chain)[2:], app_id, app_key)
+                                text = await translate(str(event.message_chain)[2:])
                                 tex = '[JA]' + text + '[JA]'
                                 await voiceGenerate(
                                     {"text": tex, "out": path, "speaker": speaker, "modelSelect": modelSelect})
@@ -502,7 +502,7 @@ def main(bot,config,sizhiKey,app_id, app_key,logger):
                                 if replyssssss in transLateData:
                                     text=transLateData.get(replyssssss)
                                 else:
-                                    text=await translate(str(replyssssss), app_id, app_key)
+                                    text=await translate(str(replyssssss))
                                     transLateData[replyssssss]=text
                                     with open('data/autoReply/transLateData.yaml', 'w', encoding="utf-8") as file:
                                         yaml.dump(transLateData, file, allow_unicode=True)
@@ -521,7 +521,7 @@ def main(bot,config,sizhiKey,app_id, app_key,logger):
                                     if replyssssss in transLateData:
                                         text = transLateData.get(replyssssss)
                                     else:
-                                        text = await translate(str(replyssssss), app_id, app_key)
+                                        text = await translate(str(replyssssss))
                                         transLateData[replyssssss] = text
                                         with open('data/autoReply/transLateData.yaml', 'w', encoding="utf-8") as file:
                                             yaml.dump(transLateData, file, allow_unicode=True)

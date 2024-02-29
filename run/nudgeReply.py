@@ -24,7 +24,7 @@ from plugins.translater import translate
 from plugins.vitsGenerate import voiceGenerate, taffySayTest, sovits, edgetts, outVits
 
 
-def main(bot,master,app_id,app_key,logger,berturl,proxy):
+def main(bot,master,logger,berturl,proxy):
     with open('config/nudgeReply.yaml', 'r', encoding='utf-8') as f:
         result = yaml.load(f.read(), Loader=yaml.FullLoader)
     normal_Reply = result.get("nudgedReply")
@@ -152,14 +152,20 @@ def main(bot,master,app_id,app_key,logger,berturl,proxy):
                             except:
                                 logger.error("out_vits语音合成出错")
                                 await bot.send_group_message(event.subject.id, rep)
+                                return
                         elif voicegg=="vits":
                             path = 'data/voices/' + random_str() + '.wav'
+                            if rep > 80:
+                                await bot.send_group_message(event.subject.id, rep)
+                                return
                             if random.randint(1, 100) > chineseVoiceRate:
                                 if rep in transLateData:
                                     text = transLateData.get(rep)
                                 else:
-                                    text = await translate(str(rep), app_id, app_key)
+                                    text = await translate(str(rep))
                                     transLateData[rep] = text
+
+
                                     with open('data/autoReply/transLateData.yaml', 'w', encoding="utf-8") as file:
                                         yaml.dump(transLateData, file, allow_unicode=True)
                                     logger.info("写入参照数据:" + rep + "| " + text)
@@ -172,16 +178,20 @@ def main(bot,master,app_id,app_key,logger,berturl,proxy):
                             await bot.send_group_message(event.subject.id, Voice(path=path))
                             if withText == True:
                                 await bot.send_group_message(event.subject.id, rep)
+                                return
                     except Exception as e:
                         logger.error(e)
                         logger.error("出错，发送原文本")
                         await bot.send_group_message(event.subject.id, rep)
                         path = 'data/voices/' + random_str() + '.wav'
+                        if rep > 80:
+                            await bot.send_group_message(event.subject.id, rep)
+                            return
                         if random.randint(1, 100) > chineseVoiceRate:
                             if rep in transLateData:
                                 text = transLateData.get(rep)
                             else:
-                                text = await translate(str(rep), app_id, app_key)
+                                text = await translate(str(rep))
                                 transLateData[rep] = text
                                 with open('data/autoReply/transLateData.yaml', 'w', encoding="utf-8") as file:
                                     yaml.dump(transLateData, file, allow_unicode=True)
@@ -200,7 +210,7 @@ def main(bot,master,app_id,app_key,logger,berturl,proxy):
         prompt = [
             {
                 "role": "user",
-                "content": "戳你一下"
+                "content": random.choice(["戳你一下","摸摸头","戳戳你的头"])
             }
         ]
         zhipuai.api_key = chatGLM_api_key

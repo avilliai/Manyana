@@ -18,7 +18,7 @@ from plugins.picGet import picDwn
 from plugins.translater import translate
 
 
-def main(bot,proxy,nasa_api,app_id,app_key,logger):
+def main(bot,proxy,nasa_api,logger):
     global data
     with open('data/scheduledTasks.yaml', 'r',encoding='utf-8') as file:
         data = yaml.load(file, Loader=yaml.FullLoader)
@@ -92,8 +92,7 @@ def main(bot,proxy,nasa_api,app_id,app_key,logger):
             # logger.info("下载缩略图")
             filename = await picDwn(response.json().get("url"),
                                     "data/pictures/nasa/" + response.json().get("date") + ".png")
-            txta = await translate(response.json().get("explanation"), app_id=app_id, app_key=app_key, ori="en",
-                                   aim="zh-CHS")
+            txta = await translate(response.json().get("explanation"), "EN2ZH_CN")
             txt = response.json().get("date") + "\n" + response.json().get("title") + "\n" + txta
             temp = {"path": "data/pictures/nasa/" + response.json().get("date") + ".png",
                     "oriTxt": response.json().get("explanation"), "transTxt": txt}

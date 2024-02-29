@@ -38,7 +38,7 @@ from plugins.translater import translate
 from plugins.webScreenShoot import webScreenShoot, screenshot_to_pdf_and_png
 
 
-def main(bot,api_KEY,app_id,app_key,nasa_api,proxy,logger):
+def main(bot,api_KEY,nasa_api,proxy,logger):
     logger.info("额外的功能 启动完成")
     with open("data/odes.json",encoding="utf-8") as fp:
         odes=json.loads(fp.read())
@@ -286,7 +286,7 @@ def main(bot,api_KEY,app_id,app_key,nasa_api,proxy,logger):
                     logger.info("获取到结果" + str(response.json()))
                     # logger.info("下载缩略图")
                     filename = await picDwn(response.json().get("url"), "data/pictures/nasa/"+response.json().get("date")+".png")
-                    txta=await translate(response.json().get("explanation"),app_id=app_id,app_key=app_key,ori="en",aim="zh-CHS")
+                    txta=await translate(response.json().get("explanation"),mode="EN2ZH_CN")
                     txt = response.json().get("date") + "\n" + response.json().get("title") + "\n" + txta
                     temp={"path":"data/pictures/nasa/"+response.json().get("date")+".png","oriTxt":response.json().get("explanation"),"transTxt":txt}
 

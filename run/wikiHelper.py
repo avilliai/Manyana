@@ -22,7 +22,7 @@ from plugins.vitsGenerate import voiceGenerate
 from plugins.webScreenShoot import webScreenShoot, screenshot_to_pdf_and_png
 
 
-def main(bot,app_id,app_key,logger):
+def main(bot,logger):
     logger.info("blueArchive")
     global punishing
     with open('data/Punishing.yaml', 'r', encoding='utf-8') as f:

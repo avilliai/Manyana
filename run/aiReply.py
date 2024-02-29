@@ -48,8 +48,6 @@ def main(bot, master, logger):
     with open('config/api.yaml', 'r', encoding='utf-8') as f:
         resulttr = yaml.load(f.read(), Loader=yaml.FullLoader)
     CoziUrl=resulttr.get("cozi")
-    app_id=resulttr.get("youdao").get("app_id")
-    app_key = resulttr.get("youdao").get("app_key")
     geminiapikey=resulttr.get("gemini")
     proxy=resulttr.get("proxy")
     berturl=resulttr.get("bert_colab")
@@ -676,7 +674,7 @@ def main(bot, master, logger):
                     try:
                         path = 'data/voices/' + random_str() + '.wav'
                         if random.randint(1, 100) > chineseVoiceRate:
-                            text = await translate(str(st8), app_id, app_key)
+                            text = await translate(str(st8))
                             tex = '[JA]' + text + '[JA]'
                         else:
                             tex = "[ZH]" + st8 + "[ZH]"
@@ -702,7 +700,7 @@ def main(bot, master, logger):
                     try:
                         path = 'data/voices/' + random_str() + '.wav'
                         if random.randint(1, 100) > chineseVoiceRate:
-                            text = await translate(str(st8), app_id, app_key)
+                            text = await translate(str(st8))
                             tex = '[JA]' + text + '[JA]'
                         else:
                             tex = "[ZH]" + st8 + "[ZH]"
@@ -1017,7 +1015,7 @@ def main(bot, master, logger):
                     try:
                         path = 'data/voices/' + random_str() + '.wav'
                         if random.randint(1, 100) > chineseVoiceRate:
-                            text = await translate(str(st8), app_id, app_key)
+                            text = await translate(str(st8))
                             tex = '[JA]' + text + '[JA]'
                         else:
                             tex = "[ZH]" + st8 + "[ZH]"
@@ -1043,7 +1041,7 @@ def main(bot, master, logger):
                     try:
                         path = 'data/voices/' + random_str() + '.wav'
                         if random.randint(1, 100) > chineseVoiceRate:
-                            text = await translate(str(st8), app_id, app_key)
+                            text = await translate(str(st8))
                             tex = '[JA]' + text + '[JA]'
                         else:
                             tex = "[ZH]" + st8 + "[ZH]"

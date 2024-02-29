@@ -21,7 +21,7 @@ from plugins.translater import translate
 from plugins.vitsGenerate import voiceGenerate, outVits
 
 
-def main(bot,master,app_id,app_key,logger):
+def main(bot,master,logger):
     logger.info("语音合成用户端启动....")
 
 
@@ -72,7 +72,7 @@ def main(bot,master,app_id,app_key,logger):
             # 取出指令中的地名
             text = m.group(1)
             path = 'data/voices/' + random_str() + '.wav'
-            text = await translate(text, app_id, app_key)
+            text = await translate(text)
             tex = '[JA]' + text + '[JA]'
             logger.info("启动文本转语音：text: " + tex + " path: " + path)
             await voiceGenerate({"text": tex, "out": path,"speaker":speaker,"modelSelect":modelSelect})
@@ -93,7 +93,7 @@ def main(bot,master,app_id,app_key,logger):
             # 取出指令中的地名
             text = m.group(1)
             path = 'data/voices/' + random_str() + '.wav'
-            #text = await translate(text, app_id, app_key)
+
             tex = '[ZH]' + text + '[ZH]'
             logger.info("启动文本转语音：text: " + tex + " path: " + path)
             await voiceGenerate({"text": tex, "out": path,"speaker":speaker,"modelSelect":modelSelect})
@@ -109,7 +109,7 @@ def main(bot,master,app_id,app_key,logger):
             # 取出指令中的地名
             text = m.group(1)
             path = 'data/voices/' + random_str() + '.wav'
-            # text = await translate(text, app_id, app_key)
+
             tex = '[JA]' + text + '[JA]'
             logger.info("启动文本转语音：text: " + tex + " path: " + path)
             await voiceGenerate({"text": tex, "out": path,"speaker":speaker,"modelSelect":modelSelect})
@@ -122,7 +122,7 @@ def main(bot,master,app_id,app_key,logger):
             text = str(event.message_chain)[len(str(event.message_chain).split("说")[0])+1:]
             if str(event.message_chain).split("说")[0] in characters:
                 speaker = str(event.message_chain).split("说")[0]
-                text =await translate(text, app_id, app_key)
+                text =await translate(text)
                 path = 'data/voices/' + random_str() + '.wav'
                 logger.info("语音生成_文本" + text)
                 logger.info("语音生成_模型:"+speaker + str(characters.get(speaker)[1]))
@@ -139,7 +139,7 @@ def main(bot,master,app_id,app_key,logger):
             if "中文" in str(event.message_chain) and str(event.message_chain).split("中文")[0] in characters:
                 speaker = str(event.message_chain).split("中文")[0]
                 text = str(event.message_chain).split("中文")[1]
-                #text = translate(text, app_id, app_key)不用翻译
+
                 path = 'data/voices/' + random_str() + '.wav'
                 logger.info("语音生成_文本" + text)
                 logger.info("语音生成_模型:" + speaker + str(characters.get(speaker)[1]))
@@ -154,7 +154,7 @@ def main(bot,master,app_id,app_key,logger):
             if "日文" in str(event.message_chain) and str(event.message_chain).split("日文")[0] in characters:
                 speaker = str(event.message_chain).split("日文")[0]
                 text = str(event.message_chain).split("日文")[1]
-                # text = translate(text, app_id, app_key)不用翻译
+
                 logger.info("语音生成_文本"+text)
                 path = 'data/voices/' + random_str() + '.wav'
                 logger.info("语音生成_模型:" + speaker + str(characters.get(speaker)[1]))

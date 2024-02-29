@@ -1,3 +1,5 @@
+import asyncio
+
 import httpx
 import requests
 import time
@@ -7,7 +9,12 @@ import uuid
 youdao_url = 'https://openapi.youdao.com/api'  # 有道api地址
 
 # 需要翻译的文本'
-async def translate(txt,app_id,app_key,ori="zh-CHS",aim="ja"):
+async def translate(text,mode="ZH_CN2JA"):
+    URL=f"https://api.pearktrue.cn/api/translate/?text={text}&type=ZH_CN2JA"
+    async with httpx.AsyncClient(timeout=20) as client:
+        r = await client.get(URL)
+        return r.json()["data"]["translate"]
+async def translate1(txt,app_id,app_key,ori="zh-CHS",aim="ja"):
     translate_text = txt
 
     # 翻译文本生成sign前进行的处理

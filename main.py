@@ -36,8 +36,6 @@ if __name__ == '__main__':
     #读取api列表
     with open('config/api.yaml', 'r', encoding='utf-8') as f:
         result = yaml.load(f.read(), Loader=yaml.FullLoader)
-    app_id = result.get("youdao").get("app_id")
-    app_key=result.get("youdao").get("app_key")#有道翻译api
     sizhiKey=result.get("siZhiAi")
     proxy=result.get("proxy")
     berturl=result.get("bert_colab")
@@ -200,7 +198,7 @@ if __name__ == '__main__':
 
 
     #current_dir = os.path.dirname(os.path.abspath(__file__))
-    voiceReply.main(bot, master, app_id, app_key, logger)  # 语音生成
+    voiceReply.main(bot, master,logger)  # 语音生成
     if proxy != "":
         try:
             # logger.info("开发过程中暂不启动poe-api")
@@ -210,10 +208,10 @@ if __name__ == '__main__':
         imgSearch.main(bot, result.get("sauceno-api"), result.get("proxy"), logger)
     else:
         logger.warning("未设置代理，禁用poe-api与搜图")
-    nudgeReply.main(bot, master, app_id, app_key, logger,berturl,proxy)  # 戳一戳
-    extraParts.main(bot, result.get("weatherXinZhi"), app_id, app_key, nasa_api, proxy, logger)  # 额外小功能
-    wReply.main(bot, config, sizhiKey, app_id, app_key, logger)
-    wikiHelper.main(bot, app_id, app_key, logger)
+    nudgeReply.main(bot, master,  logger,berturl,proxy)  # 戳一戳
+    extraParts.main(bot, result.get("weatherXinZhi"), nasa_api, proxy, logger)  # 额外小功能
+    wReply.main(bot, config, sizhiKey,  logger)
+    wikiHelper.main(bot, logger)
     userSign.main(bot, result.get("weatherXinZhi"), master, config, logger)
     groupManager.main(bot, config, moderate, logger)
     PicRandom.main(bot, proxy, logger)
@@ -221,7 +219,7 @@ if __name__ == '__main__':
     LiveMonitor.main(bot, master, botName, logger)
     bertVits2.main(bot,  logger,berturl,proxy)
     aronaapi.main(bot,logger)
-    scheduledTasks.main(bot,proxy,nasa_api,app_id,app_key,logger)
+    scheduledTasks.main(bot,proxy,nasa_api,logger)
     groupGames.main(bot,logger)
     musicpick.main(bot,logger)
     sovits2.main(bot,logger)
