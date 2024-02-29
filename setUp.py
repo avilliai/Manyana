@@ -194,7 +194,7 @@ def updaat(f=False,jump=False,source="3"):
     if source=="3":
         logger.info("拉取bot代码\n--------------------")
         logger.info("选择更新源()：\n1 git源\n2 镜像源(无需代理，但版本一般落后于git源)")
-        source = input("选择更新源(输入数字)：")
+        source = input("选择更新源(输入数字 )：")
     else:
         source=str(source)
     if source == "1":
