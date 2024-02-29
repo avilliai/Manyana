@@ -312,7 +312,7 @@ def conflict_file_dealter(file_old='old_aiReply.yaml', file_new='new_aiReply.yam
     merge_dicts(old_data, new_data)
 
     # 把新的YAML数据保存到新的文件中
-    with open(file_new, 'w') as file:
+    with open(file_new, 'w',encoding="utf-8") as file:
         yaml.dump(new_data, file)
 
 
