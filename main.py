@@ -5,10 +5,11 @@ import json
 import os
 import random
 import subprocess
+import sys
 from asyncio import sleep as sleep1
 
 import yaml
-from mirai import Mirai, WebSocketAdapter, GroupMessage, Image, At, Startup, FriendMessage
+from mirai import Mirai, WebSocketAdapter, GroupMessage, Image, At, Startup, FriendMessage, Shutdown
 
 from plugins.RandomStr import random_str
 from plugins.newLogger import newLogger
@@ -121,6 +122,11 @@ if __name__ == '__main__':
             logger.info("制图菜单")
             await bot.send(event, '发送 pet 以查看制图功能列表')
 
+    @bot.on(Shutdown)
+    async def stopWhole(event: Shutdown):
+        logger.info("结束")
+        logger.info(event)
+        sys.exit()
 
     @bot.on(Startup)
     async def clearCache(event:Startup):
