@@ -40,7 +40,7 @@ def tarotChoice():
       return txt, img
     else:
       # 打开图像
-      img = Image.open('input_image.jpg')
+      img = Image.open('data/pictures/tarot/TarotImages/'+tarots[3])
 
       # 旋转180度
       rotated_img = img.rotate(180)

@@ -184,7 +184,7 @@ def main(bot,master,logger,berturl,proxy):
                         logger.error("出错，发送原文本")
                         await bot.send_group_message(event.subject.id, rep)
                         path = 'data/voices/' + random_str() + '.wav'
-                        if rep > 80:
+                        if len(rep) > 80:
                             await bot.send_group_message(event.subject.id, rep)
                             return
                         if random.randint(1, 100) > chineseVoiceRate:
