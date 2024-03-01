@@ -155,7 +155,7 @@ def main(bot,master,logger,berturl,proxy):
                                 return
                         elif voicegg=="vits":
                             path = 'data/voices/' + random_str() + '.wav'
-                            if rep > 80:
+                            if len(rep) > 80:
                                 await bot.send_group_message(event.subject.id, rep)
                                 return
                             if random.randint(1, 100) > chineseVoiceRate:
