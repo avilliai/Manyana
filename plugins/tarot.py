@@ -35,9 +35,9 @@ def tarotChoice():
   if ints==1:
     tarots=random.choice(tarot)
     txt=tarots[0]+'\n'+'逆位'+'\n'+tarots[2]
-    img = 'data/pictures/tarot/TarotSide/' + tarots[3]
-    if os.path.exists(img):
-      return txt, img
+    img1 = 'data/pictures/tarot/TarotSide/' + tarots[3]
+    if os.path.exists(img1):
+      return txt, img1
     else:
       # 打开图像
       img = Image.open('data/pictures/tarot/TarotImages/'+tarots[3])
@@ -47,7 +47,7 @@ def tarotChoice():
 
       # 保存旋转后的图像
       rotated_img.save('data/pictures/tarot/TarotSide/'+tarots[3])
-      return txt, img
+      return txt, img1
 
 
 
