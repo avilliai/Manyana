@@ -134,6 +134,8 @@ if __name__ == '__main__':
         ls1 = os.listdir("data/pictures/avatars")
         for i in ls1:
             try:
+                if i.endswith(".py"):
+                    continue
                 os.remove("data/pictures/avatars/" + i)
             except:
                 continue
@@ -141,6 +143,8 @@ if __name__ == '__main__':
         ls1 = os.listdir("data/pictures/cache")
         for i in ls1:
             try:
+                if i.endswith(".py"):
+                    continue
                 os.remove("data/pictures/cache/" + i)
             except:
                 continue
@@ -148,6 +152,8 @@ if __name__ == '__main__':
         ls1 = os.listdir("data/voices")
         for i in ls1:
             try:
+                if i.endswith(".py"):
+                    continue
                 os.remove("data/voices/" + i)
             except:
                 continue

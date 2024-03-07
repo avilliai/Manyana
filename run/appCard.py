@@ -27,13 +27,15 @@ def main(bot,logger):
     u=[]
     @bot.on(GroupMessage)
     async def arkbegin(event: GroupMessage):
+        global u
         if str(event.message_chain)=="转卡片":
-            global u
+            await bot.send(event, "在转了捏")
             u.append(event.sender.id)
+
     @bot.on(GroupMessage)
     async def arkkapian(event: GroupMessage):
         global u
-        if event.sender.id in u:
+        if event.sender.id in u and event.message_chain.count(Image):
             logger.info("开始卡片签名....")
             if event.message_chain.count(Image):
                 logger.info("成功获取到卡片")
