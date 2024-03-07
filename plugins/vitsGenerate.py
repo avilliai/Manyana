@@ -5,7 +5,9 @@ import subprocess
 from asyncio import sleep
 
 import httpx
+import librosa
 import requests
+import soundfile
 
 from plugins.RandomStr import random_str
 from vits.MoeGoe import vG
@@ -68,13 +70,15 @@ async def outVits(data):
     p = "data/voices/" + p
     url=f"https://api.lolimi.cn/API/yyhc/y.php?msg={text}&speaker={speaker}"
     async with httpx.AsyncClient(timeout=200) as client:
-        r = await client.post(url, json=json.dumps(data))
+        r = await client.post(url)
         newUrl=r.json().get("music")
         print("outvits语音合成路径：" + p)
         r1=requests.get(newUrl)
         with open(p, "wb") as f:
             f.write(r1.content)
+        change_sample_rate(p)
         return p
+
 async def voiceGenerate(data):
     # 向本地 API 发送 POST 请求
     if "MoeGoe.py" in os.listdir():
@@ -125,3 +129,20 @@ async def voiceGenerate(data):
         await vG(tex=text, out=out, speakerID=speaker, modelSelect=modelSelect)
         print("语音生成完成")
         return out
+async def change_sample_rate(path,new_sample_rate=44100):
+    #wavfile = path  # 提取音频文件名，如“1.wav"
+    # new_file_name = wavfile.split('.')[0] + '_8k.wav'      #此行代码可用于对转换后的文件进行重命名（如有需要）
+
+    signal, sr = librosa.load(path, sr=None)  # 调用librosa载入音频
+
+    new_signal = librosa.resample(signal, orig_sr=sr, target_sr=new_sample_rate)  # 调用librosa进行音频采样率转换
+
+    new_path = path # 指定输出音频的路径，音频文件与原音频同名
+    # new_path = os.path.join(new_dir_path, new_file_name)      #若需要改名则启用此行代码
+    #print("?")
+    #print(new_path)
+
+    # librosa.output.write_wav(new_path, new_signal , new_sample_rate)      #因版本问题，此方法可能用不了
+    soundfile.write(new_path, new_signal, new_sample_rate)
+
+    #asyncio.run(pearlAIGenerate({"text":"你好啊，你吃饭了吗，今天吃的怎么样，开心吗？",'speaker':"宇希"}))
