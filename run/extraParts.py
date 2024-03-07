@@ -16,7 +16,7 @@ import utils
 import yaml
 from mirai import Image, Voice, Startup, MessageChain
 from mirai import Mirai, WebSocketAdapter, FriendMessage, GroupMessage, At, Plain
-from mirai.models import ForwardMessageNode, Forward
+from mirai.models import ForwardMessageNode, Forward, App
 
 from plugins import weatherQuery
 from plugins.RandomStr import random_str
@@ -31,6 +31,7 @@ from plugins.jokeMaker import get_joke
 from plugins.modelsLoader import modelLoader
 from plugins.newLogger import newLogger
 from plugins.newsEveryDay import news, moyu, xingzuo, sd, chaijun, danxianglii
+from plugins.arksign import arkSign
 from plugins.picGet import pic, setuGet, picDwn
 from plugins.tarot import tarotChoice
 from plugins.translater import translate
@@ -161,6 +162,11 @@ def main(bot,api_KEY,nasa_api,proxy,logger):
                         return
                     logger.info("发送图片: "+path)
                     try:
+                        try:
+                            await bot.send(event,App(arkSign(path)))
+                        except Exception as e:
+                            logger.error(e)
+                            logger.error("自动转换卡片失败")
                         await bot.send(event, Image(url=path))
                         logger.info("图片发送成功")
                     except:
@@ -446,4 +452,3 @@ def main(bot,api_KEY,nasa_api,proxy,logger):
             except:
                 logger.error("衮")
                 await bot.send(event, "获取喜加一结果失败，请稍后再试")
-
