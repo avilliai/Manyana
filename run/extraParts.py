@@ -163,7 +163,7 @@ def main(bot,api_KEY,nasa_api,proxy,logger):
                     logger.info("发送图片: "+path)
                     try:
                         try:
-                            card=arkSign(path)
+                            card=await arkSign(path)
                             await bot.send(event,App(card))
                         except Exception as e:
                             logger.error(e)

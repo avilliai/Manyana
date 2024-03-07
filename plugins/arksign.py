@@ -9,5 +9,5 @@ async def arkSign(url):
     r=requests.get(url)
     #print(r.text)
     #print(r.text,type(r.json()))
-    return r.text
+    return str(r.text)
 #arkSign("https://img.xjh.me/random_img.php")
