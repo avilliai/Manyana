@@ -29,16 +29,16 @@ def main(bot,logger):
     async def arkbegin(event: GroupMessage):
         global u
         if str(event.message_chain)=="转卡片":
-            await bot.send(event, "在转了捏")
+            await bot.send(event, "请发送图片(腾子限制，bot有可能获取不到你的图片)")
             u.append(event.sender.id)
 
     @bot.on(GroupMessage)
     async def arkkapian(event: GroupMessage):
         global u
-        if event.sender.id in u and event.message_chain.count(Image):
+        if event.message_chain.count(Image):
+            if event.sender.id not in u:
+                return
             logger.info("开始卡片签名....")
-            if event.message_chain.count(Image):
-                logger.info("成功获取到卡片")
             try:
                 lst_img = event.message_chain.get(Image)
                 url1 = lst_img[0].url
