@@ -353,22 +353,10 @@ news:
 </details>
 
 # 🚑可能遇到的问题
-
-<details markdown='1'><summary>内存不够bot总是意外结束运行</summary>
-
->服务器内存2G一般完全够用，但不排除你想整点其他的，导致内存可能不够用
-- 确保更新到了最新版Manyana
-- 把vits文件夹中的所有内容(所有文件和文件夹)复制到Manyana根目录
-- 重新启动bot即可
->launcher启动的时候支持指定内存
-- 你回车就是512mb
-- 调小或者调大都试试，很诡异，有调小能用的，也有调大能用的
-
-</details>
-
 <details markdown='1'><summary>更新不了是怎么回事</summary>
+>如果你已经更新到了2.28之后的版本，更新时程序将自动处理冲突文件，不会再出现此问题
 
->往往是因为你自定义过的文件在仓库这边的母版又有了变动，所以会导致冲突，这时更新会列出冲突的文件
+>2.28之前的版本更新遇到问题，往往是因为你自定义过的文件在仓库这边的母版又有了变动，所以会导致冲突，这时更新会列出冲突的文件
 - 重命名你的冲突的文件，不要与原来一样
 - 更新，拉取新的文件
 - 根据旧的文件**填写**新的对应文件
@@ -380,7 +368,3 @@ news:
 如果觉得项目还不错的话给个star喵，给个star谢谢喵
 ![Star History Chart](https://api.star-history.com/svg?repos=avilliai/Manyana&type=Date)
 
-## 快速克隆
-<div>
-    <a href='https://gitclone.com'><img src='https://gitclone.com/img/title.ico' style='width:300px;'/></a>
-</div>
