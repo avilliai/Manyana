@@ -22,7 +22,7 @@ from plugins.arksign import arkSign
 
 
 def main(bot,logger):
-    logger.info("arona loaded")
+    logger.info("卡片构建已启用")
     global u
     u=[]
     @bot.on(GroupMessage)

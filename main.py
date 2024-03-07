@@ -15,7 +15,8 @@ from plugins.RandomStr import random_str
 from plugins.newLogger import newLogger
 from plugins.systeminfo import get_system_info
 from run import aiReply, voiceReply, nudgeReply, wikiHelper, imgSearch, extraParts, wReply, userSign, groupManager, \
-    PicRandom, musicShare, LiveMonitor, bertVits2, aronaapi, groupGames, musicpick, scheduledTasks, sovits2, appCard
+    PicRandom, musicShare, LiveMonitor, bertVits2, aronaapi, groupGames, musicpick, scheduledTasks, sovits2, appCard, \
+    aiDraw
 
 if __name__ == '__main__':
     with open('config.json','r',encoding='utf-8') as fp:
@@ -236,6 +237,7 @@ if __name__ == '__main__':
     musicpick.main(bot,logger)
     sovits2.main(bot,logger)
     appCard.main(bot,logger)
+    aiDraw.main(bot,logger)
     #gemini_ai.main(bot,logger,master)
     startVer()
 
