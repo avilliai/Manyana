@@ -163,7 +163,8 @@ def main(bot,api_KEY,nasa_api,proxy,logger):
                     logger.info("发送图片: "+path)
                     try:
                         try:
-                            await bot.send(event,App(arkSign(path)))
+                            card=arkSign(path)
+                            await bot.send(event,App(card))
                         except Exception as e:
                             logger.error(e)
                             logger.error("自动转换卡片失败")
