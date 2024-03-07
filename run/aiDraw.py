@@ -35,7 +35,7 @@ def main(bot,logger):
     @bot.on(GroupMessage)
     async def rededd(event: GroupMessage):
         global redraw
-        if str(event.message_chain)=="以图生图 ":
+        if str(event.message_chain).startswith("以图生图 ":
             await bot.send(event,"请发送图片(最近由于未知原因，有概率获取url失败)")
             redraw[event.sender.id]=str(event.message_chain).replace("以图生图 ","")
     @bot.on(GroupMessage)
