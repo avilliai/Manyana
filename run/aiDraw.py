@@ -42,7 +42,7 @@ def main(bot,logger):
     async def redrawStart(event: GroupMessage):
         global redraw
         if event.message_chain.count(Image) and event.sender.id in redraw:
-            prompt=redraw.get(event.message_chain)
+            prompt=redraw.get(event.sender.id)
             lst_img = event.message_chain.get(Image)
             url1 = lst_img[0].url
             logger.info(f"以图生图,prompt:{prompt} url:{url1}")
