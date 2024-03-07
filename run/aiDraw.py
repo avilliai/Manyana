@@ -49,6 +49,7 @@ def main(bot,logger):
             try:
                 p=await airedraw(prompt,url1)
                 await bot.send(event,Image(path=p))
+                redraw.pop(event.sender.id)
             except Exception as e:
                 logger.error(e)
                 logger.error("ai绘画出错")
