@@ -35,14 +35,13 @@ def main(bot,logger):
     @bot.on(GroupMessage)
     async def rededd(event: GroupMessage):
         global redraw
-        if str(event.message_chain).startswith("以图生图 ":
+        if str(event.message_chain).startswith("以图生图 "):
             await bot.send(event,"请发送图片(最近由于未知原因，有概率获取url失败)")
             redraw[event.sender.id]=str(event.message_chain).replace("以图生图 ","")
     @bot.on(GroupMessage)
     async def redrawStart(event: GroupMessage):
         global redraw
         if event.message_chain.count(Image) and event.sender.id in redraw:
-
             prompt=redraw.get(event.message_chain)
             lst_img = event.message_chain.get(Image)
             url1 = lst_img[0].url
