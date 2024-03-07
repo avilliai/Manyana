@@ -76,7 +76,7 @@ async def outVits(data):
         r1=requests.get(newUrl)
         with open(p, "wb") as f:
             f.write(r1.content)
-        change_sample_rate(p)
+        await change_sample_rate(p)
         return p
 
 async def voiceGenerate(data):
