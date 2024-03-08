@@ -16,7 +16,7 @@ from mirai import Image, Voice
 from mirai import Mirai, WebSocketAdapter, FriendMessage, GroupMessage, At, Plain
 
 from plugins.RandomStr import random_str
-from plugins.aiDrawer import draw, airedraw
+from plugins.aiDrawer import draw, airedraw, draw1
 
 
 def main(bot,logger):
@@ -30,11 +30,19 @@ def main(bot,logger):
             path = "data/pictures/cache/" + random_str() + ".png"
             logger.info("发起ai绘画请求，path:"+path+"|prompt:"+tag)
             try:
+                logger.info("接口1绘画中......")
+                p=await draw1(tag,path)
+                await bot.send(event,Image(path=p),True)
+            except Exception as e:
+                logger.error(e)
+                await bot.send(event,"接口1绘画失败.......")
+            try:
+                logger.info("接口2绘画中......")
                 p=await draw(tag,path)
                 await bot.send(event,Image(path=p),True)
             except Exception as e:
                 logger.error(e)
-                await bot.send(event,"图片不见了耶.......")
+                await bot.send(event,"接口2绘画失败.......")
 
     @bot.on(GroupMessage)
     async def rededd(event: GroupMessage):
