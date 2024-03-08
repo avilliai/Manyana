@@ -14,7 +14,7 @@ fuckingnumber: 13         #低于13人退群
 #语音合成，小型服务器建议使用outVits/edgetts和vits，so-vits和bert_vits2需要较好的配置以及另行部署
 #outVits模式下，使用如下指令查看outVits可用的角色@bot 角色
 #outVits语音合成不可用时，将自动转用vits
-voicegenerate: outVits  #语音合成来源so-vits/bert_vits2/vits/outVits/edgetts(edgetts可用speaker请参考config/edgetts.txt)
+voicegenerate: vits  #语音合成来源so-vits/bert_vits2/vits/outVits/edgetts(edgetts可用speaker请参考config/edgetts.txt)
 RateIfUnavailable: 30  #当设定的语音合成不可用时，默认使用vits合成的几率,中文几率可在最下方调整
 #bert_vits2语音合成配置，不用就别管
 #根据bert_vits_sever/characters.yaml填写所有可用的speakers，不填对应的speaker则无法通过Manyana调用
@@ -41,7 +41,7 @@ chatGLM:       #只是懒得改还叫chatGLM了，实际上是多模型通用设
   maxPrompt: 10            #上下文模式开启时，最多记录的问答数量，默认10，即记录5对问答
   #语音合成通用设置
   maxLen: 40               #语音合成最大长度限制，超出则返回文本。
-  voiceRate: 100           #语音回复几率
+  voiceRate: 30           #语音回复几率
   speaker: "黑塔"           #语音合成默认音源，根据你的合成模式设定,edgetts建议使用zh-CN-XiaoyiNeural,vits则无需配置,outVits看https://api.lolimi.cn/?action=doc&id=181
   withText: true           #发送语音是否附带原始文本
   #默认都是characterglm用的，Cozi和Gemini属于特殊值，bot会自动处理不用管这两个，你该写自己的设定就写
