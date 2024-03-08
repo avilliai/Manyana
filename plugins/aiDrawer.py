@@ -15,16 +15,16 @@ async def draw(prompt,path= "./test.png"):
 
     async with httpx.AsyncClient(timeout=40) as client:
         r = await client.get(url)
-        img = Image.open(BytesIO(r.content))  # 从二进制数据创建图片对象
-        img.save(path)  # 使用PIL库保存图片
+        with open(path,"wb") as f:
+            f.write(r.content)
         # print(path)
         return path
 async def airedraw(prompt,url,path="./redraw.png"):
     url=f"https://api.lolimi.cn/API/AI/isd.php?msg={prompt}&img={url}&mode=动漫"
     async with httpx.AsyncClient(timeout=40) as client:
         r = await client.get(url)
-        img = Image.open(BytesIO(r.content))  # 从二进制数据创建图片对象
-        img.save(path)  # 使用PIL库保存图片
+        with open(path, "wb") as f:
+            f.write(r.content)
         # print(path)
         return path
 # 运行 Flask 应用
