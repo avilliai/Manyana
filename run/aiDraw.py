@@ -29,8 +29,12 @@ def main(bot,logger):
             tag=str(event.message_chain).replace("画 ","")
             path = "data/pictures/cache/" + random_str() + ".png"
             logger.info("发起ai绘画请求，path:"+path+"|prompt:"+tag)
-            p=await draw(tag,path)
-            await bot.send(event,Image(path=p),True)
+            try:
+                p=await draw(tag,path)
+                await bot.send(event,Image(path=p),True)
+            except Exception as e:
+                logger.error(e)
+                await bot.send(event,"图片不见了耶.......")
 
     @bot.on(GroupMessage)
     async def rededd(event: GroupMessage):
