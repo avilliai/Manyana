@@ -40,7 +40,7 @@ def main(bot,logger,berturl,proxy):
                 await bot.send(event,Voice(path=path))
             except:
                 pass
-        elif "说" in str(event.message_chain) and str(event.message_chain).split("说")[0] in modelScope:
+        if "说" in str(event.message_chain) and str(event.message_chain).split("说")[0] in modelScope:
             try:
                 data = {}
                 data["speaker"] = str(event.message_chain).split("说")[0]
