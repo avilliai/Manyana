@@ -12,7 +12,7 @@ fuckinggroup: false       #开启后将检测群人数，非授权群直接退�
 fuckingnumber: 13         #低于13人退群
 
 #语音合成，小型服务器建议使用modelscopeTTS/outVits/edgetts和vits，so-vits和bert_vits2需要较好的配置以及另行部署
-#outVits语音合成不可用时，将自动转用vits,建议使用modelscopeTTS，这是白嫖阿里的
+#outVits不可用时，将自动转用vits,建议使用modelscopeTTS，这是白嫖阿里的
 voicegenerate: modelscopeTTS  #语音合成来源so-vits/bert_vits2/vits/modelscopeTTS/outVits/edgetts(edgetts可用speaker请参考config/edgetts.txt)
 RateIfUnavailable: 30  #当设定的语音合成不可用时，默认使用vits合成的几率,中文几率可在最下方调整
 #bert_vits2语音合成配置，不用就别管
