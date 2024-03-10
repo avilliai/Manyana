@@ -19,8 +19,7 @@ from plugins.chatGLMonline import chatGLM1
 from plugins.googleGemini import geminirep
 
 from plugins.translater import translate
-from plugins.vitsGenerate import taffySayTest, sovits, edgetts, voiceGenerate, outVits
-
+from plugins.vitsGenerate import taffySayTest, sovits, edgetts, voiceGenerate, outVits, modelscopeTTS, superVG
 
 
 class CListen(threading.Thread):
@@ -197,47 +196,16 @@ def main(bot,logger,master):
             st8 = re.sub(r"（[^）]*）", "", st1)  # 使用r前缀表示原始字符串，避免转义字符的问题
             data1["text"] = st8
 
-            if voicegg=="bert_vits2":
-                logger.info("调用bert_vits语音回复")
+            if voicegg!="vits":
+                logger.info(f"调用{voicegg}语音回复")
                 try:
-                    path=await taffySayTest(data1,berturl,proxy)
+                    path=await superVG(data1,voicegg,berturl)
                     await bot.send(event, Voice(path=path))
                     if withText==True:
                         await bot.send(event,st1, True)
                 except:
-                    logger.error("bert_vits2语音合成服务已关闭，请重新运行")
+                    logger.error(f"{voicegg}语音合成服务已关闭，请重新运行")
                     await bot.send(event, st1, True)
-            elif voicegg=="so-vits":
-                logger.info("调用so_vits语音回复")
-                try:
-                    path=await sovits(data1)
-                    await bot.send(event, Voice(path=path))
-                    if withText==True:
-                        await bot.send(event,st1, True)
-                except:
-                    logger.error("sovits语音合成服务已关闭，请重新运行")
-                    await bot.send(event, st1, True)
-            elif voicegg=="outVits":
-                logger.info("调用out_vits语音回复")
-                try:
-                    path=await outVits(data1)
-                    await bot.send(event, Voice(path=path))
-                    if withText==True:
-                        await bot.send(event,st1, True)
-                except:
-                    logger.error("sovits语音合成服务已关闭，请重新运行")
-                    await bot.send(event, st1, True)
-            elif voicegg=="edgetts":
-                logger.info("调用edgetts语音回复")
-                try:
-                    path=await edgetts(data1)
-                    await bot.send(event, Voice(path=path))
-                    if withText==True:
-                        await bot.send(event,st1, True)
-                except Exception as e:
-                    await bot.send(event, st1, True)
-                    logger.error(e)
-                    logger.error("edgetts语音合成服务已关闭，请重新运行")
             elif voicegg=="vits":
                 logger.info("调用vits语音回复")
                 try:

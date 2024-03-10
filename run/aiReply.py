@@ -25,7 +25,7 @@ from plugins.googleGemini import geminirep
 
 from plugins.rwkvHelper import rwkvHelper
 from plugins.translater import translate
-from plugins.vitsGenerate import taffySayTest, sovits, edgetts, voiceGenerate, outVits
+from plugins.vitsGenerate import superVG, voiceGenerate
 from plugins.wReply.mohuReply import mohuaddReplys
 from plugins.yubanGPT import yubanGPTReply, luoyueGPTReply
 
@@ -652,24 +652,7 @@ def main(bot, master, logger):
             data1["text"] = st8
             st1 = r
             try:
-                if voicegg == "bert_vits2":
-                    logger.info("调用bert_vits语音回复")
-                    path = await taffySayTest(data1, berturl, proxy)
-                    await bot.send(event, Voice(path=path))
-                elif voicegg == "so-vits":
-                    logger.info("调用so_vits语音回复")
-                    path = await sovits(data1)
-                    await bot.send(event, Voice(path=path))
-                elif voicegg == "outVits":
-                    logger.info("调用out_vits语音回复")
-                    path = await outVits(data1)
-                    await bot.send(event, Voice(path=path))
-                elif voicegg == "edgetts":
-                    logger.info("调用edgetts语音回复")
-                    path = await edgetts(data1)
-                    await bot.send(event, Voice(path=path))
-
-                elif voicegg == "vits":
+                if voicegg == "vits":
                     logger.info("调用vits语音回复")
                     try:
                         path = 'data/voices/' + random_str() + '.wav'
@@ -686,11 +669,13 @@ def main(bot, master, logger):
                         modelSelect = resulte.get("defaultModel").get("modelSelect")
                         await voiceGenerate({"text": tex, "out": path, "speaker": spe, "modelSelect": modelSelect})
                         await bot.send(event, Voice(path=path))
-
                     except:
                         logger.error("vits服务运行出错，请检查是否开启或检查配置")
                         await bot.send(event, st1, True)
-
+                else:
+                    logger.info(f"调用{voicegg}语音合成")
+                    path = await superVG(data1, voicegg, berturl)
+                    await bot.send(event, Voice(path=path))
                 if withText == True:
                     await bot.send(event, st1, True)
             except Exception as e:
@@ -993,24 +978,7 @@ def main(bot, master, logger):
             data1["text"] = st8
 
             try:
-                if voicegg == "bert_vits2":
-                    logger.info("调用bert_vits语音回复")
-                    path = await taffySayTest(data1, berturl, proxy)
-                    await bot.send(event, Voice(path=path))
-                elif voicegg == "so-vits":
-                    logger.info("调用so_vits语音回复")
-                    path = await sovits(data1)
-                    await bot.send(event, Voice(path=path))
-                elif voicegg == "outVits":
-                    logger.info("调用out_vits语音回复")
-                    path = await outVits(data1)
-                    await bot.send(event, Voice(path=path))
-                elif voicegg == "edgetts":
-                    logger.info("调用edgetts语音回复")
-                    path = await edgetts(data1)
-                    await bot.send(event, Voice(path=path))
-
-                elif voicegg == "vits":
+                if voicegg == "vits":
                     logger.info("调用vits语音回复")
                     try:
                         path = 'data/voices/' + random_str() + '.wav'
@@ -1031,7 +999,10 @@ def main(bot, master, logger):
                     except:
                         logger.error("vits服务运行出错，请检查是否开启或检查配置")
                         await bot.send(event, st1, True)
-
+                else:
+                    logger.info(f"调用{voicegg}语音合成")
+                    path=await superVG(data1,voicegg,berturl)
+                    await bot.send(event,Voice(path=path))
                 if withText == True:
                     await bot.send(event, st1, True)
             except Exception as e:

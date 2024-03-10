@@ -21,7 +21,7 @@ from concurrent.futures import ThreadPoolExecutor
 from plugins.RandomStr import random_str
 from plugins.modelsLoader import modelLoader
 from plugins.translater import translate
-from plugins.vitsGenerate import voiceGenerate, taffySayTest, sovits, edgetts, outVits
+from plugins.vitsGenerate import voiceGenerate, taffySayTest, sovits, edgetts, outVits, modelscopeTTS, superVG
 
 
 def main(bot,master,logger,berturl,proxy):
@@ -123,34 +123,14 @@ def main(bot,master,logger,berturl,proxy):
                     # print(path)
                       # 使用r前缀表示原始字符串，避免转义字符的问题
                     try:
-                        if voicegg=="bert_vits2":
-                            logger.info("调用bert_vits语音回复")
-                            path = await taffySayTest(daf, berturl, proxy)
-                            await bot.send_group_message(event.subject.id, Voice(path=path))
-                            if withText == True:
-                                await bot.send_group_message(event.subject.id,  rep)
-                        elif voicegg=="so-vits":
-                            logger.info("调用so-vits语音回复")
-                            r = await sovits({"text": st8, "speaker": "riri"})
-                            logger.info("tts 完成")
-                            await bot.send_group_message(event.subject.id, Voice(path=r))
-                            if withText == True:
-                                await bot.send_group_message(event.subject.id, rep)
-                        elif voicegg=="edgetts":
-                            r = await edgetts({"text": st8, "speaker": speaker92})
-                            logger.info("edgetts 完成")
-                            await bot.send_group_message(event.subject.id, Voice(path=r))
-                            if withText == True:
-                                await bot.send_group_message(event.subject.id, rep)
-                        elif voicegg == "outVits":
-                            logger.info("调用out_vits语音回复")
+
+                        if voicegg != "vits":
+                            logger.info(f"调用{voicegg}语音回复")
                             try:
-                                path = await outVits({"text": st8, "speaker": speaker92})
+                                path = await superVG({"text": st8, "speaker": speaker92},voicegg,berturl)
                                 await bot.send_group_message(event.subject.id, Voice(path=path))
-                                if withText == True:
-                                    await bot.send_group_message(event.subject.id, rep)
                             except:
-                                logger.error("out_vits语音合成出错")
+                                logger.error(f"{voicegg}语音合成服务已关闭，请重新运行")
                                 await bot.send_group_message(event.subject.id, rep)
                                 return
                         elif voicegg=="vits":

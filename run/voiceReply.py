@@ -176,6 +176,12 @@ def main(bot,master,logger):
                 for i in characters:
                     str1 += i + " |"
                 await bot.send(event, "可用角色如下：\n" + str1)
+            elif voicegg=="modelscopeTTS":
+                modelScope=["塔菲","阿梓","otto","丁真","星瞳","东雪莲","嘉然","孙笑川"]
+                str1 = ""
+                for i in modelScope:
+                    str1 += i + " |"
+                await bot.send(event, "可用角色如下：\n" + str1)
             await bot.send(event,"可发送 xx说....... 以进行语音合成")
 
 

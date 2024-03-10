@@ -21,7 +21,7 @@ from plugins.RandomStr import random_str
 from plugins.imgDownload import dict_download_img
 from plugins.modelsLoader import modelLoader
 from plugins.translater import translate
-from plugins.vitsGenerate import voiceGenerate, outVits
+from plugins.vitsGenerate import voiceGenerate, outVits, modelscopeTTS
 from plugins.wReply.mohuReply import mohuaddReplys, mohudels, mohuadd
 from plugins.wReply.superDict import outPutDic, importDict
 
@@ -267,11 +267,29 @@ def main(bot,config,sizhiKey,logger):
                             tex = '[JA]' + text + '[JA]'
                             await voiceGenerate({"text":tex,"out":path,"speaker":speaker,"modelSelect":modelSelect})
                             value = ranpath + '.wav'
+                        elif voicegg == "modelscopeTTS":
+                            logger.info("调用modelscopeTTS语音回复")
+                            try:
+
+                                text = str(event.message_chain)[2:]
+                                p = await modelscopeTTS({"text":text,"speaker":speaker92})
+                                value=p.split("/")[-1]
+                            except Exception as e:
+                                logger.error("modelscopeTTS语音合成服务已关闭，请重新运行")
+
+                                logger.error(e)
+                                ranpath = random_str()
+                                path = 'data/autoReply/voiceReply/' + ranpath + '.wav'
+                                text = await translate(str(event.message_chain)[2:])
+                                tex = '[JA]' + text + '[JA]'
+                                await voiceGenerate(
+                                    {"text": tex, "out": path, "speaker": speaker, "modelSelect": modelSelect})
+                                value = ranpath + '.wav'
                         elif voicegg=="outVits":
                             try:
                                 text=str(event.message_chain)[2:]
                                 p=await outVits({"text":text,"speaker":speaker92})
-                                value=p.split("/")[-1]
+                                value = p.split("/")[-1]
                             except Exception as e:
                                 logger.error(e)
                                 ranpath = random_str()
