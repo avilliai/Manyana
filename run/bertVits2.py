@@ -53,3 +53,4 @@ def main(bot,logger,berturl,proxy):
                 await bot.send(event,Voice(path=path))
             except Exception as e:
                 logger.error(e)
+                await bot.send(event,"出错了喵，呜呜呜",True)
