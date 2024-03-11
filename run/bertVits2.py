@@ -42,7 +42,7 @@ def main(bot,logger,berturl,proxy):
                 pass
 
     @bot.on(GroupMessage)
-    async def taffySays(event:GroupMessage)
+    async def taffySays(event:GroupMessage):
         if "说" in str(event.message_chain) and str(event.message_chain).split("说")[0] in modelScope:
             try:
                 data = {}
