@@ -115,6 +115,8 @@ async def superVG(data,mode,urls=""):
     elif mode=="modelscopeTTS":
         speaker = data.get("speaker")
         text = data.get("text")
+        if text=="" or text==" ":
+            text="哼哼"
         if speaker == "阿梓":
             url = "https://www.modelscope.cn/api/v1/studio/xzjosh/Azusa-Bert-VITS2-2.3/gradio/run/predict"
             newurp="https://www.modelscope.cn/api/v1/studio/xzjosh/Azusa-Bert-VITS2-2.3/gradio/file="
