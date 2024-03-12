@@ -7,6 +7,7 @@ userSelfPermissonDays: 15 #用户自己在用户群中授权，可以获取的�
 autoallowFriend: False    #是否自动允许好友申请
 GroupSensor: False        #开启后，将拒绝加入无授权群
 #发图功能
+allowPic: False           #是否启用发图功能
 r18Pic: False             #涩图r18模式
 cardPic: False               #是否以卡片形式发送图片
 #在特定情况下，bot会被强制邀请造成上面的设置失效，此设置项用于处理这种情况

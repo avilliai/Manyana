@@ -62,6 +62,7 @@ def main(bot,api_KEY,nasa_api,proxy,logger):
         result1 = yaml.load(f.read(), Loader=yaml.FullLoader)
     r18 = result1.get("r18Pic")
     cardPic = result1.get("cardPic")
+    allowPic=result1.get("allowPic")
     global picData
     picData={}
     with open('config/gachaSettings.yaml', 'r', encoding='utf-8') as f:
@@ -139,6 +140,9 @@ def main(bot,api_KEY,nasa_api,proxy,logger):
             text1=str(event.message_chain).replace("壁纸","").replace("涩图","").replace("色图","").replace("图","").replace("r18","")
             match1 = re.search(pattern1, text1)
             if match1:
+                if allowPic==False:
+                    await bot.send(event,"发图功能已关闭，可使用 5图 指令使用备用发图功能")
+                    return
                 logger.info("提取图片关键字。 数量: "+str(match1.group(1))+" 关键字: "+match1.group(2))
                 data={"tag":""}
                 if "r18" in str(event.message_chain) or "色图" in str(event.message_chain) or "涩图" in str(event.message_chain):
