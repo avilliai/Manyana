@@ -394,7 +394,7 @@ def main(bot,api_KEY,nasa_api,proxy,logger):
                 p=await sd(url,"data/pictures/cache/"+random_str()+".png")
                 await bot.send(event,Image(path=p))
             except:
-                await bot.send(event,"出错，格式请按照/奖状(或证书) name#title#text")
+                await bot.send(event,"出错\n格式请按照/奖状 name#title#text\n例子\n/奖状 牢大#耐摔王#康师傅冰红茶")
 
     @bot.on(GroupMessage)
     async def jiangzhuang(event:GroupMessage):
