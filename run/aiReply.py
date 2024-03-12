@@ -195,7 +195,7 @@ def main(bot, master, logger):
                 asyncio.run_coroutine_threadsafe(asyncchatGLM(selfApiKey, meta1, prompt, event, setName, text), newLoop)
 
             except:
-                await bot.send(event, "chatGLM启动出错，请联系master检查apiKey或重试")
+                await bot.send(event, "chatGLM启动出错，请联系master检查apiKey或重试\n或发送 @bot 可用角色模板 以更换其他模型")
         elif replyModel=="gemini" or chatGLMCharacters.get(event.sender.id)=="Gemini":
             if str(event.message_chain)=="/cGemini":
                 return
@@ -233,7 +233,7 @@ def main(bot, master, logger):
                 # st1 = await chatGLM(selfApiKey, meta1, prompt)
             except Exception as e:
                 logger.error(e)
-                await bot.send(event, "gemini启动出错\n请发送 /cGemini 以清理聊天记录并重试\n如果无法解决请联系master检查代理或更换apiKey")
+                await bot.send(event, "gemini启动出错\n请发送 /cGemini 以清理聊天记录并重试\n或发送 @bot 可用角色模板 以更换其他模型")
         elif replyModel=="Cozi" or chatGLMCharacters.get(event.sender.id)=="Cozi":
             if privateGlmReply!=True:
                 return
@@ -258,7 +258,7 @@ def main(bot, master, logger):
                 await tstt(rep.get('content'),event)
             except Exception as e:
                 logger.error(e)
-                await bot.send(event,"出错，请更换模型，或联系master检查代理或重试",True)
+                await bot.send(event,"出错，请更换模型，或联系master检查代理或重试\n或发送 @bot 可用角色模板 以更换其他模型",True)
 
     # 私聊中chatGLM清除本地缓存
     @bot.on(FriendMessage)

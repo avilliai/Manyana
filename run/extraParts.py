@@ -61,6 +61,7 @@ def main(bot,api_KEY,nasa_api,proxy,logger):
     with open('config/settings.yaml', 'r', encoding='utf-8') as f:
         result1 = yaml.load(f.read(), Loader=yaml.FullLoader)
     r18 = result1.get("r18Pic")
+    cardPic = result1.get("cardPic")
     global picData
     picData={}
     with open('config/gachaSettings.yaml', 'r', encoding='utf-8') as f:
@@ -162,29 +163,21 @@ def main(bot,api_KEY,nasa_api,proxy,logger):
                         return
                     logger.info("发送图片: "+path)
                     try:
-                        try:
-                            card=await arkSign(path)
-                            await bot.send(event,App(card))
-                        except Exception as e:
-                            logger.error(e)
-                            logger.error("自动转换卡片失败")
-                        await bot.send(event, Image(url=path))
-                        logger.info("图片发送成功")
+                        if cardPic:
+                            try:
+                                card=await arkSign(path)
+                                await bot.send(event,App(card))
+                                logger.info("图片发送成功")
+                            except Exception as e:
+                                logger.error(e)
+                                logger.error("自动转换卡片失败")
+                        else:
+                            await bot.send(event, Image(url=path))
+                            logger.info("图片发送成功")
                     except:
                         logger.error("图片发送失败")
                         await bot.send(event,path)
-                    '''try:
-                        b1 = ForwardMessageNode(sender_id=bot.qq, sender_name="Manyana",
-                                                message_chain=MessageChain([" " , Image(url=path)]))
-                        picData.get(event.sender.id).append(b1)
-                    except:
-                        logger.error("出错，转为url文本")
-                        b1 = ForwardMessageNode(sender_id=bot.qq, sender_name="Manyana",
-                                                message_chain=MessageChain([" " , path]))
-                        picData.get(event.sender.id).append(b1)
-                    
-                await bot.send(event, Forward(node_list=picData.get(event.sender.id)))
-                picData.pop(event.sender.id)'''
+
 
 
     @bot.on(GroupMessage)
