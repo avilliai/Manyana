@@ -38,9 +38,9 @@
 - [so-vits-svc语音合成](https://github.com/avilliai/Moe-SVC-api)
   - 中文语音合成(很吃显卡)
 - [bert_vits2_sever](https://github.com/avilliai/Bert_Vits2_Sever)
-  - 更强大的中文语音合成(新版本Manyana无需额外部署即可使用，语音合成模式设置为modelscope即可。)
+  - 更强大的中文语音合成(新版本Manyana无需额外部署即可使用，语音合成模式设置为modelscopeTTS即可。)
 - [bert_vits2_sever.colab](https://colab.research.google.com/drive/1n8lI6pOiDtli2zC5fL9PZ9TZqbOafqma?usp=sharing)
-  - 更强大的中文语音合成，使用colab(新版本Manyana无需额外部署即可使用，语音合成模式设置为modelscope即可。)
+  - 更强大的中文语音合成，使用colab(新版本Manyana无需额外部署即可使用，语音合成模式设置为modelscopeTTS即可。)
 - [Berglm](https://github.com/avilliai/Bergml)
   - 轻量版Manyana，无需部署环境，双击即可运行。仅保留部分功能
 - [NTManyana(NTQQ)](https://github.com/avilliai/NTManyana)
