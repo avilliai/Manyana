@@ -512,7 +512,7 @@ def main(bot, master, logger):
                 await bot.send(event,"出错，请更换模型，或联系master检查代理或重试",True)
         elif (((replyModel=="lolimigpt" or chatGLMCharacters.get(event.sender.id)=="lolimigpt") and (At(bot.qq) in event.message_chain) or str(event.message_chain).startswith("/gpt"))) and (glmReply == True or (trustglmReply == True and str(event.sender.id) in trustUser)):
             try:
-                text = str(event.message_chain).replace("@" + str(bot.qq) + "", '').replace(" ", "").replace("/cozi","")
+                text = str(event.message_chain).replace("@" + str(bot.qq) + "", '').replace(" ", "").replace("/gpt","")
                 if text=="" or text==" ":
                     text="在吗"
                 for saa in noRes:

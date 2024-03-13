@@ -106,7 +106,7 @@ ping[图片]
 </details>
 
 <details markdown='1'><summary>ai类功能</summary>
-
+settings.yaml，支持多个模型，默认的lolimigpt无需配置，可直接使用。
 ```
 chatGLM 配置文件打开glmReply或trustglmReply，将取代艾特回复
      设置密钥#apiKey       #从https://open.bigmodel.cn/usercenter/apikeys复制apiKey
@@ -117,9 +117,7 @@ chatGLM 配置文件打开glmReply或trustglmReply，将取代艾特回复
 /cozi你好    #通过cozi白嫖gpt4
 /xh你好      #讯飞星火，无需配置
 /wx你好      #文心一言，无需配置
-/l你好       #无需配置的chatgpt3.5
-/y你好       #无需配置的chatgpt3.5
-/chat你好    #无需配置的chatgpt3.5
+/lolimi你好  #无需配置
 /p[你的文本，不要带括号]    config/token.txt中填写你的token，获取方式见https://ai-20230626.fakeopen.com/auth
 /poe[你的文本，不要带括号]  你需要填写api.yaml中的内容，抓取方式看https://github.com/avilliai/Poe_QQ
 /rwkv[你的文本，不要带括号]    需要在本地部署rwkv模型，具体看https://www.bilibili.com/video/BV1hM4y1v76R/?vd_source=b41b8c06d400241b8d0badbe1f821ec9
