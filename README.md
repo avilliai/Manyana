@@ -36,17 +36,17 @@
 ### dlc
 
 - [so-vits-svc语音合成](https://github.com/avilliai/Moe-SVC-api)
-  - 中文语音合成
+  - 中文语音合成(很吃显卡)
 - [bert_vits2_sever](https://github.com/avilliai/Bert_Vits2_Sever)
-  - 更强大的中文语音合成
+  - 更强大的中文语音合成(新版本Manyana无需额外部署即可使用，语音合成模式设置为modelscope即可。)
 - [bert_vits2_sever.colab](https://colab.research.google.com/drive/1n8lI6pOiDtli2zC5fL9PZ9TZqbOafqma?usp=sharing)
-  - 更强大的中文语音合成，使用colab，不占用本地资源
+  - 更强大的中文语音合成，使用colab(新版本Manyana无需额外部署即可使用，语音合成模式设置为modelscope即可。)
 - [Berglm](https://github.com/avilliai/Bergml)
   - 轻量版Manyana，无需部署环境，双击即可运行。仅保留部分功能
 - [NTManyana(NTQQ)](https://github.com/avilliai/NTManyana)
-  - 适用于NTQQ的Manyana
+  - 适用于NTQQ的Manyana(烂尾项目)
 - [Cyumis](https://github.com/avilliai/Cyumis)
-  - 基于官方api的版本，需要先在 https://q.qq.com/qqbot/#/developer/developer-setting 获取token和secret
+  - 基于官方api的版本，需要先在 https://q.qq.com/qqbot/#/developer/developer-setting 获取token和secret(烂尾项目)
 ## 方法1：搭建工具部署(推荐)
 **如果你觉得自己从零开始搭建bot比较困难，请使用此方案**
 - 从release下载ManyanaLauncher.rar并解压
