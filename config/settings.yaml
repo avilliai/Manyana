@@ -27,13 +27,13 @@ so_vits_speakers:
   - riri
 
 #ai回复，需配置api.yaml
-#模型可任意选择，个人推荐characterglm(对应api.yaml中的chatGLM),Cozi和gemini同理
+#模型可任意选择，lolimigpt可以直接免费用，个人推荐characterglm(对应api.yaml中的chatGLM),Cozi和gemini同理
 chatGLM:       #只是懒得改还叫chatGLM了，实际上是多模型通用设置
   helpUser: false          #是否引导用户自行设置apiKey(没必要)
-  model: characterglm      #ai模型可选：characterglm(超拟人大模型),gemini(配置api.yaml),Cozi 后面三个似乎不能用了yubanGPT,luoyue,pandora
-  nudgeReply: false        #戳一戳，是否使用模型回复
+  model: lolimigpt     #ai模型可选：lolimigpt(免费gpt3.5),后面三个需要自己配置api.yaml: characterglm(超拟人大模型),gemini(配置api.yaml),Cozi
+  nudgeReply: True        #戳一戳，是否使用模型回复
   #建议启用glmReply，不是很贵，用的多了大概几块一个月
-  glmReply: false          #开放群聊内ai回复
+  glmReply: True          #开放群聊内ai回复
   privateGlmReply: false   #开放私聊ai回复
   trustglmReply: False     #开启后仅【信任用户】可用
   context: True            #是否开启上下文模式
@@ -58,6 +58,7 @@ chatGLM:       #只是懒得改还叫chatGLM了，实际上是多模型通用设
       user_name: "【用户名】"   #不用管这一项，会自动替换
     Gemini: Gemini         #别动这一行
     Cozi: Cozi             #也别动这一行
+    lolimigpt: lolimigpt   #也别动这一行 lolimigpt的角色设定用的是default里面的
 #自带词库的配置，基本不用管这部分设置
 wReply:
   banWords:       #违禁词

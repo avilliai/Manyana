@@ -22,6 +22,7 @@ from plugins.RandomStr import random_str
 from plugins.modelsLoader import modelLoader
 from plugins.translater import translate
 from plugins.vitsGenerate import voiceGenerate, taffySayTest, sovits, edgetts, outVits, modelscopeTTS, superVG
+from plugins.yubanGPT import lolimigpt
 
 
 def main(bot,master,logger,berturl,proxy):
@@ -48,6 +49,7 @@ def main(bot,master,logger,berturl,proxy):
         result0 = yaml.load(f.read(), Loader=yaml.FullLoader)
     speaker92 = result0.get("chatGLM").get("speaker")
     voicegg=result0.get("voicegenerate")
+    chatmodel=result0.get("chatGLM").get("model")
     nudgeornot=result0.get("chatGLM").get("nudgeReply")
     meta1 = result0.get("chatGLM").get("bot_info").get("default")
     logger.info("语音合成模式："+voicegg+" 语音合成speaker："+speaker92)
@@ -105,6 +107,8 @@ def main(bot,master,logger,berturl,proxy):
             else:
                 if nudgeornot==False:
                     rep = random.choice(normal_Reply)
+                elif chatmodel=="lolimigpt":
+                    rep=await lolimigpt(random.choice(["戳你一下","摸摸头","戳戳你的头"]),str("你是"+meta1.get("bot_name")+","+meta1.get("bot_info")))
                 else:
                     with ThreadPoolExecutor() as executor:
                         future = executor.submit(chatGLM1)

@@ -27,7 +27,8 @@ from plugins.rwkvHelper import rwkvHelper
 from plugins.translater import translate
 from plugins.vitsGenerate import superVG, voiceGenerate
 from plugins.wReply.mohuReply import mohuaddReplys
-from plugins.yubanGPT import yubanGPTReply, luoyueGPTReply
+from plugins.yubanGPT import yubanGPTReply, luoyueGPTReply, lolimigpt
+
 
 #1
 class CListen(threading.Thread):
@@ -140,7 +141,7 @@ def main(bot, master, logger):
     @bot.on(FriendMessage)
     async def GLMFriendChat(event:FriendMessage):
         global chatGLMData,chatGLMCharacters,trustUser,chatGLMsingelUserKey,userdict,GeminiData,coziData
-        if replyModel=="characterglm" and chatGLMCharacters.get(event.sender.id)!="Gemini" and chatGLMCharacters.get(event.sender.id)!="Cozi":
+        if replyModel=="characterglm" and chatGLMCharacters.get(event.sender.id)!="Gemini" and chatGLMCharacters.get(event.sender.id)!="Cozi" and chatGLMCharacters.get(event.sender.id)!="lolimigpt":
             #如果用户有自己的key
             if event.sender.id in chatGLMsingelUserKey:
                 selfApiKey=chatGLMsingelUserKey.get(event.sender.id)
@@ -259,6 +260,30 @@ def main(bot, master, logger):
             except Exception as e:
                 logger.error(e)
                 await bot.send(event,"出错，请更换模型，或联系master检查代理或重试\n或发送 @bot 可用角色模板 以更换其他模型",True)
+        elif replyModel=="lolimigpt" or chatGLMCharacters.get(event.sender.id)=="lolimigpt":
+            if privateGlmReply!=True:
+                return
+            try:
+                text = str(event.message_chain).replace("@" + str(bot.qq) + "", '').replace(" ", "")
+                if text=="" or text==" ":
+                    text="在吗"
+                elif text=="/clear":
+                    return
+                if event.sender.id in coziData:
+                    prompt1=coziData.get(event.sender.id)
+                    prompt1.append({"content": text,"role": "user"})
+                else:
+                    prompt1=[{"content": text,"role": "user"}]
+                logger.info("lolimigpt bot 接受提问："+text)
+                rep = await lolimigpt(prompt1,str("你是"+meta.get("bot_name")+","+meta.get("bot_info")).replace(meta.get("bot_name"),botName))
+                #await bot.send(event,rep.get('content'))
+                prompt1.append(rep)
+                coziData[event.sender.id]=prompt1
+                logger.info("lolimigpt 回复："+rep.get('content'))
+                await tstt(rep.get('content'),event)
+            except Exception as e:
+                logger.error(e)
+                await bot.send(event,"出错，请更换模型，或联系master检查代理或重试\n或发送 @bot 可用角色模板 以更换其他模型",True)
 
     # 私聊中chatGLM清除本地缓存
     @bot.on(FriendMessage)
@@ -329,7 +354,7 @@ def main(bot, master, logger):
             if str(event.message_chain).split("#")[1] in allcharacters:
 
                 meta1 = allcharacters.get(str(event.message_chain).split("#")[1])
-                if meta1=='Gemini' or meta1=="Cozi":
+                if meta1=='Gemini' or meta1=="Cozi" or meta1=="lolimigpt":
                     pass
                 else:
                     try:
@@ -367,7 +392,7 @@ def main(bot, master, logger):
         if str(event.message_chain).startswith("设定#"):
             if str(event.message_chain).split("#")[1] in allcharacters:
                 meta1=allcharacters.get(str(event.message_chain).split("#")[1])
-                if meta1=="Gemini" or meta1=="Cozi":
+                if meta1=="Gemini" or meta1=="Cozi" or meta1=="lolimigpt":
                     pass
                 else:
                     try:
@@ -485,7 +510,33 @@ def main(bot, master, logger):
             except Exception as e:
                 logger.error(e)
                 await bot.send(event,"出错，请更换模型，或联系master检查代理或重试",True)
-
+        elif (((replyModel=="lolimigpt" or chatGLMCharacters.get(event.sender.id)=="lolimigpt") and (At(bot.qq) in event.message_chain) or str(event.message_chain).startswith("/gpt"))) and (glmReply == True or (trustglmReply == True and str(event.sender.id) in trustUser)):
+            try:
+                text = str(event.message_chain).replace("@" + str(bot.qq) + "", '').replace(" ", "").replace("/cozi","")
+                if text=="" or text==" ":
+                    text="在吗"
+                for saa in noRes:
+                    if text == saa:
+                        logger.warning("与屏蔽词匹配，lolimigpt不回复")
+                        return
+                if event.sender.id in coziData:
+                    prompt1=coziData.get(event.sender.id)
+                    prompt1.append({"content": text,"role": "user"})
+                else:
+                    prompt1=[{"content": text,"role": "user"}]
+                    await bot.send(event,"即将开始对话，如果遇到异常请发送 /clear 清理对话")
+                logger.info("lolimigpt bot 接受提问："+text)
+                met=str("你是"+meta.get("bot_name")+","+meta.get("bot_info")).replace(meta.get("bot_name"),botName)
+                logger.info(met)
+                rep = await lolimigpt(str(prompt1),met)
+                #await bot.send(event,rep.get('content'))
+                prompt1.append({"role":"assistant","content":rep})
+                coziData[event.sender.id]=prompt1
+                logger.info("lolimigpt bot 回复："+rep)
+                await tstt(rep,event)
+            except Exception as e:
+                logger.error(e)
+                await bot.send(event, "模型调用出错\n请发送 /clear 以清理聊天记录并重试\n或发送 @bot 可用角色模板 以更换其他模型")
         elif (((replyModel=="gemini" or chatGLMCharacters.get(event.sender.id)=="Gemini") and (At(bot.qq) in event.message_chain) or str(event.message_chain).startswith("/g"))) and (glmReply == True or (trustglmReply == True and str(event.sender.id) in trustUser)):
             text = str(event.message_chain).replace("@" + str(bot.qq) + "", '').replace(" ", "").replace("/g", "")
             for saa in noRes:
