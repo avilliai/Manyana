@@ -511,7 +511,7 @@ def main(bot, master, logger):
                 await tstt(rep.get('content'),event)
             except Exception as e:
                 logger.error(e)
-                await bot.send(event,"出错，请联系master反馈\n或发送 @bot 可用角色模板 以更换其他模型",True)
+                await bot.send(event,"出错，请联系master反馈\n或发送 \n@bot 可用角色模板\n 以更换其他模型",True)
         elif (((replyModel=="lolimigpt" or chatGLMCharacters.get(event.sender.id)=="lolimigpt") and (At(bot.qq) in event.message_chain) or str(event.message_chain).startswith("/gpt"))) and (glmReply == True or (trustglmReply == True and str(event.sender.id) in trustUser)):
             try:
                 text = str(event.message_chain).replace("@" + str(bot.qq) + "", '').replace(" ", "").replace("/gpt","")
@@ -537,7 +537,7 @@ def main(bot, master, logger):
                 logger.info("lolimigpt bot 回复："+rep)
                 if "该令牌额度已用尽" in rep:
                     logger.error("没金币了喵")
-                    await bot.send(event, "api没金币了喵\n请发送 @bot 可用角色模板 以更换其他模型", True)
+                    await bot.send(event, "api没金币了喵\n请发送 \n@bot 可用角色模板 \n以更换其他模型", True)
                     return
                 await tstt(rep,event)
             except Exception as e:
