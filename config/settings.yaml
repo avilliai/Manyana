@@ -32,7 +32,7 @@ chatGLM:       #只是懒得改还叫chatGLM了，实际上是多模型通用设
   helpUser: false          #是否引导用户自行设置apiKey(没必要)
   model: lolimigpt     #ai模型可选：lolimigpt(免费gpt3.5),后面三个需要自己配置api.yaml: characterglm(超拟人大模型),gemini(配置api.yaml),Cozi
   nudgeReply: True        #戳一戳，是否使用模型回复
-  #建议启用glmReply，不是很贵，用的多了大概几块一个月
+  #用户体量不大的话，建议启用glmReply
   glmReply: True          #开放群聊内ai回复
   privateGlmReply: false   #开放私聊ai回复
   trustglmReply: False     #开启后仅【信任用户】可用
