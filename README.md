@@ -103,6 +103,10 @@ ping[图片]
 ```
 搜图[图片]
 ```
+### ai绘图
+```
+画 雪豹
+```
 </details>
 
 <details markdown='1'><summary>ai类功能</summary>
@@ -117,9 +121,7 @@ chatGLM 配置文件打开glmReply或trustglmReply，将取代艾特回复
 /cozi你好    #通过cozi白嫖gpt4
 /xh你好      #讯飞星火，无需配置
 /wx你好      #文心一言，无需配置
-/lolimi你好  #无需配置
-/p[你的文本，不要带括号]    config/token.txt中填写你的token，获取方式见https://ai-20230626.fakeopen.com/auth
-/poe[你的文本，不要带括号]  你需要填写api.yaml中的内容，抓取方式看https://github.com/avilliai/Poe_QQ
+/gpt你好     #无需配置
 /rwkv[你的文本，不要带括号]    需要在本地部署rwkv模型，具体看https://www.bilibili.com/video/BV1hM4y1v76R/?vd_source=b41b8c06d400241b8d0badbe1f821ec9
 ```
 
@@ -157,6 +159,12 @@ nameXXX           #设定bot对你的特殊称谓为XXX，例如 name丁真珍�
 <details markdown='1'><summary>vits语音合成</summary>
 
 使用sp查看所有可用角色，或@bot 可用角色
+### bert_vits2语音合成
+你可以自己搭建，但我们现在完全可以在settings.yaml中，使用这样的设置voicegenerate: modelscopeTTS 同样是bert_vits2但不会占用你的显卡
+### outVits
+可能不稳定，在settings.yaml中，使用这样的设置voicegenerate: outVits  不占用你的本地显卡
+### vits语音合成
+已不建议用本地语音合成
 ```
 xx说 yourText             # 通过角色名，指定一个角色模型
 xx中文yourText            # 此模式下输出为中文
@@ -265,6 +273,7 @@ meme         #抽取一张meme图
 方舟十连
 ba十连
 点歌 歌曲名
+转卡片
 ```
 </details>
 
@@ -329,13 +338,12 @@ news:
 <details markdown='1'><summary>使用ai回复替代词库回复</summary>
 
 > 使用chatglm或gpt3.5进行回复
-### chatglm(推荐) 
+### chatglm(需付费) 
 - 根据api.yaml的指引注册并获取apikey,填写进api.yaml中，价格还是比较便宜的注册送的18一般够用半年以上。 
 - 打开setting.yaml 填写chatglm相关配置项即可
-### gpt3.5
-- 此api不稳定，请酌情使用
+### gpt3.5(免费)
 - 无需配置apikey
-- 打开setting.yaml 填写luoyue或yuban的相关配置项即可
+- 打开setting.yaml 将chatGLM.model设置为lolimigpt即可
 
 ### 思知ai
 > 这里是如何使用免费的思知ai进行回复的教程，目前已不推荐，推荐使用上面的chatglm
