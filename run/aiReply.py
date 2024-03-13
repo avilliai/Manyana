@@ -154,7 +154,7 @@ def main(bot, master, logger):
                 selfApiKey = chatGLM_api_key
             else:
                 return
-            if str(event.message_chain) == "/clearGLM":
+            if str(event.message_chain) == "/clearGLM" or str(event.message_chain) == "/clear":
                 return
             text = str(event.message_chain)
             logger.info("私聊glm接收消息："+text)
@@ -167,7 +167,7 @@ def main(bot, master, logger):
                 prompt.append({"role": "user", "content": text})
             # 没有该用户，以本次对话作为prompt
             else:
-                await bot.send(event,"即将开始对话，请注意，如果遇到对话异常，请发送 /clearGLM 以清理对话记录(不用艾特)")
+                await bot.send(event,"即将开始对话，请注意，如果遇到对话异常，请发送 /clear 以清理对话记录(不用艾特)")
                 prompt = [tep]
                 chatGLMData[event.sender.id] = prompt
             if event.sender.id in chatGLMCharacters:
@@ -198,7 +198,7 @@ def main(bot, master, logger):
             except:
                 await bot.send(event, "chatGLM启动出错，请联系master检查apiKey或重试\n或发送 @bot 可用角色模板 以更换其他模型")
         elif replyModel=="gemini" or chatGLMCharacters.get(event.sender.id)=="Gemini":
-            if str(event.message_chain)=="/cGemini":
+            if str(event.message_chain)=="/cGemini" or str(event.message_chain)=="/clear":
                 return
             if privateGlmReply!=True:
                 return
@@ -215,7 +215,7 @@ def main(bot, master, logger):
                 prompt.append({"role": "user", 'parts': [text]})
             # 没有该用户，以本次对话作为prompt
             else:
-                await bot.send(event, "即将开始对话，请注意，如果遇到对话异常，请发送 /cGemini 以清理对话记录(不用艾特)", True)
+                await bot.send(event, "即将开始对话，请注意，如果遇到对话异常，请发送 /clear 以清理对话记录(不用艾特)", True)
                 prompt = [tep]
 
             logger.info("gemini接收提问:" + text)
@@ -234,7 +234,7 @@ def main(bot, master, logger):
                 # st1 = await chatGLM(selfApiKey, meta1, prompt)
             except Exception as e:
                 logger.error(e)
-                await bot.send(event, "gemini启动出错\n请发送 /cGemini 以清理聊天记录并重试\n或发送 @bot 可用角色模板 以更换其他模型")
+                await bot.send(event, "gemini启动出错\n请发送 /clear 以清理聊天记录并重试\n或发送 @bot 可用角色模板 以更换其他模型")
         elif replyModel=="Cozi" or chatGLMCharacters.get(event.sender.id)=="Cozi":
             if privateGlmReply!=True:
                 return
@@ -289,7 +289,7 @@ def main(bot, master, logger):
     @bot.on(FriendMessage)
     async def clearPrompt(event: FriendMessage):
         global chatGLMData,GeminiData,coziData
-        if str(event.message_chain) == "/clearGLM":
+        if str(event.message_chain) == "/clearGLM" or str(event.message_chain) =="/clear" or str(event.message_chain) == "/cGemini":
             try:
                 chatGLMData.pop(event.sender.id)
                 # 写入文件
@@ -297,8 +297,7 @@ def main(bot, master, logger):
                     yaml.dump(chatGLMData, file, allow_unicode=True)
                 await bot.send(event,"已清除近期记忆")
             except:
-                await bot.send(event, "清理缓存出错，无本地对话记录")
-        if str(event.message_chain) == "/cGemini":
+                logger.error("清理缓存出错，无本地对话记录")
             try:
                 GeminiData.pop(event.sender.id)
                 # 写入文件
@@ -306,12 +305,11 @@ def main(bot, master, logger):
                     yaml.dump(GeminiData, file, allow_unicode=True)
                 await bot.send(event,"已清除近期记忆")
             except:
-                await bot.send(event, "清理缓存出错，无本地对话记录")
-        if str(event.message_chain)=="/clear":
+                logger.error("清理缓存出错，无本地对话记录")
             try:
                 coziData.pop(event.sender.id)
             except:
-                await bot.send(event, "清理缓存出错，无本地对话记录")
+                logger.error("清理缓存出错，无本地对话记录")
     @bot.on(FriendMessage)
     async def setChatGLMKey(event: FriendMessage):
         global chatGLMsingelUserKey
@@ -509,7 +507,7 @@ def main(bot, master, logger):
                 await tstt(rep.get('content'),event)
             except Exception as e:
                 logger.error(e)
-                await bot.send(event,"出错，请更换模型，或联系master检查代理或重试",True)
+                await bot.send(event,"出错，请联系master反馈\n或发送 @bot 可用角色模板 以更换其他模型",True)
         elif (((replyModel=="lolimigpt" or chatGLMCharacters.get(event.sender.id)=="lolimigpt") and (At(bot.qq) in event.message_chain) or str(event.message_chain).startswith("/gpt"))) and (glmReply == True or (trustglmReply == True and str(event.sender.id) in trustUser)):
             try:
                 text = str(event.message_chain).replace("@" + str(bot.qq) + "", '').replace(" ", "").replace("/gpt","")
@@ -556,7 +554,7 @@ def main(bot, master, logger):
 
             # 没有该用户，以本次对话作为prompt
             else:
-                await bot.send(event, "即将开始对话，请注意，如果遇到对话异常，请发送 /cGemini 以清理对话记录(不用艾特)", True)
+                await bot.send(event, "即将开始对话，请注意，如果遇到对话异常，请发送 /clear 以清理对话记录(不用艾特)", True)
                 prompt = [tep]
                 GeminiData[event.sender.id] = prompt
             logger.info("gemini接收提问:" + text)
@@ -577,7 +575,7 @@ def main(bot, master, logger):
                 # st1 = await chatGLM(selfApiKey, meta1, prompt)
             except Exception as e:
                 logger.error(e)
-                await bot.send(event, "gemini启动出错\n请发送 /cGemini 以清理聊天记录并重试\n如果无法解决请联系master检查代理或更换apiKey")
+                await bot.send(event, "gemini启动出错\n请发送 /clear 以清理聊天记录并重试\n或发送 @bot 可用角色模板 以更换其他模型")
         elif (glmReply == True or (trustglmReply == True and str(event.sender.id) in trustUser) or event.sender.id in chatGLMsingelUserKey.keys()) and At(bot.qq) in event.message_chain:
             text = str(event.message_chain).replace("@" + str(bot.qq) + "", '').replace(" ","")
             logger.info("分支1")
@@ -597,7 +595,7 @@ def main(bot, master, logger):
 
             #没有该用户，以本次对话作为prompt
             else:
-                await bot.send(event, "即将开始对话，请注意，如果遇到对话异常，请发送 /clearGLM 以清理对话记录(不用艾特)",True)
+                await bot.send(event, "即将开始对话，请注意，如果遇到对话异常，请发送 /clear 以清理对话记录(不用艾特)",True)
                 prompt=[tep]
                 chatGLMData[event.sender.id] =prompt
             #logger.info("当前prompt"+str(prompt))
@@ -639,7 +637,7 @@ def main(bot, master, logger):
 
 
             except:
-                await bot.send(event, "chatGLM启动出错，请联系master检查apiKey或重试")
+                await bot.send(event, "chatGLM启动出错，请联系master\n或发送 @bot 可用角色模板 以更换其他模型")
         elif ((str(event.group.id) == str(mainGroup) and chatGLM_api_key!="sdfafjsadlf;aldf") or (event.group.id in chatGLMapikeys)) and At(
                 bot.qq) in event.message_chain:
             text = str(event.message_chain).replace("@" + str(bot.qq) + "", '').replace(" ","")
@@ -692,7 +690,7 @@ def main(bot, master, logger):
                 #分界线
                 asyncio.run_coroutine_threadsafe(asyncchatGLM(key1, meta1, prompt,event,setName,text), newLoop)
             except:
-                await bot.send(event, "chatGLM启动出错，请联系master检查apiKey或重试")
+                await bot.send(event, "chatGLM启动出错，请联系master\n或发送 @bot 可用角色模板 以更换其他模型")
     async def tstt(r,event):
         if len(r) < maxTextLen and random.randint(0, 100) < voiceRate and event.type != 'FriendMessage':
             data1 = {}
@@ -765,7 +763,7 @@ def main(bot, master, logger):
     @bot.on(GroupMessage)
     async def clearPrompt(event:GroupMessage):
         global chatGLMData,GeminiData,coziData
-        if str(event.message_chain)=="/clearGLM":
+        if str(event.message_chain)=="/clearGLM" or str(event.message_chain)=="/cGemini" or str(event.message_chain)=="/clear":
             try:
                 chatGLMData.pop(event.sender.id)
                 # 写入文件
@@ -773,7 +771,19 @@ def main(bot, master, logger):
                     yaml.dump(chatGLMData, file, allow_unicode=True)
                 await bot.send(event,"已清除近期记忆")
             except:
-                await bot.send(event,"清理缓存出错，无本地对话记录")
+                logger.error("清理缓存出错，无本地对话记录")
+            try:
+                GeminiData.pop(event.sender.id)
+                # 写入文件
+                with open('data/GeminiData.yaml', 'w', encoding="utf-8") as file:
+                    yaml.dump(GeminiData, file, allow_unicode=True)
+                await bot.send(event,"已清除近期记忆")
+            except:
+                logger.error("清理缓存出错，无本地对话记录")
+            try:
+                coziData.pop(event.sender.id)
+            except:
+                logger.error("清理缓存出错，无本地对话记录")
         elif str(event.message_chain)=="/allclear" and event.sender.id==master:
             try:
                 chatGLMData={"f":"hhh"}
@@ -784,20 +794,7 @@ def main(bot, master, logger):
                 await bot.send(event,"已清除所有用户的prompt")
             except:
                 await bot.send(event,"清理缓存出错，无本地对话记录")
-        elif str(event.message_chain)=="/cGemini":
-            try:
-                GeminiData.pop(event.sender.id)
-                # 写入文件
-                with open('data/GeminiData.yaml', 'w', encoding="utf-8") as file:
-                    yaml.dump(GeminiData, file, allow_unicode=True)
-                await bot.send(event,"已清除近期记忆")
-            except:
-                await bot.send(event,"清理缓存出错，无本地对话记录")
-        elif str(event.message_chain)=="/clear":
-            try:
-                coziData.pop(event.sender.id)
-            except:
-                await bot.send(event, "清理缓存出错，无本地对话记录")
+
     @bot.on(GroupMessage)
     async def setChatGLMKey(event:GroupMessage):
         global chatGLMapikeys
@@ -810,7 +807,7 @@ def main(bot, master, logger):
                 st1 = st1.replace("yucca", botName).replace("liris", str(event.sender.member_name))
                 await bot.send(event, st1, True)
             except:
-                await bot.send(event, "chatGLM启动出错，请联系检查apiKey或重试")
+                await bot.send(event, "chatGLM启动出错，\n或发送 @bot 可用角色模板 以更换其他模型")
                 return
             chatGLMapikeys[event.group.id]=key12
             with open('config/chatGLM.yaml', 'w', encoding="utf-8") as file:
@@ -1088,7 +1085,7 @@ def main(bot, master, logger):
         else:
             if len(st1) > 400:
                 await bot.send(event, st1[:100],True)
-                await bot.send(event, "🐱‍💻回复可能存在异常，\n请发送 /clearGLM 以清理当前聊天(无需艾特)", True)
+                await bot.send(event, "🐱‍💻回复可能存在异常，\n请发送 /clear 以清理当前聊天(无需艾特)", True)
                 try:
                     prompt.remove(prompt[-1])
                     chatGLMData[event.sender.id] = prompt

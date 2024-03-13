@@ -198,9 +198,9 @@ if __name__ == '__main__':
         try:
             subprocess.Popen(["pandora", "-t", "config/token.txt","-s", "127.0.0.1:23459", "-p", proxy])
         except:
-            logger.error("pandora启动失败")
+            pass
     else:
-        logger.warning("未启用pandora，如需启用请修改setting.yaml并完成相关配置")
+        pass
     def startVer():
         file_object = open("data/fonts/mylog.log")
         try:
