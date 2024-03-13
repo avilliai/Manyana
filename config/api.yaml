@@ -11,5 +11,5 @@ chatGLM: 69ef2489e.GxN12svpXi         #chatGLM的apiKey，从https://open.bigmod
 gemini: AIzU1TuyI9YqmV-_ZX2kig       #谷歌的gemini api，在https://ai.google.dev/tutorials/setup?hl=zh-cn获取，需要配置代理，否则无法使用
 cozi: https://xxxxxx.zeabur.app/v1/chat/completions  # https://github.com/avilliai/Manyana/issues/4
 proxy: 'http://127.0.0.1:10809'  #代理 自己设置对应的端口，没有就不填
-bert_colab: "https://mess-addressed-openings-exposed.trycloudflare.com/synthesize"        #bert_vits_colab版本，不占用本地gpu，部署：https://colab.research.google.com/drive/1n8lI6pOiDtli2zC5fL9PZ9TZqbOafqma?usp=sharing 请注意，使用此功能必须配置上面的proxy项
+bert_colab: "https://mess-addressed-openings-exposed.trycloudflare.com/synthesize"      #新版本Manyana无需配置此功能，语音合成选modelscopeTTS模式即可。但如果你喜欢折腾：bert_vits_colab部署：https://colab.research.google.com/drive/1n8lI6pOiDtli2zC5fL9PZ9TZqbOafqma?usp=sharing 请注意，使用此功能必须配置上面的proxy项
 
