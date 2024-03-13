@@ -277,9 +277,13 @@ def main(bot, master, logger):
                 logger.info("lolimigpt bot 接受提问："+text)
                 rep = await lolimigpt(prompt1,str("你是"+meta.get("bot_name")+","+meta.get("bot_info")).replace(meta.get("bot_name"),botName))
                 #await bot.send(event,rep.get('content'))
-                prompt1.append(rep)
+                prompt1.append({"role":"assistant","content":rep})
                 coziData[event.sender.id]=prompt1
                 logger.info("lolimigpt 回复："+rep.get('content'))
+                if "该令牌额度已用尽" in rep:
+                    logger.error("没金币了喵")
+                    await bot.send(event, "api没金币了喵\n请发送 @bot 可用角色模板 以更换其他模型", True)
+                    return
                 await tstt(rep.get('content'),event)
             except Exception as e:
                 logger.error(e)
@@ -531,6 +535,10 @@ def main(bot, master, logger):
                 prompt1.append({"role":"assistant","content":rep})
                 coziData[event.sender.id]=prompt1
                 logger.info("lolimigpt bot 回复："+rep)
+                if "该令牌额度已用尽" in rep:
+                    logger.error("没金币了喵")
+                    await bot.send(event, "api没金币了喵\n请发送 @bot 可用角色模板 以更换其他模型", True)
+                    return
                 await tstt(rep,event)
             except Exception as e:
                 logger.error(e)
