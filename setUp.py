@@ -233,7 +233,7 @@ def updaat(f=False,jump=False,source="3"):
                 else:
                     continue
             if len(os.listdir("./config"))!=14:
-                logger.error("error,未能成功处理冲突文件,缺失了必要文件,暂停更新，请手动备份temp文件夹中的这些文件："+str(conflict_files)+"\n参考远程仓库对应文件https://github.com/avilliai/Manyana/tree/main/config重新填写本地丢失的文件")
+                logger.error("error,未能成功处理冲突文件,缺失了必要文件,暂停更新，请手动备份temp文件夹中的这些文件："+str(conflict_files)+"\n参考远程仓库对应文件https://github.com/avilliai/Manyana/tree/main/config重新制作本地丢失的文件")
                 input("备份后按任意键以继续：")
             shutil.rmtree("./temp")
         logger.info("处理冲突文件完成")
