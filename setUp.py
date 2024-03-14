@@ -223,12 +223,18 @@ def updaat(f=False,jump=False,source="3"):
     conflict_files = []
     if f==True:
         if os.path.exists("./temp"):
+            if len(os.listdir("./config")) != 14:
+                logger.error("文件数目异常，请参考远程仓库config文件夹https://github.com/avilliai/Manyana/tree/main/config补全缺失文件。")
+                input("如已补全请按任意键继续：")
             for i in os.listdir("./temp"):
                 logger.info("开始处理"+i)
                 if os.path.exists("config/"+i):
                     conflict_file_dealter("./temp/"+i,"config/"+i)
                 else:
                     continue
+            if len(os.listdir("./config"))!=14:
+                logger.error("error,未能成功处理冲突文件,缺失了必要文件,暂停更新，请手动备份temp文件夹中的这些文件："+str(conflict_files)+"\n参考远程仓库对应文件https://github.com/avilliai/Manyana/tree/main/config重新填写本地丢失的文件")
+                input("备份后按任意键以继续：")
             shutil.rmtree("./temp")
         logger.info("处理冲突文件完成")
 
