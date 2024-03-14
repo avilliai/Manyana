@@ -279,12 +279,12 @@ def main(bot, master, logger):
                 #await bot.send(event,rep.get('content'))
                 prompt1.append({"role":"assistant","content":rep})
                 coziData[event.sender.id]=prompt1
-                logger.info("lolimigpt 回复："+rep.get('content'))
+                logger.info("lolimigpt 回复："+rep)
                 if "该令牌额度已用尽" in rep:
                     logger.error("没金币了喵")
                     await bot.send(event, "api没金币了喵\n请发送 @bot 可用角色模板 以更换其他模型", True)
                     return
-                await tstt(rep.get('content'),event)
+                await tstt(rep,event)
             except Exception as e:
                 logger.error(e)
                 await bot.send(event,"出错，请更换模型，或联系master检查代理或重试\n或发送 @bot 可用角色模板 以更换其他模型",True)
