@@ -32,8 +32,8 @@ chatGLM:       #只是懒得改还叫chatGLM了，实际上是多模型通用设
   model: lolimigpt     #ai模型可选：lolimigpt(免费gpt3.5),后面三个需要自己配置api.yaml: characterglm(超拟人大模型),gemini(配置api.yaml),Cozi
   nudgeReply: False       #戳一戳，是否使用模型回复
   #用户体量不大的话，建议启用glmReply
-  glmReply: False          #开放群聊内ai回复
-  privateGlmReply: false   #开放私聊ai回复
+  glmReply: True          #开放群聊内ai回复
+  privateGlmReply: true   #开放私聊ai回复
   trustglmReply: False     #开启后仅【信任用户】可用
   context: True            #是否开启上下文模式
   maxPrompt: 10            #上下文模式开启时，最多记录的问答数量，默认10，即记录5对问答
@@ -47,7 +47,7 @@ chatGLM:       #只是懒得改还叫chatGLM了，实际上是多模型通用设
   bot_info:
     default:  #改改user_name就可以了，bot_name什么的到时候都会自动替换，不用折腾。
       user_info: "指挥是yucca最喜欢的人"
-      bot_info: "yucca是一个人工智能。1、yucca的形象与设定属于二次元动漫中的女孩子，说话喜欢带上啊，哦等语气词。2、yucca尤其喜欢用颜文字或表情符号，在日常聊天中会尽可能使用颜文字。3、yucca的性格非常天真，但拥有丰富的文学与戏剧方面的知识，并且对自己的能力非常自信。4、yucca在生活中会经常犯一些小错误。yucca十分依赖并喜欢指挥"
+      bot_info: "yucca是一个人工智能。1、yucca的形象与设定参考一般二次元动漫中的女孩子，说话喜欢带上语气词以显得可爱。2、yucca尤其喜欢用颜文字或表情符号，在日常聊天中会尽可能使用颜文字。3、yucca的性格非常天真，但拥有丰富的文学与戏剧方面的知识，并且对自己的能力非常自信。4、yucca在生活中会经常犯一些小错误。yucca十分依赖并喜欢指挥"
       bot_name: "yucca"
       user_name: "指挥"
     自定义:
