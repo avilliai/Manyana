@@ -140,8 +140,160 @@ def main(bot, master, logger):
     #私聊使用chatGLM,对信任用户或配置了apiKey的用户开启
     @bot.on(FriendMessage)
     async def GLMFriendChat(event:FriendMessage):
+        #用非常丑陋的复制粘贴临时解决bug，这下成石山代码了
         global chatGLMData,chatGLMCharacters,trustUser,chatGLMsingelUserKey,userdict,GeminiData,coziData
-        if replyModel=="characterglm" and chatGLMCharacters.get(event.sender.id)!="Gemini" and chatGLMCharacters.get(event.sender.id)!="Cozi" and chatGLMCharacters.get(event.sender.id)!="lolimigpt":
+        if event.sender.id in chatGLMCharacters:
+            print("在")
+            print(chatGLMCharacters.get(event.sender.id),type(chatGLMCharacters.get(event.sender.id)))
+            if type(chatGLMCharacters.get(event.sender.id))==dict:
+                #如果用户有自己的key
+                if event.sender.id in chatGLMsingelUserKey:
+                    selfApiKey=chatGLMsingelUserKey.get(event.sender.id)
+                    #构建prompt
+                #或者开启了信任用户回复且为信任用户
+                elif str(event.sender.id) in trustUser and trustglmReply==True:
+                    logger.info("信任用户进行chatGLM提问")
+                    selfApiKey=chatGLM_api_key
+                elif privateGlmReply==True:
+                    selfApiKey = chatGLM_api_key
+                else:
+                    return
+                if str(event.message_chain) == "/clearGLM" or str(event.message_chain) == "/clear":
+                    return
+                text = str(event.message_chain)
+                logger.info("私聊glm接收消息："+text)
+                # 构建新的prompt
+                tep = {"role": "user", "content": text}
+                # print(type(tep))
+                # 获取以往的prompt
+                if event.sender.id in chatGLMData:
+                    prompt = chatGLMData.get(event.sender.id)
+                    prompt.append({"role": "user", "content": text})
+                # 没有该用户，以本次对话作为prompt
+                else:
+                    await bot.send(event,"即将开始对话，请注意，如果遇到对话异常，请发送 /clear 以清理对话记录(不用艾特)")
+                    prompt = [tep]
+                    chatGLMData[event.sender.id] = prompt
+                if event.sender.id in chatGLMCharacters:
+                    meta1 = chatGLMCharacters.get(event.sender.id)
+                else:
+                    logger.warning("读取meta模板")
+                    with open('config/settings.yaml', 'r', encoding='utf-8') as f:
+                        resy = yaml.load(f.read(), Loader=yaml.FullLoader)
+                    meta1 = resy.get("chatGLM").get("bot_info").get("default")
+
+                try:
+                    setName = userdict.get(str(event.sender.id)).get("userName")
+                except:
+                    setName = event.sender.nickname
+                if setName == None:
+                    setName = event.sender.nickname
+
+                meta1["user_name"] = meta1.get("user_name").replace("指挥", setName)
+                meta1["user_info"] = meta1.get("user_info").replace("指挥", setName).replace("yucca",botName)
+                meta1["bot_info"] = meta1.get("bot_info").replace("指挥", setName).replace("yucca",botName)
+                meta1["bot_name"] = botName
+
+                try:
+                    logger.info("当前meta:" + str(meta1))
+                    #st1 = await chatGLM(selfApiKey, meta1, prompt)
+                    asyncio.run_coroutine_threadsafe(asyncchatGLM(selfApiKey, meta1, prompt, event, setName, text), newLoop)
+
+                except:
+                    await bot.send(event, "chatGLM启动出错，请联系master检查apiKey或重试\n或发送 @bot 可用角色模板 以更换其他模型")
+            elif chatGLMCharacters.get(event.sender.id)=="Gemini":
+                if str(event.message_chain)=="/cGemini" or str(event.message_chain)=="/clear":
+                    return
+                if privateGlmReply!=True:
+                    return
+                logger.info("gemini开始运行")
+                text = str(event.message_chain)
+                if text == "" or text == " ":
+                    text = "在吗"
+                # 构建新的prompt
+                tep = {"role": "user", "parts": [text]}
+                # print(type(tep))
+                # 获取以往的prompt
+                if event.sender.id in GeminiData and context == True:
+                    prompt = GeminiData.get(event.sender.id)
+                    prompt.append({"role": "user", 'parts': [text]})
+                # 没有该用户，以本次对话作为prompt
+                else:
+                    await bot.send(event, "即将开始对话，请注意，如果遇到对话异常，请发送 /clear 以清理对话记录(不用艾特)", True)
+                    prompt = [tep]
+
+                logger.info("gemini接收提问:" + text)
+                try:
+                    # logger.info(geminiapikey)
+                    r = await geminirep(ak=geminiapikey, messages=prompt)
+                    # 更新该用户prompt
+                    prompt.append({"role": 'model', "parts": [r]})
+                    # 超过10，移除第一个元素
+                    GeminiData[event.sender.id] = prompt
+                    # 写入文件
+                    with open('data/GeminiData.yaml', 'w', encoding="utf-8") as file:
+                        yaml.dump(GeminiData, file, allow_unicode=True)
+                    await bot.send(event, r)
+                    # asyncio.run_coroutine_threadsafe(asyncgemini(geminiapikey,prompt, event,text), newLoop)
+                    # st1 = await chatGLM(selfApiKey, meta1, prompt)
+                except Exception as e:
+                    logger.error(e)
+                    await bot.send(event, "gemini启动出错\n请发送 /clear 以清理聊天记录并重试\n或发送 @bot 可用角色模板 以更换其他模型")
+            elif chatGLMCharacters.get(event.sender.id)=="Cozi":
+                if privateGlmReply!=True:
+                    return
+                try:
+                    text = str(event.message_chain).replace("@" + str(bot.qq) + "", '').replace(" ", "")
+                    if text=="" or text==" ":
+                        text="在吗"
+                    elif text=="/clear":
+                        return
+                    if event.sender.id in coziData:
+                        prompt1=coziData.get(event.sender.id)
+                        prompt1.append({"content": text,"role": "user"})
+                    else:
+                        prompt1=[{"content": text,"role": "user"}]
+                    logger.info("cozi.version bot 接受提问："+text)
+                    loop = asyncio.get_event_loop()
+                    rep = await loop.run_in_executor(None, cozeBotRep,CoziUrl,prompt1,proxy)
+                    #await bot.send(event,rep.get('content'))
+                    prompt1.append(rep)
+                    coziData[event.sender.id]=prompt1
+                    logger.info("cozi.version bot 回复："+rep.get('content'))
+                    await tstt(rep.get('content'),event)
+                except Exception as e:
+                    logger.error(e)
+                    await bot.send(event,"出错，请更换模型，或联系master检查代理或重试\n或发送 @bot 可用角色模板 以更换其他模型",True)
+            elif chatGLMCharacters.get(event.sender.id)=="lolimigpt":
+                if privateGlmReply!=True:
+                    return
+                try:
+                    text = str(event.message_chain).replace("@" + str(bot.qq) + "", '').replace(" ", "")
+                    if text=="" or text==" ":
+                        text="在吗"
+                    elif text=="/clear":
+                        return
+                    if event.sender.id in coziData:
+                        prompt1=coziData.get(event.sender.id)
+                        prompt1.append({"content": text,"role": "user"})
+                    else:
+                        prompt1=[{"content": text,"role": "user"}]
+                    logger.info("lolimigpt bot 接受提问："+text)
+                    rep = await lolimigpt(prompt1,str("你是"+meta.get("bot_name")+","+meta.get("bot_info")).replace(meta.get("bot_name"),botName))
+                    #await bot.send(event,rep.get('content'))
+                    prompt1.append({"role":"assistant","content":rep})
+                    coziData[event.sender.id]=prompt1
+                    logger.info("lolimigpt 回复："+rep)
+                    if "该令牌额度已用尽" in rep:
+                        logger.error("没金币了喵")
+                        await bot.send(event, "api没金币了喵\n请发送 @bot 可用角色模板 以更换其他模型", True)
+                        return
+                    await tstt(rep,event)
+                except Exception as e:
+                    logger.error(e)
+                    await bot.send(event,"出错，请更换模型，或联系master检查代理或重试\n或发送 @bot 可用角色模板 以更换其他模型",True)
+        #判断模型类型
+        elif replyModel=="characterglm":
             #如果用户有自己的key
             if event.sender.id in chatGLMsingelUserKey:
                 selfApiKey=chatGLMsingelUserKey.get(event.sender.id)
@@ -197,7 +349,7 @@ def main(bot, master, logger):
 
             except:
                 await bot.send(event, "chatGLM启动出错，请联系master检查apiKey或重试\n或发送 @bot 可用角色模板 以更换其他模型")
-        elif replyModel=="gemini" or chatGLMCharacters.get(event.sender.id)=="Gemini":
+        elif replyModel=="gemini":
             if str(event.message_chain)=="/cGemini" or str(event.message_chain)=="/clear":
                 return
             if privateGlmReply!=True:
@@ -235,7 +387,7 @@ def main(bot, master, logger):
             except Exception as e:
                 logger.error(e)
                 await bot.send(event, "gemini启动出错\n请发送 /clear 以清理聊天记录并重试\n或发送 @bot 可用角色模板 以更换其他模型")
-        elif replyModel=="Cozi" or chatGLMCharacters.get(event.sender.id)=="Cozi":
+        elif replyModel=="Cozi":
             if privateGlmReply!=True:
                 return
             try:
@@ -260,7 +412,7 @@ def main(bot, master, logger):
             except Exception as e:
                 logger.error(e)
                 await bot.send(event,"出错，请更换模型，或联系master检查代理或重试\n或发送 @bot 可用角色模板 以更换其他模型",True)
-        elif replyModel=="lolimigpt" or chatGLMCharacters.get(event.sender.id)=="lolimigpt":
+        elif replyModel=="lolimigpt":
             if privateGlmReply!=True:
                 return
             try:
@@ -453,39 +605,170 @@ def main(bot, master, logger):
                     pass
                 else:
                     return
-        if replyModel=="pandora" and At(bot.qq) in event.message_chain:
 
-            asyncio.run_coroutine_threadsafe(askGPTT(event),newLoop)
-        elif (replyModel=="luoyue" and At(bot.qq) in event.message_chain) or str(event.message_chain).startswith("/l"):
-            text=str(event.message_chain).replace("/l","").replace("@" + str(bot.qq) + "", '').replace(" ","")
-            logger.info("user:"+text)
-            if event.sender.id in luoyueid:
-                logger.info("id:"+luoyueid.get(event.sender.id))
-                idd=luoyueid.get(event.sender.id)
-                rrr=await luoyueGPTReply(text,idd)
-                await bot.send(event,rrr[0],True)
-            else:
-                rrr=await luoyueGPTReply(text)
-                await bot.send(event,rrr[0],True)
-                logger.info("落月gpt:为用户"+str(event.sender.id)+"设置新的id："+rrr[1])
-                luoyueid[event.sender.id]=rrr[1]
-                with open('data/luoyueGPT.yaml', 'w', encoding="utf-8") as file:
-                    yaml.dump(luoyueid, file, allow_unicode=True)
-        elif (replyModel=="yubanGPT" and At(bot.qq) in event.message_chain) or str(event.message_chain).startswith("/y"):
-            text=str(event.message_chain).replace("/y","").replace("@" + str(bot.qq) + "", '').replace(" ","")
-            logger.info("user:" + text)
-            if event.sender.id in yubanid:
-                logger.info("id:"+yubanid.get(event.sender.id))
-                idd=yubanid.get(event.sender.id)
-                rrr=await yubanGPTReply(text,idd)
-                await bot.send(event,rrr[0],True)
-            else:
-                rrr=await yubanGPTReply(text)
-                await bot.send(event,rrr[0],True)
-                logger.info("御坂gpt:为用户"+str(event.sender.id)+"设置新的id："+rrr[1])
-                yubanid[event.sender.id]=rrr[1]
-                with open('data/yubanGPT.yaml', 'w', encoding="utf-8") as file:
-                    yaml.dump(yubanid, file, allow_unicode=True)
+        if event.sender.id in chatGLMCharacters and (At(bot.qq) in event.message_chain) and (glmReply == True or (trustglmReply == True and str(event.sender.id) in trustUser)):
+            if (chatGLMCharacters.get(event.sender.id) == "Cozi"):
+                try:
+                    text = str(event.message_chain).replace("@" + str(bot.qq) + "", '').replace(" ", "").replace("/cozi",
+                                                                                                                 "")
+                    if text == "" or text == " ":
+                        text = "在吗"
+                    for saa in noRes:
+                        if text == saa:
+                            logger.warning("与屏蔽词匹配，Gemini不回复")
+                            return
+                    if event.sender.id in coziData:
+                        prompt1 = coziData.get(event.sender.id)
+                        prompt1.append({"content": text, "role": "user"})
+                    else:
+                        prompt1 = [{"content": text, "role": "user"}]
+                        await bot.send(event, "即将开始对话，如果遇到异常请发送 /clear 清理对话")
+                    logger.info("cozi.version bot 接受提问：" + text)
+                    loop = asyncio.get_event_loop()
+                    rep = await loop.run_in_executor(None, cozeBotRep, CoziUrl, prompt1, proxy)
+                    # await bot.send(event,rep.get('content'))
+                    prompt1.append(rep)
+                    coziData[event.sender.id] = prompt1
+                    logger.info("cozi.version bot 回复：" + rep.get('content'))
+                    await tstt(rep.get('content'), event)
+                except Exception as e:
+                    logger.error(e)
+                    await bot.send(event, "出错，请联系master反馈\n或发送 \n@bot 可用角色模板\n 以更换其他模型", True)
+            elif chatGLMCharacters.get(event.sender.id) == "lolimigpt":
+                try:
+                    text = str(event.message_chain).replace("@" + str(bot.qq) + "", '').replace(" ", "").replace("/gpt", "")
+                    if text == "" or text == " ":
+                        text = "在吗"
+                    for saa in noRes:
+                        if text == saa:
+                            logger.warning("与屏蔽词匹配，lolimigpt不回复")
+                            return
+                    if event.sender.id in coziData:
+                        prompt1 = coziData.get(event.sender.id)
+                        prompt1.append({"content": text, "role": "user"})
+                    else:
+                        prompt1 = [{"content": text, "role": "user"}]
+                        await bot.send(event, "即将开始对话，如果遇到异常请发送 /clear 清理对话")
+                    logger.info("lolimigpt bot 接受提问：" + text)
+                    met = str("你是" + meta.get("bot_name") + "," + meta.get("bot_info")).replace(meta.get("bot_name"),
+                                                                                                botName)
+                    logger.info(met)
+                    rep = await lolimigpt(str(prompt1), met)
+                    # await bot.send(event,rep.get('content'))
+                    prompt1.append({"role": "assistant", "content": rep})
+                    coziData[event.sender.id] = prompt1
+                    logger.info("lolimigpt bot 回复：" + rep)
+                    if "该令牌额度已用尽" in rep:
+                        logger.error("没金币了喵")
+                        await bot.send(event, "api没金币了喵\n请发送 \n@bot 可用角色模板 \n以更换其他模型", True)
+                        return
+                    await tstt(rep, event)
+                except Exception as e:
+                    logger.error(e)
+                    await bot.send(event, "模型调用出错\n请发送 /clear 以清理聊天记录并重试\n或发送 @bot 可用角色模板 以更换其他模型")
+            elif chatGLMCharacters.get(event.sender.id) == "gemini":
+                text = str(event.message_chain).replace("@" + str(bot.qq) + "", '').replace(" ", "").replace("/g", "")
+                for saa in noRes:
+                    if text == saa:
+                        logger.warning("与屏蔽词匹配，Gemini不回复")
+                        return
+                logger.info("gemini开始运行")
+                if text == "" or text == " ":
+                    text = "在吗"
+                # 构建新的prompt
+                tep = {"role": "user", "parts": [text]}
+                # print(type(tep))
+                # 获取以往的prompt
+                if event.sender.id in GeminiData and context == True:
+                    prompt = GeminiData.get(event.sender.id)
+                    prompt.append({"role": "user", 'parts': [text]})
+
+                # 没有该用户，以本次对话作为prompt
+                else:
+                    await bot.send(event, "即将开始对话，请注意，如果遇到对话异常，请发送 /clear 以清理对话记录(不用艾特)", True)
+                    prompt = [tep]
+                    GeminiData[event.sender.id] = prompt
+                logger.info("gemini接收提问:" + text)
+                try:
+                    # logger.info(geminiapikey)
+                    r = await geminirep(ak=geminiapikey, messages=prompt)
+                    # 更新该用户prompt
+                    prompt.append({"role": 'model', "parts": [r]})
+                    await tstt(r, event)
+
+                    GeminiData[event.sender.id] = prompt
+                    # 写入文件
+                    with open('data/GeminiData.yaml', 'w', encoding="utf-8") as file:
+                        yaml.dump(GeminiData, file, allow_unicode=True)
+
+                    # asyncio.run_coroutine_threadsafe(asyncgemini(geminiapikey,prompt, event,text), newLoop)
+                    # st1 = await chatGLM(selfApiKey, meta1, prompt)
+                except Exception as e:
+                    logger.error(e)
+                    await bot.send(event, "gemini启动出错\n请发送 /clear 以清理聊天记录并重试\n或发送 @bot 可用角色模板 以更换其他模型")
+            elif type(chatGLMCharacters.get(event.sender.id)) == dict:
+                text = str(event.message_chain).replace("@" + str(bot.qq) + "", '').replace(" ", "")
+                logger.info("分支1")
+                for saa in noRes:
+                    if text == saa:
+                        logger.warning("与屏蔽词匹配，chatGLM不回复")
+                        return
+                if text == "" or text == " ":
+                    text = "在吗"
+                # 构建新的prompt
+                tep = {"role": "user", "content": text}
+                # print(type(tep))
+                # 获取以往的prompt
+                if event.sender.id in chatGLMData and context == True:
+                    prompt = chatGLMData.get(event.sender.id)
+                    prompt.append({"role": "user", "content": text})
+
+                # 没有该用户，以本次对话作为prompt
+                else:
+                    await bot.send(event, "即将开始对话，请注意，如果遇到对话异常，请发送 /clear 以清理对话记录(不用艾特)", True)
+                    prompt = [tep]
+                    chatGLMData[event.sender.id] = prompt
+                # logger.info("当前prompt"+str(prompt))
+
+                if event.sender.id in chatGLMsingelUserKey:
+                    selfApiKey = chatGLMsingelUserKey.get(event.sender.id)
+                    # 构建prompt
+                # 或者开启了信任用户回复且为信任用户
+                elif str(event.sender.id) in trustUser and trustglmReply == True:
+                    logger.info("信任用户进行chatGLM提问")
+                    selfApiKey = chatGLM_api_key
+                else:
+                    selfApiKey = chatGLM_api_key
+
+                # 获取角色设定
+                if event.sender.id in chatGLMCharacters:
+                    meta1 = chatGLMCharacters.get(event.sender.id)
+                else:
+                    logger.warning("读取meta模板")
+                    with open('config/settings.yaml', 'r', encoding='utf-8') as f:
+                        resy = yaml.load(f.read(), Loader=yaml.FullLoader)
+                    meta1 = resy.get("chatGLM").get("bot_info").get("default")
+                try:
+                    setName = userdict.get(str(event.sender.id)).get("userName")
+                except:
+                    setName = event.sender.member_name
+                if setName == None:
+                    setName = event.sender.member_name
+                meta1["user_name"] = meta1.get("user_name").replace("指挥", setName)
+                meta1["user_info"] = meta1.get("user_info").replace("指挥", setName).replace("yucca", botName)
+                meta1["bot_info"] = meta1.get("bot_info").replace("指挥", setName).replace("yucca", botName)
+                meta1["bot_name"] = botName
+
+                logger.info("chatGLM接收提问:" + text)
+                try:
+                    logger.info("当前meta:" + str(meta1))
+                    asyncio.run_coroutine_threadsafe(asyncchatGLM(selfApiKey, meta1, prompt, event, setName, text), newLoop)
+                    # st1 = await chatGLM(selfApiKey, meta1, prompt)
+
+
+                except:
+                    await bot.send(event, "chatGLM启动出错，请联系master\n或发送 @bot 可用角色模板 以更换其他模型")
+        #判断模型
         elif (((replyModel=="Cozi" or chatGLMCharacters.get(event.sender.id)=="Cozi") and (At(bot.qq) in event.message_chain) or str(event.message_chain).startswith("/cozi"))) and (glmReply == True or (trustglmReply == True and str(event.sender.id) in trustUser)):
             try:
                 text = str(event.message_chain).replace("@" + str(bot.qq) + "", '').replace(" ", "").replace("/cozi","")
@@ -584,7 +867,7 @@ def main(bot, master, logger):
             except Exception as e:
                 logger.error(e)
                 await bot.send(event, "gemini启动出错\n请发送 /clear 以清理聊天记录并重试\n或发送 @bot 可用角色模板 以更换其他模型")
-        elif (glmReply == True or (trustglmReply == True and str(event.sender.id) in trustUser) or event.sender.id in chatGLMsingelUserKey.keys()) and At(bot.qq) in event.message_chain:
+        elif ((((replyModel=="characterglm" or type(chatGLMCharacters.get(event.sender.id))==dict))) and (glmReply == True or (trustglmReply == True and str(event.sender.id) in trustUser)) or event.sender.id in chatGLMsingelUserKey.keys()) and At(bot.qq) in event.message_chain:
             text = str(event.message_chain).replace("@" + str(bot.qq) + "", '').replace(" ","")
             logger.info("分支1")
             for saa in noRes:
@@ -959,6 +1242,7 @@ def main(bot, master, logger):
 
     #CharacterchatGLM部分
     def chatGLM(api_key,bot_info,prompt,model1):
+        model1="characterglm"
         logger.info("当前模式:"+model1)
         zhipuai.api_key = api_key
         if model1=="chatglm_pro":
