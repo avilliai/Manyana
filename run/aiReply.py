@@ -22,7 +22,7 @@ from plugins.RandomStr import random_str
 from plugins.chatGLMonline import chatGLM1
 from plugins.cozeBot import cozeBotRep
 from plugins.googleGemini import geminirep
-from plugins.gptOfficial import gptOfficial
+from plugins.gptOfficial import gptOfficial,gptUnofficial
 
 from plugins.rwkvHelper import rwkvHelper
 from plugins.translater import translate
@@ -266,7 +266,7 @@ def main(bot, master, logger):
                 except Exception as e:
                     logger.error(e)
                     await bot.send(event,"出错，请更换模型，或联系master检查代理或重试\n或发送 @bot 可用角色模板 以更换其他模型",True)
-            elif chatGLMCharacters.get(event.sender.id)=="gpt3.5":
+            elif chatGLMCharacters.get(event.sender.id)=="gpt3.5" or chatGLMCharacters.get(event.sender.id)=="gpt3.5-dev":
                 if privateGlmReply!=True:
                     return
                 try:
@@ -285,7 +285,10 @@ def main(bot, master, logger):
                     bot_in = str("你是" + botName + ",我是" + event.sender.nickname + "," + allcharacters.get(
                         "gpt3.5")).replace("【bot】",
                                              botName).replace("【用户】", event.sender.nickname)
-                    rep = await loop.run_in_executor(None, gptOfficial,prompt1,gptkeys,proxy,bot_in)
+                    if replyModel=="gpt3.5-dev":
+                        rep = await loop.run_in_executor(None, gptUnofficial, prompt1, gptkeys, proxy, bot_in)
+                    else:
+                        rep = await loop.run_in_executor(None, gptOfficial,prompt1,gptkeys,proxy,bot_in)
                     #await bot.send(event,rep.get('content'))
                     # 更新该用户prompt
                     prompt1.append(rep)
@@ -452,7 +455,7 @@ def main(bot, master, logger):
             except Exception as e:
                 logger.error(e)
                 await bot.send(event,"出错，请更换模型，或联系master检查代理或重试\n或发送 @bot 可用角色模板 以更换其他模型",True)
-        elif replyModel=="gpt3.5":
+        elif replyModel=="gpt3.5" or replyModel=="gpt3.5-dev":
             if privateGlmReply != True:
                 return
             try:
@@ -471,7 +474,10 @@ def main(bot, master, logger):
                 bot_in = str("你是" + botName + ",我是" + event.sender.nickname + "," + allcharacters.get(
                     "gpt3.5")).replace("【bot】",
                                        botName).replace("【用户】", event.sender.nickname)
-                rep = await loop.run_in_executor(None, gptOfficial, prompt1, gptkeys, proxy, bot_in)
+                if replyModel == "gpt3.5-dev":
+                    rep = await loop.run_in_executor(None, gptUnofficial, prompt1, gptkeys, proxy, bot_in)
+                else:
+                    rep = await loop.run_in_executor(None, gptOfficial, prompt1, gptkeys, proxy, bot_in)
                 # await bot.send(event,rep.get('content'))
                 prompt1.append(rep)
                 # 超过10，移除第一个元素
@@ -686,7 +692,7 @@ def main(bot, master, logger):
                     return
 
         if event.sender.id in chatGLMCharacters and (At(bot.qq) in event.message_chain) and (glmReply == True or (trustglmReply == True and str(event.sender.id) in trustUser)):
-            if chatGLMCharacters.get(event.sender.id)=="gpt3.5":
+            if chatGLMCharacters.get(event.sender.id)=="gpt3.5" or chatGLMCharacters.get(event.sender.id)=="gpt3.5-dev":
                 bot_in = str("你是" + botName + ",我是" + event.sender.member_name + "," + allcharacters.get(
                     "gpt3.5")).replace("【bot】",
                                        botName).replace("【用户】", event.sender.member_name)
@@ -706,7 +712,10 @@ def main(bot, master, logger):
                         await bot.send(event, "即将开始对话，如果遇到异常请发送 /clear 清理对话")
                     logger.info("gpt3.5(官方)  bot 接受提问：" + text)
                     loop = asyncio.get_event_loop()
-                    rep = await loop.run_in_executor(None, gptOfficial, prompt1, gptkeys, proxy, bot_in)
+                    if replyModel == "gpt3.5-dev":
+                        rep = await loop.run_in_executor(None, gptUnofficial, prompt1, gptkeys, proxy, bot_in)
+                    else:
+                        rep = await loop.run_in_executor(None, gptOfficial, prompt1, gptkeys, proxy, bot_in)
                     # await bot.send(event,rep.get('content'))
                     prompt1.append(rep)
                     # 超过10，移除第一个元素
@@ -884,7 +893,7 @@ def main(bot, master, logger):
                 except:
                     await bot.send(event, "chatGLM启动出错，请联系master\n或发送 @bot 可用角色模板 以更换其他模型")
         #判断模型
-        elif (((replyModel=="gpt3.5" or chatGLMCharacters.get(event.sender.id)=="gpt3.5") and (At(bot.qq) in event.message_chain) or str(event.message_chain).startswith("/gpt"))) and (glmReply == True or (trustglmReply == True and str(event.sender.id) in trustUser)):
+        elif (((replyModel=="gpt3.5" or chatGLMCharacters.get(event.sender.id)=="gpt3.5" or replyModel=="gpt3.5-dev") and (At(bot.qq) in event.message_chain) or str(event.message_chain).startswith("/gpt"))) and (glmReply == True or (trustglmReply == True and str(event.sender.id) in trustUser)):
             bot_in = str("你是" + botName + ",我是" + event.sender.member_name + "," + allcharacters.get(
                 "gpt3.5")).replace("【bot】",
                                    botName).replace("【用户】", event.sender.member_name)
@@ -904,7 +913,10 @@ def main(bot, master, logger):
                     await bot.send(event, "即将开始对话，如果遇到异常请发送 /clear 清理对话")
                 logger.info("gpt3.5(官方)  bot 接受提问：" + text)
                 loop = asyncio.get_event_loop()
-                rep = await loop.run_in_executor(None, gptOfficial, prompt1, gptkeys, proxy, bot_in)
+                if replyModel == "gpt3.5-dev":
+                    rep = await loop.run_in_executor(None, gptUnofficial, prompt1, gptkeys, proxy, bot_in)
+                else:
+                    rep = await loop.run_in_executor(None, gptOfficial, prompt1, gptkeys, proxy, bot_in)
                 # await bot.send(event,rep.get('content'))
                 prompt1.append(rep)
                 # 超过10，移除第一个元素
