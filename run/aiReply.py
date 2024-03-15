@@ -287,8 +287,18 @@ def main(bot, master, logger):
                                              botName).replace("指挥", event.sender.nickname)
                     rep = await loop.run_in_executor(None, gptOfficial,prompt1,gptkeys,proxy,bot_in)
                     #await bot.send(event,rep.get('content'))
+                    # 更新该用户prompt
                     prompt1.append(rep)
-                    coziData[event.sender.id]=prompt1
+                    # 超过10，移除第一个元素
+
+                    if len(prompt1) > maxPrompt:
+                        logger.error("gpt3.5 prompt超限，移除元素")
+                        del prompt1[0]
+                        del prompt1[0]
+                    coziData[event.sender.id] = prompt1
+
+
+
                     logger.info("gpt3.5(官方) bot 回复："+rep.get('content'))
                     await tstt(rep.get('content'),event)
                 except Exception as e:
@@ -463,7 +473,14 @@ def main(bot, master, logger):
                 rep = await loop.run_in_executor(None, gptOfficial, prompt1, gptkeys, proxy, bot_in)
                 # await bot.send(event,rep.get('content'))
                 prompt1.append(rep)
+                # 超过10，移除第一个元素
+
+                if len(prompt1) > maxPrompt:
+                    logger.error("gpt3.5对话超限，移除元素")
+                    del prompt1[0]
+                    del prompt1[0]
                 coziData[event.sender.id] = prompt1
+
                 logger.info("gpt3.5(官方) bot 回复：" + rep.get('content'))
                 await tstt(rep.get('content'), event)
             except Exception as e:
@@ -688,6 +705,12 @@ def main(bot, master, logger):
                     rep = await loop.run_in_executor(None, gptOfficial, prompt1, gptkeys, proxy, bot_in)
                     # await bot.send(event,rep.get('content'))
                     prompt1.append(rep)
+                    # 超过10，移除第一个元素
+
+                    if len(prompt1) > maxPrompt:
+                        logger.error("gpt3.5 prompt超限，移除元素")
+                        del prompt1[0]
+                        del prompt1[0]
                     coziData[event.sender.id] = prompt1
                     logger.info("gpt3.5(官方) bot 回复：" + rep.get('content'))
                     await tstt(rep.get('content'), event)
@@ -881,6 +904,12 @@ def main(bot, master, logger):
                 rep = await loop.run_in_executor(None, gptOfficial, prompt1, gptkeys, proxy, bot_in)
                 # await bot.send(event,rep.get('content'))
                 prompt1.append(rep)
+                # 超过10，移除第一个元素
+
+                if len(prompt1) > maxPrompt:
+                    logger.error("gpt3.5 prompt超限，移除元素")
+                    del prompt1[0]
+                    del prompt1[0]
                 coziData[event.sender.id] = prompt1
                 logger.info("gpt3.5(官方) bot 回复：" + rep.get('content'))
                 await tstt(rep.get('content'), event)
