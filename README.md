@@ -110,7 +110,22 @@ ping[图片]
 </details>
 
 <details markdown='1'><summary>ai类功能</summary>
+
 settings.yaml，支持多个模型，默认的lolimigpt无需配置，可直接使用。
+
+
+模型和api.yaml对应关系如下
+
+| 模型(settings.yaml设置) | 介绍                                                                                                                                   | 配置项(api.yaml)            | 评价                                               |
+| ------------------- | ------------------------------------------------------------------------------------------------------------------------------------ | ------------------------ | ------------------------------------------------ |
+| characterglm        | 智谱的超拟人大模型，在这里[申请](https://open.bigmodel.cn/)                                                                                         | chatGLM                  | 付费api，贵，敏感词多，但效果不错                               |
+| lolimigpt           | 免费gpt3.5                                                                                                                             | 【无需配置】                   | 免费，不稳定                                           |
+| gpt3.5              | 官方gpt3.5，需要填写代理proxy项                                                                                                                | openai-keys<br>proxy<br> | 某宝0.7元一个apikey，性价比拉满                             |
+| Cozi                | GPT4，基于[coze-discord](https://github.com/deanxv/coze-discord-proxy)，教程请查看[Here](https://github.com/avilliai/Manyana/issues/4)，最好配置代理 | cozi<br>proxy(建议)        | 免费。需要discord小号，每个账号每天都有次数限制(gpt4 100次/天)，可配置多个小号 |
+| gemini              | 谷歌Gemini，在这里[申请apikey](https://ai.google.dev/tutorials/setup?hl=zh-cn)，需配置proxy                                                      | gemini<br>proxy          | 免费                                               |
+
+
+
 ```
 chatGLM 配置文件打开glmReply或trustglmReply，将取代艾特回复
      设置密钥#apiKey       #从https://open.bigmodel.cn/usercenter/apikeys复制apiKey
@@ -342,15 +357,19 @@ news:
 
 <details markdown='1'><summary>使用ai回复替代词库回复</summary>
 
-> 使用chatglm或gpt3.5进行回复
-### chatglm(需付费) 
-- 根据api.yaml的指引注册并获取apikey,填写进api.yaml中，价格还是比较便宜的注册送的18一般够用半年以上。 
-- 打开setting.yaml 填写chatglm相关配置项即可
-### gpt3.5(免费)
-- 无需配置apikey
-- 打开setting.yaml 将chatGLM.model设置为lolimigpt即可
+模型相关信息如下，配置好后，在settings.yaml的chatGLM项，打开glmReply即可
 
-### 思知ai
+
+| 模型设置(settings.yaml) | 介绍                                                                                                                                   | 配置项(api.yaml)            | 评价                                               |
+| ------------------- | ------------------------------------------------------------------------------------------------------------------------------------ | ------------------------ | ------------------------------------------------ |
+| characterglm        | 智谱的超拟人大模型，在这里[申请](https://open.bigmodel.cn/)                                                                                         | chatGLM                  | 付费api，贵，敏感词多，但效果不错                               |
+| lolimigpt           | 免费gpt3.5                                                                                                                             | 【无需配置】                   | 免费，不稳定                                           |
+| gpt3.5              | 官方gpt3.5，需要填写代理proxy项                                                                                                                | openai-keys<br>proxy<br> | 某宝0.7元一个apikey，性价比拉满                             |
+| Cozi                | GPT4，基于[coze-discord](https://github.com/deanxv/coze-discord-proxy)，教程请查看[Here](https://github.com/avilliai/Manyana/issues/4)，最好配置代理 | cozi<br>proxy(建议)        | 免费。需要discord小号，每个账号每天都有次数限制(gpt4 100次/天)，可配置多个小号 |
+| gemini              | 谷歌Gemini，在这里[申请apikey](https://ai.google.dev/tutorials/setup?hl=zh-cn)，需配置proxy                                                      | gemini<br>proxy          | 免费                                               |
+
+
+### 思知ai(不建议用，按上表操作即可使用各类大模型回复)
 > 这里是如何使用免费的思知ai进行回复的教程，目前已不推荐，推荐使用上面的chatglm
 >release有对应的知识库(sizhi.rar)用以导入思知控制台
 - [登录并创建多个bot](https://console.ownthink.com/login)
