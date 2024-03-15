@@ -284,7 +284,7 @@ def main(bot, master, logger):
                     prompt1.append({"role":"assistant","content":rep})
                     coziData[event.sender.id]=prompt1
                     logger.info("lolimigpt 回复："+rep)
-                    if "该令牌额度已用尽" in rep:
+                    if "令牌额度" in rep:
                         logger.error("没金币了喵")
                         await bot.send(event, "api没金币了喵\n请发送 @bot 可用角色模板 以更换其他模型", True)
                         return
@@ -432,7 +432,7 @@ def main(bot, master, logger):
                 prompt1.append({"role":"assistant","content":rep})
                 coziData[event.sender.id]=prompt1
                 logger.info("lolimigpt 回复："+rep)
-                if "该令牌额度已用尽" in rep:
+                if "令牌额度" in rep:
                     logger.error("没金币了喵")
                     await bot.send(event, "api没金币了喵\n请发送 @bot 可用角色模板 以更换其他模型", True)
                     return
@@ -658,7 +658,7 @@ def main(bot, master, logger):
                     prompt1.append({"role": "assistant", "content": rep})
                     coziData[event.sender.id] = prompt1
                     logger.info("lolimigpt bot 回复：" + rep)
-                    if "该令牌额度已用尽" in rep:
+                    if "令牌额度" in rep:
                         logger.error("没金币了喵")
                         await bot.send(event, "api没金币了喵\n请发送 \n@bot 可用角色模板 \n以更换其他模型", True)
                         return
@@ -818,7 +818,7 @@ def main(bot, master, logger):
                 prompt1.append({"role":"assistant","content":rep})
                 coziData[event.sender.id]=prompt1
                 logger.info("lolimigpt bot 回复："+rep)
-                if "该令牌额度已用尽" in rep:
+                if "令牌额度" in rep:
                     logger.error("没金币了喵")
                     await bot.send(event, "api没金币了喵\n请发送 \n@bot 可用角色模板 \n以更换其他模型", True)
                     return
