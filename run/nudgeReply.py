@@ -19,6 +19,7 @@ from mirai.models import NudgeEvent
 
 from concurrent.futures import ThreadPoolExecutor
 from plugins.RandomStr import random_str
+from plugins.gptOfficial import gptOfficial
 from plugins.modelsLoader import modelLoader
 from plugins.translater import translate
 from plugins.vitsGenerate import voiceGenerate, taffySayTest, sovits, edgetts, outVits, modelscopeTTS, superVG
@@ -56,6 +57,7 @@ def main(bot,master,logger,berturl,proxy):
     with open('config/api.yaml', 'r', encoding='utf-8') as f:
         resulttr = yaml.load(f.read(), Loader=yaml.FullLoader)
     chatGLM_api_key = resulttr.get("chatGLM")
+    gptkeys=resulttr.get("openai-keys")
     if voicegg=="vits":
         with open('config/autoSettings.yaml', 'r', encoding='utf-8') as f:
             result2 = yaml.load(f.read(), Loader=yaml.FullLoader)
@@ -109,6 +111,18 @@ def main(bot,master,logger,berturl,proxy):
                     rep = random.choice(normal_Reply)
                 elif chatmodel=="lolimigpt":
                     rep=await lolimigpt(random.choice(["戳你一下","摸摸头","戳戳你的头"]),str("你是"+meta1.get("bot_name")+","+meta1.get("bot_info")))
+                elif chatmodel=="gpt3.5":
+                    bot_in=str("你是"+meta1.get("bot_name")+","+meta1.get("bot_info"))
+                    prompt1 = [
+                        {
+                            "role": "user",
+                            "content": random.choice(["戳你一下", "摸摸头", "戳戳你的头","摸摸~"])
+                        }
+                    ]
+                    loop = asyncio.get_event_loop()
+
+                    rep = await loop.run_in_executor(None, gptOfficial, prompt1, gptkeys, proxy, bot_in)
+                    rep=rep.get("content")
                 else:
                     with ThreadPoolExecutor() as executor:
                         future = executor.submit(chatGLM1)

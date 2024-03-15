@@ -179,6 +179,7 @@ def updaat(f=False,jump=False,source="3"):
     if jump==False:
         logger.warning("更新python库，按1跳过，如果最近没有更新过，不建议跳过，可能错过某些更新。")
         if input("在这里输入:") != "1":
+            os.system("pip install openai")
             os.system("pip install edge-tts")
             os.system("pip install psutil")
             os.system("pip install -q -U google-generativeai")
