@@ -53,6 +53,7 @@ def main(bot,master,logger,berturl,proxy):
     chatmodel=result0.get("chatGLM").get("model")
     nudgeornot=result0.get("chatGLM").get("nudgeReply")
     meta1 = result0.get("chatGLM").get("bot_info").get("default")
+    gpt3=result0.get("chatGLM").get("bot_info").get("gpt3.5")
     logger.info("语音合成模式："+voicegg+" 语音合成speaker："+speaker92)
     with open('config/api.yaml', 'r', encoding='utf-8') as f:
         resulttr = yaml.load(f.read(), Loader=yaml.FullLoader)
@@ -112,7 +113,7 @@ def main(bot,master,logger,berturl,proxy):
                 elif chatmodel=="lolimigpt":
                     rep=await lolimigpt(random.choice(["戳你一下","摸摸头","戳戳你的头"]),str("你是"+meta1.get("bot_name")+","+meta1.get("bot_info")))
                 elif chatmodel=="gpt3.5":
-                    bot_in=str("你是"+meta1.get("bot_name")+","+meta1.get("bot_info"))
+                    bot_in=str(gpt3.replace("【bot】",meta1.get("bot_name")).replace("【用户】","主人"))
                     prompt1 = [
                         {
                             "role": "user",

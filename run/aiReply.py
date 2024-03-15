@@ -282,9 +282,9 @@ def main(bot, master, logger):
                         prompt1=[{"content": text,"role": "user"}]
                     logger.info("gpt3.5(官方) bot 接受提问："+text)
                     loop = asyncio.get_event_loop()
-                    bot_in = str("你是" + meta.get("bot_name") + ",我是" + event.sender.nickname + "," + meta.get(
-                        "bot_info")).replace(meta.get("bot_name"),
-                                             botName).replace("指挥", event.sender.nickname)
+                    bot_in = str("你是" + botName + ",我是" + event.sender.nickname + "," + allcharacters.get(
+                        "gpt3.5")).replace("【bot】",
+                                             botName).replace("【用户】", event.sender.nickname)
                     rep = await loop.run_in_executor(None, gptOfficial,prompt1,gptkeys,proxy,bot_in)
                     #await bot.send(event,rep.get('content'))
                     # 更新该用户prompt
@@ -468,8 +468,9 @@ def main(bot, master, logger):
                     prompt1 = [{"content": text, "role": "user"}]
                 logger.info("gpt3.5(官方) bot 接受提问：" + text)
                 loop = asyncio.get_event_loop()
-                bot_in = str("你是" + meta.get("bot_name") + ",我是" +event.sender.nickname+","+ meta.get("bot_info")).replace(meta.get("bot_name"),
-                                                                                               botName).replace("指挥",event.sender.nickname)
+                bot_in = str("你是" + botName + ",我是" + event.sender.nickname + "," + allcharacters.get(
+                    "gpt3.5")).replace("【bot】",
+                                       botName).replace("【用户】", event.sender.nickname)
                 rep = await loop.run_in_executor(None, gptOfficial, prompt1, gptkeys, proxy, bot_in)
                 # await bot.send(event,rep.get('content'))
                 prompt1.append(rep)
@@ -580,11 +581,13 @@ def main(bot, master, logger):
         global chatGLMCharacters
         if str(event.message_chain).startswith("设定#"):
             if str(event.message_chain).split("#")[1] in allcharacters:
+                meta1=str(event.message_chain).split("#")[1]
 
-                meta1 = allcharacters.get(str(event.message_chain).split("#")[1])
                 if meta1=="Gemini" or meta1=="Cozi" or meta1=="lolimigpt" or meta1=="gpt3.5":
                     pass
+
                 else:
+                    meta1 = allcharacters.get(str(event.message_chain).split("#")[1])
                     try:
                         setName = userdict.get(str(event.sender.id)).get("userName")
                     except:
@@ -619,10 +622,12 @@ def main(bot, master, logger):
         global chatGLMCharacters,userdict
         if str(event.message_chain).startswith("设定#"):
             if str(event.message_chain).split("#")[1] in allcharacters:
-                meta1=allcharacters.get(str(event.message_chain).split("#")[1])
+                meta1=str(event.message_chain).split("#")[1]
+                print(meta1)
                 if meta1=="Gemini" or meta1=="Cozi" or meta1=="lolimigpt" or meta1=="gpt3.5":
                     pass
                 else:
+                    meta1 = allcharacters.get(meta1)
                     try:
                         setName = userdict.get(str(event.sender.id)).get("userName")
                     except:
@@ -682,10 +687,9 @@ def main(bot, master, logger):
 
         if event.sender.id in chatGLMCharacters and (At(bot.qq) in event.message_chain) and (glmReply == True or (trustglmReply == True and str(event.sender.id) in trustUser)):
             if chatGLMCharacters.get(event.sender.id)=="gpt3.5":
-                bot_in = str(
-                    "你是" + meta.get("bot_name") + ",我是" + event.sender.member_name + "," + meta.get("bot_info")).replace(
-                    meta.get("bot_name"),
-                    botName).replace("指挥", event.sender.member_name)
+                bot_in = str("你是" + botName + ",我是" + event.sender.member_name + "," + allcharacters.get(
+                    "gpt3.5")).replace("【bot】",
+                                       botName).replace("【用户】", event.sender.member_name)
                 try:
                     text = str(event.message_chain).replace("@" + str(bot.qq) + "", '').replace(" ", "")
                     if text == "" or text == " ":
@@ -881,10 +885,9 @@ def main(bot, master, logger):
                     await bot.send(event, "chatGLM启动出错，请联系master\n或发送 @bot 可用角色模板 以更换其他模型")
         #判断模型
         elif (((replyModel=="gpt3.5" or chatGLMCharacters.get(event.sender.id)=="gpt3.5") and (At(bot.qq) in event.message_chain) or str(event.message_chain).startswith("/gpt"))) and (glmReply == True or (trustglmReply == True and str(event.sender.id) in trustUser)):
-            bot_in = str(
-                "你是" + meta.get("bot_name") + ",我是" + event.sender.member_name + "," + meta.get("bot_info")).replace(
-                meta.get("bot_name"),
-                botName).replace("指挥", event.sender.member_name)
+            bot_in = str("你是" + botName + ",我是" + event.sender.member_name + "," + allcharacters.get(
+                "gpt3.5")).replace("【bot】",
+                                   botName).replace("【用户】", event.sender.member_name)
             try:
                 text = str(event.message_chain).replace("@" + str(bot.qq) + "", '').replace("/gpt", "")
                 if text == "" or text == " ":
