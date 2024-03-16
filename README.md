@@ -111,7 +111,9 @@ ping[图片]
 
 <details markdown='1'><summary>ai类功能</summary>
 
-settings.yaml，支持多个模型，默认的lolimigpt无需配置，可直接使用。
+发送 @bot 可用角色模板 以查看所有可用的模型，用户可根据指引自行切换模型
+
+settings.yaml，支持多个模型，lolimigpt和glm-4无需配置，可直接使用。
 
 
 模型和api.yaml对应关系如下
