@@ -1312,7 +1312,10 @@ def main(bot, master, logger):
                     return
             elif modelHere=="glm-4":
                 rep=await glm4(prompt1,glm4_bot_in)
-            # await bot.send(event,rep.get('content'))
+                if "禁止违规问答" in rep:
+                    logger.error("敏感喽，不能用了")
+                    await bot.send(event,rep.get("content"))
+                    return
             prompt1.append(rep)
             # 超过10，移除第一个元素
 
