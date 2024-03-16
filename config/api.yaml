@@ -13,5 +13,6 @@ cozi: https://xxxxxx.zeabur.app/v1/chat/completions  # https://github.com/avilli
 proxy: 'http://127.0.0.1:10809'  #代理 自己设置对应的端口，没有就不填
 openai-keys:                 #openai官方的apikey，淘宝搜apikey，0.7块一个，有几个就填几个。有代理的话，settings.yaml中模型就写gpt3.5，没代理的之后更新
   - sk-Mxxxxxxxxxxx
+gpt3.5-dev: false       #如果是从readme说的店铺买的openai-apikey，请打开此开关
 bert_colab: "https://mess-addressed-openings-exposed.trycloudflare.com/synthesize"      #新版本Manyana无需配置此功能，语音合成选modelscopeTTS模式可直接使用。但如果你喜欢折腾：bert_vits_colab部署：https://colab.research.google.com/drive/1n8lI6pOiDtli2zC5fL9PZ9TZqbOafqma?usp=sharing 请注意，使用此功能必须配置上面的proxy项
 

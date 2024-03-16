@@ -50,6 +50,7 @@ def main(bot, master, logger):
     with open('config/api.yaml', 'r', encoding='utf-8') as f:
         resulttr = yaml.load(f.read(), Loader=yaml.FullLoader)
     CoziUrl=resulttr.get("cozi")
+    gptdev=resulttr.get("gpt3.5-dev")
     geminiapikey=resulttr.get("gemini")
     proxy=resulttr.get("proxy")
     berturl=resulttr.get("bert_colab")
@@ -252,7 +253,11 @@ def main(bot, master, logger):
             elif chatGLMCharacters.get(event.sender.id)=="gpt3.5" or chatGLMCharacters.get(event.sender.id)=="gpt3.5-dev":
                 if privateGlmReply!=True:
                     return
-                await modelReply(event, replyModel)
+                if gptdev==True:
+                    rth="gpt3.5-dev"
+                else:
+                    rth="gpt3.5"
+                await modelReply(event, rth)
             elif chatGLMCharacters.get(event.sender.id)=="lolimigpt":
                 if privateGlmReply!=True:
                     return
@@ -363,7 +368,11 @@ def main(bot, master, logger):
         elif replyModel=="gpt3.5" or replyModel=="gpt3.5-dev":
             if privateGlmReply != True:
                 return
-            await modelReply(event, replyModel)
+            if gptdev == True:
+                rth = "gpt3.5-dev"
+            else:
+                rth = "gpt3.5"
+            await modelReply(event, rth)
         elif replyModel=="lolimigpt":
             if privateGlmReply!=True:
                 return
@@ -539,7 +548,11 @@ def main(bot, master, logger):
 
         if event.sender.id in chatGLMCharacters and (At(bot.qq) in event.message_chain) and (glmReply == True or (trustglmReply == True and str(event.sender.id) in trustUser)):
             if chatGLMCharacters.get(event.sender.id)=="gpt3.5" or chatGLMCharacters.get(event.sender.id)=="gpt3.5-dev":
-                await modelReply(event, replyModel)
+                if gptdev == True:
+                    rth = "gpt3.5-dev"
+                else:
+                    rth = "gpt3.5"
+                await modelReply(event, rth)
             elif (chatGLMCharacters.get(event.sender.id) == "Cozi"):
                 await modelReply(event, chatGLMCharacters.get(event.sender.id))
             elif chatGLMCharacters.get(event.sender.id) == "lolimigpt":
@@ -650,7 +663,11 @@ def main(bot, master, logger):
                     await bot.send(event, "chatGLM启动出错，请联系master\n或发送 @bot 可用角色模板 以更换其他模型")
         #判断模型
         elif (((replyModel=="gpt3.5" or chatGLMCharacters.get(event.sender.id)=="gpt3.5" or replyModel=="gpt3.5-dev") and (At(bot.qq) in event.message_chain) or str(event.message_chain).startswith("/gpt"))) and (glmReply == True or (trustglmReply == True and str(event.sender.id) in trustUser)):
-            await modelReply(event,replyModel)
+            if gptdev == True:
+                rth = "gpt3.5-dev"
+            else:
+                rth = "gpt3.5"
+            await modelReply(event, rth)
         elif (((replyModel=="Cozi" or chatGLMCharacters.get(event.sender.id)=="Cozi") and (At(bot.qq) in event.message_chain) or str(event.message_chain).startswith("/cozi"))) and (glmReply == True or (trustglmReply == True and str(event.sender.id) in trustUser)):
             await modelReply(event, replyModel)
         elif (((replyModel=="glm-4" or chatGLMCharacters.get(event.sender.id)=="glm-4") and (At(bot.qq) in event.message_chain) or str(event.message_chain).startswith("/glm4"))) and (glmReply == True or (trustglmReply == True and str(event.sender.id) in trustUser)):
