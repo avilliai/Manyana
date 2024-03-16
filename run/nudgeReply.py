@@ -19,6 +19,7 @@ from mirai.models import NudgeEvent
 
 from concurrent.futures import ThreadPoolExecutor
 from plugins.RandomStr import random_str
+from plugins.chatGLMonline import glm4
 from plugins.gptOfficial import gptOfficial
 from plugins.modelsLoader import modelLoader
 from plugins.translater import translate
@@ -54,6 +55,7 @@ def main(bot,master,logger,berturl,proxy):
     nudgeornot=result0.get("chatGLM").get("nudgeReply")
     meta1 = result0.get("chatGLM").get("bot_info").get("default")
     gpt3=result0.get("chatGLM").get("bot_info").get("gpt3.5")
+    glm_4=result0.get("chatGLM").get("bot_info").get("glm-4")
     logger.info("语音合成模式："+voicegg+" 语音合成speaker："+speaker92)
     with open('config/api.yaml', 'r', encoding='utf-8') as f:
         resulttr = yaml.load(f.read(), Loader=yaml.FullLoader)
@@ -123,6 +125,17 @@ def main(bot,master,logger,berturl,proxy):
                     loop = asyncio.get_event_loop()
 
                     rep = await loop.run_in_executor(None, gptOfficial, prompt1, gptkeys, proxy, bot_in)
+                    rep=rep.get("content")
+                elif chatmodel=="glm-4":
+                    bot_in=str(glm_4.replace("【bot】",meta1.get("bot_name")).replace("【用户】","主人"))
+                    prompt1 = [
+                        {
+                            "role": "user",
+                            "content": random.choice(["戳你一下", "摸摸头", "戳戳你的头","摸摸~"])
+                        }
+                    ]
+
+                    rep = await glm4(prompt1,bot_in)
                     rep=rep.get("content")
                 else:
                     with ThreadPoolExecutor() as executor:

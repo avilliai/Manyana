@@ -19,7 +19,7 @@ import zhipuai
 
 from plugins.PandoraChatGPT import ask_chatgpt
 from plugins.RandomStr import random_str
-from plugins.chatGLMonline import chatGLM1
+from plugins.chatGLMonline import chatGLM1, glm4
 from plugins.cozeBot import cozeBotRep
 from plugins.googleGemini import geminirep
 from plugins.gptOfficial import gptOfficial,gptUnofficial
@@ -145,7 +145,7 @@ def main(bot, master, logger):
         #用非常丑陋的复制粘贴临时解决bug，这下成石山代码了
         global chatGLMData,chatGLMCharacters,trustUser,chatGLMsingelUserKey,userdict,GeminiData,coziData
         if event.sender.id in chatGLMCharacters:
-            print("在")
+            #print("在")
             print(chatGLMCharacters.get(event.sender.id),type(chatGLMCharacters.get(event.sender.id)))
             if type(chatGLMCharacters.get(event.sender.id))==dict:
                 #如果用户有自己的key
@@ -242,6 +242,10 @@ def main(bot, master, logger):
                     logger.error(e)
                     await bot.send(event, "gemini启动出错\n请发送 /clear 以清理聊天记录并重试\n或发送 @bot 可用角色模板 以更换其他模型")
             elif chatGLMCharacters.get(event.sender.id)=="Cozi":
+                if privateGlmReply!=True:
+                    return
+                await modelReply(event, chatGLMCharacters.get(event.sender.id))
+            elif chatGLMCharacters.get(event.sender.id)=="glm-4":
                 if privateGlmReply!=True:
                     return
                 await modelReply(event, chatGLMCharacters.get(event.sender.id))
@@ -352,6 +356,10 @@ def main(bot, master, logger):
             if privateGlmReply!=True:
                 return
             await modelReply(event, replyModel)
+        elif replyModel=="glm-4":
+            if privateGlmReply!=True:
+                return
+            await modelReply(event, replyModel)
         elif replyModel=="gpt3.5" or replyModel=="gpt3.5-dev":
             if privateGlmReply != True:
                 return
@@ -427,7 +435,7 @@ def main(bot, master, logger):
             if str(event.message_chain).split("#")[1] in allcharacters:
                 meta1=str(event.message_chain).split("#")[1]
 
-                if meta1=="Gemini" or meta1=="Cozi" or meta1=="lolimigpt" or meta1=="gpt3.5":
+                if meta1=="Gemini" or meta1=="Cozi" or meta1=="lolimigpt" or meta1=="gpt3.5" or meta1=="glm-4":
                     pass
 
                 else:
@@ -467,8 +475,8 @@ def main(bot, master, logger):
         if str(event.message_chain).startswith("设定#"):
             if str(event.message_chain).split("#")[1] in allcharacters:
                 meta1=str(event.message_chain).split("#")[1]
-                print(meta1)
-                if meta1=="Gemini" or meta1=="Cozi" or meta1=="lolimigpt" or meta1=="gpt3.5":
+                #print(meta1)
+                if meta1=="Gemini" or meta1=="Cozi" or meta1=="lolimigpt" or meta1=="gpt3.5" or meta1=="glm-4":
                     pass
                 else:
                     meta1 = allcharacters.get(meta1)
@@ -484,7 +492,7 @@ def main(bot, master, logger):
                     meta1["bot_name"] = botName
 
                 chatGLMCharacters[event.sender.id] =meta1
-                logger.info("当前：",chatGLMCharacters)
+                logger.info("当前："+meta1)
                 with open('data/chatGLMCharacters.yaml', 'w', encoding="utf-8") as file:
                     yaml.dump(chatGLMCharacters, file, allow_unicode=True)
                 await bot.send(event,"设定成功")
@@ -535,6 +543,8 @@ def main(bot, master, logger):
             elif (chatGLMCharacters.get(event.sender.id) == "Cozi"):
                 await modelReply(event, chatGLMCharacters.get(event.sender.id))
             elif chatGLMCharacters.get(event.sender.id) == "lolimigpt":
+                await modelReply(event, chatGLMCharacters.get(event.sender.id))
+            elif chatGLMCharacters.get(event.sender.id) == "glm-4":
                 await modelReply(event, chatGLMCharacters.get(event.sender.id))
             elif chatGLMCharacters.get(event.sender.id) == "gemini":
                 text = str(event.message_chain).replace("@" + str(bot.qq) + "", '').replace(" ", "").replace("/g", "")
@@ -642,6 +652,8 @@ def main(bot, master, logger):
         elif (((replyModel=="gpt3.5" or chatGLMCharacters.get(event.sender.id)=="gpt3.5" or replyModel=="gpt3.5-dev") and (At(bot.qq) in event.message_chain) or str(event.message_chain).startswith("/gpt"))) and (glmReply == True or (trustglmReply == True and str(event.sender.id) in trustUser)):
             await modelReply(event,replyModel)
         elif (((replyModel=="Cozi" or chatGLMCharacters.get(event.sender.id)=="Cozi") and (At(bot.qq) in event.message_chain) or str(event.message_chain).startswith("/cozi"))) and (glmReply == True or (trustglmReply == True and str(event.sender.id) in trustUser)):
+            await modelReply(event, replyModel)
+        elif (((replyModel=="glm-4" or chatGLMCharacters.get(event.sender.id)=="glm-4") and (At(bot.qq) in event.message_chain) or str(event.message_chain).startswith("/glm4"))) and (glmReply == True or (trustglmReply == True and str(event.sender.id) in trustUser)):
             await modelReply(event, replyModel)
         elif (((replyModel=="lolimigpt" or chatGLMCharacters.get(event.sender.id)=="lolimigpt") and (At(bot.qq) in event.message_chain) or str(event.message_chain).startswith("/gpt"))) and (glmReply == True or (trustglmReply == True and str(event.sender.id) in trustUser)):
             await modelReply(event, replyModel)
@@ -1240,12 +1252,18 @@ def main(bot, master, logger):
             lolimi_bot_in = str("你是" + botName + ",我是" + event.sender.member_name + "," + allcharacters.get(
                 "lolimigpt")).replace("【bot】",
                                    botName).replace("【用户】", event.sender.member_name)
+            glm4_bot_in = str("你是" + botName + ",我是" + event.sender.member_name + "," + allcharacters.get(
+                "glm-4")).replace("【bot】",
+                                      botName).replace("【用户】", event.sender.member_name)
         else:
             bot_in = str("你是" + botName + ",我是" + event.sender.nickname + "," + allcharacters.get(
                 "gpt3.5")).replace("【bot】",
                                    botName).replace("【用户】", event.sender.nickname)
             lolimi_bot_in = str("你是" + botName + ",我是" + event.sender.nickname + "," + allcharacters.get(
                 "lolimigpt")).replace("【bot】",
+                                      botName).replace("【用户】", event.sender.nickname)
+            lolimi_bot_in = str("你是" + botName + ",我是" + event.sender.nickname + "," + allcharacters.get(
+                "glm-4")).replace("【bot】",
                                       botName).replace("【用户】", event.sender.nickname)
         try:
             text = str(event.message_chain).replace("@" + str(bot.qq) + "", '').replace("/gpt", "")
@@ -1275,6 +1293,8 @@ def main(bot, master, logger):
                     logger.error("没金币了喵")
                     await bot.send(event, "api没金币了喵\n请发送 @bot 可用角色模板 以更换其他模型", True)
                     return
+            elif modelHere=="glm-4":
+                rep=await glm4(prompt1,glm4_bot_in)
             # await bot.send(event,rep.get('content'))
             prompt1.append(rep)
             # 超过10，移除第一个元素
@@ -1284,6 +1304,9 @@ def main(bot, master, logger):
                 del prompt1[0]
                 del prompt1[0]
             chatGLMData[event.sender.id] = prompt1
+            # 写入文件
+            with open('data/chatGLMData.yaml', 'w', encoding="utf-8") as file:
+                yaml.dump(chatGLMData, file, allow_unicode=True)
             logger.info(f"{modelHere} bot 回复：" + rep.get('content'))
             await tstt(rep.get('content'), event)
         except Exception as e:
