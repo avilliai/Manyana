@@ -1312,7 +1312,7 @@ def main(bot, master, logger):
                     return
             elif modelHere=="glm-4":
                 rep=await glm4(prompt1,glm4_bot_in)
-                if "禁止违规问答" in rep:
+                if "禁止违规问答" in rep.get("content"):
                     logger.error("敏感喽，不能用了")
                     await bot.send(event,rep.get("content"))
                     return
