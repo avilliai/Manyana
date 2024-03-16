@@ -461,7 +461,7 @@ def main(bot, master, logger):
                     meta1["user_name"] = setName
                 chatGLMCharacters[event.sender.id] = meta1
 
-                logger.info("当前：",chatGLMCharacters)
+                logger.info("当前："+str(chatGLMCharacters))
                 with open('data/chatGLMCharacters.yaml', 'w', encoding="utf-8") as file:
                     yaml.dump(chatGLMCharacters, file, allow_unicode=True)
                 await bot.send(event,"设定成功")
@@ -501,7 +501,7 @@ def main(bot, master, logger):
                     meta1["bot_name"] = botName
 
                 chatGLMCharacters[event.sender.id] =meta1
-                logger.info("当前："+meta1)
+                logger.info("当前："+str(meta1))
                 with open('data/chatGLMCharacters.yaml', 'w', encoding="utf-8") as file:
                     yaml.dump(chatGLMCharacters, file, allow_unicode=True)
                 await bot.send(event,"设定成功")
