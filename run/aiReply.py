@@ -1331,8 +1331,8 @@ def main(bot, master, logger):
             await tstt(rep.get('content'), event)
         except Exception as e:
             logger.error(e)
-            await bot.send(event,e)
-            await bot.send(event, "出错，请联系master反馈\n或发送 \n@bot 可用角色模板\n 以更换其他模型", True)
+            await bot.send(event,str(e))
+            await bot.send(event, "出错，请重试，如果无效请 联系master反馈问题\n或发送 \n@bot 可用角色模板\n 以更换其他模型", True)
 
 if __name__ == '__main__':
 
