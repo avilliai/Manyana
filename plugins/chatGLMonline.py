@@ -38,7 +38,7 @@ def chatGLM1(api_key,bot_info,text):
     return str1
 async def glm4(prompt,meta):
     prompt.insert(0,{"role":"user","content":meta})
-    prompt.insert(1, {"role": "assistant", "content": "好的喵~主人"})
+    prompt.insert(1, {"role": "assistant", "content": "好的~"})
     url = f"https://api.lolimi.cn/API/AI/zp.php?msg={str(prompt)}"
     async with httpx.AsyncClient(timeout=100) as client:  # 100s超时
         r = await client.get(url)  # 发起请求
