@@ -1279,7 +1279,7 @@ def main(bot, master, logger):
             lolimi_bot_in = str("你是" + botName + ",我是" + event.sender.nickname + "," + allcharacters.get(
                 "lolimigpt")).replace("【bot】",
                                       botName).replace("【用户】", event.sender.nickname)
-            lolimi_bot_in = str("你是" + botName + ",我是" + event.sender.nickname + "," + allcharacters.get(
+            glm4_bot_in = str("你是" + botName + ",我是" + event.sender.nickname + "," + allcharacters.get(
                 "glm-4")).replace("【bot】",
                                       botName).replace("【用户】", event.sender.nickname)
         try:
