@@ -1283,11 +1283,13 @@ def main(bot, master, logger):
                 "glm-4")).replace("【bot】",
                                       botName).replace("【用户】", event.sender.nickname)
         try:
-            text = str(event.message_chain).replace("@" + str(bot.qq) + "", '').replace("/gpt", "")
+            text = str(event.message_chain).replace("@" + str(bot.qq) + " ", '').replace("/gpt", "")
             if text == "" or text == " ":
                 text = "在吗"
             for saa in noRes:
+                #print(text, saa)
                 if text == saa:
+
                     logger.warning("与屏蔽词匹配，不回复")
                     return
             if event.sender.id in chatGLMData:
