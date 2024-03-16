@@ -23,7 +23,7 @@ async def lolimigpt(prompt,meta):
     url=f"https://api.lolimi.cn/API/AI/mfcat3.5.php?sx={meta}&msg={str(prompt)}"
     async with httpx.AsyncClient(timeout=100) as client: #100s超时
         r = await client.get(url)  #发起请求
-        return r.text
+        return {"role":"assistant","content":r.text}
 if __name__ == '__main__':
     prompt=[]
     while True:

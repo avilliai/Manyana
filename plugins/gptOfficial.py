@@ -30,6 +30,7 @@ def gptUnofficial(prompt,apikeys,proxy,bot_info):
         http_client=httpx.Client(base_url="https://api.xty.app/v1", follow_redirects=True)
     )
     prompt.insert(0, {"role": "user", "content": bot_info})
+    prompt.insert(1, {"role": "assistant", "content": "好的主人喵"})
     chat_completion = client.chat.completions.create(
         messages=prompt,
         model="gpt-3.5-turbo",

@@ -244,97 +244,15 @@ def main(bot, master, logger):
             elif chatGLMCharacters.get(event.sender.id)=="Cozi":
                 if privateGlmReply!=True:
                     return
-                try:
-                    text = str(event.message_chain).replace("@" + str(bot.qq) + "", '').replace(" ", "")
-                    if text=="" or text==" ":
-                        text="在吗"
-                    elif text=="/clear":
-                        return
-                    if event.sender.id in coziData:
-                        prompt1=coziData.get(event.sender.id)
-                        prompt1.append({"content": text,"role": "user"})
-                    else:
-                        prompt1=[{"content": text,"role": "user"}]
-                    logger.info("cozi.version bot 接受提问："+text)
-                    loop = asyncio.get_event_loop()
-                    rep = await loop.run_in_executor(None, cozeBotRep,CoziUrl,prompt1,proxy)
-                    #await bot.send(event,rep.get('content'))
-                    prompt1.append(rep)
-                    coziData[event.sender.id]=prompt1
-                    logger.info("cozi.version bot 回复："+rep.get('content'))
-                    await tstt(rep.get('content'),event)
-                except Exception as e:
-                    logger.error(e)
-                    await bot.send(event,"出错，请更换模型，或联系master检查代理或重试\n或发送 @bot 可用角色模板 以更换其他模型",True)
+                await modelReply(event, chatGLMCharacters.get(event.sender.id))
             elif chatGLMCharacters.get(event.sender.id)=="gpt3.5" or chatGLMCharacters.get(event.sender.id)=="gpt3.5-dev":
                 if privateGlmReply!=True:
                     return
-                try:
-                    text = str(event.message_chain).replace("@" + str(bot.qq) + "", '').replace(" ", "")
-                    if text=="" or text==" ":
-                        text="在吗"
-                    elif text=="/clear":
-                        return
-                    if event.sender.id in coziData:
-                        prompt1=coziData.get(event.sender.id)
-                        prompt1.append({"content": text,"role": "user"})
-                    else:
-                        prompt1=[{"content": text,"role": "user"}]
-                    logger.info("gpt3.5(官方) bot 接受提问："+text)
-                    loop = asyncio.get_event_loop()
-                    bot_in = str("你是" + botName + ",我是" + event.sender.nickname + "," + allcharacters.get(
-                        "gpt3.5")).replace("【bot】",
-                                             botName).replace("【用户】", event.sender.nickname)
-                    if replyModel=="gpt3.5-dev":
-                        rep = await loop.run_in_executor(None, gptUnofficial, prompt1, gptkeys, proxy, bot_in)
-                    else:
-                        rep = await loop.run_in_executor(None, gptOfficial,prompt1,gptkeys,proxy,bot_in)
-                    #await bot.send(event,rep.get('content'))
-                    # 更新该用户prompt
-                    prompt1.append(rep)
-                    # 超过10，移除第一个元素
-
-                    if len(prompt1) > maxPrompt:
-                        logger.error("gpt3.5 prompt超限，移除元素")
-                        del prompt1[0]
-                        del prompt1[0]
-                    coziData[event.sender.id] = prompt1
-
-
-
-                    logger.info("gpt3.5(官方) bot 回复："+rep.get('content'))
-                    await tstt(rep.get('content'),event)
-                except Exception as e:
-                    logger.error(e)
-                    await bot.send(event,"出错，请更换模型，或联系master检查openai-keys\n或发送 @bot 可用角色模板 以更换其他模型",True)
+                await modelReply(event, replyModel)
             elif chatGLMCharacters.get(event.sender.id)=="lolimigpt":
                 if privateGlmReply!=True:
                     return
-                try:
-                    text = str(event.message_chain).replace("@" + str(bot.qq) + "", '').replace(" ", "")
-                    if text=="" or text==" ":
-                        text="在吗"
-                    elif text=="/clear":
-                        return
-                    if event.sender.id in coziData:
-                        prompt1=coziData.get(event.sender.id)
-                        prompt1.append({"content": text,"role": "user"})
-                    else:
-                        prompt1=[{"content": text,"role": "user"}]
-                    logger.info("lolimigpt bot 接受提问："+text)
-                    rep = await lolimigpt(prompt1,str("你是"+meta.get("bot_name")+","+meta.get("bot_info")).replace(meta.get("bot_name"),botName))
-                    #await bot.send(event,rep.get('content'))
-                    prompt1.append({"role":"assistant","content":rep})
-                    coziData[event.sender.id]=prompt1
-                    logger.info("lolimigpt 回复："+rep)
-                    if "令牌额度" in rep:
-                        logger.error("没金币了喵")
-                        await bot.send(event, "api没金币了喵\n请发送 @bot 可用角色模板 以更换其他模型", True)
-                        return
-                    await tstt(rep,event)
-                except Exception as e:
-                    logger.error(e)
-                    await bot.send(event,"出错，请更换模型，或联系master检查代理或重试\n或发送 @bot 可用角色模板 以更换其他模型",True)
+                await modelReply(event, chatGLMCharacters.get(event.sender.id))
         #判断模型类型
         elif replyModel=="characterglm":
             #如果用户有自己的key
@@ -433,95 +351,15 @@ def main(bot, master, logger):
         elif replyModel=="Cozi":
             if privateGlmReply!=True:
                 return
-            try:
-                text = str(event.message_chain).replace("@" + str(bot.qq) + "", '').replace(" ", "")
-                if text=="" or text==" ":
-                    text="在吗"
-                elif text=="/clear":
-                    return
-                if event.sender.id in coziData:
-                    prompt1=coziData.get(event.sender.id)
-                    prompt1.append({"content": text,"role": "user"})
-                else:
-                    prompt1=[{"content": text,"role": "user"}]
-                logger.info("cozi.version bot 接受提问："+text)
-                loop = asyncio.get_event_loop()
-                rep = await loop.run_in_executor(None, cozeBotRep,CoziUrl,prompt1,proxy)
-                #await bot.send(event,rep.get('content'))
-                prompt1.append(rep)
-                coziData[event.sender.id]=prompt1
-                logger.info("cozi.version bot 回复："+rep.get('content'))
-                await tstt(rep.get('content'),event)
-            except Exception as e:
-                logger.error(e)
-                await bot.send(event,"出错，请更换模型，或联系master检查代理或重试\n或发送 @bot 可用角色模板 以更换其他模型",True)
+            await modelReply(event, replyModel)
         elif replyModel=="gpt3.5" or replyModel=="gpt3.5-dev":
             if privateGlmReply != True:
                 return
-            try:
-                text = str(event.message_chain).replace("@" + str(bot.qq) + "", '').replace(" ", "")
-                if text == "" or text == " ":
-                    text = "在吗"
-                elif text == "/clear":
-                    return
-                if event.sender.id in coziData:
-                    prompt1 = coziData.get(event.sender.id)
-                    prompt1.append({"content": text, "role": "user"})
-                else:
-                    prompt1 = [{"content": text, "role": "user"}]
-                logger.info("gpt3.5(官方) bot 接受提问：" + text)
-                loop = asyncio.get_event_loop()
-                bot_in = str("你是" + botName + ",我是" + event.sender.nickname + "," + allcharacters.get(
-                    "gpt3.5")).replace("【bot】",
-                                       botName).replace("【用户】", event.sender.nickname)
-                if replyModel == "gpt3.5-dev":
-                    rep = await loop.run_in_executor(None, gptUnofficial, prompt1, gptkeys, proxy, bot_in)
-                else:
-                    rep = await loop.run_in_executor(None, gptOfficial, prompt1, gptkeys, proxy, bot_in)
-                # await bot.send(event,rep.get('content'))
-                prompt1.append(rep)
-                # 超过10，移除第一个元素
-
-                if len(prompt1) > maxPrompt:
-                    logger.error("gpt3.5对话超限，移除元素")
-                    del prompt1[0]
-                    del prompt1[0]
-                coziData[event.sender.id] = prompt1
-
-                logger.info("gpt3.5(官方) bot 回复：" + rep.get('content'))
-                await tstt(rep.get('content'), event)
-            except Exception as e:
-                logger.error(e)
-                await bot.send(event, "出错，请更换模型，或联系master检查openai-keys\n或发送 @bot 可用角色模板 以更换其他模型", True)
+            await modelReply(event, replyModel)
         elif replyModel=="lolimigpt":
             if privateGlmReply!=True:
                 return
-            try:
-                text = str(event.message_chain).replace("@" + str(bot.qq) + "", '').replace(" ", "")
-                if text=="" or text==" ":
-                    text="在吗"
-                elif text=="/clear":
-                    return
-                if event.sender.id in coziData:
-                    prompt1=coziData.get(event.sender.id)
-                    prompt1.append({"content": text,"role": "user"})
-                else:
-                    prompt1=[{"content": text,"role": "user"}]
-                logger.info("lolimigpt bot 接受提问："+text)
-                rep = await lolimigpt(prompt1,str("你是"+meta.get("bot_name")+","+meta.get("bot_info")).replace(meta.get("bot_name"),botName))
-                #await bot.send(event,rep.get('content'))
-                prompt1.append({"role":"assistant","content":rep})
-                coziData[event.sender.id]=prompt1
-                logger.info("lolimigpt 回复："+rep)
-                if "令牌额度" in rep:
-                    logger.error("没金币了喵")
-                    await bot.send(event, "api没金币了喵\n请发送 @bot 可用角色模板 以更换其他模型", True)
-                    return
-                await tstt(rep,event)
-            except Exception as e:
-                logger.error(e)
-                await bot.send(event,"出错，请更换模型，或联系master检查代理或重试\n或发送 @bot 可用角色模板 以更换其他模型",True)
-
+            await modelReply(event, replyModel)
     # 私聊中chatGLM清除本地缓存
     @bot.on(FriendMessage)
     async def clearPrompt(event: FriendMessage):
@@ -693,103 +531,11 @@ def main(bot, master, logger):
 
         if event.sender.id in chatGLMCharacters and (At(bot.qq) in event.message_chain) and (glmReply == True or (trustglmReply == True and str(event.sender.id) in trustUser)):
             if chatGLMCharacters.get(event.sender.id)=="gpt3.5" or chatGLMCharacters.get(event.sender.id)=="gpt3.5-dev":
-                bot_in = str("你是" + botName + ",我是" + event.sender.member_name + "," + allcharacters.get(
-                    "gpt3.5")).replace("【bot】",
-                                       botName).replace("【用户】", event.sender.member_name)
-                try:
-                    text = str(event.message_chain).replace("@" + str(bot.qq) + "", '').replace(" ", "")
-                    if text == "" or text == " ":
-                        text = "在吗"
-                    for saa in noRes:
-                        if text == saa:
-                            logger.warning("与屏蔽词匹配，不回复")
-                            return
-                    if event.sender.id in coziData:
-                        prompt1 = coziData.get(event.sender.id)
-                        prompt1.append({"content": text, "role": "user"})
-                    else:
-                        prompt1 = [{"content": text, "role": "user"}]
-                        await bot.send(event, "即将开始对话，如果遇到异常请发送 /clear 清理对话")
-                    logger.info("gpt3.5(官方)  bot 接受提问：" + text)
-                    loop = asyncio.get_event_loop()
-                    if replyModel == "gpt3.5-dev":
-                        rep = await loop.run_in_executor(None, gptUnofficial, prompt1, gptkeys, proxy, bot_in)
-                    else:
-                        rep = await loop.run_in_executor(None, gptOfficial, prompt1, gptkeys, proxy, bot_in)
-                    # await bot.send(event,rep.get('content'))
-                    prompt1.append(rep)
-                    # 超过10，移除第一个元素
-
-                    if len(prompt1) > maxPrompt:
-                        logger.error("gpt3.5 prompt超限，移除元素")
-                        del prompt1[0]
-                        del prompt1[0]
-                    coziData[event.sender.id] = prompt1
-                    logger.info("gpt3.5(官方) bot 回复：" + rep.get('content'))
-                    await tstt(rep.get('content'), event)
-                except Exception as e:
-                    logger.error(e)
-                    await bot.send(event, "出错，请联系master反馈\n或发送 \n@bot 可用角色模板\n 以更换其他模型", True)
-                #
+                await modelReply(event, replyModel)
             elif (chatGLMCharacters.get(event.sender.id) == "Cozi"):
-                try:
-                    text = str(event.message_chain).replace("@" + str(bot.qq) + "", '').replace(" ", "").replace("/cozi",
-                                                                                                                 "")
-                    if text == "" or text == " ":
-                        text = "在吗"
-                    for saa in noRes:
-                        if text == saa:
-                            logger.warning("与屏蔽词匹配，Gemini不回复")
-                            return
-                    if event.sender.id in coziData:
-                        prompt1 = coziData.get(event.sender.id)
-                        prompt1.append({"content": text, "role": "user"})
-                    else:
-                        prompt1 = [{"content": text, "role": "user"}]
-                        await bot.send(event, "即将开始对话，如果遇到异常请发送 /clear 清理对话")
-                    logger.info("cozi.version bot 接受提问：" + text)
-                    loop = asyncio.get_event_loop()
-                    rep = await loop.run_in_executor(None, cozeBotRep, CoziUrl, prompt1, proxy)
-                    # await bot.send(event,rep.get('content'))
-                    prompt1.append(rep)
-                    coziData[event.sender.id] = prompt1
-                    logger.info("cozi.version bot 回复：" + rep.get('content'))
-                    await tstt(rep.get('content'), event)
-                except Exception as e:
-                    logger.error(e)
-                    await bot.send(event, "出错，请联系master反馈\n或发送 \n@bot 可用角色模板\n 以更换其他模型", True)
+                await modelReply(event, chatGLMCharacters.get(event.sender.id))
             elif chatGLMCharacters.get(event.sender.id) == "lolimigpt":
-                try:
-                    text = str(event.message_chain).replace("@" + str(bot.qq) + "", '').replace(" ", "").replace("/gpt", "")
-                    if text == "" or text == " ":
-                        text = "在吗"
-                    for saa in noRes:
-                        if text == saa:
-                            logger.warning("与屏蔽词匹配，lolimigpt不回复")
-                            return
-                    if event.sender.id in coziData:
-                        prompt1 = coziData.get(event.sender.id)
-                        prompt1.append({"content": text, "role": "user"})
-                    else:
-                        prompt1 = [{"content": text, "role": "user"}]
-                        await bot.send(event, "即将开始对话，如果遇到异常请发送 /clear 清理对话")
-                    logger.info("lolimigpt bot 接受提问：" + text)
-                    met = str("你是" + meta.get("bot_name") + "," + meta.get("bot_info")).replace(meta.get("bot_name"),
-                                                                                                botName)
-                    logger.info(met)
-                    rep = await lolimigpt(str(prompt1), met)
-                    # await bot.send(event,rep.get('content'))
-                    prompt1.append({"role": "assistant", "content": rep})
-                    coziData[event.sender.id] = prompt1
-                    logger.info("lolimigpt bot 回复：" + rep)
-                    if "令牌额度" in rep:
-                        logger.error("没金币了喵")
-                        await bot.send(event, "api没金币了喵\n请发送 \n@bot 可用角色模板 \n以更换其他模型", True)
-                        return
-                    await tstt(rep, event)
-                except Exception as e:
-                    logger.error(e)
-                    await bot.send(event, "模型调用出错\n请发送 /clear 以清理聊天记录并重试\n或发送 @bot 可用角色模板 以更换其他模型")
+                await modelReply(event, chatGLMCharacters.get(event.sender.id))
             elif chatGLMCharacters.get(event.sender.id) == "gemini":
                 text = str(event.message_chain).replace("@" + str(bot.qq) + "", '').replace(" ", "").replace("/g", "")
                 for saa in noRes:
@@ -894,100 +640,11 @@ def main(bot, master, logger):
                     await bot.send(event, "chatGLM启动出错，请联系master\n或发送 @bot 可用角色模板 以更换其他模型")
         #判断模型
         elif (((replyModel=="gpt3.5" or chatGLMCharacters.get(event.sender.id)=="gpt3.5" or replyModel=="gpt3.5-dev") and (At(bot.qq) in event.message_chain) or str(event.message_chain).startswith("/gpt"))) and (glmReply == True or (trustglmReply == True and str(event.sender.id) in trustUser)):
-            bot_in = str("你是" + botName + ",我是" + event.sender.member_name + "," + allcharacters.get(
-                "gpt3.5")).replace("【bot】",
-                                   botName).replace("【用户】", event.sender.member_name)
-            try:
-                text = str(event.message_chain).replace("@" + str(bot.qq) + "", '').replace("/gpt", "")
-                if text == "" or text == " ":
-                    text = "在吗"
-                for saa in noRes:
-                    if text == saa:
-                        logger.warning("与屏蔽词匹配，不回复")
-                        return
-                if event.sender.id in coziData:
-                    prompt1 = coziData.get(event.sender.id)
-                    prompt1.append({"content": text, "role": "user"})
-                else:
-                    prompt1 = [{"content": text, "role": "user"}]
-                    await bot.send(event, "即将开始对话，如果遇到异常请发送 /clear 清理对话")
-                logger.info("gpt3.5(官方)  bot 接受提问：" + text)
-                loop = asyncio.get_event_loop()
-                if replyModel == "gpt3.5-dev":
-                    rep = await loop.run_in_executor(None, gptUnofficial, prompt1, gptkeys, proxy, bot_in)
-                else:
-                    rep = await loop.run_in_executor(None, gptOfficial, prompt1, gptkeys, proxy, bot_in)
-                # await bot.send(event,rep.get('content'))
-                prompt1.append(rep)
-                # 超过10，移除第一个元素
-
-                if len(prompt1) > maxPrompt:
-                    logger.error("gpt3.5 prompt超限，移除元素")
-                    del prompt1[0]
-                    del prompt1[0]
-                coziData[event.sender.id] = prompt1
-                logger.info("gpt3.5(官方) bot 回复：" + rep.get('content'))
-                await tstt(rep.get('content'), event)
-            except Exception as e:
-                logger.error(e)
-                await bot.send(event, "出错，请联系master反馈\n或发送 \n@bot 可用角色模板\n 以更换其他模型", True)
+            await modelReply(event,replyModel)
         elif (((replyModel=="Cozi" or chatGLMCharacters.get(event.sender.id)=="Cozi") and (At(bot.qq) in event.message_chain) or str(event.message_chain).startswith("/cozi"))) and (glmReply == True or (trustglmReply == True and str(event.sender.id) in trustUser)):
-            try:
-                text = str(event.message_chain).replace("@" + str(bot.qq) + "", '').replace(" ", "").replace("/cozi","")
-                if text=="" or text==" ":
-                    text="在吗"
-                for saa in noRes:
-                    if text == saa:
-                        logger.warning("与屏蔽词匹配，Gemini不回复")
-                        return
-                if event.sender.id in coziData:
-                    prompt1=coziData.get(event.sender.id)
-                    prompt1.append({"content": text,"role": "user"})
-                else:
-                    prompt1=[{"content": text,"role": "user"}]
-                    await bot.send(event,"即将开始对话，如果遇到异常请发送 /clear 清理对话")
-                logger.info("cozi.version bot 接受提问："+text)
-                loop = asyncio.get_event_loop()
-                rep = await loop.run_in_executor(None, cozeBotRep,CoziUrl,prompt1,proxy)
-                #await bot.send(event,rep.get('content'))
-                prompt1.append(rep)
-                coziData[event.sender.id]=prompt1
-                logger.info("cozi.version bot 回复："+rep.get('content'))
-                await tstt(rep.get('content'),event)
-            except Exception as e:
-                logger.error(e)
-                await bot.send(event,"出错，请联系master反馈\n或发送 \n@bot 可用角色模板\n 以更换其他模型",True)
+            await modelReply(event, replyModel)
         elif (((replyModel=="lolimigpt" or chatGLMCharacters.get(event.sender.id)=="lolimigpt") and (At(bot.qq) in event.message_chain) or str(event.message_chain).startswith("/gpt"))) and (glmReply == True or (trustglmReply == True and str(event.sender.id) in trustUser)):
-            try:
-                text = str(event.message_chain).replace("@" + str(bot.qq) + "", '').replace(" ", "").replace("/gpt","")
-                if text=="" or text==" ":
-                    text="在吗"
-                for saa in noRes:
-                    if text == saa:
-                        logger.warning("与屏蔽词匹配，lolimigpt不回复")
-                        return
-                if event.sender.id in coziData:
-                    prompt1=coziData.get(event.sender.id)
-                    prompt1.append({"content": text,"role": "user"})
-                else:
-                    prompt1=[{"content": text,"role": "user"}]
-                    await bot.send(event,"即将开始对话，如果遇到异常请发送 /clear 清理对话")
-                logger.info("lolimigpt bot 接受提问："+text)
-                met=str("你是"+meta.get("bot_name")+","+meta.get("bot_info")).replace(meta.get("bot_name"),botName)
-                logger.info(met)
-                rep = await lolimigpt(str(prompt1),met)
-                #await bot.send(event,rep.get('content'))
-                prompt1.append({"role":"assistant","content":rep})
-                coziData[event.sender.id]=prompt1
-                logger.info("lolimigpt bot 回复："+rep)
-                if "令牌额度" in rep:
-                    logger.error("没金币了喵")
-                    await bot.send(event, "api没金币了喵\n请发送 \n@bot 可用角色模板 \n以更换其他模型", True)
-                    return
-                await tstt(rep,event)
-            except Exception as e:
-                logger.error(e)
-                await bot.send(event, "模型调用出错\n请发送 /clear 以清理聊天记录并重试\n或发送 @bot 可用角色模板 以更换其他模型")
+            await modelReply(event, replyModel)
         elif (((replyModel=="gemini" or chatGLMCharacters.get(event.sender.id)=="Gemini") and (At(bot.qq) in event.message_chain) or str(event.message_chain).startswith("/g"))) and (glmReply == True or (trustglmReply == True and str(event.sender.id) in trustUser)):
             text = str(event.message_chain).replace("@" + str(bot.qq) + "", '').replace(" ", "").replace("/g", "")
             for saa in noRes:
@@ -1574,8 +1231,64 @@ def main(bot, master, logger):
 
     # 运行异步函数
 
+    async def modelReply(event,modelHere):
+        global trustUser, chatGLMapikeys, chatGLMData, chatGLMCharacters, chatGLMsingelUserKey, userdict, yubanid, luoyueid, GeminiData, coziData
+        if event.type != 'FriendMessage':
+            bot_in = str("你是" + botName + ",我是" + event.sender.member_name + "," + allcharacters.get(
+            "gpt3.5")).replace("【bot】",
+                               botName).replace("【用户】", event.sender.member_name)
+            lolimi_bot_in = str("你是" + botName + ",我是" + event.sender.member_name + "," + allcharacters.get(
+                "lolimigpt")).replace("【bot】",
+                                   botName).replace("【用户】", event.sender.member_name)
+        else:
+            bot_in = str("你是" + botName + ",我是" + event.sender.nickname + "," + allcharacters.get(
+                "gpt3.5")).replace("【bot】",
+                                   botName).replace("【用户】", event.sender.nickname)
+            lolimi_bot_in = str("你是" + botName + ",我是" + event.sender.nickname + "," + allcharacters.get(
+                "lolimigpt")).replace("【bot】",
+                                      botName).replace("【用户】", event.sender.nickname)
+        try:
+            text = str(event.message_chain).replace("@" + str(bot.qq) + "", '').replace("/gpt", "")
+            if text == "" or text == " ":
+                text = "在吗"
+            for saa in noRes:
+                if text == saa:
+                    logger.warning("与屏蔽词匹配，不回复")
+                    return
+            if event.sender.id in chatGLMData:
+                prompt1 = chatGLMData.get(event.sender.id)
+                prompt1.append({"content": text, "role": "user"})
+            else:
+                prompt1 = [{"content": text, "role": "user"}]
+                await bot.send(event, "即将开始对话，如果遇到异常请发送 /clear 清理对话")
+            logger.info(f"{modelHere}  bot 接受提问：" + text)
+            loop = asyncio.get_event_loop()
+            if modelHere == "gpt3.5-dev":
+                rep = await loop.run_in_executor(None, gptUnofficial, prompt1, gptkeys, proxy, bot_in)
+            elif modelHere=="gpt3.5":
+                rep = await loop.run_in_executor(None, gptOfficial, prompt1, gptkeys, proxy, bot_in)
+            elif modelHere=="Cozi":
+                rep = await loop.run_in_executor(None, cozeBotRep, CoziUrl, prompt1, proxy)
+            elif modelHere=="lolimigpt":
+                rep = await lolimigpt(prompt1,lolimi_bot_in)
+                if "令牌额度" in rep:
+                    logger.error("没金币了喵")
+                    await bot.send(event, "api没金币了喵\n请发送 @bot 可用角色模板 以更换其他模型", True)
+                    return
+            # await bot.send(event,rep.get('content'))
+            prompt1.append(rep)
+            # 超过10，移除第一个元素
 
-
+            if len(prompt1) > maxPrompt:
+                logger.error("gpt3.5 prompt超限，移除元素")
+                del prompt1[0]
+                del prompt1[0]
+            chatGLMData[event.sender.id] = prompt1
+            logger.info(f"{modelHere} bot 回复：" + rep.get('content'))
+            await tstt(rep.get('content'), event)
+        except Exception as e:
+            logger.error(e)
+            await bot.send(event, "出错，请联系master反馈\n或发送 \n@bot 可用角色模板\n 以更换其他模型", True)
 
 if __name__ == '__main__':
 
