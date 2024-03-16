@@ -26,7 +26,7 @@ def main(bot,logger,berturl,proxy):
     with open('config/settings.yaml', 'r', encoding='utf-8') as f:
         result = yaml.load(f.read(), Loader=yaml.FullLoader)
     spe=result.get("bert_speakers")
-    modelScope=["塔菲","阿梓","otto","丁真","星瞳","东雪莲","嘉然","孙笑川","亚托克斯","文静","鹿鸣"]
+    modelScope=["塔菲","阿梓","otto","丁真","星瞳","东雪莲","嘉然","孙笑川","亚托克斯","文静","鹿鸣","奶绿","七海","恬豆","科比"]
     @bot.on(GroupMessage)
     async def taffySayf(event:GroupMessage):
 

@@ -115,42 +115,60 @@ async def superVG(data,mode,urls=""):
     elif mode=="modelscopeTTS":
         speaker = data.get("speaker")
         text = data.get("text")
-        if text=="" or text==" ":
-            text="哼哼"
+        if text == "" or text == " ":
+            text = "哼哼"
         if speaker == "阿梓":
             url = "https://www.modelscope.cn/api/v1/studio/xzjosh/Azusa-Bert-VITS2-2.3/gradio/run/predict"
-            newurp="https://www.modelscope.cn/api/v1/studio/xzjosh/Azusa-Bert-VITS2-2.3/gradio/file="
-        elif speaker=="otto":
+            newurp = "https://www.modelscope.cn/api/v1/studio/xzjosh/Azusa-Bert-VITS2-2.3/gradio/file="
+        elif speaker == "otto":
             url = "https://www.modelscope.cn/api/v1/studio/xzjosh/otto-Bert-VITS2-2.3/gradio/run/predict"
             newurp = "https://www.modelscope.cn/api/v1/studio/xzjosh/otto-Bert-VITS2-2.3/gradio/file="
-        elif speaker=="塔菲":
+        elif speaker == "塔菲":
+            speaker = "永雏塔菲"
             url = "https://www.modelscope.cn/api/v1/studio/xzjosh/Taffy-Bert-VITS2-2.3/gradio/run/predict"
             newurp = "https://www.modelscope.cn/api/v1/studio/xzjosh/Taffy-Bert-VITS2-2.3/gradio/file="
-        elif speaker=="星瞳":
+        elif speaker == "星瞳":
             url = "https://www.modelscope.cn/api/v1/studio/xzjosh/2568-Bert-VITS2/gradio/run/predict"
             newurp = "https://www.modelscope.cn/api/v1/studio/xzjosh/2568-Bert-VITS2/gradio/file="
-        elif speaker=="丁真":
+        elif speaker == "丁真":
             url = "https://www.modelscope.cn/api/v1/studio/xzjosh/DZ-Bert-VITS2-2.3/gradio/run/predict"
             newurp = "https://www.modelscope.cn/api/v1/studio/xzjosh/DZ-Bert-VITS2-2.3/gradio/file="
-        elif speaker=="东雪莲":
+        elif speaker == "东雪莲":
             url = "https://www.modelscope.cn/api/v1/studio/xzjosh/Azuma-Bert-VITS2.0.2/gradio/run/predict"
             newurp = "https://www.modelscope.cn/api/v1/studio/xzjosh/Azuma-Bert-VITS2.0.2/gradio/file="
-        elif speaker=="嘉然":
+        elif speaker == "嘉然":
             url = "https://www.modelscope.cn/api/v1/studio/xzjosh/Diana-Bert-VITS2-2.3/gradio/run/predict"
             newurp = "https://www.modelscope.cn/api/v1/studio/xzjosh/Diana-Bert-VITS2-2.3/gradio/file="
-        elif speaker=="孙笑川":
+        elif speaker == "孙笑川":
             url = "https://www.modelscope.cn/api/v1/studio/xzjosh/SXC-Bert-VITS2/gradio/run/predict"
             newurp = "https://www.modelscope.cn/api/v1/studio/xzjosh/SXC-Bert-VITS2/gradio/file="
-        elif speaker=="鹿鸣":
-
+        elif speaker == "鹿鸣":
+            speaker = "Lumi"
             url = "https://www.modelscope.cn/api/v1/studio/xzjosh/Lumi-Bert-VITS2/gradio/run/predict"
             newurp = "https://www.modelscope.cn/api/v1/studio/xzjosh/Lumi-Bert-VITS2/gradio/file="
-        elif speaker=="文静":
+        elif speaker == "文静":
+            speaker = "Wenjing"
             url = "https://www.modelscope.cn/api/v1/studio/xzjosh/Wenjing-Bert-VITS2/gradio/run/predict"
             newurp = "https://www.modelscope.cn/api/v1/studio/xzjosh/Wenjing-Bert-VITS2/gradio/file="
-        elif speaker=="亚托克斯":
+        elif speaker == "亚托克斯":
+            speaker = "Aatrox"
             url = "https://www.modelscope.cn/api/v1/studio/xzjosh/Aatrox-Bert-VITS2/gradio/run/predict"
             newurp = "https://www.modelscope.cn/api/v1/studio/xzjosh/Aatrox-Bert-VITS2/gradio/file="
+        elif speaker == "奶绿":
+            speaker = "明前奶绿"
+            url = "https://www.modelscope.cn/api/v1/studio/xzjosh/LAPLACE-Bert-VITS2-2.3/gradio/run/predict"
+            newurp = "https://www.modelscope.cn/api/v1/studio/xzjosh/LAPLACE-Bert-VITS2-2.3/gradio/file="
+        elif speaker == "七海":
+            speaker = "Nana7mi"
+            url = "https://www.modelscope.cn/api/v1/studio/xzjosh/Nana7mi-Bert-VITS2/gradio/run/predict"
+            newurp = "https://www.modelscope.cn/api/v1/studio/xzjosh/Nana7mi-Bert-VITS2/gradio/file="
+        elif speaker == "恬豆":
+            speaker = "Bekki"
+            url = "https://www.modelscope.cn/api/v1/studio/xzjosh/Bekki-Bert-VITS2/gradio/run/predict"
+            newurp = "https://www.modelscope.cn/api/v1/studio/xzjosh/Bekki-Bert-VITS2/gradio/file="
+        elif speaker == "科比":
+            url = "https://www.modelscope.cn/api/v1/studio/xzjosh/Kobe-Bert-VITS2-2.3/gradio/run/predict"
+            newurp = "https://www.modelscope.cn/api/v1/studio/xzjosh/Kobe-Bert-VITS2-2.3/gradio/file="
         data = {
             "data": ["<zh>" + text, speaker, 0.5, 0.5, 0.9, 1, "ZH", None, "Happy", "Text prompt", "", 0.7],
             "event_data": None,

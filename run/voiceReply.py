@@ -177,7 +177,7 @@ def main(bot,master,logger):
                     str1 += i + " |"
                 await bot.send(event, "可用角色如下：\n" + str1)
             elif voicegg=="modelscopeTTS":
-                modelScope=["塔菲","阿梓","otto","丁真","星瞳","东雪莲","嘉然","孙笑川","亚托克斯","文静","鹿鸣"]
+                modelScope=["塔菲","阿梓","otto","丁真","星瞳","东雪莲","嘉然","孙笑川","亚托克斯","文静","鹿鸣","奶绿","七海","恬豆","科比"]
                 str1 = ""
                 for i in modelScope:
                     str1 += i + " |"
