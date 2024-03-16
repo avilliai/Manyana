@@ -1308,10 +1308,15 @@ def main(bot, master, logger):
                 rep = await loop.run_in_executor(None, cozeBotRep, CoziUrl, prompt1, proxy)
             elif modelHere=="lolimigpt":
                 rep = await lolimigpt(prompt1,lolimi_bot_in)
-                if "令牌额度" in rep:
+                if "令牌额度" in rep.get("content"):
                     logger.error("没金币了喵")
                     await bot.send(event, "api没金币了喵\n请发送 @bot 可用角色模板 以更换其他模型", True)
                     return
+                if "敏感词汇" in rep.get("content"):
+                    logger.error("敏感词了搁这")
+                    await bot.send(event, "触发了敏感词审核，请发送 /clear 以清理对话", True)
+                    return
+
             elif modelHere=="glm-4":
                 rep=await glm4(prompt1,glm4_bot_in)
                 if "禁止违规问答" == rep.get("content"):
