@@ -1314,7 +1314,7 @@ def main(bot, master, logger):
                     return
                 if "敏感词汇" in rep.get("content"):
                     logger.error("敏感词了搁这")
-                    await bot.send(event, "触发了敏感词审核，请发送 /clear 以清理对话", True)
+                    await bot.send(event, "触发了敏感词审核，已自动清理聊天记录", True)
                     try:
                         chatGLMData.pop(event.sender.id)
                     except Exception as e:
@@ -1326,8 +1326,7 @@ def main(bot, master, logger):
                 if "禁止违规问答" == rep.get("content"):
                     logger.error("敏感喽，不能用了")
                     await bot.send(event,rep.get("content"))
-                    await bot.send(event,"发送 /clear 以清除聊天内容")
-
+                    await bot.send(event,"触发了敏感内容审核，已自动清理聊天记录")
                     try:
                         chatGLMData.pop(event.sender.id)
                     except Exception as e:
