@@ -33,6 +33,7 @@
 
 </details>
 哥们不是学程序设计的，如果你发现了bot存在一些我没有注意到的问题，或者有对项目的建议请及时提issue🎃
+
 ### dlc
 
 - [so-vits-svc语音合成](https://github.com/avilliai/Moe-SVC-api)
@@ -387,14 +388,26 @@ news:
 </details>
 
 # 🚑可能遇到的问题
-<details markdown='1'><summary>更新不了是怎么回事</summary>
->如果你已经更新到了2.28之后的版本，更新时程序将自动处理冲突文件，不会再出现此问题
 
->2.28之前的版本更新遇到问题，往往是因为你自定义过的文件在仓库这边的母版又有了变动，所以会导致冲突，这时更新会列出冲突的文件
+<details markdown='114514'><summary>语音听不到</summary>
+[issue1](https://github.com/avilliai/Manyana/issues/1)
+
+</details>
+
+<details markdown='114513'><summary>自动重新登录</summary>
+[issue3](https://github.com/avilliai/Manyana/issues/3)
+
+</details>
+
+<details markdown='1'><summary>更新不了</summary>   
+如果你已经更新到了2.28之后的版本，更新时程序将自动处理冲突文件，不会再出现此问题。
+   
+如果遇到网络问题更新失败，选择镜像源更新即可，二者是同步的。
+
+>2.28之前的版本更新遇到问题，往往是因为你自定义过的文件在仓库这边的母版又有了变动，需要手动处理冲突文件，更新代码时git会列出冲突的文件
 - 重命名你的冲突的文件，不要与原来一样
 - 更新，拉取新的文件
 - 根据旧的文件**填写**新的对应文件
->另一种情况是你连不上git服务器，那最好找个代理并配置git代理吧，裸连纯看运气，不是很稳
 
 </details>
 
