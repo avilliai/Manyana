@@ -1315,6 +1315,10 @@ def main(bot, master, logger):
                 if "敏感词汇" in rep.get("content"):
                     logger.error("敏感词了搁这")
                     await bot.send(event, "触发了敏感词审核，请发送 /clear 以清理对话", True)
+                    try:
+                        chatGLMData.pop(event.sender.id)
+                    except Exception as e:
+                        logger.error(e)
                     return
 
             elif modelHere=="glm-4":
@@ -1323,6 +1327,11 @@ def main(bot, master, logger):
                     logger.error("敏感喽，不能用了")
                     await bot.send(event,rep.get("content"))
                     await bot.send(event,"发送 /clear 以清除聊天内容")
+
+                    try:
+                        chatGLMData.pop(event.sender.id)
+                    except Exception as e:
+                        logger.error(e)
                     return
             prompt1.append(rep)
             # 超过10，移除第一个元素
