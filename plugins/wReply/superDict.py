@@ -94,7 +94,11 @@ def outPutDic(aimGrrrr=None):
     if aimGrrrr==None:
         las=os.listdir("data/autoReply/lexicon")
         for ias in las:
-            outPPP(ias)
+
+            try:
+                outPPP(ias)
+            except:
+                pass
     else:
         outPPP(aimGrrrr+".xlsx")
 def outPPP(ias):
