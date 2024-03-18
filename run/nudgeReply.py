@@ -24,7 +24,7 @@ from plugins.gptOfficial import gptOfficial
 from plugins.modelsLoader import modelLoader
 from plugins.translater import translate
 from plugins.vitsGenerate import voiceGenerate, taffySayTest, sovits, edgetts, outVits, modelscopeTTS, superVG
-from plugins.yubanGPT import lolimigpt
+from plugins.yubanGPT import lolimigpt, lolimigpt2
 
 
 def main(bot,master,logger,berturl,proxy):
@@ -113,7 +113,7 @@ def main(bot,master,logger,berturl,proxy):
                 if nudgeornot==False:
                     rep = random.choice(normal_Reply)
                 elif chatmodel=="lolimigpt":
-                    rep=await lolimigpt(random.choice(["戳你一下","摸摸头","戳戳你的头"]),str("你是"+meta1.get("bot_name")+","+meta1.get("bot_info")))
+                    rep=await lolimigpt2(random.choice(["戳你一下","摸摸头","戳戳你的头"]),str("你是"+meta1.get("bot_name")+","+meta1.get("bot_info")))
                 elif chatmodel=="gpt3.5":
                     bot_in=str(gpt3.replace("【bot】",meta1.get("bot_name")).replace("【用户】","主人"))
                     prompt1 = [

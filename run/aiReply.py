@@ -28,7 +28,7 @@ from plugins.rwkvHelper import rwkvHelper
 from plugins.translater import translate
 from plugins.vitsGenerate import superVG, voiceGenerate
 from plugins.wReply.mohuReply import mohuaddReplys
-from plugins.yubanGPT import yubanGPTReply, luoyueGPTReply, lolimigpt
+from plugins.yubanGPT import yubanGPTReply, luoyueGPTReply, lolimigpt, lolimigpt2
 
 
 #1
@@ -1307,7 +1307,7 @@ def main(bot, master, logger):
             elif modelHere=="Cozi":
                 rep = await loop.run_in_executor(None, cozeBotRep, CoziUrl, prompt1, proxy)
             elif modelHere=="lolimigpt":
-                rep = await lolimigpt(prompt1,lolimi_bot_in)
+                rep = await lolimigpt2(prompt1,lolimi_bot_in)
                 if "令牌额度" in rep.get("content"):
                     logger.error("没金币了喵")
                     await bot.send(event, "api没金币了喵\n请发送 @bot 可用角色模板 以更换其他模型", True)
@@ -1347,8 +1347,13 @@ def main(bot, master, logger):
             await tstt(rep.get('content'), event)
         except Exception as e:
             logger.error(e)
+            try:
+                chatGLMData.pop(event.sender.id)
+                logger.info("清理用户prompt")
+            except Exception as e:
+                logger.error("清理用户prompt出错")
             await bot.send(event,str(e))
-            await bot.send(event, "出错，请重试，如果无效请 联系master反馈问题\n或发送 \n@bot 可用角色模板\n 以更换其他模型", True)
+            await bot.send(event, "出错，自动清理异常prompt.....请重试，如果无效请 联系master反馈问题\n或发送 \n@bot 可用角色模板\n 以更换其他模型", True)
 
 if __name__ == '__main__':
 
