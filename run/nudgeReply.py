@@ -115,7 +115,7 @@ def main(bot,master,logger,berturl,proxy):
                     rep = random.choice(normal_Reply)
                 elif chatmodel=="lolimigpt":
 
-                    rep=await lolimigpt2([{"role":"user","content":random.choice(["戳你一下","摸摸头","戳戳你的头"])}],str("你是"+meta1.get("bot_name")+","+lolimig.replace("【bot】",meta1.get("bot_name")).replace("【用户】","指挥")))
+                    rep=await lolimigpt2([{"role":"user","content":random.choice(["戳你一下","摸摸头","戳戳你的头"])}],str("你是"+meta1.get("bot_name")+","+lolimig.replace("【bot】",meta1.get("bot_name")).replace("【用户】","主人")))
                     rep = rep.get("content")
                 elif chatmodel=="gpt3.5":
                     bot_in=str(gpt3.replace("【bot】",meta1.get("bot_name")).replace("【用户】","主人"))
