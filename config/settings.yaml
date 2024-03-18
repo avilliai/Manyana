@@ -84,6 +84,7 @@ wReply:
   replyRate: 80            #共有词库不艾特时的回复几率
   colorfulCharacter: 30    #彩色小人回复的机率，彩色小人替代原有回复
   sizhi: false             #是否启用思知ai
+  friendmes: False         #是否用wReply部分私聊回复(不建议，建议用上面ai的)
   turnMessage: false       #是否开启私聊转发
   voiceRate: 40            #语音回复几率，过高将增大设备负担
   MaxAllowableLength: 7    #最大允许字符长度倍数,该参数为7时,如果字符串总长为关键字长度的7倍以上，则不进行匹配。如关键词是 早 ,可以匹配 早上好 ,不会匹配 我早就把作业做完了

@@ -51,6 +51,7 @@ def main(bot,config,sizhiKey,logger):
     global yamlData
     yamlData = result.get("wReply")
     editPermission=yamlData.get("editPermission")
+    friendmes=yamlData.get("friendmes")
     global chineseVoiceRate
     chineseVoiceRate = yamlData.get("chineseVoiceRate")
     global voiceRate
@@ -571,6 +572,8 @@ def main(bot,config,sizhiKey,logger):
         global botName
         global sizhi
         global chatGLMsingelUserKey
+        if friendmes==False:
+            return
         #if event.sender.id in blUser:
             #return
         #开启信任用户回复，且为信任用户
