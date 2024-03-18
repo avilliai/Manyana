@@ -55,6 +55,7 @@ def main(bot,master,logger,berturl,proxy):
     nudgeornot=result0.get("chatGLM").get("nudgeReply")
     meta1 = result0.get("chatGLM").get("bot_info").get("default")
     gpt3=result0.get("chatGLM").get("bot_info").get("gpt3.5")
+    lolimig = result0.get("chatGLM").get("bot_info").get("lolimigpt")
     glm_4=result0.get("chatGLM").get("bot_info").get("glm-4")
     logger.info("语音合成模式："+voicegg+" 语音合成speaker："+speaker92)
     with open('config/api.yaml', 'r', encoding='utf-8') as f:
@@ -113,7 +114,8 @@ def main(bot,master,logger,berturl,proxy):
                 if nudgeornot==False:
                     rep = random.choice(normal_Reply)
                 elif chatmodel=="lolimigpt":
-                    rep=await lolimigpt2([{"role":"user","content":random.choice(["戳你一下","摸摸头","戳戳你的头"])}],str("你是"+meta1.get("bot_name")+","+meta1.get("bot_info")))
+
+                    rep=await lolimigpt2([{"role":"user","content":random.choice(["戳你一下","摸摸头","戳戳你的头"])}],str("你是"+meta1.get("bot_name")+","+lolimig.replace("【bot】",meta1.get("bot_name"))))
                     rep = rep.get("content")
                 elif chatmodel=="gpt3.5":
                     bot_in=str(gpt3.replace("【bot】",meta1.get("bot_name")).replace("【用户】","主人"))
