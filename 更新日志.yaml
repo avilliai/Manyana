@@ -167,3 +167,5 @@
   - glm-4/lolimigpt/gpt3.5 分别支持了单独的角色设置
   - 增加对话本地存储
   - 扩充modelscopeTTS可用的speaker,新增"奶绿","七海","恬豆","科比"
+2024/3/18:
+  - 调整对接lolimigpt，更好的上下文对话表现
