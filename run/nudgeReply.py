@@ -50,7 +50,7 @@ def main(bot,master,logger,berturl,proxy):
     with open('config/settings.yaml', 'r', encoding='utf-8') as f:
         result0 = yaml.load(f.read(), Loader=yaml.FullLoader)
     speaker92 = result0.get("chatGLM").get("speaker")
-    voiceLangType = result0.get("chatGLM").get("voiceLangType")
+    voiceLangType = str(result0.get("chatGLM").get("voiceLangType"))
     voicegg=result0.get("voicegenerate")
     chatmodel=result0.get("chatGLM").get("model")
     nudgeornot=result0.get("chatGLM").get("nudgeReply")

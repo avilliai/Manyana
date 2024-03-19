@@ -95,7 +95,7 @@ def main(bot, master, logger):
     meta = result.get("chatGLM").get("bot_info").get("default")
     context= result.get("chatGLM").get("context")
     maxPrompt = result.get("chatGLM").get("maxPrompt")
-    voiceLangType = result.get("chatGLM").get("voiceLangType")
+    voiceLangType = str(result.get("chatGLM").get("voiceLangType"))
     allcharacters=result.get("chatGLM").get("bot_info")
     turnMessage=result.get("wReply").get("turnMessage")
     maxTextLen = result.get("chatGLM").get("maxLen")
@@ -451,7 +451,7 @@ def main(bot, master, logger):
                 else:
                     with open('config/settings.yaml', 'r', encoding='utf-8') as f:
                         resy = yaml.load(f.read(), Loader=yaml.FullLoader)
-                    meta12 = resy.get("chatGLM").get("bot_info").get(str(meta1))
+                    meta12 = resy.get("chatGLM").get("bot_info").get(str(meta12))
                     try:
                         setName = userdict.get(str(event.sender.id)).get("userName")
                     except:
@@ -493,7 +493,7 @@ def main(bot, master, logger):
                 else:
                     with open('config/settings.yaml', 'r', encoding='utf-8') as f:
                         resy = yaml.load(f.read(), Loader=yaml.FullLoader)
-                    meta12 = resy.get("chatGLM").get("bot_info").get(str(meta1))
+                    meta12 = resy.get("chatGLM").get("bot_info").get(str(meta12))
                     try:
                         setName = userdict.get(str(event.sender.id)).get("userName")
                     except:
