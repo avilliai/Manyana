@@ -11,8 +11,23 @@ import requests
 import soundfile
 
 from plugins.RandomStr import random_str
+from plugins.translater import translate
 from vits.MoeGoe import vG
-async def superVG(data,mode,urls=""):
+async def superVG(data,mode,urls="",langmode="<zh>"):
+    if langmode=="<jp>":
+        try:
+            #r=await translate(data.get("text"))
+            #print(r)
+            data["text"]=await translate(data.get("text"))
+        except:
+            print("语音合成翻译出错")
+    elif langmode=="<en>":
+        try:
+            #r=await translate(data.get("text"))
+            #print(r)
+            data["text"]=await translate(data.get("text"),"ZH_CN2EN")
+        except:
+            print("语音合成翻译出错")
     if mode=="edgetts":
         speaker = data.get("speaker")
         text = data.get("text")
@@ -170,7 +185,7 @@ async def superVG(data,mode,urls=""):
             url = "https://www.modelscope.cn/api/v1/studio/xzjosh/Kobe-Bert-VITS2-2.3/gradio/run/predict"
             newurp = "https://www.modelscope.cn/api/v1/studio/xzjosh/Kobe-Bert-VITS2-2.3/gradio/file="
         data = {
-            "data": ["<zh>" + text, speaker, 0.5, 0.5, 0.9, 1, "ZH", None, "Happy", "Text prompt", "", 0.7],
+            "data": [text, speaker, 0.5, 0.5, 0.9, 1, "auto", None, "Happy", "Text prompt", "", 0.7],
             "event_data": None,
             "fn_index": 0,
             "dataType": ["textbox", "dropdown", "slider", "slider", "slider", "slider", "dropdown", "audio", "textbox",

@@ -95,6 +95,7 @@ def main(bot, master, logger):
     meta = result.get("chatGLM").get("bot_info").get("default")
     context= result.get("chatGLM").get("context")
     maxPrompt = result.get("chatGLM").get("maxPrompt")
+    voiceLangType = result.get("chatGLM").get("voiceLangType")
     allcharacters=result.get("chatGLM").get("bot_info")
     turnMessage=result.get("wReply").get("turnMessage")
     maxTextLen = result.get("chatGLM").get("maxLen")
@@ -862,7 +863,7 @@ def main(bot, master, logger):
                         await bot.send(event, st1, True)
                 else:
                     logger.info(f"调用{voicegg}语音合成")
-                    path = await superVG(data1, voicegg, berturl)
+                    path = await superVG(data1, voicegg, berturl,voiceLangType)
                     await bot.send(event, Voice(path=path))
                 if withText == True:
                     await bot.send(event, st1, True)
@@ -1189,7 +1190,7 @@ def main(bot, master, logger):
                         await bot.send(event, st1, True)
                 else:
                     logger.info(f"调用{voicegg}语音合成")
-                    path=await superVG(data1,voicegg,berturl)
+                    path=await superVG(data1,voicegg,berturl,voiceLangType)
                     await bot.send(event,Voice(path=path))
                 if withText == True:
                     await bot.send(event, st1, True)
