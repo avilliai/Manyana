@@ -442,9 +442,9 @@ def main(bot, master, logger):
         global chatGLMCharacters
         if str(event.message_chain).startswith("设定#"):
             if str(event.message_chain).split("#")[1] in allcharacters:
-                meta1=str(event.message_chain).split("#")[1]
+                meta12=str(event.message_chain).split("#")[1]
 
-                if meta1=="Gemini" or meta1=="Cozi" or meta1=="lolimigpt" or meta1=="gpt3.5" or meta1=="glm-4":
+                if meta12=="Gemini" or meta12=="Cozi" or meta12=="lolimigpt" or meta12=="gpt3.5" or meta12=="glm-4":
                     pass
 
                 else:
@@ -485,9 +485,9 @@ def main(bot, master, logger):
         global chatGLMCharacters,userdict
         if str(event.message_chain).startswith("设定#"):
             if str(event.message_chain).split("#")[1] in allcharacters:
-                meta1=str(event.message_chain).split("#")[1]
+                meta12=str(event.message_chain).split("#")[1]
                 #print(meta1)
-                if meta1=="Gemini" or meta1=="Cozi" or meta1=="lolimigpt" or meta1=="gpt3.5" or meta1=="glm-4":
+                if meta12=="Gemini" or meta12=="Cozi" or meta12=="lolimigpt" or meta12=="gpt3.5" or meta12=="glm-4":
                     pass
                 else:
                     with open('config/settings.yaml', 'r', encoding='utf-8') as f:
