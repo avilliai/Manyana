@@ -443,24 +443,26 @@ def main(bot, master, logger):
         global chatGLMCharacters
         if str(event.message_chain).startswith("设定#"):
             if str(event.message_chain).split("#")[1] in allcharacters:
-                meta1=str(event.message_chain).split("#")[1]
+                meta12=str(event.message_chain).split("#")[1]
 
-                if meta1=="Gemini" or meta1=="Cozi" or meta1=="lolimigpt" or meta1=="gpt3.5" or meta1=="glm-4":
+                if meta12=="Gemini" or meta12=="Cozi" or meta12=="lolimigpt" or meta12=="gpt3.5" or meta12=="glm-4":
                     pass
 
                 else:
-                    meta1 = allcharacters.get(str(event.message_chain).split("#")[1])
+                    with open('config/settings.yaml', 'r', encoding='utf-8') as f:
+                        resy = yaml.load(f.read(), Loader=yaml.FullLoader)
+                    meta12 = resy.get("chatGLM").get("bot_info").get(str(meta1))
                     try:
                         setName = userdict.get(str(event.sender.id)).get("userName")
                     except:
                         setName = event.sender.nickname
                     if setName == None:
                         setName = event.sender.nickname
-                    meta1["user_info"] = meta1.get("user_info").replace("指挥", setName).replace("yucca", botName)
-                    meta1["bot_info"] = meta1.get("bot_info").replace("指挥", setName).replace("yucca", botName)
-                    meta1["bot_name"] = botName
-                    meta1["user_name"] = setName
-                chatGLMCharacters[event.sender.id] = meta1
+                    meta12["user_info"] = meta12.get("user_info").replace(meta12.get("user_name"), setName).replace(meta12.get("bot_name"), botName)
+                    meta12["bot_info"] = meta12.get("bot_info").replace(meta12.get("user_name"), setName).replace(meta12.get("bot_name"), botName)
+                    meta12["bot_name"] = botName
+                    meta12["user_name"] = setName
+                chatGLMCharacters[event.sender.id] = meta12
 
                 logger.info("当前："+str(chatGLMCharacters))
                 with open('data/chatGLMCharacters.yaml', 'w', encoding="utf-8") as file:
@@ -484,25 +486,26 @@ def main(bot, master, logger):
         global chatGLMCharacters,userdict
         if str(event.message_chain).startswith("设定#"):
             if str(event.message_chain).split("#")[1] in allcharacters:
-                meta1=str(event.message_chain).split("#")[1]
+                meta12=str(event.message_chain).split("#")[1]
                 #print(meta1)
-                if meta1=="Gemini" or meta1=="Cozi" or meta1=="lolimigpt" or meta1=="gpt3.5" or meta1=="glm-4":
+                if meta12=="Gemini" or meta12=="Cozi" or meta12=="lolimigpt" or meta12=="gpt3.5" or meta12=="glm-4":
                     pass
                 else:
-                    meta1 = allcharacters.get(meta1)
+                    with open('config/settings.yaml', 'r', encoding='utf-8') as f:
+                        resy = yaml.load(f.read(), Loader=yaml.FullLoader)
+                    meta12 = resy.get("chatGLM").get("bot_info").get(str(meta1))
                     try:
                         setName = userdict.get(str(event.sender.id)).get("userName")
                     except:
-                        setName = event.sender.member_name
+                        setName = event.sender.nickname
                     if setName == None:
-                        setName = event.sender.member_name
-                    meta1["user_name"] = meta1.get("user_name").replace("指挥", setName)
-                    meta1["user_info"] = meta1.get("user_info").replace("指挥", setName).replace("yucca", botName)
-                    meta1["bot_info"] = meta1.get("bot_info").replace("指挥", setName).replace("yucca", botName)
-                    meta1["bot_name"] = botName
-
-                chatGLMCharacters[event.sender.id] =meta1
-                logger.info("当前："+str(meta1))
+                        setName = event.sender.nickname
+                    meta12["user_info"] = meta12.get("user_info").replace(meta12.get("user_name"), setName).replace(meta12.get("bot_name"), botName)
+                    meta12["bot_info"] = meta12.get("bot_info").replace(meta12.get("user_name"), setName).replace(meta12.get("bot_name"), botName)
+                    meta12["bot_name"] = botName
+                    meta12["user_name"] = setName
+                chatGLMCharacters[event.sender.id] = meta12
+                logger.info("当前："+str(meta12))
                 with open('data/chatGLMCharacters.yaml', 'w', encoding="utf-8") as file:
                     yaml.dump(chatGLMCharacters, file, allow_unicode=True)
                 await bot.send(event,"设定成功")
