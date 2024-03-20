@@ -165,23 +165,12 @@ def main(bot,master,logger):
     @bot.on(GroupMessage)
     async def checkCharacters(event:GroupMessage):
         if "角色" in str(event.message_chain) and At(bot.qq) in event.message_chain and "模板" not in str(event.message_chain):
-            if voicegg=="vits":
-                str1=""
-                for i in characters:
-                    str1+=i+" |"
-                await bot.send(event,"可用角色如下：\n"+str1)
-            if voicegg=="outVits":
-                await bot.send(event, "可用角色如下：\n" + str(outVitsSpeakers))
-                str1 = ""
-                for i in characters:
-                    str1 += i + " |"
-                await bot.send(event, "可用角色如下：\n" + str1)
-            elif voicegg=="modelscopeTTS":
-                modelScope=["塔菲","阿梓","otto","丁真","星瞳","东雪莲","嘉然","孙笑川","亚托克斯","文静","鹿鸣","奶绿","七海","恬豆","科比"]
-                str1 = ""
-                for i in modelScope:
-                    str1 += i + " |"
-                await bot.send(event, "可用角色如下：\n" + str1)
+
+            str1="vits可用角色如下：\n"
+            for i in characters:
+                str1+=i+" |"
+            str1+="\n\noutVits语音合成可用角色如下：\n"+str(outVitsSpeakers)+"\n\nbert_vits2可用角色如下"+str(["塔菲","阿梓","otto","丁真","星瞳","东雪莲","嘉然","孙笑川","亚托克斯","文静","鹿鸣","奶绿","七海","恬豆","科比"])
+            await bot.send(event, "语音合成可用角色：\n" + str1)
             await bot.send(event,"可发送 xx说....... 以进行语音合成")
 
 
