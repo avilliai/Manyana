@@ -194,7 +194,7 @@ def updaat(f=False,jump=False,source="3"):
             # os.system("pip install selenium")
     if source=="3":
         logger.info("拉取bot代码\n--------------------")
-        logger.warning("建议优先选用与搭建源匹配的更新源")
+        logger.warning("建议优先选用与搭建源匹配的更新源，以免由于更新版本不一致导致意外状况")
         logger.info("选择更新源()：\n1 git源\n2 镜像源(无需代理，同步更新。兼容git源搭建的Manyana git源不可用时可选此项)")
         source = input("选择更新源(输入数字 )：")
     else:
