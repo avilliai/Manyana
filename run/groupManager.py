@@ -449,7 +449,7 @@ def main(bot,config,moderateKey,logger):
                 if str(event.sender.group.id) in banWords:
                     banw=banWords.get(str(event.sender.group.id))
                     banw.append(aimWord)
-                    banWords[str(event.sender.group.id)]=[aimWord]
+                    banWords[str(event.sender.group.id)]=banw
                 else:
                     banWords[str(event.sender.group.id)]=[aimWord]
                 with open('config/autoSettings.yaml', 'r', encoding='utf-8') as f:

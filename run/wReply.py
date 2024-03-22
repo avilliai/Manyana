@@ -414,7 +414,11 @@ def main(bot,config,sizhiKey,logger):
                         for patts in pat:
                             pattern+=".*"+patts
                         pattern+=".*"
-                        match = re.search(pattern, getStr)
+                        try:
+                            match = re.search(pattern, getStr)
+                        except Exception as e:
+                            logger.error(e)
+                            return
                         if match:
                             logger.warning("成功匹配正则表达式：" + pattern)
                             if event.message_chain.count(Image) != 1:
