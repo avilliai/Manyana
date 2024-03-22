@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 import datetime
 import json
+import sys
 from asyncio import sleep
 
 from apscheduler.schedulers.asyncio import AsyncIOScheduler
@@ -173,7 +174,14 @@ def main(bot,master,botName,logger):
 
     @bot.on(Shutdown)
     def stop_scheduler(_):
-        scheduler.shutdown(True)  # 结束定时器
+        try:
+            scheduler.shutdown(True)  # 结束定时器
+        except:
+            pass
+        try:
+            sys.exit(1)
+        except:
+            pass
 
     @scheduler.scheduled_job(CronTrigger(hour=20, minute=40))
     async def timer():

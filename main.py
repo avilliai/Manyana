@@ -239,8 +239,8 @@ if __name__ == '__main__':
     startVer()
     r=1
     while True:
-        sleep(10)
-        logger.info(f"尝试连接mirai....次数{r}")
+        sleep(7)
+        logger.info(f"尝试连接mirai....次数: {r}")
         r+=1
         try:
             bot.run()

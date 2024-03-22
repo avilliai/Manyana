@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 import datetime
 import json
+import sys
 from asyncio import sleep
 
 import httpx
@@ -46,8 +47,14 @@ def main(bot,proxy,nasa_api,logger):
 
     @bot.on(Shutdown)
     def stop_scheduler(_):
-        scheduler.shutdown(True)  # 结束定时器
-
+        try:
+            scheduler.shutdown(True)  # 结束定时器
+        except:
+            pass
+        try:
+            sys.exit(1)
+        except:
+            pass
     @scheduler.scheduled_job(CronTrigger(hour=int(newsT[0]), minute=int(newsT[1])))
     async def newsEveryDay():
         logger.info("获取新闻")
