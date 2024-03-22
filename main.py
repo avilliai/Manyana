@@ -7,6 +7,7 @@ import random
 import subprocess
 import sys
 from asyncio import sleep as sleep1
+from time import sleep
 
 import yaml
 from mirai import Mirai, WebSocketAdapter, GroupMessage, Image, At, Startup, FriendMessage, Shutdown
@@ -123,11 +124,7 @@ if __name__ == '__main__':
             logger.info("制图菜单")
             await bot.send(event, '发送 pet 以查看制图功能列表')
 
-    @bot.on(Shutdown)
-    async def stopWhole(event: Shutdown):
-        logger.info("结束")
-        logger.info(event)
-        sys.exit()
+
 
     @bot.on(Startup)
     async def clearCache(event:Startup):
@@ -240,6 +237,13 @@ if __name__ == '__main__':
     aiDraw.main(bot,logger)
     #gemini_ai.main(bot,logger,master)
     startVer()
-
-    bot.run()
+    r=1
+    while True:
+        sleep(10)
+        logger.info(f"尝试连接mirai....次数{r}")
+        r+=1
+        try:
+            bot.run()
+        except Exception as e:
+            logger.error(e)
 
