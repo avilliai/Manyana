@@ -1223,6 +1223,8 @@ def main(bot, master, logger):
                         logger.error(e)
                         logger.error("vits服务运行出错，请检查是否开启或检查配置")
                         await bot.send(event, st1, True)
+                else:
+                    await bot.send(event, st1, True)
 
 
 
