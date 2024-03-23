@@ -172,3 +172,7 @@
 2024/3/19:
   - modelscopeTTS自动识别输入语言类型(部分模型不支持)
   - ai回复语音部分增加语言类型选项
+2024/3/23:
+  - 新版launcher，下载 https://github.com/avilliai/Manyana/releases/tag/Manyana
+  - 修复 无法关闭问题： 连续点击三次窗口即可彻底关闭launcher及子进程
+  - 修复 自动重启无效问题，配置自动登录即可
