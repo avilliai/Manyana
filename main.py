@@ -205,7 +205,9 @@ if __name__ == '__main__':
         finally:
             file_object.close()
         print(all_the_text)
-
+    @bot.on(Shutdown)
+    async def efff(event: Shutdown):
+        raise SystemExit()
 
     #current_dir = os.path.dirname(os.path.abspath(__file__))
     voiceReply.main(bot, master,logger)  # 语音生成
@@ -237,13 +239,5 @@ if __name__ == '__main__':
     aiDraw.main(bot,logger)
     #gemini_ai.main(bot,logger,master)
     startVer()
-    r=1
-    while True:
-        sleep(7)
-        logger.info(f"尝试连接mirai....次数: {r}")
-        r+=1
-        try:
-            bot.run()
-        except Exception as e:
-            logger.error(e)
+    bot.run()
 
