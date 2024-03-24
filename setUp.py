@@ -232,8 +232,13 @@ def updaat(f=False,jump=False,source="3"):
                 logger.info("开始处理"+i)
                 if os.path.exists("config/"+i):
                     conflict_file_dealter("./temp/"+i,"config/"+i)
+                    if os.path.exists("./temp/conflict " + i):
+                        os.remove("./temp/conflict " + i)
+                    os.rename("./temp/" + i, "./temp/conflict " + i)
                 else:
                     continue
+
+
             if len(os.listdir("./config"))!=14:
                 logger.error("error,未能成功处理冲突文件,缺失了必要文件,暂停更新，请保留temp文件夹下的这些文件："+str(conflict_files)+"\n参考远程仓库对应文件https://github.com/avilliai/Manyana/tree/main/config重新制作本地丢失的文件")
                 input("按任意键以继续：")
