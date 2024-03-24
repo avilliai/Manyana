@@ -58,6 +58,7 @@ def main(bot,config,moderateKey,logger):
 
     helpUser=result1.get("chatGLM").get("helpUser")
     privateGlmReply = result1.get("chatGLM").get("privateGlmReply")
+    trustglmReply = result1.get("chatGLM").get("trustglmReply")
 
     global superUser
     superUser = []
@@ -331,7 +332,7 @@ def main(bot,config,moderateKey,logger):
             await bot.send_friend_message(event.from_id,"你好ヾ(≧▽≦*)o，bot项目地址：https://github.com/avilliai/Manyana\n觉得还不错的话可以点个star哦")
             await bot.send_friend_message(event.from_id, "群内发送 @"+str(botName)+" 帮助 获取功能列表")
             await bot.send_friend_message(event.from_id,"本bot用户群"+str(mainGroup))
-            if privateGlmReply==False:
+            if privateGlmReply==False and trustglmReply :
                 await bot.send_friend_message(event.from_id,"在任意群内累计发送 签到 "+str(trustDays)+"天后将为您开放私聊chatglm权限")
             if helpUser:
                 await bot.send_friend_message(event.from_id,("近期支持了ChatGLM，更智能的ai聊天。\n您可以自行设置apiKey\n(注册送的18大概够用半年)\n==============\n1、注册并登录https://open.bigmodel.cn/overview\n2、点击图2中内容，复制完整apiKey.\n3、在群内或者私聊发送\n设置密钥#apiKey\n\n(群内发送则全群可用，私聊发送则仅个人使用)",Image(path="data/fonts/1.jpg"),Image(path="data/fonts/2.jpg")))
