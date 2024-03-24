@@ -139,18 +139,20 @@ async def superVG(data,mode,urls="",langmode="<zh>"):
             url = "https://www.modelscope.cn/api/v1/studio/xzjosh/otto-Bert-VITS2-2.3/gradio/run/predict"
             newurp = "https://www.modelscope.cn/api/v1/studio/xzjosh/otto-Bert-VITS2-2.3/gradio/file="
         elif speaker == "塔菲":
-            speaker = "永雏塔菲"
-            url = "https://www.modelscope.cn/api/v1/studio/xzjosh/Taffy-Bert-VITS2-2.3/gradio/run/predict"
-            newurp = "https://www.modelscope.cn/api/v1/studio/xzjosh/Taffy-Bert-VITS2-2.3/gradio/file="
+            speaker = "taffy"
+            url = "https://www.modelscope.cn/api/v1/studio/xzjosh/Taffy-Bert-VITS2/gradio/run/predict"
+            newurp = "https://www.modelscope.cn/api/v1/studio/xzjosh/Taffy-Bert-VITS2/gradio/file="
         elif speaker == "星瞳":
-            url = "https://www.modelscope.cn/api/v1/studio/xzjosh/2568-Bert-VITS2/gradio/run/predict"
-            newurp = "https://www.modelscope.cn/api/v1/studio/xzjosh/2568-Bert-VITS2/gradio/file="
+            speaker = "XingTong"
+            url = "https://www.modelscope.cn/api/v1/studio/xzjosh/XingTong-Bert-VITS2/gradio/run/predict"
+            newurp = "https://www.modelscope.cn/api/v1/studio/xzjosh/XingTong-Bert-VITS2/gradio/file="
         elif speaker == "丁真":
             url = "https://www.modelscope.cn/api/v1/studio/xzjosh/DZ-Bert-VITS2-2.3/gradio/run/predict"
             newurp = "https://www.modelscope.cn/api/v1/studio/xzjosh/DZ-Bert-VITS2-2.3/gradio/file="
         elif speaker == "东雪莲":
-            url = "https://www.modelscope.cn/api/v1/studio/xzjosh/Azuma-Bert-VITS2-2.3/gradio/run/predict"
-            newurp = "https://www.modelscope.cn/api/v1/studio/xzjosh/Azuma-Bert-VITS2-2.3/gradio/file="
+            speaker = "Azuma"
+            url = "https://www.modelscope.cn/api/v1/studio/xzjosh/Azuma-Bert-VITS2/gradio/run/predict"
+            newurp = "https://www.modelscope.cn/api/v1/studio/xzjosh/Azuma-Bert-VITS2/gradio/file="
         elif speaker == "嘉然":
             url = "https://www.modelscope.cn/api/v1/studio/xzjosh/Diana-Bert-VITS2-2.3/gradio/run/predict"
             newurp = "https://www.modelscope.cn/api/v1/studio/xzjosh/Diana-Bert-VITS2-2.3/gradio/file="
