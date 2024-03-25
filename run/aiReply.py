@@ -497,9 +497,9 @@ def main(bot, master, logger):
                     try:
                         setName = userdict.get(str(event.sender.id)).get("userName")
                     except:
-                        setName = event.sender.nickname
+                        setName = event.sender.member_name
                     if setName == None:
-                        setName = event.sender.nickname
+                        setName = event.sender.member_name
                     meta12["user_info"] = meta12.get("user_info").replace(meta12.get("user_name"), setName).replace(meta12.get("bot_name"), botName)
                     meta12["bot_info"] = meta12.get("bot_info").replace(meta12.get("user_name"), setName).replace(meta12.get("bot_name"), botName)
                     meta12["bot_name"] = botName
@@ -634,8 +634,12 @@ def main(bot, master, logger):
                 elif str(event.sender.id) in trustUser and trustglmReply == True:
                     logger.info("信任用户进行chatGLM提问")
                     selfApiKey = chatGLM_api_key
-                else:
+                elif glmReply==True:
+                    logger.info("开放群聊glm提问")
                     selfApiKey = chatGLM_api_key
+                else:
+                    await bot.send(event,"Error,该模型不可用")
+                    return
 
                 # 获取角色设定
                 if event.sender.id in chatGLMCharacters:
@@ -750,8 +754,12 @@ def main(bot, master, logger):
             elif str(event.sender.id) in trustUser and trustglmReply == True:
                 logger.info("信任用户进行chatGLM提问")
                 selfApiKey = chatGLM_api_key
-            else:
+            elif glmReply==True:
+                logger.info("开放群聊glm提问")
                 selfApiKey = chatGLM_api_key
+            else:
+                await bot.send(event,"Error,该模型不可用")
+                return
 
             #获取角色设定
             if event.sender.id in chatGLMCharacters:
