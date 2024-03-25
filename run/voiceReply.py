@@ -169,7 +169,7 @@ def main(bot,master,logger):
             str1="vits可用角色如下：\n"
             for i in characters:
                 str1+=i+" |"
-            str1+="\n\noutVits语音合成可用角色如下：\n"+str(outVitsSpeakers)+"\n\nbert_vits2可用角色如下：\n"+str(["塔菲","阿梓","otto","丁真","星瞳","东雪莲","嘉然","孙笑川","亚托克斯","文静","鹿鸣","奶绿","七海","恬豆","科比"])
+            str1+="\n\noutVits语音合成可用角色如下：\n"+str(outVitsSpeakers)+"\n\nbert_vits2可用角色如下：\n"+str(["BT","塔菲","阿梓","otto","丁真","星瞳","东雪莲","嘉然","孙笑川","亚托克斯","文静","鹿鸣","奶绿","七海","恬豆","科比"])
             await bot.send(event, str1)
             await bot.send(event,"可发送 xx说.......  以进行语音合成")
 
