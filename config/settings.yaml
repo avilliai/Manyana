@@ -16,7 +16,7 @@ fuckingnumber: 13         #低于13人退群
 
 #语音合成，小型服务器建议使用modelscopeTTS/outVits/edgetts和vits，so-vits和bert_vits2需要较好的配置以及另行部署
 #建议使用modelscopeTTS或outVits，这些语音都是在外部合成的，几乎不占用本地资源，但有时候可能没法用
-voicegenerate: modelscopeTTS  #语音合成来源so-vits/bert_vits2/vits/modelscopeTTS/outVits/edgetts(edgetts可用speaker请参考config/edgetts.txt)
+voicegenerate: outVits  #语音合成来源so-vits/bert_vits2/vits/modelscopeTTS/outVits/edgetts(edgetts可用speaker请参考config/edgetts.txt)
 RateIfUnavailable: 30  #当设定的语音合成不可用时，默认使用vits合成的几率,中文几率可在最下方调整
 #bert_vits2语音合成配置，不用就别管
 #根据bert_vits_sever/characters.yaml填写所有可用的speakers，不填对应的speaker则无法通过Manyana调用
@@ -42,7 +42,7 @@ chatGLM:       #只是懒得改还叫chatGLM了，实际上是多模型通用设
   voiceRate: 100           #语音回复几率
   voiceLangType: "<zh>"   #语音合成语言类型，可选： <zh> <jp> <en>   目前仅在modelscopeTTS模式下生效
   #当前modelscopeTTS可用角色["BT","塔菲","阿梓","otto","丁真","星瞳","东雪莲","嘉然","孙笑川","亚托克斯","文静","鹿鸣","奶绿","七海","恬豆","科比"]，该模式下任选其一填入即可
-  speaker: "BT"           #语音合成默认音源，根据你的合成模式设定,vits则无需配置,outVits(个人推荐填 瑶瑶)看https://api.lolimi.cn/?action=doc&id=181
+  speaker: "瑶瑶"           #语音合成默认音源，根据你的合成模式设定,vits则无需配置,outVits(个人推荐填 瑶瑶)看https://api.lolimi.cn/?action=doc&id=181
   withText: true           #发送语音是否附带原始文本
   #默认都是characterglm用的，Cozi和Gemini属于特殊值，bot会自动处理不用管这两个，你该写自己的设定就写
   bot_info:
