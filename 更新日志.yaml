@@ -176,3 +176,5 @@
   - 新版launcher，下载 https://github.com/avilliai/Manyana/releases/tag/Manyana
   - 修复 无法关闭问题： 连续点击三次窗口即可彻底关闭launcher及子进程
   - 修复 自动重启无效问题，配置自动登录即可
+2024/3/25:
+  - 更新modelscopeTTS 新增speaker：BT
