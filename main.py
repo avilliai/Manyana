@@ -186,7 +186,6 @@ if __name__ == '__main__':
             shutil.copyfile('temp/userData_back.yaml','data/userData.yaml')
             with open('data/userData.yaml', 'r', encoding='utf-8') as file:
                 data = yaml.load(file, Loader=yaml.FullLoader)
-            global userdict
             userdict = data
 
         # 修改为你bot的名字
