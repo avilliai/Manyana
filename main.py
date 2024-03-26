@@ -163,20 +163,30 @@ if __name__ == '__main__':
         js = file.read()
         severGroupsa = json.loads(js)
         logger.info('已读取服务群聊:' + str(len(severGroupsa)) + '个')
-        if os.path.exists("./temp"):
-            shutil.copyfile('data/userData.yaml', 'temp/userData_back.yaml')
 
-        else:
-            os.mkdir("./temp")
-            shutil.copyfile('data/userData.yaml', 'temp/userData_back.yaml')
-        logger.info("已备份用户数据文件至temp文件夹下")
 
         with open('data/userData.yaml', 'r', encoding='utf-8') as file:
             data = yaml.load(file, Loader=yaml.FullLoader)
         global userdict
         userdict = data
-        userCount = userdict.keys()
-        logger.info('已读取有记录用户:' + str(len(userCount)) + '个')
+        try:
+            userCount = userdict.keys()
+            logger.info('已读取有记录用户:' + str(len(userCount)) + '个')
+            if os.path.exists("./temp"):
+                shutil.copyfile('data/userData.yaml', 'temp/userData_back.yaml')
+
+            else:
+                os.mkdir("./temp")
+                shutil.copyfile('data/userData.yaml', 'temp/userData_back.yaml')
+            logger.info("已备份用户数据文件至temp文件夹下")
+        except Exception as e:
+            logger.error(e)
+            logger.error("用户数据文件出错，自动使用备用文件替换")
+            shutil.copyfile('temp/userData_back.yaml','data/userData.yaml')
+            with open('data/userData.yaml', 'r', encoding='utf-8') as file:
+                data = yaml.load(file, Loader=yaml.FullLoader)
+            global userdict
+            userdict = data
 
         # 修改为你bot的名字
         logger.info('botName:' + botName + '     |     master:' + str(master))
