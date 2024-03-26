@@ -166,7 +166,11 @@ def main(bot,api_KEY,master,config,logger):
                 yaml.dump(userdict, file, allow_unicode=True)
             logger.info("授权"+userId+"完成")
             await bot.send(event,"授权完成,一分钟后数据将完成同步")
-            await bot.send_friend_message(int(userId),"授权完成，解锁部分bot权限(一分钟后)")
+
+            if event.sender.id==master:
+                await bot.send_friend_message(int(userId),"授权完成,开放功能权限。")
+            else:
+                await bot.send_friend_message(int(userId),"授权完成，解锁部分bot权限(一分钟后)")
 
     @bot.on(GroupMessage)
     async def changeCity(event: GroupMessage):
