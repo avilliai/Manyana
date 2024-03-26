@@ -164,11 +164,11 @@ if __name__ == '__main__':
         severGroupsa = json.loads(js)
         logger.info('已读取服务群聊:' + str(len(severGroupsa)) + '个')
         if os.path.exists("./temp"):
-            shutil.copyfile('data/userData.yaml', 'config/userData_back.yaml')
+            shutil.copyfile('data/userData.yaml', 'temp/userData_back.yaml')
 
         else:
             os.mkdir("./temp")
-            shutil.copyfile('data/userData.yaml', 'config/userData_back.yaml')
+            shutil.copyfile('data/userData.yaml', 'temp/userData_back.yaml')
         logger.info("已备份用户数据文件至temp文件夹下")
 
         with open('data/userData.yaml', 'r', encoding='utf-8') as file:
