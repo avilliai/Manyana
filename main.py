@@ -174,10 +174,11 @@ if __name__ == '__main__':
             logger.info('已读取有记录用户:' + str(len(userCount)) + '个')
             if os.path.exists("./temp"):
                 shutil.copyfile('data/userData.yaml', 'temp/userData_back.yaml')
-
+                shutil.copyfile('data/chatGLMData.yaml', 'temp/chatGLMData_back.yaml')
             else:
                 os.mkdir("./temp")
                 shutil.copyfile('data/userData.yaml', 'temp/userData_back.yaml')
+                shutil.copyfile('data/chatGLMData.yaml', 'temp/chatGLMData_back.yaml')
             logger.info("已备份用户数据文件至temp文件夹下")
         except Exception as e:
             logger.error(e)
