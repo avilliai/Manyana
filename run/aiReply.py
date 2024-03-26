@@ -1366,7 +1366,7 @@ def main(bot, master, logger):
                 logger.info("清理用户prompt")
             except Exception as e:
                 logger.error("清理用户prompt出错")
-            await bot.send(event,str(e))
+
             await bot.send(event, "出错，自动清理异常prompt.....请重试，如果无效请 联系master反馈问题\n或发送 \n@bot 可用角色模板\n 以更换其他模型", True)
 
 if __name__ == '__main__':
