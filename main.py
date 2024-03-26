@@ -4,6 +4,7 @@ import json
 
 import os
 import random
+import shutil
 import subprocess
 import sys
 from asyncio import sleep as sleep1
@@ -162,6 +163,14 @@ if __name__ == '__main__':
         js = file.read()
         severGroupsa = json.loads(js)
         logger.info('已读取服务群聊:' + str(len(severGroupsa)) + '个')
+        if os.path.exists("./temp"):
+            shutil.copyfile('data/userData.yaml', 'config/userData_back.yaml')
+
+        else:
+            os.mkdir("./temp")
+            shutil.copyfile('data/userData.yaml', 'config/userData_back.yaml')
+        logger.info("已备份用户数据文件至temp文件夹下")
+
         with open('data/userData.yaml', 'r', encoding='utf-8') as file:
             data = yaml.load(file, Loader=yaml.FullLoader)
         global userdict
