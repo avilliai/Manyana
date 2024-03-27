@@ -81,7 +81,7 @@ git clone --depth 1 https://gh-proxy.com/https://github.com/avilliai/Manyana
   - 自行搭建：启动你自己的mirai，以及Manyana/启动脚本.bat
 ```
 {"botName": "机器人名字", "botQQ": "机器人QQ", "master": "你的QQ", "mainGroup": "你自己群的群号","vertify_key": "这里写你http-api的key,尖括号不用带", "port": "httpapi的运行端口"}
-下面是一个填写示例实例
+下面是一个填写示例实例，如使用整合包，不要修改后两项
 {"botName": "Manyana", "botQQ": "1283992481", "master": "1840094972","mainGroup": "628763673", "vertify_key": "1234567890", "port": "23456"}
 ```
 
