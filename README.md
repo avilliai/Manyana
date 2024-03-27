@@ -35,6 +35,7 @@
 哥们不是学程序设计的，〔矢山代码警告，含大量意义不明变量、判断逻辑〕如果你发现了bot存在一些我没有注意到的问题，或者有对项目的建议请及时提issue🎃
 
 ### dlc
+<details markdown='212'><summary>如何更新</summary>
 
 - [so-vits-svc语音合成](https://github.com/avilliai/Moe-SVC-api)
   - 中文语音合成(很吃显卡)
@@ -48,6 +49,9 @@
   - 适用于NTQQ的Manyana(烂尾项目)
 - [Cyumis](https://github.com/avilliai/Cyumis)
   - 基于官方api的版本，需要先在 https://q.qq.com/qqbot/#/developer/developer-setting 获取token和secret(烂尾项目)
+
+ </details>
+
 ## 方法1：搭建工具部署(推荐)
 **如果你觉得自己从零开始搭建bot比较困难，请使用此方案**
 - 从release下载ManyanaLauncher.rar并解压
@@ -396,6 +400,12 @@ news:
 
 <details markdown='114513'><summary>自动重新登录</summary>
 [issue3](https://github.com/avilliai/Manyana/issues/3)
+
+</details>
+
+<details markdown='1145131'><summary>使用这些源码搭建的bot可以收费运营吗</summary>
+**可以，毕竟热情不能当饭吃**<br>
+比如使用characterglm模型时，如果你的群很多，每个月的成本往往就是难以承受的；这样的话，我十分建议你去开一个爱发电或者把收款码给用户，多少降低一些成本压力。
 
 </details>
 
