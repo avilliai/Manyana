@@ -86,9 +86,15 @@ def main(bot,api_KEY,nasa_api,proxy,logger):
     @bot.on(GroupMessage)
     async def chaijunmaomao(event: GroupMessage):
         if str(event.message_chain)=="柴郡" or (At(bot.qq) in event.message_chain and "柴郡" in str(event.message_chain)):
-            logger.info("有楠桐调用了柴郡猫猫图")
-            asffd=await chaijun()
-            await bot.send(event,Image(path=asffd))
+            try:
+                logger.info("有楠桐调用了柴郡猫猫图")
+                asffd=await chaijun()
+                await bot.send(event,Image(path=asffd))
+                asffd=await chaijun()
+                await bot.send(event,Image(path=asffd))
+            except:
+                logger.error("获取柴郡.png失败")
+                await bot.send(event,"获取失败，请检查网络连接")
     @bot.on(GroupMessage)
     async def handle_group_message(event: GroupMessage):
         # if str(event.message_chain) == '/pic':
