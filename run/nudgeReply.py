@@ -152,7 +152,7 @@ def main(bot,master,logger,berturl,proxy):
                     tep = {"role": "user","parts": [random.choice(["戳你一下", "摸摸头", "戳戳你的头","摸摸~"])]}
                     prompt=[{"role": "user", "parts": [bot_in]},{"role": 'model', "parts": ["好的，已了解您的需求，我会扮演好你设定的角色"]}]
                     prompt.append(tep)
-                    rep =await geminirep(ak=geminiapikey, messages=prompt1)
+                    rep =await geminirep(ak=geminiapikey, messages=prompt)
                 else:
                     with ThreadPoolExecutor() as executor:
                         future = executor.submit(chatGLM1)
