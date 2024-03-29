@@ -237,6 +237,11 @@ def main(bot, master, logger):
                     # 更新该用户prompt
                     prompt.append({"role": 'model', "parts": [r]})
                     # 超过10，移除第一个元素
+
+                    if len(prompt) > maxPrompt:
+                        logger.error("gemini prompt超限，移除元素")
+                        del prompt[2]
+                        del prompt[2]
                     GeminiData[event.sender.id] = prompt
                     # 写入文件
                     with open('data/GeminiData.yaml', 'w', encoding="utf-8") as file:
@@ -247,7 +252,7 @@ def main(bot, master, logger):
                 except Exception as e:
                     logger.error(e)
                     GeminiData.pop(event.sender.id)
-                    await bot.send(event, "gemini启动出错\n请重试\n或发送 @bot 可用角色模板 以更换其他模型")
+                    await bot.send(event, "gemini启动出错,请重试\n或发送 @bot 可用角色模板 以更换其他模型")
             elif chatGLMCharacters.get(event.sender.id)=="Cozi":
                 if privateGlmReply!=True:
                     return
@@ -356,6 +361,10 @@ def main(bot, master, logger):
                 # 更新该用户prompt
                 prompt.append({"role": 'model', "parts": [r]})
                 # 超过10，移除第一个元素
+                if len(prompt) > maxPrompt:
+                    logger.error("gemini prompt超限，移除元素")
+                    del prompt[2]
+                    del prompt[2]
                 GeminiData[event.sender.id] = prompt
                 # 写入文件
                 with open('data/GeminiData.yaml', 'w', encoding="utf-8") as file:
@@ -366,7 +375,7 @@ def main(bot, master, logger):
             except Exception as e:
                 logger.error(e)
                 GeminiData.pop(event.sender.id)
-                await bot.send(event, "gemini启动出错\n请重试\n或发送 @bot 可用角色模板 以更换其他模型")
+                await bot.send(event, "gemini启动出错,请重试\n或发送 @bot 可用角色模板 以更换其他模型")
         elif replyModel=="Cozi":
             if privateGlmReply!=True:
                 return
@@ -601,7 +610,10 @@ def main(bot, master, logger):
                     # 更新该用户prompt
                     prompt.append({"role": 'model', "parts": [r]})
                     await tstt(r, event)
-
+                    if len(prompt) > maxPrompt:
+                        logger.error("gemini prompt超限，移除元素")
+                        del prompt[2]
+                        del prompt[2]
                     GeminiData[event.sender.id] = prompt
                     # 写入文件
                     with open('data/GeminiData.yaml', 'w', encoding="utf-8") as file:
@@ -612,7 +624,7 @@ def main(bot, master, logger):
                 except Exception as e:
                     logger.error(e)
                     GeminiData.pop(event.sender.id)
-                    await bot.send(event, "gemini启动出错\n请重试\n或发送 @bot 可用角色模板 以更换其他模型")
+                    await bot.send(event, "gemini启动出错,请重试\n或发送 @bot 可用角色模板 以更换其他模型")
             elif type(chatGLMCharacters.get(event.sender.id)) == dict:
                 text = str(event.message_chain).replace("@" + str(bot.qq) + "", '').replace(" ", "")
                 logger.info("分支1")
@@ -721,7 +733,10 @@ def main(bot, master, logger):
                 # 更新该用户prompt
                 prompt.append({"role": 'model', "parts": [r]})
                 await tstt(r,event)
-
+                if len(prompt) > maxPrompt:
+                    logger.error("gemini prompt超限，移除元素")
+                    del prompt[2]
+                    del prompt[2]
                 GeminiData[event.sender.id] = prompt
                 # 写入文件
                 with open('data/GeminiData.yaml', 'w', encoding="utf-8") as file:
@@ -733,7 +748,7 @@ def main(bot, master, logger):
             except Exception as e:
                 logger.error(e)
                 GeminiData.pop(event.sender.id)
-                await bot.send(event, "gemini启动出错\n请重试\n或发送 @bot 可用角色模板 以更换其他模型")
+                await bot.send(event, "gemini启动出错,请重试\n或发送 @bot 可用角色模板 以更换其他模型")
         elif ((((replyModel=="characterglm" or type(chatGLMCharacters.get(event.sender.id))==dict))) and (glmReply == True or (trustglmReply == True and str(event.sender.id) in trustUser)) or event.sender.id in chatGLMsingelUserKey.keys()) and At(bot.qq) in event.message_chain:
             text = str(event.message_chain).replace("@" + str(bot.qq) + "", '').replace(" ","")
             logger.info("分支1")
