@@ -1358,7 +1358,7 @@ def main(bot, master, logger):
             with open('data/chatGLMData.yaml', 'w', encoding="utf-8") as file:
                 yaml.dump(chatGLMData, file, allow_unicode=True)
             logger.info(f"{modelHere} bot 回复：" + rep.get('content'))
-            await tstt(rep.get('content'), event)
+            await tstt(rep.get('content').replace("Content is blocked",""), event)
         except Exception as e:
             logger.error(e)
             try:
