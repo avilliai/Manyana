@@ -17,6 +17,6 @@ async def geminirep(ak,messages):
     response = model.generate_content(messages)
 
 
-    print(response.text)
+    #print(response.text)
     return response.text
 
