@@ -25,7 +25,7 @@ from plugins.modelsLoader import modelLoader
 from plugins.translater import translate
 from plugins.vitsGenerate import voiceGenerate, taffySayTest, sovits, edgetts, outVits, modelscopeTTS, superVG
 from plugins.yubanGPT import lolimigpt, lolimigpt2
-
+from plugins.googleGemini import geminirep
 
 def main(bot,master,logger,berturl,proxy):
     with open('config/nudgeReply.yaml', 'r', encoding='utf-8') as f:
@@ -58,11 +58,16 @@ def main(bot,master,logger,berturl,proxy):
     gpt3=result0.get("chatGLM").get("bot_info").get("gpt3.5")
     lolimig = result0.get("chatGLM").get("bot_info").get("lolimigpt")
     glm_4=result0.get("chatGLM").get("bot_info").get("glm-4")
+
+    Gem=result0.get("chatGLM").get("bot_info").get("Gemini")
     logger.info("语音合成模式："+voicegg+" 语音合成speaker："+speaker92)
     with open('config/api.yaml', 'r', encoding='utf-8') as f:
         resulttr = yaml.load(f.read(), Loader=yaml.FullLoader)
     chatGLM_api_key = resulttr.get("chatGLM")
+    geminiapikey=resulttr.get("gemini")
     gptkeys=resulttr.get("openai-keys")
+    proxy=resulttr.get("proxy")
+    os.environ["http_proxy"] = proxy
     if voicegg=="vits":
         with open('config/autoSettings.yaml', 'r', encoding='utf-8') as f:
             result2 = yaml.load(f.read(), Loader=yaml.FullLoader)
@@ -141,6 +146,13 @@ def main(bot,master,logger,berturl,proxy):
 
                     rep = await glm4(prompt1,bot_in)
                     rep=rep.get("content")
+
+                elif chatmodel=="Gemini":
+                    bot_in=str(Gem.replace("【bot】",meta1.get("bot_name")).replace("【用户】","主人"))
+                    tep = {"role": "user","parts": [random.choice(["戳你一下", "摸摸头", "戳戳你的头","摸摸~"])]}
+                    prompt=[{"role": "user", "parts": [geminichar]},{"role": 'model', "parts": ["好的，已了解您的需求，我会扮演好你设定的角色"]}]
+                    prompt.append(tep)
+                    rep =await geminirep(ak=geminiapikey, messages=prompt1)
                 else:
                     with ThreadPoolExecutor() as executor:
                         future = executor.submit(chatGLM1)
