@@ -320,7 +320,7 @@ def main(bot, master, logger):
 
             except:
                 await bot.send(event, "chatGLM启动出错，请联系master检查apiKey或重试\n或发送 @bot 可用角色模板 以更换其他模型")
-        elif replyModel=="gemini":
+        elif replyModel=="Gemini":
             if str(event.message_chain)=="/cGemini" or str(event.message_chain)=="/clear":
                 return
             if privateGlmReply!=True:
@@ -563,7 +563,7 @@ def main(bot, master, logger):
                 await modelReply(event, chatGLMCharacters.get(event.sender.id))
             elif chatGLMCharacters.get(event.sender.id) == "glm-4":
                 await modelReply(event, chatGLMCharacters.get(event.sender.id))
-            elif chatGLMCharacters.get(event.sender.id) == "gemini":
+            elif chatGLMCharacters.get(event.sender.id) == "Gemini":
                 text = str(event.message_chain).replace("@" + str(bot.qq) + "", '').replace(" ", "").replace("/g", "")
                 for saa in noRes:
                     if text == saa:
@@ -682,7 +682,7 @@ def main(bot, master, logger):
             await modelReply(event, replyModel)
         elif (((replyModel=="lolimigpt" or chatGLMCharacters.get(event.sender.id)=="lolimigpt") and (At(bot.qq) in event.message_chain) or str(event.message_chain).startswith("/gpt"))) and (glmReply == True or (trustglmReply == True and str(event.sender.id) in trustUser)):
             await modelReply(event, replyModel)
-        elif (((replyModel=="gemini" or chatGLMCharacters.get(event.sender.id)=="Gemini") and (At(bot.qq) in event.message_chain) or str(event.message_chain).startswith("/g"))) and (glmReply == True or (trustglmReply == True and str(event.sender.id) in trustUser)):
+        elif (((replyModel=="Gemini" or chatGLMCharacters.get(event.sender.id)=="Gemini") and (At(bot.qq) in event.message_chain) or str(event.message_chain).startswith("/g"))) and (glmReply == True or (trustglmReply == True and str(event.sender.id) in trustUser)):
             text = str(event.message_chain).replace("@" + str(bot.qq) + "", '').replace(" ", "").replace("/g", "")
             for saa in noRes:
                 if text == saa:
