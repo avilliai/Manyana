@@ -214,6 +214,8 @@ def main(bot, master, logger):
                 text = str(event.message_chain)
                 if text == "" or text == " ":
                     text = "在吗"
+
+                geminichar=allcharacters.get("Gemini")).replace("【bot】",botName).replace("【用户】", event.sender.nickname)
                 # 构建新的prompt
                 tep = {"role": "user", "parts": [text]}
                 # print(type(tep))
@@ -224,7 +226,9 @@ def main(bot, master, logger):
                 # 没有该用户，以本次对话作为prompt
                 else:
                     await bot.send(event, "即将开始对话，请注意，如果遇到对话异常，请发送 /clear 以清理对话记录(不用艾特)", True)
-                    prompt = [tep]
+                    prompt=[{"role": "user", "parts": [text]},{"role": 'model', "parts": ["好的，已了解您的需求，我会扮演好你设定的角色"]}]
+                    prompt.append[tep]
+
 
                 logger.info("gemini接收提问:" + text)
                 try:
@@ -329,6 +333,7 @@ def main(bot, master, logger):
             text = str(event.message_chain)
             if text == "" or text == " ":
                 text = "在吗"
+            geminichar=allcharacters.get("Gemini")).replace("【bot】",botName).replace("【用户】", event.sender.nickname)
             # 构建新的prompt
             tep = {"role": "user", "parts": [text]}
             # print(type(tep))
@@ -336,10 +341,12 @@ def main(bot, master, logger):
             if event.sender.id in GeminiData and context == True:
                 prompt = GeminiData.get(event.sender.id)
                 prompt.append({"role": "user", 'parts': [text]})
-            # 没有该用户，以本次对话作为prompt
+                # 没有该用户，以本次对话作为prompt
             else:
                 await bot.send(event, "即将开始对话，请注意，如果遇到对话异常，请发送 /clear 以清理对话记录(不用艾特)", True)
-                prompt = [tep]
+                prompt=[{"role": "user", "parts": [text]},{"role": 'model', "parts": ["好的，已了解您的需求，我会扮演好你设定的角色"]}]
+                prompt.append[tep]
+
 
             logger.info("gemini接收提问:" + text)
             try:
@@ -572,19 +579,19 @@ def main(bot, master, logger):
                 logger.info("gemini开始运行")
                 if text == "" or text == " ":
                     text = "在吗"
-                # 构建新的prompt
+                geminichar=allcharacters.get("Gemini")).replace("【bot】",botName).replace("【用户】", event.sender.membername)
+            # 构建新的prompt
                 tep = {"role": "user", "parts": [text]}
-                # print(type(tep))
-                # 获取以往的prompt
+            # print(type(tep))
+            # 获取以往的prompt
                 if event.sender.id in GeminiData and context == True:
                     prompt = GeminiData.get(event.sender.id)
                     prompt.append({"role": "user", 'parts': [text]})
-
                 # 没有该用户，以本次对话作为prompt
                 else:
                     await bot.send(event, "即将开始对话，请注意，如果遇到对话异常，请发送 /clear 以清理对话记录(不用艾特)", True)
-                    prompt = [tep]
-                    GeminiData[event.sender.id] = prompt
+                    prompt=[{"role": "user", "parts": [text]},{"role": 'model', "parts": ["好的，已了解您的需求，我会扮演好你设定的角色"]}]
+                    prompt.append[tep]
                 logger.info("gemini接收提问:" + text)
                 try:
                     # logger.info(geminiapikey)
@@ -691,6 +698,7 @@ def main(bot, master, logger):
             logger.info("gemini开始运行")
             if text == "" or text == " ":
                 text = "在吗"
+            geminichar=allcharacters.get("Gemini")).replace("【bot】",botName).replace("【用户】", event.sender.membername)
             # 构建新的prompt
             tep = {"role": "user", "parts": [text]}
             # print(type(tep))
@@ -698,12 +706,11 @@ def main(bot, master, logger):
             if event.sender.id in GeminiData and context == True:
                 prompt = GeminiData.get(event.sender.id)
                 prompt.append({"role": "user", 'parts': [text]})
-
-            # 没有该用户，以本次对话作为prompt
+                # 没有该用户，以本次对话作为prompt
             else:
                 await bot.send(event, "即将开始对话，请注意，如果遇到对话异常，请发送 /clear 以清理对话记录(不用艾特)", True)
-                prompt = [tep]
-                GeminiData[event.sender.id] = prompt
+                prompt=[{"role": "user", "parts": [text]},{"role": 'model', "parts": ["好的，已了解您的需求，我会扮演好你设定的角色"]}]
+                prompt.append[tep]
             logger.info("gemini接收提问:" + text)
             try:
                 # logger.info(geminiapikey)
