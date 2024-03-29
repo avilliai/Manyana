@@ -246,7 +246,8 @@ def main(bot, master, logger):
                     # st1 = await chatGLM(selfApiKey, meta1, prompt)
                 except Exception as e:
                     logger.error(e)
-                    await bot.send(event, "gemini启动出错\n请发送 /clear 以清理聊天记录并重试\n或发送 @bot 可用角色模板 以更换其他模型")
+                    GeminiData.pop(event.sender.id)
+                    await bot.send(event, "gemini启动出错\n请重试\n或发送 @bot 可用角色模板 以更换其他模型")
             elif chatGLMCharacters.get(event.sender.id)=="Cozi":
                 if privateGlmReply!=True:
                     return
@@ -364,7 +365,8 @@ def main(bot, master, logger):
                 # st1 = await chatGLM(selfApiKey, meta1, prompt)
             except Exception as e:
                 logger.error(e)
-                await bot.send(event, "gemini启动出错\n请发送 /clear 以清理聊天记录并重试\n或发送 @bot 可用角色模板 以更换其他模型")
+                GeminiData.pop(event.sender.id)
+                await bot.send(event, "gemini启动出错\n请重试\n或发送 @bot 可用角色模板 以更换其他模型")
         elif replyModel=="Cozi":
             if privateGlmReply!=True:
                 return
@@ -609,7 +611,8 @@ def main(bot, master, logger):
                     # st1 = await chatGLM(selfApiKey, meta1, prompt)
                 except Exception as e:
                     logger.error(e)
-                    await bot.send(event, "gemini启动出错\n请发送 /clear 以清理聊天记录并重试\n或发送 @bot 可用角色模板 以更换其他模型")
+                    GeminiData.pop(event.sender.id)
+                    await bot.send(event, "gemini启动出错\n请重试\n或发送 @bot 可用角色模板 以更换其他模型")
             elif type(chatGLMCharacters.get(event.sender.id)) == dict:
                 text = str(event.message_chain).replace("@" + str(bot.qq) + "", '').replace(" ", "")
                 logger.info("分支1")
@@ -729,7 +732,8 @@ def main(bot, master, logger):
                 # st1 = await chatGLM(selfApiKey, meta1, prompt)
             except Exception as e:
                 logger.error(e)
-                await bot.send(event, "gemini启动出错\n请发送 /clear 以清理聊天记录并重试\n或发送 @bot 可用角色模板 以更换其他模型")
+                GeminiData.pop(event.sender.id)
+                await bot.send(event, "gemini启动出错\n请重试\n或发送 @bot 可用角色模板 以更换其他模型")
         elif ((((replyModel=="characterglm" or type(chatGLMCharacters.get(event.sender.id))==dict))) and (glmReply == True or (trustglmReply == True and str(event.sender.id) in trustUser)) or event.sender.id in chatGLMsingelUserKey.keys()) and At(bot.qq) in event.message_chain:
             text = str(event.message_chain).replace("@" + str(bot.qq) + "", '').replace(" ","")
             logger.info("分支1")
@@ -948,6 +952,9 @@ def main(bot, master, logger):
                 #chatGLMData.pop(event.sender.id)
                 # 写入文件
                 with open('data/chatGLMData.yaml', 'w', encoding="utf-8") as file:
+                    yaml.dump(chatGLMData, file, allow_unicode=True)
+
+                with open('data/GeminiData.yaml', 'w', encoding="utf-8") as file:
                     yaml.dump(chatGLMData, file, allow_unicode=True)
                 await bot.send(event,"已清除所有用户的prompt")
             except:
