@@ -150,7 +150,7 @@ def main(bot,master,logger,berturl,proxy):
                 elif chatmodel=="Gemini":
                     bot_in=str(Gem.replace("【bot】",meta1.get("bot_name")).replace("【用户】","主人"))
                     tep = {"role": "user","parts": [random.choice(["戳你一下", "摸摸头", "戳戳你的头","摸摸~"])]}
-                    prompt=[{"role": "user", "parts": [geminichar]},{"role": 'model', "parts": ["好的，已了解您的需求，我会扮演好你设定的角色"]}]
+                    prompt=[{"role": "user", "parts": [bot_in]},{"role": 'model', "parts": ["好的，已了解您的需求，我会扮演好你设定的角色"]}]
                     prompt.append(tep)
                     rep =await geminirep(ak=geminiapikey, messages=prompt1)
                 else:
