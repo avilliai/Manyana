@@ -8,7 +8,8 @@ siZhiAi:                             #思知ai，不建议，建议chatGLM    �
   - 806948824e6e559ff64ba689901483be    # 第二个，你有几个就填几个，按照如下格式即可。多删少补
 nasa_api: HSxxxxxxx            # nasa相关天文api 从https://api.nasa.gov/index.html#main-content申请
 chatGLM: 69xxxxxxx        #chatGLM的apiKey，从https://open.bigmodel.cn/获取
-gemini: AIxxxxxxxx       #谷歌的gemini api，免费的，在https://ai.google.dev/tutorials/setup?hl=zh-cn获取，需要配置代理，否则无法使用
+gemini:        #谷歌的gemini api，免费的，有几个填几个，在https://ai.google.dev/tutorials/setup?hl=zh-cn获取，需要配置代理，否则无法使用
+  - AIxxxxxxxx
 cozi: https://xxxxxx.zeabur.app/v1/chat/completions  # https://github.com/avilliai/Manyana/issues/4
 proxy: 'http://127.0.0.1:10809'  #代理 自己设置对应的端口，没有就不填
 openai-keys:                 #openai官方的apikey，淘宝搜apikey，0.7块一个，有几个就填几个。有代理的话，settings.yaml中模型就写gpt3.5；没代理从readme指引的店铺(哥们不是打广告的！)购买(它们提供了请求中转)，然后打开下面的开关

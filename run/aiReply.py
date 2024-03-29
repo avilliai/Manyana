@@ -233,11 +233,11 @@ def main(bot, master, logger):
                 logger.info("gemini接收提问:" + text)
                 try:
                     # logger.info(geminiapikey)
-                    r = await geminirep(ak=geminiapikey, messages=prompt)
+                    r = await geminirep(ak=random.choice(geminiapikey), messages=prompt)
                     # 更新该用户prompt
                     prompt.append({"role": 'model', "parts": [r]})
                     # 超过10，移除第一个元素
-
+                    logger.info("gemini回复：" + r)
                     if len(prompt) > maxPrompt:
                         logger.error("gemini prompt超限，移除元素")
                         del prompt[2]
@@ -357,10 +357,11 @@ def main(bot, master, logger):
             logger.info("gemini接收提问:" + text)
             try:
                 # logger.info(geminiapikey)
-                r = await geminirep(ak=geminiapikey, messages=prompt)
+                r = await geminirep(ak=random.choice(geminiapikey), messages=prompt)
                 # 更新该用户prompt
                 prompt.append({"role": 'model', "parts": [r]})
                 # 超过10，移除第一个元素
+                logger.info("gemini回复：" + r)
                 if len(prompt) > maxPrompt:
                     logger.error("gemini prompt超限，移除元素")
                     del prompt[2]
@@ -606,10 +607,11 @@ def main(bot, master, logger):
                 logger.info("gemini接收提问:" + text)
                 try:
                     # logger.info(geminiapikey)
-                    r = await geminirep(ak=geminiapikey, messages=prompt)
+                    r = await geminirep(ak=random.choice(geminiapikey), messages=prompt)
                     # 更新该用户prompt
                     prompt.append({"role": 'model', "parts": [r]})
                     await tstt(r, event)
+                    logger.info("gemini回复：" + r)
                     if len(prompt) > maxPrompt:
                         logger.error("gemini prompt超限，移除元素")
                         del prompt[2]
@@ -729,10 +731,11 @@ def main(bot, master, logger):
             logger.info("gemini接收提问:" + text)
             try:
                 # logger.info(geminiapikey)
-                r = await geminirep(ak=geminiapikey, messages=prompt)
+                r = await geminirep(ak=random.choice(geminiapikey), messages=prompt)
                 # 更新该用户prompt
                 prompt.append({"role": 'model', "parts": [r]})
                 await tstt(r,event)
+                logger.info("gemini回复："+r)
                 if len(prompt) > maxPrompt:
                     logger.error("gemini prompt超限，移除元素")
                     del prompt[2]
