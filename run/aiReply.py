@@ -579,7 +579,7 @@ def main(bot, master, logger):
                 logger.info("gemini开始运行")
                 if text == "" or text == " ":
                     text = "在吗"
-                geminichar=allcharacters.get("Gemini").replace("【bot】",botName).replace("【用户】", event.sender.membername)
+                geminichar=allcharacters.get("Gemini").replace("【bot】",botName).replace("【用户】", event.sender.member_name)
             # 构建新的prompt
                 tep = {"role": "user", "parts": [text]}
             # print(type(tep))
@@ -698,7 +698,7 @@ def main(bot, master, logger):
             logger.info("gemini开始运行")
             if text == "" or text == " ":
                 text = "在吗"
-            geminichar=allcharacters.get("Gemini").replace("【bot】",botName).replace("【用户】", event.sender.membername)
+            geminichar=allcharacters.get("Gemini").replace("【bot】",botName).replace("【用户】", event.sender.member_name)
             # 构建新的prompt
             tep = {"role": "user", "parts": [text]}
             # print(type(tep))
