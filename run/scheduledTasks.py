@@ -99,7 +99,7 @@ def main(bot,proxy,nasa_api,logger):
             # logger.info("下载缩略图")
             filename = await picDwn(response.json().get("url"),
                                     "data/pictures/nasa/" + response.json().get("date") + ".png")
-            txta = await translate(response.json().get("explanation"), "EN2ZH_CN")
+            txta = response.json().get("explanation")#await translate(response.json().get("explanation"), "EN2ZH_CN")
             txt = response.json().get("date") + "\n" + response.json().get("title") + "\n" + txta
             temp = {"path": "data/pictures/nasa/" + response.json().get("date") + ".png",
                     "oriTxt": response.json().get("explanation"), "transTxt": txt}
