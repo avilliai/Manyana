@@ -93,7 +93,7 @@ def main(bot,api_KEY,master,config,logger):
                     logger.info(weather)
                     imgurl = get_user_image_url(event.sender.id)
                     logger.info("制作签到图片....")
-                    await bot.send(event,f"{event.sender.member_name}是今天第{len(haveSign)-1}个签到的，正在制作签到图片.....")
+                    await bot.send(event,f"{event.sender.member_name}是今天第{len(haveSign)}个签到的，正在制作签到图片.....")
                     path = await signPicMaker(imgurl, id, weather, nowTime, times, exp, startTime)
                     logger.info("完成，发送签到图片")
                     data['sts'] = times
@@ -154,7 +154,7 @@ def main(bot,api_KEY,master,config,logger):
             data['userName']=event.sender.member_name
             imgurl = get_user_image_url(event.sender.id)
             logger.info("制作签到图片....")
-            await bot.send(event, f"{event.sender.member_name}是今天第{len(haveSign) - 1}个签到的，正在制作签到图片.....")
+            await bot.send(event, f"{event.sender.member_name}是今天第{len(haveSign)}个签到的，正在制作签到图片.....")
             path = await signPicMaker(imgurl, id, weather, nowTime, times, exp, startTime)
             logger.info("完成，发送签到图片")
             await bot.send(event, Im(path=path), True)
