@@ -20,6 +20,21 @@ from PIL import Image as Image1
 def main(bot,proxy,logger):
     logger.info("抽卡/运势模块启动")
     colorfulCharacterList = os.listdir("data/colorfulAnimeCharacter")
+    with open('config/settings.yaml', 'r', encoding='utf-8') as f:
+        result = yaml.load(f.read(), Loader=yaml.FullLoader)
+    lockResult=result.get("lockLuck")
+    if lockResult==True:
+        with open('data/lockLuck.yaml', 'r', encoding='utf-8') as f:
+            result2 = yaml.load(f.read(), Loader=yaml.FullLoader)
+        global luckList
+        global tod
+        tod = str(datetime.date.today())
+        if tod in result2:
+             luckList= result2
+        else:
+            luckList = {str(tod): {"运势":{123:"",456:""},"塔罗":{123:{"text":"hahaha","path":",,,"}}}}
+            with open('data/lockLuck.yaml', 'w', encoding="utf-8") as file:
+                yaml.dump(luckList, file, allow_unicode=True)
     @bot.on(GroupMessage)
     async def meme(event: GroupMessage):
         global memeData
@@ -51,22 +66,53 @@ def main(bot,proxy,logger):
 
     @bot.on(GroupMessage)
     async def meme(event: GroupMessage):
-        global memeData
+        global memeData,luckList,tod
         if ("运势" in str(event.message_chain) and At(bot.qq) in event.message_chain) or str(event.message_chain)=="运势":
-            la = os.listdir("data/pictures/amm")
-            la = "data/pictures/amm/" + random.choice(la)
-            logger.info("执行运势查询")
-            await bot.send(event, (str(event.sender.member_name) + "今天的运势是", Image(path=la)))
+            if lockResult==False:
+                la = os.listdir("data/pictures/amm")
+                la = "data/pictures/amm/" + random.choice(la)
+                logger.info("执行运势查询")
+                await bot.send(event, (str(event.sender.member_name) + "今天的运势是", Image(path=la)))
+            else:
+                if event.sender.id not in luckList.get(str(tod)).get("运势"):
+                    la = os.listdir("data/pictures/amm")
+                    la = "data/pictures/amm/" + random.choice(la)
+                    logger.info("执行运势查询")
+                    await bot.send(event, (str(event.sender.member_name) + "今天的运势是", Image(path=la)))
+                    luckList[str(tod)]["运势"][event.sender.id]=la
+                else:
+                    la=luckList.get(str(tod)).get("运势").get(event.sender.id)
+                    logger.info("执行运势查询")
+                    await bot.send(event, (str(event.sender.member_name) + "今天的运势是", Image(path=la)))
+                with open('data/lockLuck.yaml', 'w', encoding="utf-8") as file:
+                    yaml.dump(luckList, file, allow_unicode=True)
 
     @bot.on(GroupMessage)
     async def tarotToday(event: GroupMessage):
+        global luckList,tod
         if ("今日塔罗" in str(event.message_chain) and At(bot.qq) in event.message_chain) or str(
                 event.message_chain) == "今日塔罗":
             logger.info("获取今日塔罗")
-            txt, img = tarotChoice()
-            logger.info("成功获取到今日塔罗")
-            await bot.send(event, txt)
-            await bot.send(event, Image(path=img))
+            if lockResult == False:
+                txt, img = tarotChoice()
+                logger.info("成功获取到今日塔罗")
+                await bot.send(event, txt)
+                await bot.send(event, Image(path=img))
+            else:
+                if event.sender.id not in luckList.get(tod).get("塔罗"):
+                    txt, img = tarotChoice()
+                    logger.info("成功获取到今日塔罗")
+                    await bot.send(event, txt)
+                    await bot.send(event, Image(path=img))
+                    luckList[str(tod)]["塔罗"][event.sender.id]={"text":txt,"img":img}
+                else:
+                    la=luckList.get(str(tod)).get("塔罗").get(event.sender.id)
+                    logger.info("获取塔罗")
+
+                    await bot.send(event, la.get("text"))
+                    await bot.send(event, Image(path=la.get("img")))
+                with open('data/lockLuck.yaml', 'w', encoding="utf-8") as file:
+                    yaml.dump(luckList, file, allow_unicode=True)
 
     @bot.on(GroupMessage)
     async def tarotToday(event: GroupMessage):
@@ -77,4 +123,18 @@ def main(bot,proxy,logger):
             await bot.send(event, Image(path="data/colorfulAnimeCharacter/" + c))
 
 
-
+    @bot.on(Startup)
+    async def updateData(event: Startup):
+        while True:
+            await sleep(60)
+            if lockResult == True:
+                with open('data/lockLuck.yaml', 'r', encoding='utf-8') as f:
+                    result2 = yaml.load(f.read(), Loader=yaml.FullLoader)
+                global luckList,tod
+                tod = str(datetime.date.today())
+                if tod in result2:
+                    luckList = result2.get(tod)
+                else:
+                    luckList = {str(tod): {"运势": {123: "", 456: ""}, "塔罗": {123: {"text": "hahaha", "path": ",,,"}}}}
+                    with open('data/lockLuck.yaml', 'w', encoding="utf-8") as file:
+                        yaml.dump(luckList, file, allow_unicode=True)

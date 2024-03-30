@@ -14,6 +14,7 @@ cardPic: False               #是否以卡片形式发送图片
 fuckinggroup: false       #开启后将检测群人数，非授权群直接退出
 fuckingnumber: 13         #低于13人退群
 
+lockLuck: True           #是否锁定运势等功能的结果
 #语音合成，小型服务器建议使用modelscopeTTS/outVits/edgetts和vits，so-vits和bert_vits2需要较好的配置以及另行部署
 #建议使用modelscopeTTS或outVits，这些语音都是在外部合成的，几乎不占用本地资源，但有时候可能没法用
 voicegenerate: outVits  #语音合成来源so-vits/bert_vits2/vits/modelscopeTTS/outVits/edgetts(edgetts可用speaker请参考config/edgetts.txt)
