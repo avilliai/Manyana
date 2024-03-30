@@ -17,7 +17,6 @@ from asyncio import sleep
 from concurrent.futures import ThreadPoolExecutor
 import zhipuai
 
-from plugins.PandoraChatGPT import ask_chatgpt
 from plugins.RandomStr import random_str
 from plugins.chatGLMonline import chatGLM1, glm4
 from plugins.cozeBot import cozeBotRep
@@ -28,7 +27,7 @@ from plugins.rwkvHelper import rwkvHelper
 from plugins.translater import translate
 from plugins.vitsGenerate import superVG, voiceGenerate
 from plugins.wReply.mohuReply import mohuaddReplys
-from plugins.yubanGPT import yubanGPTReply, luoyueGPTReply, lolimigpt, lolimigpt2
+from plugins.yubanGPT import lolimigpt, lolimigpt2
 
 
 #1
@@ -77,9 +76,6 @@ def main(bot, master, logger):
         noRes1 = yaml.load(f.read(), Loader=yaml.FullLoader)
     noRes=noRes1.get("noRes")
 
-    global pandoraData
-    with open('data/pandora_ChatGPT.yaml', 'r', encoding='utf-8') as file:
-        pandoraData = yaml.load(file, Loader=yaml.FullLoader)
     global totallink
     totallink = False
     with open('config/settings.yaml', 'r', encoding='utf-8') as f:
@@ -126,14 +122,7 @@ def main(bot, master, logger):
         result224 = yaml.load(f.read(), Loader=yaml.FullLoader)
     global chatGLMsingelUserKey
     chatGLMsingelUserKey=result224
-    with open('data/yubanGPT.yaml', 'r', encoding='utf-8') as f:
-        resultyuban = yaml.load(f.read(), Loader=yaml.FullLoader)
-    global yubanid
-    yubanid=resultyuban
-    with open('data/luoyueGPT.yaml', 'r', encoding='utf-8') as f:
-        resultyuban1 = yaml.load(f.read(), Loader=yaml.FullLoader)
-    global luoyueid
-    luoyueid=resultyuban1
+
     global coziData
     coziData={}
     #线程预备
@@ -556,7 +545,7 @@ def main(bot, master, logger):
     #群内chatGLM回复
     @bot.on(GroupMessage)
     async def atReply(event: GroupMessage):
-        global trustUser, chatGLMapikeys,chatGLMData,chatGLMCharacters,chatGLMsingelUserKey,userdict,yubanid,luoyueid,GeminiData,coziData
+        global trustUser, chatGLMapikeys,chatGLMData,chatGLMCharacters,chatGLMsingelUserKey,userdict,GeminiData,coziData
         pattern1 = r'(\d+)张(\w+)'
         if At(bot.qq) in event.message_chain:
             text1 = str(event.message_chain).replace("壁纸", "").replace("涩图", "").replace("色图", "").replace("图",
@@ -1005,15 +994,7 @@ def main(bot, master, logger):
             with open('config/chatGLM.yaml', 'w', encoding="utf-8") as file:
                 yaml.dump(chatGLMapikeys, file, allow_unicode=True)
             await bot.send(event, "设置apiKey成功")
-    @bot.on(GroupMessage)
-    async def pandoraSever(event: GroupMessage):
-        global pandoraData
-        if str(event.message_chain).startswith("/p") and str(event.message_chain).startswith("/poe") == False and str(
-                event.message_chain).startswith("/pic") == False:
-            if replyModel=="pandora":
-                asyncio.run_coroutine_threadsafe(askGPTT(event), newLoop)
-            else:
-                await bot.send(event, "当前未启用pandora_chatGPT", True)
+
 
     @bot.on(GroupMessage)
     async def gpt3(event: GroupMessage):
@@ -1084,52 +1065,6 @@ def main(bot, master, logger):
             except:
                 logger.error("调用rwkv失败，请检查本地rwkv是否启动或端口是否配置正确(8000)")
                 await bot.send(event, "无法连接到本地rwkv")
-
-    async def askGPTT(event):
-        global trustUser, chatGLMapikeys, chatGLMData, chatGLMCharacters, chatGLMsingelUserKey, userdict
-        prompt = str(event.message_chain).replace("@" + str(bot.qq) + "", '').replace("/p","")
-
-        message_id = str(uuid.uuid4())
-        model = "text-davinci-002-render-sha"
-        logger.info("ask:" + prompt)
-        if event.group.id in pandoraData.keys():
-            pub = event.group.id
-            conversation_id = pandoraData.get(event.group.id).get("conversation_id")
-            parent_message_id = pandoraData.get(event.group.id).get("parent_message_id")
-        else:
-            if len(pandoraData.keys()) < 10:
-                pub = event.group.id
-                conversation_id = None
-                parent_message_id = "f0bf0ebe-1cd6-4067-9264-8a40af76d00e"
-            else:
-                try:
-                    pub = random.choice(pandoraData.keys())
-                    conversation_id = pandoraData.get(pub).get("conversation_id")
-                    parent_message_id = pandoraData.get(pub).get("parent_message_id")
-                except:
-                    await bot.send(event, "当前服务器负载过大，请稍后再试", True)
-                    return
-
-        try:
-            loop = asyncio.get_event_loop()
-            # 使用 loop.run_in_executor() 方法来将同步函数转换为异步非阻塞的方式进行处理
-            # 第一个参数是执行器，可以是 None、ThreadPoolExecutor 或 ProcessPoolExecutor
-            # 第二个参数是同步函数名，后面跟着任何你需要传递的参数
-            # result=chatGLM(apiKey,bot_info,prompt)
-            parent_message_id, conversation_id, response_message = await loop.run_in_executor(None, ask_chatgpt, prompt, model, message_id,parent_message_id,conversation_id)
-
-            logger.info("answer:" + response_message)
-            logger.info("conversation_id:" + conversation_id)
-            await bot.send(event, response_message, True)
-
-            pandoraData[pub] = {"parent_message_id": parent_message_id, "conversation_id": conversation_id}
-            with open('data/pandora_ChatGPT.yaml', 'w', encoding="utf-8") as file:
-                yaml.dump(pandoraData, file, allow_unicode=True)
-        except:
-            await bot.send(event, "当前服务器负载过大，请稍后再试", True)
-
-
-
 
 
     #CharacterchatGLM部分
@@ -1307,7 +1242,7 @@ def main(bot, master, logger):
     # 运行异步函数
 
     async def modelReply(event,modelHere):
-        global trustUser, chatGLMapikeys, chatGLMData, chatGLMCharacters, chatGLMsingelUserKey, userdict, yubanid, luoyueid, GeminiData, coziData
+        global trustUser, chatGLMapikeys, chatGLMData, chatGLMCharacters, chatGLMsingelUserKey, userdict, GeminiData, coziData
         if event.type != 'FriendMessage':
             bot_in = str("你是" + botName + ",我是" + event.sender.member_name + "," + allcharacters.get(
             "gpt3.5")).replace("【bot】",

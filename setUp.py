@@ -31,7 +31,7 @@ def newLogger():
 
 logger = newLogger()
 def main():
-    print("请输入要执行的指令：\n1 绑定到远程仓库(如果通过源码包安装请执行)\n2 更新bot代码\n3 启动数据清理大师(doge)\n4 导出群信息，制作一个chatLearning可用的配置文件\n5 全面去除二刺猿相关内容")
+    print("请输入要执行的指令：\n1 绑定到远程仓库(如果通过源码包安装请执行)\n2 更新bot代码\n3 清理无用数据(如缓存图片)\n4 导出群信息，制作一个chatLearning可用的配置文件\n5 全面去除二刺猿相关内容")
 
     a=input("输入要执行的数字")
     if a=="1":
@@ -275,8 +275,11 @@ def updaat(f=False,jump=False,source="3"):
             logger.warning("开始处理冲突文件.....读取中")
 
             if os.path.exists("./temp"):
-                shutil.copyfile(file, file.replace("config", "temp"))
-                os.remove(file)
+                try:
+                    shutil.copyfile(file, file.replace("config/", "temp/").replace("data/","temp/"))
+                    os.remove(file)
+                except:
+                    continue
             else:
                 os.mkdir("./temp")
                 shutil.copyfile(file, file.replace("config", "temp"))

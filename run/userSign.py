@@ -5,11 +5,12 @@ import datetime
 import random
 import time
 import sys
+from asyncio import sleep
 
 import requests
 import yaml
 
-from mirai import Image as Im
+from mirai import Image as Im, Startup
 from mirai import Mirai, WebSocketAdapter, FriendMessage, GroupMessage, At, Plain
 
 import plugins
@@ -166,8 +167,21 @@ def main(bot,api_KEY,master,config,logger):
             paddd = {str(tod): haveSign}
             with open('data/signs.yaml', 'w', encoding="utf-8") as file:
                 yaml.dump(paddd, file, allow_unicode=True)
-
-
+    @bot.on(Startup)
+    async def upddddd(event: Startup):
+        while True:
+            await sleep(60)
+            with open('data/signs.yaml', 'r', encoding='utf-8') as f:
+                signstoday = yaml.load(f.read(), Loader=yaml.FullLoader)
+            global haveSign
+            tod = str(datetime.date.today())
+            if tod in signstoday:
+                haveSign = signstoday.get(tod)
+            else:
+                haveSign = [123]
+                paddd = {str(tod): haveSign}
+                with open('data/signs.yaml', 'w', encoding="utf-8") as file:
+                    yaml.dump(paddd, file, allow_unicode=True)
 
     @bot.on(GroupMessage)
     async def accessGiver(event:GroupMessage):

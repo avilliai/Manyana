@@ -14,6 +14,7 @@ cardPic: False               #是否以卡片形式发送图片
 fuckinggroup: false       #开启后将检测群人数，非授权群直接退出
 fuckingnumber: 13         #低于13人退群
 
+lockLuck: false          #是否锁定运势等功能的结果
 #语音合成，小型服务器建议使用modelscopeTTS/outVits/edgetts和vits，so-vits和bert_vits2需要较好的配置以及另行部署
 #建议使用modelscopeTTS或outVits，这些语音都是在外部合成的，几乎不占用本地资源，但有时候可能没法用
 voicegenerate: outVits  #语音合成来源so-vits/bert_vits2/vits/modelscopeTTS/outVits/edgetts(edgetts可用speaker请参考config/edgetts.txt)
@@ -26,7 +27,7 @@ bert_speakers:
 so_vits_speakers:
   - riri
 
-#ai回复设置
+#ai回复设置，个人最推荐的模型是Gemini，但需要代理
 chatGLM:       #只是懒得改还叫chatGLM了，实际上是多模型通用设置
   helpUser: false          #是否引导用户自行设置apiKey(没必要)
   model: lolimigpt  #ai模型可选：lolimigpt(免费gpt3.5，填写即可用),glm-4(免费，填写即可使用)后面几个需要自己配置api.yaml: characterglm(对应chatGLM),Gemini(同名),Cozi(同名),gpt3.5(openai-keys),gpt3.5-dev(无需代理，但需要从特定店铺买的apikey才能用。详见项目文档：可选配置)
