@@ -1,4 +1,5 @@
 # -*- coding: utf-8 -*-
+import asyncio
 import json
 import os
 import datetime
@@ -25,6 +26,7 @@ from PIL import Image
 from plugins.RandomStr import random_str
 from plugins.imgDownload import dict_download_img
 from plugins.weatherQuery import querys
+from run.aiReply import CListen
 
 lucky = [
 "——中吉——\n天上有云飘过的日子，天气令人十分舒畅。\n工作非常顺利，连午睡时也会想到好点子。\n突然发现，与老朋友还有其他的共同话题…\n——每一天，每一天都要积极开朗地度过——",
@@ -45,7 +47,10 @@ lucky = [
 "——大凶——\n内心空落落的一天。可能会陷入深深的无力感之中。\n很多事情都无法理清头绪，过于钻牛角尖则易生病。\n虽然一切皆陷于低潮谷底中，但也不必因此而气馁。\n若能撑过一时困境，他日必另有一番作为。"
 ]
 def main(bot,api_KEY,master,config,logger):
-
+    newLoop = asyncio.new_event_loop()
+    listen = CListen(newLoop)
+    listen.setDaemon(True)
+    listen.start()
     logger.info("签到部分启动完成")
     with open('data/userData.yaml', 'r', encoding='utf-8') as file:
         data = yaml.load(file, Loader=yaml.FullLoader)
@@ -95,7 +100,8 @@ def main(bot,api_KEY,master,config,logger):
                     imgurl = get_user_image_url(event.sender.id)
                     logger.info("制作签到图片....")
                     await bot.send(event,f"{event.sender.member_name}是今天第{len(haveSign)}个签到的，正在制作签到图片.....")
-                    path = await signPicMaker(imgurl, id, weather, nowTime, times, exp, startTime)
+                    asyncio.run_coroutine_threadsafe(fuff(imgurl, id, weather, nowTime, times, exp, startTime,event),newLoop)
+
                     logger.info("完成，发送签到图片")
                     data['sts'] = times
                     data['exp'] = exp
@@ -105,8 +111,6 @@ def main(bot,api_KEY,master,config,logger):
                     logger.info("更新用户数据中")
                     with open('data/userData.yaml', 'w', encoding="utf-8") as file:
                         yaml.dump(userdict, file, allow_unicode=True)
-                    await bot.send(event, Im(path=path), True)
-
                     haveSign.append(event.sender.id)
                     paddd = {str(tod): haveSign}
                     with open('data/signs.yaml', 'w', encoding="utf-8") as file:
@@ -156,9 +160,8 @@ def main(bot,api_KEY,master,config,logger):
             imgurl = get_user_image_url(event.sender.id)
             logger.info("制作签到图片....")
             await bot.send(event, f"{event.sender.member_name}是今天第{len(haveSign)}个签到的，正在制作签到图片.....")
-            path = await signPicMaker(imgurl, id, weather, nowTime, times, exp, startTime)
-            logger.info("完成，发送签到图片")
-            await bot.send(event, Im(path=path), True)
+            asyncio.run_coroutine_threadsafe(fuff(imgurl, id, weather, nowTime, times, exp, startTime,event),newLoop)
+
             userdict[str(event.sender.id)] = data
             logger.info("更新用户数据中")
             with open('data/userData.yaml', 'w', encoding="utf-8") as file:
@@ -167,6 +170,10 @@ def main(bot,api_KEY,master,config,logger):
             paddd = {str(tod): haveSign}
             with open('data/signs.yaml', 'w', encoding="utf-8") as file:
                 yaml.dump(paddd, file, allow_unicode=True)
+    async def fuff(imgurl, id, weather, nowTime, times, exp, startTime,event):
+        path = await signPicMaker(imgurl, id, weather, nowTime, times, exp, startTime)
+        logger.info("完成，发送签到图片")
+        await bot.send(event, Im(path=path), True)
     @bot.on(Startup)
     async def upddddd(event: Startup):
         while True:
