@@ -41,6 +41,10 @@ class CListen(threading.Thread):
 
         self.mLoop.run_forever()
 def main(bot, master, logger):
+    with open('config/autoSettings.yaml', 'r', encoding='utf-8') as f:
+        resul = yaml.load(f.read(), Loader=yaml.FullLoader)
+    global trustG
+    trustG = resul.get("trustGroups")
     #读取个性化角色设定
     with open('data/chatGLMCharacters.yaml', 'r', encoding='utf-8') as f:
         result2223 = yaml.load(f.read(), Loader=yaml.FullLoader)
@@ -541,11 +545,31 @@ def main(bot, master, logger):
                     trustUser.append(str(i))
             logger.info('已读取信任用户' + str(len(trustUser)) + '个')
 
-
+    @bot.on(GroupMessage)
+    async def upddd(event: GroupMessage):
+        if str(event.message_chain).startswith("授权") and event.sender.id==master:
+            logger.info("更新数据")
+            await sleep(15)
+            with open('config/autoSettings.yaml', 'r', encoding='utf-8') as f:
+                resul = yaml.load(f.read(), Loader=yaml.FullLoader)
+            global trustG
+            trustG=  resul.get("trustGroups")
+            with open('data/userData.yaml', 'r', encoding='utf-8') as file:
+                data = yaml.load(file, Loader=yaml.FullLoader)
+            global trustUser
+            global userdict
+            userdict = data
+            trustUser = []
+            for i in userdict.keys():
+                data = userdict.get(i)
+                times = int(str(data.get('sts')))
+                if times > trustDays:
+                    trustUser.append(str(i))
+            logger.info('已读取信任用户' + str(len(trustUser)) + '个')
     #群内chatGLM回复
     @bot.on(GroupMessage)
     async def atReply(event: GroupMessage):
-        global trustUser, chatGLMapikeys,chatGLMData,chatGLMCharacters,chatGLMsingelUserKey,userdict,GeminiData,coziData
+        global trustUser, chatGLMapikeys,chatGLMData,chatGLMCharacters,chatGLMsingelUserKey,userdict,GeminiData,coziData,trustG
         pattern1 = r'(\d+)张(\w+)'
         if At(bot.qq) in event.message_chain:
             text1 = str(event.message_chain).replace("壁纸", "").replace("涩图", "").replace("色图", "").replace("图",
@@ -557,8 +581,12 @@ def main(bot, master, logger):
                     pass
                 else:
                     return
+        if (At(bot.qq) in event.message_chain) and (glmReply == True or (trustglmReply == True and str(event.sender.id) in trustUser) or event.group.id in trustG):
+            logger.info("ai聊天启动")
+        else:
 
-        if event.sender.id in chatGLMCharacters and (At(bot.qq) in event.message_chain) and (glmReply == True or (trustglmReply == True and str(event.sender.id) in trustUser)):
+            return
+        if event.sender.id in chatGLMCharacters:
             if chatGLMCharacters.get(event.sender.id)=="gpt3.5" or chatGLMCharacters.get(event.sender.id)=="gpt3.5-dev":
                 if gptdev == True:
                     rth = "gpt3.5-dev"
@@ -683,19 +711,19 @@ def main(bot, master, logger):
                 except:
                     await bot.send(event, "chatGLM启动出错，请联系master\n或发送 @bot 可用角色模板 以更换其他模型")
         #判断模型
-        elif (((replyModel=="gpt3.5" or chatGLMCharacters.get(event.sender.id)=="gpt3.5" or replyModel=="gpt3.5-dev") and (At(bot.qq) in event.message_chain) or str(event.message_chain).startswith("/gpt"))) and (glmReply == True or (trustglmReply == True and str(event.sender.id) in trustUser)):
+        elif replyModel=="gpt3.5":
             if gptdev == True:
                 rth = "gpt3.5-dev"
             else:
                 rth = "gpt3.5"
             await modelReply(event, rth)
-        elif (((replyModel=="Cozi" or chatGLMCharacters.get(event.sender.id)=="Cozi") and (At(bot.qq) in event.message_chain) or str(event.message_chain).startswith("/cozi"))) and (glmReply == True or (trustglmReply == True and str(event.sender.id) in trustUser)):
+        elif replyModel=="Cozi" :
             await modelReply(event, replyModel)
-        elif (((replyModel=="glm-4" or chatGLMCharacters.get(event.sender.id)=="glm-4") and (At(bot.qq) in event.message_chain) or str(event.message_chain).startswith("/glm4"))) and (glmReply == True or (trustglmReply == True and str(event.sender.id) in trustUser)):
+        elif replyModel=="glm-4":
             await modelReply(event, replyModel)
-        elif (((replyModel=="lolimigpt" or chatGLMCharacters.get(event.sender.id)=="lolimigpt") and (At(bot.qq) in event.message_chain) or str(event.message_chain).startswith("/gpt"))) and (glmReply == True or (trustglmReply == True and str(event.sender.id) in trustUser)):
+        elif replyModel=="lolimigpt":
             await modelReply(event, replyModel)
-        elif (((replyModel=="Gemini" or chatGLMCharacters.get(event.sender.id)=="Gemini") and (At(bot.qq) in event.message_chain) or str(event.message_chain).startswith("/g"))) and (glmReply == True or (trustglmReply == True and str(event.sender.id) in trustUser)):
+        elif replyModel=="Gemini":
             text = str(event.message_chain).replace("@" + str(bot.qq) + "", '').replace(" ", "").replace("/g", "")
             for saa in noRes:
                 if text == saa:
@@ -741,7 +769,7 @@ def main(bot, master, logger):
                 logger.error(e)
                 GeminiData.pop(event.sender.id)
                 await bot.send(event, "gemini启动出错,请重试\n或发送 @bot 可用角色模板 以更换其他模型")
-        elif ((((replyModel=="characterglm" or type(chatGLMCharacters.get(event.sender.id))==dict))) and (glmReply == True or (trustglmReply == True and str(event.sender.id) in trustUser)) or event.sender.id in chatGLMsingelUserKey.keys()) and At(bot.qq) in event.message_chain:
+        elif replyModel=="characterglm":
             text = str(event.message_chain).replace("@" + str(bot.qq) + "", '').replace(" ","")
             logger.info("分支1")
             for saa in noRes:
@@ -1264,7 +1292,7 @@ def main(bot, master, logger):
                 "glm-4")).replace("【bot】",
                                       botName).replace("【用户】", event.sender.nickname)
         try:
-            text = str(event.message_chain).replace("@" + str(bot.qq) + " ", '').replace("/gpt", "")
+            text = str(event.message_chain).replace("@" + str(bot.qq) + " ", '')
             if text == "" or text == " ":
                 text = "在吗"
             for saa in noRes:

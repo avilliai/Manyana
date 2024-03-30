@@ -360,6 +360,8 @@ def main(bot,config,sizhiKey,logger):
                     return
                 elif event.sender.id in chatGLMsingelUserKey.keys():
                     return
+                elif sizhi==False:
+                    return
                 for i in noRes:
                     if i in str(event.message_chain):
                         return
