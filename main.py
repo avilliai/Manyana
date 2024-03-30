@@ -147,6 +147,14 @@ if __name__ == '__main__':
                 os.remove("data/pictures/cache/" + i)
             except:
                 continue
+        ls1 = os.listdir("data/pictures/new_sign_Image")
+        for i in ls1:
+            try:
+                if i.endswith("zYz.png"):
+                    continue
+                os.remove("data/pictures/new_sign_Image/" + i)
+            except:
+                continue
         logger.info("清理图片缓存完成")
         ls1 = os.listdir("data/voices")
         for i in ls1:
