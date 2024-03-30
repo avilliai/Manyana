@@ -276,7 +276,7 @@ def updaat(f=False,jump=False,source="3"):
 
             if os.path.exists("./temp"):
                 try:
-                    shutil.copyfile(file, file.replace("config", "temp"))
+                    shutil.copyfile(file, file.replace("config/", "temp/").replace("data/","temp/"))
                     os.remove(file)
                 except:
                     continue
