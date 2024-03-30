@@ -133,7 +133,7 @@ def main(bot,proxy,logger):
                 global luckList,tod
                 tod = str(datetime.date.today())
                 if tod in result2:
-                    luckList = result2.get(tod)
+                    luckList = result2
                 else:
                     luckList = {str(tod): {"运势": {123: "", 456: ""}, "塔罗": {123: {"text": "hahaha", "path": ",,,"}}}}
                     with open('data/lockLuck.yaml', 'w', encoding="utf-8") as file:
