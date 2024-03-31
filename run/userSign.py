@@ -68,7 +68,7 @@ def main(bot,api_KEY,master,config,logger):
     trustDays = result1.get("trustDays")
     with open('data/signs.yaml', 'r', encoding='utf-8') as f:
         signstoday = yaml.load(f.read(), Loader=yaml.FullLoader)
-    global haveSign
+    global haveSig,tod
     tod=str(datetime.date.today())
     if tod in signstoday:
         haveSign=signstoday.get(tod)
@@ -79,7 +79,7 @@ def main(bot,api_KEY,master,config,logger):
             yaml.dump(paddd, file, allow_unicode=True)
     @bot.on(GroupMessage)
     async def handle_group_message(event: GroupMessage):
-        global haveSign
+        global haveSign,tod
         if '签到' ==str(event.message_chain):
             logger.info("接收来自："+event.sender.member_name+"("+str(event.sender.id)+") 的签到指令")
             if str(event.sender.id) in userdict.keys():
@@ -126,7 +126,7 @@ def main(bot,api_KEY,master,config,logger):
 
     @bot.on(GroupMessage)
     async def handle_group_message(event: GroupMessage):
-        global newUser,haveSign
+        global newUser,haveSign,tod
         if str(event.sender.id) in newUser.keys():
             newUser.pop(str(event.sender.id))
             logger.info("用户+1："+str(event.sender.member_name)+" ("+str(event.sender.id)+")")
@@ -180,7 +180,7 @@ def main(bot,api_KEY,master,config,logger):
             await sleep(60)
             with open('data/signs.yaml', 'r', encoding='utf-8') as f:
                 signstoday = yaml.load(f.read(), Loader=yaml.FullLoader)
-            global haveSign
+            global haveSign,tod
             tod = str(datetime.date.today())
             if tod in signstoday:
                 haveSign = signstoday.get(tod)
