@@ -264,6 +264,7 @@ def main(bot,api_KEY,master,config,logger):
         except Exception as e:
             logger.error(e)
             image_path="data/pictures/new_sign_Image/9bFIzYz.png"
+            return image_path
         size = os.path.getsize(image_path) / (1024 * 1024)
         while size > 5:
             logger.error("过大的图片，重新获取")
