@@ -226,7 +226,9 @@ def main(bot, master, logger):
                 logger.info("gemini接收提问:" + text)
                 try:
                     # logger.info(geminiapikey)
-                    r = await geminirep(ak=random.choice(geminiapikey), messages=prompt)
+                    r = asyncio.run_coroutine_threadsafe(geminirep(ak=random.choice(geminiapikey), messages=prompt),
+                                                         newLoop)
+                    r = r.result()
                     # 更新该用户prompt
                     prompt.append({"role": 'model', "parts": [r]})
                     # 超过10，移除第一个元素
@@ -350,7 +352,9 @@ def main(bot, master, logger):
             logger.info("gemini接收提问:" + text)
             try:
                 # logger.info(geminiapikey)
-                r = await geminirep(ak=random.choice(geminiapikey), messages=prompt)
+                r = asyncio.run_coroutine_threadsafe(geminirep(ak=random.choice(geminiapikey), messages=prompt),
+                                                     newLoop)
+                r = r.result()
                 # 更新该用户prompt
                 prompt.append({"role": 'model', "parts": [r]})
                 # 超过10，移除第一个元素
@@ -624,7 +628,9 @@ def main(bot, master, logger):
                 logger.info("gemini接收提问:" + text)
                 try:
                     # logger.info(geminiapikey)
-                    r = await geminirep(ak=random.choice(geminiapikey), messages=prompt)
+                    r = asyncio.run_coroutine_threadsafe(geminirep(ak=random.choice(geminiapikey), messages=prompt),
+                                                         newLoop)
+                    r = r.result()
                     # 更新该用户prompt
                     prompt.append({"role": 'model', "parts": [r]})
                     await tstt(r, event)
@@ -748,7 +754,9 @@ def main(bot, master, logger):
             logger.info("gemini接收提问:" + text)
             try:
                 # logger.info(geminiapikey)
-                r = await geminirep(ak=random.choice(geminiapikey), messages=prompt)
+                r=asyncio.run_coroutine_threadsafe(geminirep(ak=random.choice(geminiapikey), messages=prompt),
+                                                 newLoop)
+                r = r.result()
                 # 更新该用户prompt
                 prompt.append({"role": 'model', "parts": [r]})
                 await tstt(r,event)
