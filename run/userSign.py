@@ -68,7 +68,7 @@ def main(bot,api_KEY,master,config,logger):
     trustDays = result1.get("trustDays")
     with open('data/signs.yaml', 'r', encoding='utf-8') as f:
         signstoday = yaml.load(f.read(), Loader=yaml.FullLoader)
-    global haveSig,tod
+    global haveSign,tod
     tod=str(datetime.date.today())
     if tod in signstoday:
         haveSign=signstoday.get(tod)
@@ -86,7 +86,7 @@ def main(bot,api_KEY,master,config,logger):
                 data=userdict.get(str(event.sender.id))
                 signOrNot = data.get('ok')
                 time114514 = str(datetime.datetime.now().strftime('%Y-%m-%d'))
-                if signOrNot!=time114514:
+                if signOrNot!=time114514 or event.sender.id==master:
                     city = data.get('city')
                     startTime = data.get('st')
                     times = str(int(data.get('sts')) + 1)
