@@ -270,6 +270,8 @@ def main(bot,api_KEY,master,config,logger):
             logger.error("过大的图片，重新获取")
             image_path = getPic()
             size = os.path.getsize(image_path) / (1024 * 1024)
+            if image_path=="data/pictures/new_sign_Image/9bFIzYz.png":
+                break
         return image_path
     
     async def signPicMaker(url,ids,weather,nowTime,times,exp,startTime):
