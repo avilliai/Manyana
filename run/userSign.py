@@ -258,13 +258,22 @@ def main(bot,api_KEY,master,config,logger):
         fad = touxiang.resize((450, 450), Image.BICUBIC)
         fad.save(fileName)
         return fileName
-    async def signPicMaker(url,ids,weather,nowTime,times,exp,startTime):
-        # Load the background image
+    async def check_image_size():
         try:
-            bg_path = pic()
+            image_path = pic()
         except Exception as e:
             logger.error(e)
-            bg_path="data/pictures/new_sign_Image/9bFIzYz.png"
+            image_path="data/pictures/new_sign_Image/9bFIzYz.png"
+        size = os.path.getsize(image_path) / (1024 * 1024)
+        while size > 5:
+            logger.error("过大的图片，重新获取")
+            image_path = getPic()
+            size = os.path.getsize(image_path) / (1024 * 1024)
+        return image_path
+    
+    async def signPicMaker(url,ids,weather,nowTime,times,exp,startTime):
+        # Load the background image
+        bg_path=await check_image_size()
         bg = Image.open(bg_path)
 
         # Apply blur to the entire background image
