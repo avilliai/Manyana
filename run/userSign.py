@@ -350,18 +350,39 @@ def main(bot,api_KEY,master,config,logger):
 
         return final_image_path
     def pic():
-        url = "https://api.iw233.cn/api.php?sort=pc"
-        # url+="tag=萝莉|少女&tag=白丝|黑丝"
-        headers = {
-            "user-agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/111.0.0.0 Safari/537.36 Edg/111.0.1661.54",
-            "Referer": "https://weibo.com/"}
-        r = requests.get(url, headers=headers).content
-
         ranpath = random_str()
+        try:
+            url = "https://api.iw233.cn/api.php?sort=pc"
+            # url+="tag=萝莉|少女&tag=白丝|黑丝"
+            headers = {
+                "user-agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/111.0.0.0 Safari/537.36 Edg/111.0.1661.54",
+                "Referer": "https://weibo.com/"}
+            r = requests.get(url, headers=headers).content
+            with open("data/pictures/new_sign_Image/" + ranpath + ".png", mode="wb") as f:
+                f.write(r)  # 图片内容写入文件
+            return "data/pictures/new_sign_Image/" + ranpath + ".png"
+        except Exception as e:
+            logger.error(e)
+            logger.info("使用二号接口")
+            try:
+                url = 'https://api.yimian.xyz/img'
+                params = {
+                    'type': 'moe',
+                    'size': '1920x1080'
+                }
+                res = requests.get(url, params=params)
+                r = requests.get(res.url).content
+                with open("data/pictures/new_sign_Image/" + ranpath + ".png", mode="wb") as f:
+                    f.write(r)  # 图片内容写入文件
+                return "data/pictures/new_sign_Image/" + ranpath + ".png"
+            except Exception as e:
+                logger.error(e)
+                logger.error("二号接口失效，返回备用图片")
+                image_path = "data/pictures/new_sign_Image/9bFIzYz.png"
+                return image_path
 
-        with open("data/pictures/new_sign_Image/" + ranpath + ".png", mode="wb") as f:
-            f.write(r)  # 图片内容写入文件
-        return "data/pictures/new_sign_Image/" + ranpath + ".png"
+
+
 
     def get_user_image_url(qqid):
         return f'https://q4.qlogo.cn/g?b=qq&nk={qqid}&s=640'
