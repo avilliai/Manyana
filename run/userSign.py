@@ -266,7 +266,7 @@ def main(bot,api_KEY,master,config,logger):
             image_path="data/pictures/new_sign_Image/9bFIzYz.png"
             return image_path
         size = os.path.getsize(image_path) / (1024 * 1024)
-        while size > 6:
+        while size > 4:
             logger.error("过大的图片，重新获取")
             image_path = pic()
             size = os.path.getsize(image_path) / (1024 * 1024)
