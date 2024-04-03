@@ -135,33 +135,31 @@ def main(bot,master,logger):
 
     @bot.on(GroupMessage)
     async def characterSpeake(event: GroupMessage):
-        if voicegg=="vits":
-            if "中文" in str(event.message_chain) and str(event.message_chain).split("中文")[0] in characters:
-                speaker = str(event.message_chain).split("中文")[0]
-                text = str(event.message_chain).split("中文")[1]
+        if "中文" in str(event.message_chain) and str(event.message_chain).split("中文")[0] in characters:
+            speaker = str(event.message_chain).split("中文")[0]
+            text = str(event.message_chain).split("中文")[1]
 
-                path = 'data/voices/' + random_str() + '.wav'
-                logger.info("语音生成_文本" + text)
-                logger.info("语音生成_模型:" + speaker + str(characters.get(speaker)[1]))
-                data = {"text": "[ZH]" + text + "[ZH]", "out": path, 'speaker': characters.get(speaker)[0],
-                        'modelSelect': characters.get(speaker)[1]}
-                await voiceGenerate(data)
-                await bot.send(event, Voice(path=path))
+            path = 'data/voices/' + random_str() + '.wav'
+            logger.info("语音生成_文本" + text)
+            logger.info("语音生成_模型:" + speaker + str(characters.get(speaker)[1]))
+            data = {"text": "[ZH]" + text + "[ZH]", "out": path, 'speaker': characters.get(speaker)[0],
+                    'modelSelect': characters.get(speaker)[1]}
+            await voiceGenerate(data)
+            await bot.send(event, Voice(path=path))
 
     @bot.on(GroupMessage)
     async def characterSpeake(event: GroupMessage):
-        if voicegg=="vits":
-            if "日文" in str(event.message_chain) and str(event.message_chain).split("日文")[0] in characters:
-                speaker = str(event.message_chain).split("日文")[0]
-                text = str(event.message_chain).split("日文")[1]
+        if "日文" in str(event.message_chain) and str(event.message_chain).split("日文")[0] in characters:
+            speaker = str(event.message_chain).split("日文")[0]
+            text = str(event.message_chain).split("日文")[1]
 
-                logger.info("语音生成_文本"+text)
-                path = 'data/voices/' + random_str() + '.wav'
-                logger.info("语音生成_模型:" + speaker + str(characters.get(speaker)[1]))
-                data = {"text": "[JA]" + text + "[JA]", "out": path, 'speaker': characters.get(speaker)[0],
-                        'modelSelect': characters.get(speaker)[1]}
-                await voiceGenerate(data)
-                await bot.send(event, Voice(path=path))
+            logger.info("语音生成_文本"+text)
+            path = 'data/voices/' + random_str() + '.wav'
+            logger.info("语音生成_模型:" + speaker + str(characters.get(speaker)[1]))
+            data = {"text": "[JA]" + text + "[JA]", "out": path, 'speaker': characters.get(speaker)[0],
+                    'modelSelect': characters.get(speaker)[1]}
+            await voiceGenerate(data)
+            await bot.send(event, Voice(path=path))
     @bot.on(GroupMessage)
     async def checkCharacters(event:GroupMessage):
         if "角色" in str(event.message_chain) and At(bot.qq) in event.message_chain and "模板" not in str(event.message_chain):
