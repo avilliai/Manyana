@@ -10,7 +10,7 @@
 - [CjangCjengh-MoeGoe](https://github.com/CjangCjengh/MoeGoe) vits语音合成功能来源
 - [pandora-chatgpt](https://github.com/pengzhile/pandora)    好像已经没了
 - [coze-discord-proxy](https://github.com/deanxv/coze-discord-proxy) 通过discord白嫖gpt4(视频教程见release的cozi+discord.mp4)
-- [MrXiaoM](https://github.com/MrXiaoM)     你懂的
+- [overflow](https://mirai.mamoe.net/topic/2565/overflow-%E5%B0%86-mirai-%E5%AE%9E%E7%8E%B0%E6%8D%A2%E6%88%90-onebot-%E6%9C%BA%E5%99%A8%E4%BA%BA%E7%9A%84%E5%8F%88%E4%B8%80%E4%B8%AA%E8%A7%A3%E5%86%B3%E6%96%B9%E6%A1%88?_=1712421277845)     你懂的
 - [arona api](https://doc.arona.diyigemt.com/)  提供blueArchive数据支持
 - [Yiri-mirai](https://github.com/YiriMiraiProject/YiriMirai)  很好的python sdk
 - [stella](https://www.pixiv.net/artworks/109772665)
@@ -33,6 +33,7 @@
 
 </details>
 哥们不是学程序设计的，〔矢山代码警告，含大量意义不明变量、判断逻辑〕如果你发现了bot存在一些我没有注意到的问题，或者有对项目的建议请及时提issue🎃
+
 ## qisgn不能用了怎么改用overflow
 [教程与整合包](https://github.com/avilliai/Manyana/releases/tag/LLoneBot-tutorial)
 
