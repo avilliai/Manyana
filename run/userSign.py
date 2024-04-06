@@ -260,19 +260,22 @@ def main(bot,api_KEY,master,config,logger):
         return fileName
     async def check_image_size():
         try:
-            image_path = pic()
+            while True:
+                logger.info("获取签到背景图片")
+                image_path = pic()
+                size = os.path.getsize(image_path) / (1024 * 1024)
+
+                if size>4:
+                    logger.info("获取签到背景图片完成")
+                    break
+                else:
+                    logger.error("过大的图片，重新获取")
+            return image_path
         except Exception as e:
             logger.error(e)
             image_path="data/pictures/new_sign_Image/9bFIzYz.png"
             return image_path
-        size = os.path.getsize(image_path) / (1024 * 1024)
-        while size > 4:
-            logger.error("过大的图片，重新获取")
-            image_path = pic()
-            size = os.path.getsize(image_path) / (1024 * 1024)
-            if image_path=="data/pictures/new_sign_Image/9bFIzYz.png":
-                break
-        return image_path
+        
     
     async def signPicMaker(url,ids,weather,nowTime,times,exp,startTime):
         # Load the background image
