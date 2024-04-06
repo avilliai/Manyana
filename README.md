@@ -34,10 +34,12 @@
 </details>
 哥们不是学程序设计的，〔矢山代码警告，含大量意义不明变量、判断逻辑〕如果你发现了bot存在一些我没有注意到的问题，或者有对项目的建议请及时提issue🎃
 
-## qisgn不能用了怎么改用overflow
+## qisgn不能用了改用overflow
 [教程与整合包](https://github.com/avilliai/Manyana/releases/tag/LLoneBot-tutorial)
 
-你可以简单理解为，overflow取代了压缩包里的miraiBot
+你可以简单理解为，overflow取代了压缩包里的miraiBot，这也是现在推荐的。
+
+也就是说，原本你是miraiBot+Manyana，现在可以overflow+Manyana(当然QQ客户端得挂着)，而不用再启动原来的Mirai
 ## dlc
 <details markdown='212'><summary>此项目的一些拓展/相关项目</summary>
 
