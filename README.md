@@ -60,7 +60,7 @@
 
  </details>
 
-**请注意，如下两种搭建方式，如今都已经不再推荐使用其中的Mirai部分，而是推荐改用overflow+llonebot来替换原来的Mirai，这很简单，大概两分钟就可以完成，这里是教程：[教程与整合包](https://github.com/avilliai/Manyana/releases/tag/LLoneBot-tutorial)**
+**请注意，如下两种搭建方式，如今都已经不再推荐使用其中的纯Mirai部分，而是推荐改用overflow+llonebot来替换原来的Mirai，这很简单，大概两分钟就可以完成，这里是教程：[教程与整合包](https://github.com/avilliai/Manyana/releases/tag/LLoneBot-tutorial)**
 ## 方法1：搭建工具部署(推荐)
 **如果你觉得自己从零开始搭建bot比较困难，请使用此方案**
 - 从release下载ManyanaLauncher.rar并解压
@@ -401,6 +401,15 @@ news:
 </details>
 
 # 🚑可能遇到的问题
+<details markdown='213'><summary>改用overflow</summary>
+
+[教程与整合包](https://github.com/avilliai/Manyana/releases/tag/LLoneBot-tutorial)
+
+你可以简单理解为，overflow取代了压缩包里的miraiBot，这也是现在推荐的。
+
+也就是说，原本你是miraiBot+Manyana，现在可以overflow+Manyana(当然QQ客户端得挂着)，而不用再启动原来的Mirai
+
+</details>
 
 <details markdown='114514'><summary>语音听不到</summary>
 [issue1](https://github.com/avilliai/Manyana/issues/1)
