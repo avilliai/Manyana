@@ -33,8 +33,11 @@
 
 </details>
 哥们不是学程序设计的，〔矢山代码警告，含大量意义不明变量、判断逻辑〕如果你发现了bot存在一些我没有注意到的问题，或者有对项目的建议请及时提issue🎃
+## qisgn不能用了怎么改用overflow
+[教程与整合包](https://github.com/avilliai/Manyana/releases/tag/LLoneBot-tutorial)
 
-### dlc
+你可以简单理解为，overflow取代了压缩包里的miraiBot
+## dlc
 <details markdown='212'><summary>此项目的一些拓展/相关项目</summary>
 
 - [so-vits-svc语音合成](https://github.com/avilliai/Moe-SVC-api)
