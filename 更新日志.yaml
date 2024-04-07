@@ -180,7 +180,7 @@
   - 更新modelscopeTTS 新增speaker：BT
 2024/3/29:
   - Gemini模型支持自定义预设角色
-  - Gemini支持多apiKey，相应的，数据结构也发生了变化，参照openaiKey的填写方式填写你的key
+  - Gemini支持多apiKey，相应的，数据类型也发生了变化，参照openaiKey的填写方式填写你的key
 2024/3/30:
   - 更新ai回复对应的授权系统，当你同时关闭glmReply和trustGlmReply时，只有你授权过的群才能回复
   - ai回复满足如下三个条件之一即可触发,glmReply=True(对所有人开放)/trustGlmReply=True并且用户是信任用户(对信任用户开放)/群是已经授权了的群
@@ -191,3 +191,6 @@
   - 解决Gemini频繁出现报错问题，重新设置了审核策略
 2024/4/1:
   - 修复 签到 图片过大导致bot可能卡死的问题
+2024/4/7:
+  - 用overflow替换原来的MiraiBot吧，协议库快没法用了https://github.com/avilliai/Manyana/issues/5，教程视频很简单
+  - 增加master指令(私聊) 群列表
