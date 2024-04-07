@@ -119,7 +119,9 @@ if __name__ == '__main__':
     async def help(event: GroupMessage):
         if ('帮助' in str(event.message_chain) or '菜单' in str(event.message_chain) or "help" in str(event.message_chain)) and At(bot.qq) in event.message_chain:
             logger.info("获取菜单")
-            await bot.send(event, [Image(path='data/fonts/help1.png'),Image(path='data/fonts/help2.png'),Image(path='data/fonts/help3.png'),Image(path='data/fonts/help4.png')])
+            s=[Image(path='data/fonts/help1.png'),Image(path='data/fonts/help2.png'),Image(path='data/fonts/help3.png'),Image(path='data/fonts/help4.png')]
+            for i in s:
+                await bot.send(event, i)
             await bot.send(event, '这是' + botName + '的功能列表\nヾ(≧▽≦*)o\n发送 pet 以查看制图功能列表')
         if '制图' in str(event.message_chain) and At(bot.qq) in event.message_chain :
             logger.info("制图菜单")
