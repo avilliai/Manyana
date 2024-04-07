@@ -139,6 +139,13 @@ def main(bot, master, logger):
     async def GLMFriendChat(event:FriendMessage):
         #用非常丑陋的复制粘贴临时解决bug，这下成石山代码了
         global chatGLMData,chatGLMCharacters,trustUser,chatGLMsingelUserKey,userdict,GeminiData,coziData
+        text = str(event.message_chain)
+        if event.sender.id==master:
+            noresm=["群列表","/bl","退群#","/quit"]
+            for saa in noresm:
+                if text == saa or text.startswith(saa):
+                    logger.warning("与屏蔽词匹配，不回复")
+                    return
         if event.sender.id in chatGLMCharacters:
             #print("在")
             print(chatGLMCharacters.get(event.sender.id),type(chatGLMCharacters.get(event.sender.id)))

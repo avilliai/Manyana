@@ -792,3 +792,67 @@ def main(bot,config,moderateKey,logger):
             await bot.send_group_message(groupid,ta)
         except:
             logger.error("群事件监听出错，不影响运行，请忽略")
+
+    @bot.on(FriendMessage)
+    async def getGroupList(event: FriendMessage):
+        if event.sender.id == master and (
+                str(event.message_chain)==("群列表")):
+            r="群列表如下："
+            asf = await bot.group_list()
+            # print(len(asf.data), asf.data)
+            with open('config/autoSettings.yaml', 'r', encoding='utf-8') as f:
+                result23 = yaml.load(f.read(), Loader=yaml.FullLoader)
+            youquan1 = result23.get("trustGroups")
+            logger.info("获取群列表")
+            for nb in asf:
+                gid = nb.id
+                try:
+                    sf = await bot.member_list(int(gid))
+                    gname=sf.data[0].group.name
+                    if gid in youquan1:
+                        logger.info(f"信任群聊：群 {gid}({gname})\n人数 {len(sf.data)}")
+                        r += "\n" + f"信任群聊：群 {gid}({gname})\n人数 {len(sf.data)}"
+                    else:
+                        logger.info(f"群 {gid}({gname})\n人数 {len(sf.data)}")
+                        r+="\n"+f"群 {gid}({gname})\n人数 {len(sf.data)}"
+                except Exception as e:
+                    logger.error(e)
+                    continue
+            await bot.send(event, f"当前群列表：{r}\n\n可发送如下指令以退出群聊：\n/quit<7    此指令用于退出所有人数小于7的群聊\n退群#群号     此指令退出指定群聊")
+
+    @bot.on(FriendMessage)
+    async def quitgrrrr(event: FriendMessage):
+        if event.sender.id == master and (
+                str(event.message_chain).startswith("/quit<") or str(event.message_chain).startswith("/quit＜")):
+            try:
+                setg = int(str(event.message_chain).replace("/quit<", "").replace("/quit＜", ""))
+            except:
+                await bot.send(event, "不合法的取值")
+                return
+            await bot.send(event, "退出所有人数小于" + str(setg) + "的群....")
+            asf = await bot.group_list()
+            # print(len(asf.data), asf.data)
+            with open('config/autoSettings.yaml', 'r', encoding='utf-8') as f:
+                result23 = yaml.load(f.read(), Loader=yaml.FullLoader)
+            youquan1 = result23.get("trustGroups")
+            totalquit = 0
+            for nb in asf:
+                gid = nb.id
+                try:
+                    sf = await bot.member_list(int(gid))
+                    sf = len(sf.data)
+                except Exception as e:
+                    logger.error(e)
+                    continue
+                try:
+                    if sf < setg and gid not in youquan1:
+                        await bot.send_group_message(gid, "无授权小群，自动退出。")
+                        logger.warning("已清退" + str(gid))
+                        await bot.send(event,f"清退：{gid}")
+                        await bot.quit(gid)
+                except Exception as e:
+                    logger.error(e)
+                    continue
+                    totalquit += 1
+            await bot.send(event, "已退出" + str(totalquit) + "个群")
+
