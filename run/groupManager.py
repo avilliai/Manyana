@@ -814,13 +814,13 @@ def main(bot,config,moderateKey,logger):
                         logger.info(f"信任群聊：群 {gid} ({gname})\n人数 {len(sf.data)}")
                         r += "\n" + f"信任群聊：群 {gid} ({gname})\n人数 {len(sf.data)}"
                     else:
-                        logger.info(f"群 {gid}({gname})\n人数 {len(sf.data)}")
-                        r+="\n"+f"群 {gid}({gname})\n人数 {len(sf.data)}"
+                        logger.info(f"群 {gid} ({gname})\n人数 {len(sf.data)}")
+                        r+="\n"+f"群 {gid} ({gname})\n人数 {len(sf.data)}"
                     total+=1
                 except Exception as e:
                     logger.error(e)
                     continue
-            await bot.send(event, f"当前群列表：{r}\n总数：{total}\n\n可发送如下指令以退出群聊：\n/quit<7    此指令用于退出所有人数小于7的群聊\n退群#群号     此指令退出指定群聊")
+            await bot.send(event, f"当前群列表：{r}\n总数：{total}\n\n可发送如下指令以退出群聊：\n/quit<7    此指令用于退出所有人数小于7的群聊，数字可更改\n退群#群号     此指令退出指定群聊")
 
     @bot.on(FriendMessage)
     async def quitgrrrr(event: FriendMessage):
