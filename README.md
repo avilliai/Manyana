@@ -25,7 +25,7 @@
 ---
 # 🚀部署
 **如果你没有代理，或git连接不稳定，可在搭建时选择【镜像源】，镜像源和git源完全同步更新。**<br>
-哥们不是学程序设计的，〔矢山代码警告，含大量意义不明变量、判断逻辑〕如果你发现了bot存在一些我没有注意到的问题，或者有对项目的建议请及时提issue🎃
+
 <details markdown='21'><summary>如何更新</summary>
 
 - 双击更新脚本，或者使用launcher.exe的更新功能
@@ -63,9 +63,9 @@
 ## 选择mirai或overflow
 二者选择其一即可。
 
-压缩包里准备了mirai和overflow，你可以任选其一使用，overflow的部署请参考[HowToUse.mp4](https://github.com/avilliai/Manyana/releases/tag/LLoneBot-tutorial) <br>
+**压缩包里准备了mirai和overflow，你可以任选其一使用**，overflow的部署请参考[HowToUse.mp4](https://github.com/avilliai/Manyana/releases/tag/LLoneBot-tutorial) <br>
 mirai就不用说了吧，应该都会用，不会用的参考[release的HowToUse.mpt](https://github.com/avilliai/Manyana/releases/tag/Manyana) <br>
-如果你确实不会，就用overflow
+如果你确实不会，就用overflow，很简单
 ## 方法1：搭建工具部署(推荐)
 **如果你觉得自己从零开始搭建bot比较困难，请使用此方案**
 - 从[release](https://github.com/avilliai/Manyana/releases/tag/Manyana) 下载ManyanaLauncher_v2.rar并解压
