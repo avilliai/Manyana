@@ -63,7 +63,7 @@
 ## 选择mirai或overflow
 二者选择其一即可。
 
-mirai压缩包里就有，压缩包里也配备了overflow，overflow的部署请参考[HowToUse.mp4](https://github.com/avilliai/Manyana/releases/tag/LLoneBot-tutorial)
+压缩包里准备了mirai和overflow，你可以任选其一使用，overflow的部署请参考[HowToUse.mp4](https://github.com/avilliai/Manyana/releases/tag/LLoneBot-tutorial)
 
 ## 方法1：搭建工具部署(推荐)
 **如果你觉得自己从零开始搭建bot比较困难，请使用此方案**
