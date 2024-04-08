@@ -63,8 +63,9 @@
 ## 选择mirai或overflow
 二者选择其一即可。
 
-压缩包里准备了mirai和overflow，你可以任选其一使用，overflow的部署请参考[HowToUse.mp4](https://github.com/avilliai/Manyana/releases/tag/LLoneBot-tutorial)
-
+压缩包里准备了mirai和overflow，你可以任选其一使用，overflow的部署请参考[HowToUse.mp4](https://github.com/avilliai/Manyana/releases/tag/LLoneBot-tutorial) <br>
+mirai就不用说了吧，应该都会用，不会用的参考[release的HowToUse.mpt](https://github.com/avilliai/Manyana/releases/tag/Manyana) <br>
+如果你确实不会，就用overflow
 ## 方法1：搭建工具部署(推荐)
 **如果你觉得自己从零开始搭建bot比较困难，请使用此方案**
 - 从[release](https://github.com/avilliai/Manyana/releases/tag/Manyana) 下载ManyanaLauncher_v2.rar并解压
@@ -72,7 +73,7 @@
 - 从[release](https://github.com/avilliai/Manyana/releases/edit/ManyanaUI) 下载最新的Launcher.exe，覆盖压缩包中的Launcher.exe
 - 右键以管理员身份运行launcher.exe<br>
 - 在【工具】页面单击【搭建】，跟随指引即可，部署完成后
-- 关闭launcher，重启
+- 关闭launcher，重启launcher
 - 填写主界面【基本设置】,使用压缩包仅需修改前四项。<br>
 
 ```
