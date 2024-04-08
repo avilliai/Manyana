@@ -21,9 +21,10 @@ from run import aiReply, voiceReply, nudgeReply, wikiHelper, imgSearch, extraPar
     aiDraw
 
 if __name__ == '__main__':
-    with open('config.json','r',encoding='utf-8') as fp:
-        data=fp.read()
-    config=json.loads(data)
+    with open('config.json', 'r', encoding='utf-8') as f:
+        data = yaml.load(f.read(), Loader=yaml.FullLoader)
+
+    config=data
     qq=int(config.get('botQQ'))
     key=config.get("vertify_key")
     port= int(config.get("port"))
