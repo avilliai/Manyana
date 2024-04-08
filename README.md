@@ -59,19 +59,37 @@
   - 基于官方api的版本，需要先在 https://q.qq.com/qqbot/#/developer/developer-setting 获取token和secret(烂尾项目)
 
  </details>
+ 
+## 选择mirai或overflow
+二者选择其一即可。
 
-**请注意，如下两种搭建方式，如今都已经不再推荐使用其中的纯Mirai部分，而是推荐改用overflow+llonebot来替换原来的Mirai，这很简单，大概两分钟就可以完成，这里是教程：[教程与整合包](https://github.com/avilliai/Manyana/releases/tag/LLoneBot-tutorial)**
+mirai压缩包里就有,至于overflow，请参考[教程与整合包](https://github.com/avilliai/Manyana/releases/tag/LLoneBot-tutorial)
+
 ## 方法1：搭建工具部署(推荐)
 **如果你觉得自己从零开始搭建bot比较困难，请使用此方案**
-- 从release下载ManyanaLauncher.rar并解压
+- 从[release](https://github.com/avilliai/Manyana/releases/tag/Manyana) 下载ManyanaLauncher_v2.rar并解压
   - 如果下载过慢，你也可以从Q群628763673获得这个压缩包
-  - 或者从[百度网盘下载](https://pan.baidu.com/s/1rGw2-Kqpm8bI4toSgIaq1A?pwd=10dv) 提取码：10dv
-- 从release下载最新的Launcher.exe，覆盖压缩包中的Launcher.exe
-- 右键以管理员身份运行launcher.exe
-- 从release下载HowToUse.mp4，如有疑问参考视频即可(较旧，但能用)
+- 从[release](https://github.com/avilliai/Manyana/releases/edit/ManyanaUI) 下载最新的Launcher.exe，覆盖压缩包中的Launcher.exe
+- 右键以管理员身份运行launcher.exe<br>
+- 在【工具】页面单击【搭建】，跟随指引即可，部署完成后
+- 关闭launcher，重启
+- 填写主界面【基本设置】,使用压缩包仅需修改前四项。<br>
+
+```
+"botName": 机器人名字
+"botQQ": 机器人QQ
+"master": 你的QQ
+"mainGroup": 你自己群的群号
+"vertify_key": 【整合包无需修改】
+"port": 【整合包无需修改】
+```
+
+- 用launcher启动Mirai或overflow，随后启动Manyana即可<br>
+
 ## 方法2：自行部署(如果你有一定bot搭建经验)
 - 请确保py版本为3.9
 - 请确保已安装[mirai-api-http](https://github.com/project-mirai/mirai-api-http) 并[正确配置](https://github.com/avilliai/wReply/blob/master/setting.yml)
+- 自行搭建我也同样建议使用[launcher](https://github.com/avilliai/Manyana/releases/edit/ManyanaUI)，可视化界面总比没有强
 ### 操作步骤
 - 从release下载setUps.rar并解压，依次安装，一般默认下一步就行(**安装python的第一步一定要先勾选add to path**)。apk安装到手机。
 - 克隆本仓库。找一个你喜欢的目录(**不要带中文**)打开cmd或git bash执行
@@ -83,11 +101,9 @@ git clone --depth 1 https://gh-proxy.com/https://github.com/avilliai/Manyana
 - 双击Manyana/一键部署脚本.bat即可
 - 把release的模型(1374_epochsm.pth)文件放置在Manyana/vits/voiceModel/nene
 - 运行一次Manyana/更新脚本.bat 以补全最近更新的内容
-## 不管你用哪种搭建方式
-- 填写config.json(必做)与config/api.yaml(建议填写)
+- 填写config.json(必做)
 - 启动bot
-  - 工具搭建：Launcher.exe会帮助你启动
-  - 自行搭建：启动你自己的mirai，以及Manyana/启动脚本.bat
+  - 自行搭建：启动你自己的mirai/overflow，以及Manyana/启动脚本.bat
 ```
 {"botName": "机器人名字", "botQQ": "机器人QQ", "master": "你的QQ", "mainGroup": "你自己群的群号","vertify_key": "这里写你http-api的key,尖括号不用带", "port": "httpapi的运行端口"}
 下面是一个填写示例实例，如使用整合包，不要修改后两项
