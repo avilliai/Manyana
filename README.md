@@ -63,7 +63,7 @@
 ## 选择mirai或overflow
 二者选择其一即可。
 
-mirai压缩包里就有,至于overflow，请参考[教程与整合包](https://github.com/avilliai/Manyana/releases/tag/LLoneBot-tutorial)
+mirai压缩包里就有，压缩包里也配备了overflow，overflow的部署请参考[HowToUse.mp4](https://github.com/avilliai/Manyana/releases/tag/LLoneBot-tutorial)
 
 ## 方法1：搭建工具部署(推荐)
 **如果你觉得自己从零开始搭建bot比较困难，请使用此方案**
@@ -89,7 +89,7 @@ mirai压缩包里就有,至于overflow，请参考[教程与整合包](https://g
 ## 方法2：自行部署(如果你有一定bot搭建经验)
 - 请确保py版本为3.9
 - 请确保已安装[mirai-api-http](https://github.com/project-mirai/mirai-api-http) 并[正确配置](https://github.com/avilliai/wReply/blob/master/setting.yml)
-- 自行搭建我也同样建议使用[launcher](https://github.com/avilliai/Manyana/releases/edit/ManyanaUI)，可视化界面总比没有强
+- 自行搭建我也同样建议使用[launcher](https://github.com/avilliai/Manyana/releases/edit/ManyanaUI)，可视化界面总比没有强，那么你也可以参考方法1
 ### 操作步骤
 - 从release下载setUps.rar并解压，依次安装，一般默认下一步就行(**安装python的第一步一定要先勾选add to path**)。apk安装到手机。
 - 克隆本仓库。找一个你喜欢的目录(**不要带中文**)打开cmd或git bash执行
