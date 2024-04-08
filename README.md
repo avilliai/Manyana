@@ -25,40 +25,6 @@
 ---
 # 🚀部署
 **如果你没有代理，或git连接不稳定，可在搭建时选择【镜像源】，镜像源和git源完全同步更新。**<br>
-
-<details markdown='21'><summary>如何更新</summary>
-
-- 双击更新脚本，或者使用launcher.exe的更新功能
-- 一般建议成功执行完“处理冲突文件” 步骤后关闭
-
-</details>
-
-<details markdown='213'><summary>改用overflow</summary>
-
-[教程与整合包](https://github.com/avilliai/Manyana/releases/tag/LLoneBot-tutorial)
-
-你可以简单理解为，overflow取代了压缩包里的miraiBot，这也是现在推荐的。
-
-也就是说，原本你是miraiBot+Manyana，现在可以overflow+Manyana(当然QQ客户端得挂着)，而不用再启动原来的Mirai
-
-</details>
-
-<details markdown='212'><summary>此项目的一些拓展/相关项目</summary>
-
-- [so-vits-svc语音合成](https://github.com/avilliai/Moe-SVC-api)
-  - 中文语音合成(很吃显卡)
-- [bert_vits2_sever](https://github.com/avilliai/Bert_Vits2_Sever)
-  - 更强大的中文语音合成(新版本Manyana无需额外部署即可使用，语音合成模式设置为modelscopeTTS即可。)
-- [bert_vits2_sever.colab](https://colab.research.google.com/drive/1n8lI6pOiDtli2zC5fL9PZ9TZqbOafqma?usp=sharing)
-  - 更强大的中文语音合成，使用colab(新版本Manyana无需额外部署即可使用，语音合成模式设置为modelscopeTTS即可。)
-- [Berglm](https://github.com/avilliai/Bergml)
-  - 轻量版Manyana，无需部署环境，双击即可运行。仅保留部分功能
-- [NTManyana(NTQQ)](https://github.com/avilliai/NTManyana)
-  - 适用于NTQQ的Manyana(烂尾项目)
-- [Cyumis](https://github.com/avilliai/Cyumis)
-  - 基于官方api的版本，需要先在 https://q.qq.com/qqbot/#/developer/developer-setting 获取token和secret(烂尾项目)
-
- </details>
  
 ## 选择mirai或overflow
 二者选择其一即可。
@@ -421,6 +387,29 @@ news:
 </details>
 
 # 🚑可能遇到的问题
+<details markdown='21'><summary>如何更新</summary>
+
+- 双击更新脚本，或者使用launcher.exe的更新功能
+- 一般建议成功执行完“处理冲突文件” 步骤后关闭
+
+</details>
+
+<details markdown='212'><summary>此项目的一些拓展/相关项目</summary>
+
+- [so-vits-svc语音合成](https://github.com/avilliai/Moe-SVC-api)
+  - 中文语音合成(很吃显卡)
+- [bert_vits2_sever](https://github.com/avilliai/Bert_Vits2_Sever)
+  - 更强大的中文语音合成(新版本Manyana无需额外部署即可使用，语音合成模式设置为modelscopeTTS即可。)
+- [bert_vits2_sever.colab](https://colab.research.google.com/drive/1n8lI6pOiDtli2zC5fL9PZ9TZqbOafqma?usp=sharing)
+  - 更强大的中文语音合成，使用colab(新版本Manyana无需额外部署即可使用，语音合成模式设置为modelscopeTTS即可。)
+- [Berglm](https://github.com/avilliai/Bergml)
+  - 轻量版Manyana，无需部署环境，双击即可运行。仅保留部分功能
+- [NTManyana(NTQQ)](https://github.com/avilliai/NTManyana)
+  - 适用于NTQQ的Manyana(烂尾项目)
+- [Cyumis](https://github.com/avilliai/Cyumis)
+  - 基于官方api的版本，需要先在 https://q.qq.com/qqbot/#/developer/developer-setting 获取token和secret(烂尾项目)
+
+ </details>
 <details markdown='213'><summary>改用overflow</summary>
 
 [教程与整合包](https://github.com/avilliai/Manyana/releases/tag/LLoneBot-tutorial)
