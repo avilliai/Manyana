@@ -83,14 +83,14 @@ async def danxianglii():
 
 async def moyu():
     headers = get_headers()
-    url="https://moyu.qqsuu.cn/"
+    url="https://api.lolimi.cn/API/moyu/"
     time = datetime.datetime.now().strftime('%Y_%m_%d')
     path="data/pictures/cache/"+time+"moyu.png"
     #path="moyu.png"
     if os.path.exists(path):
         return path
     else:
-        async with httpx.AsyncClient(timeout=20,headers=headers) as client:
+        async with httpx.AsyncClient(timeout=30,headers=headers) as client:
             r = await client.get(url)
             img = Image.open(BytesIO(r.content))  # 从二进制数据创建图片对象
             img.save(path)  # 使用PIL库保存图片
