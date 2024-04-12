@@ -26,14 +26,6 @@
 # 🚀部署
 **如果你没有代理，或git连接不稳定，可在搭建时选择【镜像源】，镜像源和git源完全同步更新。**<br>
  
-## 选择mirai或overflow
-二者选择其一即可。
-
-**压缩包里准备了mirai和overflow，你可以任选其一使用**，overflow的部署请参考[HowToUse.mp4](https://github.com/avilliai/Manyana/releases/tag/LLoneBot-tutorial) <br>
-mirai就不用说了吧，应该都会用，不会用的参考[release的HowToUse.mpt](https://github.com/avilliai/Manyana/releases/tag/Manyana) <br>
-如果你确实不会，就用overflow，很简单
-
-准备好后，我们开始部署Manyana
 ## 方法1：搭建工具部署(推荐)
 **如果你觉得自己从零开始搭建bot比较困难，请使用此方案**
 - 从[release](https://github.com/avilliai/Manyana/releases/tag/Manyana) 下载ManyanaLauncher_v2.rar并解压
@@ -78,7 +70,12 @@ git clone --depth 1 https://gh-proxy.com/https://github.com/avilliai/Manyana
 下面是一个填写示例实例，如使用整合包，不要修改后两项
 {"botName": "Manyana", "botQQ": "1283992481", "master": "1840094972","mainGroup": "628763673", "vertify_key": "1234567890", "port": "23456"}
 ```
+## 对接mirai或overflow
+二者选择其一即可。
 
+**压缩包里准备了mirai和overflow，你可以任选其一使用**，overflow的部署请参考[HowToUse.mp4](https://github.com/avilliai/Manyana/releases/tag/LLoneBot-tutorial) <br>
+mirai就不用说了吧，应该都会用，不会用的参考[release的HowToUse.mpt](https://github.com/avilliai/Manyana/releases/tag/Manyana) <br>
+如果你确实不会，就用overflow，很简单
 ---
 # 🍩功能
 readme的更新并不及时
