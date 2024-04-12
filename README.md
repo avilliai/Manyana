@@ -45,7 +45,7 @@
 "port": 【整合包无需修改】
 ```
 
-- 用launcher启动Mirai或overflow，随后启动Manyana即可<br>
+- 用launcher启动Mirai或overflow(没部署overflow的先参考[HowToUse.mp4](https://github.com/avilliai/Manyana/releases/tag/LLoneBot-tutorial) 部署)，随后启动Manyana即可<br>
 
 ## 方法2：自行部署(如果你有一定bot搭建经验)
 - 请确保py版本为3.9
@@ -76,6 +76,7 @@ git clone --depth 1 https://gh-proxy.com/https://github.com/avilliai/Manyana
 **压缩包里准备了mirai和overflow，你可以任选其一使用**，overflow的部署请参考[HowToUse.mp4](https://github.com/avilliai/Manyana/releases/tag/LLoneBot-tutorial) <br>
 mirai就不用说了吧，应该都会用，不会用的参考[release的HowToUse.mpt](https://github.com/avilliai/Manyana/releases/tag/Manyana) <br>
 如果你确实不会，就用overflow，很简单
+
 ---
 # 🍩功能
 readme的更新并不及时
