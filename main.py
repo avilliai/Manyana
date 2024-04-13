@@ -95,7 +95,7 @@ if __name__ == '__main__':
                         await bot.send_group_message(int(i),(event.message_chain+"\n==================\n随机码："+random_str()))
                     else:
                         try:
-                            await bot.send_group_message(int(i), (event.message_chain +"\n随机码：" + random_str()))
+                            await bot.send_group_message(int(i), (event.message_chain +"\n==============\n随机码：" + random_str()))
                         except:
                             await bot.send_group_message(int(i), event.message_chain)
                 except:
