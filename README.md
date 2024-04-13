@@ -82,10 +82,15 @@ mirai就不用说了吧，应该都会用，不会用的参考[release的HowToUs
 readme的更新并不及时<br>
 搭建后在群内发送@bot 帮助 以查看功能列表
 
-![data/fonts/help1.png]<br>
-![data/fonts/help2.png]
-![data/fonts/help3.png]
-![data/fonts/master.png]
+这里是bot菜单
+
+<div align="center">
+   <img width="70%" height="70%" src="data/fonts/help1.png" alt="logo"></br>
+   <img width="70%" height="70%" src="data/fonts/help2.png" alt="logo"></br>
+   <img width="70%" height="70%" src="data/fonts/help3.png" alt="logo"></br>
+   <img width="70%" height="70%" src="data/fonts/master.png" alt="logo"></br>
+</div>
+
 
 <details markdown='1'><summary>图片相关</summary>
 
