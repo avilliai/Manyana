@@ -194,3 +194,6 @@
 2024/4/7:
   - 用overflow替换原来的MiraiBot吧，协议库快没法用了https://github.com/avilliai/Manyana/issues/5，教程视频很简单
   - 增加master指令(私聊) 群列表
+2024/4/13:
+  - 增加新指令
+  - 发病 对象
