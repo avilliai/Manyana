@@ -6,24 +6,26 @@ masterPermissionDays: 99  #master使用授权#QQ 时为用户增加的签到天�
 userSelfPermissonDays: 15 #用户自己在用户群中授权，可以获取的签到天数
 autoallowFriend: False    #是否自动允许好友申请
 GroupSensor: False        #开启后，将拒绝加入无授权群
-#发图功能
-allowPic: True           #是否启用发图功能
-r18Pic: True            #涩图r18模式
-cardPic: False               #是否以卡片形式发送图片
 #在特定情况下，bot会被强制邀请造成上面的设置失效，此设置项用于处理这种情况
 fuckinggroup: false       #开启后将检测群人数，非授权群直接退出
 fuckingnumber: 13         #低于13人退群
 
+#发图功能
+allowPic: True           #是否启用发图功能
+r18Pic: True            #涩图r18模式
+cardPic: False               #是否以卡片形式发送图片
+
+#单独功能设置
 lockLuck: false          #是否锁定运势等功能的结果
-#语音合成，小型服务器建议使用modelscopeTTS/outVits/edgetts和vits，so-vits和bert_vits2需要较好的配置以及另行部署
-#建议使用modelscopeTTS或outVits，这些语音都是在外部合成的，几乎不占用本地资源，但有时候可能没法用
-voicegenerate: outVits  #语音合成来源so-vits/bert_vits2/vits/modelscopeTTS/outVits/edgetts(edgetts可用speaker请参考config/edgetts.txt)
+musicToVoice: true       #是否以语音方式点歌
+
+#建议使用modelscopeTTS或outVits，其他模式需要额外部署。
+voicegenerate: modelscopeTTS  #语音合成模式 so-vits/bert_vits2/vits/modelscopeTTS/outVits/edgetts(edgetts可用speaker请参考config/edgetts.txt)
 RateIfUnavailable: 30  #当设定的语音合成不可用时，默认使用vits合成的几率,中文几率可在最下方调整
-#bert_vits2语音合成配置，不用就别管
-#根据bert_vits_sever/characters.yaml填写所有可用的speakers，不填对应的speaker则无法通过Manyana调用
-bert_speakers:
+#bert_vits2语音合成配置，不知道是什么就别动这里
+bert_speakers:  #根据bert_vits_sever/characters.yaml填写所有可用的speakers，不填对应的speaker则无法通过Manyana调用
   - 塔菲
-#so-vits语音合成配置，不用就别管
+#so-vits语音合成配置，不知道是啥就别动这里
 so_vits_speakers:
   - riri
 

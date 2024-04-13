@@ -23,6 +23,9 @@ def main(bot,logger):
     logger.warning("语音点歌 loaded")
     global musicTask
     musicTask={}
+    with open('config/settings.yaml', 'r', encoding='utf-8') as f:
+        resulta = yaml.load(f.read(), Loader=yaml.FullLoader)
+    musicToVoice=resulta.get(resulta)
     @bot.on(GroupMessage)
     async def selectMusic(event: GroupMessage):
         global musicTask
@@ -51,18 +54,19 @@ def main(bot,logger):
         if event.sender.id in musicTask:
             try:
                 ass=musicTask.get(event.sender.id)[int(str(event.message_chain))]
-                #p=await musicDown(ass[1],ass[0])
+
                 logger.info("获取歌曲："+ass[0])
-                await bot.send(event, MusicShare(kind="NeteaseCloudMusic", title=ass[0],
-                                                                  summary=ass[3],
-                                                                  jump_url="http://music.163.com/song/media/outer/url?id=" + str(ass[1]) + ".mp3",
-                                                                  picture_url=ass[2],
-                                                                  music_url="http://music.163.com/song/media/outer/url?id=" + str(ass[1]) + ".mp3",
-                                                                  brief=ass[3]))
-
-
-                #await bot.send(event,Voice(path=p))
-                musicTask.pop(event.sender.id)
+                if musicToVoice==True:
+                    p = await musicDown(ass[1], ass[0])
+                    await bot.send(event, Voice(path=p))
+                else:
+                    await bot.send(event, MusicShare(kind="NeteaseCloudMusic", title=ass[0],
+                                                                      summary=ass[3],
+                                                                      jump_url="http://music.163.com/song/media/outer/url?id=" + str(ass[1]) + ".mp3",
+                                                                      picture_url=ass[2],
+                                                                      music_url="http://music.163.com/song/media/outer/url?id=" + str(ass[1]) + ".mp3",
+                                                                      brief=ass[3]))
+                    musicTask.pop(event.sender.id)
             except:
                 await bot.send(event,"意外的参数，请输入想要点歌的数字")
 
