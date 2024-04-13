@@ -79,11 +79,13 @@ mirai就不用说了吧，应该都会用，不会用的参考[release的HowToUs
 
 ---
 # 🍩功能
-readme的更新并不及时
-- 查看config文件夹下的几个help.png，它们是bot的菜单
-- 或搭建后在群内发送@bot 帮助 以查看功能列表
-  (plugins文件夹内的函数基本都可以单独拿出去用)
+readme的更新并不及时<br>
+搭建后在群内发送@bot 帮助 以查看功能列表
 
+![data/fonts/help1.png]<br>
+![data/fonts/help2.png]
+![data/fonts/help3.png]
+![data/fonts/master.png]
 
 <details markdown='1'><summary>图片相关</summary>
 
