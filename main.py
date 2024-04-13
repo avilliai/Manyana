@@ -92,7 +92,7 @@ if __name__ == '__main__':
                 logger.info("向群："+i +" 推送公告")
                 try:
                     if event.message_chain.count(Image):
-                        await bot.send_group_message(int(i),(event.message_chain+"\n随机码："+random_str()))
+                        await bot.send_group_message(int(i),(event.message_chain+"\n==================\n随机码："+random_str()))
                     else:
                         try:
                             await bot.send_group_message(int(i), (event.message_chain +"\n随机码：" + random_str()))
@@ -118,9 +118,9 @@ if __name__ == '__main__':
     # 菜单
     @bot.on(GroupMessage)
     async def help(event: GroupMessage):
-        if ('帮助' in str(event.message_chain) or '菜单' in str(event.message_chain) or "help" in str(event.message_chain)) and At(bot.qq) in event.message_chain:
+        if ('帮助' in str(event.message_chain) or '菜单' in str(event.message_chain) or "功能" in str(event.message_chain)) and At(bot.qq) in event.message_chain:
             logger.info("获取菜单")
-            s=[Image(path='data/fonts/help1.png'),Image(path='data/fonts/help2.png'),Image(path='data/fonts/help3.png'),Image(path='data/fonts/help4.png')]
+            s=[Image(path='data/fonts/help1.png'),Image(path='data/fonts/help2.png'),Image(path='data/fonts/help3.png')]
             for i in s:
                 await bot.send(event, i)
             await bot.send(event, '这是' + botName + '的功能列表\nヾ(≧▽≦*)o\n发送 pet 以查看制图功能列表')
@@ -205,9 +205,10 @@ if __name__ == '__main__':
         await bot.send_friend_message(master,time1 + '\n已读取服务群聊:' + str(len(severGroupsa)) + '个')
         await bot.send_friend_message(master,time1 + '\n已读取有记录用户:' + str(len(userCount)) + '个')
         await bot.send_friend_message(master,time1 + '\n功能已加载完毕，欢迎使用')
-        infof = get_system_info()
-        await bot.send_friend_message(master,"当前系统信息如下，可使用.system指令查看当前系统信息")
-        await bot.send_friend_message(master, infof)
+        await bot.send_friend_message(master,Image(path="data/fonts/master.png"))
+        #infof = get_system_info()
+        #await bot.send_friend_message(master,"当前系统信息如下，可使用.system指令查看当前系统信息")
+        #await bot.send_friend_message(master, infof)
 
 
    # logger.info("如果遇到卡顿请按ctrl+c | 如成功更新了某些文件，请重启main.py以应用更新")
