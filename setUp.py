@@ -237,11 +237,6 @@ def updaat(f=False,jump=False,source="3"):
                     os.rename("./temp/" + i, "./temp/conflict " + i)
                 else:
                     continue
-
-
-            if len(os.listdir("./config"))!=14:
-                logger.error("error,未能成功处理冲突文件,缺失了必要文件,暂停更新，请保留temp文件夹下的这些文件："+str(conflict_files)+"\n参考远程仓库对应文件https://github.com/avilliai/Manyana/tree/main/config重新制作本地丢失的文件")
-                input("按任意键以继续：")
             #shutil.rmtree("./temp")
         logger.info("处理冲突文件完成")
         logger.info("旧的冲突文件被保存到了temp文件夹，以防万一你需要它们。")
@@ -288,10 +283,8 @@ def updaat(f=False,jump=False,source="3"):
             logger.warning("无法处理的 " + file)
             logger.warning("请自行决定删除或修改文件名称，在重新拉取后根据旧文件重新填写新文件")
     logger.warning("如果存在冲突的.yaml类文件，请按任意键，程序将自动处理。如果无冲突yaml文件并完成了拉取，请关闭此窗口")
-    logger.info("即将再次执行拉取操作，输入任意键继续，按1退出")
-    a=input("输入：")
-    if a==1:
-        sys.exit()
+    logger.info("即将再次执行拉取操作，按任意键继续")
+    input()
     updaat(True,True,str(source))
     # 不要忘了等待进程结束
     p.wait()
