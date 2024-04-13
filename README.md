@@ -82,7 +82,7 @@ mirai就不用说了吧，应该都会用，不会用的参考[release的HowToUs
 readme的更新并不及时<br>
 搭建后在群内发送@bot 帮助 以查看功能列表
 
-这里是bot菜单
+<details markdown='1'><summary>图片版菜单</summary>
 
 <div align="center">
    <img width="70%" height="70%" src="data/fonts/help1.png" alt="logo"></br>
@@ -91,6 +91,9 @@ readme的更新并不及时<br>
    <img width="70%" height="70%" src="data/fonts/master.png" alt="logo"></br>
 </div>
 
+</details>
+
+<details markdown='1'><summary>文本菜单</summary>
 
 <details markdown='1'><summary>图片相关</summary>
 
@@ -326,6 +329,8 @@ ba十连
 <details markdown='1'><summary>TODO</summary>
 
 - [ ] 能够白嫖的ai绘图
+</details>
+
 </details>
 
 # 🎲可选配置
