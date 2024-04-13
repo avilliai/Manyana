@@ -25,7 +25,7 @@ def main(bot,logger):
     musicTask={}
     with open('config/settings.yaml', 'r', encoding='utf-8') as f:
         resulta = yaml.load(f.read(), Loader=yaml.FullLoader)
-    musicToVoice=resulta.get(resulta)
+    musicToVoice=resulta.get("musicToVoice")
     @bot.on(GroupMessage)
     async def selectMusic(event: GroupMessage):
         global musicTask
