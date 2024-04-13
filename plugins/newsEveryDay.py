@@ -70,6 +70,14 @@ async def chaijun():
         img.save(path)  # 使用PIL库保存图片
         # print(path)
         return path
+async def beCrazy(aim):
+    headers=get_headers()
+    url=f"https://api.lolimi.cn/API/fabing/fb.php?name={aim}"
+    async with httpx.AsyncClient(timeout=20, headers=headers) as client:
+        r = await client.get(url)
+        r=r.json().get("data")
+        # print(path)
+        return r
 async def danxianglii():
     headers=get_headers()
     url="https://xialiu.cn/api/dan/"

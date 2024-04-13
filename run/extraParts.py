@@ -30,7 +30,7 @@ from plugins.jokeMaker import get_joke
 
 from plugins.modelsLoader import modelLoader
 from plugins.newLogger import newLogger
-from plugins.newsEveryDay import news, moyu, xingzuo, sd, chaijun, danxianglii
+from plugins.newsEveryDay import news, moyu, xingzuo, sd, chaijun, danxianglii, beCrazy
 from plugins.arksign import arkSign
 from plugins.picGet import pic, setuGet, picDwn
 from plugins.tarot import tarotChoice
@@ -95,6 +95,19 @@ def main(bot,api_KEY,nasa_api,proxy,logger):
             except:
                 logger.error("获取柴郡.png失败")
                 await bot.send(event,"获取失败，请检查网络连接")
+
+    @bot.on(GroupMessage)
+    async def fabing(event: GroupMessage):
+        if str(event.message_chain).startswith("发病 ") or (At(bot.qq) in event.message_chain and "发病 " in str(event.message_chain)):
+            try:
+                logger.info("开始发病")
+                aim=str(event.message_chain).replace(str(At(bot.qq)),"").replace("发病 ","")
+                asffd = await beCrazy(aim)
+                logger.info(asffd)
+                await bot.send(event, asffd)
+            except:
+                logger.error("调用接口失败")
+                await bot.send(event, "获取失败，请检查网络连接")
     @bot.on(GroupMessage)
     async def handle_group_message(event: GroupMessage):
         # if str(event.message_chain) == '/pic':
