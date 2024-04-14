@@ -282,9 +282,8 @@ def updaat(f=False,jump=False,source="3"):
         else:
             logger.warning("无法处理的 " + file)
             logger.warning("请自行决定删除或修改文件名称，在重新拉取后根据旧文件重新填写新文件")
-    logger.warning("如果存在冲突的.yaml类文件，请按任意键，程序将自动处理。如果无冲突yaml文件并完成了拉取，请关闭此窗口")
-    logger.info("即将再次执行拉取操作，按任意键继续")
-    input()
+    logger.warning("开始处理冲突文件")
+    logger.info("即将再次执行拉取操作")
     updaat(True,True,str(source))
     # 不要忘了等待进程结束
     p.wait()
