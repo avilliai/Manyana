@@ -103,9 +103,9 @@ def main(bot, master, logger):
     speaker = result.get("chatGLM").get("speaker")
     withText=result.get("chatGLM").get("withText")
 
-    with open('config.json', 'r', encoding='utf-8') as fp:
-        data = fp.read()
-    config = json.loads(data)
+    with open('config.json', 'r', encoding='utf-8') as f:
+        data = yaml.load(f.read(), Loader=yaml.FullLoader)
+    config = data
     mainGroup = int(config.get("mainGroup"))
     botName = config.get("botName")
     with open('data/userData.yaml', 'r', encoding='utf-8') as file:
