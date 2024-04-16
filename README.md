@@ -398,6 +398,12 @@ news:
 </details>
 
 # 🚑可能遇到的问题
+<details markdown='21'><summary>项目跑不起来</summary>
+   
+双击更新脚本，或者使用launcher.exe的更新功能，更新和重启能够解决绝大多数问题
+
+</details>
+
 <details markdown='21'><summary>如何更新</summary>
 
 - 双击更新脚本，或者使用launcher.exe的更新功能
