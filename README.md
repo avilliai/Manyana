@@ -398,9 +398,11 @@ news:
 </details>
 
 # 🚑可能遇到的问题
-<details markdown='21'><summary>项目跑不起来</summary>
+<details markdown='21'><summary>项目跑不起来/有功能没法用</summary>
    
-双击更新脚本，或者使用launcher.exe的更新功能，更新和重启能够解决绝大多数问题
+- 双击更新脚本，或者使用launcher.exe的更新功能，更新和重启能够解决绝大多数问题。
+- 如果更新无法解决，检查自己是否进行了不规范操作，比如自行修改文件导致文件格式异常无法读取
+- 排除以上两种情况后，请在我们的用户群628763673或是创建一个issue 反馈此问题
 
 </details>
 
