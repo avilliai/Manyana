@@ -242,7 +242,7 @@ if __name__ == '__main__':
 
     #current_dir = os.path.dirname(os.path.abspath(__file__))
     voiceReply.main(bot, master,logger)  # 语音生成
-    if true:
+    if 1:
         aiReply.main(bot, master, logger)  # poe-api
         imgSearch.main(bot, result.get("sauceno-api"), result.get("proxy"), logger)
     else:
