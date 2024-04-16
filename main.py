@@ -242,12 +242,8 @@ if __name__ == '__main__':
 
     #current_dir = os.path.dirname(os.path.abspath(__file__))
     voiceReply.main(bot, master,logger)  # 语音生成
-    if proxy != "":
-        try:
-            # logger.info("开发过程中暂不启动poe-api")
-            aiReply.main(bot, master, logger)  # poe-api
-        except Exception as e:
-            logger.error(e)
+    if true:
+        aiReply.main(bot, master, logger)  # poe-api
         imgSearch.main(bot, result.get("sauceno-api"), result.get("proxy"), logger)
     else:
         logger.warning("未设置代理，禁用poe-api与搜图")
