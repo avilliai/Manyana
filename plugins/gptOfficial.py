@@ -25,9 +25,8 @@ def gptUnofficial(prompt,apikeys,proxy,bot_info):
     os.environ["OPENAI_API_KEY"] = random.choice(apikeys)
     client = OpenAI(
         # This is the default and can be omitted
-        base_url="https://api.xty.app/v1",
+        base_url="https://api.chatanywhere.com.cn",
         api_key=os.environ.get("OPENAI_API_KEY"),
-        http_client=httpx.Client(base_url="https://api.xty.app/v1", follow_redirects=True)
     )
     prompt.insert(0, {"role": "user", "content": bot_info})
     prompt.insert(1, {"role": "assistant", "content": "好的主人喵"})

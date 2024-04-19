@@ -32,7 +32,7 @@ so_vits_speakers:
 #ai回复设置，个人最推荐的模型是Gemini，但需要代理
 chatGLM:       #只是懒得改还叫chatGLM了，实际上是多模型通用设置
   helpUser: false          #是否引导用户自行设置apiKey(没必要)
-  model: lolimigpt  #ai模型可选：lolimigpt(免费gpt3.5，填写即可用),glm-4(免费，填写即可使用)后面几个需要自己配置api.yaml: characterglm(对应chatGLM),Gemini(同名),Cozi(同名),gpt3.5(openai-keys),gpt3.5-dev(无需代理，但需要从特定店铺买的apikey才能用。详见项目文档：可选配置)
+  model: lolimigpt  #ai模型可选：lolimigpt(免费gpt3.5，填写即可用),glm-4(免费，填写即可使用)后面几个需要自己配置api.yaml: characterglm(对应chatGLM),Gemini(同名),Cozi(同名),gpt3.5(openai-keys),gpt3.5-dev(无需代理的apikey。详见项目文档：可选配置)
   nudgeReply: false    #戳一戳，是否使用模型回复
   #用户体量不大的话，建议启用glmReply
   glmReply: True          #开放群聊内ai回复
@@ -45,7 +45,7 @@ chatGLM:       #只是懒得改还叫chatGLM了，实际上是多模型通用设
   voiceRate: 100           #语音回复几率
   voiceLangType: "<zh>"   #语音合成语言类型，可选： <zh> <jp> <en>   目前仅在modelscopeTTS模式下生效
   #当前modelscopeTTS可用角色["BT","塔菲","阿梓","otto","丁真","星瞳","东雪莲","嘉然","孙笑川","亚托克斯","文静","鹿鸣","奶绿","七海","恬豆","科比"]，该模式下任选其一填入即可
-  speaker: "瑶瑶"           #语音合成默认音源，根据你的合成模式设定,vits则无需配置,outVits(个人推荐填 瑶瑶)看https://api.lolimi.cn/?action=doc&id=181
+  speaker: "东雪莲"           #语音合成默认音源，根据你的合成模式设定,vits则无需配置,outVits(个人推荐填 瑶瑶)看https://api.lolimi.cn/?action=doc&id=181
   withText: true           #发送语音是否附带原始文本
   #默认都是characterglm用的，Cozi和Gemini属于特殊值，bot会自动处理不用管这两个，你该写自己的设定就写
   bot_info:
