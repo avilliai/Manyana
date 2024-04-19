@@ -199,3 +199,7 @@
   - 发病 对象
 2024/4/16:
   - 如使用launcher1.1.4时遇到问题，请拉取更新。在UI编辑【基本设置】时，如为旧版Manyana将导致无法正常启动，使用【更新脚本.bat】更新至新版Manyana即可
+2024/4/19:
+  - 增加免费、稳定、无需代理的gpt3.5来源，取消原本从指定店铺购买apikey的方式
+  - 免费从https://github.com/chatanywhere/GPT_API_free?tab=readme-ov-file申请apikey
+  - 填写apikey，并打开api.yaml中的gpt3.5-dev
