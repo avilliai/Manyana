@@ -11,7 +11,7 @@ chatGLM: 69xxxxxxx               #chatGLM的apiKey，从https://open.bigmodel.cn
 gemini:                          #谷歌的gemini api，免费的，有几个填几个，在https://ai.google.dev/tutorials/setup?hl=zh-cn获取，需要配置代理，否则无法使用
   - AIxxxxxxxx
 cozi: https://xxxxxx.zeabur.app/v1/chat/completions  # https://github.com/avilliai/Manyana/issues/4
-proxy: 'http://127.0.0.1:10809'  #代理 自己设置对应的端口，没有就不填
+proxy: ''  #代理 http://127.0.0.1:端口 如http://127.0.0.1:10809 自己设置对应的端口，没有就不填，v2ray是7890，clash一般7890，ssr一般1080
 openai-keys:                     #openai官方的apikey，或免费从https://github.com/chatanywhere/GPT_API_free?tab=readme-ov-file申请
   - sk-Mxxxxxxxxxxx
 gpt3.5-dev: false                #如果是从https://github.com/chatanywhere/GPT_API_free?tab=readme-ov-file申请openai-apikey，请打开此开关，这样就无需代理即可使用
