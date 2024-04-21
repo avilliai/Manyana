@@ -202,4 +202,5 @@
 2024/4/19:
   - 增加免费、稳定、无需代理的gpt3.5来源，取消原本从指定店铺购买apikey的方式
   - 免费从https://github.com/chatanywhere/GPT_API_free?tab=readme-ov-file申请apikey
-  - 填写apikey，并打开api.yaml中的gpt3.5-dev
+  - 填写apikey，并打开api.yaml(ui中为 外部api设置)中的gpt3.5-dev
+  - 新的免费gpt3.5存在上下文长度限制，为确保稳定使用，请将settings.yaml中的maxPrompt设置为8或10
