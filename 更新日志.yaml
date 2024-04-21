@@ -204,3 +204,5 @@
   - 免费从https://github.com/chatanywhere/GPT_API_free?tab=readme-ov-file申请apikey
   - 填写apikey，并打开api.yaml(ui中为 外部api设置)中的gpt3.5-dev
   - 新的免费gpt3.5存在上下文长度限制，为确保稳定使用，请将settings.yaml中的maxPrompt设置为8或10
+2024/4/21:
+  - ai绘画功能调整，降低了调用失败的几率
