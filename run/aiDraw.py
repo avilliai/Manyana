@@ -31,7 +31,7 @@ def main(bot,logger):
             logger.info("发起ai绘画请求，path:"+path+"|prompt:"+tag)
             i=1
             while i<10:
-                logger.info(f"第{i}次请求")
+                logger.info(f"接口1第{i}次请求")
                 try:
                     logger.info("接口1绘画中......")
                     p=await draw1(tag,path)
@@ -44,9 +44,15 @@ def main(bot,logger):
                 i+=1
             if i>10:
                 await bot.send(event, "接口绘画失败.......")
+    @bot.on(GroupMessage)
+    async def aidrawff(event: GroupMessage):
+        if str(event.message_chain).startswith("画 "):
+            tag=str(event.message_chain).replace("画 ","")
+            path = "data/pictures/cache/" + random_str() + ".png"
+            logger.info("发起ai绘画请求，path:"+path+"|prompt:"+tag)
             i=1
             while i<10:
-                logger.info(f"第{i}次请求")
+                logger.info(f"接口2第{i}次请求")
                 try:
                     logger.info("接口2绘画中......")
                     p=await draw(tag,path)
