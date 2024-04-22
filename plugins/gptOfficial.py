@@ -29,7 +29,7 @@ def gptUnofficial(prompt,apikeys,proxy,bot_info):
         api_key=os.environ.get("OPENAI_API_KEY"),
     )
     prompt.insert(0, {"role": "user", "content": bot_info})
-    prompt.insert(1, {"role": "assistant", "content": "好的主人喵"})
+    prompt.insert(1, {"role": "assistant", "content": "好的，已了解您的需求，我会根据您的需求扮演好您设定的角色。"})
     chat_completion = client.chat.completions.create(
         messages=prompt,
         model="gpt-3.5-turbo",
