@@ -36,21 +36,30 @@ def main(bot,logger):
                     logger.info("接口1绘画中......")
                     p=await draw1(tag,path)
                     await bot.send(event,Image(path=p),True)
-                    return
+                    break
                 except Exception as e:
                     logger.error(e)
                     logger.error("接口1绘画失败.......")
                     #await bot.send(event,"接口1绘画失败.......")
+                i+=1
+            if i>10:
+                await bot.send(event, "接口绘画失败.......")
+            i=1
+            while i<10:
+                logger.info(f"第{i}次请求")
                 try:
                     logger.info("接口2绘画中......")
                     p=await draw(tag,path)
                     await bot.send(event,Image(path=p),True)
+                    break
                 except Exception as e:
                     logger.error(e)
                     logger.error("接口2绘画失败.......")
                     #await bot.send(event,"接口2绘画失败.......")
                 i+=1
-            await bot.send(event, "接口绘画失败.......")
+            if i>10:
+                await bot.send(event, "接口绘画失败.......")
+            
 
     @bot.on(GroupMessage)
     async def rededd(event: GroupMessage):
