@@ -471,3 +471,5 @@ news:
 如果觉得项目还不错的话给个star喵，给个star谢谢喵
 ![Star History Chart](https://api.star-history.com/svg?repos=avilliai/Manyana&type=Date)
 
+感谢JetBrains提供的开源项目license
+![PyCharm logo](https://resources.jetbrains.com/storage/products/company/brand/logos/PyCharm_icon.png)
