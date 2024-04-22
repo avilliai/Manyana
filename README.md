@@ -472,4 +472,4 @@ news:
 ![Star History Chart](https://api.star-history.com/svg?repos=avilliai/Manyana&type=Date)
 
 感谢JetBrains提供的开源项目license<br>
-<img src="https://resources.jetbrains.com/storage/products/company/brand/logos/PyCharm_icon.png" alt="PyCharm logo." width="200">
+<img src="https://resources.jetbrains.com/storage/products/company/brand/logos/PyCharm_icon.png" alt="PyCharm logo." width="100">
