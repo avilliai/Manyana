@@ -116,10 +116,13 @@ def main(bot, master, logger):
     trustUser = []
     for i in userdict.keys():
         data = userdict.get(i)
-        times = int(str(data.get('sts')))
-        if times > trustDays:
-            trustUser.append(str(i))
+        try:
+            times = int(str(data.get('sts')))
+            if times > trustDays:
+                trustUser.append(str(i))
 
+        except Exception as e:
+            logger.error(f"用户{i}的sts数值出错，请打开data/userData.yaml检查，将其修改为正常数值")
     logger.info('chatglm部分已读取信任用户' + str(len(trustUser)) + '个')
 
     with open('config/chatGLMSingelUser.yaml', 'r', encoding='utf-8') as f:
