@@ -212,7 +212,7 @@ async def superVG(data,mode,urls="",langmode="<zh>"):
             r = await client.post(url, json=data)
             newurl = newurp + \
                      r.json().get("data")[1].get("name")
-            async with httpx.AsyncClient(timeout=200) as client:
+            async with httpx.AsyncClient(timeout=200,headers=headers) as client:
                 r = await client.get(newurl)
                 with open(p, "wb") as f:
                     f.write(r.content)
