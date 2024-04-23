@@ -206,3 +206,6 @@
   - 新的免费gpt3.5存在上下文长度限制，为确保稳定使用，请将settings.yaml中的maxPrompt设置为8或10
 2024/4/21:
   - ai绘画功能调整，降低了调用失败的几率
+2024/4/23:
+  - modelscope反爬策略导致语音合成失效
+  - 应对-api.yaml新增配置项modelscopeCookie，留空默认先用我的，如我的cookie失效，请参照https://github.com/avilliai/Manyana/issues/7自行获取
