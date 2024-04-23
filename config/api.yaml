@@ -15,6 +15,6 @@ proxy: ''  #代理 http://127.0.0.1:端口 如http://127.0.0.1:10809 自己设�
 openai-keys:                     #openai官方的apikey，或免费从https://github.com/chatanywhere/GPT_API_free?tab=readme-ov-file申请
   - sk-Mxxxxxxxxxxx
 gpt3.5-dev: false                #如果是从https://github.com/chatanywhere/GPT_API_free?tab=readme-ov-file申请openai-apikey，请打开此开关，这样就无需代理即可使用
-modelscopeCookie: ""            #modescopeTTS增加反爬虫，需自行抓取cookie，查看https://github.com/avilliai/Manyana/issues/7
+modelscopeCookie: ""            #modescopeTTS增加反爬虫，默认留空用我的，如不能用了自行抓取cookie，查看https://github.com/avilliai/Manyana/issues/7
 bert_colab: "https://mess-addressed-openings-exposed.trycloudflare.com/synthesize"      #新版本Manyana无需配置此功能，语音合成选modelscopeTTS模式可直接使用。但如果你喜欢折腾：bert_vits_colab部署：https://colab.research.google.com/drive/1n8lI6pOiDtli2zC5fL9PZ9TZqbOafqma?usp=sharing 请注意，使用此功能必须配置上面的proxy项
 
