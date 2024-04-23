@@ -255,23 +255,7 @@ def main(bot, master, logger):
                     logger.error(e)
                     GeminiData.pop(event.sender.id)
                     await bot.send(event, "gemini启动出错,请重试\n或发送 @bot 可用角色模板 以更换其他模型")
-            elif chatGLMCharacters.get(event.sender.id)=="Cozi":
-                if privateGlmReply!=True:
-                    return
-                await modelReply(event, chatGLMCharacters.get(event.sender.id))
-            elif chatGLMCharacters.get(event.sender.id)=="glm-4":
-                if privateGlmReply!=True:
-                    return
-                await modelReply(event, chatGLMCharacters.get(event.sender.id))
-            elif chatGLMCharacters.get(event.sender.id)=="gpt3.5" or chatGLMCharacters.get(event.sender.id)=="gpt3.5-dev":
-                if privateGlmReply!=True:
-                    return
-                if gptdev==True:
-                    rth="gpt3.5-dev"
-                else:
-                    rth="gpt3.5"
-                await modelReply(event, rth)
-            elif chatGLMCharacters.get(event.sender.id)=="lolimigpt":
+            else:
                 if privateGlmReply!=True:
                     return
                 await modelReply(event, chatGLMCharacters.get(event.sender.id))
@@ -381,23 +365,7 @@ def main(bot, master, logger):
                 logger.error(e)
                 GeminiData.pop(event.sender.id)
                 await bot.send(event, "gemini启动出错,请重试\n或发送 @bot 可用角色模板 以更换其他模型")
-        elif replyModel=="Cozi":
-            if privateGlmReply!=True:
-                return
-            await modelReply(event, replyModel)
-        elif replyModel=="glm-4":
-            if privateGlmReply!=True:
-                return
-            await modelReply(event, replyModel)
-        elif replyModel=="gpt3.5" or replyModel=="gpt3.5-dev":
-            if privateGlmReply != True:
-                return
-            if gptdev == True:
-                rth = "gpt3.5-dev"
-            else:
-                rth = "gpt3.5"
-            await modelReply(event, rth)
-        elif replyModel=="lolimigpt":
+        else:
             if privateGlmReply!=True:
                 return
             await modelReply(event, replyModel)
@@ -470,7 +438,6 @@ def main(bot, master, logger):
 
                 if meta12=="Gemini" or meta12=="Cozi" or meta12=="lolimigpt" or meta12=="gpt3.5" or meta12=="glm-4":
                     pass
-
                 else:
                     with open('config/settings.yaml', 'r', encoding='utf-8') as f:
                         resy = yaml.load(f.read(), Loader=yaml.FullLoader)
@@ -598,19 +565,7 @@ def main(bot, master, logger):
 
             return
         if event.sender.id in chatGLMCharacters:
-            if chatGLMCharacters.get(event.sender.id)=="gpt3.5" or chatGLMCharacters.get(event.sender.id)=="gpt3.5-dev":
-                if gptdev == True:
-                    rth = "gpt3.5-dev"
-                else:
-                    rth = "gpt3.5"
-                await modelReply(event, rth)
-            elif (chatGLMCharacters.get(event.sender.id) == "Cozi"):
-                await modelReply(event, chatGLMCharacters.get(event.sender.id))
-            elif chatGLMCharacters.get(event.sender.id) == "lolimigpt":
-                await modelReply(event, chatGLMCharacters.get(event.sender.id))
-            elif chatGLMCharacters.get(event.sender.id) == "glm-4":
-                await modelReply(event, chatGLMCharacters.get(event.sender.id))
-            elif chatGLMCharacters.get(event.sender.id) == "Gemini":
+            if chatGLMCharacters.get(event.sender.id) == "Gemini":
                 text = str(event.message_chain).replace("@" + str(bot.qq) + "", '').replace(" ", "").replace("/g", "")
                 for saa in noRes:
                     if text == saa:
@@ -723,19 +678,9 @@ def main(bot, master, logger):
 
                 except:
                     await bot.send(event, "chatGLM启动出错，请联系master\n或发送 @bot 可用角色模板 以更换其他模型")
-        #判断模型
-        elif replyModel=="gpt3.5":
-            if gptdev == True:
-                rth = "gpt3.5-dev"
             else:
-                rth = "gpt3.5"
-            await modelReply(event, rth)
-        elif replyModel=="Cozi" :
-            await modelReply(event, replyModel)
-        elif replyModel=="glm-4":
-            await modelReply(event, replyModel)
-        elif replyModel=="lolimigpt":
-            await modelReply(event, replyModel)
+                await modelReply(event, chatGLMCharacters.get(event.sender.id))
+        #判断模型
         elif replyModel=="Gemini":
             text = str(event.message_chain).replace("@" + str(bot.qq) + "", '').replace(" ", "").replace("/g", "")
             for saa in noRes:
@@ -903,6 +848,8 @@ def main(bot, master, logger):
                 asyncio.run_coroutine_threadsafe(asyncchatGLM(key1, meta1, prompt,event,setName,text), newLoop)
             except:
                 await bot.send(event, "chatGLM启动出错，请联系master\n或发送 @bot 可用角色模板 以更换其他模型")
+        else:
+            await modelReply(event, replyModel)
     async def tstt(r,event):
         if len(r) < maxTextLen and random.randint(0, 100) < voiceRate and event.type != 'FriendMessage':
             data1 = {}
