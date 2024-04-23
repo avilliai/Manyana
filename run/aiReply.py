@@ -562,7 +562,7 @@ def main(bot, master, logger):
                     pass
                 else:
                     return
-        if (At(bot.qq) in event.message_chain) and (glmReply == True or (trustglmReply == True and str(event.sender.id) in trustUser) or event.group.id in trustG):
+        if (At(bot.qq) in event.message_chain) and (glmReply == True or (trustglmReply == True and str(event.sender.id) in trustUser) or event.group.id in trustG or event.sender.id==int(mainGroup)):
             logger.info("ai聊天启动")
         else:
 
@@ -796,59 +796,6 @@ def main(bot, master, logger):
                 #st1 = await chatGLM(selfApiKey, meta1, prompt)
 
 
-            except:
-                await bot.send(event, "chatGLM启动出错，请联系master\n或发送 @bot 可用角色模板 以更换其他模型")
-        elif ((str(event.group.id) == str(mainGroup) and chatGLM_api_key!="sdfafjsadlf;aldf") or (event.group.id in chatGLMapikeys)) and At(
-                bot.qq) in event.message_chain:
-            text = str(event.message_chain).replace("@" + str(bot.qq) + "", '').replace(" ","")
-            logger.info("分支2")
-            for saa in noRes:
-                if text==saa:
-                    logger.warning("与屏蔽词匹配，chatGLM不回复")
-                    return
-            if text=="" or text==" ":
-                text="在吗"
-            # 构建新的prompt
-            tep = {"role": "user", "content": text}
-
-            # 获取以往的prompt
-            if event.sender.id in chatGLMData and context==True:
-                prompt = chatGLMData.get(event.sender.id)
-                prompt.append({"role": "user","content": text})
-            # 没有该用户，以本次对话作为prompt
-            else:
-                prompt = [tep]
-                chatGLMData[event.sender.id] = prompt
-            #logger.info("当前prompt" + str(prompt))
-            #获取专属meta
-            if event.sender.id in chatGLMCharacters:
-                meta1=chatGLMCharacters.get(event.sender.id)
-            else:
-                logger.warning("读取meta模板")
-                with open('config/settings.yaml', 'r', encoding='utf-8') as f:
-                    resy = yaml.load(f.read(), Loader=yaml.FullLoader)
-                meta1 = resy.get("chatGLM").get("bot_info").get("default")
-            try:
-                setName = userdict.get(str(event.sender.id)).get("userName")
-            except:
-                setName = event.sender.member_name
-            if setName==None:
-                setName = event.sender.member_name
-            meta1["user_name"] = meta1.get("user_name").replace("指挥", setName)
-            meta1["user_info"] = meta1.get("user_info").replace("指挥", setName).replace("yucca",botName)
-            meta1["bot_info"] = meta1.get("bot_info").replace("指挥", setName).replace("yucca",botName)
-            meta1["bot_name"] = botName
-
-            logger.info("chatGLM接收提问:" + text)
-            #获取apiKey
-            logger.info("当前meta:"+str(meta1))
-            if str(event.group.id) == str(mainGroup):
-                key1 = chatGLM_api_key
-            else:
-                key1 = chatGLMapikeys.get(event.group.id)
-            try:
-                #分界线
-                asyncio.run_coroutine_threadsafe(asyncchatGLM(key1, meta1, prompt,event,setName,text), newLoop)
             except:
                 await bot.send(event, "chatGLM启动出错，请联系master\n或发送 @bot 可用角色模板 以更换其他模型")
         else:
