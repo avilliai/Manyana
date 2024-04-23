@@ -265,7 +265,7 @@ def main(bot,api_KEY,master,config,logger):
                 image_path = pic()
                 size = os.path.getsize(image_path) / (1024 * 1024)
 
-                if size>4:
+                if size<4:
                     logger.info("获取签到背景图片完成")
                     break
                 else:
