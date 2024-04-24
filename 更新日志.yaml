@@ -209,3 +209,5 @@
 2024/4/23:
   - modelscope反爬策略导致语音合成失效
   - 应对-api.yaml新增配置项modelscopeCookie，留空默认先用我的，如我的cookie失效，请参照https://github.com/avilliai/Manyana/issues/7自行获取
+2024/4/24:
+  - 新增指令：手写 xxxxxx
