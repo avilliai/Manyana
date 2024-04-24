@@ -260,16 +260,13 @@ def main(bot,api_KEY,master,config,logger):
         return fileName
     async def check_image_size():
         try:
-            while True:
-                logger.info("获取签到背景图片")
-                image_path = pic()
-                size = os.path.getsize(image_path) / (1024 * 1024)
 
-                if size<5:
-                    logger.info("获取签到背景图片完成")
-                    break
-                else:
-                    logger.error("过大的图片，重新获取")
+            logger.info("获取签到背景图片")
+            image_path = pic()
+
+            layer = Image.open(image_path)
+            layer = layer.resize((1920, 1080), resample=Image.LANCZOS)
+            layer.save(image_path)
             return image_path
         except Exception as e:
             logger.error(e)
