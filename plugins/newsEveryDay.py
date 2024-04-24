@@ -150,6 +150,7 @@ async def sd(url,path):
         return path
 async def handwrite(msg):
     url=f"https://zj.v.api.aa1.cn/api/zuoye/?msg={msg}"
+    path="data/pictures/cache/"+random_str()+".png"
     async with httpx.AsyncClient(timeout=200, headers=get_headers()) as client:
         r = await client.get(url)
         img = Image.open(BytesIO(r.content))  # 从二进制数据创建图片对象
