@@ -77,7 +77,38 @@ def main():
                 os.remove("data/pictures/wallpaper/" + i)
             except:
                 continue
-        print("清理本地图库缓存完成,缓存的涩图都没喽")
+        ls1 = os.listdir("data/pictures/blueArchive/arona")
+        for i in ls1:
+            try:
+                os.remove("data/pictures/blueArchive/arona/" + i)
+            except:
+                continue
+        ls1 = os.listdir("data/pictures/blueArchive/cache")
+        for i in ls1:
+            try:
+                os.remove("data/pictures/blueArchive/cache/" + i)
+            except:
+                continue
+        ls1 = os.listdir("data/Elo")
+        for i in ls1:
+            try:
+                os.remove("data/Elo/" + i)
+            except:
+                continue
+        ls1 = os.listdir("data/arknights")
+        for i in ls1:
+            try:
+                os.remove("data/arknights/" + i)
+            except:
+                continue
+
+        ls1 = os.listdir("data/backrooms")
+        for i in ls1:
+            try:
+                os.remove("data/backrooms/" + i)
+            except:
+                continue
+        print("清理本地图库缓存完成")
         print("清理缓存完成")
     elif a=="4":
         import json
