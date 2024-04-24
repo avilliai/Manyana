@@ -148,5 +148,13 @@ async def sd(url,path):
         img.save(path)  # 使用PIL库保存图片
         # rint(path)
         return path
+async def handwrite(msg):
+    url=f"https://zj.v.api.aa1.cn/api/zuoye/?msg={msg}"
+    async with httpx.AsyncClient(timeout=200, headers=get_headers()) as client:
+        r = await client.get(url)
+        img = Image.open(BytesIO(r.content))  # 从二进制数据创建图片对象
+        img.save(path)  # 使用PIL库保存图片
+        # rint(path)
+        return path
 if __name__ == '__main__':
     asyncio.run(xingzuo())
