@@ -30,7 +30,7 @@ from plugins.jokeMaker import get_joke
 
 from plugins.modelsLoader import modelLoader
 from plugins.newLogger import newLogger
-from plugins.newsEveryDay import news, moyu, xingzuo, sd, chaijun, danxianglii, beCrazy
+from plugins.newsEveryDay import news, moyu, xingzuo, sd, chaijun, danxianglii, beCrazy,handwrite
 from plugins.arksign import arkSign
 from plugins.picGet import pic, setuGet, picDwn
 from plugins.tarot import tarotChoice
@@ -372,6 +372,18 @@ def main(bot,api_KEY,nasa_api,proxy,logger):
             except:
                 logger.error("截图失败!")
             await bot.send(event, Image(path=path), True)
+
+    @bot.on(GroupMessage)
+    async def handwrite(event: GroupMessage):
+        if str(event.message_chain).startswith("手写 "):
+            msg=str(event.message_chain).replace("手写 ","")
+            logger.info("手写模拟:"+msg)
+            try:
+                path=await handwrite(msg)
+                await bot.send(event, Image(path=path), True)
+            except:
+                logger.error("调用手写模拟器失败")
+            
 
     @bot.on(GroupMessage)
     async def NasaHelper(event: GroupMessage):
