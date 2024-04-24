@@ -77,16 +77,16 @@ def main():
                 os.remove("data/pictures/wallpaper/" + i)
             except:
                 continue
-        ls1 = os.listdir("data/pictures/blueArchive/arona")
+        ls1 = os.listdir("data/blueArchive/arona")
         for i in ls1:
             try:
-                os.remove("data/pictures/blueArchive/arona/" + i)
+                os.remove("data/blueArchive/arona/" + i)
             except:
                 continue
-        ls1 = os.listdir("data/pictures/blueArchive/cache")
+        ls1 = os.listdir("data/blueArchive/cache")
         for i in ls1:
             try:
-                os.remove("data/pictures/blueArchive/cache/" + i)
+                os.remove("data/blueArchive/cache/" + i)
             except:
                 continue
         ls1 = os.listdir("data/Elo")
