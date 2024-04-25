@@ -232,11 +232,11 @@ def main(bot, master, logger):
                     prompt=[{"role": "user", "parts": [geminichar]},{"role": 'model', "parts": ["好的，已了解您的需求，我会扮演好你设定的角色"]}]
                     prompt.append(tep)
 
-
                 logger.info("gemini接收提问:" + text)
+                
                 try:
                     # logger.info(geminiapikey)
-                    r = asyncio.run_coroutine_threadsafe(geminirep(ak=random.choice(geminiapikey), messages=prompt),
+                    r = asyncio.run_coroutine_threadsafe(geminirep(ak=random.choice(geminiapikey), messages=prompt,model1=replyModel),
                                                          newLoop)
                     r = r.result()
                     # 更新该用户prompt
@@ -319,7 +319,7 @@ def main(bot, master, logger):
 
             except:
                 await bot.send(event, "chatGLM启动出错，请联系master检查apiKey或重试\n或发送 @bot 可用角色模板 以更换其他模型")
-        elif replyModel=="Gemini":
+        elif replyModel=="Gemini" or replyModel=="Gemini1.5":
             if str(event.message_chain)=="/cGemini" or str(event.message_chain)=="/clear":
                 return
             if privateGlmReply!=True:
@@ -346,7 +346,7 @@ def main(bot, master, logger):
             logger.info("gemini接收提问:" + text)
             try:
                 # logger.info(geminiapikey)
-                r = asyncio.run_coroutine_threadsafe(geminirep(ak=random.choice(geminiapikey), messages=prompt),
+                r = asyncio.run_coroutine_threadsafe(geminirep(ak=random.choice(geminiapikey), messages=prompt,model1=replyModel),
                                                      newLoop)
                 r = r.result()
                 # 更新该用户prompt
@@ -593,7 +593,7 @@ def main(bot, master, logger):
                 logger.info("gemini接收提问:" + text)
                 try:
                     # logger.info(geminiapikey)
-                    r = asyncio.run_coroutine_threadsafe(geminirep(ak=random.choice(geminiapikey), messages=prompt),
+                    r = asyncio.run_coroutine_threadsafe(geminirep(ak=random.choice(geminiapikey), messages=prompt,model1=replyModel),
                                                          newLoop)
                     r = r.result()
                     # 更新该用户prompt
@@ -684,7 +684,7 @@ def main(bot, master, logger):
             else:
                 await modelReply(event, chatGLMCharacters.get(event.sender.id))
         #判断模型
-        elif replyModel=="Gemini":
+        elif replyModel=="Gemini" or replyModel=="Gemini1.5":
             text = str(event.message_chain).replace("@" + str(bot.qq) + "", '').replace(" ", "").replace("/g", "")
             for saa in noRes:
                 if text == saa:
@@ -709,7 +709,7 @@ def main(bot, master, logger):
             logger.info("gemini接收提问:" + text)
             try:
                 # logger.info(geminiapikey)
-                r=asyncio.run_coroutine_threadsafe(geminirep(ak=random.choice(geminiapikey), messages=prompt),
+                r=asyncio.run_coroutine_threadsafe(geminirep(ak=random.choice(geminiapikey), messages=prompt,model1=replyModel),
                                                  newLoop)
                 r = r.result()
                 # 更新该用户prompt
