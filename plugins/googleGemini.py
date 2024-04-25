@@ -2,7 +2,7 @@ import asyncio
 import os
 
 import google.generativeai as genai
-async def geminirep(ak,messages,model1="gemini-1.5-pro-latest"):
+async def geminirep(ak,messages):
     # Or use `os.getenv('GOOGLE_API_KEY')` to fetch an environment variable.
     GOOGLE_API_KEY=ak
     
@@ -40,7 +40,7 @@ async def geminirep(ak,messages,model1="gemini-1.5-pro-latest"):
     ]
 
     model = genai.GenerativeModel(
-        model_name=model1,
+        model_name="gemini-pro",
         generation_config=generation_config,
         safety_settings=safety_settings
     )
