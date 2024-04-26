@@ -32,7 +32,7 @@ so_vits_speakers:
 #ai回复设置，个人最推荐的模型是Gemini，但需要代理
 chatGLM:       #只是懒得改还叫chatGLM了，实际上是多模型通用设置
   helpUser: false          #是否引导用户自行设置apiKey(没必要)
-  model: lolimigpt  #ai模型可选：lolimigpt(免费不稳定),glm-4(免费不稳定)后面几个需要自己配置api.yaml对应变量: characterglm(对应chatGLM),Gemini或Gemini1.5(对应Gemini),Cozi(同名),gpt3.5(官方openai-keys),gpt3.5(无需代理、免费的openai-keys，需要勾选gpt3.5-dev)
+  model: lolimigpt  #ai模型可选：lolimigpt(免费不稳定),glm-4(免费不稳定)后面几个需要自己配置api.yaml对应变量: characterglm(对应chatGLM),Gemini或Gemini1.5(对应的Gemini),Cozi(同名),gpt3.5(官方openai-keys),gpt3.5(无需代理、免费的openai-keys，需要勾选gpt3.5-dev)
   nudgeReply: false    #戳一戳，是否使用模型回复
   #用户体量不大的话，建议启用glmReply
   glmReply: True          #开放群聊内ai回复
