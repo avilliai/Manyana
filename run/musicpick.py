@@ -68,5 +68,6 @@ def main(bot,logger):
                                                                       brief=ass[3]))
                     musicTask.pop(event.sender.id)
             except:
-                await bot.send(event,"意外的参数，请输入想要点歌的数字")
+                musicTask.pop(event.sender.id)
+                await bot.send(event,"点歌失败！不规范的操作")
 

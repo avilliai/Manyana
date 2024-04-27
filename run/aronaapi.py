@@ -47,7 +47,7 @@ def main(bot,logger):
                 for i in result9:
                     for ia in result9.get(i).get("hash"):
                         logger.info("检查"+ia+"更新")
-                        await sleep(5)
+                        await sleep(25)
                         url1 = "https://arona.diyigemt.com/api/v2/image?name=" + ia
                         async with httpx.AsyncClient(timeout=100) as client:  # 100s超时
                             try:
