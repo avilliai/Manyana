@@ -20,7 +20,7 @@ from mirai.models import NudgeEvent
 from concurrent.futures import ThreadPoolExecutor
 from plugins.RandomStr import random_str
 from plugins.chatGLMonline import glm4
-from plugins.gptOfficial import gptOfficial
+from plugins.gptOfficial import gptOfficial,kimi, qingyan, lingyi, stepAI, qwen, gptvvvv
 from plugins.modelsLoader import modelLoader
 from plugins.translater import translate
 from plugins.vitsGenerate import voiceGenerate, taffySayTest, sovits, edgetts, outVits, modelscopeTTS, superVG
@@ -28,6 +28,10 @@ from plugins.yubanGPT import lolimigpt, lolimigpt2
 from plugins.googleGemini import geminirep
 
 def main(bot,master,logger,berturl,proxy):
+    with open('config.json', 'r', encoding='utf-8') as f:
+        datas = yaml.load(f.read(), Loader=yaml.FullLoader)
+    configs = datas
+    botName = configs.get("botName")
     with open('config/nudgeReply.yaml', 'r', encoding='utf-8') as f:
         result = yaml.load(f.read(), Loader=yaml.FullLoader)
     normal_Reply = result.get("nudgedReply")
@@ -58,7 +62,7 @@ def main(bot,master,logger,berturl,proxy):
     gpt3=result0.get("chatGLM").get("bot_info").get("gpt3.5")
     lolimig = result0.get("chatGLM").get("bot_info").get("lolimigpt")
     glm_4=result0.get("chatGLM").get("bot_info").get("glm-4")
-
+    allcharacters = result0.get("chatGLM").get("bot_info")
     Gem=result0.get("chatGLM").get("bot_info").get("Gemini")
     logger.info("语音合成模式："+voicegg+" 语音合成speaker："+speaker92)
     with open('config/api.yaml', 'r', encoding='utf-8') as f:
@@ -117,6 +121,16 @@ def main(bot,master,logger,berturl,proxy):
                     except:
                         await bot.send_group_message(event.subject.id,"唔....似乎戳不了你呢....好可惜")
             else:
+                bot_in = str("你是" + botName + ",我是" + event.sender.member_name + "," + allcharacters.get(
+                    chatmodel)).replace("【bot】",
+                                        botName).replace("【用户】", event.sender.member_name)
+                prompt1 = [
+                    {
+                        "role": "user",
+                        "content": random.choice(["戳你一下", "摸摸头", "戳戳你的头", "摸摸~"])
+                    }
+                ]
+                loop = asyncio.get_event_loop()
                 if nudgeornot==False:
                     rep = random.choice(normal_Reply)
                 elif chatmodel=="lolimigpt":
@@ -125,28 +139,26 @@ def main(bot,master,logger,berturl,proxy):
                     rep = rep.get("content")
                 elif chatmodel=="gpt3.5":
                     bot_in=str(gpt3.replace("【bot】",meta1.get("bot_name")).replace("【用户】","主人"))
-                    prompt1 = [
-                        {
-                            "role": "user",
-                            "content": random.choice(["戳你一下", "摸摸头", "戳戳你的头","摸摸~"])
-                        }
-                    ]
-                    loop = asyncio.get_event_loop()
-
                     rep = await loop.run_in_executor(None, gptOfficial, prompt1, gptkeys, proxy, bot_in)
                     rep=rep.get("content")
                 elif chatmodel=="glm-4":
                     bot_in=str(glm_4.replace("【bot】",meta1.get("bot_name")).replace("【用户】","主人"))
-                    prompt1 = [
-                        {
-                            "role": "user",
-                            "content": random.choice(["戳你一下", "摸摸头", "戳戳你的头","摸摸~"])
-                        }
-                    ]
+
 
                     rep = await glm4(prompt1,bot_in)
                     rep=rep.get("content")
-
+                elif chatmodel == "kimi":
+                    rep = await loop.run_in_executor(None, kimi, prompt1, bot_in)
+                elif chatmodel == "清言":
+                    rep = await loop.run_in_executor(None, qingyan, prompt1, bot_in)
+                elif chatmodel == "lingyi":
+                    rep = await loop.run_in_executor(None, lingyi, prompt1, bot_in)
+                elif chatmodel == "step":
+                    rep = await loop.run_in_executor(None, stepAI, prompt1, bot_in)
+                elif chatmodel == "通义千问":
+                    rep = await loop.run_in_executor(None, qwen, prompt1, bot_in)
+                elif chatmodel == "gptX":
+                    rep = await loop.run_in_executor(None, gptvvvv, prompt1, bot_in)
                 elif chatmodel=="Gemini":
                     bot_in=str(Gem.replace("【bot】",meta1.get("bot_name")).replace("【用户】","主人"))
                     tep = {"role": "user","parts": [random.choice(["戳你一下", "摸摸头~"])]}
