@@ -211,3 +211,5 @@
   - 应对-api.yaml新增配置项modelscopeCookie，留空默认先用我的，如我的cookie失效，请参照https://github.com/avilliai/Manyana/issues/7自行获取
 2024/4/24:
   - 新增指令：手写 xxxxxx
+2024/4/28:
+  - 增加五个免费、无需代理、无需额外配置的对话模型 kimi、清言、lingyi、step、通义千问、gptX
