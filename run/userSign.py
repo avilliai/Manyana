@@ -297,7 +297,7 @@ def main(bot,api_KEY,master,config,logger):
         # 使用LANCZOS采样方法进行调整大小
 
         # 创建一个灰色的矩形填充区域
-        gray_color = (169, 169, 169, 128)  # 灰色，128为半透明的alpha值
+        gray_color = (169, 169, 169, 1)  # 灰色，128为半透明的alpha值
         draw = ImageDraw.Draw(blurred_bg, 'RGBA')
         left_fill_width = bg.width // 3  # 你可以调整这个宽度
         # 绘制一个半透明的灰色矩形
@@ -337,12 +337,12 @@ def main(bot,api_KEY,master,config,logger):
         wi = int(bg.width * 0.02)
         font = ImageFont.truetype('data/fonts/Caerulaarbor.ttf', int(bg.width*0.02))
         draw.text((wi, int(bg.height * 0.25)), (ids.replace("-", "a")), (12, 0, 6), font=font)
-        font = ImageFont.truetype('data/fonts/H-TTF-BuMing-B-2.ttf', int(bg.width*0.015))
+        font = ImageFont.truetype('data/fonts/zpix.ttf', int(bg.width*0.015))
         draw.text((wi, int(bg.height * 0.35)), "天气："+weather, (12, 0, 6), font=font)
         draw.text((wi, int(bg.height * 0.45)), "当前时间："+nowTime, (12, 0, 6), font=font)
         draw.text((wi, int(bg.height * 0.55)), "签到次数："+times, (12, 0, 6), font=font)
         draw.text((wi, int(bg.height * 0.65)), "注册日："+startTime, (12, 0, 6), font=font)
-        font = ImageFont.truetype('data/fonts/H-TTF-BuMing-B-2.ttf', int(bg.width * 0.013))
+        font = ImageFont.truetype('data/fonts/zpix.ttf', int(bg.width * 0.013))
         draw.text((int(bg.width * 0.015), int(bg.height * 0.75)), random.choice(lucky), (12, 3, 6), font=font)
         # Save the final image
         final_image_path = "data/pictures/cache/"+random_str()+".png"
