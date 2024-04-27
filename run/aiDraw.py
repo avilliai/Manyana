@@ -16,7 +16,7 @@ from mirai import Image, Voice
 from mirai import Mirai, WebSocketAdapter, FriendMessage, GroupMessage, At, Plain
 
 from plugins.RandomStr import random_str
-from plugins.aiDrawer import draw, airedraw, draw1
+from plugins.aiDrawer import draw, airedraw, draw1, draw3
 
 
 def main(bot,logger):
@@ -65,8 +65,28 @@ def main(bot,logger):
                 i+=1
             if i>10:
                 await bot.send(event, "接口绘画失败.......")
-            
 
+    @bot.on(GroupMessage)
+    async def aidrawff(event: GroupMessage):
+        if str(event.message_chain).startswith("画 "):
+            tag = str(event.message_chain).replace("画 ", "")
+            path = "data/pictures/cache/" + random_str() + ".png"
+            logger.info("发起ai绘画请求，path:" + path + "|prompt:" + tag)
+            i = 1
+            while i < 10:
+                logger.info(f"接口3第{i}次请求")
+                try:
+                    logger.info("接口3绘画中......")
+                    p = await draw3(tag, path)
+                    await bot.send(event, Image(path=p), True)
+                    break
+                except Exception as e:
+                    logger.error(e)
+                    logger.error("接口3绘画失败.......")
+                    # await bot.send(event,"接口2绘画失败.......")
+                i += 1
+            if i > 10:
+                await bot.send(event, "接口绘画失败.......")
     @bot.on(GroupMessage)
     async def rededd(event: GroupMessage):
         global redraw

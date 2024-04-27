@@ -21,7 +21,7 @@ from plugins.RandomStr import random_str
 from plugins.chatGLMonline import chatGLM1, glm4
 from plugins.cozeBot import cozeBotRep
 from plugins.googleGemini import geminirep
-from plugins.gptOfficial import gptOfficial,gptUnofficial
+from plugins.gptOfficial import gptOfficial, gptUnofficial, kimi, qingyan, lingyi, stepAI, qwen, gptvvvv
 
 from plugins.rwkvHelper import rwkvHelper
 from plugins.translater import translate
@@ -439,7 +439,7 @@ def main(bot, master, logger):
             if str(event.message_chain).split("#")[1] in allcharacters:
                 meta12=str(event.message_chain).split("#")[1]
 
-                if meta12=="Gemini" or meta12=="Cozi" or meta12=="lolimigpt" or meta12=="gpt3.5" or meta12=="glm-4":
+                if meta12 in allcharacters:
                     pass
                 else:
                     with open('config/settings.yaml', 'r', encoding='utf-8') as f:
@@ -481,7 +481,7 @@ def main(bot, master, logger):
             if str(event.message_chain).split("#")[1] in allcharacters:
                 meta12=str(event.message_chain).split("#")[1]
                 #print(meta1)
-                if meta12=="Gemini" or meta12=="Cozi" or meta12=="lolimigpt" or meta12=="gpt3.5" or meta12=="glm-4":
+                if meta12 in allcharacters:
                     pass
                 else:
                     with open('config/settings.yaml', 'r', encoding='utf-8') as f:
@@ -936,76 +936,6 @@ def main(bot, master, logger):
             await bot.send(event, "设置apiKey成功")
 
 
-    @bot.on(GroupMessage)
-    async def gpt3(event: GroupMessage):
-        if str(event.message_chain).startswith("/chat"):
-            s = str(event.message_chain).replace("/chat", "")
-            try:
-                logger.info("gpt3.5接收信息：" + s)
-                url = "https://api.lolimi.cn/API/AI/mfcat3.5.php?sx=你是一个可爱萝莉&msg="+s+"&type=json"
-                async with httpx.AsyncClient(timeout=40) as client:
-                    # 用get方法发送请求
-                    response = await client.get(url=url)
-                s=response.json().get("data")
-                s = s.replace(r"\n", "\n")
-
-                logger.info("gpt3.5:" + s)
-                await bot.send(event, s, True)
-            except:
-                logger.error("调用gpt3.5失败，请检查网络或重试")
-                await bot.send(event, "无法连接到gpt3.5，请检查网络或重试")
-    #科大讯飞星火ai
-    @bot.on(GroupMessage)
-    async def gpt3(event: GroupMessage):
-        if str(event.message_chain).startswith("/xh"):
-            s = str(event.message_chain).replace("/xh", "")
-            try:
-                logger.info("讯飞星火接收信息：" + s)
-                url = "https://api.lolimi.cn/API/AI/xh.php?msg=" + s
-                async with httpx.AsyncClient(timeout=40) as client:
-                    # 用get方法发送请求
-                    response = await client.get(url=url)
-                s = response.json().get("data").get("output")
-                s = s.replace(r"\n", "\n")
-                logger.info("讯飞星火:" + s)
-                await bot.send(event, s, True)
-            except:
-                logger.error("调用讯飞星火失败，请检查网络或重试")
-                await bot.send(event, "无法连接到讯飞星火，请检查网络或重试")
-
-    # 文心一言
-    @bot.on(GroupMessage)
-    async def gpt3(event: GroupMessage):
-        if str(event.message_chain).startswith("/wx"):
-            s = str(event.message_chain).replace("/wx", "")
-            try:
-                logger.info("文心一言接收信息：" + s)
-                url = "https://api.lolimi.cn/API/AI/wx.php?msg=" + s
-                async with httpx.AsyncClient(timeout=40) as client:
-                    # 用get方法发送请求
-                    response = await client.get(url=url)
-                s = response.json().get("data").get("output")
-                s=s.replace(r"\n","\n")
-
-                logger.info("文心一言:" + s)
-                await bot.send(event, s, True)
-            except:
-                logger.error("调用文心一言失败，请检查网络或重试")
-                await bot.send(event, "无法连接到文心一言，请检查网络或重试")
-
-    @bot.on(GroupMessage)
-    async def rwkv(event: GroupMessage):
-        if str(event.message_chain).startswith("/rwkv"):
-            s = str(event.message_chain).replace("/rwkv", "")
-            try:
-                logger.info("rwkv接收信息：" + s)
-                s = await rwkvHelper(s)
-                logger.info("rwkv:" + s)
-                await bot.send(event, s, True)
-            except:
-                logger.error("调用rwkv失败，请检查本地rwkv是否启动或端口是否配置正确(8000)")
-                await bot.send(event, "无法连接到本地rwkv")
-
 
     #CharacterchatGLM部分
     def chatGLM(api_key,bot_info,prompt,model1):
@@ -1185,24 +1115,12 @@ def main(bot, master, logger):
         global trustUser, chatGLMapikeys, chatGLMData, chatGLMCharacters, chatGLMsingelUserKey, userdict, GeminiData, coziData
         if event.type != 'FriendMessage':
             bot_in = str("你是" + botName + ",我是" + event.sender.member_name + "," + allcharacters.get(
-            "gpt3.5")).replace("【bot】",
+            modelHere)).replace("【bot】",
                                botName).replace("【用户】", event.sender.member_name)
-            lolimi_bot_in = str("你是" + botName + ",我是" + event.sender.member_name + "," + allcharacters.get(
-                "lolimigpt")).replace("【bot】",
-                                   botName).replace("【用户】", event.sender.member_name)
-            glm4_bot_in = str("你是" + botName + ",我是" + event.sender.member_name + "," + allcharacters.get(
-                "glm-4")).replace("【bot】",
-                                      botName).replace("【用户】", event.sender.member_name)
         else:
             bot_in = str("你是" + botName + ",我是" + event.sender.nickname + "," + allcharacters.get(
-                "gpt3.5")).replace("【bot】",
+                modelHere)).replace("【bot】",
                                    botName).replace("【用户】", event.sender.nickname)
-            lolimi_bot_in = str("你是" + botName + ",我是" + event.sender.nickname + "," + allcharacters.get(
-                "lolimigpt")).replace("【bot】",
-                                      botName).replace("【用户】", event.sender.nickname)
-            glm4_bot_in = str("你是" + botName + ",我是" + event.sender.nickname + "," + allcharacters.get(
-                "glm-4")).replace("【bot】",
-                                      botName).replace("【用户】", event.sender.nickname)
         try:
             text = str(event.message_chain).replace("@" + str(bot.qq) + " ", '')
             if text == "" or text == " ":
@@ -1221,14 +1139,27 @@ def main(bot, master, logger):
                 await bot.send(event, "即将开始对话，如果遇到异常请发送 /clear 清理对话")
             logger.info(f"{modelHere}  bot 接受提问：" + text)
             loop = asyncio.get_event_loop()
-            if modelHere == "gpt3.5-dev":
-                rep = await loop.run_in_executor(None, gptUnofficial, prompt1, gptkeys, proxy, bot_in)
-            elif modelHere=="gpt3.5":
-                rep = await loop.run_in_executor(None, gptOfficial, prompt1, gptkeys, proxy, bot_in)
+            if modelHere == "gpt3.5":
+                if gptdev==True:
+                    rep = await loop.run_in_executor(None, gptUnofficial, prompt1, gptkeys, proxy, bot_in)
+                else:
+                    rep = await loop.run_in_executor(None, gptOfficial, prompt1, gptkeys, proxy, bot_in)
             elif modelHere=="Cozi":
                 rep = await loop.run_in_executor(None, cozeBotRep, CoziUrl, prompt1, proxy)
+            elif modelHere=="kimi":
+                rep = await loop.run_in_executor(None, kimi, prompt1, bot_in)
+            elif modelHere == "清言":
+                rep = await loop.run_in_executor(None, qingyan, prompt1, bot_in)
+            elif modelHere == "lingyi":
+                rep = await loop.run_in_executor(None, lingyi, prompt1, bot_in)
+            elif modelHere == "step":
+                rep = await loop.run_in_executor(None, stepAI, prompt1, bot_in)
+            elif modelHere == "通义千问":
+                rep = await loop.run_in_executor(None, qwen, prompt1, bot_in)
+            elif modelHere == "gptX":
+                rep = await loop.run_in_executor(None, gptvvvv, prompt1, bot_in)
             elif modelHere=="lolimigpt":
-                rep = await lolimigpt2(prompt1,lolimi_bot_in)
+                rep = await lolimigpt2(prompt1,bot_in)
                 if "令牌额度" in rep.get("content"):
                     logger.error("没金币了喵")
                     await bot.send(event, "api没金币了喵\n请发送 @bot 可用角色模板 以更换其他模型", True)
@@ -1243,7 +1174,7 @@ def main(bot, master, logger):
                     return
 
             elif modelHere=="glm-4":
-                rep=await glm4(prompt1,glm4_bot_in)
+                rep=await glm4(prompt1,bot_in)
                 if "禁止违规问答" == rep.get("content"):
                     logger.error("敏感喽，不能用了")
                     await bot.send(event,rep.get("content"))
