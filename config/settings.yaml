@@ -10,27 +10,24 @@ GroupSensor: False        #开启后，将拒绝加入无授权群
 fuckinggroup: false       #开启后将检测群人数，非授权群直接退出
 fuckingnumber: 13         #低于13人退群
 
-#发图功能
 allowPic: True           #是否启用发图功能
 r18Pic: True            #涩图r18模式
 cardPic: False               #是否以卡片形式发送图片
 
-#单独功能设置
 lockLuck: false          #是否锁定运势等功能的结果
 musicToVoice: true       #是否以语音方式点歌
 
 #建议使用modelscopeTTS或outVits，其他模式需要额外部署。
 voicegenerate: modelscopeTTS  #语音合成模式 so-vits/bert_vits2/vits/modelscopeTTS/outVits/edgetts(edgetts可用speaker请参考config/edgetts.txt)
 RateIfUnavailable: 30  #当设定的语音合成不可用时，默认使用vits合成的几率,中文几率可在最下方调整
-#bert_vits2语音合成配置，不知道是什么就别动这里
-bert_speakers:  #根据bert_vits_sever/characters.yaml填写所有可用的speakers，不填对应的speaker则无法通过Manyana调用
-  - 塔菲
-#so-vits语音合成配置，不知道是啥就别动这里
+#自建bert_vits2语音合成配置，不知道是啥就别动
+bert_speakers:  
+  - rriri  #如果搭建了，根据bert_vits_sever/characters.yaml填写所有可用的speakers，没自己搭bert_vits2就别动！别动！
+#自建so-vits语音合成配置，不知道是啥就别动
 so_vits_speakers:
   - riri
 
-#ai回复设置，个人最推荐的模型是Gemini，但需要代理
-chatGLM:       #只是懒得改还叫chatGLM了，实际上是多模型通用设置
+chatGLM:       #对话模型通用设置
   helpUser: false          #是否引导用户自行设置apiKey(没必要)
   model: kimi  #ai模型，kimi、清言、lingyi、step、通义千问、gptX,lolimigpt,glm-4(免费无需配置)|后面几个需要自己配置api.yaml对应变量: characterglm(对应chatGLM),Gemini或Gemini1.5(对应的Gemini),Cozi(同名),gpt3.5(官方openai-keys),gpt3.5(无需代理、免费的openai-keys，需要勾选gpt3.5-dev)
   nudgeReply: false    #戳一戳，是否使用模型回复
