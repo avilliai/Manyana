@@ -483,7 +483,7 @@ def main(bot,api_KEY,nasa_api,proxy,logger):
                 await bot.send(event, "获取喜加一结果失败，请稍后再试")
     @bot.on(GroupMessage)
     async def tail(event: GroupMessage):
-        if str(event.message_chain).startswith("小尾巴 ")：
+        if str(event.message_chain).startswith("小尾巴 "):
             tail=str(event.message_chain).replace("小尾巴","")
             url=f"https://www.oexan.cn/API/ncwb.php?name=后缀：&wb={tail}"
             async with httpx.AsyncClient(timeout=40) as client:
