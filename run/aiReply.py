@@ -152,7 +152,7 @@ def main(bot, master, logger):
         if event.sender.id in chatGLMCharacters:
             #print("在")
             print(chatGLMCharacters.get(event.sender.id),type(chatGLMCharacters.get(event.sender.id)))
-            if type(chatGLMCharacters.get(event.sender.id))==dict:
+            if type(chatGLMCharacters.get(event.sender.id))==dict or type(allcharacters.get(chatGLMCharacters.get(event.sender.id)))==dict:
                 #如果用户有自己的key
                 if event.sender.id in chatGLMsingelUserKey:
                     selfApiKey=chatGLMsingelUserKey.get(event.sender.id)
@@ -182,7 +182,10 @@ def main(bot, master, logger):
                     prompt = [tep]
                     chatGLMData[event.sender.id] = prompt
                 if event.sender.id in chatGLMCharacters:
-                    meta1 = chatGLMCharacters.get(event.sender.id)
+                    if type(allcharacters.get(chatGLMCharacters.get(event.sender.id))) == dict:
+                        meta1 = allcharacters.get(chatGLMCharacters.get(event.sender.id))
+                    else:
+                        meta1 = chatGLMCharacters.get(event.sender.id)
                 else:
                     logger.warning("读取meta模板")
                     with open('config/settings.yaml', 'r', encoding='utf-8') as f:
@@ -568,6 +571,7 @@ def main(bot, master, logger):
 
             return
         if event.sender.id in chatGLMCharacters:
+            print(type(chatGLMCharacters.get(event.sender.id)),chatGLMCharacters.get(event.sender.id))
             if chatGLMCharacters.get(event.sender.id) == "Gemini":
                 text = str(event.message_chain).replace("@" + str(bot.qq) + "", '').replace(" ", "").replace("/g", "")
                 for saa in noRes:
@@ -615,7 +619,7 @@ def main(bot, master, logger):
                     logger.error(e)
                     GeminiData.pop(event.sender.id)
                     await bot.send(event, "gemini启动出错,请重试\n或发送 @bot 可用角色模板 以更换其他模型")
-            elif type(chatGLMCharacters.get(event.sender.id)) == dict:
+            elif type(chatGLMCharacters.get(event.sender.id)) == dict or type(allcharacters.get(chatGLMCharacters.get(event.sender.id)))==dict:
                 text = str(event.message_chain).replace("@" + str(bot.qq) + "", '').replace(" ", "")
                 logger.info("分支1")
                 for saa in noRes:
@@ -654,8 +658,12 @@ def main(bot, master, logger):
                     return
 
                 # 获取角色设定
+
                 if event.sender.id in chatGLMCharacters:
-                    meta1 = chatGLMCharacters.get(event.sender.id)
+                    if type(allcharacters.get(chatGLMCharacters.get(event.sender.id)))==dict:
+                        meta1 = allcharacters.get(chatGLMCharacters.get(event.sender.id))
+                    else:
+                        meta1=chatGLMCharacters.get(event.sender.id)
                 else:
                     logger.warning("读取meta模板")
                     with open('config/settings.yaml', 'r', encoding='utf-8') as f:
