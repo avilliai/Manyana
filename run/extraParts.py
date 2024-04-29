@@ -489,4 +489,4 @@ def main(bot,api_KEY,nasa_api,proxy,logger):
             async with httpx.AsyncClient(timeout=40) as client:
                 r1 = await client.get(url)
             await bot.send(event,"请完整复制如下内容，否则无法使用",True)
-            await bot.send(event,r1.text.replace("后缀：",""),True)
+            await bot.send(event,r1.text.replace("后缀：",""))
