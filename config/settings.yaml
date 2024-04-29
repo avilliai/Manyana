@@ -20,11 +20,10 @@ musicToVoice: true        #是否以语音方式点歌
 #建议使用modelscopeTTS或outVits，其他模式需要额外部署。
 voicegenerate: modelscopeTTS  #语音合成模式 so-vits/bert_vits2/vits/modelscopeTTS/outVits/edgetts(edgetts可用speaker请参考config/edgetts.txt)
 RateIfUnavailable: 30         #当设定的语音合成不可用时，默认使用vits合成的几率,中文几率可在最下方调整
-#自建bert_vits2语音合成配置，不知道是啥就别动
-bert_speakers:  
+#下面的两个配置项，除非你自己额外搭了对应的服务，不然就别动。
+bert_speakers:  #自建bert_vits2语音合成配置，不知道是啥就别动
   - rriri  #如果搭建了，根据bert_vits_sever/characters.yaml填写所有可用的speakers，没自己搭bert_vits2就别动
-#自建so-vits语音合成配置，不知道是啥就别动
-so_vits_speakers:
+so_vits_speakers: #自建so-vits语音合成配置，不知道是啥就别动
   - riri   #没搭就别动。
 
 chatGLM:       #对话模型通用设置
