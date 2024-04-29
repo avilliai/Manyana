@@ -27,6 +27,14 @@ async def airedraw(prompt,url,path="./redraw.png"):
             f.write(r.content)
         # print(path)
         return path
+async def tiktokredraw(prompt,url,path="./rr.png"):
+    url=f"https://oiapi.net/API/AiImage/?url={url}&word={prompt}"
+    async with httpx.AsyncClient(timeout=40) as client:
+        r = await client.get(url)
+        with open(path, "wb") as f:
+            f.write(r.content)
+        # print(path)
+        return path
 async def draw1(prompt,path="./test.png"):
     url=f"https://api-collect.idcdun.com/v1/images/generations?prompt={prompt}&n=1&model=dall-e-3&size=1024x1024"
     async with httpx.AsyncClient(timeout=40) as client:
