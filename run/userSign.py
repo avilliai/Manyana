@@ -297,7 +297,7 @@ def main(bot,api_KEY,master,config,logger):
         # 使用LANCZOS采样方法进行调整大小
 
         # 创建一个灰色的矩形填充区域
-        gray_color = (169, 169, 169, 1)  # 灰色，128为半透明的alpha值
+        gray_color = (169, 169, 169, 40)  # 灰色，128为半透明的alpha值
         draw = ImageDraw.Draw(blurred_bg, 'RGBA')
         left_fill_width = bg.width // 3  # 你可以调整这个宽度
         # 绘制一个半透明的灰色矩形

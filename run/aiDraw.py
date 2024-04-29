@@ -30,7 +30,7 @@ def main(bot,logger):
             path = "data/pictures/cache/" + random_str() + ".png"
             logger.info("发起ai绘画请求，path:"+path+"|prompt:"+tag)
             i=1
-            while i<10:
+            while i<5:
                 logger.info(f"接口1第{i}次请求")
                 try:
                     logger.info("接口1绘画中......")
@@ -42,7 +42,7 @@ def main(bot,logger):
                     logger.error("接口1绘画失败.......")
                     #await bot.send(event,"接口1绘画失败.......")
                 i+=1
-            if i>10:
+            if i>4:
                 await bot.send(event, "接口绘画失败.......")
     @bot.on(GroupMessage)
     async def aidrawff(event: GroupMessage):
@@ -51,7 +51,7 @@ def main(bot,logger):
             path = "data/pictures/cache/" + random_str() + ".png"
             logger.info("发起ai绘画请求，path:"+path+"|prompt:"+tag)
             i=1
-            while i<10:
+            while i<8:
                 logger.info(f"接口2第{i}次请求")
                 try:
                     logger.info("接口2绘画中......")
@@ -63,7 +63,7 @@ def main(bot,logger):
                     logger.error("接口2绘画失败.......")
                     #await bot.send(event,"接口2绘画失败.......")
                 i+=1
-            if i>10:
+            if i>7:
                 await bot.send(event, "接口绘画失败.......")
 
     @bot.on(GroupMessage)
@@ -73,7 +73,7 @@ def main(bot,logger):
             path = "data/pictures/cache/" + random_str() + ".png"
             logger.info("发起ai绘画请求，path:" + path + "|prompt:" + tag)
             i = 1
-            while i < 10:
+            while i < 5:
                 logger.info(f"接口3第{i}次请求")
                 try:
                     logger.info("接口3绘画中......")
@@ -85,7 +85,7 @@ def main(bot,logger):
                     logger.error("接口3绘画失败.......")
                     # await bot.send(event,"接口2绘画失败.......")
                 i += 1
-            if i > 10:
+            if i > 4:
                 await bot.send(event, "接口绘画失败.......")
     @bot.on(GroupMessage)
     async def rededd(event: GroupMessage):
