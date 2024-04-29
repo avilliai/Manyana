@@ -1,4 +1,4 @@
-# -*- coding: utf-8 -*-
+
 import asyncio
 import json
 import os
@@ -481,3 +481,12 @@ def main(bot,api_KEY,nasa_api,proxy,logger):
             except:
                 logger.error("衮")
                 await bot.send(event, "获取喜加一结果失败，请稍后再试")
+    @bot.on(GroupMessage)
+    async def tail(event: GroupMessage):
+        if str(event.message_chain).startswith("小尾巴 "):
+            tail=str(event.message_chain).replace("小尾巴","")
+            url=f"https://www.oexan.cn/API/ncwb.php?name=后缀：&wb={tail}"
+            async with httpx.AsyncClient(timeout=40) as client:
+                r1 = await client.get(url)
+            await bot.send(event,"请完整复制如下内容，否则无法使用",True)
+            await bot.send(event,r1.text.replace("后缀：",""))

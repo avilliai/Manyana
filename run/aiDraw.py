@@ -16,7 +16,7 @@ from mirai import Image, Voice
 from mirai import Mirai, WebSocketAdapter, FriendMessage, GroupMessage, At, Plain
 
 from plugins.RandomStr import random_str
-from plugins.aiDrawer import draw, airedraw, draw1, draw3
+from plugins.aiDrawer import draw, airedraw, draw1, draw3,tiktokredraw
 
 
 def main(bot,logger):
@@ -101,12 +101,20 @@ def main(bot,logger):
             lst_img = event.message_chain.get(Image)
             url1 = lst_img[0].url
             logger.info(f"以图生图,prompt:{prompt} url:{url1}")
+            path = "data/pictures/cache/" + random_str() + ".png"
             try:
-                p=await airedraw(prompt,url1)
+                p=await airedraw(prompt,url1,path)
                 await bot.send(event,Image(path=p))
-                redraw.pop(event.sender.id)
             except Exception as e:
                 logger.error(e)
                 logger.error("ai绘画出错")
-                await bot.send(event,"ai绘画出错")
-                redraw.pop(event.sender.id)
+                await bot.send(event,"接口1绘画出错")
+            try:
+                p=await tiktokredraw(prompt,url1,path)
+                await bot.send(event,Image(path=p))
+            except Exception as e:
+                logger.error(e)
+                logger.error("ai绘画出错")
+                await bot.send(event,"接口2绘画出错")
+            redraw.pop(event.sender.id)
+            
