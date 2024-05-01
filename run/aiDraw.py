@@ -72,7 +72,7 @@ def main(bot,logger):
             tag = str(event.message_chain).replace("画 ", "")
             path = "data/pictures/cache/" + random_str() + ".png"
             logger.info("发起ai绘画请求，path:" + path + "|prompt:" + tag)
-            if len(prompt)>100:
+            if len(tag)>100:
                 return
             i = 1
             while i < 5:
