@@ -72,6 +72,8 @@ def main(bot,logger):
             tag = str(event.message_chain).replace("画 ", "")
             path = "data/pictures/cache/" + random_str() + ".png"
             logger.info("发起ai绘画请求，path:" + path + "|prompt:" + tag)
+            if len(tag)>100:
+                return
             i = 1
             while i < 5:
                 logger.info(f"接口3第{i}次请求")
