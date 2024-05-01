@@ -32,16 +32,16 @@ def main(bot,logger):
         if str(event.message_chain)=="开溜" or (At(bot.qq) in event.message_chain and "唱歌" in str(event.message_chain)):
             logger.info("电梓播放器，启动！")
             p=os.listdir("data/music/audio")
-            await bot.send(event,Voice(path="data/music/audio/"+random.choice(p)))
+            await bot.send(event,Voice(path="./data/music/audio/"+random.choice(p)))
 
     @bot.on(GroupMessage)
     async def dianzibofangqidiange(event: GroupMessage):
         if str(event.message_chain).startswith("溜 ") or str(event.message_chain).startswith("唱 "):
             logger.info("电梓播放器，启动！")
-            p = os.listdir("data/music/audio")
+            p = os.listdir("./data/music/audio")
             ha=process.extractBests(str(event.message_chain).replace("溜 ","").replace("唱 ",""), p, limit=3)
             logger.info(ha[0][0])
-            p="data/music/audio/" + ha[0][0]
+            p="./data/music/audio/" + ha[0][0]
             await bot.send(event, Voice(path=p))
     @bot.on(GroupMessage)
     async def selectMusic(event: GroupMessage):
