@@ -220,5 +220,5 @@
   - 增加ModelscopeTTS speaker 胡桃
   - ai绘画改为出4图
   - 本地音乐库，data/music/audio 把你自己的曲子放进去，可以自动匹配
-  - 新指令 开溜
-  - 新指令 溜 曲子名
+  - 新指令 开溜            #从data/music/audio随机选取一首发送
+  - 新指令 溜 曲子名        #匹配data/music/audio中相似度最高的音频发送
