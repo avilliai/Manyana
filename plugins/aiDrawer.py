@@ -36,16 +36,21 @@ async def tiktokredraw(prompt,url,path="./rr.png"):
         # print(path)
         return path
 async def draw1(prompt,path="./test.png"):
-    url=f"https://api-collect.idcdun.com/v1/images/generations?prompt={prompt}&n=1&model=dall-e-3&size=1024x1024"
+    url=f"https://api-collect.idcdun.com/v1/images/generations?prompt={prompt}&n=1&model=dall-e-3&size=1024x1024&n=4"
     async with httpx.AsyncClient(timeout=40) as client:
         r = await client.get(url)
-        url2=r.json().get("data")[0].get("url")
-        async with httpx.AsyncClient(timeout=40) as client:
-            r1 = await client.get(url2)
-        with open(path, "wb") as f:
-            f.write(r1.content)
-        # print(path)
-        return path
+        #url2=r.json().get("data")[0].get("url")
+        paths=[]
+        for i in r.json().get("data"):
+            url2=i.get("url")
+            async with httpx.AsyncClient(timeout=40) as client:
+                r1 = await client.get(url2)
+            path = "data/pictures/cache/" + random_str() + ".png"
+            paths.append(path)
+            with open(path, "wb") as f:
+                f.write(r1.content)
+            # print(path)
+        return paths
 async def draw3(prompt,path="./test.png"):
     url=f"https://api.alcex.cn/API/ai/novelai.php?tag={prompt}"
     async with httpx.AsyncClient(timeout=40) as client:

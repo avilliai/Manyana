@@ -35,7 +35,7 @@ def main(bot,logger):
                 try:
                     logger.info("接口1绘画中......")
                     p=await draw1(tag,path)
-                    await bot.send(event,Image(path=p),True)
+                    await bot.send(event,[Image(path=p[0]),Image(path=p[1]),Image(path=p[2]),Image(path=p[3])],True)
                     break
                 except Exception as e:
                     logger.error(e)
@@ -83,6 +83,7 @@ def main(bot,logger):
                 except Exception as e:
                     logger.error(e)
                     logger.error("接口3绘画失败.......")
+                    return
                     # await bot.send(event,"接口2绘画失败.......")
                 i += 1
             if i > 4:
