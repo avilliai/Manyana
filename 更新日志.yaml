@@ -219,3 +219,6 @@
 2024/5/1:
   - 增加ModelscopeTTS speaker 胡桃
   - ai绘画改为出4图
+  - 本地音乐库，data/music/audio 把你自己的曲子放进去，可以自动匹配
+  - 新指令 开溜
+  - 新指令 溜 曲子名
