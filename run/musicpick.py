@@ -32,7 +32,9 @@ def main(bot,logger):
         if str(event.message_chain)=="开溜" or (At(bot.qq) in event.message_chain and "唱歌" in str(event.message_chain)):
             logger.info("电梓播放器，启动！")
             p=os.listdir("data/music/audio")
-            await bot.send(event,Voice(path="./data/music/audio/"+random.choice(p)))
+            purchase=random.choice(p)
+            await bot.send(event,Voice(path="./data/music/audio/"+purchase))
+            await bot.send(event,f"正在播放：{purchase}")
 
     @bot.on(GroupMessage)
     async def dianzibofangqidiange(event: GroupMessage):
