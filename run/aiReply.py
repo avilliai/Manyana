@@ -1200,6 +1200,8 @@ def main(bot, master, logger):
                 rep = await loop.run_in_executor(None, qwen, prompt1, bot_in)
             elif modelHere == "gptX":
                 rep = await loop.run_in_executor(None, gptvvvv, prompt1, bot_in)
+            elif modelHere == "grop":
+                rep = await loop.run_in_executor(None, grop, prompt1, bot_in)
             elif modelHere=="lolimigpt":
                 rep = await lolimigpt2(prompt1,bot_in)
                 if "令牌额度" in rep.get("content"):
