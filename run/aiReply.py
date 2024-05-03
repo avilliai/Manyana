@@ -1158,7 +1158,7 @@ def main(bot, master, logger):
                 # 将所有模型的执行代码包装成异步任务，并添加到任务列表
                 tasks.append(loop_run_in_executor(loop, gptUnofficial if gptdev else gptOfficial, prompt1, gptkeys, proxy,bot_in))
                 tasks.append(loop_run_in_executor(loop, cozeBotRep, CoziUrl, prompt1, proxy))
-                #tasks.append(loop_run_in_executor(loop, kimi, prompt1, bot_in))
+                tasks.append(loop_run_in_executor(loop, kimi, prompt1, bot_in))
                 tasks.append(loop_run_in_executor(loop, qingyan, prompt1, bot_in))
                 tasks.append(loop_run_in_executor(loop, grop, prompt1, bot_in))
                 tasks.append(loop_run_in_executor(loop, lingyi, prompt1, bot_in))
