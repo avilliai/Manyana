@@ -1175,7 +1175,7 @@ def main(bot, master, logger):
                     result = task.result()
                     if result is not None:
                         try:
-                            if "令牌额度" in rep.get("content") or "敏感词汇" in rep.get("content") or "request id" in rep.get("content"):
+                            if "令牌额度" in rep.get("content") or "敏感词汇" in rep.get("content") or "request id" in rep.get("content") or "This model's maximum" in rep.get("content") or "solve CAPTCHA to" in rep.get("content"):
                                 continue
                         except:
                             pass
