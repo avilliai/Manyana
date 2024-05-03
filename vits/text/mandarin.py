@@ -7,7 +7,7 @@ import cn2an
 import logging
 
 logging.getLogger('jieba').setLevel(logging.WARNING)
-jieba.set_dictionary('/vits/jieba/dict.txt')
+jieba.set_dictionary('./vits/jieba/dict.txt')
 jieba.initialize()
 
 
