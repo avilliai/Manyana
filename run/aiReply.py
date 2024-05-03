@@ -1174,6 +1174,11 @@ def main(bot, master, logger):
                 for task in done:
                     result = task.result()
                     if result is not None:
+                        try:
+                            if "令牌额度" in rep.get("content") or "敏感词汇" in rep.get("content") or "request id" in rep.get("content"):
+                                continue
+                        except:
+                            pass
                         rep = result
                         break  # 找到有效结果，跳出循环
 
