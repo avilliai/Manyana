@@ -9,7 +9,7 @@ from plugins.newsEveryDay import get_headers
 
 async def cccdddm(musicname):
     # 导入selenium库
-    url='https://music.163.com/api/search/get/web?csrf_token=hlpretag=&hlposttag=&s='+musicname+'&type=1&offset=1&total=true&limit=11'
+    url='https://music.163.com/api/search/get/web?csrf_token=hlpretag=&hlposttag=&s='+musicname+'&type=1&offset=1&total=false&limit=11'
     #DAT={'s': musicname,'offset': 1,'limit': 1,'type': 1}
     #url = "http://music.wandhi.com/?name=" + musicname + "&type=netease"
     #header=get_headers()
