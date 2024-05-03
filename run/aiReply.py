@@ -21,13 +21,13 @@ from plugins.RandomStr import random_str
 from plugins.chatGLMonline import chatGLM1, glm4
 from plugins.cozeBot import cozeBotRep
 from plugins.googleGemini import geminirep
-from plugins.gptOfficial import gptOfficial, gptUnofficial, kimi, qingyan, lingyi, stepAI, qwen, gptvvvv
+from plugins.gptOfficial import gptOfficial, gptUnofficial, kimi, qingyan, lingyi, stepAI, qwen, gptvvvv, grop
 
 from plugins.rwkvHelper import rwkvHelper
 from plugins.translater import translate
 from plugins.vitsGenerate import superVG, voiceGenerate
 from plugins.wReply.mohuReply import mohuaddReplys
-from plugins.yubanGPT import lolimigpt, lolimigpt2
+from plugins.yubanGPT import lolimigpt, lolimigpt2, relolimigpt2
 
 
 #1
@@ -1116,7 +1116,12 @@ def main(bot, master, logger):
             with open('data/chatGLMData.yaml', 'w', encoding="utf-8") as file:
                 yaml.dump(chatGLMData, file, allow_unicode=True)
 
-
+    async def loop_run_in_executor(executor, func, *args):
+        try:
+            return await executor.run_in_executor(None, func, *args)
+        except Exception as e:
+            logger.error(f"Error running {func.__name__}: {e}")
+            return None
     # 运行异步函数
 
     async def modelReply(event,modelHere):
@@ -1147,6 +1152,35 @@ def main(bot, master, logger):
                 await bot.send(event, "即将开始对话，如果遇到异常请发送 /clear 清理对话")
             logger.info(f"{modelHere}  bot 接受提问：" + text)
             loop = asyncio.get_event_loop()
+            if modelHere=="random":
+                tasks = []
+                logger.warning("请求所有模型接口")
+                # 将所有模型的执行代码包装成异步任务，并添加到任务列表
+                tasks.append(loop_run_in_executor(loop, gptUnofficial if gptdev else gptOfficial, prompt1, gptkeys, proxy,bot_in))
+                tasks.append(loop_run_in_executor(loop, cozeBotRep, CoziUrl, prompt1, proxy))
+                #tasks.append(loop_run_in_executor(loop, kimi, prompt1, bot_in))
+                tasks.append(loop_run_in_executor(loop, qingyan, prompt1, bot_in))
+                tasks.append(loop_run_in_executor(loop, grop, prompt1, bot_in))
+                tasks.append(loop_run_in_executor(loop, lingyi, prompt1, bot_in))
+                tasks.append(loop_run_in_executor(loop,relolimigpt2,prompt1,bot_in))
+                tasks.append(loop_run_in_executor(loop, stepAI, prompt1, bot_in))
+                tasks.append(loop_run_in_executor(loop, qwen, prompt1, bot_in))
+                tasks.append(loop_run_in_executor(loop, gptvvvv, prompt1, bot_in))
+                # ... 添加其他模型的任务 ...
+                done, pending = await asyncio.wait(tasks, return_when=asyncio.ALL_COMPLETED)
+
+                # 等待任何一个任务完成
+                rep = None
+                for task in done:
+                    result = task.result()
+                    if result is not None:
+                        rep = result
+                        break  # 找到有效结果，跳出循环
+
+                # 如果所有任务都完成但没有找到非None的结果
+                if rep is None:
+                    logger.warning("所有模型都未能返回有效回复")
+                    raise Exception
             if modelHere == "gpt3.5":
                 if gptdev==True:
                     rep = await loop.run_in_executor(None, gptUnofficial, prompt1, gptkeys, proxy, bot_in)

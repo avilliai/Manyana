@@ -1,7 +1,9 @@
 import asyncio
 import json
+import urllib
 
 import httpx
+import requests
 
 
 async def yubanGPTReply(text,id=None):
@@ -25,6 +27,7 @@ async def lolimigpt(prompt,meta):
     async with httpx.AsyncClient(timeout=100) as client: #100s超时
         r = await client.get(url)  #发起请求
         return {"role":"assistant","content":r.text}
+
 async def lolimigpt2(prompt,meta):
     url="https://api.lolimi.cn/API/AI/c.php?"
     prompt.insert(0,{"role":"user","content":meta})
@@ -32,12 +35,13 @@ async def lolimigpt2(prompt,meta):
     async with httpx.AsyncClient(timeout=200) as client:
         r = await client.post(url=url,json=prompt)
         return {"role":"assistant","content":r.text}
+def relolimigpt2(prompt,meta):
+    url = "https://api.lolimi.cn/API/AI/c.php?"
+    prompt.insert(0, {"role": "user", "content": meta})
+    prompt.insert(1, {"role": "assistant", "content": "好的，已了解您的需求~我会扮演好您设定的角色"})
+    r = requests.post(url=url, json=prompt)
+    return {"role": "assistant", "content": r.text}
+
 if __name__ == '__main__':
-    prompt=[]
-    while True:
-        text=input("textHere:")
-        #print(prompt)
-        prompt.append({"role": "user", "content":text})
-        text1=asyncio.run(lolimigpt2(prompt,""))
-        prompt.append(text1)
-        print(text1)
+    k = kimi([{"role": "user", "content": "你好"}])
+    print(k)
