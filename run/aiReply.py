@@ -1181,11 +1181,12 @@ def main(bot, master, logger):
                         if "无法解析" in result.get("content") or "账户余额不足" in result.get("content") or "令牌额度" in result.get("content") or "敏感词汇" in result.get("content") or "request id" in result.get("content") or "This model's maximum" in result.get("content") or "solve CAPTCHA to" in result.get("content"):
                             continue
                         reps.append(result)  #添加可用结果
-                rep=random.choice(reps)
+
                 # 如果所有任务都完成但没有找到非None的结果
-                if len(rep)==0:
+                if len(reps)==0:
                     logger.warning("所有模型都未能返回有效回复")
                     raise Exception
+                rep = random.choice(reps)
             if modelHere == "gpt3.5":
                 if gptdev==True:
                     rep = await loop.run_in_executor(None, gptUnofficial, prompt1, gptkeys, proxy, bot_in)
