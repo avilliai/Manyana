@@ -108,6 +108,7 @@ def main(bot,logger):
                     logger.error(e)
                     logger.error("接口4绘画失败.......")
                     # await bot.send(event,"接口2绘画失败.......")
+                    break
                 i += 1
             if i > 4:
                 await bot.send(event, "接口绘画失败.......")
