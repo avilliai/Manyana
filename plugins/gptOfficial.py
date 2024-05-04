@@ -101,4 +101,11 @@ def grop(prompt,bot_info):
     url=f"https://api.alcex.cn/API/ai/grop.php?messages={prompt}"
     r=requests.get(url).json()
     return {"role": "assistant", "content": r["choices"][0]["message"]["content"]}
+def gpt4hahaha(prompt,meta):
+    prompt.insert(0, {"role": "user", "content": meta})
+    prompt.insert(1, {"role": "assistant", "content": "好的，已了解您的需求，我会根据您的需求扮演好您设定的角色。"})
+    prompt = str(prompt).replace("\"", "%22").replace("\'", "%22")
+    url=f"https://api.alcex.cn/API/gpt-4/v2.php?messages={prompt}"
+    r = requests.get(url).json()
+    return {"role": "assistant", "content": r["choices"][0]["message"]["content"]}
 

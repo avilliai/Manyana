@@ -21,7 +21,8 @@ from plugins.RandomStr import random_str
 from plugins.chatGLMonline import chatGLM1, glm4
 from plugins.cozeBot import cozeBotRep
 from plugins.googleGemini import geminirep
-from plugins.gptOfficial import gptOfficial, gptUnofficial, kimi, qingyan, lingyi, stepAI, qwen, gptvvvv, grop
+from plugins.gptOfficial import gptOfficial, gptUnofficial, kimi, qingyan, lingyi, stepAI, qwen, gptvvvv, grop, \
+    gpt4hahaha
 
 from plugins.rwkvHelper import rwkvHelper
 from plugins.translater import translate
@@ -1168,6 +1169,7 @@ def main(bot, master, logger):
                 tasks.append(loop_run_in_executor(loop, stepAI, prompt1, bot_in))
                 tasks.append(loop_run_in_executor(loop, qwen, prompt1, bot_in))
                 tasks.append(loop_run_in_executor(loop, gptvvvv, prompt1, bot_in))
+                tasks.append(loop_run_in_executor(loop,gpt4hahaha,prompt1,bot_in))
                 # ... 添加其他模型的任务 ...
                 done, pending = await asyncio.wait(tasks, return_when=asyncio.ALL_COMPLETED)
                 reps=[]
