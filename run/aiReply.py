@@ -1170,7 +1170,7 @@ def main(bot, master, logger):
                 tasks.append(loop_run_in_executor(loop, gptvvvv, prompt1, bot_in))
                 # ... 添加其他模型的任务 ...
                 done, pending = await asyncio.wait(tasks, return_when=asyncio.ALL_COMPLETED)
-                reps=[]
+
                 # 等待任何一个任务完成
                 rep = None
                 for task in done:
@@ -1181,12 +1181,11 @@ def main(bot, master, logger):
                         if "账户余额不足" in result.get("content") or "令牌额度" in result.get("content") or "敏感词汇" in result.get("content") or "request id" in result.get("content") or "This model's maximum" in result.get("content") or "solve CAPTCHA to" in result.get("content"):
                                 continue
 
-                        reps.append(result)
-                          # 找到有效结果，跳出循环
-                rep=random.choice(reps)
-                #logger.info(f"choose：{rep}")
+                        rep = result
+                        break  # 找到有效结果，跳出循环
+
                 # 如果所有任务都完成但没有找到非None的结果
-                if len(reps)==0:
+                if rep is None:
                     logger.warning("所有模型都未能返回有效回复")
                     raise Exception
             if modelHere == "gpt3.5":
