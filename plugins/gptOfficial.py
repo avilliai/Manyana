@@ -110,13 +110,17 @@ def gpt4hahaha(prompt,meta):
     return {"role": "assistant", "content": r["choices"][0]["message"]["content"]}
 def localAurona(prompt,meta):
     url="http://127.0.0.1:3040/v1/chat/completions"
-    headers={"Content-Type: application/json","Authorization: Bearer any_string_you_like" }
+    headers={"Content-Type": "application/json","Authorization": "Bearer fff" }
     prompt.insert(0, {"role": "user", "content": meta})
     prompt.insert(1, {"role": "assistant", "content": "好的，已了解您的需求，我会根据您的需求扮演好您设定的角色。"})
-    prompt={
+    print(prompt)
+    data={
         "model": "gpt-3.5-turbo",
         "messages": prompt,
-        "stream": True
+        "stream": False
     }
-    r=requests.post(url,headers=headers,prompt=prompt)
+    r=requests.post(url,headers=headers,json=data)
     print(r)
+if __name__ == '__main__':
+    k = localAurona([{"role": "user", "content": "你好"}],"你是一只猫娘")
+    print(k)
