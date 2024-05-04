@@ -59,6 +59,14 @@ async def draw3(prompt,path="./test.png"):
         f.write(r1.content)
     # print(path)
     return path
+async def draw4(prompt,path="./test.png"):
+    url=f"http://txvo.cn/API/huihua/?msg={prompt}"
+    async with httpx.AsyncClient(timeout=40) as client:
+        r1 = await client.get(url)
+    with open(path, "wb") as f:
+        f.write(r1.content)
+    # print(path)
+    return path
 # 运行 Flask 应用
 if __name__ == "__main__":
     asyncio.run(draw1("正在吃早饭的二次元少女"))
