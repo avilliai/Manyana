@@ -1122,7 +1122,7 @@ def main(bot, master, logger):
             logger.info(f"successfully running {func.__name__}:{r.get('content')}")
             return r
         except Exception as e:
-            logger.error(f"Error running {func.__name__}: {e}")
+            #logger.error(f"Error running {func.__name__}: {e}")
             return None
     # 运行异步函数
 
@@ -1256,7 +1256,7 @@ def main(bot, master, logger):
             except Exception as e:
                 logger.error("清理用户prompt出错")
 
-            await bot.send(event, "出错，自动清理异常prompt.....请重试，如果无效请 联系master反馈问题\n或发送 \n@bot 可用角色模板\n 以更换其他模型", True)
+            await bot.send(event, "出错，请重试\n或发送 \n@bot 可用角色模板\n 以更换其他模型", True)
 
 if __name__ == '__main__':
 
