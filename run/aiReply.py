@@ -1184,7 +1184,7 @@ def main(bot, master, logger):
                         reps.append(result)
                           # 找到有效结果，跳出循环
                 rep=random.choice(reps)
-                logger.info(f"choice {rep}")
+                logger.info(f"choose：{rep}")
                 # 如果所有任务都完成但没有找到非None的结果
                 if len(reps)==0:
                     logger.warning("所有模型都未能返回有效回复")
