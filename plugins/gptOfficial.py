@@ -108,4 +108,15 @@ def gpt4hahaha(prompt,meta):
     url=f"https://api.alcex.cn/API/gpt-4/v2.php?messages={prompt}"
     r = requests.get(url).json()
     return {"role": "assistant", "content": r["choices"][0]["message"]["content"]}
-
+def localAurona(prompt,meta):
+    url="http://127.0.0.1:3040/v1/chat/completions"
+    headers={"Content-Type: application/json","Authorization: Bearer any_string_you_like" }
+    prompt.insert(0, {"role": "user", "content": meta})
+    prompt.insert(1, {"role": "assistant", "content": "好的，已了解您的需求，我会根据您的需求扮演好您设定的角色。"})
+    prompt={
+        "model": "gpt-3.5-turbo",
+        "messages": prompt,
+        "stream": True
+    }
+    r=requests.post(url,headers=headers,prompt=prompt)
+    print(r)
