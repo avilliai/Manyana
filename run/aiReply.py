@@ -1179,7 +1179,7 @@ def main(bot, master, logger):
                         if "content" not in result:
                             continue
                         if "账户余额不足" in result.get("content") or "令牌额度" in result.get("content") or "敏感词汇" in result.get("content") or "request id" in result.get("content") or "This model's maximum" in result.get("content") or "solve CAPTCHA to" in result.get("content"):
-                                continue
+                            continue
                         reps.append(result)  #添加可用结果
                 rep=random.choice(reps)
                 # 如果所有任务都完成但没有找到非None的结果
