@@ -109,7 +109,6 @@ def main(bot,logger):
                 except Exception as e:
                     logger.error(e)
                     logger.error("接口4绘画失败.......")
-                    break
                     # await bot.send(event,"接口2绘画失败.......")
                 i += 1
             if i > 4:
