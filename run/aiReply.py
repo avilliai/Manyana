@@ -1118,7 +1118,9 @@ def main(bot, master, logger):
 
     async def loop_run_in_executor(executor, func, *args):
         try:
-            return await executor.run_in_executor(None, func, *args)
+            r=await executor.run_in_executor(None, func, *args)
+            logger.info(f"successfully running {func.__name__}:{r.get('content')}")
+            return r
         except Exception as e:
             logger.error(f"Error running {func.__name__}: {e}")
             return None
@@ -1158,7 +1160,7 @@ def main(bot, master, logger):
                 # 将所有模型的执行代码包装成异步任务，并添加到任务列表
                 tasks.append(loop_run_in_executor(loop, gptUnofficial if gptdev else gptOfficial, prompt1, gptkeys, proxy,bot_in))
                 tasks.append(loop_run_in_executor(loop, cozeBotRep, CoziUrl, prompt1, proxy))
-                tasks.append(loop_run_in_executor(loop, kimi, prompt1, bot_in))
+                #tasks.append(loop_run_in_executor(loop, kimi, prompt1, bot_in))
                 tasks.append(loop_run_in_executor(loop, qingyan, prompt1, bot_in))
                 tasks.append(loop_run_in_executor(loop, grop, prompt1, bot_in))
                 tasks.append(loop_run_in_executor(loop, lingyi, prompt1, bot_in))
@@ -1174,11 +1176,11 @@ def main(bot, master, logger):
                 for task in done:
                     result = task.result()
                     if result is not None:
-                        try:
-                            if "账户余额不足" in rep.get("content") or "令牌额度" in rep.get("content") or "敏感词汇" in rep.get("content") or "request id" in rep.get("content") or "This model's maximum" in rep.get("content") or "solve CAPTCHA to" in rep.get("content"):
+                        if "content" not in result:
+                            continue
+                        if "账户余额不足" in result.get("content") or "令牌额度" in result.get("content") or "敏感词汇" in result.get("content") or "request id" in result.get("content") or "This model's maximum" in result.get("content") or "solve CAPTCHA to" in result.get("content"):
                                 continue
-                        except:
-                            pass
+
                         rep = result
                         break  # 找到有效结果，跳出循环
 
