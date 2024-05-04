@@ -1170,7 +1170,7 @@ def main(bot, master, logger):
                 tasks.append(loop_run_in_executor(loop, qwen, prompt1, bot_in))
                 tasks.append(loop_run_in_executor(loop, gptvvvv, prompt1, bot_in))
                 tasks.append(loop_run_in_executor(loop,gpt4hahaha,prompt1,bot_in))
-                tasks.append(loop_run_in_executor(loop,localAurona,prompt1,bot_in))
+                #tasks.append(loop_run_in_executor(loop,localAurona,prompt1,bot_in))
                 # ... 添加其他模型的任务 ...
                 done, pending = await asyncio.wait(tasks, return_when=asyncio.ALL_COMPLETED)
                 reps=[]
