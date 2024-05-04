@@ -1171,7 +1171,7 @@ def main(bot, master, logger):
                 # ... 添加其他模型的任务 ...
                 done, pending = await asyncio.wait(tasks, return_when=asyncio.ALL_COMPLETED)
                 reps=[]
-                # 等待任何一个任务完成
+                # 等待所有任务完成
                 rep = None
                 for task in done:
                     result = task.result()
