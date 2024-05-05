@@ -31,7 +31,7 @@ def gptUnofficial(prompt,apikeys,proxy,bot_info):
         api_key=os.environ.get("OPENAI_API_KEY"),
     )
     prompt.insert(0, {"role": "user", "content": bot_info})
-    prompt.insert(1, {"role": "assistant", "content": "好的，已了解您的需求，我会根据您的需求扮演好您设定的角色。"})
+    prompt.insert(1, {"role": "assistant", "content": "好的，已了解您的需求~我会扮演好您设定的角色。"})
     chat_completion = client.chat.completions.create(
         messages=prompt,
         model="gpt-3.5-turbo",
@@ -41,7 +41,7 @@ def gptUnofficial(prompt,apikeys,proxy,bot_info):
     return {"role": "assistant", "content": chat_completion.choices[0].message.content}
 def kimi(prompt,bot_info):
     prompt.insert(0, {"role": "user", "content": bot_info})
-    prompt.insert(1, {"role": "assistant", "content": "好的，已了解您的需求，我会根据您的需求扮演好您设定的角色。"})
+    prompt.insert(1, {"role": "assistant", "content": "好的，已了解您的需求~我会扮演好您设定的角色。"})
     prompt=str(prompt).replace("\"","%22").replace("\'","%22")
 
     url = f"https://api.alcex.cn/API/ai/kimi.php?messages={prompt}"
@@ -50,7 +50,7 @@ def kimi(prompt,bot_info):
     return {"role": "assistant", "content": r["choices"][0]["message"]["content"]}
 def qingyan(prompt,bot_info):
     prompt.insert(0, {"role": "user", "content": bot_info})
-    prompt.insert(1, {"role": "assistant", "content": "好的，已了解您的需求，我会根据您的需求扮演好您设定的角色。"})
+    prompt.insert(1, {"role": "assistant", "content": "好的，已了解您的需求~我会扮演好您设定的角色。"})
     prompt=str(prompt).replace("\"","%22").replace("\'","%22")
 
     url = f"https://api.alcex.cn/API/chatglm/?messages={prompt}"
@@ -60,7 +60,7 @@ def qingyan(prompt,bot_info):
 
 def lingyi(prompt,bot_info):
     prompt.insert(0, {"role": "user", "content": bot_info})
-    prompt.insert(1, {"role": "assistant", "content": "好的，已了解您的需求，我会根据您的需求扮演好您设定的角色。"})
+    prompt.insert(1, {"role": "assistant", "content": "好的，已了解您的需求~我会扮演好您设定的角色。"})
     prompt=str(prompt).replace("\"","%22").replace("\'","%22")
 
     url = f"https://api.alcex.cn/API/ai/zeroyi.php?messages={prompt}"
@@ -69,7 +69,7 @@ def lingyi(prompt,bot_info):
     return {"role": "assistant", "content": r["choices"][0]["message"]["content"]}
 def stepAI(prompt,bot_info):
     prompt.insert(0, {"role": "user", "content": bot_info})
-    prompt.insert(1, {"role": "assistant", "content": "好的，已了解您的需求，我会根据您的需求扮演好您设定的角色。"})
+    prompt.insert(1, {"role": "assistant", "content": "好的，已了解您的需求~我会扮演好您设定的角色。"})
     prompt=str(prompt).replace("\"","%22").replace("\'","%22")
 
     url = f"https://api.alcex.cn/API/ai/step.php?messages={prompt}"
@@ -78,7 +78,7 @@ def stepAI(prompt,bot_info):
     return {"role": "assistant", "content": r["choices"][0]["message"]["content"]}
 def qwen(prompt,bot_info):
     prompt.insert(0, {"role": "user", "content": bot_info})
-    prompt.insert(1, {"role": "assistant", "content": "好的，已了解您的需求，我会根据您的需求扮演好您设定的角色。"})
+    prompt.insert(1, {"role": "assistant", "content": "好的，已了解您的需求~我会扮演好您设定的角色。"})
     prompt=str(prompt).replace("\"","%22").replace("\'","%22")
 
     url = f"https://api.alcex.cn/API/ai/qwen.php?messages={prompt}"
@@ -87,7 +87,7 @@ def qwen(prompt,bot_info):
     return {"role": "assistant", "content": r["choices"][0]["message"]["content"]}
 def gptvvvv(prompt,bot_info):
     prompt.insert(0, {"role": "user", "content": bot_info})
-    prompt.insert(1, {"role": "assistant", "content": "好的，已了解您的需求，我会根据您的需求扮演好您设定的角色。"})
+    prompt.insert(1, {"role": "assistant", "content": "好的，已了解您的需求~我会扮演好您设定的角色。"})
     prompt=str(prompt).replace("\"","%22").replace("\'","%22")
 
     url = f"https://api.alcex.cn/API/gpt-4/v2.php?messages={prompt}&model=gpt-3.5-turbo"
@@ -96,14 +96,14 @@ def gptvvvv(prompt,bot_info):
     return {"role": "assistant", "content": r["choices"][0]["message"]["content"]}
 def grop(prompt,bot_info):
     prompt.insert(0, {"role": "user", "content": bot_info})
-    prompt.insert(1, {"role": "assistant", "content": "好的，已了解您的需求，我会根据您的需求扮演好您设定的角色。"})
+    prompt.insert(1, {"role": "assistant", "content": "好的，已了解您的需求~我会扮演好您设定的角色。"})
     prompt = str(prompt).replace("\"", "%22").replace("\'", "%22")
     url=f"https://api.alcex.cn/API/ai/grop.php?messages={prompt}"
     r=requests.get(url).json()
     return {"role": "assistant", "content": r["choices"][0]["message"]["content"]}
 def gpt4hahaha(prompt,meta):
     prompt.insert(0, {"role": "user", "content": meta})
-    prompt.insert(1, {"role": "assistant", "content": "好的，已了解您的需求，我会根据您的需求扮演好您设定的角色。"})
+    prompt.insert(1, {"role": "assistant", "content": "好的，已了解您的需求~我会扮演好您设定的角色。"})
     prompt = str(prompt).replace("\"", "%22").replace("\'", "%22")
     url=f"https://api.alcex.cn/API/gpt-4/v2.php?messages={prompt}"
     r = requests.get(url).json()
@@ -112,7 +112,7 @@ def localAurona(prompt,meta):
     url="http://127.0.0.1:3040/v1/chat/completions"
     headers={"Content-Type": "application/json","Authorization": "Bearer fff" }
     prompt.insert(0, {"role": "user", "content": meta})
-    prompt.insert(1, {"role": "assistant", "content": "好的，已了解您的需求，我会根据您的需求扮演好您设定的角色。"})
+    prompt.insert(1, {"role": "assistant", "content": "好的，已了解您的需求~我会扮演好您设定的角色。"})
     print(prompt)
     data={
         "model": "gpt-3.5-turbo",

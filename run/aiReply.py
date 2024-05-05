@@ -1172,6 +1172,11 @@ def main(bot, master, logger):
                 tasks.append(loop_run_in_executor(loop,gpt4hahaha,prompt1,bot_in))
                 #tasks.append(loop_run_in_executor(loop,localAurona,prompt1,bot_in))
                 # ... 添加其他模型的任务 ...
+                aim = {"role": "user", "content": bot_in}
+                prompt1 = [i for i in prompt1 if i != aim]
+                aim = {"role": "assistant", "content": "好的，已了解您的需求~我会扮演好您设定的角色。"}
+                prompt1 = [i for i in prompt1 if i != aim]
+
                 done, pending = await asyncio.wait(tasks, return_when=asyncio.ALL_COMPLETED)
                 reps=[]
                 # 等待所有任务完成

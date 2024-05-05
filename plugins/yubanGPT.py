@@ -31,16 +31,22 @@ async def lolimigpt(prompt,meta):
 async def lolimigpt2(prompt,meta):
     url="https://api.lolimi.cn/API/AI/c.php?"
     prompt.insert(0,{"role":"user","content":meta})
-    prompt.insert(1, {"role": "assistant", "content": "好的，已了解您的需求~我会扮演好您设定的角色"})
+    prompt.insert(1, {"role": "assistant", "content": "好的，已了解您的需求~我会扮演好您设定的角色。"})
     async with httpx.AsyncClient(timeout=200) as client:
         r = await client.post(url=url,json=prompt)
         return {"role":"assistant","content":r.text}
 def relolimigpt2(prompt,meta):
     url = "https://api.lolimi.cn/API/AI/c.php?"
     prompt.insert(0, {"role": "user", "content": meta})
-    prompt.insert(1, {"role": "assistant", "content": "好的，已了解您的需求~我会扮演好您设定的角色"})
+    prompt.insert(1, {"role": "assistant", "content": "好的，已了解您的需求~我会扮演好您设定的角色。"})
     r = requests.post(url=url, json=prompt)
     return {"role": "assistant", "content": r.text}
+def glm4hahaha(prompt,meta):
+    prompt.insert(0,{"role":"user","content":meta})
+    prompt.insert(1, {"role": "assistant", "content": "好的~"})
+    url = f"https://api.lolimi.cn/API/AI/zp.php?msg={str(prompt)}"
+    r=requests.get(url)
+    return {"role": "assistant", "content": r.json().get("data").get("output")}
 
 if __name__ == '__main__':
     k = kimi([{"role": "user", "content": "你好"}])
