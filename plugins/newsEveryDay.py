@@ -91,7 +91,7 @@ async def danxianglii():
 
 async def moyu():
     headers = get_headers()
-    url="https://api.lolimi.cn/API/moyu/"
+    url="https://api.52vmy.cn/api/wl/moyu"
     time = datetime.datetime.now().strftime('%Y_%m_%d')
     path="data/pictures/cache/"+time+"moyu.png"
     #path="moyu.png"
