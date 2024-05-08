@@ -43,3 +43,4 @@ if __name__ == '__main__':
         ))
         logger = newLogger()
         main(bot,logger)
+        bot.run()
