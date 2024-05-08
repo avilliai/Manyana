@@ -21,7 +21,10 @@ def main(bot,logger):
                 try:
                     logger.info(f"bing接口发起请求:{tag}")
                     p=await bingCreate(sock5proxy,tag,bing_image_creator_key.get("_U"),bing_image_creator_key.get("KievRPSSecAuth"))
-                    await bot.send(event, [Image(path=p[0]), Image(path=p[1]), Image(path=p[2]), Image(path=p[3])], True)
+                    plist=[]
+                    for i in p:
+                        plist.append(Image(path=i))
+                    await bot.send(event, plist, True)
                 except Exception as e:
                     logger.error(e)
                     await bot.send(event,"bing cookie过期，请检查")
