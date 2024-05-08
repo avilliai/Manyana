@@ -213,6 +213,7 @@ def main(bot, master, logger):
                 except:
                     await bot.send(event, "chatGLM启动出错，请联系master检查apiKey或重试\n或发送 @bot 可用角色模板 以更换其他模型")
             elif chatGLMCharacters.get(event.sender.id)=="Gemini":
+                os.environ["http_proxy"] = proxy
                 if str(event.message_chain)=="/cGemini" or str(event.message_chain)=="/clear":
                     return
                 if privateGlmReply!=True:
@@ -574,6 +575,7 @@ def main(bot, master, logger):
         if event.sender.id in chatGLMCharacters:
             print(type(chatGLMCharacters.get(event.sender.id)),chatGLMCharacters.get(event.sender.id))
             if chatGLMCharacters.get(event.sender.id) == "Gemini":
+                os.environ["http_proxy"] = proxy
                 text = str(event.message_chain).replace("@" + str(bot.qq) + "", '').replace(" ", "").replace("/g", "")
                 for saa in noRes:
                     if text == saa:
