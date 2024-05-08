@@ -232,3 +232,4 @@
   - 跟bing爆了，白嫖bing的dall-e-3
   - 参考https://github.com/avilliai/Manyana/issues/8
   - 此功能需要配置代理，并且获取对应cookie
+  - 由于使用代理端口不一致，该功能是单独的启动脚本，详见bing-dalle3启动脚本.bat
