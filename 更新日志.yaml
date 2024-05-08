@@ -228,3 +228,7 @@
   - 增加一个免费ai绘画接口
 2024/5/5:
   - 昨天更新的random模式存在严重问题，已修复
+2024/5/8:
+  - 跟bing爆了，白嫖bing的dall-e-3
+  - 参考https://github.com/avilliai/Manyana/issues/8
+  - 此功能需要配置代理，并且获取对应cookie
