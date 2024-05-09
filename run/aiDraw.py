@@ -18,14 +18,18 @@ def main(bot,logger):
             tag=str(event.message_chain).replace("画 ","")
             path = "data/pictures/cache/" + random_str() + ".png"
             logger.info("发起ai绘画请求，path:"+path+"|prompt:"+tag)
-            try:
-                logger.info("接口1绘画中......")
-                p=await draw1(tag,path)
-                await bot.send(event,[Image(path=p[0]),Image(path=p[1]),Image(path=p[2]),Image(path=p[3])],True)
-            except Exception as e:
-                logger.error(e)
-                logger.error("接口1绘画失败.......")
-                #await bot.send(event,"接口1绘画失败.......")
+            i = 1
+            while i < 8:
+                try:
+                    logger.info("接口1绘画中......")
+                    p=await draw1(tag,path)
+                    await bot.send(event,[Image(path=p[0]),Image(path=p[1]),Image(path=p[2]),Image(path=p[3])],True)
+                except Exception as e:
+                    logger.error(e)
+                    logger.error("接口1绘画失败.......")
+                    #await bot.send(event,"接口1绘画失败.......")
+            if i>7:
+                await bot.send(event, "接口绘画失败.......")
 
     @bot.on(GroupMessage)
     async def aidrawff(event: GroupMessage):
