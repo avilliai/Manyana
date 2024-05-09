@@ -21,7 +21,7 @@ def main(bot,logger):
             i = 1
             while i < 8:
                 try:
-                    logger.info("接口1绘画中......")
+                    logger.info(f"接口1绘画中......第{i}次请求....")
                     p=await draw1(tag,path)
                     await bot.send(event,[Image(path=p[0]),Image(path=p[1]),Image(path=p[2]),Image(path=p[3])],True)
                 except Exception as e:
