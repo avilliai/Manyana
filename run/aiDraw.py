@@ -27,6 +27,7 @@ def main(bot,logger):
                 except Exception as e:
                     logger.error(e)
                     logger.error("接口1绘画失败.......")
+                    i+=1
                     #await bot.send(event,"接口1绘画失败.......")
             if i>7:
                 await bot.send(event, "接口绘画失败.......")
