@@ -15,7 +15,7 @@ def main(bot,logger):
     bing_image_creator_key=resulttr.get("bing-image-creator")
     @bot.on(GroupMessage)
     async def selfBingDraw(event: GroupMessage):
-        if str(event.message_chain).startswith("画"):
+        if str(event.message_chain).startswith("画 "):
             tag = str(event.message_chain).replace("画 ", "")
             if bing_image_creator_key.get("_U")!="" and bing_image_creator_key.get("KievRPSSecAuth")!="":
                 try:
