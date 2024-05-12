@@ -27,7 +27,7 @@ def main(bot,logger):
                     await bot.send(event, plist, True)
                 except Exception as e:
                     logger.error(e)
-                    await bot.send(event,"bing cookie过期，请检查")
+                    await bot.send(event,"出错，请重试；可能是bing cookie过期，请检查")
 if __name__ == '__main__':
     with open('config/api.yaml', 'r', encoding='utf-8') as f:
         resulttr = yaml.load(f.read(), Loader=yaml.FullLoader)
