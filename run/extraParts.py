@@ -494,7 +494,7 @@ def main(bot,api_KEY,nasa_api,proxy,logger):
     async def zhifubao(event: GroupMessage):
         if str(event.message_chain).startswith("支付宝到账 "):
             try:
-                numb=int(str(event.message_chain).replace("支付宝到账 ",""))
+                numb=str(event.message_chain).replace("支付宝到账 ","")
                 url=f"https://free.wqwlkj.cn/wqwlapi/alipay_yy.php?money={str(numb)}"
                 r=requests.get(url)
                 p = "data/voices/" + random_str() + '.wav'
