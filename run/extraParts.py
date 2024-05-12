@@ -490,3 +490,18 @@ def main(bot,api_KEY,nasa_api,proxy,logger):
                 r1 = await client.get(url)
             await bot.send(event,"请完整复制如下内容，否则无法使用",True)
             await bot.send(event,r1.text.replace("后缀：",""))
+    @bot.on(GroupMessage)
+    async def zhifubao(event: GroupMessage):
+        if str(event.message_chain).startswith("支付宝到账 "):
+            try:
+                numb=int(str(event.message_chain).replace("支付宝到账 ",""))
+                url=f"https://free.wqwlkj.cn/wqwlapi/alipay_yy.php?money={str(numb)}"
+                r=requests.get(url)
+                p = "data/voices/" + random_str() + '.wav'
+                logger.info(f"支付宝到账：{numb}")
+                with open(p, "wb") as f:
+                    f.write(r.content)
+                await bot.send(event,Voice(path=p))
+            except Exception as e:
+                logger.error(e)
+                await bot.send(event,"生成失败，请检查数额")
