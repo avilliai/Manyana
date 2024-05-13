@@ -366,11 +366,13 @@ def main(bot,config,moderateKey,logger):
                 membernamelist[event.sender.id]=str(event.sender.member_name)
                 await bot.send(event, membernamelist.get("event.sender.id")+' 的昵称改成了 ' + str(event.sender.member_name) + ' \n警惕新型皮套诈骗')
         elif event.sender.id not in membernamelist:
-            membernamelist[event.sender.id]=str(event.sender.member_name)
-            logger.info(f"记录{event.sender.id} 昵称{event.sender.member_name}")
+            try:
+                membernamelist[event.sender.id]=str(event.sender.member_name)
+            except:
+                logger.error(f"无法记录{event.sender.id} 的用户名，将无法监测该用户昵称变动"}
         else:
             pass
-    @bot.on(MemberCardChangeEvent)
+    '''@bot.on(MemberCardChangeEvent)
     async def nameChange(event: MemberCardChangeEvent):
         if len(event.current) > 0:
             logger.info("群员昵称改变")
@@ -378,7 +380,7 @@ def main(bot,config,moderateKey,logger):
                 return
             else:
                 await bot.send_group_message(event.member.group.id,
-                                             event.origin + ' 的昵称改成了 ' + event.current + ' \n警惕新型皮套诈骗')
+                                             event.origin + ' 的昵称改成了 ' + event.current + ' \n警惕新型皮套诈骗')'''
 
 
     @bot.on(BotMuteEvent)
