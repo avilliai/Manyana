@@ -5,7 +5,7 @@ from mirai import Image
 from mirai import GroupMessage
 
 from plugins.RandomStr import random_str
-from plugins.aiDrawer import draw, airedraw, draw1, draw3,tiktokredraw,draw5
+from plugins.aiDrawer import draw, airedraw, draw1, draw3,tiktokredraw,draw5,draw4
 
 
 def main(bot,logger):
@@ -65,12 +65,21 @@ def main(bot,logger):
         if str(event.message_chain).startswith("画 "):
             tag = str(event.message_chain).replace("画 ", "")
             path = "data/pictures/cache/" + random_str() + ".png"
-            logger.info("发起ai绘画请求，path:" + path + "|prompt:" + tag)
-            if len(tag)>100:
-                return
+            try:
+                logger.info("接口5绘画中......")
+                p = await draw5(tag, path)
+                await bot.send(event, Image(path=p), True)
+            except Exception as e:
+                logger.error(e)
+                logger.error("接口5绘画失败.......")
+    @bot.on(GroupMessage)
+    async def aidrawff(event: GroupMessage):
+        if str(event.message_chain).startswith("画 "):
+            tag = str(event.message_chain).replace("画 ", "")
+            path = "data/pictures/cache/" + random_str() + ".png"
             try:
                 logger.info("接口4绘画中......")
-                p = await draw5(tag, path)
+                p = await draw4(tag, path)
                 await bot.send(event, Image(path=p), True)
             except Exception as e:
                 logger.error(e)
