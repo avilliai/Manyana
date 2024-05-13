@@ -13,7 +13,7 @@ def main(bot,logger):
     global redraw
     redraw={}
     @bot.on(GroupMessage)
-    async def aidrawf(event: GroupMessage):
+    async def aidrawf1(event: GroupMessage):
         if str(event.message_chain).startswith("画 "):
             tag=str(event.message_chain).replace("画 ","")
             path = "data/pictures/cache/" + random_str() + ".png"
@@ -31,11 +31,10 @@ def main(bot,logger):
                     #await bot.send(event,"接口1绘画失败.......")
 
     @bot.on(GroupMessage)
-    async def aidrawff(event: GroupMessage):
+    async def aidrawff2(event: GroupMessage):
         if str(event.message_chain).startswith("画 "):
             tag=str(event.message_chain).replace("画 ","")
             path = "data/pictures/cache/" + random_str() + ".png"
-            logger.info("发起ai绘画请求，path:"+path+"|prompt:"+tag)
             try:
                 logger.info("接口2绘画中......")
                 p=await draw(tag,path)
@@ -46,11 +45,10 @@ def main(bot,logger):
                 #await bot.send(event,"接口2绘画失败.......")
 
     @bot.on(GroupMessage)
-    async def aidrawff(event: GroupMessage):
+    async def aidrawff3(event: GroupMessage):
         if str(event.message_chain).startswith("画 "):
             tag = str(event.message_chain).replace("画 ", "")
             path = "data/pictures/cache/" + random_str() + ".png"
-            logger.info("发起ai绘画请求，path:" + path + "|prompt:" + tag)
             if len(tag)>100:
                 return
             try:
@@ -61,7 +59,7 @@ def main(bot,logger):
                 logger.error(e)
                 logger.error("接口3绘画失败.......")
     @bot.on(GroupMessage)
-    async def aidrawff(event: GroupMessage):
+    async def aidrawff4(event: GroupMessage):
         if str(event.message_chain).startswith("画 "):
             tag = str(event.message_chain).replace("画 ", "")
             path = "data/pictures/cache/" + random_str() + ".png"
@@ -73,7 +71,7 @@ def main(bot,logger):
                 logger.error(e)
                 logger.error("接口5绘画失败.......")
     @bot.on(GroupMessage)
-    async def aidrawff(event: GroupMessage):
+    async def aidrawff5(event: GroupMessage):
         if str(event.message_chain).startswith("画 "):
             tag = str(event.message_chain).replace("画 ", "")
             path = "data/pictures/cache/" + random_str() + ".png"
