@@ -92,9 +92,6 @@ def main(bot,config,moderateKey,logger):
     severGroups=moderate.get("groups")
     global banTime
     banTime=moderate.get("banTime")
-    #overflow版本实现群名片更改监听
-    global membernamelist
-    membernamelist={}
     #群成员遭到禁言
     @bot.on(MemberMuteEvent)
     async def whenMute(event: MemberMuteEvent):
@@ -358,22 +355,8 @@ def main(bot,config,moderateKey,logger):
     async def honorChange(event: MemberSpecialTitleChangeEvent):
         logger.info("群员称号改变")
         await bot.send_group_message(event.member.group.id, str(event.member.member_name) + '获得了称号：' + str(event.current))
-    @bot.on(GroupMessage)
-    async def membernameChangeEventNew(event: GroupMessage):
-        global membernamelist
-        if event.sender.id in membernamelist:
-            if str(event.sender.member_name)!=membernamelist.get("event.sender.id"):
-                membernamelist[event.sender.id]=str(event.sender.member_name)
-                await bot.send(event, membernamelist.get("event.sender.id")+' 的昵称改成了 ' + str(event.sender.member_name) + ' \n警惕新型皮套诈骗')
-        elif event.sender.id not in membernamelist:
-            try:
-                membernamelist[event.sender.id]=str(event.sender.member_name)
-            except:
-                #pass
-                logger.error(f"无法记录{event.sender.id} 的用户名，将无法监测该用户昵称变动")
-        else:
-            pass
-    '''@bot.on(MemberCardChangeEvent)
+
+    @bot.on(MemberCardChangeEvent)
     async def nameChange(event: MemberCardChangeEvent):
         if len(event.current) > 0:
             logger.info("群员昵称改变")
@@ -381,7 +364,7 @@ def main(bot,config,moderateKey,logger):
                 return
             else:
                 await bot.send_group_message(event.member.group.id,
-                                             event.origin + ' 的昵称改成了 ' + event.current + ' \n警惕新型皮套诈骗')'''
+                                             event.origin + ' 的昵称改成了 ' + event.current + ' \n警惕新型皮套诈骗')
 
 
     @bot.on(BotMuteEvent)
