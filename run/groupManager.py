@@ -369,7 +369,8 @@ def main(bot,config,moderateKey,logger):
             try:
                 membernamelist[event.sender.id]=str(event.sender.member_name)
             except:
-                logger.error(f"无法记录{event.sender.id} 的用户名，将无法监测该用户昵称变动"}
+                #pass
+                logger.error(f"无法记录{event.sender.id} 的用户名，将无法监测该用户昵称变动"})
         else:
             pass
     '''@bot.on(MemberCardChangeEvent)
