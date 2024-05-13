@@ -363,10 +363,11 @@ def main(bot,config,moderateKey,logger):
         global membernamelist
         if event.sender.id in membernamelist:
             if str(event.sender.member_name)!=membernamelist.get("event.sender.id"):
+                membernamelist[event.sender.id]=str(event.sender.member_name)
                 await bot.send(event, membernamelist.get("event.sender.id")+' 的昵称改成了 ' + str(event.sender.member_name) + ' \n警惕新型皮套诈骗')
-                membernamelist[event.sender.id]=event.sender.member_name
         elif event.sender.id not in membernamelist:
-            membernamelist[event.sender.id]=event.sender.member_name
+            membernamelist[event.sender.id]=str(event.sender.member_name)
+            logger.info(f"记录{event.sender.id} 昵称{event.sender.member_name}")
         else:
             pass
     '''@bot.on(MemberCardChangeEvent)
