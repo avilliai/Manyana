@@ -370,7 +370,7 @@ def main(bot,config,moderateKey,logger):
             logger.info(f"记录{event.sender.id} 昵称{event.sender.member_name}")
         else:
             pass
-    '''@bot.on(MemberCardChangeEvent)
+    @bot.on(MemberCardChangeEvent)
     async def nameChange(event: MemberCardChangeEvent):
         if len(event.current) > 0:
             logger.info("群员昵称改变")
@@ -378,7 +378,7 @@ def main(bot,config,moderateKey,logger):
                 return
             else:
                 await bot.send_group_message(event.member.group.id,
-                                             event.origin + ' 的昵称改成了 ' + event.current + ' \n警惕新型皮套诈骗')'''
+                                             event.origin + ' 的昵称改成了 ' + event.current + ' \n警惕新型皮套诈骗')
 
 
     @bot.on(BotMuteEvent)
