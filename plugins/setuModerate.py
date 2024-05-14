@@ -3,13 +3,17 @@ import asyncio
 import httpx
 import base64
 
+import requests
+
+
 async def setuModerate(img_url,moderateKey):
     url="https://api.moderatecontent.com/moderate/?url="+str(img_url)+"&key="+str(moderateKey)
     async with httpx.AsyncClient(timeout=50) as client:
         r = await client.get(url)
-        print(r.json().get('predictions').get('adult'))
+        #print(r.json().get('predictions').get('adult'))
         return r.json().get('predictions').get('adult')
 async def fileImgModerate(image_path,moderateKey):
+    #print(image_path)
     with open(image_path, "rb") as image_file:
         image_data = image_file.read()
 
@@ -23,9 +27,8 @@ async def fileImgModerate(image_path,moderateKey):
         "url": f"data:image/png;base64,{image_base64}",
     }
 
-    async with httpx.AsyncClient() as client:
-        r = await client.post(url="https://api.moderatecontent.com/moderate/", data=data)
-    print(r.json().get('predictions').get('adult'))
+
+    r=requests.post(url="https://api.moderatecontent.com/moderate/", data=data)
     return r.json().get('predictions').get('adult')
 
 if __name__ == '__main__':

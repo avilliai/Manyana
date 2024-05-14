@@ -15,6 +15,7 @@ def main(bot,logger):
     with open('config/api.yaml', 'r', encoding='utf-8') as f:
         result = yaml.load(f.read(), Loader=yaml.FullLoader)
     moderateK = result.get("moderate")
+    proxy=result.get("proxy")
     with open('config/settings.yaml', 'r', encoding='utf-8') as f:
         result1 = yaml.load(f.read(), Loader=yaml.FullLoader)
     selfsensor=result1.get("moderate").get("selfsensor")
