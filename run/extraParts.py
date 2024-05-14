@@ -197,7 +197,7 @@ def main(bot,logger):
                         logger.error("涩图请求出错")
                         await bot.send(event,"请求出错，请稍后再试")
                         return
-                    logger.info("发送图片: "+path)
+                    logger.info("获取到图片: "+path)
 
                     if cardPic:
                         try:
@@ -209,12 +209,15 @@ def main(bot,logger):
                             logger.error("自动转换卡片失败")
                     else:
                         if selfsensor==True:
-
-                            thurs=await setuModerate(path,moderateK)
-                            logger.info(f"获取到安全审核结果： adult {thurs}")
-                            if int(thurs)>selfthreshold:
-                                logger.warning(f"不安全的图片，自我审核过滤")
-                                continue
+                            try:
+                                thurs=await setuModerate(path,moderateK)
+                                logger.info(f"获取到审核结果： adult- {thurs}")
+                                if int(thurs)>selfthreshold:
+                                    logger.warning(f"不安全的图片，自我审核过滤")
+                                    continue
+                            except Exception as e:
+                                logger.error(e)
+                                logger.error("无法进行自我审核，错误的网络环境或apikey")
                         await bot.send(event, Image(url=path))
                         logger.info("图片发送成功")
 

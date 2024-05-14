@@ -7,7 +7,7 @@ import random
 import time
 import sys
 import socket
-
+from plugins.setuModerate import setuModerate
 import httpx
 import requests
 import utils
@@ -28,6 +28,11 @@ def main(bot,api_key,proxy,logger):
     with open('config/api.yaml', 'r', encoding='utf-8') as f:
         result = yaml.load(f.read(), Loader=yaml.FullLoader)
     cookies=result.get("e-hentai")
+    moderateK = result.get("moderate")
+    with open('config/settings.yaml', 'r', encoding='utf-8') as f:
+        result1 = yaml.load(f.read(), Loader=yaml.FullLoader)
+    selfsensor=result1.get("moderate").get("selfsensor")
+    selfthreshold=result1.get("moderate").get("selfthreshold")
     global dataGet
     dataGet={}
     global userSearch
@@ -69,6 +74,16 @@ def main(bot,api_key,proxy,logger):
                 #b1=ForwardMessageNode(sender_id=bot.qq, sender_name="Manyana",message_chain=MessageChain(["sauceno获取到结果:\n"+result,Image(url=urlss)]))
                 #b1 = ForwardMessageNode(sender_id=bot.qq, sender_name="Manyana",message_chain=MessageChain([result, Image(url=urlss]))
                 dataGet.get(event.sender.id).append("sauceno获取到结果:\n"+result)
+                if selfsensor == True:
+                    try:
+                        thurs = await setuModerate(urlss, moderateK)
+                        logger.info(f"获取到审核结果： adult- {thurs}")
+                        if int(thurs) > selfthreshold:
+                            logger.warning(f"不安全的图片，自我审核过滤")
+                            urlss="data/colorfulAnimeCharacter/"+random.choice(os.listdir("data/colorfulAnimeCharacter"))
+                    except Exception as e:
+                        logger.error(e)
+                        logger.error("无法进行自我审核，错误的网络环境或apikey不可用")
                 dataGet.get(event.sender.id).append( Image(url=urlss))
 
                 #await bot.send(event,' similarity:'+str(response.json().get("results")[0].get('header').get('similarity'))+"\n"+str(response.json().get("results")[0].get('data')).replace(",","\n").replace("{"," ").replace("}","").replace("'","").replace("[","").replace("]",""),True)
@@ -86,6 +101,16 @@ def main(bot,api_key,proxy,logger):
                 #b1 = ForwardMessageNode(sender_id=bot.qq, sender_name="Manyana",
                                         #message_chain=MessageChain(["TraceMoe获取到结果：\n" +result, Image(url=piccc)]))
                 dataGet.get(event.sender.id).append("TraceMoe获取到结果：\n" +result)
+                if selfsensor == True:
+                    try:
+                        thurs = await setuModerate(piccc, moderateK)
+                        logger.info(f"获取到审核结果： adult- {thurs}")
+                        if int(thurs) > selfthreshold:
+                            logger.warning(f"不安全的图片，自我审核过滤")
+                            piccc="data/colorfulAnimeCharacter/"+random.choice(os.listdir("data/colorfulAnimeCharacter"))
+                    except Exception as e:
+                        logger.error(e)
+                        logger.error("无法进行自我审核，错误的网络环境或apikey不可用")
                 dataGet.get(event.sender.id).append( Image(url=piccc))
                 try:
                     pass
@@ -106,6 +131,16 @@ def main(bot,api_key,proxy,logger):
                 #b1 = ForwardMessageNode(sender_id=bot.qq, sender_name="Manyana",
                                         #message_chain=MessageChain(["Ascii2D获取到结果：\n" +result, Image(url=piccc)]))
                 dataGet.get(event.sender.id).append("Ascii2D获取到结果：\n" +result)
+                if selfsensor == True:
+                    try:
+                        thurs = await setuModerate(piccc, moderateK)
+                        logger.info(f"获取到审核结果： adult- {thurs}")
+                        if int(thurs) > selfthreshold:
+                            logger.warning(f"不安全的图片，自我审核过滤")
+                            piccc="data/colorfulAnimeCharacter/"+random.choice(os.listdir("data/colorfulAnimeCharacter"))
+                    except Exception as e:
+                        logger.error(e)
+                        logger.error("无法进行自我审核，错误的网络环境或apikey不可用")
                 dataGet.get(event.sender.id).append(Image(url=piccc))
             except:
                 logger.error("Ascii2D未获取到结果" )
@@ -122,6 +157,16 @@ def main(bot,api_key,proxy,logger):
                 '''b1 = ForwardMessageNode(sender_id=bot.qq, sender_name="Manyana",
                                         message_chain=MessageChain(["iqdb获取到结果：\n"+result, Image(url=piccc)]))'''
                 dataGet.get(event.sender.id).append("iqdb获取到结果：\n"+result)
+                if selfsensor == True:
+                    try:
+                        thurs = await setuModerate(piccc, moderateK)
+                        logger.info(f"获取到审核结果： adult- {thurs}")
+                        if int(thurs) > selfthreshold:
+                            logger.warning(f"不安全的图片，自我审核过滤")
+                            piccc="data/colorfulAnimeCharacter/"+random.choice(os.listdir("data/colorfulAnimeCharacter"))
+                    except Exception as e:
+                        logger.error(e)
+                        logger.error("无法进行自我审核，错误的网络环境或apikey不可用")
                 dataGet.get(event.sender.id).append(Image(url=piccc))
                 try:
                     pass
