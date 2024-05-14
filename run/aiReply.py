@@ -27,6 +27,7 @@ from plugins.gptOfficial import gptOfficial, gptUnofficial, kimi, qingyan, lingy
 from plugins.rwkvHelper import rwkvHelper
 from plugins.translater import translate
 from plugins.vitsGenerate import superVG, voiceGenerate
+from plugins.wReply.wontRep import wontrep
 from plugins.wReply.mohuReply import mohuaddReplys
 from plugins.yubanGPT import lolimigpt, lolimigpt2, relolimigpt2
 
@@ -80,7 +81,6 @@ def main(bot, master, logger):
     # logger.info(chatGLMData)
     with open('config/noResponse.yaml', 'r', encoding='utf-8') as f:
         noRes1 = yaml.load(f.read(), Loader=yaml.FullLoader)
-    noRes = noRes1.get("noRes")
 
     global totallink
     totallink = False
@@ -594,10 +594,6 @@ def main(bot, master, logger):
             print(type(chatGLMCharacters.get(event.sender.id)), chatGLMCharacters.get(event.sender.id))
             if chatGLMCharacters.get(event.sender.id) == "Gemini":
                 text = str(event.message_chain).replace("@" + str(bot.qq) + "", '').replace(" ", "").replace("/g", "")
-                for saa in noRes:
-                    if text == saa:
-                        logger.warning("与屏蔽词匹配，Gemini不回复")
-                        return
                 logger.info("gemini开始运行")
                 if text == "" or text == " ":
                     text = "在吗"
@@ -646,10 +642,6 @@ def main(bot, master, logger):
                     allcharacters.get(chatGLMCharacters.get(event.sender.id))) == dict:
                 text = str(event.message_chain).replace("@" + str(bot.qq) + "", '').replace(" ", "")
                 logger.info("分支1")
-                for saa in noRes:
-                    if text == saa:
-                        logger.warning("与屏蔽词匹配，chatGLM不回复")
-                        return
                 if text == "" or text == " ":
                     text = "在吗"
                 # 构建新的prompt
@@ -719,10 +711,6 @@ def main(bot, master, logger):
         # 判断模型
         elif replyModel == "Gemini" or replyModel == "Gemini1.5":
             text = str(event.message_chain).replace("@" + str(bot.qq) + "", '').replace(" ", "").replace("/g", "")
-            for saa in noRes:
-                if text == saa:
-                    logger.warning("与屏蔽词匹配，Gemini不回复")
-                    return
             logger.info("gemini开始运行")
             if text == "" or text == " ":
                 text = "在吗"
@@ -769,10 +757,6 @@ def main(bot, master, logger):
         elif replyModel == "characterglm":
             text = str(event.message_chain).replace("@" + str(bot.qq) + "", '').replace(" ", "")
             logger.info("分支1")
-            for saa in noRes:
-                if text == saa:
-                    logger.warning("与屏蔽词匹配，chatGLM不回复")
-                    return
             if text == "" or text == " ":
                 text = "在吗"
             # 构建新的prompt
@@ -1168,11 +1152,6 @@ def main(bot, master, logger):
             text = str(event.message_chain).replace("@" + str(bot.qq) + " ", '')
             if text == "" or text == " ":
                 text = "在吗"
-            for saa in noRes:
-                # print(text, saa)
-                if text == saa:
-                    logger.warning("与屏蔽词匹配，不回复")
-                    return
             if event.sender.id in chatGLMData:
                 prompt1 = chatGLMData.get(event.sender.id)
                 prompt1.append({"content": text, "role": "user"})
@@ -1383,7 +1362,7 @@ def main(bot, master, logger):
     # logger.info(chatGLMData)
     with open('config/noResponse.yaml', 'r', encoding='utf-8') as f:
         noRes1 = yaml.load(f.read(), Loader=yaml.FullLoader)
-    noRes = noRes1.get("noRes")
+
 
     global totallink
     totallink = False
@@ -1876,17 +1855,12 @@ def main(bot, master, logger):
     @bot.on(GroupMessage)
     async def atReply(event: GroupMessage):
         global trustUser, chatGLMapikeys, chatGLMData, chatGLMCharacters, chatGLMsingelUserKey, userdict, GeminiData, coziData, trustG
-        pattern1 = r'(\d+)张(\w+)'
         if At(bot.qq) in event.message_chain:
-            text1 = str(event.message_chain).replace("壁纸", "").replace("涩图", "").replace("色图", "").replace("图",
-                                                                                                           "").replace(
-                "r18", "")
-            match1 = re.search(pattern1, text1)
-            if match1:
-                if len(match1.group(2)) > 5:
-                    pass
-                else:
+            try:
+                if wontrep(noRes1, str(event.message_chain).replace(str(At(bot.qq)), "").replace(" ", ""),logger)==False:
                     return
+            except Exception as e:
+                logger.error("无法运行屏蔽词审核，请检查noResponse.yaml配置格式")
         if (At(bot.qq) in event.message_chain) and (glmReply == True or (trustglmReply == True and str(
                 event.sender.id) in trustUser) or event.group.id in trustG or event.sender.id == int(mainGroup)):
             logger.info("ai聊天启动")
@@ -1897,10 +1871,7 @@ def main(bot, master, logger):
             print(type(chatGLMCharacters.get(event.sender.id)), chatGLMCharacters.get(event.sender.id))
             if chatGLMCharacters.get(event.sender.id) == "Gemini":
                 text = str(event.message_chain).replace("@" + str(bot.qq) + "", '').replace(" ", "").replace("/g", "")
-                for saa in noRes:
-                    if text == saa:
-                        logger.warning("与屏蔽词匹配，Gemini不回复")
-                        return
+
                 logger.info("gemini开始运行")
                 if text == "" or text == " ":
                     text = "在吗"
@@ -1949,10 +1920,6 @@ def main(bot, master, logger):
                     allcharacters.get(chatGLMCharacters.get(event.sender.id))) == dict:
                 text = str(event.message_chain).replace("@" + str(bot.qq) + "", '').replace(" ", "")
                 logger.info("分支1")
-                for saa in noRes:
-                    if text == saa:
-                        logger.warning("与屏蔽词匹配，chatGLM不回复")
-                        return
                 if text == "" or text == " ":
                     text = "在吗"
                 # 构建新的prompt
@@ -2022,10 +1989,6 @@ def main(bot, master, logger):
         # 判断模型
         elif replyModel == "Gemini" or replyModel == "Gemini1.5":
             text = str(event.message_chain).replace("@" + str(bot.qq) + "", '').replace(" ", "").replace("/g", "")
-            for saa in noRes:
-                if text == saa:
-                    logger.warning("与屏蔽词匹配，Gemini不回复")
-                    return
             logger.info("gemini开始运行")
             if text == "" or text == " ":
                 text = "在吗"
@@ -2072,10 +2035,6 @@ def main(bot, master, logger):
         elif replyModel == "characterglm":
             text = str(event.message_chain).replace("@" + str(bot.qq) + "", '').replace(" ", "")
             logger.info("分支1")
-            for saa in noRes:
-                if text == saa:
-                    logger.warning("与屏蔽词匹配，chatGLM不回复")
-                    return
             if text == "" or text == " ":
                 text = "在吗"
             # 构建新的prompt
@@ -2471,11 +2430,6 @@ def main(bot, master, logger):
             text = str(event.message_chain).replace("@" + str(bot.qq) + " ", '')
             if text == "" or text == " ":
                 text = "在吗"
-            for saa in noRes:
-                # print(text, saa)
-                if text == saa:
-                    logger.warning("与屏蔽词匹配，不回复")
-                    return
             if event.sender.id in chatGLMData:
                 prompt1 = chatGLMData.get(event.sender.id)
                 prompt1.append({"content": text, "role": "user"})
