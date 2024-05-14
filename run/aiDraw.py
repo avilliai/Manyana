@@ -1,10 +1,12 @@
 # -*- coding: utf-8 -*-
-
+import random
+import os
 import yaml
 from mirai import Image
 from mirai import GroupMessage
 
 from plugins.RandomStr import random_str
+from plugins.setuModerate import fileImgModerate
 from plugins.aiDrawer import SdDraw ,draw, airedraw, draw1, draw3,tiktokredraw,draw5,draw4
 
 
