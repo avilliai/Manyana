@@ -6,10 +6,18 @@ from mirai import GroupMessage
 
 from plugins.RandomStr import random_str
 from plugins.aiDrawer import draw, airedraw, draw1, draw3,tiktokredraw,draw5,draw4
+from plugins.setuModerate import setuModerate,fileImgModerate
 
 
 def main(bot,logger):
     logger.info("ai绘画 启用")
+    with open('config/api.yaml', 'r', encoding='utf-8') as f:
+        result = yaml.load(f.read(), Loader=yaml.FullLoader)
+    moderateK = result.get("moderate")
+    with open('config/settings.yaml', 'r', encoding='utf-8') as f:
+        result1 = yaml.load(f.read(), Loader=yaml.FullLoader)
+    selfsensor=result1.get("moderate").get("selfsensor")
+    selfthreshold=result1.get("moderate").get("selfthreshold")
     global redraw
     redraw={}
     @bot.on(GroupMessage)
@@ -38,6 +46,19 @@ def main(bot,logger):
             try:
                 logger.info("接口2绘画中......")
                 p=await draw(tag,path)
+                if selfsensor==True:
+                    try:
+                        thurs=await fileImgModerate(p,moderateK)
+                        logger.info(f"获取到审核结果： adult- {thurs}")
+                        if int(thurs)>selfthreshold:
+                            logger.warning(f"不安全的图片，自我审核过滤")
+                            await bot.send(event,["nsfw内容已过滤",Image(path="data/colorfulAnimeCharacter/"+random.choice(os.listdir("data/colorfulAnimeCharacter")))])
+                            return
+                    except Exception as e:
+                        logger.error(e)
+                        logger.error("无法进行自我审核，错误的网络环境或apikey")
+                        await bot.send(event,["审核策略失效，为确保安全，不显示本图片",Image(path="data/colorfulAnimeCharacter/"+random.choice(os.listdir("data/colorfulAnimeCharacter")))])
+                        return
                 await bot.send(event,Image(path=p),True)
             except Exception as e:
                 logger.error(e)
@@ -54,6 +75,19 @@ def main(bot,logger):
             try:
                 logger.info("接口3绘画中......")
                 p = await draw3(tag, path)
+                if selfsensor==True:
+                    try:
+                        thurs=await fileImgModerate(p,moderateK)
+                        logger.info(f"获取到审核结果： adult- {thurs}")
+                        if int(thurs)>selfthreshold:
+                            logger.warning(f"不安全的图片，自我审核过滤")
+                            await bot.send(event,["nsfw内容已过滤",Image(path="data/colorfulAnimeCharacter/"+random.choice(os.listdir("data/colorfulAnimeCharacter")))])
+                            return
+                    except Exception as e:
+                        logger.error(e)
+                        logger.error("无法进行自我审核，错误的网络环境或apikey")
+                        await bot.send(event,["审核策略失效，为确保安全，不显示本图片",Image(path="data/colorfulAnimeCharacter/"+random.choice(os.listdir("data/colorfulAnimeCharacter")))])
+                        return
                 await bot.send(event, Image(path=p), True)
             except Exception as e:
                 logger.error(e)
@@ -66,6 +100,19 @@ def main(bot,logger):
             try:
                 logger.info("接口5绘画中......")
                 p = await draw5(tag, path)
+                if selfsensor==True:
+                    try:
+                        thurs=await fileImgModerate(p,moderateK)
+                        logger.info(f"获取到审核结果： adult- {thurs}")
+                        if int(thurs)>selfthreshold:
+                            logger.warning(f"不安全的图片，自我审核过滤")
+                            await bot.send(event,["nsfw内容已过滤",Image(path="data/colorfulAnimeCharacter/"+random.choice(os.listdir("data/colorfulAnimeCharacter")))])
+                            return
+                    except Exception as e:
+                        logger.error(e)
+                        logger.error("无法进行自我审核，错误的网络环境或apikey")
+                        await bot.send(event,["审核策略失效，为确保安全，不显示本图片",Image(path="data/colorfulAnimeCharacter/"+random.choice(os.listdir("data/colorfulAnimeCharacter")))])
+                        return
                 await bot.send(event, Image(path=p), True)
             except Exception as e:
                 logger.error(e)
@@ -78,6 +125,19 @@ def main(bot,logger):
             try:
                 logger.info("接口4绘画中......")
                 p = await draw4(tag, path)
+                if selfsensor==True:
+                    try:
+                        thurs=await fileImgModerate(p,moderateK)
+                        logger.info(f"获取到审核结果： adult- {thurs}")
+                        if int(thurs)>selfthreshold:
+                            logger.warning(f"不安全的图片，自我审核过滤")
+                            await bot.send(event,["nsfw内容已过滤",Image(path="data/colorfulAnimeCharacter/"+random.choice(os.listdir("data/colorfulAnimeCharacter")))])
+                            return
+                    except Exception as e:
+                        logger.error(e)
+                        logger.error("无法进行自我审核，错误的网络环境或apikey")
+                        await bot.send(event,["审核策略失效，为确保安全，不显示本图片",Image(path="data/colorfulAnimeCharacter/"+random.choice(os.listdir("data/colorfulAnimeCharacter")))])
+                        return
                 await bot.send(event, Image(path=p), True)
             except Exception as e:
                 logger.error(e)
