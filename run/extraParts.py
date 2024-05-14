@@ -33,13 +33,23 @@ from plugins.newLogger import newLogger
 from plugins.newsEveryDay import news, moyu, xingzuo, sd, chaijun, danxianglii, beCrazy,handwrite
 from plugins.arksign import arkSign
 from plugins.picGet import pic, setuGet, picDwn
+from plugins.setuModerate import setuModerate
 from plugins.tarot import tarotChoice
 from plugins.translater import translate
 
 from plugins.webScreenShoot import webScreenShoot, screenshot_to_pdf_and_png
 
 
-def main(bot,api_KEY,nasa_api,proxy,logger):
+def main(bot,logger):
+    # 读取api列表
+    with open('config/api.yaml', 'r', encoding='utf-8') as f:
+        result = yaml.load(f.read(), Loader=yaml.FullLoader)
+    api_KEY = result.get("weatherXinZhi")
+    proxy = result.get("proxy")
+    moderateK = result.get("moderate")
+    nasa_api = result.get("nasa_api")
+    proxy = result.get("proxy")
+
     logger.info("额外的功能 启动完成")
     with open("data/odes.json",encoding="utf-8") as fp:
         odes=json.loads(fp.read())
@@ -63,6 +73,9 @@ def main(bot,api_KEY,nasa_api,proxy,logger):
     r18 = result1.get("r18Pic")
     cardPic = result1.get("cardPic")
     allowPic=result1.get("allowPic")
+    selfsensor=result1.get("moderate").get("selfsensor")
+    selfthreshold=result1.get("moderate").get("selfthreshold")
+
     global picData
     picData={}
     with open('config/gachaSettings.yaml', 'r', encoding='utf-8') as f:
@@ -185,21 +198,26 @@ def main(bot,api_KEY,nasa_api,proxy,logger):
                         await bot.send(event,"请求出错，请稍后再试")
                         return
                     logger.info("发送图片: "+path)
-                    try:
-                        if cardPic:
-                            try:
-                                card=await arkSign(path)
-                                await bot.send(event,App(card))
-                                logger.info("图片发送成功")
-                            except Exception as e:
-                                logger.error(e)
-                                logger.error("自动转换卡片失败")
-                        else:
-                            await bot.send(event, Image(url=path))
+
+                    if cardPic:
+                        try:
+                            card=await arkSign(path)
+                            await bot.send(event,App(card))
                             logger.info("图片发送成功")
-                    except:
-                        logger.error("图片发送失败")
-                        await bot.send(event,path)
+                        except Exception as e:
+                            logger.error(e)
+                            logger.error("自动转换卡片失败")
+                    else:
+                        if selfsensor==True:
+
+                            thurs=await setuModerate(path,moderateK)
+                            logger.info(f"获取到安全审核结果： adult {thurs}")
+                            if int(thurs)>selfthreshold:
+                                logger.warning(f"不安全的图片，自我审核过滤")
+                                continue
+                        await bot.send(event, Image(url=path))
+                        logger.info("图片发送成功")
+
 
 
 

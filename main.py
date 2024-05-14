@@ -248,7 +248,7 @@ if __name__ == '__main__':
     else:
         logger.warning("未设置代理，禁用poe-api与搜图")
     nudgeReply.main(bot, master,  logger,berturl,proxy)  # 戳一戳
-    extraParts.main(bot, result.get("weatherXinZhi"), nasa_api, proxy, logger)  # 额外小功能
+    extraParts.main(bot,  logger)  # 额外小功能
     wReply.main(bot, config, sizhiKey,  logger)
     wikiHelper.main(bot, logger)
     userSign.main(bot, result.get("weatherXinZhi"), master, config, logger)
@@ -266,5 +266,5 @@ if __name__ == '__main__':
     aiDraw.main(bot,logger)
     #gemini_ai.main(bot,logger,master)
     startVer()
-    bot.run()
+    bot.run(asgi_server=None)
 
