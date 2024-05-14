@@ -92,7 +92,6 @@ def main(bot,config,moderateKey,logger):
     severGroups=moderate.get("groups")
     global banTime
     banTime=moderate.get("banTime")
-
     #群成员遭到禁言
     @bot.on(MemberMuteEvent)
     async def whenMute(event: MemberMuteEvent):

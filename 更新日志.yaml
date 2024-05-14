@@ -233,3 +233,8 @@
   - 参考https://github.com/avilliai/Manyana/issues/8
   - 此功能需要配置代理，并且获取对应cookie
   - 由于使用代理端口不一致，该功能是单独的启动脚本，详见bing-dalle3启动脚本.bat
+2024/5/12:
+  - 新指令
+  - 支付宝到账 数字
+2024/5/13:
+  - ai绘画接口，增加

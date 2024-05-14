@@ -404,7 +404,10 @@ def main(bot,config,sizhiKey,logger):
                     if str(event.group.id) in superDict.keys():
                         keys1=superDict.get(str(event.group.id)).keys()
                     else:
-                        keys1 = superDict.get("publicLexicon").keys()
+                        try:
+                            keys1 = superDict.get("publicLexicon").keys()
+                        except:
+                            logger.error("谁知道呢，catch了")
 
                     lock=0
                     lenth1 = 0
