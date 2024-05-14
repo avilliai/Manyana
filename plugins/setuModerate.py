@@ -10,10 +10,17 @@ async def setuModerate(img_url,moderateKey):
         print(r.json().get('predictions').get('adult'))
         return r.json().get('predictions').get('adult')
 async def fileImgModerate(image_path,moderateKey):
-    
+    with open(image_path, "rb") as image_file:
+        image_data = image_file.read()
+
+    # Encode the image data to base64
+    image_base64 = base64.b64encode(image_data).decode("utf-8")
+
+    # Prepare the request body
     data = {
-    "file": (image_path, open(image_path, "rb"),"image/jpeg"),
-    "key": moderateKey,
+        "key": moderateKey,
+        "base64": "true",
+        "url": f"data:image/png;base64,{image_base64}",
     }
 
     async with httpx.AsyncClient() as client:
@@ -23,4 +30,4 @@ async def fileImgModerate(image_path,moderateKey):
 
 if __name__ == '__main__':
 
-    asyncio.run(setuModerate(a,b))
+    asyncio.run(fileImgModerate("Pa@RRfK111.png","6fb083462b3806a00545ddae4c3f2a5b"))
