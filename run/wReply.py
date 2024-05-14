@@ -401,7 +401,6 @@ def main(bot,config,sizhiKey,logger):
                 #优先从专有词库匹配
                 elif str(event.group.id) in superDict.keys() or random.randint(0,100)<likeindex:
                     #获取专有词库所有key
-                    keys1 = []
                     if str(event.group.id) in superDict.keys():
                         keys1=superDict.get(str(event.group.id)).keys()
                     else:
@@ -409,6 +408,7 @@ def main(bot,config,sizhiKey,logger):
                             keys1 = superDict.get("publicLexicon").keys()
                         except:
                             logger.error("谁知道呢，catch了")
+                            return
 
                     lock=0
                     lenth1 = 0
