@@ -214,6 +214,7 @@ def main(bot,logger):
                                 logger.info(f"获取到审核结果： adult- {thurs}")
                                 if int(thurs)>selfthreshold:
                                     logger.warning(f"不安全的图片，自我审核过滤")
+                                    await bot.send(event,["nsfw内容已过滤",Image(path="data/colorfulAnimeCharacter/"+random.choice(os.listdir("data/colorfulAnimeCharacter")))])
                                     continue
                             except Exception as e:
                                 logger.error(e)
