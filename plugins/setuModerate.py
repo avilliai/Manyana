@@ -11,7 +11,7 @@ async def setuModerate(img_url,moderateKey):
         return r.json().get('predictions').get('adult')
 async def fileImgModerate(filePath,moderateKey):
     data = {
-        "file": (filePath, open(image_path, "rb")),
+        "file": (filePath, open(filePath, "rb")),
         "key": moderateKey,
     }
     async with httpx.AsyncClient() as client:
