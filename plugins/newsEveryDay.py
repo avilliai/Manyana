@@ -80,7 +80,8 @@ async def beCrazy(aim):
         return r
 async def danxianglii():
     headers=get_headers()
-    url="https://edui123.com/rili/"
+    time = datetime.datetime.now().strftime('%Y/%m%d')
+    url=f"https://img.owspace.com/Public/uploads/Download/{time}.jpg"
     path="data/pictures/cache/"+random_str()+".png"
     async with httpx.AsyncClient(timeout=20, headers=headers) as client:
         r = await client.get(url)
