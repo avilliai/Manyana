@@ -9,21 +9,13 @@ async def setuModerate(img_url,moderateKey):
         r = await client.get(url)
         print(r.json().get('predictions').get('adult'))
         return r.json().get('predictions').get('adult')
-async def fileImgModerate(filePath,moderateKey):
+async def fileImgModerate(image_path,moderateKey):
     
-    # Read the image file as binary data
-    with open(filePath, "rb") as image_file:
-        image_data = image_file.read()
-    
-    # Encode the image data to base64
-    image_base64 = base64.b64encode(image_data).decode("utf-8")
-    
-    # Prepare the request body
     data = {
-        "key": moderateKey,
-        "base64": "true",
-        "url": f"data:image/png;base64,{image_base64}",
+    "file": (image_path, open(image_path, "rb"),"image/jpeg"),
+    "key": moderateKey,
     }
+
     async with httpx.AsyncClient() as client:
         r = await client.post(url="https://api.moderatecontent.com/moderate/", data=data)
     print(r.json().get('predictions').get('adult'))
