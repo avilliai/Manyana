@@ -80,7 +80,7 @@ async def beCrazy(aim):
         return r
 async def danxianglii():
     headers=get_headers()
-    url="https://xialiu.cn/api/dan/"
+    url="https://edui123.com/rili/"
     path="data/pictures/cache/"+random_str()+".png"
     async with httpx.AsyncClient(timeout=20, headers=headers) as client:
         r = await client.get(url)
