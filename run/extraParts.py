@@ -219,6 +219,8 @@ def main(bot,logger):
                             except Exception as e:
                                 logger.error(e)
                                 logger.error("无法进行自我审核，错误的网络环境或apikey")
+                                await bot.send(event,["审核策略失效，为确保安全，不显示本图片",Image(path="data/colorfulAnimeCharacter/"+random.choice(os.listdir("data/colorfulAnimeCharacter")))])
+                                continue
                         await bot.send(event, Image(url=path))
                         logger.info("图片发送成功")
 
