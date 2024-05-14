@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-
+import random
 import yaml
 from mirai import Image
 from mirai import GroupMessage
