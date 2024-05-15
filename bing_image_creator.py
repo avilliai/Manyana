@@ -17,6 +17,11 @@ def main(bot,logger):
     async def selfBingDraw(event: GroupMessage):
         if str(event.message_chain).startswith("画 "):
             tag = str(event.message_chain).replace("画 ", "")
+            list1=["sex","nsfw","性交","做爱","pussy","奴隶","调教","中出","后入","颜射","阴道","NSFW","SEX","Sex"]
+            for i in list1:
+                if i in tag:
+                    await bot.send(event,"审核策略生效，请检查并去除prompt中违规内容")
+                    return
             if bing_image_creator_key.get("_U")!="" and bing_image_creator_key.get("KievRPSSecAuth")!="":
                 try:
                     logger.info(f"bing接口发起请求:{tag}")
