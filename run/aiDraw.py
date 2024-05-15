@@ -32,23 +32,7 @@ def main(bot,logger):
             logger.info("发起SDai绘画请求，path:" + path + "|prompt:" + tag)
             try:
                 p = await SdDraw(tag, path)
-                if selfsensor == True:
-                    try:
-                        thurs = await fileImgModerate(path, moderateK)
-                        logger.info(f"获取到审核结果： adult- {thurs}")
-                        if int(thurs) > selfthreshold:
-                            logger.warning(f"不安全的图片，自我审核过滤")
-                            await bot.send(event, ["nsfw内容已过滤", Image(
-                                path="data/colorfulAnimeCharacter/" + random.choice(
-                                    os.listdir("data/colorfulAnimeCharacter")))])
-                            return
-                    except Exception as e:
-                        logger.error(e)
-                        logger.error("无法进行自我审核，错误的网络环境或apikey")
-                        await bot.send(event, ["审核策略失效，为确保安全，不显示本图片", Image(
-                            path="data/colorfulAnimeCharacter/" + random.choice(
-                                os.listdir("data/colorfulAnimeCharacter")))])
-                        return
+                
                 #logger.error(str(p))
                 
                 await bot.send(event, [Image(path=p)], True)
