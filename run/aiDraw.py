@@ -75,7 +75,7 @@ def main(bot,logger):
                 #await bot.send(event,"接口2绘画失败.......")
 
     @bot.on(GroupMessage)
-    async def aidrawff3(event: GroupMessage)
+    async def aidrawff3(event: GroupMessage):
         if str(event.message_chain).startswith("画 ") and aiDrawController.get("接口3"):
             tag = str(event.message_chain).replace("画 ", "")
             path = "data/pictures/cache/" + random_str() + ".png"
