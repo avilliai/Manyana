@@ -55,7 +55,7 @@ def main(bot,logger):
                 #logger.error(str(p))
                 image = PIM.open(io.BytesIO(base64.b64decode(p)))
                 image.save(f'{path}')
-                await bot.send(event, [Image(path=p)], True)
+                await bot.send(event, [Image(path=path)], True)
                 #logger.info("success")
             except Exception as e:
                 logger.error(e)
