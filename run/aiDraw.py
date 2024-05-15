@@ -9,6 +9,10 @@ from plugins.RandomStr import random_str
 from plugins.setuModerate import fileImgModerate
 from plugins.aiDrawer import SdDraw ,draw, airedraw, draw1, draw3,tiktokredraw,draw5,draw4
 
+from io import BytesIO
+import io
+import base64
+from PIL import Image as PIM
 
 def main(bot,logger):
     logger.info("ai绘画 启用")
@@ -37,7 +41,7 @@ def main(bot,logger):
                 p = await SdDraw(tag, negative_prompt,path)
                 if selfsensor == True:
                     try:
-                        thurs = await fileImgModerate(path, moderateK)
+                        thurs = await fileImgModerate(path, moderateK,p)
                         logger.info(f"获取到审核结果： adult- {thurs}")
                         if int(thurs) > selfthreshold:
                             logger.warning(f"不安全的图片，自我审核过滤")
@@ -49,6 +53,8 @@ def main(bot,logger):
                         logger.error(e)
                         logger.error("无法进行自我审核，错误的网络环境或apikey")
                 #logger.error(str(p))
+                image = PIM.open(io.BytesIO(base64.b64decode(p)))
+                image.save(f'{path}')
                 await bot.send(event, [Image(path=p)], True)
                 #logger.info("success")
             except Exception as e:
