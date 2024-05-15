@@ -1,0 +1,11 @@
+#单独功能开关
+ai绘画:
+  接口1: true
+  接口2: true
+  接口3: true
+  接口4: true
+  接口5: true
+  ai重绘: false   #目前应该是不可用的
+  ai重绘2: false  #同上
+小功能:
+  发病: true
