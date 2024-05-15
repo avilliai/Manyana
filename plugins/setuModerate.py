@@ -28,7 +28,7 @@ async def fileImgModerate(image_path,moderateKey):
     }
 
     async with httpx.AsyncClient(timeout=40) as client:
-        response = await client.post(url="https://api.moderatecontent.com/moderate/", data=data)
+        r = await client.post(url="https://api.moderatecontent.com/moderate/", data=data)
     return r.json().get('predictions').get('adult')
 
 if __name__ == '__main__':
