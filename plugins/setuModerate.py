@@ -13,7 +13,7 @@ async def setuModerate(img_url,moderateKey):
         #print(r.json().get('predictions').get('adult'))
         return r.json().get('predictions').get('adult')
 async def fileImgModerate(image_path,moderateKey,image_base64=None):
-    if base64data!=None:
+    if image_base64==None:
         #print(image_path)
         with open(image_path, "rb") as image_file:
             image_data = image_file.read()
