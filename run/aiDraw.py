@@ -28,16 +28,26 @@ def main(bot,logger):
     
     @bot.on(GroupMessage)
     async def AiSdDraw(event: GroupMessage):
-        if str(event.message_chain).startswith("画 "):
+        if str(event.message_chain).startswith("画 ") and aiDrawController.get("sd接口"):
             tag = str(event.message_chain).replace("画 ", "")#由于SD的无审查性，请不要输入R18词条，例如：nsfw，否则号没了
             path = "data/pictures/cache/" + random_str() + ".png"
-            logger.info("由于SD的无审查性，请不要输入R18词条，例如：nsfw，否则号没了")
             logger.info("发起SDai绘画请求，path:" + path + "|prompt:" + tag)
             try:
                 p = await SdDraw(tag, path)
-                
+                if selfsensor == True:
+                    try:
+                        thurs = await fileImgModerate(path, moderateK)
+                        logger.info(f"获取到审核结果： adult- {thurs}")
+                        if int(thurs) > selfthreshold:
+                            logger.warning(f"不安全的图片，自我审核过滤")
+                            await bot.send(event, ["nsfw内容已过滤", Image(
+                                path="data/colorfulAnimeCharacter/" + random.choice(
+                                    os.listdir("data/colorfulAnimeCharacter")))])
+                            return
+                    except Exception as e:
+                        logger.error(e)
+                        logger.error("无法进行自我审核，错误的网络环境或apikey")
                 #logger.error(str(p))
-                
                 await bot.send(event, [Image(path=p)], True)
                 #logger.info("success")
             except Exception as e:
@@ -84,9 +94,6 @@ def main(bot,logger):
                     except Exception as e:
                         logger.error(e)
                         logger.error("无法进行自我审核，错误的网络环境或apikey")
-                        await bot.send(event, ["审核策略失效，为确保安全，不显示本图片", Image(
-                            path="data/colorfulAnimeCharacter/" + random.choice(
-                                os.listdir("data/colorfulAnimeCharacter")))])
                         return
                 await bot.send(event,Image(path=p),True)
             except Exception as e:
@@ -117,9 +124,6 @@ def main(bot,logger):
                     except Exception as e:
                         logger.error(e)
                         logger.error("无法进行自我审核，错误的网络环境或apikey")
-                        await bot.send(event, ["审核策略失效，为确保安全，不显示本图片", Image(
-                            path="data/colorfulAnimeCharacter/" + random.choice(
-                                os.listdir("data/colorfulAnimeCharacter")))])
                         return
                 await bot.send(event, Image(path=p), True)
             except Exception as e:
@@ -146,9 +150,6 @@ def main(bot,logger):
                     except Exception as e:
                         logger.error(e)
                         logger.error("无法进行自我审核，错误的网络环境或apikey")
-                        await bot.send(event, ["审核策略失效，为确保安全，不显示本图片", Image(
-                            path="data/colorfulAnimeCharacter/" + random.choice(
-                                os.listdir("data/colorfulAnimeCharacter")))])
                         return
                 await bot.send(event, Image(path=p), True)
             except Exception as e:
