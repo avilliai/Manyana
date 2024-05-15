@@ -11,13 +11,13 @@ from PIL import Image
 
 from plugins.RandomStr import random_str
 
-async def SdDraw(prompt, path="./output.png"):
+async def SdDraw(prompt, path="./output.png",negative_prompt):
     url = "http://166.0.199.118:17858"
     
     payload = {
         "denoising_strength": 0,
         "prompt": prompt,
-        "negative_prompt": "(nsfw:1.5),pussy,nipples,breasts,breast,sex,worst quality,censored,low quality,signature,watermark, username, blurry,",
+        "negative_prompt": negative_prompt,
         "seed": -1,
         "batch_size": 1,
         "n_iter": 1,
