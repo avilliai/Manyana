@@ -8,6 +8,6 @@ ai绘画:
   sd接口: true
   ai重绘: false   #目前应该是不可用的
   ai重绘2: false  #同上
-  negative_prompt: "(nsfw:1.5),pussy,nipples,breasts,breast,sex,worst quality,censored,watermark,username,text,extra digit,bad anatomy, bad proportions, blurry, cloned face, deformed, disfigured, duplicate, extra arms, extra fingers, extra limbs, extra legs, fused fingers, gross proportions, long neck,mutated hands, mutation, mutilated, morbid, poorly drawn hands, poorly drawn face, too many fingers, ugly, ugly, duplicate, morbid, mutilated, out of frame, extra fingers, mutated hands, poorly drawn hands, poorly drawn face, mutation, deformed"
+  negative_prompt: "(nsfw:1.5),pussy,nipples,breasts,breast,sex,worst quality,censored,low quality,signature,watermark, username, blurry,(nsfw:1.5),pussy,nipples,breasts,breast,sex,worst quality,censored,watermark,username,text,extra digit,bad anatomy, bad proportions, blurry, cloned face, deformed, disfigured, duplicate, extra arms, extra fingers, extra limbs, extra legs, fused fingers, gross proportions, long neck,mutated hands, mutation, mutilated, morbid, poorly drawn hands, poorly drawn face, too many fingers, ugly, ugly, duplicate, morbid, mutilated, out of frame, extra fingers, mutated hands, poorly drawn hands, poorly drawn face, mutation, deformed"
 小功能:
   发病: true
