@@ -40,6 +40,7 @@ def main(bot,logger):
             try:
                 p = await SdDraw(tag, negative_prompt,path)
                 if selfsensor == True:
+                    logger.info("进入色情审核流程")
                     try:
                         thurs = await fileImgModerate(path, moderateK,p)
                         logger.info(f"获取到审核结果： adult- {thurs}")
@@ -52,6 +53,8 @@ def main(bot,logger):
                     except Exception as e:
                         logger.error(e)
                         logger.error("无法进行自我审核，错误的网络环境或apikey")
+                        await bot.send("审核策略失效，为保证安全，不发送图片")
+                        return
                 #logger.error(str(p))
                 image = PIM.open(io.BytesIO(base64.b64decode(p)))
                 image.save(f'{path}')
