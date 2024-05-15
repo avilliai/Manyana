@@ -34,7 +34,7 @@ def main(bot,logger):
             path = "data/pictures/cache/" + random_str() + ".png"
             logger.info("发起SDai绘画请求，path:" + path + "|prompt:" + tag)
             try:
-                p = await SdDraw(tag, path,negative_prompt)
+                p = await SdDraw(tag, negative_prompt,path)
                 if selfsensor == True:
                     try:
                         thurs = await fileImgModerate(path, moderateK)
