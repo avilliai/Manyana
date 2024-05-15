@@ -20,11 +20,14 @@ def main(bot,logger):
         result1 = yaml.load(f.read(), Loader=yaml.FullLoader)
     selfsensor=result1.get("moderate").get("selfsensor")
     selfthreshold=result1.get("moderate").get("selfthreshold")
+    with open('config/controller.yaml', 'r', encoding='utf-8') as f:
+        controller = yaml.load(f.read(), Loader=yaml.FullLoader)
+    aiDrawController=controller.get("ai绘画")
     global redraw
     redraw={}
     @bot.on(GroupMessage)
     async def aidrawf1(event: GroupMessage):
-        if str(event.message_chain).startswith("画 "):
+        if str(event.message_chain).startswith("画 ") and aiDrawController.get("接口1"):
             tag=str(event.message_chain).replace("画 ","")
             path = "data/pictures/cache/" + random_str() + ".png"
             logger.info("发起ai绘画请求，path:"+path+"|prompt:"+tag)
@@ -42,7 +45,7 @@ def main(bot,logger):
 
     @bot.on(GroupMessage)
     async def aidrawff2(event: GroupMessage):
-        if str(event.message_chain).startswith("画 "):
+        if str(event.message_chain).startswith("画 ") and aiDrawController.get("接口2"):
             tag=str(event.message_chain).replace("画 ","")
             path = "data/pictures/cache/" + random_str() + ".png"
             try:
@@ -72,8 +75,8 @@ def main(bot,logger):
                 #await bot.send(event,"接口2绘画失败.......")
 
     @bot.on(GroupMessage)
-    async def aidrawff3(event: GroupMessage):
-        if str(event.message_chain).startswith("画 "):
+    async def aidrawff3(event: GroupMessage)  
+        if str(event.message_chain).startswith("画 ") and aiDrawController.get("接口3"):
             tag = str(event.message_chain).replace("画 ", "")
             path = "data/pictures/cache/" + random_str() + ".png"
             if len(tag)>100:
@@ -104,7 +107,7 @@ def main(bot,logger):
                 logger.error("接口3绘画失败.......")
     @bot.on(GroupMessage)
     async def aidrawff4(event: GroupMessage):
-        if str(event.message_chain).startswith("画 "):
+        if str(event.message_chain).startswith("画 ") and aiDrawController.get("接口5"):
             tag = str(event.message_chain).replace("画 ", "")
             path = "data/pictures/cache/" + random_str() + ".png"
             try:
@@ -133,7 +136,7 @@ def main(bot,logger):
                 logger.error("接口5绘画失败.......")
     @bot.on(GroupMessage)
     async def aidrawff5(event: GroupMessage):
-        if str(event.message_chain).startswith("画 "):
+        if str(event.message_chain).startswith("画 ") and aiDrawController.get("接口4"):
             tag = str(event.message_chain).replace("画 ", "")
             path = "data/pictures/cache/" + random_str() + ".png"
             try:
@@ -163,7 +166,7 @@ def main(bot,logger):
     @bot.on(GroupMessage)
     async def rededd(event: GroupMessage):
         global redraw
-        if str(event.message_chain).startswith("以图生图 "):
+        if str(event.message_chain).startswith("以图生图 ") and aiDrawController.get("ai重绘"):
             await bot.send(event,"请发送图片，bot随后将开始绘制")
             redraw[event.sender.id]=str(event.message_chain).replace("以图生图 ","")
     @bot.on(GroupMessage)
