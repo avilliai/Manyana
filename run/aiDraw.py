@@ -6,8 +6,8 @@ from mirai import Image
 from mirai import GroupMessage
 
 from plugins.RandomStr import random_str
-from plugins.aiDrawer import draw, airedraw, draw1, draw3,tiktokredraw,draw5,draw4
 from plugins.setuModerate import fileImgModerate
+from plugins.aiDrawer import SdDraw ,draw, airedraw, draw1, draw3,tiktokredraw,draw5,draw4
 
 
 def main(bot,logger):
@@ -25,6 +25,25 @@ def main(bot,logger):
     aiDrawController=controller.get("ai绘画")
     global redraw
     redraw={}
+    
+    @bot.on(GroupMessage)
+    async def AiSdDraw(event: GroupMessage):
+        if str(event.message_chain).startswith("画 "):
+            tag = str(event.message_chain).replace("画 ", "")#由于SD的无审查性，请不要输入R18词条，例如：nsfw，否则号没了
+            path = "data/pictures/cache/" + random_str() + ".png"
+            logger.info("由于SD的无审查性，请不要输入R18词条，例如：nsfw，否则号没了")
+            logger.info("发起SDai绘画请求，path:" + path + "|prompt:" + tag)
+            try:
+                p = await SdDraw(tag, path)
+                
+                #logger.error(str(p))
+                
+                await bot.send(event, [Image(path=p)], True)
+                #logger.info("success")
+            except Exception as e:
+                logger.error(e)
+                logger.error("绘画失败，可能是绘画接口寄了，请检查plugins\aiDrawer.py中url有效")
+    
     @bot.on(GroupMessage)
     async def aidrawf1(event: GroupMessage):
         if str(event.message_chain).startswith("画 ") and aiDrawController.get("接口1"):
@@ -36,6 +55,7 @@ def main(bot,logger):
                 try:
                     logger.info(f"接口1绘画中......第{i}次请求....")
                     p=await draw1(tag,path)
+                    logger.error(str(p))
                     await bot.send(event,[Image(path=p[0]),Image(path=p[1]),Image(path=p[2]),Image(path=p[3])],True)
                 except Exception as e:
                     logger.error(e)
@@ -193,4 +213,3 @@ def main(bot,logger):
                 logger.error("ai绘画出错")
                 await bot.send(event,"接口2绘画出错")
             redraw.pop(event.sender.id)
-            

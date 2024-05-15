@@ -3,13 +3,41 @@ import asyncio
 from io import BytesIO
 
 import httpx
+import io
 
+import base64
 import requests
 from PIL import Image
 
 from plugins.RandomStr import random_str
 
+async def SdDraw(prompt, path="./output.png"):
+    url = "http://166.0.199.118:17858"
+    
+    payload = {
+        "denoising_strength": 0,
+        "prompt": prompt,
+        "negative_prompt": "(nsfw:1.5),pussy,nipples,breasts,breast,sex,worst quality,censored,low quality,signature,watermark, username, blurry,",
+        "seed": -1,
+        "batch_size": 1,
+        "n_iter": 1,
+        "steps": 15,
+        "cfg_scale": 7,
+        "width": 768,
+        "height": 512,
+        "restore_faces": False,
+        "tiling": False,
+        "sampler_index": "Euler a"
+    }#不懂SD调参就不要改参数了，否则可能会导致服务器内存溢出，导致绘画失败。其中negative_prompt（负面tag）中的(nsfw:1.5),pussy,nipples,breasts,breast,sex防止出现r18图片
 
+    response = requests.post(url=f'{url}/sdapi/v1/txt2img', json=payload)
+    r = response.json()
+
+    for i, img_data in enumerate(r['images']):
+        image = Image.open(io.BytesIO(base64.b64decode(img_data.split(",", 1)[0])))
+        image.save(f'{path}')
+        
+    return path
 async def draw(prompt,path= "./test.png"):
     url=f"https://api.lolimi.cn/API/AI/sd.php?msg={prompt}&mode=动漫"
 
