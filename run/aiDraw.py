@@ -35,27 +35,12 @@ def main(bot,logger):
     @bot.on(GroupMessage)
     async def AiSdDraw(event: GroupMessage):
         if str(event.message_chain).startswith("画 ") and aiDrawController.get("sd接口"):
-            tag = str(event.message_chain).replace("画 ", "")#由于SD的无审查性，请不要输入R18词条，例如：nsfw，否则号没了
+            tag = str(event.message_chain).replace("画 ", "")
             path = "data/pictures/cache/" + random_str() + ".png"
             logger.info("发起SDai绘画请求，path:" + path + "|prompt:" + tag)
             try:
+                #没啥好审的，controller直接自个写了。
                 p = await SdDraw(positive_prompt+tag, negative_prompt,path)
-                if selfsensor == True:
-                    logger.info("进入色情审核流程")
-                    try:
-                        thurs = await fileImgModerate(path, moderateK,p)
-                        logger.info(f"获取到审核结果： adult- {thurs}")
-                        if int(thurs) > selfthreshold:
-                            logger.warning(f"不安全的图片，自我审核过滤")
-                            await bot.send(event, ["nsfw内容已过滤", Image(
-                                path="data/colorfulAnimeCharacter/" + random.choice(
-                                    os.listdir("data/colorfulAnimeCharacter")))])
-                            return
-                    except Exception as e:
-                        logger.error(e)
-                        logger.error("无法进行自我审核，错误的网络环境或apikey")
-                        await bot.send("审核策略失效，为保证安全，不发送图片")
-                        return
                 #logger.error(str(p))
                 image = PIM.open(io.BytesIO(base64.b64decode(p)))
                 image.save(f'{path}')
