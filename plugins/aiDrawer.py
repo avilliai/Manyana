@@ -11,7 +11,7 @@ from PIL import Image
 
 from plugins.RandomStr import random_str
 
-async def SdDraw(prompt, path="./output.png",negative_prompt):
+async def SdDraw(prompt, negative_prompt,path="./output.png"):
     url = "http://166.0.199.118:17858"
     
     payload = {
