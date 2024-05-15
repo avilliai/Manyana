@@ -27,8 +27,8 @@ def main(bot,logger):
     with open('config/controller.yaml', 'r', encoding='utf-8') as f:
         controller = yaml.load(f.read(), Loader=yaml.FullLoader)
     aiDrawController=controller.get("ai绘画")
-    negative_prompt=controller.get("negative_prompt")
-    positive_prompt=controller.get("positive_prompt")
+    negative_prompt=aiDrawController.get("negative_prompt")
+    positive_prompt=aiDrawController.get("positive_prompt")
     global redraw
     redraw={}
     
