@@ -28,6 +28,7 @@ def main(bot,logger):
         controller = yaml.load(f.read(), Loader=yaml.FullLoader)
     aiDrawController=controller.get("ai绘画")
     negative_prompt=controller.get("negative_prompt")
+    positive_prompt=controller.get("positive_prompt")
     global redraw
     redraw={}
     
@@ -38,7 +39,7 @@ def main(bot,logger):
             path = "data/pictures/cache/" + random_str() + ".png"
             logger.info("发起SDai绘画请求，path:" + path + "|prompt:" + tag)
             try:
-                p = await SdDraw(tag, negative_prompt,path)
+                p = await SdDraw(positive_prompt+tag, negative_prompt,path)
                 if selfsensor == True:
                     logger.info("进入色情审核流程")
                     try:

@@ -8,6 +8,7 @@ ai绘画:
   sd接口: true
   ai重绘: false   #目前应该是不可用的
   ai重绘2: false  #同上
+  positive_prompt: "(((best quality))),(((ultra detailed))),(((masterpiece))),illustration,Extreme detail expression,Ultra High Definition,Maximum Detail Display,Hyperdetail,Clear details,Amazing quality,Super details,Unbelievable,HDR,16K,details,The most authentic,Glossy solid color"
   negative_prompt: "nsfw, paintings, cartoon, anime, sketches, worst quality, low quality, normal quality, lowres, watermark, monochrome, grayscale, ugly, blurry, Tan skin, dark skin, black skin, skin spots, skin blemishes, age spot, glans, disabled, distorted, bad anatomy, morbid, malformation, amputation, bad proportions, twins, missing body, fused body, extra head, poorly drawn face, bad eyes, deformed eye, unclear eyes, cross-eyed, long neck, malformed limbs, extra limbs, extra arms, missing arms, bad tongue, strange fingers, mutated hands, missing hands, poorly drawn hands, extra hands, fused hands, connected hand, bad hands, wrong fingers, missing fingers, extra fingers, 4 fingers, 3 fingers, deformed hands, extra legs, bad legs, many legs, more than two legs, bad feet, wrong feet, extra feets,"
 小功能:
   发病: true
