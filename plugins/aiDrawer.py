@@ -32,10 +32,8 @@ async def SdDraw(prompt, negative_prompt,path="./output.png"):
     async with httpx.AsyncClient(timeout=40) as client:
         response = await client.post(url=f'{url}/sdapi/v1/txt2img', json=payload)
     r = response.json()
-
-    for i, img_data in enumerate(r['images']):
-        image = Image.open(io.BytesIO(base64.b64decode(img_data.split(",", 1)[0])))
-        image.save(f'{path}')
+    image = Image.open(io.BytesIO(base64.b64decode(r['images'])))
+    image.save(f'{path}')
         
     return path
 async def draw(prompt,path= "./test.png"):
