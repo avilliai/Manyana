@@ -23,6 +23,7 @@ def main(bot,logger):
     with open('config/controller.yaml', 'r', encoding='utf-8') as f:
         controller = yaml.load(f.read(), Loader=yaml.FullLoader)
     aiDrawController=controller.get("ai绘画")
+    negative_prompt=controller.get("negative_prompt")
     global redraw
     redraw={}
     
@@ -33,7 +34,7 @@ def main(bot,logger):
             path = "data/pictures/cache/" + random_str() + ".png"
             logger.info("发起SDai绘画请求，path:" + path + "|prompt:" + tag)
             try:
-                p = await SdDraw(tag, path)
+                p = await SdDraw(tag, path,negative_prompt)
                 if selfsensor == True:
                     try:
                         thurs = await fileImgModerate(path, moderateK)
