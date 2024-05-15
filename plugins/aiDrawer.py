@@ -29,7 +29,7 @@ async def SdDraw(prompt, path="./output.png"):
         "tiling": False,
         "sampler_index": "Euler a"
     }#不懂SD调参就不要改参数了，否则可能会导致服务器内存溢出，导致绘画失败。其中negative_prompt（负面tag）中的(nsfw:1.5),pussy,nipples,breasts,breast,sex防止出现r18图片
-    async with httpx.AsyncClient(proxies=proxies) as client:
+    async with httpx.AsyncClient(timeout=40) as client:
         response = await client.post(url=f'{url}/sdapi/v1/txt2img', json=payload)
     r = response.json()
 
