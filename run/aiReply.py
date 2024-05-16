@@ -817,7 +817,7 @@ def main(bot, master, logger):
             await modelReply(event, replyModel)
 
     async def tstt(r, event):
-        if len(r) < maxTextLen and random.randint(0, 100) < voiceRate and event.type != 'FriendMessage':
+        if len(r) < maxTextLen and random.randint(0, 100) < voiceRate:
             data1 = {}
             data1['speaker'] = speaker
 
@@ -1023,7 +1023,7 @@ def main(bot, master, logger):
         # print(result)
         st11 = st1.replace(setName, "指挥")
         logger.info("chatGLM:" + st1)
-        if len(st1) < maxTextLen and random.randint(0, 100) < voiceRate and event.type != 'FriendMessage':
+        if len(st1) < maxTextLen and random.randint(0, 100) < voiceRate:
             data1 = {}
             data1['speaker'] = speaker
 
