@@ -263,7 +263,8 @@ def main(bot, master, logger):
                     # 写入文件
                     with open('data/GeminiData.yaml', 'w', encoding="utf-8") as file:
                         yaml.dump(GeminiData, file, allow_unicode=True)
-                    await bot.send(event, r)
+                    await tstt(r, event)
+                    #await bot.send(event, r)
                     # asyncio.run_coroutine_threadsafe(asyncgemini(geminiapikey,prompt, event,text), newLoop)
                     # st1 = await chatGLM(selfApiKey, meta1, prompt)
                 except Exception as e:
@@ -374,7 +375,7 @@ def main(bot, master, logger):
                 # 写入文件
                 with open('data/GeminiData.yaml', 'w', encoding="utf-8") as file:
                     yaml.dump(GeminiData, file, allow_unicode=True)
-                await bot.send(event, r)
+                await tstt(r, event)
                 # asyncio.run_coroutine_threadsafe(asyncgemini(geminiapikey,prompt, event,text), newLoop)
                 # st1 = await chatGLM(selfApiKey, meta1, prompt)
             except Exception as e:
