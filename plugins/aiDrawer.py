@@ -23,8 +23,8 @@ async def SdDraw(prompt, negative_prompt,path="./output.png"):
         "n_iter": 1,
         "steps": 15,
         "cfg_scale": 7,
-        "width": 1024,
-        "height": 1024,
+        "width": 970,
+        "height": 970,
         "restore_faces": False,
         "tiling": False,
         "sampler_index": "Euler a"

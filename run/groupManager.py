@@ -704,6 +704,7 @@ def main(bot,config,moderateKey,logger):
                         await bot.send_group_message(gid,"无授权小群，自动退出。")
                         logger.warning("已清退"+str(gid))
                         await bot.quit(gid)
+                        totalquit += 1
                 except Exception as e:
                     logger.error(e)
                     continue
