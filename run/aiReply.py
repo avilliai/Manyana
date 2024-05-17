@@ -1138,14 +1138,21 @@ def main(bot, master, logger):
 
     async def modelReply(event, modelHere):
         global trustUser, chatGLMapikeys, chatGLMData, chatGLMCharacters, chatGLMsingelUserKey, userdict, GeminiData, coziData
-        if event.type != 'FriendMessage':
-            bot_in = str("你是" + botName + ",我是" + event.sender.member_name + "," + allcharacters.get(
-                modelHere)).replace("【bot】",
-                                    botName).replace("【用户】", event.sender.member_name)
-        else:
-            bot_in = str("你是" + botName + ",我是" + event.sender.nickname + "," + allcharacters.get(
-                modelHere)).replace("【bot】",
-                                    botName).replace("【用户】", event.sender.nickname)
+        try:
+            if event.type != 'FriendMessage':
+                bot_in = str("你是" + botName + ",我是" + event.sender.member_name + "," + allcharacters.get(
+                    modelHere)).replace("【bot】",
+                                        botName).replace("【用户】", event.sender.member_name)
+            else:
+                bot_in = str("你是" + botName + ",我是" + event.sender.nickname + "," + allcharacters.get(
+                    modelHere)).replace("【bot】",
+                                        botName).replace("【用户】", event.sender.nickname)
+        except Exception as e:
+            logger.error(e)
+            logger.info(f"无法获取到该用户昵称 id：{event.sender.id}")
+            bot_in = str("你是" + botName  + allcharacters.get(
+                    modelHere)).replace("【bot】",
+                                        botName).replace("【用户】", "我")
         try:
             text = str(event.message_chain).replace("@" + str(bot.qq) + " ", '')
             if text == "" or text == " ":
