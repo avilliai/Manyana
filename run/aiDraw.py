@@ -40,7 +40,7 @@ def main(bot,logger):
             logger.info("发起SDai绘画请求，path:" + path + "|prompt:" + tag)
             try:
                 #没啥好审的，controller直接自个写了。
-                p = await SdDraw(positive_prompt+tag, negative_prompt,path)
+                p = await SdDraw(tag+positive_prompt, negative_prompt,path)
                 #logger.error(str(p))
                 image = PIM.open(io.BytesIO(base64.b64decode(p)))
                 image.save(f'{path}')
