@@ -14,7 +14,7 @@ openai-keys:                     #openai官方的apikey，或免费从https://gi
   - sk-Mxxxxxxxxxxx
 gpt3.5-dev: false                #如果是从https://github.com/chatanywhere/GPT_API_free?tab=readme-ov-file申请openai-apikey，请打开此开关，这样就无需代理即可使用
 cozi: https://xxxxxx.zeabur.app/v1/chat/completions  # https://github.com/avilliai/Manyana/issues/4
-proxy: ''                        #代理 http://127.0.0.1:端口 如http://127.0.0.1:10809 自己设置对应的端口，没有就不填，v2ray是10809，clash一般7890，ssr一般1080
+proxy: ''                        #代理 http://127.0.0.1:端口 如http://127.0.0.1:10809 自己设置对应的端口，没有就不填，v2ray一般是10809，clash一般7890，ssr一般1080
 sock5-proxy: ""                  #sock5代理，如使用bing-imagecreator必须配置，取决于你自己代理的端口。
 bing-image-creator:              #bing的ai绘画，参考https://github.com/avilliai/Manyana/issues/8
   _U: ""
