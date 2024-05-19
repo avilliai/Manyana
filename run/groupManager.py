@@ -18,8 +18,7 @@ from mirai.models.events import BotInvitedJoinGroupRequestEvent, NewFriendReques
     MemberLeaveEventQuit
 
 from plugins.setuModerate import setuModerate
-from plugins.vitsGenerate import voiceGenerate
-from plugins.wReply.superDict import importDict
+
 
 
 def main(bot,config,moderateKey,logger):
@@ -47,14 +46,15 @@ def main(bot,config,moderateKey,logger):
     userdict = data
     with open('config/settings.yaml', 'r', encoding='utf-8') as f:
         result1 = yaml.load(f.read(), Loader=yaml.FullLoader)
-    allowFriendstimes=result1.get("allowFriendstimes")
-    GroupSensor = result1.get("GroupSensor")
-    autoallowFriend=result1.get("autoallowFriend")
-    trustDays = result1.get("trustDays")
-    fuckinggroup=result1.get("fuckinggroup")
-    fuckingnumber=result1.get("fuckingnumber")  # 低于13人退
+    friendsAndGroups=result1.get("加群和好友")
+    allowFriendstimes=friendsAndGroups.get("allowFriendstimes")
+    GroupSensor = friendsAndGroups.get("GroupSensor")
+    autoallowFriend=friendsAndGroups.get("autoallowFriend")
+    trustDays = friendsAndGroups.get("trustDays")
+    fuckinggroup=friendsAndGroups.get("fuckinggroup")
+    fuckingnumber=friendsAndGroups.get("fuckingnumber")  # 低于13人退
     global qiandaoT
-    qiandaoT=result1.get("signTimes")
+    qiandaoT=friendsAndGroups.get("signTimes")
 
     helpUser=result1.get("chatGLM").get("helpUser")
     privateGlmReply = result1.get("chatGLM").get("privateGlmReply")

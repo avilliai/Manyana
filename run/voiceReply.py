@@ -30,8 +30,8 @@ def main(bot,master,logger):
         result = yaml.load(f.read(), Loader=yaml.FullLoader)
     with open('config/settings.yaml', 'r', encoding='utf-8') as f:
         result0 = yaml.load(f.read(), Loader=yaml.FullLoader)
-    voicegg=result0.get("voicegenerate")
-    outSpeaker=result0.get("chatGLM").get("speaker")
+    voicegg=result0.get("语音功能设置").get("voicegenerate")
+    outSpeaker=result0.get("语音功能设置").get("speaker")
 
 
     with open('config/autoSettings.yaml', 'r', encoding='utf-8') as f:

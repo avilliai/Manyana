@@ -23,8 +23,8 @@ async def SdDraw(prompt, negative_prompt,path="./output.png"):
         "n_iter": 1,
         "steps": 15,
         "cfg_scale": 7,
-        "width": 970,
-        "height": 970,
+        "width": 840,
+        "height": 840,
         "restore_faces": False,
         "tiling": False,
         "sampler_index": "Euler a"
@@ -38,7 +38,7 @@ async def SdDraw(prompt, negative_prompt,path="./output.png"):
     image.save(f'{path}')
         
     return path
-async def draw(prompt,path= "./test.png"):
+async def draw2(prompt,path= "./test.png"):
     url=f"https://api.lolimi.cn/API/AI/sd.php?msg={prompt}&mode=动漫"
 
     async with httpx.AsyncClient(timeout=40) as client:
@@ -102,6 +102,14 @@ async def draw5(prompt,path="./test.png"):
     with open(path, "wb") as f:
         f.write(r1.content)
     return path
+async def draw6(prompt,path="./test.png"):
+    url=f"https://api.vps02.top/API/ai_draw.php?tag={prompt}&model=二次元-漫画暗黑风"
+    async with httpx.AsyncClient(timeout=40) as client:
+        r1 = await client.get(url)
+        r1=await client.get(r1.json().get("url"))
+    with open(path, "wb") as f:
+        f.write(r1.content)
+    return path
 # 运行 Flask 应用
 if __name__ == "__main__":
-    asyncio.run(draw1("正在吃早饭的二次元少女"))
+    asyncio.run(draw6("a 2D girlish, with only 1 character in the picture.Wearing a choker.White and light blue long hair, exquisite and cute hairstyle，Tips of hair are light blue.Cute face，Loving gaze，Light purple eyes，must leave a small amount of blank space between the top of the charater's head and the top of the picture.Wearing a exquisite white dress.Cute playful action.a character portrait by Muqi, pixiv contest winner, rococo,booru, official art，drawing the character as avatar。"))

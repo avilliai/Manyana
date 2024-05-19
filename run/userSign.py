@@ -63,9 +63,10 @@ def main(bot,api_KEY,master,config,logger):
     newUser={}
     with open('config/settings.yaml', 'r', encoding='utf-8') as f:
         result1 = yaml.load(f.read(), Loader=yaml.FullLoader)
-    masterPermissionDays=result1.get("masterPermissionDays")
-    userSelfPermissonDays=result1.get("userSelfPermissonDays")
-    trustDays = result1.get("trustDays")
+    friendsAndGroups = result1.get("加群和好友")
+    masterPermissionDays=friendsAndGroups.get("masterPermissionDays")
+    userSelfPermissonDays=friendsAndGroups.get("userSelfPermissonDays")
+    trustDays = friendsAndGroups.get("trustDays")
     with open('data/signs.yaml', 'r', encoding='utf-8') as f:
         signstoday = yaml.load(f.read(), Loader=yaml.FullLoader)
     global haveSign,tod

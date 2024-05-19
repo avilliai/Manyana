@@ -19,7 +19,6 @@ async def newCloudMusicDown(musicname,n):
     async with httpx.AsyncClient(timeout=None, headers=get_headers()) as client:
         r = await client.get(url)
         r=r.json().get("data").get("src")
-        print(r)
         waf = requests.get(r,timeout=20).content
 
         with open(path, "wb") as f:

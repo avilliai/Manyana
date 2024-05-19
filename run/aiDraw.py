@@ -7,7 +7,7 @@ from mirai import GroupMessage
 
 from plugins.RandomStr import random_str
 from plugins.setuModerate import fileImgModerate
-from plugins.aiDrawer import SdDraw ,draw, airedraw, draw1, draw3,tiktokredraw,draw5,draw4
+from plugins.aiDrawer import SdDraw, draw2, airedraw, draw1, draw3, tiktokredraw, draw5, draw4, draw6
 
 from io import BytesIO
 import io
@@ -76,7 +76,7 @@ def main(bot,logger):
             path = "data/pictures/cache/" + random_str() + ".png"
             try:
                 logger.info("接口2绘画中......")
-                p=await draw(tag,path)
+                p=await draw2(tag,path)
                 if selfsensor == True:
                     try:
                         thurs = await fileImgModerate(path, moderateK)
@@ -133,6 +133,32 @@ def main(bot,logger):
             try:
                 logger.info("接口5绘画中......")
                 p = await draw5(tag, path)
+                if selfsensor == True:
+                    try:
+                        thurs = await fileImgModerate(path, moderateK)
+                        logger.info(f"获取到审核结果： adult- {thurs}")
+                        if int(thurs) > selfthreshold:
+                            logger.warning(f"不安全的图片，自我审核过滤")
+                            await bot.send(event, ["nsfw内容已过滤", Image(
+                                path="data/colorfulAnimeCharacter/" + random.choice(
+                                    os.listdir("data/colorfulAnimeCharacter")))])
+                            return
+                    except Exception as e:
+                        logger.error(e)
+                        logger.error("无法进行自我审核，错误的网络环境或apikey")
+                        return
+                await bot.send(event, Image(path=p), True)
+            except Exception as e:
+                logger.error(e)
+                logger.error("接口5绘画失败.......")
+    @bot.on(GroupMessage)
+    async def aidrawff4(event: GroupMessage):
+        if str(event.message_chain).startswith("画 ") and aiDrawController.get("接口6"):
+            tag = str(event.message_chain).replace("画 ", "")
+            path = "data/pictures/cache/" + random_str() + ".png"
+            try:
+                logger.info("接口6绘画中......")
+                p = await draw6(tag, path)
                 if selfsensor == True:
                     try:
                         thurs = await fileImgModerate(path, moderateK)

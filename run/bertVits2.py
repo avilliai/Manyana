@@ -25,11 +25,10 @@ def main(bot,logger,berturl,proxy):
     logger.info("bert_vits语音合成用户端启动....")
     with open('config/settings.yaml', 'r', encoding='utf-8') as f:
         result = yaml.load(f.read(), Loader=yaml.FullLoader)
-    spe=result.get("bert_speakers")
+    spe=result.get("语音功能设置").get("bert_speakers")
     modelScope=["BT","塔菲","阿梓","otto","丁真","星瞳","东雪莲","嘉然","孙笑川","亚托克斯","文静","鹿鸣","奶绿","七海","恬豆","科比"]
     @bot.on(GroupMessage)
     async def taffySayf(event:GroupMessage):
-
         if "说" in str(event.message_chain) and str(event.message_chain).split("说")[0] in spe:
             data={}
 

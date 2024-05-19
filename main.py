@@ -51,7 +51,7 @@ if __name__ == '__main__':
     with open('config/settings.yaml', 'r', encoding='utf-8') as f:
         resulta = yaml.load(f.read(), Loader=yaml.FullLoader)
     pandora = resulta.get("chatGLM").get("model")
-    voicegg = resulta.get("voicegenerate")
+    voicegg = resulta.get("语音功能设置").get("voicegenerate")
     logger.info("读取到apiKey列表")
 
 
@@ -222,13 +222,6 @@ if __name__ == '__main__':
         logger.error("取消github更新")'''
 
     logger.info("当前语音合成模式："+voicegg)
-    if pandora=="pandora":
-        try:
-            subprocess.Popen(["pandora", "-t", "config/token.txt","-s", "127.0.0.1:23459", "-p", proxy])
-        except:
-            pass
-    else:
-        pass
     def startVer():
         file_object = open("data/fonts/mylog.log")
         try:
@@ -242,11 +235,10 @@ if __name__ == '__main__':
 
     #current_dir = os.path.dirname(os.path.abspath(__file__))
     voiceReply.main(bot, master,logger)  # 语音生成
-    if 1:
-        aiReply.main(bot, master, logger)  # poe-api
-        imgSearch.main(bot, result.get("sauceno-api"), result.get("proxy"), logger)
-    else:
-        logger.warning("未设置代理，禁用poe-api与搜图")
+
+    aiReply.main(bot, master, logger)  # poe-api
+    imgSearch.main(bot, result.get("sauceno-api"), result.get("proxy"), logger)
+
     nudgeReply.main(bot, master,  logger,berturl,proxy)  # 戳一戳
     extraParts.main(bot,  logger)  # 额外小功能
     wReply.main(bot, config, sizhiKey,  logger)

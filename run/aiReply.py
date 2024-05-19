@@ -89,9 +89,10 @@ def main(bot, master, logger):
     with open('config/settings.yaml', 'r', encoding='utf-8') as f:
         result = yaml.load(f.read(), Loader=yaml.FullLoader)
     chineseVoiceRate = result.get("wReply").get("chineseVoiceRate")
-    voicegg = result.get("voicegenerate")
-    trustDays = result.get("trustDays")
-    RateIfUnavailable = result.get("RateIfUnavailable")
+    voicegg = result.get("语音功能设置").get("voicegenerate")
+    friendsAndGroups = result.get("加群和好友")
+    trustDays = friendsAndGroups.get("trustDays")
+    RateIfUnavailable = result.get("语音功能设置").get("RateIfUnavailable")
     glmReply = result.get("chatGLM").get("glmReply")
     privateGlmReply = result.get("chatGLM").get("privateGlmReply")
     replyModel = result.get("chatGLM").get("model")
@@ -104,7 +105,7 @@ def main(bot, master, logger):
     turnMessage = result.get("wReply").get("turnMessage")
     maxTextLen = result.get("chatGLM").get("maxLen")
     voiceRate = result.get("chatGLM").get("voiceRate")
-    speaker = result.get("chatGLM").get("speaker")
+    speaker = result.get("语音功能设置").get("speaker")
     withText = result.get("chatGLM").get("withText")
 
     with open('config.json', 'r', encoding='utf-8') as f:

@@ -1,30 +1,32 @@
+加群和好友:
+  signTimes: 3              #邀请加群需要签到天数
+  trustDays: 28             #成为信任用户需要的签到天数
+  allowFriendstimes: 1      #添加好友需要的签到天数
+  masterPermissionDays: 99  #master使用授权#QQ 时为用户增加的签到天数
+  userSelfPermissonDays: 15 #用户自己在用户群中授权，可以获取的签到天数
+  autoallowFriend: False    #是否自动允许好友申请
+  GroupSensor: False        #开启后，将拒绝加入无授权群
+  #在特定情况下，bot会被强制邀请造成上面的设置失效，此设置项用于处理这种情况
+  fuckinggroup: false       #开启后将检测群人数，非授权群直接退出
+  fuckingnumber: 13         #低于13人退群
+语音功能设置:
+  #建议使用modelscopeTTS或outVits，其他模式需要额外部署。
+  voicegenerate: modelscopeTTS  #语音合成模式 so-vits/bert_vits2/vits/modelscopeTTS/outVits/edgetts(edgetts可用speaker请参考config/edgetts.txt)
+  RateIfUnavailable: 30         #当设定的语音合成不可用时，默认使用vits合成的几率,中文几率可在最下方调整
+  #当前modelscopeTTS可用角色["BT","塔菲","阿梓","otto","丁真","星瞳","东雪莲","嘉然","孙笑川","亚托克斯","文静","鹿鸣","奶绿","七海","恬豆","科比"]，该模式下任选其一填入即可
+  speaker: "东雪莲"         #语音合成默认音源，根据你的合成模式设定,vits则无需配置,outVits(个人推荐填 瑶瑶)看https://api.lolimi.cn/?action=doc&id=181
 
-signTimes: 3              #邀请加群需要签到天数
-trustDays: 28             #成为信任用户需要的签到天数
-allowFriendstimes: 1      #添加好友需要的签到天数
-masterPermissionDays: 99  #master使用授权#QQ 时为用户增加的签到天数
-userSelfPermissonDays: 15 #用户自己在用户群中授权，可以获取的签到天数
-autoallowFriend: False    #是否自动允许好友申请
-GroupSensor: False        #开启后，将拒绝加入无授权群
-#在特定情况下，bot会被强制邀请造成上面的设置失效，此设置项用于处理这种情况
-fuckinggroup: false       #开启后将检测群人数，非授权群直接退出
-fuckingnumber: 13         #低于13人退群
+  #下面的两个配置项，除非你自己额外搭了对应的服务，不然就别动。
+  bert_speakers: #自建bert_vits2语音合成配置，不知道是啥就别动
+    - rriri  #如果搭建了，根据bert_vits_sever/characters.yaml填写所有可用的speakers，没自己搭bert_vits2就别动
+  so_vits_speakers: #自建so-vits语音合成配置，不知道是啥就别动
+    - riri   #没搭就别动。
 
 allowPic: True            #是否启用发图功能
 r18Pic: True              #涩图r18模式
 cardPic: False            #是否以卡片形式发送图片
-
 lockLuck: false           #是否锁定运势等功能的结果
 musicToVoice: true        #是否以语音方式点歌
-
-#建议使用modelscopeTTS或outVits，其他模式需要额外部署。
-voicegenerate: modelscopeTTS  #语音合成模式 so-vits/bert_vits2/vits/modelscopeTTS/outVits/edgetts(edgetts可用speaker请参考config/edgetts.txt)
-RateIfUnavailable: 30         #当设定的语音合成不可用时，默认使用vits合成的几率,中文几率可在最下方调整
-#下面的两个配置项，除非你自己额外搭了对应的服务，不然就别动。
-bert_speakers:  #自建bert_vits2语音合成配置，不知道是啥就别动
-  - rriri  #如果搭建了，根据bert_vits_sever/characters.yaml填写所有可用的speakers，没自己搭bert_vits2就别动
-so_vits_speakers: #自建so-vits语音合成配置，不知道是啥就别动
-  - riri   #没搭就别动。
 
 moderate:
   selfsensor: false  #开启自我审核
@@ -42,8 +44,6 @@ chatGLM:       #对话模型通用设置
   maxLen: 100              #语音合成最大长度限制，超出则返回文本。
   voiceRate: 70            #语音回复几率
   voiceLangType: "<zh>"    #语音合成语言类型，可选： <zh> <jp> <en>   目前仅在modelscopeTTS模式下生效
-  #当前modelscopeTTS可用角色["BT","塔菲","阿梓","otto","丁真","星瞳","东雪莲","嘉然","孙笑川","亚托克斯","文静","鹿鸣","奶绿","七海","恬豆","科比"]，该模式下任选其一填入即可
-  speaker: "东雪莲"         #语音合成默认音源，根据你的合成模式设定,vits则无需配置,outVits(个人推荐填 瑶瑶)看https://api.lolimi.cn/?action=doc&id=181
   withText: true           #发送语音是否附带原始文本
   #默认都是characterglm用的，Cozi和Gemini属于特殊值，bot会自动处理不用管这两个，你该写自己的设定就写
   bot_info:

@@ -27,7 +27,7 @@ def main(bot,logger):
     with open('config/settings.yaml', 'r', encoding='utf-8') as f:
         result = yaml.load(f.read(), Loader=yaml.FullLoader)
     speaker = result.get("chatGLM").get("speaker")
-    speakers=result.get("so_vits_speakers")
+    speakers=result.get("语音功能设置").get("so_vits_speakers")
     @bot.on(GroupMessage)
     async def sovitsHelper(event: GroupMessage):
         if str(event.message_chain).startswith("/sovits"):
