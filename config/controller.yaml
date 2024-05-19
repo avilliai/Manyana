@@ -2,10 +2,10 @@
 ai绘画:
   接口1: false    #大概是跑路了
   接口2: false    #日常寄
-  接口3: true
+  接口3: true     #差不多
   接口4: true
   接口5: true
-  接口6: true    #朦胧(我描述不太清，但还行，只支持英文prompt)
+  接口6: true    #朦胧(还行，只支持英文prompt)
   sd接口: true   #anything v3
   ai重绘: false  #目前应该是不可用的
   ai重绘2: false #同上

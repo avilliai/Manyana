@@ -17,10 +17,10 @@
   speaker: "东雪莲"         #语音合成默认音源，根据你的合成模式设定,vits则无需配置,outVits(个人推荐填 瑶瑶)看https://api.lolimi.cn/?action=doc&id=181
 
   #下面的两个配置项，除非你自己额外搭了对应的服务，不然就别动。
-  bert_speakers: #自建bert_vits2语音合成配置，不知道是啥就别动
-    - rriri  #如果搭建了，根据bert_vits_sever/characters.yaml填写所有可用的speakers，没自己搭bert_vits2就别动
+  bert_speakers:    #自建bert_vits2语音合成配置，不知道是啥就别动
+    - rriri         #如果搭建了，根据bert_vits_sever/characters.yaml填写所有可用的speakers，没自己搭bert_vits2就别动
   so_vits_speakers: #自建so-vits语音合成配置，不知道是啥就别动
-    - riri   #没搭就别动。
+    - riri          #没搭就别动。
 
 allowPic: True            #是否启用发图功能
 r18Pic: True              #涩图r18模式
