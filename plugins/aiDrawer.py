@@ -104,7 +104,7 @@ async def draw5(prompt,path="./test.png"):
     return path
 async def draw6(prompt,path="./test.png"):
     url=f"https://api.vps02.top/API/ai_draw.php?tag={prompt}&model=二次元-漫画暗黑风"
-    async with httpx.AsyncClient(timeout=40) as client:
+    async with httpx.AsyncClient(timeout=60) as client:
         r1 = await client.get(url)
         r1=await client.get(r1.json().get("url"))
     with open(path, "wb") as f:
