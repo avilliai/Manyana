@@ -61,7 +61,8 @@ def main(bot, master, logger):
     geminiapikey = resulttr.get("gemini")
     proxy = resulttr.get("proxy")
     berturl = resulttr.get("bert_colab")
-    os.environ["http_proxy"] = proxy
+    if proxy!="":
+        os.environ["http_proxy"] = proxy
     gptkeys = resulttr.get("openai-keys")
     chatGLM_api_key = resulttr.get("chatGLM")
     with open('data/GeminiData.yaml', 'r', encoding='utf-8') as f:
