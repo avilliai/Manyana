@@ -156,27 +156,30 @@ def main(bot,logger):
         if str(event.message_chain).startswith("画 ") and aiDrawController.get("接口6"):
             tag = str(event.message_chain).replace("画 ", "")
             path = "data/pictures/cache/" + random_str() + ".png"
-            try:
-                logger.info("接口6绘画中......")
-                p = await draw6(tag, path)
-                if selfsensor == True:
-                    try:
-                        thurs = await fileImgModerate(path, moderateK)
-                        logger.info(f"获取到审核结果： adult- {thurs}")
-                        if int(thurs) > selfthreshold:
-                            logger.warning(f"不安全的图片，自我审核过滤")
-                            await bot.send(event, ["nsfw内容已过滤", Image(
-                                path="data/colorfulAnimeCharacter/" + random.choice(
-                                    os.listdir("data/colorfulAnimeCharacter")))])
+            i = 0
+            while i < 5:
+                try:
+                    logger.info("接口6绘画中......")
+                    p = await draw6(tag, path)
+                    if selfsensor == True:
+                        try:
+                            thurs = await fileImgModerate(p, moderateK)
+                            logger.info(f"获取到审核结果： adult- {thurs}")
+                            if int(thurs) > selfthreshold:
+                                logger.warning(f"不安全的图片，自我审核过滤")
+                                await bot.send(event, ["nsfw内容已过滤", Image(
+                                    path="data/colorfulAnimeCharacter/" + random.choice(
+                                        os.listdir("data/colorfulAnimeCharacter")))])
+                                return
+                        except Exception as e:
+                            logger.error(e)
+                            logger.error("无法进行自我审核，错误的网络环境或apikey")
                             return
-                    except Exception as e:
-                        logger.error(e)
-                        logger.error("无法进行自我审核，错误的网络环境或apikey")
-                        return
-                await bot.send(event, Image(path=p), True)
-            except Exception as e:
-                logger.error(e)
-                logger.error("接口5绘画失败.......")
+                    await bot.send(event, Image(path=p), True)
+                except Exception as e:
+                    logger.error(e)
+                    logger.error("接口6绘画失败.......")
+                    i+=1
     @bot.on(GroupMessage)
     async def aidrawff5(event: GroupMessage):
         if str(event.message_chain).startswith("画 ") and aiDrawController.get("接口4"):
