@@ -58,7 +58,7 @@ def main(bot,logger):
                         await bot.send(event,"连接出错，或无对应歌曲")
                     else:
                         musicTask[event.sender.id]=musicName
-                        ffs=(r"',"+str(ffs)).replace(r"\n","\n").replace("[","").replace("]","").replace(r"','","")
+                        ffs=(r"', "+str(ffs)).replace(r"\n","\n").replace("[","").replace("]","").replace(r"', '","")
                         await bot.send(event,f"请发送对应歌曲的序号:\n{ffs}",True)
                 else:
                     ffs = await cccdddm(musicName)
