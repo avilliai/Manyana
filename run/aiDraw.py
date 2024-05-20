@@ -156,8 +156,7 @@ def main(bot,logger):
         if str(event.message_chain).startswith("画 ") and aiDrawController.get("接口6"):
             tag = str(event.message_chain).replace("画 ", "")
             path = "data/pictures/cache/" + random_str() + ".png"
-            i = 0
-            while i < 5:
+            if 1:
                 try:
                     logger.info("接口6绘画中......")
                     p = await draw6(tag, path)
@@ -179,7 +178,6 @@ def main(bot,logger):
                 except Exception as e:
                     logger.error(e)
                     logger.error("接口6绘画失败.......")
-                    i+=1
     @bot.on(GroupMessage)
     async def aidrawff5(event: GroupMessage):
         if str(event.message_chain).startswith("画 ") and aiDrawController.get("接口4"):
