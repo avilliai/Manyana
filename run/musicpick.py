@@ -58,7 +58,7 @@ def main(bot,logger):
                         await bot.send(event,"连接出错，或无对应歌曲")
                     else:
                         musicTask[event.sender.id]=musicName
-                        ffs=str(ffs).replace(r"\n","\n").replace("[","").replace("]","")
+                        ffs=str(r"',"+ffs).replace(r"\n","\n").replace("[","").replace("]","").replace(r"','","")
                         await bot.send(event,f"请发送对应歌曲的序号:\n{ffs}",True)
                 else:
                     ffs = await cccdddm(musicName)
@@ -88,6 +88,7 @@ def main(bot,logger):
                     p = await newCloudMusicDown(musicname, order)
                     logger.info(f"已下载目标单曲：{p}")
                     await bot.send(event, Voice(path=p))
+                    musicTask.pop(event.sender.id)
                 else:
                     ass = musicTask.get(event.sender.id)[int(str(event.message_chain))]
                     logger.info("获取歌曲：" + ass[0])
