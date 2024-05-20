@@ -60,7 +60,7 @@ def main(bot,logger):
                         musicTask[event.sender.id]=musicName
                         musicL=""
                         for ib in ffs:
-                            musicL+=ib+"\n"
+                            musicL+=ib
                         await bot.send(event,f"请发送对应歌曲的序号:\n{musicL}",True)
                 else:
                     ffs = await cccdddm(musicName)
