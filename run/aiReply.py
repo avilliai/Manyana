@@ -22,7 +22,7 @@ from plugins.chatGLMonline import chatGLM1, glm4
 from plugins.cozeBot import cozeBotRep
 from plugins.googleGemini import geminirep
 from plugins.gptOfficial import gptOfficial, gptUnofficial, kimi, qingyan, lingyi, stepAI, qwen, gptvvvv, grop, \
-    gpt4hahaha, localAurona
+    gpt4hahaha, localAurona, anotherGPT35
 
 from plugins.rwkvHelper import rwkvHelper
 from plugins.translater import translate
@@ -1156,6 +1156,7 @@ def main(bot, master, logger):
                     modelHere)).replace("【bot】",
                                         botName).replace("【用户】", "我")
         try:
+            loop = asyncio.get_event_loop()
             text = str(event.message_chain).replace("@" + str(bot.qq) + " ", '')
             if text == "" or text == " ":
                 text = "在吗"
@@ -1165,8 +1166,11 @@ def main(bot, master, logger):
             else:
                 prompt1 = [{"content": text, "role": "user"}]
                 await bot.send(event, "即将开始对话，如果遇到异常请发送 /clear 清理对话")
+                if modelHere=="anotherGPT3.5":
+                    rep=await loop.run_in_executor(None,anotherGPT35,[{"role": "user", "content": bot_in}],event.sender.id)
+                    await bot.send(event,"初始化角色完成")
             logger.info(f"{modelHere}  bot 接受提问：" + text)
-            loop = asyncio.get_event_loop()
+
             if modelHere == "random":
                 tasks = []
                 logger.warning("请求所有模型接口")
@@ -1215,6 +1219,8 @@ def main(bot, master, logger):
                     rep = await loop.run_in_executor(None, gptUnofficial, prompt1, gptkeys, proxy, bot_in)
                 else:
                     rep = await loop.run_in_executor(None, gptOfficial, prompt1, gptkeys, proxy, bot_in)
+            elif modelHere=="anotherGPT3.5":
+                rep=await loop.run_in_executor(None,anotherGPT35,prompt1,event.sender.id)
             elif modelHere == "Cozi":
                 rep = await loop.run_in_executor(None, cozeBotRep, CoziUrl, prompt1, proxy)
             elif modelHere == "kimi":

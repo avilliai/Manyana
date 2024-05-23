@@ -121,6 +121,11 @@ def localAurona(prompt,meta):
     }
     r=requests.post(url,headers=headers,json=data)
     print(r)
+def anotherGPT35(prompt,id):
+    prompt=prompt[-1]["content"]
+    url=f"https://api.shenke.love/api/ChatGPT.php?msg={prompt}&id={id}"
+    r = requests.get(url).json()["data"]["message"]
+    return {"role": "assistant", "content": r}
 if __name__ == '__main__':
     k = localAurona([{"role": "user", "content": "你好"}],"你是一只猫娘")
     print(k)
