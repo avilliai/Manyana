@@ -15,7 +15,7 @@ async def weatherQuery1(proxy):
         return r.json()
 async def querys(city,API_KEY) -> str:
     """查询天气数据。"""
-    async with httpx.AsyncClient() as client:
+    async with httpx.AsyncClient(timeout=20) as client:
         try:
             resp = await client.get(f'https://api.seniverse.com/v3/weather/now.json', params={
                 'key': API_KEY,
