@@ -53,7 +53,6 @@ def main(bot,config,moderateKey,logger):
     trustDays = friendsAndGroups.get("trustDays")
     fuckinggroup=friendsAndGroups.get("fuckinggroup")
     fuckingnumber=friendsAndGroups.get("fuckingnumber")  # 低于13人退
-    global qiandaoT
     qiandaoT=friendsAndGroups.get("signTimes")
 
     helpUser=result1.get("chatGLM").get("helpUser")
@@ -286,8 +285,7 @@ def main(bot,config,moderateKey,logger):
             userdict = data
             with open('config/settings.yaml', 'r', encoding='utf-8') as f:
                 result1 = yaml.load(f.read(), Loader=yaml.FullLoader)
-            global qiandaoT
-            qiandaoT = result1.get("signTimes")
+
 
             global superUser
             superUser = []
@@ -315,8 +313,6 @@ def main(bot,config,moderateKey,logger):
 
             global severGroups
             severGroups = moderate.get("groups")
-            global banTime
-            banTime = moderate.get("banTime")
 
 
 
