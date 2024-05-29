@@ -1205,7 +1205,7 @@ def main(bot, master, logger):
                         if "无法解析" in result.get("content") or "账户余额不足" in result.get("content") or "令牌额度" in result.get(
                                 "content") or "敏感词汇" in result.get("content") or "request id" in result.get(
                                 "content") or "This model's maximum" in result.get(
-                                "content") or "solve CAPTCHA to" in result.get("content") or "输出错误请联系站长" in result.get("content"):
+                                "content") or "solve CAPTCHA to" in result.get("content") or "输出错误请联系站长" in result.get("content") or "接口失败" in result.get("content"):
                             continue
                         reps.append(result)  # 添加可用结果
 
