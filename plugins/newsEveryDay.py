@@ -37,7 +37,7 @@ def get_headers():
     headers = {'User-Agent': userAgent}
     return headers
 async def news():
-    url="https://api.pearktrue.cn/api/60s/image/"
+    url="https://api.311i.cn/api/60SReadWorld/api.php"
     time = datetime.datetime.now().strftime('%Y_%m_%d')
     #path="./news.png"
     path="data/pictures/cache/"+time+"news.png"
