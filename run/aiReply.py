@@ -1156,7 +1156,7 @@ def main(bot, master, logger):
             bot_in = str("你是" + botName  + allcharacters.get(
                     modelHere)).replace("【bot】",
                                         botName).replace("【用户】", "我")
-        if 1:
+        try:
             loop = asyncio.get_event_loop()
             text = str(event.message_chain).replace("@" + str(bot.qq) + " ", '')
             if text == "" or text == " ":
@@ -1288,7 +1288,15 @@ def main(bot, master, logger):
                 yaml.dump(chatGLMData, file, allow_unicode=True)
             logger.info(f"{modelHere} bot 回复：" + rep.get('content'))
             await tstt(rep.get('content').replace("Content is blocked", ""), event)
+        except Exception as e:
+            logger.error(e)
+            try:
+                chatGLMData.pop(event.sender.id)
+                logger.info("清理用户prompt")
+            except Exception as e:
+                logger.error("清理用户prompt出错")
 
+            await bot.send(event, "出错，请重试\n或发送 \n@bot 可用角色模板\n 以更换其他模型", True)
 
 
 if __name__ == '__main__':
