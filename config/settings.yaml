@@ -33,7 +33,18 @@ moderate:
   selfthreshold: 50 # 自我审核阈值
 chatGLM:       #对话模型通用设置
   helpUser: false          #是否引导用户自行设置apiKey(没必要)
-  model: random  #ai模型，random(自动选取免费可用模型) anotherGPT3.5,grop,kimi、清言、lingyi、step、通义千问、gptX,lolimigpt,glm-4(免费无需配置)|后面几个需要自己配置api.yaml对应变量: characterglm(对应chatGLM),Gemini或Gemini1.5(对应的Gemini),Cozi(同名),gpt3.5(官方openai-keys),gpt3.5(无需代理、免费的openai-keys，需要勾选gpt3.5-dev)
+  model: random  #ai模型，random(自动选取免费可用模型，不包括anotherGPT)anotherGPT3.5,grop,kimi、清言、lingyi、step、通义千问、gptX,lolimigpt,glm-4(免费无需配置)|后面几个需要自己配置api.yaml对应变量: characterglm(对应chatGLM),Gemini或Gemini1.5(对应的Gemini),Cozi(同名),gpt3.5(官方openai-keys),gpt3.5(无需代理、免费的openai-keys，需要勾选gpt3.5-dev)
+  random&PriorityModel:   #random模式下，模型调用顺序，确保稳定性，这里是按函数名排序的，会有一点点不一样
+    - kimi
+    - qingyan
+    - grop
+    - lingyi
+    - relolimigpt2
+    - stepAI
+    - qwen
+    - gptvvvv
+    - gpt4hahaha
+    - anotherGPT35
   nudgeReply: false        #戳一戳，是否使用模型回复
   glmReply: True           #开放群聊内ai回复(建议)
   privateGlmReply: false   #开放私聊ai回复

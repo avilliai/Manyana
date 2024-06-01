@@ -95,6 +95,7 @@ def main(bot, master, logger):
     RateIfUnavailable = result.get("语音功能设置").get("RateIfUnavailable")
     glmReply = result.get("chatGLM").get("glmReply")
     privateGlmReply = result.get("chatGLM").get("privateGlmReply")
+    randomModelPriority = result.get("chatGLM").get("random&PriorityModel")
     replyModel = result.get("chatGLM").get("model")
     trustglmReply = result.get("chatGLM").get("trustglmReply")
     meta = result.get("chatGLM").get("bot_info").get("default")
@@ -1130,11 +1131,11 @@ def main(bot, master, logger):
     async def loop_run_in_executor(executor, func, *args):
         try:
             r = await executor.run_in_executor(None, func, *args)
-            logger.info(f"successfully running {func.__name__}:{r.get('content')}")
-            return r
+            logger.info(f"并发调用 | successfully running funcname：{func.__name__} result：{r.get('content')}")
+            return [str(func.__name__),r]
         except Exception as e:
             # logger.error(f"Error running {func.__name__}: {e}")
-            return None
+            return [str(func.__name__),None]
 
     # 运行异步函数
 
@@ -1155,7 +1156,7 @@ def main(bot, master, logger):
             bot_in = str("你是" + botName  + allcharacters.get(
                     modelHere)).replace("【bot】",
                                         botName).replace("【用户】", "我")
-        try:
+        if 1:
             loop = asyncio.get_event_loop()
             text = str(event.message_chain).replace("@" + str(bot.qq) + " ", '')
             if text == "" or text == " ":
@@ -1166,7 +1167,7 @@ def main(bot, master, logger):
             else:
                 prompt1 = [{"content": text, "role": "user"}]
                 await bot.send(event, "即将开始对话，如果遇到异常请发送 /clear 清理对话")
-                if modelHere=="anotherGPT3.5":
+                if modelHere=="anotherGPT3.5" or modelHere=="random":
                     rep=await loop.run_in_executor(None,anotherGPT35,[{"role": "user", "content": bot_in}],event.sender.id)
                     await bot.send(event,"初始化角色完成")
             logger.info(f"{modelHere}  bot 接受提问：" + text)
@@ -1186,6 +1187,7 @@ def main(bot, master, logger):
                 tasks.append(loop_run_in_executor(loop, qwen, prompt1, bot_in))
                 tasks.append(loop_run_in_executor(loop, gptvvvv, prompt1, bot_in))
                 tasks.append(loop_run_in_executor(loop, gpt4hahaha, prompt1, bot_in))
+                tasks.append(loop_run_in_executor(loop,anotherGPT35,prompt1,event.sender.id))
                 # tasks.append(loop_run_in_executor(loop,localAurona,prompt1,bot_in))
                 # ... 添加其他模型的任务 ...
                 aim = {"role": "user", "content": bot_in}
@@ -1194,11 +1196,11 @@ def main(bot, master, logger):
                 prompt1 = [i for i in prompt1 if i != aim]
 
                 done, pending = await asyncio.wait(tasks, return_when=asyncio.ALL_COMPLETED)
-                reps = []
+                reps = {}
                 # 等待所有任务完成
                 rep = None
                 for task in done:
-                    result = task.result()
+                    result = task.result()[1]
                     if result is not None:
                         if "content" not in result:
                             continue
@@ -1207,13 +1209,21 @@ def main(bot, master, logger):
                                 "content") or "This model's maximum" in result.get(
                                 "content") or "solve CAPTCHA to" in result.get("content") or "输出错误请联系站长" in result.get("content") or "接口失败" in result.get("content"):
                             continue
-                        reps.append(result)  # 添加可用结果
+                        reps[task.result()[0]]=task.result()[1]
+                        #reps.append(task.result())  # 添加可用结果
 
                 # 如果所有任务都完成但没有找到非None的结果
                 if len(reps) == 0:
                     logger.warning("所有模型都未能返回有效回复")
                     raise Exception
-                rep = random.choice(reps)
+                #print(reps)
+                for priority in randomModelPriority:
+                    if priority in reps:
+                        rep=reps.get(priority)
+                        logger.info(f"random模型选择结果：{priority}: {rep}")
+                        break
+
+
             if modelHere == "gpt3.5":
                 if gptdev == True:
                     rep = await loop.run_in_executor(None, gptUnofficial, prompt1, gptkeys, proxy, bot_in)
@@ -1278,15 +1288,7 @@ def main(bot, master, logger):
                 yaml.dump(chatGLMData, file, allow_unicode=True)
             logger.info(f"{modelHere} bot 回复：" + rep.get('content'))
             await tstt(rep.get('content').replace("Content is blocked", ""), event)
-        except Exception as e:
-            logger.error(e)
-            try:
-                chatGLMData.pop(event.sender.id)
-                logger.info("清理用户prompt")
-            except Exception as e:
-                logger.error("清理用户prompt出错")
 
-            await bot.send(event, "出错，请重试\n或发送 \n@bot 可用角色模板\n 以更换其他模型", True)
 
 
 if __name__ == '__main__':
