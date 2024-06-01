@@ -1217,7 +1217,10 @@ def main(bot, master, logger):
                     logger.warning("所有模型都未能返回有效回复")
                     raise Exception
                 #print(reps)
+                modeltrans={"gptX":"gptvvvv","清言":"qingyan","通义千问":"qwen","anotherGPT3.5":"anotherGPT35","lolimigpt":"relolimigpt2","step":"stepAI"}
                 for priority in randomModelPriority:
+                    if priority in modeltrans:
+                        priority = modeltrans.get(priority)
                     if priority in reps:
                         rep=reps.get(priority)
                         logger.info(f"random模型选择结果：{priority}: {rep}")
