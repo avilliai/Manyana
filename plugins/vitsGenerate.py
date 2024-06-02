@@ -9,6 +9,7 @@ import httpx
 import librosa
 import requests
 import soundfile
+import websockets
 import yaml
 
 from plugins.RandomStr import random_str
@@ -21,6 +22,16 @@ modelscopeCookie=resulttr.get("modelscopeCookie")
 if modelscopeCookie=="":
     modelscopeCookie="cna=j117HdPDmkoCAXjC3hh/4rjk; ajs_anonymous_id=5aa505b4-8510-47b5-a1e3-6ead158f3375; t=27c49d517b916cf11d961fa3769794dd; uuid_tt_dd=11_99759509594-1710000225471-034528; log_Id_click=16; log_Id_pv=12; log_Id_view=277; xlly_s=1; csrf_session=MTcxMzgzODI5OHxEdi1CQkFFQ180SUFBUkFCRUFBQU12LUNBQUVHYzNSeWFXNW5EQW9BQ0dOemNtWlRZV3gwQm5OMGNtbHVad3dTQUJCNFkwRTFkbXAwV0VVME0wOUliakZwfHNEIp5sKWkjeJWKw1IphSS3e4R_7GyEFoKKuDQuivUs; csrf_token=TkLyvVj3to4G5Mn_chtw3OI8rRA%3D; _samesite_flag_=true; cookie2=11ccab40999fa9943d4003d08b6167a0; _tb_token_=555ee71fdee17; _gid=GA1.2.1037864555.1713838369; h_uid=2215351576043; _xsrf=2|f9186bd2|74ae7c9a48110f4a37f600b090d68deb|1713840596; csg=242c1dff; m_session_id=769d7c25-d715-4e3f-80de-02b9dbfef325; _gat_gtag_UA_156449732_1=1; _ga_R1FN4KJKJH=GS1.1.1713838368.22.1.1713841094.0.0.0; _ga=GA1.1.884310199.1697973032; tfstk=fE4KxBD09OXHPxSuRWsgUB8pSH5GXivUTzyBrU0oKGwtCSJHK7N3ebe0Ce4n-4Y8X8wideDotbQ8C7kBE3queYwEQ6OotW08WzexZUVIaNlgVbmIN7MQBYNmR0rnEvD-y7yAstbcoWPEz26cnZfu0a_qzY_oPpRUGhg5ntbgh_D3W4ZudTQmX5MZwX9IN8ts1AlkAYwSdc9sMjuSF8g56fGrgX9SFbgs5bGWtBHkOYL8Srdy07KF-tW4Wf6rhWQBrfUt9DHbOyLWPBhKvxNIBtEfyXi_a0UyaUn8OoyrGJ9CeYzT1yZbhOxndoh8iuFCRFg38WZjVr6yVWunpVaQDQT762H3ezewpOHb85aq5cbfM5aaKWzTZQ_Ss-D_TygRlsuKRvgt_zXwRYE_VymEzp6-UPF_RuIrsr4vHFpmHbxC61Ky4DGguGhnEBxD7Zhtn1xM43oi_fHc61Ky4DGZ6xfGo3-rjf5..; isg=BKKjOsZlMNqsZy8UH4-lXjE_8ygE86YNIkwdKew665XKv0I51IGvHCUz7_tDrx6l"
 async def superVG(data,mode,urls="",langmode="<zh>"):
+    if langmode=="<zh>":
+        speaker = data.get("speaker")
+        if "_" in str(speaker):
+            bbb=str(speaker).split("_")[1]
+            if bbb=="ZH":
+                langmode="<zh>"
+            if bbb=="EN":
+                langmode="<en>"
+            if bbb=="JP":
+                langmode = "<jp>"
     if langmode=="<jp>":
         try:
             #r=await translate(data.get("text"))
@@ -242,6 +253,71 @@ async def superVG(data,mode,urls="",langmode="<zh>"):
                 f.write(r1.content)
             # await change_sample_rate(p)
             return p
+    elif mode=="firefly":
+        datap=data
+        uri = "wss://fs.firefly.matce.cn/queue/join"
+        session_hash = "1fki0r8hg8mj"
+        async with websockets.connect(uri) as ws:
+            # 连接后发送的第一次请求
+            await ws.send(json.dumps({"fn_index": 4, "session_hash": session_hash}))
+            await ws.send(json.dumps(
+                {"data": [datap.get("speaker")], "event_data": None, "fn_index": 1, session_hash: "1fki0r8hg8mj"}))
+            while True:
+                message = await ws.recv()
+                print("Received '%s'" % message)
+                data = json.loads(message)
+                # 当消息中包含 'name' 并且是所需文件路径时
+                if "output" in data and "data" in data["output"]:
+                    ibn = data["output"]["data"][0]
+                    exampletext = data["output"]["data"][1]
+                    break
+        async with websockets.connect(uri) as ws:
+            await ws.send(json.dumps({"fn_index": 4, "session_hash": session_hash}))
+            await ws.send(
+                json.dumps({"data": [ibn], "event_data": None, "fn_index": 2, "session_hash": "1fki0r8hg8mj"}))
+            while True:
+                message = await ws.recv()
+                data = json.loads(message)
+                # 当消息中包含 'name' 并且是所需文件路径时
+                if "output" in data and "data" in data["output"]:
+                    for item in data["output"]["data"]:
+                        if item and "name" in item and "/tmp/gradio/" in item["name"]:
+                            # 提取文件的路径
+                            example = item["name"]
+                            # print(f"这里是请求结果：{example}")
+                            break
+                    break
+        async with websockets.connect(uri) as ws:
+            await ws.send(json.dumps({"fn_index": 4, "session_hash": session_hash}))
+            # 连接后发送的第二次请求
+            await ws.send(json.dumps({"data": [datap.get("text"), True, {"name": f"{example}",
+                                                                         "data": f"https://fs.firefly.matce.cn/file={example}",
+                                                                         "is_file": True, "orig_name": "audio.wav"},
+                                               exampletext, 0, 90, 0.7, 1.5, 0.7, datap.get("speaker")],
+                                      "event_data": None, "fn_index": 4, "session_hash": "1fki0r8hg8mj"}))
+
+            # 等待并处理服务器的消息
+            while True:
+                message = await ws.recv()
+                print("Received '%s'" % message)
+                data = json.loads(message)
+                # 当消息中包含 'name' 并且是所需文件路径时
+                if "output" in data and "data" in data["output"]:
+                    for item in data["output"]["data"]:
+                        if item and "name" in item and "/tmp/gradio/" in item["name"]:
+                            # 提取文件的路径
+                            file_path = item["name"]
+                            # 拼接 URL
+                            full_url = f"https://fs.firefly.matce.cn/file={file_path}"
+                            break
+                    break
+            p = "data/voices/" + random_str() + '.wav'
+            async with httpx.AsyncClient(timeout=200) as client:
+                r = await client.get(full_url)
+                with open(p, "wb") as f:
+                    f.write(r.content)
+                return p
+
 
 async def edgetts(data):
     speaker=data.get("speaker")
