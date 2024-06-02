@@ -1,9 +1,11 @@
 # -*- coding: utf-8 -*-
 import asyncio
+import datetime
 import json
 import os
 import random
 import re
+import shutil
 import uuid
 from asyncio import sleep
 
@@ -114,8 +116,28 @@ def main(bot, master, logger):
     config = data
     mainGroup = int(config.get("mainGroup"))
     botName = config.get("botName")
-    with open('data/userData.yaml', 'r', encoding='utf-8') as file:
-        data = yaml.load(file, Loader=yaml.FullLoader)
+    try:
+        with open('data/userData.yaml', 'r', encoding='utf-8') as file:
+            data = yaml.load(file, Loader=yaml.FullLoader)
+    except Exception as e:
+        #logger.error(e)
+        logger.error("用户数据文件出错，自动使用最新备用文件替换")
+        logger.warning("备份文件在temp/userDataBack文件夹下，如数据不正确，请手动使用更早的备份，重命名并替换data/userData.yaml")
+        directory = 'temp/userDataBack'
+
+        # 列出文件夹中的所有文件，并按日期排序
+        files = sorted(
+            [f for f in os.listdir(directory) if os.path.isfile(os.path.join(directory, f))],
+            key=lambda x: datetime.datetime.strptime(os.path.splitext(x)[0], '%Y_%m_%d'),
+            reverse=True
+        )
+        # 列表中的第一个文件将是日期最新的文件
+        latest_file = files[0] if files else None
+        logger.warning(f'The latest file is: {latest_file}')
+
+        shutil.copyfile(f'{directory}/{latest_file}', 'data/userData.yaml')
+        with open('data/userData.yaml', 'r', encoding='utf-8') as file:
+            data = yaml.load(file, Loader=yaml.FullLoader)
     global trustUser
     global userdict
     userdict = data
