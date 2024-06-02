@@ -257,70 +257,67 @@ async def superVG(data,mode,urls="",langmode="<zh>"):
         datap=data
         uri = "wss://fs.firefly.matce.cn/queue/join"
         session_hash = "1fki0r8hg8mj"
-        try:
-            async with websockets.connect(uri) as ws:
-                # 连接后发送的第一次请求
-                await ws.send(json.dumps({"fn_index": 4, "session_hash": session_hash}))
-                await ws.send(json.dumps(
-                    {"data": [datap.get("speaker")], "event_data": None, "fn_index": 1, session_hash: "1fki0r8hg8mj"}))
-                while True:
-                    message = await ws.recv()
-                    print("Received '%s'" % message)
-                    data = json.loads(message)
-                    # 当消息中包含 'name' 并且是所需文件路径时
-                    if "output" in data and "data" in data["output"]:
-                        ibn = data["output"]["data"][0]
-                        exampletext = data["output"]["data"][1]
-                        break
-            async with websockets.connect(uri) as ws:
-                await ws.send(json.dumps({"fn_index": 4, "session_hash": session_hash}))
-                await ws.send(
-                    json.dumps({"data": [ibn], "event_data": None, "fn_index": 2, "session_hash": "1fki0r8hg8mj"}))
-                while True:
-                    message = await ws.recv()
-                    data = json.loads(message)
-                    # 当消息中包含 'name' 并且是所需文件路径时
-                    if "output" in data and "data" in data["output"]:
-                        for item in data["output"]["data"]:
-                            if item and "name" in item and "/tmp/gradio/" in item["name"]:
-                                # 提取文件的路径
-                                example = item["name"]
-                                # print(f"这里是请求结果：{example}")
-                                break
-                        break
-            async with websockets.connect(uri) as ws:
-                await ws.send(json.dumps({"fn_index": 4, "session_hash": session_hash}))
-                # 连接后发送的第二次请求
-                await ws.send(json.dumps({"data": [datap.get("text"), True, {"name": f"{example}",
-                                                                             "data": f"https://fs.firefly.matce.cn/file={example}",
-                                                                             "is_file": True, "orig_name": "audio.wav"},
-                                                   exampletext, 0, 90, 0.7, 1.5, 0.7, datap.get("speaker")],
-                                          "event_data": None, "fn_index": 4, "session_hash": "1fki0r8hg8mj"}))
+        
+        async with websockets.connect(uri) as ws:
+            # 连接后发送的第一次请求
+            await ws.send(json.dumps({"fn_index": 4, "session_hash": session_hash}))
+            await ws.send(json.dumps(
+                {"data": [datap.get("speaker")], "event_data": None, "fn_index": 1, session_hash: "1fki0r8hg8mj"}))
+            while True:
+                message = await ws.recv()
+                print("Received '%s'" % message)
+                data = json.loads(message)
+                # 当消息中包含 'name' 并且是所需文件路径时
+                if "output" in data and "data" in data["output"]:
+                    ibn = data["output"]["data"][0]
+                    exampletext = data["output"]["data"][1]
+                    break
+        async with websockets.connect(uri) as ws:
+            await ws.send(json.dumps({"fn_index": 4, "session_hash": session_hash}))
+            await ws.send(
+                json.dumps({"data": [ibn], "event_data": None, "fn_index": 2, "session_hash": "1fki0r8hg8mj"}))
+            while True:
+                message = await ws.recv()
+                data = json.loads(message)
+                # 当消息中包含 'name' 并且是所需文件路径时
+                if "output" in data and "data" in data["output"]:
+                    for item in data["output"]["data"]:
+                        if item and "name" in item and "/tmp/gradio/" in item["name"]:
+                            # 提取文件的路径
+                            example = item["name"]
+                            # print(f"这里是请求结果：{example}")
+                            break
+                    break
+        async with websockets.connect(uri) as ws:
+            await ws.send(json.dumps({"fn_index": 4, "session_hash": session_hash}))
+            # 连接后发送的第二次请求
+            await ws.send(json.dumps({"data": [datap.get("text"), True, {"name": f"{example}",
+                                                                         "data": f"https://fs.firefly.matce.cn/file={example}",
+                                                                         "is_file": True, "orig_name": "audio.wav"},
+                                               exampletext, 0, 90, 0.7, 1.5, 0.7, datap.get("speaker")],
+                                      "event_data": None, "fn_index": 4, "session_hash": "1fki0r8hg8mj"}))
 
-                # 等待并处理服务器的消息
-                while True:
-                    message = await ws.recv()
-                    print("Received '%s'" % message)
-                    data = json.loads(message)
-                    # 当消息中包含 'name' 并且是所需文件路径时
-                    if "output" in data and "data" in data["output"]:
-                        for item in data["output"]["data"]:
-                            if item and "name" in item and "/tmp/gradio/" in item["name"]:
-                                # 提取文件的路径
-                                file_path = item["name"]
-                                # 拼接 URL
-                                full_url = f"https://fs.firefly.matce.cn/file={file_path}"
-                                break
-                        break
-                p = "data/voices/" + random_str() + '.wav'
-                async with httpx.AsyncClient(timeout=200) as client:
-                    r = await client.get(full_url)
-                    with open(p, "wb") as f:
-                        f.write(r.content)
-                    return p
-        except Exception as e:
-            print("出错，返回备用音频")
-            return "data/fonts/bpkd1Lz.wav"
+            # 等待并处理服务器的消息
+            while True:
+                message = await ws.recv()
+                print("Received '%s'" % message)
+                data = json.loads(message)
+                # 当消息中包含 'name' 并且是所需文件路径时
+                if "output" in data and "data" in data["output"]:
+                    for item in data["output"]["data"]:
+                        if item and "name" in item and "/tmp/gradio/" in item["name"]:
+                            # 提取文件的路径
+                            file_path = item["name"]
+                            # 拼接 URL
+                            full_url = f"https://fs.firefly.matce.cn/file={file_path}"
+                            break
+                    break
+            p = "data/voices/" + random_str() + '.wav'
+            async with httpx.AsyncClient(timeout=200) as client:
+                r = await client.get(full_url)
+                with open(p, "wb") as f:
+                    f.write(r.content)
+                return p
 
 
 async def edgetts(data):
