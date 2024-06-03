@@ -254,5 +254,5 @@
 2024/6/1:
   - 当你使用 random 模型时，可在 settings.yaml 中的 random&PriorityModel 设置模型的优先级，避免不同风格模型调用造成对话前后割裂
 2024/6/3:
-  - 更新，新的语音合成模式firefly，支持超多speaker，请访问https://fs.firefly.matce.cn/，这里能用的bot全部能用。
+  - 更新，新的语音合成模式firefly，支持超多speaker，请查看config/edgetts.txt或访问https://fs.firefly.matce.cn/，这里能用的bot全部能用。
   - 对于没有语言类型标识的speaker(如黑崎小雪)，请在 chatGLM的voiceLangType 设置对应的语言类型，以便于能和对话模型正常对接
