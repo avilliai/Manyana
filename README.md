@@ -327,6 +327,8 @@ ba十连
 ```
 </details>
 
+</details>
+
 <details markdown='1'><summary>未来更新方向</summary>
 
 因为学业繁忙，下面这些可能要到明年才能开始了，如果您有参与开发意向，欢迎pr🏵
@@ -337,8 +339,6 @@ ba十连
 - [ ] 词库优化
 - [ ] UI重制
 - [ ] 优化搭建引导
-</details>
-
 </details>
 
 # 🎲可选配置
