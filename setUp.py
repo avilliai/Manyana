@@ -210,6 +210,8 @@ def updaat(f=False,jump=False,source="3"):
     if jump==False:
         logger.warning("更新python库，按1跳过，如果最近没有更新过，不建议跳过，可能错过某些更新。")
         if input("在这里输入:") != "1":
+            logger.warning("即将开始更新依赖库，请确保已关闭代理，否则无法安装依赖库")
+            input("按任意键继续：")
             os.system("pip install pip install bingart")
             os.system("pip install emoji")
             # os.system("pip install -U zhipuai")
@@ -269,6 +271,7 @@ def updaat(f=False,jump=False,source="3"):
         logger.info("处理冲突文件完成")
         logger.info("旧的冲突文件被保存到了temp文件夹，以防万一你需要它们。")
         logger.info("你可以关闭此窗口了")
+        logger.warning("如果出现启动闪退，重新执行更新脚本，不要跳过 更新python库 环节，执行结束后即可正常启动")
         input()
     # 逐行检查错误信息
     for line in stderr.split('\n'):
