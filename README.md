@@ -94,7 +94,7 @@ readme的更新并不及时<br>
 
 </details>
 
-<details markdown='1'><summary>文本菜单</summary>
+<details markdown='1'><summary>文本菜单(仅供参考，未更新)</summary>
 
 <details markdown='1'><summary>图片相关</summary>
 
@@ -329,8 +329,8 @@ ba十连
 
 </details>
 
-<details markdown='1'><summary>未来更新方向</summary>
 
+### 未来更新计划
 由于学业繁忙，下面这些可能要到明年才能开始了，如果您有意向参与开发，欢迎pr🏵
 - [ ] 降低耦合度，进一步优化承载收发功能的run文件夹下各文件
 - [ ] 适配tg、discord、微信等平台(完成上一目标后)
@@ -339,7 +339,7 @@ ba十连
 - [ ] 词库优化
 - [ ] UI重制
 - [ ] 优化搭建引导
-</details>
+
 
 # 🎲可选配置
 <details markdown='1'><summary>填写配置文件</summary>
