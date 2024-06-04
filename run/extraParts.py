@@ -231,7 +231,7 @@ def main(bot,logger):
             try:
                 p=await emojimix(r[0],r[1])
             except:
-                pass
+                return
             if p!=None:
                 logger.info(f"emoji合成：{r[0]} + {r[1]}")
                 await bot.send(event,Image(path=p),True)
