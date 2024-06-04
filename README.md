@@ -33,7 +33,6 @@
 **如果你觉得自己从零开始搭建bot比较困难，请使用此方案**
 - 从[release](https://github.com/avilliai/Manyana/releases/tag/Manyana) 下载ManyanaLauncher_v2.rar并解压
   - 如果下载过慢，你也可以从Q群628763673获得这个压缩包
-- 从[release](https://github.com/avilliai/Manyana/releases/edit/ManyanaUI) 下载最新的Launcher.exe，覆盖压缩包中的Launcher.exe
 - 右键以管理员身份运行launcher.exe<br>
 - 在【工具】页面单击【搭建】，跟随指引即可，部署完成后
 - 关闭launcher，重启launcher
@@ -44,8 +43,8 @@
 "botQQ": 机器人QQ
 "master": 你的QQ
 "mainGroup": 你自己群的群号
-"vertify_key": 【整合包无需修改】
-"port": 【整合包无需修改】
+"vertify_key": 【整合包无需修改】 #mirai-api-http的verify_key设置
+"port": 【整合包无需修改】        #mirai-api-http的ws端口配置
 ```
 
 - 用launcher启动Mirai或overflow(没部署overflow的先参考[HowToUse.mp4](https://github.com/avilliai/Manyana/releases/tag/LLoneBot-tutorial) 部署)，随后启动Manyana即可<br>
@@ -328,9 +327,16 @@ ba十连
 ```
 </details>
 
-<details markdown='1'><summary>TODO</summary>
+<details markdown='1'><summary>未来更新方向</summary>
 
-- [ ] 能够白嫖的ai绘图
+因为学业繁忙，下面这些可能要到明年才能开始了，如果您有参与开发意向，欢迎pr🏵
+- [ ] 降低耦合度，进一步优化承载收发功能的run文件夹下各文件
+- [ ] 适配tg、discord、微信等平台(完成上一目标后)
+- [ ] 各大手游/端游数据查询
+- [ ] 更换/接手开发用sdk
+- [ ] 词库优化
+- [ ] UI重制
+- [ ] 优化搭建引导
 </details>
 
 </details>
