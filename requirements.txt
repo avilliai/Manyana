@@ -166,3 +166,4 @@ google-generativeai
 openai
 anthropic
 bingart
+emoji
