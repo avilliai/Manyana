@@ -256,3 +256,6 @@
 2024/6/3:
   - 更新，新的语音合成模式firefly，支持超多speaker，请查看config/edgetts.txt或访问https://fs.firefly.matce.cn/，这里能用的bot全部能用。
   - 对于没有语言类型标识的speaker(如黑崎小雪)，请在 chatGLM的voiceLangType 设置对应的语言类型，以便于能和对话模型正常对接
+2024/6/4:
+  - 新增功能 emoji合成
+  - 先拉取一次更新(更新脚本自身更新)，然后再次更新(安装新内容)，第二次更新不要跳过更新依赖库

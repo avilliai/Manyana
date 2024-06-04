@@ -21,7 +21,7 @@ from mirai.models import ForwardMessageNode, Forward, App
 from plugins import weatherQuery
 from plugins.RandomStr import random_str
 from plugins.arkOperator import arkOperator
-from plugins.cpGenerate import get_cp_mesg
+from plugins.extraParts import get_cp_mesg, emojimix
 from plugins.gacha import arkGacha, starRailGacha, bbbgacha
 from plugins.genshinGo import genshinDraw, qianCao
 from plugins.historicalToday import hisToday, steamEpic
@@ -224,8 +224,17 @@ def main(bot,logger):
                         await bot.send(event, Image(url=path))
                         logger.info("图片发送成功")
 
-
-
+    @bot.on(GroupMessage)
+    async def emojiMix(event: GroupMessage):
+        if len(str(event.message_chain))==2:
+            r=list(str(event.message_chain))
+            try:
+                p=await emojimix(r[0],r[1])
+            except:
+                pass
+            if p!=None:
+                logger.info(f"emoji合成：{r[0]} + {r[1]}")
+                await bot.send(event,Image(path=p),True)
 
     @bot.on(GroupMessage)
     async def historyToday(event:GroupMessage):
