@@ -21,7 +21,10 @@
 </div>
 
 ---
-# 🚀部署
+# 🚀linux部署
+[linux部署脚本](https://github.com/lux-QAQ/Manyana_deploy)
+
+# 🚀windows部署
 **如果你没有代理，或git连接不稳定，可在搭建时选择【镜像源】，镜像源和git源完全同步更新。**<br>
 
  如果你看不懂教程，从release下载[Tutorial.mp4](https://github.com/avilliai/Manyana/releases/tag/Manyana) 照做就行<br>
@@ -61,13 +64,12 @@ git clone --depth 1 https://gh-proxy.com/https://github.com/avilliai/Manyana
 ```
 - 双击Manyana/一键部署脚本.bat即可
 - 把release的模型(1374_epochsm.pth)文件放置在Manyana/vits/voiceModel/nene
-- 运行一次Manyana/更新脚本.bat 以补全最近更新的内容
 - 填写config.json(必做)
 - 启动bot
   - 自行搭建：启动你自己的mirai/overflow，以及Manyana/启动脚本.bat
 ```
-{"botName": "机器人名字", "botQQ": "机器人QQ", "master": "你的QQ", "mainGroup": "你自己群的群号","vertify_key": "这里写你http-api的key,尖括号不用带", "port": "httpapi的运行端口"}
-下面是一个填写示例实例，如使用整合包，不要修改后两项
+{"botName": "机器人名字", "botQQ": "机器人QQ", "master": "你的QQ", "mainGroup": "你自己群的群号","vertify_key": "这里写你http-api的key,尖括号不用带", "port": "httpapi的ws运行端口"}
+下面是一个config.json填写实例，如使用整合包，不要修改后两项
 {"botName": "Manyana", "botQQ": "1283992481", "master": "1840094972","mainGroup": "628763673", "vertify_key": "1234567890", "port": "23456"}
 ```
 ## 对接mirai或overflow
