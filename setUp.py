@@ -206,7 +206,7 @@ def main():
 
     else:
         print("结束")
-def updaat(f=False,jump=False,source="3"):
+def updaat(f=False,jump=False,source=None):
     if jump==False:
         logger.warning("更新python库，按1跳过，如果最近没有更新过，不建议跳过，可能错过某些更新。")
         if input("在这里输入:") != "1":
@@ -222,9 +222,8 @@ def updaat(f=False,jump=False,source="3"):
             # os.system("pip install --upgrade requests")
             # os.system("pip install --upgrade urllib3[socks]")
             # os.system("pip install selenium")
-    if source=="3":
+    if source==None:
         logger.info("拉取bot代码\n--------------------")
-        logger.warning("建议优先选用与搭建源匹配的更新源，以免由于更新版本不一致导致意外状况")
         logger.info("选择更新源(git源 镜像源相互兼容)：\n1 git源\n2 镜像源1\n3 镜像源2")
         source = input("选择更新源(输入数字 )：")
     else:
