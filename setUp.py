@@ -225,7 +225,7 @@ def updaat(f=False,jump=False,source="3"):
     if source=="3":
         logger.info("拉取bot代码\n--------------------")
         logger.warning("建议优先选用与搭建源匹配的更新源，以免由于更新版本不一致导致意外状况")
-        logger.info("选择更新源()：\n1 git源\n2 镜像源(无需代理，同步更新。兼容git源搭建的Manyana git源不可用时可选此项)")
+        logger.info("选择更新源(git源 镜像源相互兼容)：\n1 git源\n2 镜像源1\n3 镜像源2")
         source = input("选择更新源(输入数字 )：")
     else:
         source=str(source)
@@ -237,6 +237,8 @@ def updaat(f=False,jump=False,source="3"):
     elif source=="2":
         p = subprocess.Popen(['git', 'pull', 'https://gh-proxy.com/https://github.com/avilliai/Manyana'], stdout=subprocess.PIPE,
                              stderr=subprocess.PIPE)
+    elif source=="3":
+        p=subprocess.Popen(['git', 'pull', 'https://mirror.ghproxy.com/https://github.com/avilliai/Manyana'], stdout=subprocess.PIPE,stderr=subprocess.PIPE)
     else:
         logger.error("无效输入，重新执行")
         updaat()
