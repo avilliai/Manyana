@@ -265,9 +265,7 @@ def main(bot,api_KEY,master,config,logger):
             logger.info("获取签到背景图片")
             image_path = pic()
 
-            layer = Image.open(image_path)
-            layer = layer.resize((1920, 1080), resample=Image.LANCZOS)
-            layer.save(image_path)
+            
             return image_path
         except Exception as e:
             logger.error(e)
@@ -361,6 +359,10 @@ def main(bot,api_KEY,master,config,logger):
             r = requests.get(url, headers=headers).content
             with open("data/pictures/new_sign_Image/" + ranpath + ".png", mode="wb") as f:
                 f.write(r)  # 图片内容写入文件
+            image_path="data/pictures/new_sign_Image/" + ranpath + ".png"
+            layer = Image.open(image_path)
+            layer = layer.resize((1920, 1080), resample=Image.LANCZOS)
+            layer.save(image_path)
             return "data/pictures/new_sign_Image/" + ranpath + ".png"
         except Exception as e:
             logger.error(e)
@@ -371,6 +373,10 @@ def main(bot,api_KEY,master,config,logger):
             r = requests.get(url).content
             with open("data/pictures/new_sign_Image/" + ranpath + ".png", mode="wb") as f:
                 f.write(r)  # 图片内容写入文件
+            image_path="data/pictures/new_sign_Image/" + ranpath + ".png"
+            layer = Image.open(image_path)
+            layer = layer.resize((1920, 1080), resample=Image.LANCZOS)
+            layer.save(image_path)
             return "data/pictures/new_sign_Image/" + ranpath + ".png"
         except Exception as e:
             logger.error(e)
@@ -385,6 +391,10 @@ def main(bot,api_KEY,master,config,logger):
             r = requests.get(res.url).content
             with open("data/pictures/new_sign_Image/" + ranpath + ".png", mode="wb") as f:
                 f.write(r)  # 图片内容写入文件
+            image_path="data/pictures/new_sign_Image/" + ranpath + ".png"
+            layer = Image.open(image_path)
+            layer = layer.resize((1920, 1080), resample=Image.LANCZOS)
+            layer.save(image_path)
             return "data/pictures/new_sign_Image/" + ranpath + ".png"
         except Exception as e:
             logger.error(e)
