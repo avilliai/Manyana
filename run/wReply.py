@@ -135,7 +135,10 @@ def main(bot,config,sizhiKey,logger):
     logger.info("当前语音模型设定："+str(speaker)+"\n模型"+str(modelSelect))
     global models
     global characters
-    models, default, characters = modelLoader()  # 读取模型
+    try:
+        models, default, characters = modelLoader()  # 读取模型
+    except:
+        pass
     global lock
     lock=False
 
