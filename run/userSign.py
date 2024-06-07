@@ -365,22 +365,32 @@ def main(bot,api_KEY,master,config,logger):
         except Exception as e:
             logger.error(e)
             logger.info("使用二号接口")
-            try:
-                url = 'https://api.yimian.xyz/img'
-                params = {
-                    'type': 'moe',
-                    'size': '1920x1080'
-                }
-                res = requests.get(url, params=params)
-                r = requests.get(res.url).content
-                with open("data/pictures/new_sign_Image/" + ranpath + ".png", mode="wb") as f:
-                    f.write(r)  # 图片内容写入文件
-                return "data/pictures/new_sign_Image/" + ranpath + ".png"
-            except Exception as e:
-                logger.error(e)
-                logger.error("二号接口失效，返回备用图片")
-                image_path = "data/pictures/new_sign_Image/9bFIzYz.png"
-                return image_path
+        try:
+            url = "https://t.mwm.moe/pc"
+            # url+="tag=萝莉|少女&tag=白丝|黑丝"
+            r = requests.get(url).content
+            with open("data/pictures/new_sign_Image/" + ranpath + ".png", mode="wb") as f:
+                f.write(r)  # 图片内容写入文件
+            return "data/pictures/new_sign_Image/" + ranpath + ".png"
+        except Exception as e:
+            logger.error(e)
+            logger.info("使用三号接口")
+        try:
+            url = 'https://api.yimian.xyz/img'
+            params = {
+                'type': 'moe',
+                'size': '1920x1080'
+            }
+            res = requests.get(url, params=params)
+            r = requests.get(res.url).content
+            with open("data/pictures/new_sign_Image/" + ranpath + ".png", mode="wb") as f:
+                f.write(r)  # 图片内容写入文件
+            return "data/pictures/new_sign_Image/" + ranpath + ".png"
+        except Exception as e:
+            logger.error(e)
+            logger.error("三号接口失效，返回备用图片")
+            image_path = "data/pictures/new_sign_Image/9bFIzYz.png"
+            return image_path
 
 
 
