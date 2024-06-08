@@ -27,11 +27,11 @@
 # 🚀windows部署
 **如果你没有代理，或git连接不稳定，可在搭建时选择【镜像源】，镜像源和git源完全同步更新。**<br>
 
- 如果你看不懂教程，从release下载[Tutorial.mp4](https://github.com/avilliai/Manyana/releases/tag/Manyana) 照做就行<br>
+ 如果你看不懂教程，从release下载[Tutorial.mp4](https://github.com/avilliai/Manyana/releases/tag/Launcher) 照做就行<br>
  能用Launcher改设置就用launcher改，不规范地修改文件导致的格式错误自行搜索解决。<br>
 ## 方法1：搭建工具部署(推荐)
 **如果你觉得自己从零开始搭建bot比较困难，请使用此方案**
-- 从[release](https://github.com/avilliai/Manyana/releases/tag/Manyana) 下载ManyanaLauncher_v2.rar并解压
+- 从[release](https://github.com/avilliai/Manyana/releases/tag/Launcher)下载ManyanaLauncher_v2.rar并解压
   - 如果下载过慢，你也可以从Q群628763673获得这个压缩包
 - 右键以管理员身份运行launcher.exe<br>
 - 在【工具】页面单击【搭建】，跟随指引即可，部署完成后
@@ -52,9 +52,9 @@
 ## 方法2：自行部署(如果你有一定bot搭建经验)
 - 请确保py版本为3.9
 - 请确保已安装[mirai-api-http](https://github.com/project-mirai/mirai-api-http) 并[正确配置](https://github.com/avilliai/wReply/blob/master/setting.yml)
-- 自行搭建我也同样建议使用[launcher](https://github.com/avilliai/Manyana/releases/edit/ManyanaUI)，可视化界面总比没有强，那么你也可以参考方法1
+- 自行部署仍推荐使用[release](https://github.com/avilliai/Manyana/releases/tag/Launcher)的ManyanaLauncher_v2.rar进行部署
 ### 操作步骤
-- 从release下载setUps.rar并解压，依次安装，一般默认下一步就行(**安装python的第一步一定要先勾选add to path**)。apk安装到手机。
+- 从[release](https://github.com/avilliai/Manyana/releases/tag/Manyana)下载setUps.rar并解压，依次安装，一般默认下一步就行(**安装python的第一步一定要先勾选add to path**)。apk安装到手机。
 - 克隆本仓库。找一个你喜欢的目录(**不要带中文**)打开cmd或git bash执行
 ```
 git clone --depth 1 https://github.com/avilliai/Manyana.git
@@ -71,13 +71,6 @@ git clone --depth 1 https://gh-proxy.com/https://github.com/avilliai/Manyana
 下面是一个config.json填写实例，如使用整合包，不要修改后两项
 {"botName": "Manyana", "botQQ": "1283992481", "master": "1840094972","mainGroup": "628763673", "vertify_key": "1234567890", "port": "23456"}
 ```
-## 对接mirai或overflow
-二者选择其一即可。
-
-**压缩包里准备了mirai和overflow，你可以任选其一使用**，overflow的部署请参考[HowToUse.mp4](https://github.com/avilliai/Manyana/releases/tag/LLoneBot-tutorial) <br>
-mirai就不用说了吧，应该都会用，不会用的参考[release的HowToUse.mpt](https://github.com/avilliai/Manyana/releases/tag/Manyana) <br>
-如果你确实不会，就用overflow，很简单
-
 ---
 # 🍩功能
 #### 功能列表
