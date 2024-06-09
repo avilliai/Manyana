@@ -12,7 +12,6 @@
 - [overflow](https://mirai.mamoe.net/topic/2565/overflow-%E5%B0%86-mirai-%E5%AE%9E%E7%8E%B0%E6%8D%A2%E6%88%90-onebot-%E6%9C%BA%E5%99%A8%E4%BA%BA%E7%9A%84%E5%8F%88%E4%B8%80%E4%B8%AA%E8%A7%A3%E5%86%B3%E6%96%B9%E6%A1%88?_=1712421277845)     你懂的
 - [arona api](https://doc.arona.diyigemt.com/)  提供blueArchive数据支持
 - [Yiri-mirai](https://github.com/YiriMiraiProject/YiriMirai)  很好的python sdk
-- 部分查询功能需要[fireFox浏览器](https://www.firefox.com.cn/) ，不用的话可以不装
 - 如果遇到使用问题，请在QQ群628763673反馈
 
 
@@ -21,6 +20,7 @@
 </div>
 
 ---
+因为作者是学政治的，不是计算机专业，最开始基本是边学边写，因而源码中存在诸多问题，陆续优化中。
 # 🚀linux部署
 [linux部署脚本](https://github.com/lux-QAQ/Manyana_deploy)
 
