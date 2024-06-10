@@ -619,7 +619,7 @@ def main(bot,config,moderateKey,logger):
 
     @bot.on(GroupMessage)
     async def exitBadGroup(event:GroupMessage):
-        ls=["你妈","傻逼","艹逼","你妈","死你","垃圾","nm","狗东西","废物","低能","沙比","啥比","沙壁","啥必","辣鸡","腊鸡"]
+        ls=["你妈","傻逼","艹","你妈","死你","垃圾","nm","狗东西","废物","低能","沙比","啥比","沙壁","啥必","辣鸡","腊鸡","马","妈","爸","爹","智障","死","b","逼"]
         if At(bot.qq) in event.message_chain:
             for i in ls:
                 if i in str(event.message_chain):
@@ -628,8 +628,8 @@ def main(bot,config,moderateKey,logger):
                         return
                     except:
                         logger.error("禁言失败，权限可能过低")
-                        logger.warn("遭到："+str(event.sender.id)+" 的辱骂")
-                        await bot.send_friend_message(master,"遭到："+str(event.sender.id)+" 的辱骂\n群号："+str(event.group.id)+"\n内容："+str(event.message_chain)+"\n可使用 退群#群号 操作bot退出该群")
+                        logger.warn("敏感词触发者："+str(event.sender.id))
+                        await bot.send_friend_message(master,"用户："+str(event.sender.id)+" 发送了含敏感字消息\n群号："+str(event.group.id)+"\n内容："+str(event.message_chain)+"\n可使用 退群#群号 操作bot退出该群")
                         #await bot.quit(event.group.id)
                         global blackList
                         global blGroups
