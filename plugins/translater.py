@@ -10,11 +10,25 @@ youdao_url = 'https://openapi.youdao.com/api'  # 有道api地址
 
 # 需要翻译的文本'
 async def translate(text,mode="ZH_CN2JA"):
-    URL=f"https://api.pearktrue.cn/api/translate/?text={text}&type={mode}"
-    async with httpx.AsyncClient(timeout=20) as client:
-        r = await client.get(URL)
-        #print(r.json()["data"]["translate"])
-        return r.json()["data"]["translate"]
+    try:
+        URL=f"https://api.pearktrue.cn/api/translate/?text={text}&type={mode}"
+        async with httpx.AsyncClient(timeout=20) as client:
+            r = await client.get(URL)
+            #print(r.json()["data"]["translate"])
+            return r.json()["data"]["translate"]
+    except:
+        print("语音文本翻译接口失效")
+        if mode!="ZH_CN2JA":
+            return text
+    try:
+        url=f"https://translate.appworlds.cn?text={text}&from=zh-CN&to=ja"
+        async with httpx.AsyncClient(timeout=20) as client:
+            r = await client.get(URL)
+            #print(r.json()["data"]["translate"])
+        return r.json()["data"]
+    except:
+        print("翻译接口2调用失败")
+        return text
 async def translate1(txt,app_id,app_key,ori="zh-CHS",aim="ja"):
     translate_text = txt
 
