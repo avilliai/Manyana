@@ -21,7 +21,7 @@ async def translate(text,mode="ZH_CN2JA"):
         if mode!="ZH_CN2JA":
             return text
     try:
-        url=f"https://findmyip.net/api/translate.php?text={text}&target_lang=js"
+        url=f"https://findmyip.net/api/translate.php?text={text}&target_lang=ja"
         async with httpx.AsyncClient(timeout=20) as client:
             r = await client.get(URL)
             #print(r.json()["data"]["translate"])
