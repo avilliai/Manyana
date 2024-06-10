@@ -23,6 +23,7 @@ def main(bot,proxy,logger):
     with open('config/settings.yaml', 'r', encoding='utf-8') as f:
         result = yaml.load(f.read(), Loader=yaml.FullLoader)
     lockResult=result.get("lockLuck")
+    InternetMeme=result.get("InternetMeme")
     if lockResult==True:
         with open('data/lockLuck.yaml', 'r', encoding='utf-8') as f:
             result2 = yaml.load(f.read(), Loader=yaml.FullLoader)
@@ -39,7 +40,7 @@ def main(bot,proxy,logger):
     async def meme(event: GroupMessage):
         global memeData
         if str(event.message_chain) == "meme" or ("meme" in str(event.message_chain) and At(bot.qq) in event.message_chain):
-            try:
+            if InternetMeme:
                 logger.info("使用网络meme")
 
                 url = 'https://meme-api.com/gimme'
@@ -57,8 +58,8 @@ def main(bot,proxy,logger):
                         img.save(path)  # 使用PIL库保存图片
                         await bot.send(event, Image(path=path))
 
-            except:
-                logger.warning("网络meme出错，使用本地meme图")
+            else:
+                logger.warning("使用本地meme图")
                 la = os.listdir("data/pictures/meme")
                 la = "data/pictures/meme/" + random.choice(la)
                 logger.info("掉落了一张meme图")
