@@ -22,10 +22,9 @@ async def translate(text,mode="ZH_CN2JA"):
             return text
     try:
         url=f"https://findmyip.net/api/translate.php?text={text}&target_lang=ja"
-        async with httpx.AsyncClient(timeout=20) as client:
-            r = await client.get(URL)
-            #print(r.json()["data"]["translate"])
+        r=requests.get(url=url,timeout=10)
         return r.json()["data"]["translate_result"]
+        
     except:
         print("翻译接口2调用失败")
         return text
