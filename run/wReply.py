@@ -90,8 +90,18 @@ def main(bot,config,sizhiKey,logger):
     chatglm = result.get("chatGLM")
 
     logger.info("读取词库文件中")
-    importDict()
-    logger.info("读取完成")
+    try:
+        importDict()
+        logger.info("读取完成")
+    except Exception as e:
+        logger.error("词库文件损坏！")
+        logger.warning("重新写入词库文件")
+        try:
+            outPutDic()
+            logger.warning("写入完成。")
+        except:
+            logger.error("备用文件损坏，词库功能失效")
+            return
     file = open('config/superDict.txt', 'r')
     jss = file.read()
     file.close()
