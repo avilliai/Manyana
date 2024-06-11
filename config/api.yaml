@@ -10,7 +10,7 @@ nasa_api: HSxxxxxxx              #nasa相关天文api 从https://api.nasa.gov/in
 chatGLM: 69xxxxxxx               #chatGLM的apiKey，从https://open.bigmodel.cn/获取
 gemini:                          #谷歌的gemini api，免费的，有几个填几个，在https://ai.google.dev/tutorials/setup?hl=zh-cn获取，需要配置代理，否则无法使用
   - AIxxxxxxxx
-openai-keys:                     #openai官方的apikey，或免费从https://github.com/chatanywhere/GPT_API_free?tab=readme-ov-file申请
+openai-keys:                     #openai官方的apikey，或免费(不推荐，已经加了限制。random模式够你用了)从https://github.com/chatanywhere/GPT_API_free?tab=readme-ov-file申请
   - sk-Mxxxxxxxxxxx
 gpt3.5-dev: false                #如果是从https://github.com/chatanywhere/GPT_API_free?tab=readme-ov-file申请openai-apikey，请打开此开关，这样就无需代理即可使用
 cozi: https://xxxxxx.zeabur.app/v1/chat/completions  # https://github.com/avilliai/Manyana/issues/4
