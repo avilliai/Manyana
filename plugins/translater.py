@@ -71,5 +71,3 @@ async def translate1(txt,app_id,app_key,ori="zh-CHS",aim="ja"):
         return r.json()["translation"][0]
     #print("翻译后的结果：" + r["translation"][0])  # 获取翻译内容
 
-r=asyncio.run(translate("你好","ZH_CN2JA"))
-print(r)
