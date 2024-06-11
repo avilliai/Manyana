@@ -17,17 +17,22 @@ async def translate(text,mode="ZH_CN2JA"):
             #print(r.json()["data"]["translate"])
             return r.json()["data"]["translate"]
     except:
-        print("语音文本翻译接口失效")
+        print("文本翻译接口1失效")
         if mode!="ZH_CN2JA":
             return text
     try:
         url=f"https://findmyip.net/api/translate.php?text={text}&target_lang=ja"
         r=requests.get(url=url,timeout=10)
         return r.json()["data"]["translate_result"]
-        
     except:
         print("翻译接口2调用失败")
-        return text
+    try:
+        url=f"https://translate.appworlds.cn?text={text}&from=zh-CN&to=ja"
+        r = requests.get(url=url, timeout=10,verify=False)
+        return r.json()["data"]
+    except:
+        print("翻译接口3调用失败")
+    return text
 async def translate1(txt,app_id,app_key,ori="zh-CHS",aim="ja"):
     translate_text = txt
 
@@ -66,4 +71,5 @@ async def translate1(txt,app_id,app_key,ori="zh-CHS",aim="ja"):
         return r.json()["translation"][0]
     #print("翻译后的结果：" + r["translation"][0])  # 获取翻译内容
 
-#asyncio.run(translate("你好","ZH_CN2EN"))
+r=asyncio.run(translate("你好","ZH_CN2JA"))
+print(r)
