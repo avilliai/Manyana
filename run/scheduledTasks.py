@@ -108,9 +108,9 @@ def main(bot,proxy,nasa_api,logger):
 
             with open('data/nasaTasks.yaml', 'w', encoding="utf-8") as file:
                 yaml.dump(data, file, allow_unicode=True)
-            for i in data.get("news").get("groups"):
+            for i in data.get("astronomy").get("groups"):
                 try:
-                    await bot.send_group_message(int(i), [data.get("news").get("text"), Image(path=filename),txt])
+                    await bot.send_group_message(int(i), [data.get("astronomy").get("text"), Image(path=filename),txt])
                 except:
                     logger.error("不存在的群" + str(i))
         except:
