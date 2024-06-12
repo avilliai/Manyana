@@ -388,55 +388,27 @@ async def outVits(data):
         return p
 
 async def voiceGenerate(data):
-    # 向本地 API 发送 POST 请求
-    if "MoeGoe.py" in os.listdir():
-        from MoeGoe import voiceGenerate as vg
-        # 解析请求中的参数
-        text = data['text']
-        out = data["out"]
-
-        try:
-            speaker = data['speaker']
-            modelSelect = data['modelSelect']
-        except:
-            speaker = 2
-            modelSelect = ['voiceModel/nene/1374_epochsm.pth', 'voiceModel/nene/config.json']
-
-            # with open('config/settings.yaml', 'r', encoding='utf-8') as f:
-            # result = yaml.load(f.read(), Loader=yaml.FullLoader)
-            # speaker = result.get("vits").get("speaker")
-            # modelSelect = result.get("vits").get("modelSelect")
-        # 调用 voiceG() 函数
-        if modelSelect[0].endswith("I.pth"):
-            text = text.replace("[JA]", "").replace("[ZH]", "")
-        await vg(tex=text, out=out, speakerID=speaker, modelSelect=modelSelect)
-        print("语音生成完成")
-        # 将生成的音频返回给客户端
-        return out
-
-    else:
-        print("start voice generate")
-
-        text = data['text']
-        out = data["out"]
-        try:
-            speaker = data['speaker']
-            modelSelect = data['modelSelect']
-        except Exception as e:
-            speaker = 2
-            modelSelect = ['vits/voiceModel/nene/1374_epochsm.pth', 'vits/voiceModel/nene/config.json']
-            print(e)
-            # with open('config/settings.yaml', 'r', encoding='utf-8') as f:
-            # result = yaml.load(f.read(), Loader=yaml.FullLoader)
-            # speaker = result.get("vits").get("speaker")
-            # modelSelect = result.get("vits").get("modelSelect")
-        # 调用 voiceG() 函数
-        if modelSelect[0].endswith("I.pth"):
-            text = text.replace("[JA]", "").replace("[ZH]", "")
-        # print("get")
-        await vG(tex=text, out=out, speakerID=speaker, modelSelect=modelSelect)
-        print("语音生成完成")
-        return out
+    print("start voice generate")
+    text = data['text']
+    out = data["out"]
+    try:
+        speaker = data['speaker']
+        modelSelect = data['modelSelect']
+    except Exception as e:
+        speaker = 2
+        modelSelect = ['vits/voiceModel/nene/1374_epochsm.pth', 'vits/voiceModel/nene/config.json']
+        print(e)
+        # with open('config/settings.yaml', 'r', encoding='utf-8') as f:
+        # result = yaml.load(f.read(), Loader=yaml.FullLoader)
+        # speaker = result.get("vits").get("speaker")
+        # modelSelect = result.get("vits").get("modelSelect")
+    # 调用 voiceG() 函数
+    if modelSelect[0].endswith("I.pth"):
+        text = text.replace("[JA]", "").replace("[ZH]", "")
+    # print("get")
+    await vG(tex=text, out=out, speakerID=speaker, modelSelect=modelSelect)
+    print("语音生成完成")
+    return out
 async def modelscopeTTS(data):
     speaker = data.get("speaker")
     text = data.get("text")
