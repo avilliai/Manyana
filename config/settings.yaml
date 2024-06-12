@@ -15,7 +15,8 @@
   RateIfUnavailable: 0         #当设定的语音合成不可用时，默认使用vits合成的几率,中文几率可在最下方调整
   #当前modelscopeTTS可用角色["BT","塔菲","阿梓","otto","丁真","星瞳","东雪莲","嘉然","孙笑川","亚托克斯","文静","鹿鸣","奶绿","七海","恬豆","科比"]，该模式下任选其一填入即可
   speaker: "东雪莲"         #根据你的合成模式设定角色,modelscopeTTS看上面，firefly可用的speaker即https://fs.firefly.matce.cn/可用的speaker，vits则无需配置,outVits看https://api.lolimi.cn/?action=doc&id=181
-
+  voiceLangType: "<zh>"    #默认语音合成语言类型，可选： <zh> <jp> <en>   目前仅在modelscopeTTS和firefly模式下生效,firefly模式下需要与speaker的语言类型匹配
+  
   #下面的两个配置项，除非你自己额外搭了对应的服务，不然就别动。
   bert_speakers:    #自建bert_vits2语音合成配置，不知道是啥就别动
     - rriri         #如果搭建了，根据bert_vits_sever/characters.yaml填写所有可用的speakers，没自己搭bert_vits2就别动
@@ -55,7 +56,6 @@ chatGLM:       #对话模型通用设置
   #语音合成通用设置
   maxLen: 100              #语音合成最大长度限制，超出则返回文本。
   voiceRate: 60            #语音回复几率
-  voiceLangType: "<zh>"    #语音合成语言类型，可选： <zh> <jp> <en>   目前仅在modelscopeTTS和firefly模式下生效,firefly模式下需要与speaker的语言类型匹配
   withText: true           #发送语音是否附带原始文本
   #默认都是characterglm用的，Cozi和Gemini属于特殊值，bot会自动处理不用管这两个，你该写自己的设定就写
   bot_info:
