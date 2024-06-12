@@ -80,18 +80,18 @@ def main(bot,master,botName,logger):
         global live
         if str(event.message_chain).startswith("取消直播订阅#"):
             id1=str(event.message_chain).split("#")[1]
-            logger.info("尝试取消订阅"+id1)
+            logger.info("尝试取消订阅:"+id1)
             id1=int(id1)
             try:
                 d1=live.get(id1).get("group")
                 logger.info("取到数值")
                 logger.info(str(d1))
-                d1.pop(id1)
-                logger.info("弹出")
+                d1.remove(event.group.id)
+                logger.info("清理直播")
                 t1=[]
 
                 if d1==t1:
-                    live.pop(id1)
+                    live.remove(id1)
                 else:
                     live[id1]["group"]=d1
                 with open('data/biliMonitor.yaml', 'w', encoding="utf-8") as file:
@@ -124,6 +124,7 @@ def main(bot,master,botName,logger):
                     else:
                         groups.append(event.group.id)
                         live[content]["group"]=groups
+                    live[content]["app"]=con
                 else:
                     live[content]={"app":con,"group":[event.group.id]}
                 await bot.send(event,"成功添加了对"+str(content)+"的直播订阅")
