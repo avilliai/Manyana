@@ -1190,8 +1190,11 @@ def main(bot, master, logger):
                 prompt1 = [{"content": text, "role": "user"}]
                 await bot.send(event, "即将开始对话，如果遇到异常请发送 /clear 清理对话")
                 if modelHere=="anotherGPT3.5" or modelHere=="random":
-                    rep=await loop.run_in_executor(None,anotherGPT35,[{"role": "user", "content": bot_in}],event.sender.id)
-                    await bot.send(event,"初始化角色完成")
+                    try:
+                        rep=await loop.run_in_executor(None,anotherGPT35,[{"role": "user", "content": bot_in}],event.sender.id)
+                        await bot.send(event,"初始化角色完成")
+                    except:
+                        await bot.send(event,"初始化anotherGPT3.5失败")
             logger.info(f"{modelHere}  bot 接受提问：" + text)
 
             if modelHere == "random":
