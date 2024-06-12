@@ -41,25 +41,23 @@ async def news():
     time = datetime.datetime.now().strftime('%Y_%m_%d')
     #path="./news.png"
     path="data/pictures/cache/"+time+"news.png"
-    if os.path.exists(path):
+
+    #r=requests.get(url).content
+    #with open("./news.png","wb") as fp:
+        #fp.write(r)
+        #return
+    #async with httpx.AsyncClient(timeout=20) as client:
+        #r = await client.get(url)
+        #url=r.json().get("tp1")
+        #print(url)
+        #return url
+        #print(r.json().get("data").get("image")) # 从二进制数据创建图片对象
+    async with httpx.AsyncClient(timeout=200,headers=get_headers()) as client:
+        r = await client.get(url)
+        img = Image.open(BytesIO(r.content))  # 从二进制数据创建图片对象
+        img.save(path)  # 使用PIL库保存图片
+        #print(path)
         return path
-    else:
-        #r=requests.get(url).content
-        #with open("./news.png","wb") as fp:
-            #fp.write(r)
-            #return
-        #async with httpx.AsyncClient(timeout=20) as client:
-            #r = await client.get(url)
-            #url=r.json().get("tp1")
-            #print(url)
-            #return url
-            #print(r.json().get("data").get("image")) # 从二进制数据创建图片对象
-        async with httpx.AsyncClient(timeout=200,headers=get_headers()) as client:
-            r = await client.get(url)
-            img = Image.open(BytesIO(r.content))  # 从二进制数据创建图片对象
-            img.save(path)  # 使用PIL库保存图片
-            #print(path)
-            return path
 async def chaijun():
     headers=get_headers()
     url="http://api.yujn.cn/api/chaijun.php?"
@@ -96,32 +94,26 @@ async def moyu():
     time = datetime.datetime.now().strftime('%Y_%m_%d')
     path="data/pictures/cache/"+time+"moyu.png"
     #path="moyu.png"
-    if os.path.exists(path):
+
+    async with httpx.AsyncClient(timeout=30,headers=headers) as client:
+        r = await client.get(url)
+        img = Image.open(BytesIO(r.content))  # 从二进制数据创建图片对象
+        img.save(path)  # 使用PIL库保存图片
+        #print(path)
         return path
-    else:
-        async with httpx.AsyncClient(timeout=30,headers=headers) as client:
-            r = await client.get(url)
-            img = Image.open(BytesIO(r.content))  # 从二进制数据创建图片对象
-            img.save(path)  # 使用PIL库保存图片
-            #print(path)
-            return path
 async def xingzuo():
     url="https://dayu.qqsuu.cn/xingzuoyunshi/apis.php"
     time = datetime.datetime.now().strftime('%Y_%m_%d')
     # path="./news.png"
     path = "data/pictures/cache/" + time + "xingzuo.png"
     #path="./xingzuo.png"
-    if os.path.exists(path):
+    # print(r.json().get("data").get("image")) # 从二进制数据创建图片对象
+    async with httpx.AsyncClient(timeout=200, headers=get_headers()) as client:
+        r = await client.get(url)
+        img = Image.open(BytesIO(r.content))  # 从二进制数据创建图片对象
+        img.save(path)  # 使用PIL库保存图片
+        #rint(path)
         return path
-    else:
-
-        # print(r.json().get("data").get("image")) # 从二进制数据创建图片对象
-        async with httpx.AsyncClient(timeout=200, headers=get_headers()) as client:
-            r = await client.get(url)
-            img = Image.open(BytesIO(r.content))  # 从二进制数据创建图片对象
-            img.save(path)  # 使用PIL库保存图片
-            #rint(path)
-            return path
 async def nong(url,name):
     # path="./news.png"
     path = "data/Elo/"+name+".png"
