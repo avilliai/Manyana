@@ -856,7 +856,7 @@ def main(bot, master, logger):
                     logger.info("调用vits语音回复")
                     try:
                         path = 'data/voices/' + random_str() + '.wav'
-                        if voiceLangType=="<JA>":
+                        if voiceLangType=="<jp>":
                             texts = await translate(str(st8))
                             tex = '[JA]' + texts + '[JA]'
                         else:
@@ -884,7 +884,7 @@ def main(bot, master, logger):
                     logger.info("出错，改用vits")
                     try:
                         path = 'data/voices/' + random_str() + '.wav'
-                        if random.randint(1, 100) > chineseVoiceRate:
+                        if voiceLangType=="<jp>":
                             text = await translate(str(st8))
                             tex = '[JA]' + text + '[JA]'
                         else:
@@ -1062,7 +1062,7 @@ def main(bot, master, logger):
                     logger.info("调用vits语音回复")
                     try:
                         path = 'data/voices/' + random_str() + '.wav'
-                        if random.randint(1, 100) > chineseVoiceRate:
+                        if voiceLangType=="<jp>":
                             text = await translate(str(st8))
                             tex = '[JA]' + text + '[JA]'
                         else:
@@ -1091,7 +1091,7 @@ def main(bot, master, logger):
                     logger.info("出错，改用vits")
                     try:
                         path = 'data/voices/' + random_str() + '.wav'
-                        if random.randint(1, 100) > chineseVoiceRate:
+                        if voiceLangType=="<jp>":
                             text = await translate(str(st8))
                             tex = '[JA]' + text + '[JA]'
                         else:
