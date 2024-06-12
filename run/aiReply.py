@@ -856,9 +856,9 @@ def main(bot, master, logger):
                     logger.info("调用vits语音回复")
                     try:
                         path = 'data/voices/' + random_str() + '.wav'
-                        if random.randint(1, 100) > chineseVoiceRate:
-                            text = await translate(str(st8))
-                            tex = '[JA]' + text + '[JA]'
+                        if voiceLangType=="<JA>":
+                            texts = await translate(str(st8))
+                            tex = '[JA]' + texts + '[JA]'
                         else:
                             tex = "[ZH]" + st8 + "[ZH]"
                         logger.info("启动文本转语音：text: " + tex + " path: " + path)
