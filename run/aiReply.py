@@ -733,8 +733,8 @@ def main(bot, master, logger):
                 await modelReply(event, chatGLMCharacters.get(event.sender.id))
         # 判断模型
         elif replyModel == "Gemini" or replyModel == "Gemini1.5":
-            text = str(event.message_chain).replace("@" + str(bot.qq) + "", '').replace(" ", "").replace("/g", "")
-            logger.info("gemini开始运行")
+            text = str(event.message_chain).replace("@" + str(bot.qq) + " ", '')
+            logger.info(f"gemini接受提问：{text}")
             if text == "" or text == " ":
                 text = "在吗"
             geminichar = allcharacters.get("Gemini").replace("【bot】", botName).replace("【用户】", event.sender.member_name)
