@@ -1,11 +1,11 @@
 # -*- coding: utf-8 -*-
 import json
 
-file = open('./star-rail-atlas/othername.json', 'r',encoding="utf-8")
+file = open('./data/star-rail-atlas/othername.json', 'r',encoding="utf-8")
 js = file.read()
 origindata = json.loads(js)
 
-file=open("./star-rail-atlas/path.json",'r',encoding="utf-8")
+file=open("./data/star-rail-atlas/path.json",'r',encoding="utf-8")
 js = file.read()
 picData = json.loads(js)
 def find_keys_containing_value(json_data, search_value):

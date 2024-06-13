@@ -5,12 +5,11 @@ import yaml
 from mirai import Image
 from mirai import FriendMessage, GroupMessage, At, Plain
 
-from plugins.starrailSearch import getxinqiuPath
-
 
 def main(bot,logger):
     if os.path.exists("./data/star-rail-atlas"):
         logger.info("星穹铁道查询功能启用")
+        from plugins.starrailSearch import getxinqiuPath
     else:
         logger.error("缺少星穹铁道图片素材，如需要请执行 更新脚本.bat 下载对应图片素材")
         return
