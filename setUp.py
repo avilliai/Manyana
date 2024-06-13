@@ -192,7 +192,7 @@ def main():
                 os.system("git pull https://gitee.com/Nwflower/star-rail-atlas.git")
             else:
                 os.chdir("./data")
-                logger.info("文件夹已存在，进入更新模式")
+                logger.info("文件夹不存在，拉取素材")
                 os.system("git clone https://gitee.com/Nwflower/star-rail-atlas.git")
 
     else:
