@@ -31,7 +31,7 @@ def newLogger():
 
 logger = newLogger()
 def main():
-    print("请输入要执行的指令：\n1 绑定到远程仓库(如果通过源码包安装请执行)\n2 更新bot代码\n3 清理无用数据(如缓存图片)\n4 导出群信息，制作一个chatLearning可用的配置文件\n5 全面去除二刺猿相关内容")
+    print("请输入要执行的指令：\n1 绑定到远程仓库(如果通过源码包安装请执行)\n2 更新bot代码\n3 清理无用数据(如缓存图片)\n4 导出群信息，制作一个chatLearning可用的配置文件\n5 其他素材下载(可选)")
 
     a=input("输入要执行的数字")
     if a=="1":
@@ -183,26 +183,17 @@ def main():
             fp.write(ja)
         print("完毕，请用config.clc覆盖chatLearning文件夹下同名文件")
     elif a=="5":
-        import yaml
-        logger = newLogger()
-        logger.info("开始清理：nudgeReply.yaml")
-        with open('config/nudgeReply.yaml', 'r', encoding='utf-8') as f:
-            resy = yaml.load(f.read(), Loader=yaml.FullLoader)
-        resy["BeatNudge"]=["干嘛","有事吗"]
-        resy["BeatNudge1"]=["干嘛","有事吗"]
-        resy["nudgedReply"]=["干嘛","有事吗"]
-        with open('config/nudgeReply.yaml', 'w', encoding="utf-8") as file:
-            yaml.dump(resy, file, allow_unicode=True)
-        logger.info("清理config/nudgeReply.yaml完成")
-        logger.info("开始清理：词库")
-        os.remove("data/autoReply/lexicon/public.xlsx")
-
-        shutil.copyfile('data/autoReply/lexicon/init.xlsx',
-                        'data/autoReply/lexicon/public.xlsx')
-        logger.info("清理词库成功")
-        logger.warning("请自行删除 miraiBot/plugins/AutoGroup-2.0.3.mirai.jar")
-        logger.info("请自行修改 chatGLM模式为chatglm_pro")
-
+        logger.info("图片素材下载/更新\n输入要执行的指令：\n1 下载/更新星穹铁道资源")
+        orderP=input("在这里输入指令：")
+        if orderP=="1":
+            if os.path.exists("./data/star-rail-atlas"):
+                os.chdir("./data")
+                logger.info("文件夹已存在，进入更新模式")
+                os.system("git pull https://gitee.com/Nwflower/star-rail-atlas.git")
+            else:
+                os.chdir("./data")
+                logger.info("文件夹已存在，进入更新模式")
+                os.system("git clone https://gitee.com/Nwflower/star-rail-atlas.git")
 
     else:
         print("结束")
