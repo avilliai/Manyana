@@ -4,10 +4,8 @@ import os
 import google.generativeai as genai
 async def geminirep(ak,messages,model1="Gemini"):
     # Or use `os.getenv('GOOGLE_API_KEY')` to fetch an environment variable.
-    if model1=="Gemini1.5":
-        model1="gemini-1.5-pro-latest"
-    else:
-        model1="gemini-pro"
+    model1="gemini-1.5-flash"
+
     GOOGLE_API_KEY=ak
     
     genai.configure(api_key=GOOGLE_API_KEY)
