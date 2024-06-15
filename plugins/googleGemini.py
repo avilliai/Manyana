@@ -67,13 +67,13 @@ async def geminirep(ak,messages,GeminiRevProxy=""):
 
         response = model.generate_content(messages)
 
-
+        text=response.text.rstrip()
         #print(response.text)
-        return response.text
+        return text
     else:
         messages = promptConvert(messages)
         r = await geminiCFProxy(ak, messages, GeminiRevProxy)
-        return r
+        return r.rstrip()
 async def geminiCFProxy(ak,messages,proxyUrl):
     url=f"{proxyUrl}/v1beta/models/gemini-1.5-flash:generateContent?key={ak}"
     #print(requests.get(url,verify=False))
