@@ -48,7 +48,7 @@ chatGLM:                   #对话模型通用设置
     - gpt4hahaha
   nudgeReply: false        #戳一戳，是否使用模型回复
   glmReply: True           #开放群聊内ai回复(建议)
-  privateGlmReply: false   #开放私聊ai回复
+  privateGlmReply: True    #开放私聊ai回复
   trustglmReply: false     #开启后仅【信任用户】可用
   maxPrompt: 10            #上下文模式开启时，最多记录的问答数量，默认10，即记录5对问答
   #语音合成通用设置
