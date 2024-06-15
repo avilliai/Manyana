@@ -50,24 +50,16 @@ def main(bot,master,botName,logger):
                         if asf.get("data").get("live_status") == 0:
 
                             for ia in live.get(i).get("group"):
-                                try:
-                                    #await bot.send_group_message(int(ia), AtAll())
-                                    await bot.send_group_message(int(ia), "主播下播了，明天见ヾ(≧▽≦*)o")
-                                except:
-                                    await bot.send_group_message(int(ia), "主播下播了，明天见ヾ(≧▽≦*)o")
+                                await bot.send_group_message(int(ia), "直播结束ヾ(≧▽≦*)o(如果需要关闭订阅请发送 取消直播订阅#直播间id)")
+                                await bot.send_group_message(int(ia), App(content=live.get(i).get("app")))
+
                         if asf.get("data").get("live_status") == 1:
                             for ia in live.get(i).get("group"):
-                                try:
-                                    #await bot.send_group_message(int(ia), AtAll() )
-                                    await bot.send_group_message(int(ia),"主播正在直播φ(゜▽゜*)♪")
-                                    logger.info("检测到直播进行中")
 
-                                    await bot.send_group_message(int(ia), App(content=live.get(i).get("app")))
-                                except:
-                                    await bot.send_group_message(int(ia), "主播正在直播φ(゜▽゜*)♪")
-                                    logger.info("检测到直播进行中")
+                                await bot.send_group_message(int(ia), "订阅的直播进行中φ(゜▽゜*)♪")
+                                logger.info("检测到直播进行中")
 
-                                    await bot.send_group_message(int(ia), App(content=live.get(i).get("app")))
+                                await bot.send_group_message(int(ia), App(content=live.get(i).get("app")))
 
                         lists[i] = asf.get("data").get("live_status")
                 except:
