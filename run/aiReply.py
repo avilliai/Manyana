@@ -638,7 +638,6 @@ def main(bot, master, logger):
             logger.error(e)
             try:
                 chatGLMData.pop(event.sender.id)
-                logger.info("清理用户prompt")
             except Exception as e:
                 logger.error("清理用户prompt出错")
 
