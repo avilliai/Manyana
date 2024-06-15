@@ -616,7 +616,6 @@ def main(bot, master, logger):
                 rep = {"role": "assistant", "content": r}
             prompt1.append(rep)
             # 超过10，移除第一个元素
-
             if len(prompt1) > maxPrompt:
                 logger.error(f"{modelHere} prompt超限，移除元素")
                 del prompt1[0]
@@ -633,11 +632,5 @@ def main(bot, master, logger):
                 chatGLMData.pop(event.sender.id)
             except Exception as e:
                 logger.error("清理用户prompt出错")
-
             await bot.send(event, "出错，请重试\n或发送 \n@bot 可用角色模板\n 以更换其他模型", True)
 
-
-if __name__ == '__main__':
-
-    while True:
-        input("任意键以结束")
