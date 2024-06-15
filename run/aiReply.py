@@ -174,9 +174,7 @@ def main(bot, master, logger):
                 if text == saa or text.startswith(saa):
                     logger.warning("与屏蔽词匹配，不回复")
                     return
-        if trustglmReply == True and str(event.sender.id) not in trustUser:
-            return
-        if privateGlmReply != True:
+        if (trustglmReply == True and str(event.sender.id) not in trustUser) or privateGlmReply!=True:
             return
         if event.sender.id in chatGLMCharacters:
             # print("在")
@@ -614,6 +612,9 @@ def main(bot, master, logger):
                 r = r.result()
                 rep={"role": "assistant", "content": r}
             elif type(allcharacters.get(modelHere))==dict:
+                if event.sender.id not in trustUser and trustglmReply and glmReply:
+                    await bot.send(event,"没有使用该模型的权限!")
+                    return
                 r=await loop.run_in_executor(None, chatGLM,chatGLM_api_key, bot_in, prompt1)
                 rep = {"role": "assistant", "content": r}
             prompt1.append(rep)
