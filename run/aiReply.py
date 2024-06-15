@@ -482,10 +482,14 @@ def main(bot, master, logger):
         except Exception as e:
             logger.error(e)
             logger.info(f"无法获取到该用户昵称 id：{event.sender.id}")
-            bot_in = str("你是" + botName  + allcharacters.get(
-                    modelHere)).replace("【bot】",
-                                        botName).replace("【用户】", "我")
-        if 1:
+            try:
+                bot_in = str("你是" + botName  + allcharacters.get(
+                        modelHere)).replace("【bot】",
+                                            botName).replace("【用户】", "我")
+            except:
+                await bot.send(event,"模型不可用，请发送 可用角色模板 并重新设定模型")
+                return
+        try:
             loop = asyncio.get_event_loop()
             text = str(event.message_chain).replace("@" + str(bot.qq) + " ", '')
             if text == "" or text == " ":
@@ -630,7 +634,7 @@ def main(bot, master, logger):
                 yaml.dump(chatGLMData, file, allow_unicode=True)
             logger.info(f"{modelHere} bot 回复：" + rep.get('content'))
             await tstt(rep.get('content'), event)
-        else:
+        except Exception as e:
             logger.error(e)
             try:
                 chatGLMData.pop(event.sender.id)
