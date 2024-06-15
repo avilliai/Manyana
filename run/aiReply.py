@@ -243,60 +243,6 @@ def main(bot, master, logger):
 
                 except:
                     await bot.send(event, "chatGLM启动出错，请联系master检查apiKey或重试\n或发送 @bot 可用角色模板 以更换其他模型")
-            elif chatGLMCharacters.get(event.sender.id) == "Gemini":
-                if str(event.message_chain) == "/cGemini" or str(event.message_chain) == "/clear":
-                    return
-                if privateGlmReply != True:
-                    return
-                logger.info("gemini开始运行")
-                text = str(event.message_chain)
-                if text == "" or text == " ":
-                    text = "在吗"
-
-                geminichar = allcharacters.get("Gemini").replace("【bot】", botName).replace("【用户】",
-                                                                                           event.sender.nickname)
-                # 构建新的prompt
-                tep = {"role": "user", "parts": [text]}
-                # print(type(tep))
-                # 获取以往的prompt
-                if event.sender.id in GeminiData and context == True:
-                    prompt = GeminiData.get(event.sender.id)
-                    prompt.append({"role": "user", 'parts': [text]})
-                # 没有该用户，以本次对话作为prompt
-                else:
-                    await bot.send(event, "即将开始对话，请注意，如果遇到对话异常，请发送 /clear 以清理对话记录(不用艾特)", True)
-                    prompt = [{"role": "user", "parts": [geminichar]},
-                              {"role": 'model', "parts": ["好的，已了解您的需求，我会扮演好你设定的角色"]}]
-                    prompt.append(tep)
-
-                logger.info("gemini接收提问:" + text)
-
-                try:
-                    # logger.info(geminiapikey)
-                    r = asyncio.run_coroutine_threadsafe(
-                        geminirep(ak=random.choice(geminiapikey), messages=prompt, GeminiRevProxy=GeminiRevProxy),
-                        newLoop)
-                    r = r.result()
-                    # 更新该用户prompt
-                    prompt.append({"role": 'model', "parts": [r]})
-                    # 超过10，移除第一个元素
-                    logger.info("gemini回复：" + r)
-                    if len(prompt) > maxPrompt:
-                        logger.error("gemini prompt超限，移除元素")
-                        del prompt[2]
-                        del prompt[2]
-                    GeminiData[event.sender.id] = prompt
-                    # 写入文件
-                    with open('data/GeminiData.yaml', 'w', encoding="utf-8") as file:
-                        yaml.dump(GeminiData, file, allow_unicode=True)
-                    await tstt(r, event)
-                    #await bot.send(event, r)
-                    # asyncio.run_coroutine_threadsafe(asyncgemini(geminiapikey,prompt, event,text), newLoop)
-                    # st1 = await chatGLM(selfApiKey, meta1, prompt)
-                except Exception as e:
-                    logger.error(e)
-                    GeminiData.pop(event.sender.id)
-                    await bot.send(event, "gemini启动出错,请重试\n或发送 @bot 可用角色模板 以更换其他模型")
             else:
                 if privateGlmReply != True:
                     return
@@ -358,56 +304,6 @@ def main(bot, master, logger):
 
             except:
                 await bot.send(event, "chatGLM启动出错，请联系master检查apiKey或重试\n或发送 @bot 可用角色模板 以更换其他模型")
-        elif replyModel == "Gemini" or replyModel == "Gemini1.5":
-            if str(event.message_chain) == "/cGemini" or str(event.message_chain) == "/clear":
-                return
-            if privateGlmReply != True:
-                return
-            logger.info("gemini开始运行")
-            text = str(event.message_chain)
-            if text == "" or text == " ":
-                text = "在吗"
-            geminichar = allcharacters.get("Gemini").replace("【bot】", botName).replace("【用户】", event.sender.nickname)
-            # 构建新的prompt
-            tep = {"role": "user", "parts": [text]}
-            # print(type(tep))
-            # 获取以往的prompt
-            if event.sender.id in GeminiData and context == True:
-                prompt = GeminiData.get(event.sender.id)
-                prompt.append({"role": "user", 'parts': [text]})
-                # 没有该用户，以本次对话作为prompt
-            else:
-                await bot.send(event, "即将开始对话，请注意，如果遇到对话异常，请发送 /clear 以清理对话记录(不用艾特)", True)
-                prompt = [{"role": "user", "parts": [geminichar]},
-                          {"role": 'model', "parts": ["好的，已了解您的需求，我会扮演好你设定的角色"]}]
-                prompt.append(tep)
-
-            logger.info("gemini接收提问:" + text)
-            try:
-                # logger.info(geminiapikey)
-                r = asyncio.run_coroutine_threadsafe(
-                    geminirep(ak=random.choice(geminiapikey), messages=prompt, GeminiRevProxy=GeminiRevProxy),
-                    newLoop)
-                r = r.result()
-                # 更新该用户prompt
-                prompt.append({"role": 'model', "parts": [r]})
-                # 超过10，移除第一个元素
-                logger.info("gemini回复：" + r)
-                if len(prompt) > maxPrompt:
-                    logger.error("gemini prompt超限，移除元素")
-                    del prompt[2]
-                    del prompt[2]
-                GeminiData[event.sender.id] = prompt
-                # 写入文件
-                with open('data/GeminiData.yaml', 'w', encoding="utf-8") as file:
-                    yaml.dump(GeminiData, file, allow_unicode=True)
-                await tstt(r, event)
-                # asyncio.run_coroutine_threadsafe(asyncgemini(geminiapikey,prompt, event,text), newLoop)
-                # st1 = await chatGLM(selfApiKey, meta1, prompt)
-            except Exception as e:
-                logger.error(e)
-                GeminiData.pop(event.sender.id)
-                await bot.send(event, "gemini启动出错,请重试\n或发送 @bot 可用角色模板 以更换其他模型")
         else:
             if privateGlmReply != True:
                 return
@@ -611,58 +507,11 @@ def main(bot, master, logger):
                 event.sender.id) in trustUser) or event.group.id in trustG or event.sender.id == int(mainGroup)):
             logger.info("ai聊天启动")
         else:
-
             return
         if event.sender.id in chatGLMCharacters:
             print(type(chatGLMCharacters.get(event.sender.id)), chatGLMCharacters.get(event.sender.id))
-            if chatGLMCharacters.get(event.sender.id) == "Gemini":
-                text = str(event.message_chain).replace("@" + str(bot.qq) + "", '')
 
-                logger.info("gemini开始运行")
-                if text == "" or text == " ":
-                    text = "在吗"
-                geminichar = allcharacters.get("Gemini").replace("【bot】", botName).replace("【用户】",
-                                                                                           event.sender.member_name)
-                # 构建新的prompt
-                tep = {"role": "user", "parts": [text]}
-                # print(type(tep))
-                # 获取以往的prompt
-                if event.sender.id in GeminiData and context == True:
-                    prompt = GeminiData.get(event.sender.id)
-                    prompt.append({"role": "user", 'parts': [text]})
-                # 没有该用户，以本次对话作为prompt
-                else:
-                    await bot.send(event, "即将开始对话，请注意，如果遇到对话异常，请发送 /clear 以清理对话记录(不用艾特)", True)
-                    prompt = [{"role": "user", "parts": [geminichar]},
-                              {"role": 'model', "parts": ["好的，已了解您的需求，我会扮演好你设定的角色"]}]
-                    prompt.append(tep)
-                logger.info("gemini接收提问:" + text)
-                try:
-                    # logger.info(geminiapikey)
-                    r = asyncio.run_coroutine_threadsafe(
-                        geminirep(ak=random.choice(geminiapikey), messages=prompt, GeminiRevProxy=GeminiRevProxy),
-                        newLoop)
-                    r = r.result()
-                    # 更新该用户prompt
-                    prompt.append({"role": 'model', "parts": [r]})
-                    await tstt(r, event)
-                    logger.info("gemini回复：" + r)
-                    if len(prompt) > maxPrompt:
-                        logger.error("gemini prompt超限，移除元素")
-                        del prompt[2]
-                        del prompt[2]
-                    GeminiData[event.sender.id] = prompt
-                    # 写入文件
-                    with open('data/GeminiData.yaml', 'w', encoding="utf-8") as file:
-                        yaml.dump(GeminiData, file, allow_unicode=True)
-
-                    # asyncio.run_coroutine_threadsafe(asyncgemini(geminiapikey,prompt, event,text), newLoop)
-                    # st1 = await chatGLM(selfApiKey, meta1, prompt)
-                except Exception as e:
-                    logger.error(e)
-                    GeminiData.pop(event.sender.id)
-                    await bot.send(event, "gemini启动出错,请重试\n或发送 @bot 可用角色模板 以更换其他模型")
-            elif type(chatGLMCharacters.get(event.sender.id)) == dict or type(
+            if type(chatGLMCharacters.get(event.sender.id)) == dict or type(
                     allcharacters.get(chatGLMCharacters.get(event.sender.id))) == dict:
                 text = str(event.message_chain).replace("@" + str(bot.qq) + "", '').replace(" ", "")
                 logger.info("分支1")
@@ -726,58 +575,11 @@ def main(bot, master, logger):
                     asyncio.run_coroutine_threadsafe(asyncchatGLM(selfApiKey, meta1, prompt, event, setName, text),
                                                      newLoop)
                     # st1 = await chatGLM(selfApiKey, meta1, prompt)
-
-
                 except:
                     await bot.send(event, "chatGLM启动出错，请联系master\n或发送 @bot 可用角色模板 以更换其他模型")
             else:
                 await modelReply(event, chatGLMCharacters.get(event.sender.id))
         # 判断模型
-        elif replyModel == "Gemini" or replyModel == "Gemini1.5":
-            text = str(event.message_chain).replace("@" + str(bot.qq) + "", '')
-            logger.info(f"gemini接受提问：{text}")
-            if text == "" or text == " ":
-                text = "在吗"
-            geminichar = allcharacters.get("Gemini").replace("【bot】", botName).replace("【用户】", event.sender.member_name)
-            # 构建新的prompt
-            tep = {"role": "user", "parts": [text]}
-            # print(type(tep))
-            # 获取以往的prompt
-            if event.sender.id in GeminiData and context == True:
-                prompt = GeminiData.get(event.sender.id)
-                prompt.append({"role": "user", 'parts': [text]})
-                # 没有该用户，以本次对话作为prompt
-            else:
-                await bot.send(event, "即将开始对话，请注意，如果遇到对话异常，请发送 /clear 以清理对话记录(不用艾特)", True)
-                prompt = [{"role": "user", "parts": [geminichar]},
-                          {"role": 'model', "parts": ["好的，已了解您的需求，我会扮演好你设定的角色"]}]
-                prompt.append(tep)
-            logger.info("gemini接收提问:" + text)
-            try:
-                # logger.info(geminiapikey)
-                r = asyncio.run_coroutine_threadsafe(
-                    geminirep(ak=random.choice(geminiapikey), messages=prompt, GeminiRevProxy=GeminiRevProxy),
-                    newLoop)
-                r = r.result()
-                # 更新该用户prompt
-                prompt.append({"role": 'model', "parts": [r]})
-                await tstt(r, event)
-                logger.info("gemini回复：" + r)
-                if len(prompt) > maxPrompt:
-                    logger.error("gemini prompt超限，移除元素")
-                    del prompt[2]
-                    del prompt[2]
-                GeminiData[event.sender.id] = prompt
-                # 写入文件
-                with open('data/GeminiData.yaml', 'w', encoding="utf-8") as file:
-                    yaml.dump(GeminiData, file, allow_unicode=True)
-
-                # asyncio.run_coroutine_threadsafe(asyncgemini(geminiapikey,prompt, event,text), newLoop)
-                # st1 = await chatGLM(selfApiKey, meta1, prompt)
-            except Exception as e:
-                logger.error(e)
-                GeminiData.pop(event.sender.id)
-                await bot.send(event, "gemini启动出错,请重试\n或发送 @bot 可用角色模板 以更换其他模型")
         elif replyModel == "characterglm":
             text = str(event.message_chain).replace("@" + str(bot.qq) + "", '').replace(" ", "")
             logger.info("分支1")
@@ -881,33 +683,7 @@ def main(bot, master, logger):
                     await bot.send(event, st1, True)
             except Exception as e:
                 logger.error(e)
-                if random.randint(0, 100) < RateIfUnavailable:
-                    logger.info("出错，改用vits")
-                    try:
-                        path = 'data/voices/' + random_str() + '.wav'
-                        if voiceLangType=="<jp>":
-                            text = await translate(str(st8))
-                            tex = '[JA]' + text + '[JA]'
-                        else:
-                            tex = "[ZH]" + st8 + "[ZH]"
-                        logger.info("启动文本转语音：text: " + tex + " path: " + path)
-                        # spe = rte.get("defaultModel").get("speaker")
-                        with open('config/autoSettings.yaml', 'r', encoding='utf-8') as f:
-                            resulte = yaml.load(f.read(), Loader=yaml.FullLoader)
-                        spe = resulte.get("defaultModel").get("speaker")
-                        modelSelect = resulte.get("defaultModel").get("modelSelect")
-                        await voiceGenerate(
-                            {"text": tex, "out": path, "speaker": spe, "modelSelect": modelSelect})
-                        await bot.send(event, Voice(path=path))
-                        if withText == True:
-                            await bot.send(event, st1, True)
-                    except Exception as e:
-                        logger.error(e)
-                        logger.error("vits服务运行出错，请检查是否开启或检查配置")
-                        await bot.send(event, st1, True)
-                        return
-                else:
-                    await bot.send(event, st1, True)
+                await bot.send(event, st1, True)
 
         else:
             await bot.send(event, r, True)
@@ -1164,6 +940,7 @@ def main(bot, master, logger):
 
     async def modelReply(event, modelHere):
         global trustUser, chatGLMapikeys, chatGLMData, chatGLMCharacters, chatGLMsingelUserKey, userdict, GeminiData, coziData
+        logger.info(modelHere)
         try:
             if event.type != 'FriendMessage':
                 bot_in = str("你是" + botName + ",我是" + event.sender.member_name + "," + allcharacters.get(
@@ -1179,7 +956,7 @@ def main(bot, master, logger):
             bot_in = str("你是" + botName  + allcharacters.get(
                     modelHere)).replace("【bot】",
                                         botName).replace("【用户】", "我")
-        try:
+        if 1:
             loop = asyncio.get_event_loop()
             text = str(event.message_chain).replace("@" + str(bot.qq) + " ", '')
             if text == "" or text == " ":
@@ -1251,8 +1028,6 @@ def main(bot, master, logger):
                         rep=reps.get(priority)
                         logger.info(f"random模型选择结果：{priority}: {rep}")
                         break
-
-
             if modelHere == "gpt3.5":
                 if gptdev == True:
                     rep = await loop.run_in_executor(None, gptUnofficial, prompt1, gptkeys, proxy, bot_in)
@@ -1304,6 +1079,12 @@ def main(bot, master, logger):
                     except Exception as e:
                         logger.error(e)
                     return
+            elif modelHere=="Gemini":
+                r = asyncio.run_coroutine_threadsafe(
+                    geminirep(ak=random.choice(geminiapikey), messages=prompt1,bot_info=bot_in, GeminiRevProxy=GeminiRevProxy),
+                    newLoop)
+                r = r.result()
+                rep={"role": "assistant", "content": r}
             prompt1.append(rep)
             # 超过10，移除第一个元素
 
@@ -1316,8 +1097,8 @@ def main(bot, master, logger):
             with open('data/chatGLMData.yaml', 'w', encoding="utf-8") as file:
                 yaml.dump(chatGLMData, file, allow_unicode=True)
             logger.info(f"{modelHere} bot 回复：" + rep.get('content'))
-            await tstt(rep.get('content').replace("Content is blocked", ""), event)
-        except Exception as e:
+            await tstt(rep.get('content'), event)
+        else:
             logger.error(e)
             try:
                 chatGLMData.pop(event.sender.id)

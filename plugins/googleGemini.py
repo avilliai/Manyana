@@ -15,6 +15,16 @@ def promptConvert(input_list):
                 new_parts.append({'text': part})
         item['parts'] = new_parts
     return input_list
+def convert_content_to_parts_and_role(input_list):
+    for item in input_list:
+        # 转换'content'键到'parts'
+        if 'content' in item:
+            item['parts'] = [item['content']]
+            del item['content']
+        # 转换'role'值从"assistant"到"model"
+        if item.get('role') == "assistant":
+            item['role'] = "model"
+    return input_list
 safety_settings = [
         {
             "category": "HARM_CATEGORY_DANGEROUS",
@@ -37,7 +47,10 @@ safety_settings = [
             "threshold": "BLOCK_NONE",
         },
     ]
-async def geminirep(ak,messages,GeminiRevProxy=""):
+async def geminirep(ak,messages,bot_info,GeminiRevProxy=""):
+    messages.insert(0,{"role": "user", "parts": [bot_info]})
+    messages.insert(1,{"role": 'model', "parts": ["好的，已了解您的需求，我会扮演好你设定的角色"]})
+    messages=convert_content_to_parts_and_role(messages)
     if GeminiRevProxy=="" or GeminiRevProxy==" ":
 
         # Or use `os.getenv('GOOGLE_API_KEY')` to fetch an environment variable.
