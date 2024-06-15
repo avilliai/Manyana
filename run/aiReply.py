@@ -62,6 +62,7 @@ def main(bot, master, logger):
     gptdev = resulttr.get("gpt3.5-dev")
     geminiapikey = resulttr.get("gemini")
     proxy = resulttr.get("proxy")
+    GeminiRevProxy=resulttr.get("GeminiRevProxy")
     berturl = resulttr.get("bert_colab")
     if proxy!="":
         os.environ["http_proxy"] = proxy
@@ -273,7 +274,7 @@ def main(bot, master, logger):
                 try:
                     # logger.info(geminiapikey)
                     r = asyncio.run_coroutine_threadsafe(
-                        geminirep(ak=random.choice(geminiapikey), messages=prompt, model1=replyModel),
+                        geminirep(ak=random.choice(geminiapikey), messages=prompt, GeminiRevProxy=GeminiRevProxy),
                         newLoop)
                     r = r.result()
                     # 更新该用户prompt
@@ -385,7 +386,7 @@ def main(bot, master, logger):
             try:
                 # logger.info(geminiapikey)
                 r = asyncio.run_coroutine_threadsafe(
-                    geminirep(ak=random.choice(geminiapikey), messages=prompt, model1=replyModel),
+                    geminirep(ak=random.choice(geminiapikey), messages=prompt, GeminiRevProxy=GeminiRevProxy),
                     newLoop)
                 r = r.result()
                 # 更新该用户prompt
@@ -639,7 +640,7 @@ def main(bot, master, logger):
                 try:
                     # logger.info(geminiapikey)
                     r = asyncio.run_coroutine_threadsafe(
-                        geminirep(ak=random.choice(geminiapikey), messages=prompt, model1=replyModel),
+                        geminirep(ak=random.choice(geminiapikey), messages=prompt, GeminiRevProxy=GeminiRevProxy),
                         newLoop)
                     r = r.result()
                     # 更新该用户prompt
@@ -755,7 +756,7 @@ def main(bot, master, logger):
             try:
                 # logger.info(geminiapikey)
                 r = asyncio.run_coroutine_threadsafe(
-                    geminirep(ak=random.choice(geminiapikey), messages=prompt, model1=replyModel),
+                    geminirep(ak=random.choice(geminiapikey), messages=prompt, GeminiRevProxy=GeminiRevProxy),
                     newLoop)
                 r = r.result()
                 # 更新该用户prompt
