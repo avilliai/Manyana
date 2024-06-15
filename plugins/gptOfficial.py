@@ -5,6 +5,7 @@ import random
 
 import httpx
 import requests
+import zhipuai
 from openai import OpenAI
 
 def gptOfficial(prompt,apikeys,proxy,bot_info):
@@ -126,6 +127,33 @@ def anotherGPT35(prompt,id):
     url=f"https://api.shenke.love/api/ChatGPT.php?msg={prompt}&id={id}"
     r = requests.get(url).json()["data"]["message"]
     return {"role": "assistant", "content": r}
+def chatGLM(api_key, bot_info, prompt):
+    print(bot_info)
+    print(prompt)
+    zhipuai.api_key = api_key
+    response = zhipuai.model_api.sse_invoke(
+        model="characterglm",
+        meta=bot_info,
+        prompt=prompt,
+        incremental=True
+    )
+    str1 = ""
+    for event in response.events():
+        if event.event == "add":
+            str1 += event.data
+            # print(event.data)
+        elif event.event == "error" or event.event == "interrupted":
+            str1 += event.data
+            # print(event.data)
+        elif event.event == "finish":
+            str1 += event.data
+            # print(event.data)
+            print(event.meta)
+        else:
+            str1 += event.data
+            # print(event.data)
+    # print(str1)
+    return str1
 if __name__ == '__main__':
     k = localAurona([{"role": "user", "content": "你好"}],"你是一只猫娘")
     print(k)
