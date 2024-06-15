@@ -53,8 +53,7 @@ def main(bot,config,sizhiKey,logger):
     yamlData = result.get("wReply")
     editPermission=yamlData.get("editPermission")
     friendmes=yamlData.get("friendmes")
-    global chineseVoiceRate
-    chineseVoiceRate = yamlData.get("chineseVoiceRate")
+    voiceLangType = str(result.get("语音功能设置").get("voiceLangType"))
     global voiceRate
     voiceRate = yamlData.get("voiceRate")
     MaxAllowableLength=yamlData.get("MaxAllowableLength")
@@ -69,8 +68,7 @@ def main(bot,config,sizhiKey,logger):
     likeindex = yamlData.get("replyRate")
     global sizhi
     sizhi = yamlData.get("sizhi")
-    global turnMess
-    turnMess = yamlData.get("turnMessage")
+
     global colorfulCharacter
     colorfulCharacter=yamlData.get("colorfulCharacter")
     colorfulCharacterList=os.listdir("data/colorfulAnimeCharacter")
@@ -541,7 +539,7 @@ def main(bot,config,sizhiKey,logger):
                         if voicegg=="vits":
 
                             path='data/voices/' + random_str() + '.wav'
-                            if random.randint(1,100)>chineseVoiceRate:
+                            if voiceLangType=="<jp>":
                                 if replyssssss in transLateData:
                                     text=transLateData.get(replyssssss)
                                 else:
@@ -560,7 +558,7 @@ def main(bot,config,sizhiKey,logger):
                                 path = await outVits({"text": replyssssss, "speaker": speaker92})
                             except:
                                 path = 'data/voices/' + random_str() + '.wav'
-                                if random.randint(1, 100) > chineseVoiceRate:
+                                if voiceLangType=="<jp>":
                                     if replyssssss in transLateData:
                                         text = transLateData.get(replyssssss)
                                     else:
@@ -651,26 +649,10 @@ def main(bot,config,sizhiKey,logger):
 
             logger.info('接收私聊消息,来自' + str(event.sender.get_name()) + ' | ' + str(
                 event.sender.id) + '内容：' + event.message_chain)
-            global turnMess
-            if turnMess == True and event.sender.id != master:
-                await bot.send_friend_message(master,'接收私聊消息\n来自：' + str(event.sender.get_name()) + '\nQQ:' + str(event.sender.id) + '\n内容：' + event.message_chain + '\n用--> ' + replyssssss + ' <--回复了')
-            else:
-                pass
             await bot.send(event, replyssssss)
 
 
-    @bot.on(FriendMessage)
-    async def banTurnMess(event: FriendMessage):
-        global turnMess
-        if str(event.sender.id)==str(master):
-            if str(event.message_chain)=='关闭转发':
-                await bot.send(event,'已关闭转发')
-                logger.info("关闭私聊转发")
-                turnMess=False
-            elif str(event.message_chain)=='开启转发':
-                logger("开启私聊转发")
-                await bot.send(event, '已开启转发')
-                turnMess=True
+
 
     # 删除模糊回复value
     @bot.on(GroupMessage)
@@ -865,8 +847,7 @@ def main(bot,config,sizhiKey,logger):
             likeindex = yamlData.get("replyRate")
             global sizhi
             sizhi = yamlData.get("sizhi")
-            global turnMess
-            turnMess = yamlData.get("turnMessage")
+
             #logger.info("读取词库文件中")
             #importDict()
             #logger.info("读取完成")
