@@ -224,7 +224,7 @@ def updaat(f=False,jump=False,source=None):
         # os.system("git pull https://github.com/avilliai/Manyana.git")
         # 启动进程
         p = subprocess.Popen(['git', 'pull', 'https://github.com/avilliai/Manyana.git'], stdout=subprocess.PIPE,
-                             stderr=subprocess.PIPE,encoding="utf-8")
+                             stderr=subprocess.PIPE)
     elif source=="2":
         p = subprocess.Popen(['git', 'pull', 'https://gh-proxy.com/https://github.com/avilliai/Manyana'], stdout=subprocess.PIPE,
                              stderr=subprocess.PIPE,encoding="utf-8")
