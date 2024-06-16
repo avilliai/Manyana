@@ -1,37 +1,27 @@
 # -*- coding: utf-8 -*-
 import asyncio
 import datetime
-import json
 import os
 import random
 import re
 import shutil
-import uuid
-from asyncio import sleep
-
-import httpx
-# import poe
 import yaml
 from mirai import Image, Voice, Startup
 from mirai import Mirai, WebSocketAdapter, FriendMessage, GroupMessage, At, Plain
 import threading
 from asyncio import sleep
-from concurrent.futures import ThreadPoolExecutor
-import zhipuai
 
 from plugins.RandomStr import random_str
-from plugins.chatGLMonline import chatGLM1, glm4
+from plugins.chatGLMonline import  glm4
 from plugins.cozeBot import cozeBotRep
 from plugins.googleGemini import geminirep
 from plugins.gptOfficial import gptOfficial, gptUnofficial, kimi, qingyan, lingyi, stepAI, qwen, gptvvvv, grop, \
     gpt4hahaha, localAurona, anotherGPT35, chatGLM
 
-from plugins.rwkvHelper import rwkvHelper
 from plugins.translater import translate
 from plugins.vitsGenerate import superVG, voiceGenerate
-from plugins.wReply.mohuReply import mohuaddReplys
 from plugins.wReply.wontRep import wontrep
-from plugins.yubanGPT import lolimigpt, lolimigpt2, relolimigpt2
+from plugins.yubanGPT import lolimigpt2, relolimigpt2
 
 
 # 1
