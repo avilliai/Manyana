@@ -579,8 +579,12 @@ def main(bot, master, logger):
                 r = r.result()
                 rep={"role": "assistant", "content": r}
             elif type(allcharacters.get(modelHere))==dict:
-                r=await loop.run_in_executor(None, chatGLM,chatGLM_api_key, bot_in, prompt1)
-                rep = {"role": "assistant", "content": r}
+                if str(event.sender.id) not in trustUser and trustglmReply:
+                    await bot.send(event, "无模型使用权限！")
+                    return
+                else:
+                    r = await loop.run_in_executor(None, chatGLM, chatGLM_api_key, bot_in, prompt1)
+                    rep = {"role": "assistant", "content": r}
             prompt1.append(rep)
             # 超过10，移除第一个元素
             if len(prompt1) > maxPrompt:
