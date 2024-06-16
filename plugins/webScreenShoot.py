@@ -1,6 +1,7 @@
 import asyncio
 from asyncio import sleep
 
+import httpx
 from selenium import webdriver
 def webScreenShoot(url,path,width=1200,height=7500):
     browser = webdriver.Firefox()
@@ -80,9 +81,14 @@ async def screenshot_to_pdf_and_png(link,path,waitT=1):
     except Exception as e:
         print(e)
 
-
+async def webScreenShot(url,path):
+    url=f"https://mini.s-shot.ru/1080x980/PNG/2024/?{url}"
+    async with httpx.AsyncClient(timeout=20) as client:
+        r = await client.get(url)
+        with open(path,"wb") as f:
+            f.write(r.content)
 if __name__ == '__main__':
-    asyncio.run(screenshot_to_pdf_and_png("https://prts.wiki/w/波登可","./test.png"))
+    asyncio.run(webScreenShot("https://prts.wiki/w/波登可","./test.png"))
     #asyncio.run(screenshot_to_pdf_and_png("https://prts.wiki/w/斯卡蒂", "./test.png"))
 
     #webScreenShoot("https://prts.wiki/w/w","test.png",1200,7500)
