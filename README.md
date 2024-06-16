@@ -399,90 +399,14 @@ news:
 
 </details>
 
-# 🚑可能遇到的问题
-<details markdown='21'><summary>一键部署脚本怎么跑不起来</summary>
-   
-- 确保已经安装了py3.9
-- 把代理关了，或者自己改pac，别挂全局代理
-
-</details>
-
-<details markdown='21'><summary>项目跑不起来/有功能没法用</summary>
-
-- 初次搭建遇到此问题，检查UI中【基本设置】，检查是否运行了一键部署脚本
-- 双击更新脚本，或者使用launcher.exe的更新功能，更新和重启能够解决绝大多数问题。
-- 如果更新无法解决，检查自己是否进行了不规范操作，比如自行修改文件导致文件格式异常无法读取
-- 排除以上两种情况后，请在我们的用户群628763673反馈此问题或是创建一个issue详细描述你遇到的问题
-
-</details>
-
-<details markdown='21'><summary>如何更新</summary>
-
-- 双击更新脚本，或者使用launcher.exe的更新功能
-- 一般建议成功执行完“处理冲突文件” 步骤后关闭
-
-</details>
-
-<details markdown='1'><summary>更新不了</summary>
-如果遇到网络问题更新失败，选择镜像源更新即可，git源与镜像源二者是同步的。<br>
-
-#### 类型1：git的奇奇怪怪报错，看不出更新没有
-这时候就该使用更新脚本[debug].bat了，请自行根据它的提示去搜索对应解决方案，你能解决的，这些都不是什么大问题。<br>
-处理好之后，就能正常使用更新脚本.bat进行更新了<br>
-#### 类型2：过于古早的Manyana
-如果你已经更新到了2.28之后的版本，更新时程序将自动处理冲突文件，基本不会再出现此问题。<br>
->2.28之前的版本更新遇到问题，往往是因为你自定义过的文件在仓库这边的母版又有了变动，需要手动处理冲突文件，更新代码时git会列出冲突的文件
-- 重命名你的冲突的文件，不要与原来一样
-- 更新，拉取新的文件
-- 根据旧的文件**填写**新的对应文件<br>
-
-</details>
-
-<details markdown='212'><summary>此项目的一些拓展/相关项目</summary>
-
-- [so-vits-svc语音合成](https://github.com/avilliai/Moe-SVC-api)
-  - 中文语音合成(很吃显卡)
-- [bert_vits2_sever](https://github.com/avilliai/Bert_Vits2_Sever)
-  - 更强大的中文语音合成(新版本Manyana无需额外部署即可使用，语音合成模式设置为modelscopeTTS即可。)
-- [bert_vits2_sever.colab](https://colab.research.google.com/drive/1n8lI6pOiDtli2zC5fL9PZ9TZqbOafqma?usp=sharing)
-  - 更强大的中文语音合成，使用colab(新版本Manyana无需额外部署即可使用，语音合成模式设置为modelscopeTTS即可。)
-- [Berglm](https://github.com/avilliai/Bergml)
-  - 轻量版Manyana，无需部署环境，双击即可运行。仅保留部分功能
-- [NTManyana(NTQQ)](https://github.com/avilliai/NTManyana)
-  - 适用于NTQQ的Manyana(烂尾项目)
-- [Cyumis](https://github.com/avilliai/Cyumis)
-  - 基于官方api的版本，需要先在 https://q.qq.com/qqbot/#/developer/developer-setting 获取token和secret(烂尾项目)
-
- </details>
-<details markdown='213'><summary>改用overflow</summary>
-
-[教程与整合包](https://github.com/avilliai/Manyana/releases/tag/LLoneBot-tutorial)
-
-你可以简单理解为，overflow取代了压缩包里的miraiBot，这也是现在推荐的。
-
-也就是说，原本你是miraiBot+Manyana，现在可以overflow+Manyana(当然QQ客户端得挂着)，而不用再启动原来的Mirai
-
-</details>
-
-<details markdown='114514'><summary>语音听不到</summary>
-[issue1](https://github.com/avilliai/Manyana/issues/1)
-
-</details>
-
-<details markdown='114513'><summary>自动重新登录</summary>
-[issue3](https://github.com/avilliai/Manyana/issues/3)
-
-</details>
-
-<details markdown='1145131'><summary>使用这些源码搭建的bot可以收费运营吗</summary>
-**可以，毕竟热情不能当饭吃**<br>
-比如使用characterglm模型时，如果你的群很多，每个月的成本往往就是难以承受的；这样的话，我十分建议你去开一个爱发电或者把收款码给用户，多少降低一些成本压力。
-
-</details>
 
 # 🎄最后
 如果觉得项目还不错的话给个star喵，给个star谢谢喵
 ![Star History Chart](https://api.star-history.com/svg?repos=avilliai/Manyana&type=Date)
+
+其他相关项目如下
+- [Enkianthus_tts](https://github.com/avilliai/Enkianthus_tts) 简单易用的语音合成工具
+- [Petunia](https://github.com/avilliai/Petunia/releases) 轻量版Manyana，无需搭建环境，已打包
 
 感谢JetBrains提供的开源项目license<br>
 <img src="https://resources.jetbrains.com/storage/products/company/brand/logos/PyCharm_icon.png" alt="PyCharm logo." width="50">
