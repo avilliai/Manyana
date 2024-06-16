@@ -238,7 +238,7 @@ def updaat(f=False,jump=False,source=None):
     stdout = stdout.decode('utf-8', errors='ignore')
     stderr = stderr.decode('utf-8', errors='ignore')
     logger.info(stdout)
-    logger.error(stderr)
+    logger.warning(stderr)
 
     # 标记是否在错误信息中
     in_error_info = False
