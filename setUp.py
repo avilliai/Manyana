@@ -271,11 +271,14 @@ def updaat(f=False,jump=False,source=None):
         if 'error: Your local changes to the following files would be overwritten by merge:' in line:
             in_error_info = True
             continue  # 结束当前循环，进入下一个循环
-
+        elif 'error: 您对下列文件的本地修改将被合并操作覆盖：' in line:
+            in_error_info=True
+            continue
         # 标记冲突文件名结束位置
         if 'Please commit your changes or stash them before you merge.' in line:
             in_error_info = False
-
+        elif '请在合并前提交或贮藏您的修改。' in line:
+            in_error_info=False
         # 将冲突文件名添加到列表
         if in_error_info:
             conflict_files.append(line.strip())
@@ -303,8 +306,9 @@ def updaat(f=False,jump=False,source=None):
                 shutil.copyfile(file, file.replace("config", "temp"))
                 os.remove(file)
         else:
-            logger.warning("无法处理的 " + file)
-            logger.warning("请自行决定删除或修改文件名称，在重新拉取后根据旧文件重新填写新文件")
+            os.remove(file)
+            logger.warning("移除了 " + file)
+            #logger.warning("请自行决定删除或修改文件名称，在重新拉取后根据旧文件重新填写新文件")
     logger.warning("开始处理冲突文件")
     logger.info("即将再次执行拉取操作")
     updaat(True,True,str(source))
