@@ -227,7 +227,7 @@ def updaat(f=False,jump=False,source=None):
                              stderr=subprocess.PIPE)
     elif source=="2":
         p = subprocess.Popen(['git', 'pull', 'https://gh-proxy.com/https://github.com/avilliai/Manyana'], stdout=subprocess.PIPE,
-                             stderr=subprocess.PIPE,encoding="utf-8")
+                             stderr=subprocess.PIPE)
     elif source=="3":
         p=subprocess.Popen(['git', 'pull', 'https://mirror.ghproxy.com/https://github.com/avilliai/Manyana'], stdout=subprocess.PIPE,stderr=subprocess.PIPE)
     else:
