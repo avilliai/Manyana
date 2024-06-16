@@ -58,10 +58,7 @@ def main(bot, master, logger):
         os.environ["http_proxy"] = proxy
     gptkeys = resulttr.get("openai-keys")
     chatGLM_api_key = resulttr.get("chatGLM")
-    with open('data/GeminiData.yaml', 'r', encoding='utf-8') as f:
-        cha0 = yaml.load(f.read(), Loader=yaml.FullLoader)
-    global GeminiData
-    GeminiData = cha0
+
 
     with open('config/chatGLM.yaml', 'r', encoding='utf-8') as f:
         result222 = yaml.load(f.read(), Loader=yaml.FullLoader)
@@ -156,7 +153,7 @@ def main(bot, master, logger):
     @bot.on(FriendMessage)
     async def GLMFriendChat(event: FriendMessage):
         # 用非常丑陋的复制粘贴临时解决bug，这下成石山代码了
-        global chatGLMData, chatGLMCharacters, trustUser, chatGLMsingelUserKey, userdict, GeminiData, coziData
+        global chatGLMData, chatGLMCharacters, trustUser, chatGLMsingelUserKey, userdict, coziData
         text = str(event.message_chain)
         if event.sender.id == master:
             noresm = ["群列表", "/bl", "退群#", "/quit"]
@@ -177,22 +174,13 @@ def main(bot, master, logger):
     # 私聊中chatGLM清除本地缓存
     @bot.on(FriendMessage)
     async def clearPrompt(event: FriendMessage):
-        global chatGLMData, GeminiData, coziData
-        if str(event.message_chain) == "/clearGLM" or str(event.message_chain) == "/clear" or str(
-                event.message_chain) == "/cGemini":
+        global chatGLMData, coziData
+        if str(event.message_chain) == "/clear":
             try:
                 chatGLMData.pop(event.sender.id)
                 # 写入文件
                 with open('data/chatGLMData.yaml', 'w', encoding="utf-8") as file:
                     yaml.dump(chatGLMData, file, allow_unicode=True)
-                await bot.send(event, "已清除近期记忆")
-            except:
-                logger.error("清理缓存出错，无本地对话记录")
-            try:
-                GeminiData.pop(event.sender.id)
-                # 写入文件
-                with open('data/GeminiData.yaml', 'w', encoding="utf-8") as file:
-                    yaml.dump(GeminiData, file, allow_unicode=True)
                 await bot.send(event, "已清除近期记忆")
             except:
                 logger.error("清理缓存出错，无本地对话记录")
@@ -317,7 +305,7 @@ def main(bot, master, logger):
     # 群内chatGLM回复
     @bot.on(GroupMessage)
     async def atReply(event: GroupMessage):
-        global trustUser, chatGLMapikeys, chatGLMData, chatGLMCharacters, chatGLMsingelUserKey, userdict, GeminiData, coziData, trustG
+        global trustUser, chatGLMapikeys, chatGLMData, chatGLMCharacters, chatGLMsingelUserKey, userdict,coziData, trustG
         if At(bot.qq) in event.message_chain:
             try:
                 if wontrep(noRes1, str(event.message_chain).replace(str(At(bot.qq)), "").replace(" ", ""),logger)==False:
@@ -383,22 +371,13 @@ def main(bot, master, logger):
     # 用于chatGLM清除本地缓存
     @bot.on(GroupMessage)
     async def clearPrompt(event: GroupMessage):
-        global chatGLMData, GeminiData, coziData
-        if str(event.message_chain) == "/clearGLM" or str(event.message_chain) == "/cGemini" or str(
-                event.message_chain) == "/clear":
+        global chatGLMData, coziData
+        if str(event.message_chain) == "/clear":
             try:
                 chatGLMData.pop(event.sender.id)
                 # 写入文件
                 with open('data/chatGLMData.yaml', 'w', encoding="utf-8") as file:
                     yaml.dump(chatGLMData, file, allow_unicode=True)
-                await bot.send(event, "已清除近期记忆")
-            except:
-                logger.error("清理缓存出错，无本地对话记录")
-            try:
-                GeminiData.pop(event.sender.id)
-                # 写入文件
-                with open('data/GeminiData.yaml', 'w', encoding="utf-8") as file:
-                    yaml.dump(GeminiData, file, allow_unicode=True)
                 await bot.send(event, "已清除近期记忆")
             except:
                 logger.error("清理缓存出错，无本地对话记录")
@@ -412,9 +391,6 @@ def main(bot, master, logger):
                 # chatGLMData.pop(event.sender.id)
                 # 写入文件
                 with open('data/chatGLMData.yaml', 'w', encoding="utf-8") as file:
-                    yaml.dump(chatGLMData, file, allow_unicode=True)
-
-                with open('data/GeminiData.yaml', 'w', encoding="utf-8") as file:
                     yaml.dump(chatGLMData, file, allow_unicode=True)
                 await bot.send(event, "已清除所有用户的prompt")
             except:
@@ -432,7 +408,7 @@ def main(bot, master, logger):
     # 运行异步函数
 
     async def modelReply(event, modelHere):
-        global trustUser, chatGLMapikeys, chatGLMData, chatGLMCharacters, chatGLMsingelUserKey, userdict, GeminiData, coziData
+        global trustUser, chatGLMapikeys, chatGLMData, chatGLMCharacters, chatGLMsingelUserKey, userdict, coziData
         logger.info(modelHere)
         try:
             if event.type != 'FriendMessage':
