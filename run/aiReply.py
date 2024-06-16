@@ -161,8 +161,11 @@ def main(bot, master, logger):
                 if text == saa or text.startswith(saa):
                     logger.warning("与屏蔽词匹配，不回复")
                     return
-        if (trustglmReply == True and str(event.sender.id) not in trustUser) or privateGlmReply!=True:
-            return
+        if privateGlmReply==True:
+            pass
+        else: 
+            if (trustglmReply == True and str(event.sender.id) not in trustUser) or trustglmReply!=True:
+                return
         if event.sender.id in chatGLMCharacters:
             # print("在")
             print(chatGLMCharacters.get(event.sender.id), type(chatGLMCharacters.get(event.sender.id)))
