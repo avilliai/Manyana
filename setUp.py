@@ -223,22 +223,21 @@ def updaat(f=False,jump=False,source=None):
         # os.system("git pull https://github.com/avilliai/Manyana.git")
         # 启动进程
         p = subprocess.Popen(['git', 'pull', 'https://github.com/avilliai/Manyana.git'], stdout=subprocess.PIPE,
-                             stderr=subprocess.PIPE)
+                             stderr=subprocess.PIPE,encoding="utf-8")
     elif source=="2":
         p = subprocess.Popen(['git', 'pull', 'https://gh-proxy.com/https://github.com/avilliai/Manyana'], stdout=subprocess.PIPE,
-                             stderr=subprocess.PIPE)
+                             stderr=subprocess.PIPE,encoding="utf-8")
     elif source=="3":
-        p=subprocess.Popen(['git', 'pull', 'https://mirror.ghproxy.com/https://github.com/avilliai/Manyana'], stdout=subprocess.PIPE,stderr=subprocess.PIPE)
+        p=subprocess.Popen(['git', 'pull', 'https://mirror.ghproxy.com/https://github.com/avilliai/Manyana'], stdout=subprocess.PIPE,stderr=subprocess.PIPE,encoding="utf-8")
     else:
         logger.error("无效输入，重新执行")
         updaat()
     # 获取进程的输出和错误信息
     stdout, stderr = p.communicate()
-
-    # 输出内容和错误信息都是字节串，需要解码为字符串
-    stdout = stdout.decode()
+    stdout = stdout.decode('utf-8', errors='ignore')
+    stderr = stderr.decode('utf-8', errors='ignore')
     logger.info(stdout)
-    stderr = stderr.decode()
+    logger.error(stderr)
 
     # 标记是否在错误信息中
     in_error_info = False
