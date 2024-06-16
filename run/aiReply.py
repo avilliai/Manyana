@@ -376,6 +376,7 @@ def main(bot, master, logger):
                     except:
                         logger.error("vits服务运行出错，请检查是否开启或检查配置")
                         await bot.send(event, st1, True)
+                        return
                 else:
                     logger.info(f"调用{voicegg}语音合成")
                     path = await superVG(data1, voicegg, berturl, voiceLangType)
