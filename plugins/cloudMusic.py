@@ -1,9 +1,12 @@
 import asyncio
 
 import httpx
+import librosa
 import requests
 import json
 # 定义请求的URL
+import soundfile
+
 from plugins.newsEveryDay import get_headers
 
 
@@ -17,14 +20,18 @@ async def newCloudMusicDown(musicname,n):
     path = 'data/music/musicCache/' + musicname + '.mp3'
     #path="./ttt.mp3"
     async with httpx.AsyncClient(timeout=None, headers=get_headers()) as client:
-        r = await client.get(url)
-        r=r.json().get("data").get("src")
-        waf = requests.get(r,timeout=20).content
-
+        rp = await client.get(url)
+        r=rp.json().get("data").get("src")
+        imgP=rp.json().get("data").get("cover")
+        r=str(r).split("id=")[1].replace(".mp3","")
+        newR=f"https://dataiqs.com/api/netease/music/?type=songid&id={r}"
+        async with httpx.AsyncClient(timeout=None, headers=get_headers()) as client:
+            r2 = await client.get(newR)
+            #print(r.json()["song_url"])
+        waf = requests.get(r2.json()["song_url"],timeout=20).content
         with open(path, "wb") as f:
             f.write(waf)
-        return path
-
+        return path,r2.json()["song_url"],imgP
 
 
 '''import os, pilk
