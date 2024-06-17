@@ -31,7 +31,7 @@ async def newCloudMusicDown(musicname,n):
         waf = requests.get(r2.json()["song_url"],timeout=20).content
         with open(path, "wb") as f:
             f.write(waf)
-        return path,r2.json()["song_url"],imgP
+        return path
 
 
 '''import os, pilk

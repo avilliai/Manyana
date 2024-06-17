@@ -87,10 +87,9 @@ def main(bot,logger):
                     order = int(str(event.message_chain))
                     musicname = musicTask.get(event.sender.id)
                     logger.info(f"获取歌曲：{musicname} 序号：{order}")
-                    p,urlMusic,img= await newCloudMusicDown(musicname, order)
+                    p= await newCloudMusicDown(musicname, order)
                     logger.info(f"已下载目标单曲：{p}")
                     await bot.send(event, Voice(path=p))
-                    await bot.send(event,[Image(url=img),urlMusic])
                     musicTask.pop(event.sender.id)
                 else:
                     ass = musicTask.get(event.sender.id)[int(str(event.message_chain))]
