@@ -104,6 +104,9 @@ def main(bot,logger):
                     musicTask.pop(event.sender.id)
             except Exception as e:
                 logger.error(e)
-                musicTask.pop(event.sender.id)
+                try:
+                    musicTask.pop(event.sender.id)
+                except:
+                    pass
                 await bot.send(event,"点歌失败！不规范的操作")
 
