@@ -84,16 +84,15 @@ def main(bot,logger):
         if event.sender.id in musicTask:
             try:
                 if musicToVoice==True:
-                    musicTask.pop(event.sender.id)
+
                     order = int(str(event.message_chain))
                     musicname = musicTask.get(event.sender.id)
                     logger.info(f"获取歌曲：{musicname} 序号：{order}")
                     p= await newCloudMusicDown(musicname, order)
                     logger.info(f"已下载目标单曲：{p}")
                     await bot.send(event, Voice(path=p))
-
-                else:
                     musicTask.pop(event.sender.id)
+                else:
                     ass = musicTask.get(event.sender.id)[int(str(event.message_chain))]
                     logger.info("获取歌曲：" + ass[0])
                     await bot.send(event, MusicShare(kind="NeteaseCloudMusic", title=ass[0],
@@ -102,7 +101,7 @@ def main(bot,logger):
                                                                       picture_url=ass[2],
                                                                       music_url="http://music.163.com/song/media/outer/url?id=" + str(ass[1]) + ".mp3",
                                                                       brief=ass[3]))
-
+                    musicTask.pop(event.sender.id)
             except Exception as e:
                 logger.error(e)
                 musicTask.pop(event.sender.id)
