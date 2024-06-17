@@ -51,32 +51,30 @@ def main(bot,logger):
         if str(event.message_chain).startswith("点歌 "):
             musicName=str(event.message_chain).replace("点歌 ","")
             logger.info("点歌："+musicName)
-            if 1:
-                if musicToVoice == True:
-                    ffs=await newCloudMusic(musicName)
-                    if ffs==None:
-                        await bot.send(event,"连接出错，或无对应歌曲")
-                    else:
-                        musicTask[event.sender.id]=musicName
-                        musicL=""
-                        for ib in ffs:
-                            musicL+=ib
-                        await bot.send(event,f"请发送对应歌曲的序号:\n{musicL}",True)
+            if musicToVoice == True:
+                ffs=await newCloudMusic(musicName)
+                if ffs==None:
+                    await bot.send(event,"连接出错，或无对应歌曲")
                 else:
-                    ffs = await cccdddm(musicName)
-                    if ffs == None:
-                        await bot.send(event, "连接出错，或无对应歌曲")
-                    else:
-                        musicTask[event.sender.id] = ffs
-                        # print(ffs)
-                        t = "请发送序号："
-                        i = 0
-                        for sf in ffs:
-                            t = t + "\n" + str(i) + " " + sf[0] + " | " + sf[3]
-                            i += 1
-                        await bot.send(event, t, True)
+                    musicTask[event.sender.id]=musicName
+                    musicL=""
+                    for ib in ffs:
+                        musicL+=ib
+                    await bot.send(event,f"请发送对应歌曲的序号:\n{musicL}",True)
             else:
-                await bot.send(event, "连接出错，或无对应歌曲")
+                ffs = await cccdddm(musicName)
+                if ffs == None:
+                    await bot.send(event, "连接出错，或无对应歌曲")
+                else:
+                    musicTask[event.sender.id] = ffs
+                    # print(ffs)
+                    t = "请发送序号："
+                    i = 0
+                    for sf in ffs:
+                        t = t + "\n" + str(i) + " " + sf[0] + " | " + sf[3]
+                        i += 1
+                    await bot.send(event, t, True)
+
 
     @bot.on(GroupMessage)
     async def select11Music(event: GroupMessage):

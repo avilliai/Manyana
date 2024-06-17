@@ -22,7 +22,6 @@ async def newCloudMusicDown(musicname,n):
     async with httpx.AsyncClient(timeout=None, headers=get_headers()) as client:
         rp = await client.get(url)
         r=rp.json().get("data").get("src")
-        imgP=rp.json().get("data").get("cover")
         r=str(r).split("id=")[1].replace(".mp3","")
         newR=f"https://dataiqs.com/api/netease/music/?type=songid&id={r}"
         async with httpx.AsyncClient(timeout=None, headers=get_headers()) as client:
