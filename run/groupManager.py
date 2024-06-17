@@ -55,7 +55,6 @@ def main(bot,config,moderateKey,logger):
     fuckingnumber=friendsAndGroups.get("fuckingnumber")  # 低于13人退
     qiandaoT=friendsAndGroups.get("signTimes")
 
-    helpUser=result1.get("chatGLM").get("helpUser")
     privateGlmReply = result1.get("chatGLM").get("privateGlmReply")
     trustglmReply = result1.get("chatGLM").get("trustglmReply")
 
@@ -242,23 +241,6 @@ def main(bot,config,moderateKey,logger):
             except Exception as e:
                 logger.error(e)
         await bot.send_group_message(event.group.id,"发送 @"+str(botName)+" 帮助 以获取功能列表\n项目地址：https://github.com/avilliai/Manyana\n喜欢bot的话可以给个star哦(≧∇≦)ﾉ")
-        if helpUser:
-            await bot.send_group_message(event.group.id, ("近期支持了ChatGLM，更智能的ai聊天。\n您可以自行设置apiKey，随后可在本群启用\n(注册送的18大概够用半年)\n==============\n1、注册并登录https://open.bigmodel.cn/overview\n2、点击图2中内容，复制完整apiKey.\n3、在群内或者私聊发送\n设置密钥#apiKey\n\n(群内发送则全群可用，私聊发送则仅个人使用)",Image(path="data/fonts/1.jpg"),Image(path="data/fonts/2.jpg")))
-
-
-        '''path="data/autoReply/voiceReply/joinGroup.wav"
-
-        ok=os.path.exists(path)
-        if ok:
-            await bot.send_group_message(event.group.id,Voice(path=path))
-        else:
-            data={'text':"[JA]みなさん、こんにちは、私はこのグループのメンバーになりました、将来もっとアドバイスしてください![JA]","out":path}
-            await voiceGenerate(data)
-            await bot.send_group_message(event.group.id,Voice(path=path))'''
-        #await bot.send_group_message(event.group.id,"发送 帮助 获取功能列表哦")
-
-
-
     @bot.on(Startup)
     async def updateData(event: Startup):
         while True:
@@ -328,10 +310,7 @@ def main(bot,config,moderateKey,logger):
             await bot.send_friend_message(event.from_id, "群内发送 @"+str(botName)+" 帮助 获取功能列表")
             await bot.send_friend_message(event.from_id,"本bot用户群"+str(mainGroup))
             if privateGlmReply==False and trustglmReply :
-                await bot.send_friend_message(event.from_id,"在任意群内累计发送 签到 "+str(trustDays)+"天后将为您开放私聊chatglm权限")
-            if helpUser:
-                await bot.send_friend_message(event.from_id,("近期支持了ChatGLM，更智能的ai聊天。\n您可以自行设置apiKey\n(注册送的18大概够用半年)\n==============\n1、注册并登录https://open.bigmodel.cn/overview\n2、点击图2中内容，复制完整apiKey.\n3、在群内或者私聊发送\n设置密钥#apiKey\n\n(群内发送则全群可用，私聊发送则仅个人使用)",Image(path="data/fonts/1.jpg"),Image(path="data/fonts/2.jpg")))
-
+                await bot.send_friend_message(event.from_id,"在任意群内累计发送 签到 "+str(trustDays)+"天后将为您开放私聊ai权限")
         else:
             logger.info("无用户记录，拒绝")
             al='拒绝'
@@ -623,33 +602,27 @@ def main(bot,config,moderateKey,logger):
         if At(bot.qq) in event.message_chain:
             for i in ls:
                 if i in str(event.message_chain):
-                    try:
-                        await bot.mute(target=event.sender.group.id, member_id=event.sender.id, time=banTime)
-                        return
-                    except:
-                        logger.error("禁言失败，权限可能过低")
-                        logger.warn("敏感词触发者："+str(event.sender.id))
-                        await bot.send_friend_message(master,"用户："+str(event.sender.id)+" 发送了含敏感字消息\n群号："+str(event.group.id)+"\n内容："+str(event.message_chain)+"\n可使用 退群#群号 操作bot退出该群")
-                        #await bot.quit(event.group.id)
-                        global blackList
-                        global blGroups
-                        if event.group.id in blGroups:
-                            logger.info("已有黑名单群"+str(event.sender.group))
-                        else:
-                            blGroups.append(event.group.id)
+                    logger.warn("敏感词触发者："+str(event.sender.id))
+                    await bot.send_friend_message(master,"用户："+str(event.sender.id)+" 发送了含敏感字消息\n群号："+str(event.group.id)+"\n内容："+str(event.message_chain)+"\n可使用 退群#群号 操作bot退出该群\n或使用\n  /bl add qq号  拉黑指定用户")
+                    global blackList
+                    global blGroups
+                    if event.group.id in blGroups or event.group.id == int(mainGroup):
+                        logger.info("不再添加黑名单群："+str(event.sender.group))
+                    else:
+                        blGroups.append(event.group.id)
 
-                        if event.sender.id in blackList:
-                            logger.info("已有黑名单用户"+str(event.sender.id))
-                        else:
-                            blackList.append(event.sender.id)
+                    if event.sender.id in blackList:
+                        logger.info("已有黑名单用户"+str(event.sender.id))
+                    else:
+                        blackList.append(event.sender.id)
 
-                        with open('config/autoSettings.yaml', 'r', encoding='utf-8') as f:
-                            result = yaml.load(f.read(), Loader=yaml.FullLoader)
-                        result["banUser"] = blackList
-                        result["banGroups"] = blGroups
-                        with open('config/autoSettings.yaml', 'w', encoding="utf-8") as file:
-                            yaml.dump(result, file, allow_unicode=True)
-                        return
+                    with open('config/autoSettings.yaml', 'r', encoding='utf-8') as f:
+                        result = yaml.load(f.read(), Loader=yaml.FullLoader)
+                    result["banUser"] = blackList
+                    result["banGroups"] = blGroups
+                    with open('config/autoSettings.yaml', 'w', encoding="utf-8") as file:
+                        yaml.dump(result, file, allow_unicode=True)
+                    return
 
     @bot.on(GroupMessage)
     async def removeBl(event: GroupMessage):
