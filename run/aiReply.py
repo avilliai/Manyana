@@ -152,6 +152,7 @@ def main(bot, master, logger):
     listen.start()
     @bot.on(NudgeEvent)
     async def NudgeReply(event:NudgeEvent):
+        #戳一戳使用ai回复的话，和这部分放在一起会更好。
         if event.target==bot.qq and nudgeornot:
             global chatGLMCharacters
             logger.info("接收到来自" + str(event.from_id) + "的戳一戳")
