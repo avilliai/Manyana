@@ -84,6 +84,7 @@ def main(bot, master, logger):
     trustDays = friendsAndGroups.get("trustDays")
     glmReply = result.get("chatGLM").get("glmReply")
     privateGlmReply = result.get("chatGLM").get("privateGlmReply")
+    nudgeornot=result.get("chatGLM").get("nudgeReply")
     randomModelPriority = result.get("chatGLM").get("random&PriorityModel")
     replyModel = result.get("chatGLM").get("model")
     trustglmReply = result.get("chatGLM").get("trustglmReply")
@@ -151,7 +152,7 @@ def main(bot, master, logger):
     listen.start()
     @bot.on(NudgeEvent)
     async def NudgeReply(event:NudgeEvent):
-        if event.target==bot.qq:
+        if event.target==bot.qq and nudgeornot:
             global chatGLMCharacters
             logger.info("接收到来自" + str(event.from_id) + "的戳一戳")
             if event.sender.id in chatGLMCharacters:
