@@ -8,6 +8,7 @@ import shutil
 import yaml
 from mirai import Image, Voice, Startup
 from mirai import Mirai, WebSocketAdapter, FriendMessage, GroupMessage, At, Plain
+from mirai.models import NudgeEvent
 import threading
 from asyncio import sleep
 
@@ -148,12 +149,22 @@ def main(bot, master, logger):
     listen = CListen(newLoop)
     listen.setDaemon(True)
     listen.start()
-
+    @bot.on(NudgeEvent)
+    async def NudgeReply(event:NudgeEvent):
+        if event.target==bot.qq:
+            global chatGLMCharacters
+            logger.info("接收到来自" + str(event.from_id) + "的戳一戳")
+            if event.sender.id in chatGLMCharacters:
+                print(chatGLMCharacters.get(event.sender.id), type(chatGLMCharacters.get(event.sender.id)))
+                await modelReply(event, chatGLMCharacters.get(event.sender.id),nudgeR=True)
+            # 判断模型类型
+            else:
+                await modelReply(event, replyModel,nudgeR=True)
     # 私聊使用chatGLM,对信任用户或配置了apiKey的用户开启
     @bot.on(FriendMessage)
     async def GLMFriendChat(event: FriendMessage):
         # 用非常丑陋的复制粘贴临时解决bug，这下成石山代码了
-        global chatGLMData, chatGLMCharacters, trustUser, chatGLMsingelUserKey, userdict, coziData
+        global chatGLMData, chatGLMCharacters, trustUser, userdict
         text = str(event.message_chain)
         if event.sender.id == master:
             noresm = ["群列表", "/bl", "退群#", "/quit"]
@@ -409,7 +420,7 @@ def main(bot, master, logger):
 
     # 运行异步函数
 
-    async def modelReply(event, modelHere):
+    async def modelReply(event, modelHere,nudgeR=False):
         global trustUser, chatGLMapikeys, chatGLMData, chatGLMCharacters, chatGLMsingelUserKey, userdict, coziData
         logger.info(modelHere)
         try:
@@ -456,6 +467,8 @@ def main(bot, master, logger):
             text = str(event.message_chain).replace("@" + str(bot.qq) + " ", '')
             if text == "" or text == " ":
                 text = "在吗"
+            if nudgeR:
+                text=random.choice(["戳你一下", "摸摸头", "戳戳你的头", "摸摸~"])
             if event.sender.id in chatGLMData:
                 prompt1 = chatGLMData.get(event.sender.id)
                 prompt1.append({"content": text, "role": "user"})
