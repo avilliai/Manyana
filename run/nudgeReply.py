@@ -112,7 +112,7 @@ def main(bot,master,logger,berturl,proxy):
     @bot.on(NudgeEvent)
     async def NudgeReply(event:NudgeEvent):
         global transLateData
-        if event.target==bot.qq and nudgeornot==False::
+        if event.target==bot.qq and nudgeornot==False:
             logger.info("接收到来自" + str(event.from_id) + "的戳一戳")
             if random.randint(0,100)>100-prob:
                 await bot.send_group_message(event.subject.id, random.choice(special_Reply))
