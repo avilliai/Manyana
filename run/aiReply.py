@@ -605,7 +605,7 @@ def main(bot, master, logger):
             prompt1.append(rep)
             # 超过10，移除第一个元素
             if len(prompt1) > maxPrompt:
-                logger.error(f"{modelHere} prompt超限，移除元素")
+                logger.warning(f"{modelHere} prompt超限，移除元素")
                 del prompt1[0]
                 del prompt1[0]
             chatGLMData[event.sender.id] = prompt1
