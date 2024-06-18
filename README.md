@@ -373,18 +373,18 @@ news:
 
 <details markdown='1'><summary>使用ai回复替代词库回复</summary>
 
-模型相关信息如下，配置好后，在settings.yaml的chatGLM项，打开glmReply即可
+模型相关信息如下，你自己用 设定#模型名 指令的优先级高于你在配置文件填写的模型，所以不要再问“为什么我修改了配置文件模型还是没反应”的问题了
 
 
-| 模型(settings.yaml设置)           | 介绍                                                                                                                                   | 配置项(api.yaml)             | 评价                                               |
+| 模型(settings.yaml中的model设置)    | 介绍                                                                                                                                   | 配置项(api.yaml对应)             | 评价                                               |
 |-------------------------------|--------------------------------------------------------------------------------------------------------------------------------------|---------------------------|--------------------------------------------------|
-| characterglm                  | 智谱的超拟人大模型，在这里[申请](https://open.bigmodel.cn/)                                                                                         | chatGLM                   | 付费api，贵，敏感词多，但效果不错                               |
-| kimi、清言、lingyi、step、通义千问、gptX | 任选其一填入即可，免费无需配置、较稳定                                                                                                                  | 【无需配置】                    | 免费，无代理可用                                         |
-| lolimigpt、glm-4               | 任选其一填入，免费无需配置、不稳定                                                                                                                    | 【无需配置】                    | 免费，不稳定                                           |
+| characterglm                  | 智谱的超拟人大模型，在这里[申请](https://open.bigmodel.cn/)                                                                                         | chatGLM                  | 付费api，效果好。群少/自用可优先选择                             |
+| gemini                        | 谷歌Gemini，在这里[申请apikey](https://ai.google.dev/tutorials/setup?hl=zh-cn)，需配置proxy                                                      | gemini<br>proxy           | 免费，稳定，有代理时首选                                     |
+| random | 稳定，免费，无代理首选，包括下面列出的所有无需配置的免费模型                                                                                                                  | 【无需配置】                    | 免费，稳定，无需代理                               |
+| kimi、清言、lingyi、step、通义千问、gptX，glm-4、lolimigpt | 任选其一填入即可，免费无需配置、较稳定，不如直接填random                                                                                                                 | 【无需配置】                    | 免费，较稳定                               |
 | gpt3.5                        | 官方gpt3.5，需要填写代理proxy项                                                                                                                | openai-keys<br>proxy      | 不建议使用，官方贵，并且需要配置代理                               |
-| gpt3.5-dev(模型仍填gpt3.5)        | 官方gpt3.5，无需代理，[免费申请apikey](https://github.com/chatanywhere/GPT_API_free?tab=readme-ov-file)                                          | openai-keys<br>gpt3.5-dev | 免费，稳定，有调用次数限制                                    |
+| gpt3.5                        | 同样是gpt3.5，无需代理，[免费申请apikey](https://github.com/chatanywhere/GPT_API_free?tab=readme-ov-file) 使用此apikey需要把gpt3.5-dev的值修改为true         | openai-keys<br>gpt3.5-dev | 不建议使用，免费，稳定，每天限制100次                                   |
 | Cozi                          | GPT4，基于[coze-discord](https://github.com/deanxv/coze-discord-proxy)，教程请查看[Here](https://github.com/avilliai/Manyana/issues/4)，最好配置代理 | cozi<br>proxy(建议)         | 免费。需要discord小号，每个账号每天都有次数限制(gpt4 100次/天)，可配置多个小号 |
-| gemini                        | 谷歌Gemini，在这里[申请apikey](https://ai.google.dev/tutorials/setup?hl=zh-cn)，需配置proxy                                                      | gemini<br>proxy           | 免费，如果你有代理，那就是首选                                  |
 
 ### 思知ai(不建议用，按上表操作即可使用各类大模型回复)
 > 这里是如何使用免费的思知ai进行回复的教程，目前已不推荐，推荐使用上面的chatglm
