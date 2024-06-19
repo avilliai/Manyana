@@ -25,39 +25,76 @@ def convert_content_to_parts_and_role(input_list):
         if item.get('role') == "assistant":
             item['role'] = "model"
     return input_list
-
-async def geminirep(ak,messages,bot_info,GeminiRevProxy="",proxy=""):
+safety_settings = [
+        {
+            "category": "HARM_CATEGORY_DANGEROUS",
+            "threshold": "BLOCK_NONE",
+        },
+        {
+            "category": "HARM_CATEGORY_HARASSMENT",
+            "threshold": "BLOCK_NONE",
+        },
+        {
+            "category": "HARM_CATEGORY_HATE_SPEECH",
+            "threshold": "BLOCK_NONE",
+        },
+        {
+            "category": "HARM_CATEGORY_SEXUALLY_EXPLICIT",
+            "threshold": "BLOCK_NONE",
+        },
+        {
+            "category": "HARM_CATEGORY_DANGEROUS_CONTENT",
+            "threshold": "BLOCK_NONE",
+        },
+    ]
+async def geminirep(ak,messages,bot_info,GeminiRevProxy=""):
     messages.insert(0,{"role": "user", "parts": [bot_info]})
     messages.insert(1,{"role": 'model', "parts": ["好的，已了解您的需求，我会扮演好你设定的角色"]})
     messages=convert_content_to_parts_and_role(messages)
-    messages = promptConvert(messages)
     if GeminiRevProxy=="" or GeminiRevProxy==" ":
-        url = f"https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key={ak}"
-    else:
-        url = f"{GeminiRevProxy}/v1beta/models/gemini-1.5-flash:generateContent?key={ak}"
-    r = await geminiCFProxy(messages, url,proxy)
-    return r.rstrip()
-async def geminiCFProxy(messages,url,proxy):
-    #print(requests.get(url,verify=False))
-    if proxy=="" or proxy==" ":
-        async with httpx.AsyncClient(timeout=100,verify=False) as client:
 
-            r = await client.post(url,json={"contents":messages,"safetySettings":[{'category': 'HARM_CATEGORY_SEXUALLY_EXPLICIT', "threshold": "BLOCK_None"},
-             {'category': 'HARM_CATEGORY_HATE_SPEECH', "threshold": "BLOCK_None"},
-             {'category': 'HARM_CATEGORY_HARASSMENT', "threshold": "BLOCK_None"},
-             {'category': 'HARM_CATEGORY_DANGEROUS_CONTENT', "threshold": "BLOCK_None"}]})
-            return r.json()['candidates'][0]["content"]["parts"][0]["text"]
-    else:
-        proxies = {
-            "http://": proxy,
-            "https://": proxy
+        # Or use `os.getenv('GOOGLE_API_KEY')` to fetch an environment variable.
+        model1="gemini-1.5-flash"
+
+        GOOGLE_API_KEY=ak
+
+        genai.configure(api_key=GOOGLE_API_KEY)
+
+        #model = genai.GenerativeModel('gemini-pro')
+        generation_config = {
+          "candidate_count": 1,
+          "max_output_tokens": 256,
+          "temperature": 1.0,
+          "top_p": 0.7,
         }
-        async with httpx.AsyncClient(timeout=100, verify=False,proxies=proxies) as client:
 
-            r = await client.post(url, json={"contents": messages, "safetySettings": [
-                {'category': 'HARM_CATEGORY_SEXUALLY_EXPLICIT', "threshold": "BLOCK_None"},
-                {'category': 'HARM_CATEGORY_HATE_SPEECH', "threshold": "BLOCK_None"},
-                {'category': 'HARM_CATEGORY_HARASSMENT', "threshold": "BLOCK_None"},
-                {'category': 'HARM_CATEGORY_DANGEROUS_CONTENT', "threshold": "BLOCK_None"}]})
-            return r.json()['candidates'][0]["content"]["parts"][0]["text"]
+
+        model = genai.GenerativeModel(
+            model_name=model1,
+            generation_config=generation_config,
+            safety_settings=safety_settings
+        )
+
+
+        #print(type(messages))
+
+        response = model.generate_content(messages)
+
+        text=response.text.rstrip()
+        #print(response.text)
+        return text
+    else:
+        messages = promptConvert(messages)
+        r = await geminiCFProxy(ak, messages, GeminiRevProxy)
+        return r.rstrip()
+async def geminiCFProxy(ak,messages,proxyUrl):
+    url=f"{proxyUrl}/v1beta/models/gemini-1.5-flash:generateContent?key={ak}"
+    #print(requests.get(url,verify=False))
+    async with httpx.AsyncClient(timeout=100) as client:
+
+        r = await client.post(url,json={"contents":messages,"safetySettings":[{'category': 'HARM_CATEGORY_SEXUALLY_EXPLICIT', "threshold": "BLOCK_None"},
+         {'category': 'HARM_CATEGORY_HATE_SPEECH', "threshold": "BLOCK_None"},
+         {'category': 'HARM_CATEGORY_HARASSMENT', "threshold": "BLOCK_None"},
+         {'category': 'HARM_CATEGORY_DANGEROUS_CONTENT', "threshold": "BLOCK_None"}]})
+        return r.json()['candidates'][0]["content"]["parts"][0]["text"]
     #r=requests.post(url,json=message,verify=False)

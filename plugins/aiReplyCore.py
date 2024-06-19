@@ -243,7 +243,7 @@ async def modelReply(senderName,senderId, text,modelHere, trustUser):
         elif modelHere == "Gemini":
             r = asyncio.run_coroutine_threadsafe(
                 geminirep(ak=random.choice(geminiapikey), messages=prompt1, bot_info=bot_in,
-                          GeminiRevProxy=GeminiRevProxy,proxy=proxy),
+                          GeminiRevProxy=GeminiRevProxy),
                 newLoop)
             r = r.result()
             rep = {"role": "assistant", "content": r}
