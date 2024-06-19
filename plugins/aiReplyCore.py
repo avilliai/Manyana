@@ -117,7 +117,7 @@ async def modelReply(senderName,senderId, text,modelHere, trustUser):
                                     botName).replace("【用户】", "我")
         except:
             return "模型不可用，请发送 可用角色模板 并重新设定模型"
-    if 1:
+    try:
         loop = asyncio.get_event_loop()
 
         if text == "" or text == " ":
@@ -242,7 +242,8 @@ async def modelReply(senderName,senderId, text,modelHere, trustUser):
 
         elif modelHere == "Gemini":
             r = await geminirep(ak=random.choice(geminiapikey), messages=prompt1, bot_info=bot_in,GeminiRevProxy=GeminiRevProxy),
-            rep = {"role": "assistant", "content": r}
+            #print(r,type(r))
+            rep = {"role": "assistant", "content": r[0].replace(r"\n","\n")}
         elif type(allcharacters.get(modelHere)) == dict:
             if str(senderId) not in trustUser and trustglmReply:
                 return "无模型使用权限！"
@@ -259,10 +260,12 @@ async def modelReply(senderName,senderId, text,modelHere, trustUser):
         # 写入文件
         with open('data/chatGLMData.yaml', 'w', encoding="utf-8") as file:
             yaml.dump(chatGLMData, file, allow_unicode=True)
+        #print(rep.get('content'),type(rep.get('content')))
         logger.info(f"{modelHere} bot 回复：" + rep.get('content'))
         return rep.get("content")
         #await tstt(rep.get('content'), event)
-    else:
+    except Exception as e:
+        logger.error(e)
         try:
             chatGLMData.pop(senderId)
         except Exception as e:
