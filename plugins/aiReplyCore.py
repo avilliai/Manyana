@@ -21,6 +21,7 @@ CoziUrl = resulttr.get("cozi")
 gptdev = resulttr.get("gpt3.5-dev")
 geminiapikey = resulttr.get("gemini")
 proxy = resulttr.get("proxy")
+
 GeminiRevProxy = resulttr.get("GeminiRevProxy")
 berturl = resulttr.get("bert_colab")
 if proxy != "":
@@ -242,7 +243,7 @@ async def modelReply(senderName,senderId, text,modelHere, trustUser):
         elif modelHere == "Gemini":
             r = asyncio.run_coroutine_threadsafe(
                 geminirep(ak=random.choice(geminiapikey), messages=prompt1, bot_info=bot_in,
-                          GeminiRevProxy=GeminiRevProxy),
+                          GeminiRevProxy=GeminiRevProxy,proxy=proxy),
                 newLoop)
             r = r.result()
             rep = {"role": "assistant", "content": r}
