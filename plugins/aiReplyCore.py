@@ -280,6 +280,7 @@ async def clearsinglePrompt(senderid):
         return "已清理近期记忆"
     except:
         logger.error("清理缓存出错，无本地对话记录")
+        return "无本地对话记录"
 async def clearAllPrompts():
     try:
         chatGLMData = {"f": "hhh"}
