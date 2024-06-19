@@ -117,7 +117,7 @@ async def modelReply(senderName,senderId, text,modelHere, trustUser):
                                     botName).replace("【用户】", "我")
         except:
             return "模型不可用，请发送 可用角色模板 并重新设定模型"
-    try:
+    if 1:
         loop = asyncio.get_event_loop()
 
         if text == "" or text == " ":
@@ -262,8 +262,7 @@ async def modelReply(senderName,senderId, text,modelHere, trustUser):
         logger.info(f"{modelHere} bot 回复：" + rep.get('content'))
         return rep.get("content")
         #await tstt(rep.get('content'), event)
-    except Exception as e:
-        logger.error(e)
+    else:
         try:
             chatGLMData.pop(senderId)
         except Exception as e:
