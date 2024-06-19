@@ -114,22 +114,18 @@ def localAurona(prompt,meta):
     headers={"Content-Type": "application/json","Authorization": "Bearer fff" }
     prompt.insert(0, {"role": "user", "content": meta})
     prompt.insert(1, {"role": "assistant", "content": "好的，已了解您的需求~我会扮演好您设定的角色。"})
-    print(prompt)
     data={
         "model": "gpt-3.5-turbo",
         "messages": prompt,
         "stream": False
     }
     r=requests.post(url,headers=headers,json=data,timeout=20)
-    print(r)
 def anotherGPT35(prompt,id):
     prompt=prompt[-1]["content"]
     url=f"https://api.shenke.love/api/ChatGPT.php?msg={prompt}&id={id}"
     r = requests.get(url,timeout=20).json()["data"]["message"]
     return {"role": "assistant", "content": r}
 def chatGLM(api_key, bot_info, prompt):
-    print(bot_info)
-    print(prompt)
     zhipuai.api_key = api_key
     response = zhipuai.model_api.sse_invoke(
         model="characterglm",
