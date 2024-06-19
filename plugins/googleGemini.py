@@ -51,8 +51,10 @@ safety_settings = [
 async def geminirep(ak,messages,bot_info,GeminiRevProxy=""):
     messages.insert(0,{"role": "user", "parts": [bot_info]})
     messages.insert(1,{"role": 'model', "parts": ["好的，已了解您的需求，我会扮演好你设定的角色"]})
+    print("被调用")
     messages=convert_content_to_parts_and_role(messages)
     if GeminiRevProxy=="" or GeminiRevProxy==" ":
+        print("官方api")
 
         # Or use `os.getenv('GOOGLE_API_KEY')` to fetch an environment variable.
         model1="gemini-1.5-flash"
@@ -89,6 +91,7 @@ async def geminirep(ak,messages,bot_info,GeminiRevProxy=""):
         r = await geminiCFProxy(ak, messages, GeminiRevProxy)
         return r.rstrip()
 async def geminiCFProxy(ak,messages,proxyUrl):
+    print("反代")
     url=f"{proxyUrl}/v1beta/models/gemini-1.5-flash:generateContent?key={ak}"
     #print(requests.get(url,verify=False))
     async with httpx.AsyncClient(timeout=100) as client:
@@ -97,5 +100,6 @@ async def geminiCFProxy(ak,messages,proxyUrl):
          {'category': 'HARM_CATEGORY_HATE_SPEECH', "threshold": "BLOCK_None"},
          {'category': 'HARM_CATEGORY_HARASSMENT', "threshold": "BLOCK_None"},
          {'category': 'HARM_CATEGORY_DANGEROUS_CONTENT', "threshold": "BLOCK_None"}]})
+        print(r)
         return r.json()['candidates'][0]["content"]["parts"][0]["text"]
     #r=requests.post(url,json=message,verify=False)

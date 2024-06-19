@@ -241,11 +241,7 @@ async def modelReply(senderName,senderId, text,modelHere, trustUser):
                 return "触发了敏感内容审核，已自动清理聊天记录"
 
         elif modelHere == "Gemini":
-            r = asyncio.run_coroutine_threadsafe(
-                geminirep(ak=random.choice(geminiapikey), messages=prompt1, bot_info=bot_in,
-                          GeminiRevProxy=GeminiRevProxy),
-                newLoop)
-            r = r.result()
+            r = await geminirep(ak=random.choice(geminiapikey), messages=prompt1, bot_info=bot_in,GeminiRevProxy=GeminiRevProxy),
             rep = {"role": "assistant", "content": r}
         elif type(allcharacters.get(modelHere)) == dict:
             if str(senderId) not in trustUser and trustglmReply:
