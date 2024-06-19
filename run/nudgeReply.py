@@ -1,53 +1,25 @@
 # -*- coding: utf-8 -*-
-import asyncio
-import json
 import os
-import datetime
 import random
-import re
-import time
-import sys
-
-import httpx
-import requests
-import utils
 import yaml
-import zhipuai
 from mirai import Image, Voice, Poke
 from mirai import Mirai, WebSocketAdapter, FriendMessage, GroupMessage, At, Plain
 from mirai.models import NudgeEvent
 
-from concurrent.futures import ThreadPoolExecutor
-from plugins.RandomStr import random_str
-from plugins.chatGLMonline import glm4
-from plugins.gptOfficial import gptOfficial,kimi, qingyan, lingyi, stepAI, qwen, gptvvvv
 from plugins.modelsLoader import modelLoader
-from plugins.translater import translate
-from plugins.vitsGenerate import voiceGenerate, taffySayTest, sovits, edgetts, outVits, modelscopeTTS, superVG
-from plugins.yubanGPT import lolimigpt, lolimigpt2
-from plugins.googleGemini import geminirep
+
 
 def main(bot,master,logger,berturl,proxy):
-    with open('config.json', 'r', encoding='utf-8') as f:
-        datas = yaml.load(f.read(), Loader=yaml.FullLoader)
-    configs = datas
-    botName = configs.get("botName")
     with open('config/nudgeReply.yaml', 'r', encoding='utf-8') as f:
         result = yaml.load(f.read(), Loader=yaml.FullLoader)
     normal_Reply = result.get("nudgedReply")
     special_Reply = result.get("BeatNudge")
     special_Reply1 = result.get("BeatNudge1")
-    voiceReply = result.get("voiceReply")
-    chineseVoiceRate=result.get("chineseVoiceRate")
-    bert_vits2_mode=result.get("bert_vits2_mode")
     global transLateData
     with open('data/autoReply/transLateData.yaml', 'r', encoding='utf-8') as file:
         transLateData = yaml.load(file, Loader=yaml.FullLoader)
-
     prob=result.get("prob")
-    withText=result.get("withText")
     logger.info("读取到apiKey列表")
-
     global models
     global characters
     try:
@@ -59,24 +31,10 @@ def main(bot,master,logger,berturl,proxy):
     with open('config/settings.yaml', 'r', encoding='utf-8') as f:
         result0 = yaml.load(f.read(), Loader=yaml.FullLoader)
     speaker92 = result0.get("语音功能设置").get("speaker")
-    voiceLangType = str(result0.get("语音功能设置").get("voiceLangType"))
     voicegg=result0.get("语音功能设置").get("voicegenerate")
-    chatmodel=result0.get("chatGLM").get("model")
     nudgeornot=result0.get("chatGLM").get("nudgeReply")
-    meta1 = result0.get("chatGLM").get("bot_info").get("default")
-    gpt3=result0.get("chatGLM").get("bot_info").get("gpt3.5")
-    lolimig = result0.get("chatGLM").get("bot_info").get("lolimigpt")
-    glm_4=result0.get("chatGLM").get("bot_info").get("glm-4")
-    allcharacters = result0.get("chatGLM").get("bot_info")
-    Gem=result0.get("chatGLM").get("bot_info").get("Gemini")
     logger.info("语音合成模式："+voicegg+" 语音合成speaker："+speaker92)
-    with open('config/api.yaml', 'r', encoding='utf-8') as f:
-        resulttr = yaml.load(f.read(), Loader=yaml.FullLoader)
-    chatGLM_api_key = resulttr.get("chatGLM")
-    geminiapikey=resulttr.get("gemini")
-    gptkeys=resulttr.get("openai-keys")
-    proxy=resulttr.get("proxy")
-    os.environ["http_proxy"] = proxy
+
     if voicegg=="vits":
         with open('config/autoSettings.yaml', 'r', encoding='utf-8') as f:
             result2 = yaml.load(f.read(), Loader=yaml.FullLoader)
@@ -127,5 +85,6 @@ def main(bot,master,logger,berturl,proxy):
                         await bot.send_group_message(event.subject.id,"唔....似乎戳不了你呢....好可惜")
             else:
                 rep = random.choice(normal_Reply)
+                await bot.send_group_message(event.subject.id,rep)
 
                     
