@@ -2,7 +2,7 @@ import asyncio
 import os
 import random
 import re
-
+#注释
 import yaml
 from mirai import logger
 from plugins.chatGLMonline import  glm4

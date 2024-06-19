@@ -49,8 +49,7 @@ def main(bot, master, logger):
     berturl = resulttr.get("bert_colab")
     if proxy!="":
         os.environ["http_proxy"] = proxy
-    gptkeys = resulttr.get("openai-keys")
-    chatGLM_api_key = resulttr.get("chatGLM")
+
 
 
 

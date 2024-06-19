@@ -47,6 +47,7 @@ safety_settings = [
             "threshold": "BLOCK_NONE",
         },
     ]
+#调用
 async def geminirep(ak,messages,bot_info,GeminiRevProxy=""):
     messages.insert(0,{"role": "user", "parts": [bot_info]})
     messages.insert(1,{"role": 'model', "parts": ["好的，已了解您的需求，我会扮演好你设定的角色"]})
