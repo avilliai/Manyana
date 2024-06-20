@@ -382,7 +382,7 @@ def main(bot,config,moderateKey,logger):
     @bot.on(GroupMessage)
     async def help(event: GroupMessage):
         global banWords
-        if str(event.group.id) in banWords.keys():
+        if str(event.group.id) in banWords.keys() and event.sender.id!=master:
             group=str(event.sender.group.id)
             try:
                 banw=banWords.get(group)
