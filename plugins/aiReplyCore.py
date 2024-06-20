@@ -54,6 +54,7 @@ withText = result.get("chatGLM").get("withText")
 newLoop = asyncio.new_event_loop()
 with open('data/chatGLMData.yaml', 'r', encoding='utf-8') as f:
     cha = yaml.load(f.read(), Loader=yaml.FullLoader)
+global chatGLMData
 chatGLMData = cha
 async def tstt(r):
     data1 = {}
@@ -91,6 +92,7 @@ async def loop_run_in_executor(executor, func, *args):
         return [str(func.__name__), None]
 # 运行异步函数
 async def modelReply(senderName,senderId, text,modelHere, trustUser=None,checkIfRepFirstTime=False):
+    global chatGLMData
     logger.info(modelHere)
     try:
         if type(allcharacters.get(modelHere)) == dict:
@@ -252,6 +254,7 @@ async def modelReply(senderName,senderId, text,modelHere, trustUser=None,checkIf
             yaml.dump(chatGLMData, file, allow_unicode=True)
         #print(rep.get('content'),type(rep.get('content')))
         logger.info(f"{modelHere} bot 回复：" + rep.get('content'))
+        logger.error(chatGLMData)
         if checkIfRepFirstTime:
             return rep.get("content"),firstRep
         else:
@@ -268,6 +271,7 @@ async def modelReply(senderName,senderId, text,modelHere, trustUser=None,checkIf
         else:
             return "出错，请重试\n或发送 \n@bot 可用角色模板\n 以更换其他模型"
 async def clearsinglePrompt(senderid):
+    global chatGLMData
     try:
         chatGLMData.pop(senderid)
         # 写入文件
