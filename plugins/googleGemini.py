@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
 import asyncio
+import copy
 import os
 
 import google.generativeai as genai
@@ -49,9 +50,14 @@ safety_settings = [
     ]
 #调用
 async def geminirep(ak,messages,bot_info,GeminiRevProxy=""):
-    messages.insert(0,{"role": "user", "parts": [bot_info]})
-    messages.insert(1,{"role": 'model', "parts": ["好的，已了解您的需求，我会扮演好你设定的角色"]})
-    messages=convert_content_to_parts_and_role(messages)
+    messages_copy = copy.deepcopy(messages)
+
+    # 在副本上进行操作
+    messages_copy.insert(0, {"role": "user", "parts": [bot_info]})
+    messages_copy.insert(1, {"role": 'model', "parts": ["好的，已了解您的需求，我会扮演好你设定的角色"]})
+    # 假设convert_content_to_parts_and_role是一个自定义函数，确保它不会修改外部状态
+    messages_copy = convert_content_to_parts_and_role(messages_copy)
+
     if GeminiRevProxy=="" or GeminiRevProxy==" ":
         # Or use `os.getenv('GOOGLE_API_KEY')` to fetch an environment variable.
         model1="gemini-1.5-flash"
@@ -78,16 +84,16 @@ async def geminirep(ak,messages,bot_info,GeminiRevProxy=""):
 
         #print(type(messages))
 
-        response = model.generate_content(messages)
+        response = model.generate_content(messages_copy)
 
-        text=str(response.text.rstrip())
+        r=str(response.text.rstrip())
         #print(response.text)
-        return text
+
     else:
-        messages = promptConvert(messages)
-        r = await geminiCFProxy(ak, messages, GeminiRevProxy)
-        #print(r.rstrip())
-        return str(r.rstrip())
+        messages_copy = promptConvert(messages_copy)
+        r = await geminiCFProxy(ak, messages_copy, GeminiRevProxy)
+        r = r.rstrip()
+    return r
 async def geminiCFProxy(ak,messages,proxyUrl):
     url=f"{proxyUrl}/v1beta/models/gemini-1.5-flash:generateContent?key={ak}"
     #print(requests.get(url,verify=False))
