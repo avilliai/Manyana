@@ -49,10 +49,6 @@ def main(bot, master, logger):
     berturl = resulttr.get("bert_colab")
     if proxy!="":
         os.environ["http_proxy"] = proxy
-
-
-
-
     with open('data/chatGLMData.yaml', 'r', encoding='utf-8') as f:
         cha = yaml.load(f.read(), Loader=yaml.FullLoader)
     global chatGLMData
@@ -301,7 +297,7 @@ def main(bot, master, logger):
             logger.info("ai聊天启动")
         else:
             return
-        text = str(event.message_chain).replace("@" + str(bot.qq) + " ", '')
+        text = str(event.message_chain).replace("@" + str(bot.qq) + "", '')
 
         if event.sender.id in chatGLMCharacters:
             print(type(chatGLMCharacters.get(event.sender.id)), chatGLMCharacters.get(event.sender.id))
