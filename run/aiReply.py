@@ -164,10 +164,10 @@ def main(bot, master, logger):
         text=str(event.message_chain)
         if event.sender.id in chatGLMCharacters:
             print(type(chatGLMCharacters.get(event.sender.id)), chatGLMCharacters.get(event.sender.id))
-            r,firstRep = await modelReply(event.sender.nickname,event.sender.id,text, chatGLMCharacters.get(event.sender.id), trustUser)
+            r,firstRep = await modelReply(event.sender.nickname,event.sender.id,text, chatGLMCharacters.get(event.sender.id), trustUser,checkIfRepFirstTime=True)
         # 判断模型
         else:
-            r,firstRep = await modelReply(event.sender.nickname,event.sender.id,text, replyModel, trustUser)
+            r,firstRep = await modelReply(event.sender.nickname,event.sender.id,text, replyModel, trustUser,checkIfRepFirstTime=True)
         if firstRep:
             await bot.send(event,"如对话异常请发送 /clear 以清理对话",True)
         if len(r) < maxTextLen and random.randint(0, 100) < voiceRate:
@@ -302,10 +302,10 @@ def main(bot, master, logger):
 
         if event.sender.id in chatGLMCharacters:
             print(type(chatGLMCharacters.get(event.sender.id)), chatGLMCharacters.get(event.sender.id))
-            r,firstRep=await modelReply(event.sender.member_name,event.sender.id,text, chatGLMCharacters.get(event.sender.id),trustUser)
+            r,firstRep=await modelReply(event.sender.member_name,event.sender.id,text, chatGLMCharacters.get(event.sender.id),trustUser,True)
         # 判断模型
         else:
-            r,firstRep=await modelReply(event.sender.member_name,event.sender.id,text,replyModel,trustUser)
+            r,firstRep=await modelReply(event.sender.member_name,event.sender.id,text,replyModel,trustUser,True)
         if firstRep:
             await bot.send(event,"如对话异常请发送 /clear",True)
         if len(r) < maxTextLen and random.randint(0, 100) < voiceRate:

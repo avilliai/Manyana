@@ -90,24 +90,24 @@ async def loop_run_in_executor(executor, func, *args):
         # logger.error(f"Error running {func.__name__}: {e}")
         return [str(func.__name__), None]
 # 运行异步函数
-async def modelReply(senderName,senderId, text,modelHere, trustUser):
+async def modelReply(senderName,senderId, text,modelHere, trustUser=None,checkIfRepFirstTime=False):
     logger.info(modelHere)
     try:
-            if type(allcharacters.get(modelHere)) == dict:
-                with open('config/settings.yaml', 'r', encoding='utf-8') as f:
-                    resy = yaml.load(f.read(), Loader=yaml.FullLoader)
-                meta1 = resy.get("chatGLM").get("bot_info").get(modelHere)
-                meta1["user_name"] = senderName
-                meta1["user_info"] = meta1.get("user_info").replace("【用户】", senderName).replace("【bot】",
-                                                                                                              botName)
-                meta1["bot_info"] = meta1.get("bot_info").replace("【用户】", senderName).replace("【bot】",
-                                                                                                            botName)
-                meta1["bot_name"] = botName
-                bot_in = meta1
-            else:
-                bot_in = str("你是" + botName + ",我是" + senderName + "," + allcharacters.get(
-                    modelHere)).replace("【bot】",
-                                        botName).replace("【用户】", senderName)
+        if type(allcharacters.get(modelHere)) == dict:
+            with open('config/settings.yaml', 'r', encoding='utf-8') as f:
+                resy = yaml.load(f.read(), Loader=yaml.FullLoader)
+            meta1 = resy.get("chatGLM").get("bot_info").get(modelHere)
+            meta1["user_name"] = senderName
+            meta1["user_info"] = meta1.get("user_info").replace("【用户】", senderName).replace("【bot】",
+                                                                                                          botName)
+            meta1["bot_info"] = meta1.get("bot_info").replace("【用户】", senderName).replace("【bot】",
+                                                                                                        botName)
+            meta1["bot_name"] = botName
+            bot_in = meta1
+        else:
+            bot_in = str("你是" + botName + ",我是" + senderName + "," + allcharacters.get(
+                modelHere)).replace("【bot】",
+                                    botName).replace("【用户】", senderName)
     except Exception as e:
         logger.error(e)
         logger.info(f"无法获取到该用户昵称 id：{senderId}")
@@ -116,7 +116,10 @@ async def modelReply(senderName,senderId, text,modelHere, trustUser):
                 modelHere)).replace("【bot】",
                                     botName).replace("【用户】", "我")
         except:
-            return "模型不可用，请发送 可用角色模板 并重新设定模型",False
+            if checkIfRepFirstTime:
+                return "模型不可用，请发送 可用角色模板 并重新设定模型",False
+            else:
+                return "模型不可用，请发送 可用角色模板 并重新设定模型"
     try:
         loop = asyncio.get_event_loop()
 
@@ -221,34 +224,19 @@ async def modelReply(senderName,senderId, text,modelHere, trustUser):
             rep = await loop.run_in_executor(None, localAurona, prompt1, bot_in)
         elif modelHere == "lolimigpt":
             rep = await lolimigpt2(prompt1, bot_in)
-            if "令牌额度" in rep.get("content"):
-                logger.error("没金币了喵")
-                return "api没金币了喵\n请发送 @bot 可用角色模板 以更换其他模型",False
-            if "敏感词汇" in rep.get("content"):
-                logger.error("敏感词了搁这")
-                try:
-                    chatGLMData.pop(senderId)
-                except Exception as e:
-                    logger.error(e)
-                return "模型不可用",False
-
         elif modelHere == "glm-4":
             rep = await glm4(prompt1, bot_in)
-            if "禁止违规问答" == rep.get("content"):
-                logger.error("敏感喽，不能用了")
-                try:
-                    chatGLMData.pop(senderId)
-                except Exception as e:
-                    logger.error(e)
-                return "触发了敏感内容审核，已自动清理聊天记录",False
 
         elif modelHere == "Gemini":
             r = await geminirep(ak=random.choice(geminiapikey), messages=prompt1, bot_info=bot_in,GeminiRevProxy=GeminiRevProxy),
             #print(r,type(r))
             rep = {"role": "assistant", "content": r[0].replace(r"\n","\n")}
         elif type(allcharacters.get(modelHere)) == dict:
-            if str(senderId) not in trustUser and trustglmReply:
-                return "无模型使用权限！",False
+            if (str(senderId) not in trustUser and trustglmReply) and trustUser!=None:
+                if checkIfRepFirstTime:
+                    return "无模型使用权限！",False
+                else:
+                    return "无模型使用权限"
             else:
                 r = await loop.run_in_executor(None, chatGLM, chatGLM_api_key, bot_in, prompt1)
                 rep = {"role": "assistant", "content": r}
@@ -264,7 +252,10 @@ async def modelReply(senderName,senderId, text,modelHere, trustUser):
             yaml.dump(chatGLMData, file, allow_unicode=True)
         #print(rep.get('content'),type(rep.get('content')))
         logger.info(f"{modelHere} bot 回复：" + rep.get('content'))
-        return rep.get("content"),firstRep
+        if checkIfRepFirstTime:
+            return rep.get("content"),firstRep
+        else:
+            return rep.get("content")
         #await tstt(rep.get('content'), event)
     except Exception as e:
         logger.error(e)
@@ -272,7 +263,10 @@ async def modelReply(senderName,senderId, text,modelHere, trustUser):
             chatGLMData.pop(senderId)
         except Exception as e:
             logger.error("清理用户prompt出错")
-        return "出错，请重试\n或发送 \n@bot 可用角色模板\n 以更换其他模型"
+        if checkIfRepFirstTime:
+            return "出错，请重试\n或发送 \n@bot 可用角色模板\n 以更换其他模型",False
+        else:
+            return "出错，请重试\n或发送 \n@bot 可用角色模板\n 以更换其他模型"
 async def clearsinglePrompt(senderid):
     try:
         chatGLMData.pop(senderid)
@@ -290,6 +284,7 @@ async def clearAllPrompts():
         # 写入文件
         with open('data/chatGLMData.yaml', 'w', encoding="utf-8") as file:
             yaml.dump(chatGLMData, file, allow_unicode=True)
+        print(chatGLMData)
         return "已清除所有用户的prompt"
     except:
         return "清理缓存出错，无本地对话记录"
