@@ -139,11 +139,10 @@ def main(bot, master, logger):
             text = random.choice(["戳你一下", "摸摸头", "戳戳你的头", "摸摸~"])
             if event.from_id in chatGLMCharacters:
                 print(chatGLMCharacters.get(event.target), type(chatGLMCharacters.get(event.target)))
-                await modelReply("指挥",event.from_id,text, chatGLMCharacters.get(event.target),trustUser)
+                r,t=await modelReply("指挥",event.from_id,text, chatGLMCharacters.get(event.target),trustUser)
             # 判断模型类型
             else:
-                await modelReply("指挥", event.from_id, text, replyModel, trustUser)
-
+                r,t=await modelReply("指挥", event.from_id, text, replyModel, trustUser)
     # 私聊使用chatGLM,对信任用户或配置了apiKey的用户开启
     @bot.on(FriendMessage)
     async def GLMFriendChat(event: FriendMessage):
@@ -165,10 +164,12 @@ def main(bot, master, logger):
         text=str(event.message_chain)
         if event.sender.id in chatGLMCharacters:
             print(type(chatGLMCharacters.get(event.sender.id)), chatGLMCharacters.get(event.sender.id))
-            r = await modelReply(event.sender.nickname,event.sender.id,text, chatGLMCharacters.get(event.sender.id), trustUser)
+            r,firstRep = await modelReply(event.sender.nickname,event.sender.id,text, chatGLMCharacters.get(event.sender.id), trustUser)
         # 判断模型
         else:
-            r = await modelReply(event.sender.nickname,event.sender.id,text, replyModel, trustUser)
+            r,firstRep = await modelReply(event.sender.nickname,event.sender.id,text, replyModel, trustUser)
+        if firstRep:
+            await bot.send(event,"如对话异常请发送 /clear 以清理对话",True)
         if len(r) < maxTextLen and random.randint(0, 100) < voiceRate:
             try:
                 voiceP = await tstt(r)
@@ -301,10 +302,12 @@ def main(bot, master, logger):
 
         if event.sender.id in chatGLMCharacters:
             print(type(chatGLMCharacters.get(event.sender.id)), chatGLMCharacters.get(event.sender.id))
-            r=await modelReply(event.sender.member_name,event.sender.id,text, chatGLMCharacters.get(event.sender.id),trustUser)
+            r,firstRep=await modelReply(event.sender.member_name,event.sender.id,text, chatGLMCharacters.get(event.sender.id),trustUser)
         # 判断模型
         else:
-            r=await modelReply(event.sender.member_name,event.sender.id,text,replyModel,trustUser)
+            r,firstRep=await modelReply(event.sender.member_name,event.sender.id,text,replyModel,trustUser)
+        if firstRep:
+            await bot.send(event,"如对话异常请发送 /clear",True)
         if len(r) < maxTextLen and random.randint(0, 100) < voiceRate:
             try:
                 voiceP=await tstt(r)
