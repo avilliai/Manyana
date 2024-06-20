@@ -256,7 +256,6 @@ async def modelReply(senderName,senderId, text,modelHere=modelDefault, trustUser
             yaml.dump(chatGLMData, file, allow_unicode=True)
         #print(rep.get('content'),type(rep.get('content')))
         logger.info(f"{modelHere} bot 回复：" + rep.get('content'))
-        logger.error(chatGLMData)
         if checkIfRepFirstTime:
             return rep.get("content"),firstRep
         else:
