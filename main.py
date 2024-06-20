@@ -16,9 +16,7 @@ from mirai import Mirai, WebSocketAdapter, GroupMessage, Image, At, Startup, Fri
 from plugins.RandomStr import random_str
 from plugins.newLogger import newLogger
 from plugins.systeminfo import get_system_info
-from run import aiReply, voiceReply, nudgeReply, wikiHelper, imgSearch, extraParts, wReply, userSign, groupManager, \
-    PicRandom, musicShare, LiveMonitor, bertVits2, aronaapi, groupGames, musicpick, scheduledTasks, sovits2, appCard, \
-    aiDraw, starRail
+from run import aiReply, voiceReply, nudgeReply, wikiHelper, imgSearch, extraParts, wReply, userSign, groupManager,musicShare, LiveMonitor, bertVits2, aronaapi, groupGames, musicpick, scheduledTasks, sovits2, appCard, aiDraw, starRail
 
 if __name__ == '__main__':
     with open('config.json', 'r', encoding='utf-8') as f:
@@ -244,7 +242,6 @@ if __name__ == '__main__':
     wikiHelper.main(bot, logger)
     userSign.main(bot, result.get("weatherXinZhi"), master, config, logger)
     groupManager.main(bot, config, moderate, logger)
-    PicRandom.main(bot, proxy, logger)
     musicShare.main(bot, master, botName, logger)
     LiveMonitor.main(bot, master, botName, logger)
     bertVits2.main(bot,  logger,berturl,proxy)
