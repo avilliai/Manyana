@@ -41,12 +41,7 @@ def main(bot, master, logger):
     chatGLMCharacters = result2223
     with open('config/api.yaml', 'r', encoding='utf-8') as f:
         resulttr = yaml.load(f.read(), Loader=yaml.FullLoader)
-    CoziUrl = resulttr.get("cozi")
-    gptdev = resulttr.get("gpt3.5-dev")
-    geminiapikey = resulttr.get("gemini")
     proxy = resulttr.get("proxy")
-    GeminiRevProxy=resulttr.get("GeminiRevProxy")
-    berturl = resulttr.get("bert_colab")
     if proxy!="":
         os.environ["http_proxy"] = proxy
     with open('data/chatGLMData.yaml', 'r', encoding='utf-8') as f:

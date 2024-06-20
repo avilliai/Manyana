@@ -13,6 +13,8 @@ from mirai import Mirai, WebSocketAdapter, FriendMessage, GroupMessage, At, Plai
 from mirai.models import MusicShare
 from mirai import Startup, Shutdown
 
+from plugins import weatherQuery
+from plugins.aiReplyCore import modelReply
 from plugins.historicalToday import steamEpic
 from plugins.newsEveryDay import news, danxianglii, moyu, xingzuo
 from plugins.picGet import picDwn
@@ -20,6 +22,9 @@ from plugins.translater import translate
 
 
 def main(bot,proxy,nasa_api,logger):
+    with open('config/api.yaml', 'r', encoding='utf-8') as f:
+        result = yaml.load(f.read(), Loader=yaml.FullLoader)
+    api_KEY = result.get("weatherXinZhi")
     global data
     with open('data/scheduledTasks.yaml', 'r',encoding='utf-8') as file:
         data = yaml.load(file, Loader=yaml.FullLoader)
@@ -40,7 +45,48 @@ def main(bot,proxy,nasa_api,logger):
     global scheduler
     scheduler = AsyncIOScheduler()
 
+    #早安推送信息必要内容
+    with open('config/settings.yaml', 'r', encoding='utf-8') as f:
+        result = yaml.load(f.read(), Loader=yaml.FullLoader)
+    friendsAndGroups = result.get("加群和好友")
+    aiReplyCore = result.get("chatGLM").get("aiReplyCore")
+    trustDays = friendsAndGroups.get("trustDays")
+    scheduledTasks=result.get("scheduledTasks")
+    morningTime=str(scheduledTasks.get("morning").get("time")).split("/")
+    morningText=scheduledTasks.get("morning").get("text")
+    morningEnable = scheduledTasks.get("morning").get("enable")
 
+    with open('data/userData.yaml', 'r', encoding='utf-8') as file:
+        data = yaml.load(file, Loader=yaml.FullLoader)
+    global trustUser
+    global userdict
+    userdict = data
+    trustUser = []
+    for i in userdict.keys():
+        data = userdict.get(i)
+        try:
+            times = int(str(data.get('sts')))
+            if times > trustDays:
+                trustUser.append(str(i))
+
+        except Exception as e:
+            logger.error(f"用户{i}的sts数值出错，请打开data/userData.yaml检查，将其修改为正常数值")
+
+    @bot.on(Startup)
+    async def upDate(event: Startup):
+        while True:
+            await sleep(60)
+            with open('data/userData.yaml', 'r', encoding='utf-8') as file:
+                data = yaml.load(file, Loader=yaml.FullLoader)
+            global trustUser
+            global userdict
+            userdict = data
+            trustUser = []
+            for i in userdict.keys():
+                data = userdict.get(i)
+                times = int(str(data.get('sts')))
+                if times > trustDays:
+                    trustUser.append(str(i))
     @bot.on(Startup)
     def start_scheduler(_):
         scheduler.start()  # 启动定时器
@@ -66,6 +112,25 @@ def main(bot,proxy,nasa_api,logger):
             except:
                 logger.error("不存在的群"+str(i))
 
+    @scheduler.scheduled_job(CronTrigger(hour=int(morningTime[0]), minute=int(morningTime[1])))
+    async def MorningSendHello():
+        global trustUser,userdict
+        logger.info("早间天气推送")
+        if morningEnable:
+            for i in trustUser:
+                try:
+                    city=userdict.get(i).get("city")
+                    logger.info("查询 " + city + " 天气")
+                    wSult = await weatherQuery.querys(city, api_KEY)
+                    # 发送天气消息
+                    if aiReplyCore:
+                        r = await modelReply(userdict.get(i).get("userName"), int(i), f"请你为我进行天气播报，下面是天气查询的结果：{wSult}")
+                        await bot.send_friend_message(int(i),r)
+                    else:
+                        await bot.send_friend_message(int(i),morningText+wSult)
+                except Exception as e:
+                    logger.error(e)
+                    continue
     @scheduler.scheduled_job(CronTrigger(hour=int(steamadd1[0]), minute=int(steamadd1[1])))
     async def steamEveryDay():
         logger.info("获取steam喜加一")

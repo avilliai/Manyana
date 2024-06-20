@@ -603,7 +603,7 @@ def main(bot,logger):
                 await bot.send(event, [txt,Image(path=img)])
                 if aiReplyCore:
                     r=await modelReply(event.sender.member_name,event.sender.id,f"为我进行塔罗牌播报，下面是塔罗占卜的结果{txt}")
-                    await bot.send(event,r)
+                    await bot.send(event,r,True)
 
             else:
                 if event.sender.id not in luckList.get(tod).get("塔罗"):
