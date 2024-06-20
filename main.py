@@ -28,12 +28,28 @@ if __name__ == '__main__':
     qq=int(config.get('botQQ'))
     key=config.get("vertify_key")
     port= int(config.get("port"))
+    
     bot = Mirai(qq, adapter=WebSocketAdapter(
         verify_key=key, host='localhost', port=port
     ))
     botName = config.get('botName')
-    master=int(config.get('master'))
-
+    
+    with open('data/userData.yaml', 'r', encoding='utf-8') as file:
+        data = yaml.load(file, Loader=yaml.FullLoader)
+    userdict = data
+    masterid=str(int(config.get('master')))
+    if masterid in userdict:
+        data=userdict.get(masterid)
+        data["sts"]=str(int(data.get("sts"))+9999)
+        userdict[masterid]=data
+    else:
+        logger.info("master加权中......")
+        time = datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')
+        userdict[userId] = {"city": "通辽", "st": time, "sts": str(9999), "exp": "0",
+                                          "id": "miav-"+random_str(), 'ok': time}
+    
+    with open('data/userData.yaml', 'w', encoding="utf-8") as file:
+        yaml.dump(userdict, file, allow_unicode=True)
 
     #芝士logger
     logger=newLogger()
