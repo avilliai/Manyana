@@ -20,16 +20,14 @@ from mirai.models import ForwardMessageNode, Forward, App
 
 from plugins import weatherQuery
 from plugins.RandomStr import random_str
+from plugins.aiReplyCore import modelReply
 from plugins.arkOperator import arkOperator
 from plugins.extraParts import get_cp_mesg, emojimix
 from plugins.gacha import arkGacha, starRailGacha, bbbgacha
 from plugins.genshinGo import genshinDraw, qianCao
 from plugins.historicalToday import hisToday, steamEpic
-from plugins.imgDownload import dict_download_img
 from plugins.jokeMaker import get_joke
 
-from plugins.modelsLoader import modelLoader
-from plugins.newLogger import newLogger
 from plugins.newsEveryDay import news, moyu, xingzuo, sd, chaijun, danxianglii, beCrazy,handwrite
 from plugins.arksign import arkSign
 from plugins.picGet import pic, setuGet, picDwn
@@ -37,7 +35,7 @@ from plugins.setuModerate import setuModerate
 from plugins.tarot import tarotChoice
 from plugins.translater import translate
 from PIL import Image as Image1
-from plugins.webScreenShoot import webScreenShoot, screenshot_to_pdf_and_png
+from plugins.webScreenShoot import  screenshot_to_pdf_and_png
 from io import BytesIO
 
 def main(bot,logger):
@@ -75,16 +73,28 @@ def main(bot,logger):
     allowPic=result1.get("allowPic")
     selfsensor=result1.get("moderate").get("selfsensor")
     selfthreshold=result1.get("moderate").get("selfthreshold")
-
+    aiReplyCore=result1.get("chatGLM").get("aiReplyCore")
     colorfulCharacterList = os.listdir("data/colorfulAnimeCharacter")
-    lockResult = result.get("lockLuck")
-    InternetMeme = result.get("InternetMeme")
+    lockResult = result1.get("lockLuck")
+    InternetMeme = result1.get("InternetMeme")
 
     global picData
     picData={}
     with open('config/gachaSettings.yaml', 'r', encoding='utf-8') as f:
         resultp = yaml.load(f.read(), Loader=yaml.FullLoader)
     bbb = resultp.get("blueArchiveGacha")
+    if lockResult==True:
+        with open('data/lockLuck.yaml', 'r', encoding='utf-8') as f:
+            result2 = yaml.load(f.read(), Loader=yaml.FullLoader)
+        global luckList
+        global tod
+        tod = str(datetime.date.today())
+        if tod in result2:
+             luckList= result2
+        else:
+            luckList = {str(tod): {"运势":{123:"",456:""},"塔罗":{123:{"text":"hahaha","path":",,,"}}}}
+            with open('data/lockLuck.yaml', 'w', encoding="utf-8") as file:
+                yaml.dump(luckList, file, allow_unicode=True)
     @bot.on(Startup)
     async def update(event:Startup):
         while True:
@@ -263,8 +273,13 @@ def main(bot,logger):
             city = m.group(1)
             logger.info("查询 "+city+" 天气")
             await bot.send(event, '查询中……')
+            wSult=await weatherQuery.querys(city,api_KEY)
             # 发送天气消息
-            await bot.send(event, await weatherQuery.querys(city,api_KEY))
+            if aiReplyCore:
+                r=await modelReply(event.sender.member_name,event.sender.id,f"请你为我进行天气播报，下面是天气查询的结果：{wSult}")
+                await bot.send(event,r)
+            else:
+                await bot.send(event, wSult)
     @bot.on(GroupMessage)
     async def newsToday(event:GroupMessage):
         if ("新闻" in str(event.message_chain) and At(bot.qq) in event.message_chain) or str(event.message_chain)=="新闻":
@@ -420,33 +435,7 @@ def main(bot,logger):
                 await bot.send(event, Image(path=path), True)
             except:
                 logger.error("调用手写模拟器失败")
-            
 
-    @bot.on(GroupMessage)
-    async def NasaHelper(event: GroupMessage):
-        if str(event.message_chain).startswith("/sd"):
-            try:
-
-                ls=str(event.message_chain)[3:]
-            except:
-                await bot.send("未传递合法的prompt")
-                return
-            logger.info("拆分获取prompt:"+str(ls))
-            try:
-                url = "https://api.pearktrue.cn/api/stablediffusion/?prompt=" + str(ls) + "&model=normal"
-                url=requests.get(url).json().get("imgurl")
-            except:
-                logger.error("出错")
-                await bot.send(event, "出错，请稍后再试")
-                return 
-            path = "data/pictures/cache/" + random_str() + ".png"
-            try:
-                p=await sd(url,path)
-            except:
-                logger.error("出错")
-                await bot.send(event,"出错，请稍后再试")
-                return
-            await bot.send(event, Image(path=p),True)
     @bot.on(GroupMessage)
     async def jiangzhuang(event:GroupMessage):
         if str(event.message_chain).startswith("/奖状") or str(event.message_chain).startswith("/证书"):
@@ -542,18 +531,7 @@ def main(bot,logger):
             except Exception as e:
                 logger.error(e)
                 await bot.send(event,"生成失败，请检查数额")
-    if lockResult==True:
-        with open('data/lockLuck.yaml', 'r', encoding='utf-8') as f:
-            result2 = yaml.load(f.read(), Loader=yaml.FullLoader)
-        global luckList
-        global tod
-        tod = str(datetime.date.today())
-        if tod in result2:
-             luckList= result2
-        else:
-            luckList = {str(tod): {"运势":{123:"",456:""},"塔罗":{123:{"text":"hahaha","path":",,,"}}}}
-            with open('data/lockLuck.yaml', 'w', encoding="utf-8") as file:
-                yaml.dump(luckList, file, allow_unicode=True)
+
     @bot.on(GroupMessage)
     async def meme(event: GroupMessage):
         global memeData
@@ -615,8 +593,11 @@ def main(bot,logger):
             if lockResult == False:
                 txt, img = tarotChoice()
                 logger.info("成功获取到今日塔罗")
-                await bot.send(event, txt)
-                await bot.send(event, Image(path=img))
+                await bot.send(event, [txt,Image(path=img)])
+                if aiReplyCore:
+                    r=await modelReply(event.sender.member_name,event.sender.id,f"为我进行塔罗牌播报，下面是塔罗占卜的结果{txt}")
+                    await bot.send(event,r)
+
             else:
                 if event.sender.id not in luckList.get(tod).get("塔罗"):
                     txt, img = tarotChoice()
@@ -630,6 +611,9 @@ def main(bot,logger):
 
                     await bot.send(event, la.get("text"))
                     await bot.send(event, Image(path=la.get("img")))
+                if aiReplyCore:
+                    r=await modelReply(event.sender.member_name,event.sender.id,f"为我进行塔罗牌播报，下面是塔罗占卜的结果:{txt}")
+                    await bot.send(event,r)
                 with open('data/lockLuck.yaml', 'w', encoding="utf-8") as file:
                     yaml.dump(luckList, file, allow_unicode=True)
 

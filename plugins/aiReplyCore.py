@@ -40,6 +40,7 @@ voicegg = result.get("语音功能设置").get("voicegenerate")
 friendsAndGroups = result.get("加群和好友")
 trustDays = friendsAndGroups.get("trustDays")
 glmReply = result.get("chatGLM").get("glmReply")
+modelDefault = result.get("chatGLM").get("model")
 privateGlmReply = result.get("chatGLM").get("privateGlmReply")
 randomModelPriority = result.get("chatGLM").get("random&PriorityModel")
 replyModel = result.get("chatGLM").get("model")
@@ -52,9 +53,10 @@ voiceRate = result.get("chatGLM").get("voiceRate")
 speaker = result.get("语音功能设置").get("speaker")
 withText = result.get("chatGLM").get("withText")
 newLoop = asyncio.new_event_loop()
+global chatGLMData
 with open('data/chatGLMData.yaml', 'r', encoding='utf-8') as f:
     cha = yaml.load(f.read(), Loader=yaml.FullLoader)
-global chatGLMData
+
 chatGLMData = cha
 async def tstt(r):
     data1 = {}
@@ -91,7 +93,7 @@ async def loop_run_in_executor(executor, func, *args):
         # logger.error(f"Error running {func.__name__}: {e}")
         return [str(func.__name__), None]
 # 运行异步函数
-async def modelReply(senderName,senderId, text,modelHere, trustUser=None,checkIfRepFirstTime=False):
+async def modelReply(senderName,senderId, text,modelHere=modelDefault, trustUser=None,checkIfRepFirstTime=False):
     global chatGLMData
     logger.info(modelHere)
     try:

@@ -62,21 +62,16 @@ def main(bot, master, logger):
     totallink = False
     with open('config/settings.yaml', 'r', encoding='utf-8') as f:
         result = yaml.load(f.read(), Loader=yaml.FullLoader)
-    voicegg = result.get("语音功能设置").get("voicegenerate")
     friendsAndGroups = result.get("加群和好友")
     trustDays = friendsAndGroups.get("trustDays")
     glmReply = result.get("chatGLM").get("glmReply")
     privateGlmReply = result.get("chatGLM").get("privateGlmReply")
     nudgeornot=result.get("chatGLM").get("nudgeReply")
-    randomModelPriority = result.get("chatGLM").get("random&PriorityModel")
     replyModel = result.get("chatGLM").get("model")
     trustglmReply = result.get("chatGLM").get("trustglmReply")
-    maxPrompt = result.get("chatGLM").get("maxPrompt")
-    voiceLangType = str(result.get("语音功能设置").get("voiceLangType"))
     allcharacters = result.get("chatGLM").get("bot_info")
     maxTextLen = result.get("chatGLM").get("maxLen")
     voiceRate = result.get("chatGLM").get("voiceRate")
-    speaker = result.get("语音功能设置").get("speaker")
     withText = result.get("chatGLM").get("withText")
 
     with open('config.json', 'r', encoding='utf-8') as f:
