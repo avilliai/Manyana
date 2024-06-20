@@ -276,7 +276,7 @@ def main(bot,logger):
             wSult=await weatherQuery.querys(city,api_KEY)
             # 发送天气消息
             if aiReplyCore:
-                r=await modelReply(event.sender.member_name,event.sender.id,f"请你为我进行天气播报，下面是天气查询的结果：{wSult}")
+                r=await modelReply(event.sender.member_name,event.sender.id,f"请你为我进行天气播报，下面是天气查询的结果：{wSult}",True)
                 await bot.send(event,r)
             else:
                 await bot.send(event, wSult)
@@ -398,7 +398,7 @@ def main(bot,logger):
             logger.info(o)
             await bot.send(event, o, True)
             if aiReplyCore:
-                r = await modelReply(event.sender.member_name, event.sender.id, f"为我进行解签，下面是抽签的结果:{o}")
+                r = await modelReply(event.sender.member_name, event.sender.id, f"为我进行解签，下面是抽签的结果:{o}",True)
                 await bot.send(event, r)
     @bot.on(GroupMessage)
     async def NasaHelper(event: GroupMessage):
@@ -408,7 +408,7 @@ def main(bot,logger):
             logger.info("\n"+ode)
             await bot.send(event,ode)
             if aiReplyCore:
-                r = await modelReply(event.sender.member_name, event.sender.id, f"下面这首诗来自《诗经》，为我介绍它:{ode}")
+                r = await modelReply(event.sender.member_name, event.sender.id, f"下面这首诗来自《诗经》，为我介绍它:{ode}",True)
                 await bot.send(event, r)
 
     @bot.on(GroupMessage)
@@ -601,7 +601,7 @@ def main(bot,logger):
                 logger.info("成功获取到今日塔罗")
                 await bot.send(event, [txt,Image(path=img)])
                 if aiReplyCore:
-                    r=await modelReply(event.sender.member_name,event.sender.id,f"为我进行塔罗牌播报，下面是塔罗占卜的结果{txt}")
+                    r=await modelReply(event.sender.member_name,event.sender.id,f"为我进行塔罗牌播报，下面是塔罗占卜的结果{txt}",True)
                     await bot.send(event,r)
 
             else:
@@ -618,7 +618,7 @@ def main(bot,logger):
                     await bot.send(event, la.get("text"))
                     await bot.send(event, Image(path=la.get("img")))
                 if aiReplyCore:
-                    r=await modelReply(event.sender.member_name,event.sender.id,f"为我进行塔罗牌播报，下面是塔罗占卜的结果:{txt}")
+                    r=await modelReply(event.sender.member_name,event.sender.id,f"为我进行塔罗牌播报，下面是塔罗占卜的结果:{txt}",True)
                     await bot.send(event,r)
                 with open('data/lockLuck.yaml', 'w', encoding="utf-8") as file:
                     yaml.dump(luckList, file, allow_unicode=True)
