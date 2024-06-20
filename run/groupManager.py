@@ -163,7 +163,7 @@ def main(bot,config,moderateKey,logger):
             with open('config/autoSettings.yaml', 'r', encoding='utf-8') as f:
                 result23 = yaml.load(f.read(), Loader=yaml.FullLoader)
             youquan = result23.get("trustGroups")
-            if event.group_id in youquan:
+            if event.group_id in youquan or event.sender.id==master:
                 logger.info("同意")
                 al = '同意'
                 sdf = "请先向目标群群员确认是否愿意接受bot加群"
@@ -177,7 +177,7 @@ def main(bot,config,moderateKey,logger):
                 await bot.send_friend_message(event.from_id, "该群无授权，请在bot用户群："+str(mainGroup)+"\n联系机器人管理员获取授权")
         else:
             if str(event.from_id) in userdict.keys():
-                if int(userdict.get(str(event.from_id)).get("sts")) > qiandaoT:
+                if int(userdict.get(str(event.from_id)).get("sts")) > qiandaoT or event.sender.id==master:
                     if event.group_id in blGroups:
                         await bot.send_friend_message(event.from_id, "该群在黑名单内.\n解除拉黑请前往本bot用户群" + str(
                             mainGroup) + "在群内发送\n/blgroup remove 群号")
@@ -350,8 +350,10 @@ def main(bot,config,moderateKey,logger):
         if event.operator.group.id in blGroups:
             logger.info("已有黑名单群" + str(event.operator.group.id))
         else:
-            blGroups.append(event.operator.group.id)
-
+            if envent.operator.group.id!=mainGroup:
+                blGroups.append(event.operator.group.id)
+            else:
+                return
         if event.operator.id in blackList:
             logger.info("已有黑名单用户" + str(event.operator.id))
         else:
