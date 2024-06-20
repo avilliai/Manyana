@@ -33,6 +33,7 @@ if __name__ == '__main__':
         verify_key=key, host='localhost', port=port
     ))
     botName = config.get('botName')
+    master=int(config.get('master'))
     #芝士logger
     logger=newLogger()
 
