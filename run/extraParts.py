@@ -397,6 +397,9 @@ def main(bot,logger):
             o = qianCao()
             logger.info(o)
             await bot.send(event, o, True)
+            if aiReplyCore:
+                r = await modelReply(event.sender.member_name, event.sender.id, f"为我进行解签，下面是抽签的结果:{o}")
+                await bot.send(event, r)
     @bot.on(GroupMessage)
     async def NasaHelper(event: GroupMessage):
         if At(bot.qq) in event.message_chain and "诗经" in str(event.message_chain):
@@ -404,6 +407,9 @@ def main(bot,logger):
             ode=random.choice(odes.get("诗经"))
             logger.info("\n"+ode)
             await bot.send(event,ode)
+            if aiReplyCore:
+                r = await modelReply(event.sender.member_name, event.sender.id, f"下面这首诗来自《诗经》，为我介绍它:{ode}")
+                await bot.send(event, r)
 
     @bot.on(GroupMessage)
     async def NasaHelper(event: GroupMessage):
