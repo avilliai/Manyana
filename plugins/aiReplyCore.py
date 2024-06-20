@@ -116,7 +116,7 @@ async def modelReply(senderName,senderId, text,modelHere, trustUser):
                 modelHere)).replace("【bot】",
                                     botName).replace("【用户】", "我")
         except:
-            return "模型不可用，请发送 可用角色模板 并重新设定模型"
+            return "模型不可用，请发送 可用角色模板 并重新设定模型",False
     try:
         loop = asyncio.get_event_loop()
 
@@ -126,6 +126,7 @@ async def modelReply(senderName,senderId, text,modelHere, trustUser):
         if senderId in chatGLMData:
             prompt1 = chatGLMData.get(senderId)
             prompt1.append({"content": text, "role": "user"})
+            firstRep=False
         else:
             prompt1 = [{"content": text, "role": "user"}]
             if modelHere == "anotherGPT3.5" or modelHere == "random":
@@ -134,6 +135,7 @@ async def modelReply(senderName,senderId, text,modelHere, trustUser):
                                                      senderId)
                 except:
                     logger.error("初始化anotherGPT3.5失败")
+            firstRep=True
         logger.info(f"{modelHere}  bot 接受提问：" + text)
 
         if modelHere == "random":
@@ -221,14 +223,14 @@ async def modelReply(senderName,senderId, text,modelHere, trustUser):
             rep = await lolimigpt2(prompt1, bot_in)
             if "令牌额度" in rep.get("content"):
                 logger.error("没金币了喵")
-                return "api没金币了喵\n请发送 @bot 可用角色模板 以更换其他模型"
+                return "api没金币了喵\n请发送 @bot 可用角色模板 以更换其他模型",False
             if "敏感词汇" in rep.get("content"):
                 logger.error("敏感词了搁这")
                 try:
                     chatGLMData.pop(senderId)
                 except Exception as e:
                     logger.error(e)
-                return
+                return "模型不可用",False
 
         elif modelHere == "glm-4":
             rep = await glm4(prompt1, bot_in)
@@ -238,7 +240,7 @@ async def modelReply(senderName,senderId, text,modelHere, trustUser):
                     chatGLMData.pop(senderId)
                 except Exception as e:
                     logger.error(e)
-                return "触发了敏感内容审核，已自动清理聊天记录"
+                return "触发了敏感内容审核，已自动清理聊天记录",False
 
         elif modelHere == "Gemini":
             r = await geminirep(ak=random.choice(geminiapikey), messages=prompt1, bot_info=bot_in,GeminiRevProxy=GeminiRevProxy),
@@ -246,7 +248,7 @@ async def modelReply(senderName,senderId, text,modelHere, trustUser):
             rep = {"role": "assistant", "content": r[0].replace(r"\n","\n")}
         elif type(allcharacters.get(modelHere)) == dict:
             if str(senderId) not in trustUser and trustglmReply:
-                return "无模型使用权限！"
+                return "无模型使用权限！",False
             else:
                 r = await loop.run_in_executor(None, chatGLM, chatGLM_api_key, bot_in, prompt1)
                 rep = {"role": "assistant", "content": r}
@@ -262,7 +264,7 @@ async def modelReply(senderName,senderId, text,modelHere, trustUser):
             yaml.dump(chatGLMData, file, allow_unicode=True)
         #print(rep.get('content'),type(rep.get('content')))
         logger.info(f"{modelHere} bot 回复：" + rep.get('content'))
-        return rep.get("content")
+        return rep.get("content"),firstRep
         #await tstt(rep.get('content'), event)
     except Exception as e:
         logger.error(e)
