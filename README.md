@@ -1,6 +1,5 @@
-
 <div align="center">
-   <img src="https://socialify.git.ci/avilliai/Manyana/image?description=1&descriptionEditable=Based%20on%20Mirai%EF%BC%8CVersatile%EF%BC%8Ceasy%20to%20use&font=Rokkitt&forks=1&issues=1&language=1&logo=.%2Fdata%2Ffonts%2Favatar.png&name=1&owner=1&pattern=Circuit%20Board&stargazers=1&theme=Light" alt="logo"></br>
+   <img src="https://socialify.git.ci/avilliai/Manyana/image?description=1&descriptionEditable=Based%20on%20Mirai%EF%BC%8CVersatile%EF%BC%8Ceasy%20to%20use&font=Rokkitt&forks=1&issues=1&language=1&logo=https%3A%2F%2Fimg.picui.cn%2Ffree%2F2024%2F06%2F21%2F66755de95f94b.png&name=1&owner=1&pattern=Circuit%20Board&stargazers=1&theme=Light" alt="logo"></br>
 </div>
 
 ----
