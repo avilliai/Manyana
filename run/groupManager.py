@@ -204,15 +204,10 @@ def main(bot,config,moderateKey,logger):
     async def MemberJoinHelper(event:MemberJoinEvent):
         if random.choice(memberJoinWelcome)==1:
             return
+        if event.member.group.id==628763673:
+            await bot.send_group_message(event.member.group.id,[At(event.member.id),"\n提问前请翻阅：\n常见问题汇总：https://docs.qq.com/aio/DTXNRVnZYYm5TQWhM\n项目wiki:https://github.com/avilliai/Manyana/wiki\n项目文档：https://github.com/avilliai/Manyana\n\n提问附上控制台截图。"])
+            return
         await bot.send_group_message(event.member.group.id,(At(event.member.id),random.choice(memberJoinWelcome).replace("botName",botName).replace(r"\n","\n")))
-        try:
-            await bot.send_temp_message(event.member.id,random.choice(sendTemp).replace("botName",botName).replace(r"\n","\n"))
-        except:
-            try:
-                await bot.send_friend_message(event.member.id,random.choice(sendTemp).replace("botName",botName).replace(r"\n","\n"))
-            except:
-
-                logger.error("向新入群成员"+str(event.member.id)+"发送消息失败")
 
     @bot.on(BotJoinGroupEvent)
     async def botJoin(event:BotJoinGroupEvent):
