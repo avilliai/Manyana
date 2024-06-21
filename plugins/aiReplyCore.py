@@ -283,6 +283,7 @@ async def clearsinglePrompt(senderid):
         logger.error("清理缓存出错，无本地对话记录")
         return "无本地对话记录"
 async def clearAllPrompts():
+    global chatGLMData
     try:
         chatGLMData = {"f": "hhh"}
         # chatGLMData.pop(event.sender.id)
