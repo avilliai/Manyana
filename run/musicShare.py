@@ -15,6 +15,8 @@ from plugins.RandomStr import random_str
 
 
 def main(bot,master,botName,logger):
+    logger.warning("ntqq不启用定时推送点歌")
+    return
     file = open('data/music/music.txt', 'r')
     js = file.read()
     global userdict
