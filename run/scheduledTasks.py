@@ -57,15 +57,15 @@ def main(bot,proxy,nasa_api,logger):
     morningEnable = scheduledTasks.get("morning").get("enable")
 
     with open('data/userData.yaml', 'r', encoding='utf-8') as file:
-        data = yaml.load(file, Loader=yaml.FullLoader)
+        Userdata = yaml.load(file, Loader=yaml.FullLoader)
     global trustUser
     global userdict
-    userdict = data
+    userdict = Userdata
     trustUser = []
     for i in userdict.keys():
-        data = userdict.get(i)
+        Userdata = userdict.get(i)
         try:
-            times = int(str(data.get('sts')))
+            times = int(str(Userdata.get('sts')))
             if times > trustDays:
                 trustUser.append(str(i))
 
@@ -77,14 +77,14 @@ def main(bot,proxy,nasa_api,logger):
         while True:
             await sleep(60)
             with open('data/userData.yaml', 'r', encoding='utf-8') as file:
-                data = yaml.load(file, Loader=yaml.FullLoader)
+                Userdata = yaml.load(file, Loader=yaml.FullLoader)
             global trustUser
             global userdict
-            userdict = data
+            userdict = Userdata
             trustUser = []
             for i in userdict.keys():
-                data = userdict.get(i)
-                times = int(str(data.get('sts')))
+                Userdata = userdict.get(i)
+                times = int(str(Userdata.get('sts')))
                 if times > trustDays:
                     trustUser.append(str(i))
     @bot.on(Startup)
