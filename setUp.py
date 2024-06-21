@@ -32,7 +32,7 @@ def newLogger():
 
 logger = newLogger()
 def main():
-    print("请输入要执行的指令：\n1 绑定到远程仓库(如果通过源码包安装请执行)\n2 更新bot代码\n3 清理无用数据(如缓存图片)\n4 导出群信息，制作一个chatLearning可用的配置文件\n5 其他素材下载(可选)")
+    print("请输入要执行的指令：\n1 绑定到远程仓库(如果通过源码包安装请执行)\n2 更新bot代码\n3 清理无用数据(如缓存图片)\n4 导出群信息，制作一个chatLearning可用的配置文件\n5 其他素材下载(可选)\n6 安装vits功能对应依赖")
 
     a=input("输入要执行的数字")
     if a=="1":
@@ -195,7 +195,9 @@ def main():
                 os.chdir("./data")
                 logger.info("文件夹不存在，拉取素材")
                 os.system("git clone https://gitee.com/Nwflower/star-rail-atlas.git")
-
+    elif a=="6":
+        logger.info("开始安装vits语音模块相关依赖")
+        os.system("pip install -r vits/vitsRequirements.txt")
     else:
         print("结束")
 def updaat(f=False,jump=False,source=None):

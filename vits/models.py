@@ -2,13 +2,13 @@ import math
 import torch
 from torch import nn
 from torch.nn import functional as F
-from vits import commons
-from vits import modules
-from vits import attentions
+from . import commons
+from . import modules
+from . import attentions
 
 from torch.nn import Conv1d, ConvTranspose1d
 from torch.nn.utils import weight_norm
-from vits.commons import init_weights
+from .commons import init_weights
 
 
 class StochasticDurationPredictor(nn.Module):

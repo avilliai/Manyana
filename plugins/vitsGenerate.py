@@ -13,8 +13,14 @@ import websockets
 import yaml
 
 from plugins.RandomStr import random_str
+from plugins.modelsLoader import modelLoader
 from plugins.translater import translate
-from vits.MoeGoe import vG
+
+try:
+    models, default, characters = modelLoader()  # 读取模型
+    from vits import vG
+except:
+    pass
 
 with open('config/api.yaml', 'r', encoding='utf-8') as f:
     resulttr = yaml.load(f.read(), Loader=yaml.FullLoader)

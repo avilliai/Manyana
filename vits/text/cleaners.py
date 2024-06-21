@@ -1,8 +1,7 @@
 import re
 
-
 def japanese_cleaners(text):
-    from vits.text.japanese import japanese_to_romaji_with_accent
+    from .japanese import japanese_to_romaji_with_accent
     text = japanese_to_romaji_with_accent(text)
     text = re.sub(r'([A-Za-z])$', r'\1.', text)
     return text
@@ -14,7 +13,7 @@ def japanese_cleaners2(text):
 
 def korean_cleaners(text):
     '''Pipeline for Korean text'''
-    from vits.text.korean import latin_to_hangul, number_to_hangul, divide_hangul
+    from .korean import latin_to_hangul, number_to_hangul, divide_hangul
     text = latin_to_hangul(text)
     text = number_to_hangul(text)
     text = divide_hangul(text)
@@ -24,7 +23,7 @@ def korean_cleaners(text):
 
 def chinese_cleaners(text):
     '''Pipeline for Chinese text'''
-    from vits.text.mandarin import number_to_chinese, chinese_to_bopomofo, latin_to_bopomofo
+    from .mandarin import number_to_chinese, chinese_to_bopomofo, latin_to_bopomofo
     text = number_to_chinese(text)
     text = chinese_to_bopomofo(text)
     text = latin_to_bopomofo(text)
@@ -33,8 +32,8 @@ def chinese_cleaners(text):
 
 
 def zh_ja_mixture_cleaners(text):
-    from vits.text.mandarin import chinese_to_romaji
-    from vits.text.japanese import japanese_to_romaji_with_accent
+    from .mandarin import chinese_to_romaji
+    from .japanese import japanese_to_romaji_with_accent
     text = re.sub(r'\[ZH\](.*?)\[ZH\]',
                   lambda x: chinese_to_romaji(x.group(1))+' ', text)
     text = re.sub(r'\[JA\](.*?)\[JA\]', lambda x: japanese_to_romaji_with_accent(
@@ -51,11 +50,11 @@ def sanskrit_cleaners(text):
 
 
 def cjks_cleaners(text):
-    from vits.text.mandarin import chinese_to_lazy_ipa
-    from vits.text.japanese import japanese_to_ipa
-    from vits.text.korean import korean_to_lazy_ipa
-    from vits.text.sanskrit import devanagari_to_ipa
-    from vits.text.english import english_to_lazy_ipa
+    from mandarin import chinese_to_lazy_ipa
+    from japanese import japanese_to_ipa
+    from korean import korean_to_lazy_ipa
+    from sanskrit import devanagari_to_ipa
+    from english import english_to_lazy_ipa
     text = re.sub(r'\[ZH\](.*?)\[ZH\]',
                   lambda x: chinese_to_lazy_ipa(x.group(1))+' ', text)
     text = re.sub(r'\[JA\](.*?)\[JA\]',
@@ -72,10 +71,10 @@ def cjks_cleaners(text):
 
 
 def cjke_cleaners(text):
-    from vits.text.mandarin import chinese_to_lazy_ipa
-    from vits.text.japanese import japanese_to_ipa
-    from vits.text.korean import korean_to_ipa
-    from vits.text.english import english_to_ipa2
+    from mandarin import chinese_to_lazy_ipa
+    from japanese import japanese_to_ipa
+    from korean import korean_to_ipa
+    from english import english_to_ipa2
     text = re.sub(r'\[ZH\](.*?)\[ZH\]', lambda x: chinese_to_lazy_ipa(x.group(1)).replace(
         'ʧ', 'tʃ').replace('ʦ', 'ts').replace('ɥan', 'ɥæn')+' ', text)
     text = re.sub(r'\[JA\](.*?)\[JA\]', lambda x: japanese_to_ipa(x.group(1)).replace('ʧ', 'tʃ').replace(
@@ -90,10 +89,10 @@ def cjke_cleaners(text):
 
 
 def cjke_cleaners2(text):
-    from vits.text.mandarin import chinese_to_ipa
-    from vits.text.japanese import japanese_to_ipa2
-    from vits.text.korean import korean_to_ipa
-    from vits.text.english import english_to_ipa2
+    from mandarin import chinese_to_ipa
+    from japanese import japanese_to_ipa2
+    from korean import korean_to_ipa
+    from english import english_to_ipa2
     text = re.sub(r'\[ZH\](.*?)\[ZH\]',
                   lambda x: chinese_to_ipa(x.group(1))+' ', text)
     text = re.sub(r'\[JA\](.*?)\[JA\]',
@@ -108,26 +107,26 @@ def cjke_cleaners2(text):
 
 
 def thai_cleaners(text):
-    from vits.text.thai import num_to_thai, latin_to_thai
+    from thai import num_to_thai, latin_to_thai
     text = num_to_thai(text)
     text = latin_to_thai(text)
     return text
 
 
 def shanghainese_cleaners(text):
-    from vits.text.shanghainese import shanghainese_to_ipa
+    from shanghainese import shanghainese_to_ipa
     text = shanghainese_to_ipa(text)
     text = re.sub(r'([^\.,!\?\-…~])$', r'\1.', text)
     return text
 
 
 def chinese_dialect_cleaners(text):
-    from vits.text.mandarin import chinese_to_ipa2
-    from vits.text.japanese import japanese_to_ipa3
-    from vits.text.shanghainese import shanghainese_to_ipa
-    from vits.text.cantonese import cantonese_to_ipa
-    from vits.text.english import english_to_lazy_ipa2
-    from vits.text.ngu_dialect import ngu_dialect_to_ipa
+    from .mandarin import chinese_to_ipa2
+    from .japanese import japanese_to_ipa3
+    from .shanghainese import shanghainese_to_ipa
+    from .cantonese import cantonese_to_ipa
+    from .english import english_to_lazy_ipa2
+    from .ngu_dialect import ngu_dialect_to_ipa
     text = re.sub(r'\[ZH\](.*?)\[ZH\]',
                   lambda x: chinese_to_ipa2(x.group(1))+' ', text)
     text = re.sub(r'\[JA\](.*?)\[JA\]',

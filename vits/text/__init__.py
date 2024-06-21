@@ -1,6 +1,5 @@
 """ from https://github.com/keithito/tacotron """
-from vits.text import cleaners
-
+from . import cleaners
 
 def text_to_sequence(text, symbols, cleaner_names):
   '''Converts a string of text to a sequence of IDs corresponding to the symbols in the text.

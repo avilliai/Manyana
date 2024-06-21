@@ -28,6 +28,7 @@ def main(bot,master,logger,berturl,proxy):
         logger.error("缺少本地vits模型，无法使用vits模式(非必要)")
         logger.warning("如有需要，请从https://github.com/avilliai/Manyana/releases/download/Manyana/1374_epochsm.pth下载，或在群628763673内获取")
         logger.warning("下载后，将其放置在vits/voiceModel/nene文件夹下")
+        logger.warning("然后执行更新脚本的 下载vits依赖 选项")
     with open('config/settings.yaml', 'r', encoding='utf-8') as f:
         result0 = yaml.load(f.read(), Loader=yaml.FullLoader)
     speaker92 = result0.get("语音功能设置").get("speaker")
