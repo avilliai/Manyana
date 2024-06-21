@@ -15,7 +15,6 @@ from mirai import Image, Voice
 from mirai import Mirai, WebSocketAdapter, FriendMessage, GroupMessage, At, Plain
 
 from plugins.RandomStr import random_str
-from plugins.modelsLoader import modelLoader
 from plugins.newsEveryDay import nong
 from plugins.translater import translate
 from plugins.vitsGenerate import voiceGenerate

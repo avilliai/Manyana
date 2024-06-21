@@ -16,15 +16,13 @@ from mirai import Image, Voice
 from mirai import Mirai, WebSocketAdapter, FriendMessage, GroupMessage, At, Plain
 
 from plugins.RandomStr import random_str
-from plugins.modelsLoader import modelLoader
+
 from plugins.translater import translate
 from plugins.vitsGenerate import voiceGenerate, outVits, superVG
 
 
 def main(bot,master,logger):
     logger.info("语音合成用户端启动....")
-
-
 
     with open('config/nudgeReply.yaml', 'r', encoding='utf-8') as f:
         result = yaml.load(f.read(), Loader=yaml.FullLoader)
@@ -44,6 +42,7 @@ def main(bot,master,logger):
     global models
     global characters
     try:
+        from plugins.modelsLoader import modelLoader
         models, default, characters = modelLoader()  # 读取模型
     except Exception as e:
         characters={"None":"无可用模型"}

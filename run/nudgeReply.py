@@ -6,8 +6,6 @@ from mirai import Image, Voice, Poke
 from mirai import Mirai, WebSocketAdapter, FriendMessage, GroupMessage, At, Plain
 from mirai.models import NudgeEvent
 
-from plugins.modelsLoader import modelLoader
-
 
 def main(bot,master,logger,berturl,proxy):
     with open('config/nudgeReply.yaml', 'r', encoding='utf-8') as f:
@@ -23,6 +21,7 @@ def main(bot,master,logger,berturl,proxy):
     global models
     global characters
     try:
+        from plugins.modelsLoader import modelLoader
         models, default, characters = modelLoader()  # 读取模型
     except:
         logger.error("缺少本地vits模型，无法使用vits模式(非必要)")

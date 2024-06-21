@@ -1,3 +1,4 @@
+librosa==0.10.0
 numba==0.57.1
 numpy==1.23.0
 torch==2.0.1

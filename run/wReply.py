@@ -19,7 +19,7 @@ from mirai import Mirai, WebSocketAdapter, FriendMessage, GroupMessage, At, Plai
 
 from plugins.RandomStr import random_str
 from plugins.imgDownload import dict_download_img
-from plugins.modelsLoader import modelLoader
+
 from plugins.translater import translate
 from plugins.vitsGenerate import voiceGenerate, outVits, modelscopeTTS
 from plugins.wReply.mohuReply import mohuaddReplys, mohudels, mohuadd
@@ -144,6 +144,7 @@ def main(bot,config,sizhiKey,logger):
     global models
     global characters
     try:
+        from plugins.modelsLoader import modelLoader
         models, default, characters = modelLoader()  # 读取模型
     except:
         pass

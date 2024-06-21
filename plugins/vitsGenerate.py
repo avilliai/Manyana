@@ -6,20 +6,20 @@ import subprocess
 from asyncio import sleep
 
 import httpx
-import librosa
 import requests
-import soundfile
 import websockets
 import yaml
 
 from plugins.RandomStr import random_str
-from plugins.modelsLoader import modelLoader
-from plugins.translater import translate
 
+from plugins.translater import translate
 try:
+    from plugins.modelsLoader import modelLoader
     models, default, characters = modelLoader()  # 读取模型
     from vits import vG
 except:
+    print("未读取到模型，禁用vits功能")
+    print("如已部署模型请运行 更新脚本 安装vits依赖")
     pass
 
 with open('config/api.yaml', 'r', encoding='utf-8') as f:
@@ -232,7 +232,6 @@ async def superVG(data,mode,urls="",langmode="<zh>"):
             r1 = requests.get(newUrl)
             with open(p, "wb") as f:
                 f.write(r1.content)
-            # await change_sample_rate(p)
             return p
     elif mode=="firefly":
         datap=data
@@ -365,7 +364,6 @@ async def outVits(data):
         r1=requests.get(newUrl)
         with open(p, "wb") as f:
             f.write(r1.content)
-        #await change_sample_rate(p)
         return p
 
 async def voiceGenerate(data):
@@ -415,20 +413,5 @@ async def modelscopeTTS(data):
                 f.write(r.content)
             return p
 
-async def change_sample_rate(path,new_sample_rate=44100):
-    #wavfile = path  # 提取音频文件名，如“1.wav"
-    # new_file_name = wavfile.split('.')[0] + '_8k.wav'      #此行代码可用于对转换后的文件进行重命名（如有需要）
-
-    signal, sr = librosa.load(path, sr=None)  # 调用librosa载入音频
-
-    new_signal = librosa.resample(signal, orig_sr=sr, target_sr=new_sample_rate)  # 调用librosa进行音频采样率转换
-
-    new_path = path # 指定输出音频的路径，音频文件与原音频同名
-    # new_path = os.path.join(new_dir_path, new_file_name)      #若需要改名则启用此行代码
-    #print("?")
-    #print(new_path)
-
-    # librosa.output.write_wav(new_path, new_signal , new_sample_rate)      #因版本问题，此方法可能用不了
-    soundfile.write(new_path, new_signal, new_sample_rate)
 
 #asyncio.run(outVits({"text":"你好啊，你吃饭了吗，今天吃的怎么样，开心吗？",'speaker':"黑塔"}))

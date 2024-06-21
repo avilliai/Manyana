@@ -1,11 +1,9 @@
 import asyncio
 
 import httpx
-import librosa
 import requests
 import json
 # 定义请求的URL
-import soundfile
 
 from plugins.newsEveryDay import get_headers
 

@@ -19,8 +19,6 @@ from mirai.models import ForwardMessageNode, Forward
 from plugins.RandomStr import random_str
 from plugins.imgSearch import test2, superSearch, test1, test
 
-from plugins.modelsLoader import modelLoader
-from plugins.translater import translate
 
 
 def main(bot,api_key,proxy,logger):
