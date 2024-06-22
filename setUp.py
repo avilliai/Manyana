@@ -218,7 +218,7 @@ def updaat(f=False,jump=False,source=None):
             # os.system("pip install selenium")
     if source==None:
         logger.info("拉取bot代码\n--------------------")
-        logger.info("选择更新源(git源 镜像源相互兼容)：\n1 git源\n2 镜像源1\n3 镜像源2(推荐) \n4 中国计算机协会源(linux系统用这个)")
+        logger.info("选择更新源(git源 镜像源相互兼容)：\n1 git源\n2 镜像源1\n3 镜像源2(推荐) \n4 中国计算机协会源(linux系统用这个，不兼容上述源)")
         source = input("选择更新源(输入数字 )：")
     else:
         source=str(source)
@@ -233,7 +233,7 @@ def updaat(f=False,jump=False,source=None):
     elif source=="3":
         p=subprocess.Popen(['git', 'pull', 'https://mirror.ghproxy.com/https://github.com/avilliai/Manyana'], stdout=subprocess.PIPE,stderr=subprocess.PIPE)
     elif source=="4":
-        p=subprocess.Popen(['git', 'pull', 'https://gitlink.org.cn/lux-QAQ/Manyana'], stdout=subprocess.PIPE,stderr=subprocess.PIPE)
+        p=subprocess.Popen(['git', 'pull', 'https://gitlink.org.cn/penoy/mirror.Manyana'], stdout=subprocess.PIPE,stderr=subprocess.PIPE)
     else:
         logger.error("无效输入，重新执行")
         updaat()
