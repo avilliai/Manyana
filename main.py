@@ -9,7 +9,11 @@ import subprocess
 import sys
 from asyncio import sleep as sleep1
 from time import sleep
+# 将工作目录设置为脚本所在目录
+os.chdir(os.path.dirname(os.path.abspath(__file__)))
 
+# 将当前目录添加到sys.path中
+sys.path.append(os.path.dirname(os.path.abspath(__file__)))
 import yaml
 from mirai import Mirai, WebSocketAdapter, GroupMessage, Image, At, Startup, FriendMessage, Shutdown
 
