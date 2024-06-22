@@ -18,8 +18,6 @@ try:
     models, default, characters = modelLoader()  # 读取模型
     from vits import vG
 except:
-    print("未读取到模型，禁用vits功能")
-    print("如已部署模型请运行 更新脚本 安装vits依赖")
     pass
 
 with open('config/api.yaml', 'r', encoding='utf-8') as f:
