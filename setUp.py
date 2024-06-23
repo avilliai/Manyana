@@ -233,7 +233,7 @@ def updaat(f=False,jump=False,source=None):
     elif source=="3":
         p=subprocess.Popen(['git', 'pull', 'https://mirror.ghproxy.com/https://github.com/avilliai/Manyana'], stdout=subprocess.PIPE,stderr=subprocess.PIPE)
     elif source=="4":
-        p=subprocess.Popen(['git', 'pull', 'https://gitlink.org.cn/penoy/mirror.Manyana'], stdout=subprocess.PIPE,stderr=subprocess.PIPE)
+        p=subprocess.Popen(['git', 'pull', 'https://www.gitlink.org.cn/lux-QAQ/Manyana'], stdout=subprocess.PIPE,stderr=subprocess.PIPE)
     else:
         logger.error("无效输入，重新执行")
         updaat()
