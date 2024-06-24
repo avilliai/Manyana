@@ -361,8 +361,8 @@ def main(bot,logger):
                     logger.info("获取到结果" + str(response.json()))
                     # logger.info("下载缩略图")
                     filename = await picDwn(response.json().get("url"), "data/pictures/nasa/"+response.json().get("date")+".png")
-                    txta=await translate(response.json().get("explanation"),mode="EN2ZH_CN")
-                    txt = response.json().get("date") + "\n" + response.json().get("title") + "\n" + txta
+
+                    txt = response.json().get("date") + "\n" + response.json().get("title") + "\n" + response.json().get("explanation")
                     temp={"path":"data/pictures/nasa/"+response.json().get("date")+".png","oriTxt":response.json().get("explanation"),"transTxt":txt}
 
                     data[datetime.datetime.now().strftime('%Y-%m-%d')]=temp
@@ -370,8 +370,8 @@ def main(bot,logger):
                     with open('data/nasaTasks.yaml', 'w', encoding="utf-8") as file:
                         yaml.dump(data, file, allow_unicode=True)
                     if aiReplyCore:
-                        r = await modelReply(event.sender.member_name, event.sender.id, f"将下面这段内容翻译为中文:{txt}")
-                        txt=r
+                        txt = await modelReply(event.sender.member_name, event.sender.id, f"将下面这段内容翻译为中文:{txt}")
+
                     await bot.send(event,(Image(path=filename),txt))
 
                 except:
