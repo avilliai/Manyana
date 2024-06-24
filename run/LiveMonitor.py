@@ -80,9 +80,8 @@ def main(bot,master,botName,logger):
                 logger.info(str(d1))
                 d1.remove(event.group.id)
                 logger.info("清理直播")
-                t1=[]
 
-                if d1==t1:
+                if len(d1)==0:
                     live.remove(id1)
                 else:
                     live[id1]["group"]=d1
@@ -90,7 +89,8 @@ def main(bot,master,botName,logger):
                     yaml.dump(live, file, allow_unicode=True)
                 logger.warning("取消了直播订阅")
                 await bot.send(event, "取消了对"+str(id1)+"的直播订阅")
-            except:
+            except Exception as e:
+                logger.error(e)
                 await bot.send(event,"error，请检查直播房间号是否正确")
 
     @bot.on(GroupMessage)
