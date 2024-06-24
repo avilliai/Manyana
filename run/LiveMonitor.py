@@ -80,9 +80,8 @@ def main(bot,master,botName,logger):
                 logger.info(str(d1))
                 d1.remove(event.group.id)
                 logger.info("清理直播")
-
                 if len(d1)==0:
-                    live.remove(id1)
+                    live.pop(id1)
                 else:
                     live[id1]["group"]=d1
                 with open('data/biliMonitor.yaml', 'w', encoding="utf-8") as file:
