@@ -369,6 +369,9 @@ def main(bot,logger):
 
                     with open('data/nasaTasks.yaml', 'w', encoding="utf-8") as file:
                         yaml.dump(data, file, allow_unicode=True)
+                    if aiReplyCore:
+                        r = await modelReply(event.sender.member_name, event.sender.id, f"将下面这段内容翻译为中文:{txt}")
+                        txt=r
                     await bot.send(event,(Image(path=filename),txt))
 
                 except:

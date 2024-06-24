@@ -173,6 +173,9 @@ def main(bot,proxy,nasa_api,logger):
 
             with open('data/nasaTasks.yaml', 'w', encoding="utf-8") as file:
                 yaml.dump(data, file, allow_unicode=True)
+            if aiReplyCore:
+                r = await modelReply("用户", 000000, f"将下面这段内容翻译为中文:{txt}")
+                txt = r
             for i in data.get("astronomy").get("groups"):
                 try:
                     await bot.send_group_message(int(i), [data.get("astronomy").get("text"), Image(path=filename),txt])
