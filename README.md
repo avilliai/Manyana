@@ -104,7 +104,9 @@ git clone --depth 1 https://gh-proxy.com/https://github.com/avilliai/Manyana
 # 🎲可选配置
 <details markdown='1'><summary>填写配置文件</summary>
 
-有关配置文件的填写，config文件夹每个yaml文件基本都有注释，每个yaml文件几乎都是可供修改的，默认的记事本即可打开yaml文件，但对于windows用户尤其是不熟悉yaml用户结构的用户来说，强烈建议在launcher的UI中进行配置文件的修改，以免由于修改后的格式错误导致bot无法运行。
+有关配置文件的填写，config文件夹每个yaml文件基本都有注释，每个yaml文件几乎都是可供修改的，默认的记事本即可打开yaml文件，但对于windows用户尤其是不熟悉yaml用户结构的用户来说，我们强烈建议在launcher的UI中进行配置文件的修改，而不是通过记事本。
+
+不规范地修改配置文件将破坏yaml文件结构并最终导致bot无法运行。
 
 </details>
 
