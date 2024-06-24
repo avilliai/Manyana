@@ -363,14 +363,15 @@ def main(bot,logger):
                     filename = await picDwn(response.json().get("url"), "data/pictures/nasa/"+response.json().get("date")+".png")
 
                     txt = response.json().get("date") + "\n" + response.json().get("title") + "\n" + response.json().get("explanation")
+                    if aiReplyCore:
+                        txt = await modelReply(event.sender.member_name, event.sender.id, f"将下面这段内容翻译为中文:{txt}")
                     temp={"path":"data/pictures/nasa/"+response.json().get("date")+".png","oriTxt":response.json().get("explanation"),"transTxt":txt}
 
                     data[datetime.datetime.now().strftime('%Y-%m-%d')]=temp
 
                     with open('data/nasaTasks.yaml', 'w', encoding="utf-8") as file:
                         yaml.dump(data, file, allow_unicode=True)
-                    if aiReplyCore:
-                        txt = await modelReply(event.sender.member_name, event.sender.id, f"将下面这段内容翻译为中文:{txt}")
+
 
                     await bot.send(event,(Image(path=filename),txt))
 
