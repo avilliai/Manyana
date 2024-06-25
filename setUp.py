@@ -7,6 +7,17 @@ import sys
 import colorlog
 
 import shutil
+current_dir = os.getcwd()
+
+# 获取上一级目录
+parent_dir = os.path.dirname(current_dir)
+
+# 检测上一级目录下的environments/MinGit/cmd/git.exe是否存在
+custom_git_path = os.path.join(parent_dir, "environments", "MinGit", "cmd", "git.exe")
+if os.path.exists(custom_git_path):
+    git_path = custom_git_path
+else:
+    git_path = "git"
 def newLogger():
     # 创建一个logger对象
     logger = logging.getLogger("villia")
@@ -36,10 +47,10 @@ def main():
 
     a=input("输入要执行的数字")
     if a=="1":
-        os.system("git init")
-        os.system("git remote add origin https://github.com/avilliai/Manyana.git")
+        os.system(f"{git_path} init")
+        os.system(f"{git_path} remote add origin https://github.com/avilliai/Manyana.git")
         print("正在添加文件.....这可能需要较长时间")
-        os.system("git add .")
+        os.system(f"{git_path} add .")
         print("over")
     elif a=="2":
         updaat()
@@ -190,11 +201,11 @@ def main():
             if os.path.exists("./data/star-rail-atlas"):
                 os.chdir("./data")
                 logger.info("文件夹已存在，进入更新模式")
-                os.system("git pull https://gitee.com/Nwflower/star-rail-atlas.git")
+                os.system(f"{git_path} pull https://gitee.com/Nwflower/star-rail-atlas.git")
             else:
                 os.chdir("./data")
                 logger.info("文件夹不存在，拉取素材")
-                os.system("git clone https://gitee.com/Nwflower/star-rail-atlas.git")
+                os.system(f"{git_path} clone https://gitee.com/Nwflower/star-rail-atlas.git")
     elif a=="6":
         logger.info("开始安装vits语音模块相关依赖")
         os.system("pip install -r vits/vitsRequirements.txt")
@@ -225,15 +236,15 @@ def updaat(f=False,jump=False,source=None):
     if source == "1":
         # os.system("git pull https://github.com/avilliai/Manyana.git")
         # 启动进程
-        p = subprocess.Popen(['git', 'pull', 'https://github.com/avilliai/Manyana.git'], stdout=subprocess.PIPE,
+        p = subprocess.Popen([f'{git_path}', 'pull', 'https://github.com/avilliai/Manyana.git'], stdout=subprocess.PIPE,
                              stderr=subprocess.PIPE)
     elif source=="2":
-        p = subprocess.Popen(['git', 'pull', 'https://gh-proxy.com/https://github.com/avilliai/Manyana'], stdout=subprocess.PIPE,
+        p = subprocess.Popen([f'{git_path}', 'pull', 'https://gh-proxy.com/https://github.com/avilliai/Manyana'], stdout=subprocess.PIPE,
                              stderr=subprocess.PIPE)
     elif source=="3":
-        p=subprocess.Popen(['git', 'pull', 'https://mirror.ghproxy.com/https://github.com/avilliai/Manyana'], stdout=subprocess.PIPE,stderr=subprocess.PIPE)
+        p=subprocess.Popen([f'{git_path}', 'pull', 'https://mirror.ghproxy.com/https://github.com/avilliai/Manyana'], stdout=subprocess.PIPE,stderr=subprocess.PIPE)
     elif source=="4":
-        p=subprocess.Popen(['git', 'pull', 'https://www.gitlink.org.cn/lux-QAQ/Manyana'], stdout=subprocess.PIPE,stderr=subprocess.PIPE)
+        p=subprocess.Popen([f'{git_path}', 'pull', 'https://www.gitlink.org.cn/lux-QAQ/Manyana'], stdout=subprocess.PIPE,stderr=subprocess.PIPE)
     else:
         logger.error("无效输入，重新执行")
         updaat()
