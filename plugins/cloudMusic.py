@@ -13,7 +13,7 @@ async def newCloudMusic(musicname):
     async with httpx.AsyncClient(timeout=None,headers=get_headers()) as client:
         r = await client.get(url)
         return r.json().get("content")
-async def newCloudMusicDown(musicname,n):
+async def newCloudMusicDown(musicname,n,downloadMusicUrl=False):
     url = f"http://api.caonmtx.cn/api/wangyi.php?msg={musicname}&n={n}"
     path = 'data/music/musicCache/' + musicname + '.mp3'
     #path="./ttt.mp3"
@@ -28,7 +28,10 @@ async def newCloudMusicDown(musicname,n):
         waf = requests.get(r2.json()["song_url"],timeout=20).content
         with open(path, "wb") as f:
             f.write(waf)
-        return path
+        if downloadMusicUrl:
+            return path,r2.json()["song_url"]
+        else:
+            return path
 
 
 '''import os, pilk
