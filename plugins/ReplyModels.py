@@ -191,6 +191,25 @@ def glm4hahaha(prompt,meta):
     url = f"https://api.lolimi.cn/API/AI/zp.php?msg={str(prompt)}"
     r=requests.get(url,timeout=20)
     return {"role": "assistant", "content": r.json().get("data").get("output")}
+def xinghuo(prompt,meta):
+    prompt.insert(0, {"role": "user", "content": meta})
+    prompt.insert(1, {"role": "assistant", "content": "好的~"})
+    prompt = str(prompt).replace("\"", "%22").replace("\'", "%22")
+    url=f"https://api.alcex.cn/API/spark/?messages={str(prompt)}"
+    r = requests.get(url, timeout=20).json()
+    return {"role": "assistant", "content": r["choices"][0]["message"]["content"]}
+def freeGemini(prompt,bot_info):
+    prompt.insert(0, {"role": "user", "content": bot_info})
+    prompt.insert(1, {"role": "assistant", "content": "好的，已了解您的需求~我会扮演好您设定的角色。"})
+    pro1 = {"contents": prompt}
+    prompt1 = str(pro1).replace("\"", "%22").replace("\'", "%22").rstrip()
+    print(prompt1,type(prompt))
+    r="{%22contents%22:[{%22parts%22:[{%22text%22:%22%E4%BD%A0%E5%A5%BD%22}]}]}"
+
+    url = f"https://api.alcex.cn/API/gemini/?q={prompt1}"
+    r = requests.get(url)
+    print(r.json())
+    return {"role": "assistant", "content": r.json()["answer"]["candidates"][0]["content"]["parts"][0]["text"]}
 if __name__ == '__main__':
-    k = localAurona([{"role": "user", "content": "你好"}],"你是一只猫娘")
+    k = xinghuo([{"role": "user", "content": "谁赢得了2020年的世界职业棒球大赛?"},{"role": "assistant", "content": "洛杉矶道奇队在2020年赢得了世界职业棒球大赛冠军."},{"role": "user", "content": "它在哪里举办的?"} ] ,"你是一只猫娘")
     print(k)

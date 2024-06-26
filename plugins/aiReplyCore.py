@@ -9,7 +9,7 @@ from plugins.chatGLMonline import  glm4
 from plugins.cozeBot import cozeBotRep
 from plugins.googleGemini import geminirep
 from plugins.ReplyModels import gptOfficial, gptUnofficial, kimi, qingyan, lingyi, stepAI, qwen, gptvvvv, grop, \
-    gpt4hahaha, localAurona, anotherGPT35, chatGLM,lolimigpt2, relolimigpt2
+    gpt4hahaha, localAurona, anotherGPT35, chatGLM, lolimigpt2, relolimigpt2, xinghuo
 from plugins.RandomStr import random_str
 from plugins.translater import translate
 from plugins.vitsGenerate import voiceGenerate, superVG
@@ -161,6 +161,7 @@ async def modelReply(senderName,senderId, text,modelHere=modelDefault, trustUser
             tasks.append(loop_run_in_executor(loop, gptvvvv, prompt1, bot_in))
             tasks.append(loop_run_in_executor(loop, gpt4hahaha, prompt1, bot_in))
             tasks.append(loop_run_in_executor(loop, anotherGPT35, prompt1, senderId))
+            tasks.append(loop_run_in_executor(loop, xinghuo, prompt1, senderId))
             # tasks.append(loop_run_in_executor(loop,localAurona,prompt1,bot_in))
             # ... 添加其他模型的任务 ...
             aim = {"role": "user", "content": bot_in}
@@ -193,7 +194,7 @@ async def modelReply(senderName,senderId, text,modelHere=modelDefault, trustUser
                 raise Exception
             # print(reps)
             modeltrans = {"gptX": "gptvvvv", "清言": "qingyan", "通义千问": "qwen", "anotherGPT3.5": "anotherGPT35",
-                          "lolimigpt": "relolimigpt2", "step": "stepAI"}
+                          "lolimigpt": "relolimigpt2", "step": "stepAI","讯飞星火":"xinghuo"}
             for priority in randomModelPriority:
                 if priority in modeltrans:
                     priority = modeltrans.get(priority)
@@ -206,30 +207,8 @@ async def modelReply(senderName,senderId, text,modelHere=modelDefault, trustUser
                 rep = await loop.run_in_executor(None, gptUnofficial, prompt1, gptkeys, proxy, bot_in)
             else:
                 rep = await loop.run_in_executor(None, gptOfficial, prompt1, gptkeys, proxy, bot_in)
-        elif modelHere == "anotherGPT3.5":
-            rep = await loop.run_in_executor(None, anotherGPT35, prompt1, senderId)
-        elif modelHere == "Cozi":
-            rep = await loop.run_in_executor(None, cozeBotRep, CoziUrl, prompt1, proxy)
-        elif modelHere == "kimi":
-            rep = await loop.run_in_executor(None, kimi, prompt1, bot_in)
-        elif modelHere == "清言":
-            rep = await loop.run_in_executor(None, qingyan, prompt1, bot_in)
-        elif modelHere == "lingyi":
-            rep = await loop.run_in_executor(None, lingyi, prompt1, bot_in)
-        elif modelHere == "step":
-            rep = await loop.run_in_executor(None, stepAI, prompt1, bot_in)
-        elif modelHere == "通义千问":
-            rep = await loop.run_in_executor(None, qwen, prompt1, bot_in)
-        elif modelHere == "gptX":
-            rep = await loop.run_in_executor(None, gptvvvv, prompt1, bot_in)
-        elif modelHere == "grop":
-            rep = await loop.run_in_executor(None, grop, prompt1, bot_in)
-        elif modelHere == "aurora":
-            rep = await loop.run_in_executor(None, localAurona, prompt1, bot_in)
-        elif modelHere == "lolimigpt":
-            rep = await lolimigpt2(prompt1, bot_in)
-        elif modelHere == "glm-4":
-            rep = await glm4(prompt1, bot_in)
+
+
 
         elif modelHere == "Gemini":
             r = await geminirep(ak=random.choice(geminiapikey), messages=prompt1, bot_info=bot_in,GeminiRevProxy=GeminiRevProxy),

@@ -5,6 +5,7 @@ import os
 
 import google.generativeai as genai
 import httpx
+
 #官方sdk的prompt和使用post请求的prompt结构不同，需要进行转换
 def promptConvert(input_list):
     for item in input_list:
@@ -49,6 +50,7 @@ safety_settings = [
         },
     ]
 #调用
+
 async def geminirep(ak,messages,bot_info,GeminiRevProxy=""):
     messages_copy = copy.deepcopy(messages)
 
