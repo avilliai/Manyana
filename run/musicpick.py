@@ -90,6 +90,8 @@ def main(bot,logger):
                 if musicToVoice==True:
 
                     order = int(str(event.message_chain))
+                    if order<1:
+                        order=1
                     musiclist = musicTask.get(event.sender.id)
                     logger.info(f"获取歌曲：{musiclist[order-1]}")
                     if downloadMusicUrl:
