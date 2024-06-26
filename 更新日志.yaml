@@ -280,3 +280,4 @@
 2024/6/23:
   - 启动器大更新
   - config/controller.yaml增加配置项，点歌可附带音频下载链接
+  - 增加一个免费模型，请自行在random&PriorityModel添加一个 - 讯飞星火
