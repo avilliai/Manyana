@@ -27,6 +27,9 @@ def main(bot,logger):
     with open('config/settings.yaml', 'r', encoding='utf-8') as f:
         resulta = yaml.load(f.read(), Loader=yaml.FullLoader)
     musicToVoice=resulta.get("musicToVoice")
+    with open('config/controller.yaml', 'r', encoding='utf-8') as f:
+        controller = yaml.load(f.read(), Loader=yaml.FullLoader)
+    downloadMusicUrl=controller.get("点歌").get("下载链接")
     @bot.on(GroupMessage)
     async def dianzibofangqi(event: GroupMessage):
         if str(event.message_chain)=="开溜" or (At(bot.qq) in event.message_chain and "唱歌" in str(event.message_chain)):
@@ -86,7 +89,11 @@ def main(bot,logger):
                     order = int(str(event.message_chain))
                     musicname = musicTask.get(event.sender.id)
                     logger.info(f"获取歌曲：{musicname} 序号：{order}")
-                    p= await newCloudMusicDown(musicname, order)
+                    if downloadMusicUrl:
+                        p,MusicUrlDownLoad= await newCloudMusicDown(musicname, order,True)
+                        await bot.send(event,f"下载链接(mp3)：{MusicUrlDownLoad}")
+                    else:
+                        p= await newCloudMusicDown(musicname, order)
                     logger.info(f"已下载目标单曲：{p}")
                     await bot.send(event, Voice(path=p))
                     musicTask.pop(event.sender.id)
