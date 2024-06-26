@@ -55,14 +55,17 @@ def main(bot,logger):
             musicName=str(event.message_chain).replace("点歌 ","")
             logger.info("点歌："+musicName)
             if musicToVoice == True:
-                ffs=await newCloudMusic(musicName)
+                ffs=await cccdddm(musicName)
                 if ffs==None:
                     await bot.send(event,"连接出错，或无对应歌曲")
                 else:
-                    musicTask[event.sender.id]=musicName
+                    musicTask[event.sender.id]=ffs
                     musicL=""
+                    count1=1
                     for ib in ffs:
-                        musicL+=ib
+
+                        musicL+=f"{count1} {ib[0]} {ib[2]}\n"
+                        count1+=1
                     await bot.send(event,f"请发送对应歌曲的序号:\n{musicL}",True)
             else:
                 ffs = await cccdddm(musicName)
@@ -87,13 +90,13 @@ def main(bot,logger):
                 if musicToVoice==True:
 
                     order = int(str(event.message_chain))
-                    musicname = musicTask.get(event.sender.id)
-                    logger.info(f"获取歌曲：{musicname} 序号：{order}")
+                    musiclist = musicTask.get(event.sender.id)
+                    logger.info(f"获取歌曲：{musiclist[order-1]}")
                     if downloadMusicUrl:
-                        p,MusicUrlDownLoad= await newCloudMusicDown(musicname, order,True)
+                        p,MusicUrlDownLoad= await newCloudMusicDown(musiclist[order-1][1],True)
                         await bot.send(event,f"下载链接(mp3)：{MusicUrlDownLoad}")
                     else:
-                        p= await newCloudMusicDown(musicname, order)
+                        p= await newCloudMusicDown(musiclist[order-1][1])
                     logger.info(f"已下载目标单曲：{p}")
                     await bot.send(event, Voice(path=p))
                     musicTask.pop(event.sender.id)

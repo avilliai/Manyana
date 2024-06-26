@@ -13,25 +13,20 @@ async def newCloudMusic(musicname):
     async with httpx.AsyncClient(timeout=None,headers=get_headers()) as client:
         r = await client.get(url)
         return r.json().get("content")
-async def newCloudMusicDown(musicname,n,downloadMusicUrl=False):
-    url = f"http://api.caonmtx.cn/api/wangyi.php?msg={musicname}&n={n}"
-    path = 'data/music/musicCache/' + musicname + '.mp3'
-    #path="./ttt.mp3"
+async def newCloudMusicDown(musicid,downloadMusicUrl=False):
+    path = 'data/music/musicCache/' + str(musicid) + '.mp3'
+
+    newR = f"https://dataiqs.com/api/netease/music/?type=songid&id={musicid}"
     async with httpx.AsyncClient(timeout=None, headers=get_headers()) as client:
-        rp = await client.get(url)
-        r=rp.json().get("data").get("src")
-        r=str(r).split("id=")[1].replace(".mp3","")
-        newR=f"https://dataiqs.com/api/netease/music/?type=songid&id={r}"
-        async with httpx.AsyncClient(timeout=None, headers=get_headers()) as client:
-            r2 = await client.get(newR)
-            #print(r.json()["song_url"])
-        waf = requests.get(r2.json()["song_url"],timeout=20).content
-        with open(path, "wb") as f:
-            f.write(waf)
-        if downloadMusicUrl:
-            return path,r2.json()["song_url"]
-        else:
-            return path
+        r2 = await client.get(newR)
+        # print(r.json()["song_url"])
+    waf = requests.get(r2.json()["song_url"], timeout=20).content
+    with open(path, "wb") as f:
+        f.write(waf)
+    if downloadMusicUrl:
+        return path, r2.json()["song_url"]
+    else:
+        return path
 
 
 '''import os, pilk
@@ -58,7 +53,7 @@ async def convert_to_silk(media_path: str) -> str:
 
 async def cccdddm(musicname):
     # 导入selenium库
-    url='https://music.163.com/api/search/get/web?csrf_token=hlpretag=&hlposttag=&s='+musicname+'&type=1&offset=1&total=false&limit=11'
+    url='https://music.163.com/api/search/get/web?csrf_token=hlpretag=&hlposttag=&s='+musicname+'&type=1&offset=0&total=true&limit=20'
     #DAT={'s': musicname,'offset': 1,'limit': 1,'type': 1}
     #url = "http://music.wandhi.com/?name=" + musicname + "&type=netease"
     #header=get_headers()
@@ -70,10 +65,11 @@ async def cccdddm(musicname):
         #print(r.json().get("result").get("songs"))
         #print(r.json().get("result").get("songs")[0].get("id"))
         newa=[]
+
         for i in r.json().get("result").get("songs"):
-            newa.append([i.get("name"),i.get("id"),i.get("artists")[0].get("img1v1Url"),i.get("artists")[0].get("name")])
-            if len(newa)>10:
-                return newa
+            #newa.append([i.get("name"),i.get("id"),i.get("artists")[0].get("img1v1Url"),i.get("artists")[0].get("name")])
+            newa.append(
+                [i.get("name"), i.get("id"), i.get("artists")[0].get("name")])
         return newa
         #id=r.json().get("result").get("songs")[0]
         #name=r.json().get("result").get("songs")[0].get("name")
@@ -89,5 +85,6 @@ async def musicDown(id, name):
         f.write(waf)
     return path
 
-#asyncio.run(cccdddm("iridescent"))
+#r=asyncio.run(cccdddm("しゃろう superstar"))
+#print(r)
 # musicDown("http://music.163.com/song/media/outer/url?id=1940303073.mp3")
