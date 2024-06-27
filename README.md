@@ -28,18 +28,19 @@
 # 🚀windows部署
 **如果你没有代理，或git连接不稳定，可在搭建时选择【镜像源】，镜像源和git源完全同步更新。**<br>
 
- 如果你看不懂教程，从release下载[Tutorial.mp4](https://github.com/avilliai/Manyana/releases/tag/Launcher) 照做就行<br>
+ 压缩包中附带了readme.txt 照做就行<br>
  能用Launcher改设置就用launcher改，不规范地修改文件导致的格式错误自行搜索解决。<br>
 ## 方法1：搭建工具部署(推荐)
 **如果你觉得自己从零开始搭建bot比较困难，请使用此方案**
-- 从[release](https://github.com/avilliai/Manyana/releases)下载ManyanaLauncher_v2.rar并解压
+- 从[release](https://github.com/avilliai/Manyana/releases)下载LAUNCHER_with_onebot.rar并解压
   - 如果下载过慢，你也可以从Q群628763673获得这个压缩包
-- 右键以管理员身份运行launcher.exe<br>
-- 在【工具】页面单击【搭建】，跟随指引即可，部署完成后
+- 运行launcher.exe<br>
+- 依次点击搭建页面的 一键安装 python+java+git，克隆仓库，安装依赖(没有自己的onebot实现的，需要额外安装onebot文件夹下的两个文件，先qq后llob_install)
 - 关闭launcher，重启launcher
-- 填写主界面【基本设置】,使用压缩包仅需修改前四项。<br>
-
+- 此时可以看到主界面已经变化，填写主界面设置,使用压缩包仅需修改前四项。<br>
+- 在第二个页面，依次启动overflow和Manyana<br>
 ```
+主界面配置项的含义如下
 "botName": 机器人名字
 "botQQ": 机器人QQ
 "master": 你的QQ
@@ -48,22 +49,23 @@
 "port": 【整合包无需修改】        #mirai-api-http的ws端口配置
 ```
 
-- 用launcher启动Mirai或overflow(没部署overflow的先参考[HowToUse.mp4](https://github.com/avilliai/Manyana/releases/tag/LLoneBot-tutorial) 部署)，随后启动Manyana即可<br>
-
 ## 方法2：自行部署(如果你有一定bot搭建经验)
 - 请确保py版本为3.9
 - 请确保已安装[mirai-api-http](https://github.com/project-mirai/mirai-api-http) 并[正确配置](https://github.com/avilliai/wReply/blob/master/setting.yml)
-- 自行部署仍推荐使用[release](https://github.com/avilliai/Manyana/releases/tag/Launcher)的ManyanaLauncher_v2.rar进行部署
-### 操作步骤
-- 从[release](https://github.com/avilliai/Manyana/releases/tag/Manyana)下载setUps.rar并解压，依次安装，一般默认下一步就行(**安装python的第一步一定要先勾选add to path**)。apk安装到手机。
+- 强烈推荐使用[release](https://github.com/avilliai/Manyana/releases))的LAUNCHER.rar进行部署，这将省去大量折腾的时间
+### 如果你坚持不使用LAUNCHER
+- 从[release](https://github.com/avilliai/wReply/releases/tag/yirimirai-Bot)下载python39_amd.exe并安装，(**安装python39的第一步一定要先勾选add to path**)
 - 克隆本仓库。找一个你喜欢的目录(**不要带中文**)打开cmd或git bash执行
 ```
 git clone --depth 1 https://github.com/avilliai/Manyana.git
 或使用镜像源
-git clone --depth 1 https://gh-proxy.com/https://github.com/avilliai/Manyana
+git clone --depth 1 https://mirror.ghproxy.com/https://github.com/avilliai/Manyana
+其他镜像源(推荐)
+git clone --depth 1 https://github.moeyy.xyz/https://github.com/avilliai/Manyana
+国内镜像(最快)
+git clone --depth 1 https://www.gitlink.org.cn/lux-QAQ/Manyana
 ```
 - 双击Manyana/一键部署脚本.bat即可
-- 把release的模型(1374_epochsm.pth)文件放置在Manyana/vits/voiceModel/nene
 - 填写config.json(必做)
 - 启动bot
   - 自行搭建：启动你自己的mirai/overflow，以及Manyana/启动脚本.bat
