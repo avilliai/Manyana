@@ -38,7 +38,7 @@
 - 运行launcher.exe<br>
 - 依次点击搭建页面的 一键安装 python+java+git，克隆仓库，安装依赖(没有自己的onebot实现的，需要额外安装onebot文件夹下的两个文件，先qq后llob_install)
 - 关闭launcher，重启launcher
-- 此时可以看到主界面已经变化，填写主界面设置,使用压缩包仅需修改前四项。<br>
+- 此时可以看到主界面已经变化，填写主界面设置并保存。使用压缩包仅需修改前四项。<br>
 - 在第二个页面，依次启动overflow和Manyana<br>
 ```
 主界面配置项的含义如下
