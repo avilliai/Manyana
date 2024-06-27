@@ -32,7 +32,7 @@
  能用Launcher改设置就用launcher改，不规范地修改文件导致的格式错误自行搜索解决。<br>
 ## 方法1：搭建工具部署(推荐)
 **如果你觉得自己从零开始搭建bot比较困难，请使用此方案**
-- 从[release](https://github.com/avilliai/Manyana/releases/tag/Launcher)下载ManyanaLauncher_v2.rar并解压
+- 从[release](https://github.com/avilliai/Manyana/releases)下载ManyanaLauncher_v2.rar并解压
   - 如果下载过慢，你也可以从Q群628763673获得这个压缩包
 - 右键以管理员身份运行launcher.exe<br>
 - 在【工具】页面单击【搭建】，跟随指引即可，部署完成后
