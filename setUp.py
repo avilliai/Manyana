@@ -18,6 +18,17 @@ if os.path.exists(custom_git_path):
     git_path = custom_git_path
 else:
     git_path = "git"
+
+custom_python_path = os.path.join(parent_dir, "environments", "Python39", "python.exe")
+if os.path.exists(custom_python_path):
+    python_path = custom_python_path
+else:
+    python_path = "python"
+custom_pip_path = os.path.join(parent_dir, "environments", "Python39", "Scripts","pip.exe")
+if os.path.exists(custom_pip_path):
+    pip_path = custom_pip_path
+else:
+    pip_path = "pip"
 def newLogger():
     # 创建一个logger对象
     logger = logging.getLogger("villia")
@@ -208,7 +219,7 @@ def main():
                 os.system(f"{git_path} clone https://gitee.com/Nwflower/star-rail-atlas.git")
     elif a=="6":
         logger.info("开始安装vits语音模块相关依赖")
-        os.system("pip install -r vits/vitsRequirements.txt")
+        os.system(f"{custom_pip_path} install -r vits/vitsRequirements.txt")
     else:
         print("结束")
 def updaat(f=False,jump=False,source=None):
@@ -217,16 +228,8 @@ def updaat(f=False,jump=False,source=None):
         if input("在这里输入:") != "1":
             logger.warning("即将开始更新依赖库，请确保已关闭代理，否则无法安装依赖库")
             input("按任意键继续：")
-            os.system("pip install pip install bingart")
-            os.system("pip install emoji")
-            # os.system("pip install -U zhipuai")
-            # os.system("pip install pydantic==1.10.11")
-            # os.system("pip install aspose-words")
-
-            # os.system("pip install --upgrade poe-api")
-            # os.system("pip install --upgrade requests")
-            # os.system("pip install --upgrade urllib3[socks]")
-            # os.system("pip install selenium")
+            os.system(f"{custom_pip_path} install bingart")
+            os.system(f"{custom_pip_path} install emoji")
     if source==None:
         logger.info("拉取bot代码\n--------------------")
         logger.info("选择更新源(git源 镜像源相互兼容)：\n1 git源\n2 镜像源1\n3 镜像源2 \n4 中国计算机协会源(搭建用的默认gitlink源就选这个，不兼容上述源)")
@@ -338,7 +341,7 @@ try:
     from ruamel.yaml import YAML
 except Exception as e:
     logger.error("未安装ruamel.yaml库，无法处理冲突文件，开始安装缺少的依赖")
-    os.system("pip install ruamel.yaml")
+    os.system(f"{custom_pip_path} install ruamel.yaml")
     from ruamel.yaml import YAML
 # 创建一个YAML对象来加载和存储YAML数据
 yaml = YAML()
