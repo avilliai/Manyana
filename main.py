@@ -28,7 +28,7 @@ if __name__ == '__main__':
 
     config=data
     qq=int(config.get('botQQ'))
-    key=config.get("vertify_key")
+    key=str(config.get("vertify_key"))
     port= int(config.get("port"))
     
     bot = Mirai(qq, adapter=WebSocketAdapter(
