@@ -2,16 +2,17 @@
 import os
 import sys
 
+os.chdir(os.path.dirname(os.path.abspath(__file__)))
+
+# 将当前目录添加到sys.path中
+sys.path.append(os.path.dirname(os.path.abspath(__file__)))
 import yaml
 from mirai import Mirai, WebSocketAdapter, GroupMessage, Image, At, Startup, FriendMessage, Shutdown
 
 from plugins.bingImageCreater.bingDraw import bingCreate
 from plugins.newLogger import newLogger
 
-os.chdir(os.path.dirname(os.path.abspath(__file__)))
 
-# 将当前目录添加到sys.path中
-sys.path.append(os.path.dirname(os.path.abspath(__file__)))
 def main(bot,logger):
     with open('config/api.yaml', 'r', encoding='utf-8') as f:
         resulttr = yaml.load(f.read(), Loader=yaml.FullLoader)
