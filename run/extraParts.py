@@ -233,7 +233,7 @@ def main(bot,logger):
                     b1 = ForwardMessageNode(sender_id=bot.qq, sender_name="Manyana",
                                             message_chain=MessageChain(Image(url=path)))
                     fordMes.append(b1)
-                await bot.send(event, fordMes)
+                await bot.send(event,Forward(node_list=fordMes))
                 logger.info("图片发送成功")
 
     @bot.on(GroupMessage)
