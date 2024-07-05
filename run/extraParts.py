@@ -201,40 +201,42 @@ def main(bot,logger):
                 data["size"] = "regular"
                 logger.info("组装数据完成："+str(data))
                 a=int(match1.group(1))
-                if int(match1.group(1))>10:
-                    a=9
+                if int(match1.group(1))>6:
+                    a=5
                     await bot.send(event,"api访问限制，修改获取张数为 5")
-                fordMes=[]
                 for i in range(a):
                     try:
                         path=await setuGet(data)
                     except:
                         logger.error("涩图请求出错")
-                        b1 = ForwardMessageNode(sender_id=bot.qq, sender_name="Manyana",
-                                                message_chain=MessageChain(["请求出错，请稍后再试"]))
-                        fordMes.append(b1)
+                        await bot.send(event,"请求出错，请稍后再试")
                         continue
                     logger.info("获取到图片: "+path)
 
-                    if selfsensor==True:
+                    if cardPic:
                         try:
-                            thurs=await setuModerate(path,moderateK)
-                            logger.info(f"获取到审核结果： adult- {thurs}")
-                            if int(thurs)>selfthreshold:
-                                logger.warning(f"不安全的图片，自我审核过滤")
-                                b1 = ForwardMessageNode(sender_id=bot.qq, sender_name="Manyana",
-                                                        message_chain=MessageChain(["nsfw内容已过滤",Image(path="data/colorfulAnimeCharacter/"+random.choice(os.listdir("data/colorfulAnimeCharacter")))]))
-                                fordMes.append(b1)
-                                continue
+                            card=await arkSign(path)
+                            await bot.send(event,App(card))
+                            logger.info("图片发送成功")
                         except Exception as e:
                             logger.error(e)
-                            logger.error("无法进行自我审核，错误的网络环境或apikey")
-                            continue
-                    b1 = ForwardMessageNode(sender_id=bot.qq, sender_name="Manyana",
-                                            message_chain=MessageChain(Image(url=path)))
-                    fordMes.append(b1)
-                await bot.send(event,Forward(node_list=fordMes))
-                logger.info("图片发送成功")
+                            logger.error("自动转换卡片失败")
+                    else:
+                        if selfsensor==True:
+                            try:
+                                thurs=await setuModerate(path,moderateK)
+                                logger.info(f"获取到审核结果： adult- {thurs}")
+                                if int(thurs)>selfthreshold:
+                                    logger.warning(f"不安全的图片，自我审核过滤")
+                                    await bot.send(event,["nsfw内容已过滤",Image(path="data/colorfulAnimeCharacter/"+random.choice(os.listdir("data/colorfulAnimeCharacter")))])
+                                    continue
+                            except Exception as e:
+                                logger.error(e)
+                                logger.error("无法进行自我审核，错误的网络环境或apikey")
+                                await bot.send(event,["审核策略失效，为确保安全，不显示本图片",Image(path="data/colorfulAnimeCharacter/"+random.choice(os.listdir("data/colorfulAnimeCharacter")))])
+                                continue
+                        await bot.send(event, Image(url=path))
+                        logger.info("图片发送成功")
 
     @bot.on(GroupMessage)
     async def emojiMix(event: GroupMessage):
