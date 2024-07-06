@@ -281,3 +281,7 @@
   - 启动器大更新
   - config/controller.yaml增加配置项，点歌可附带音频下载链接
   - 增加一个免费模型，请自行在random&PriorityModel添加一个 - 讯飞星火
+2024/7/6:
+  - firefly语音合成模式全部失效，新增FishTTS模式
+  - 看https://github.com/avilliai/Manyana/issues/19
+  - 应该需要代理(填proxy)
