@@ -424,17 +424,7 @@ def main(bot,logger):
             logger.info("\n" + IChing1)
             await bot.send(event, IChing1)
 
-    @bot.on(GroupMessage)
-    async def screenShoot(event: GroupMessage):
-        if str(event.message_chain).startswith("截图#"):
-            url=str(event.message_chain).split("#")[1]
-            path="data/pictures/cache/"+random_str()+".png"
-            logger.info("接收网页截图任务url:"+url)
-            try:
-                await screenshot_to_pdf_and_png(url, path)
-            except:
-                logger.error("截图失败!")
-            await bot.send(event, Image(path=path), True)
+
 
     @bot.on(GroupMessage)
     async def handwrite(event: GroupMessage):

@@ -1,29 +1,15 @@
 import asyncio
-from asyncio import sleep
 
 import httpx
-from selenium import webdriver
-def webScreenShoot(url,path,width=1200,height=7500):
-    browser = webdriver.Firefox()
-    url = url
-    browser.set_window_size(width,height)
-    browser.get(url)
-
-    browser.save_screenshot(path)
-    browser.close()
 
 
-# !/usr/bin/python3
-# -*- coding:utf-8 -*-
-
-
-import time
-from selenium import webdriver
-from selenium.webdriver.chrome.options import Options
-from PIL import Image
-
-
-async def screenshot_to_pdf_and_png(link,path,waitT=1):
+async def screenshot_to_pdf_and_png(url,path,width=1024,height=9680):
+    url=f"https://mini.s-shot.ru/{width}x{height}/PNG/1800/?{url}"
+    async with httpx.AsyncClient(timeout=200) as client:
+        r = await client.get(url)
+        with open(path, "wb") as f:
+            f.write(r.content)
+        return path
     ''' 参数：网址
         功能: 保存网址截图
              解决了截图不全问题
@@ -33,7 +19,7 @@ async def screenshot_to_pdf_and_png(link,path,waitT=1):
 
 
 
-    driver = webdriver.Firefox()
+    '''driver = webdriver.Firefox()
     # 6> 模仿手动滑动滚动条，解决懒加载问题
     try:
         driver.implicitly_wait(1)
@@ -79,7 +65,7 @@ async def screenshot_to_pdf_and_png(link,path,waitT=1):
         return png_path
 
     except Exception as e:
-        print(e)
+        print(e)'''
 
 async def webScreenShot(url,path):
     url=f"https://mini.s-shot.ru/1080x980/PNG/2024/?{url}"

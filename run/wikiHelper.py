@@ -16,9 +16,8 @@ from mirai import Mirai, WebSocketAdapter, FriendMessage, GroupMessage, At, Plai
 
 from plugins.RandomStr import random_str
 from plugins.newsEveryDay import nong
-from plugins.translater import translate
 from plugins.vitsGenerate import voiceGenerate
-from plugins.webScreenShoot import webScreenShoot, screenshot_to_pdf_and_png
+from plugins.webScreenShoot import  screenshot_to_pdf_and_png
 
 
 def main(bot,logger):
@@ -30,6 +29,17 @@ def main(bot,logger):
     with open('data/blueArchive/character.yaml', 'r', encoding='utf-8') as f:
         newResult = yaml.load(f.read(), Loader=yaml.FullLoader)
 
+    @bot.on(GroupMessage)
+    async def screenShoot(event: GroupMessage):
+        if str(event.message_chain).startswith("截图#"):
+            url = str(event.message_chain).split("#")[1]
+            path = "data/pictures/cache/" + random_str() + ".png"
+            logger.info("接收网页截图任务url:" + url)
+            try:
+                await screenshot_to_pdf_and_png(url, path,width=1024,height=980)
+            except:
+                logger.error("截图失败!")
+            await bot.send(event, Image(path=path), True)
     @bot.on(GroupMessage)
     async def CharacterQuery(event: GroupMessage):
         global punishing
@@ -89,65 +99,6 @@ def main(bot,logger):
                 await bot.send(event, Voice(path="data/autoReply/voiceReply/queryFalse.wav"))
 
     @bot.on(GroupMessage)
-    async def CharacterQuery(event:GroupMessage):
-        global newResult
-        if "ba查询" in str(event.message_chain):
-            aimCharacter = str(event.message_chain).split("ba查询")[1]
-            logger.info("查询ba角色:" + aimCharacter)
-            for i in newResult:
-                if aimCharacter in newResult.get(i).get('otherName'):
-                    if 'detail' in newResult.get(i):
-                        logger.info("存在本地数据文件，直接发送")
-                        path=newResult.get(i).get("detail")
-                        try:
-                            await bot.send(event,Image(path=path))
-                            return
-                        except:
-                            logger.error("失败，重新抓取")
-
-                    if True:
-                        logger.warning("没有本地数据文件，启用下载")
-                        await bot.send(event, "抓取数据中....初次查询将耗费较长时间。")
-                        url='https://blue-utils.me/'+newResult.get(i).get('url')
-                        path="data/blueArchive/cache/"+random_str()+'.png'
-                        data1=newResult.get(i)
-                        try:
-                            webScreenShoot(url,path)
-                            #await screenshot_to_pdf_and_png(url, path)
-                        except:
-                            logger.warning("查询ba角色:" + aimCharacter + " 失败，未收录对应数据")
-                            logger.info("发送语音()：数据库里好像没有这个角色呢,要再检查一下吗？")
-                            if os.path.exists("data/autoReply/voiceReply/queryFalse.wav") == False:
-                                data = {"text": "[ZH]数据库里好像没有这个角色呢,要再检查一下吗？[ZH]",
-                                        "out": "data/autoReply/voiceReply/queryFalse.wav"}
-                                await voiceGenerate(data)
-                                await bot.send(event, Voice(path="data/autoReply/voiceReply/queryFalse.wav"))
-                            else:
-                                await bot.send(event, Voice(path="data/autoReply/voiceReply/queryFalse.wav"))
-                            return
-
-                        data1["detail"]=path
-                        newResult[i]=data1
-                        logger.info("写入文件")
-                        #logger.info(newResult)
-                        with open('data/blueArchive/character.yaml', 'w', encoding="utf-8") as file:
-                            yaml.dump(newResult, file, allow_unicode=True)
-
-                        logger.info("发送成功")
-                        await bot.send(event,Image(path=path))
-                    return
-                else:
-                    continue
-            logger.warning("查询ba角色:" + aimCharacter + " 失败，未收录对应数据")
-            logger.info("发送语音(日)：数据库里好像没有这个角色呢,要再检查一下吗？")
-            if os.path.exists("data/autoReply/voiceReply/queryFalse.wav") == False:
-                data = {"text": "[ZH]数据库里好像没有这个角色呢,要再检查一下吗？[ZH]", "out": "data/autoReply/voiceReply/queryFalse.wav"}
-                await voiceGenerate(data)
-                await bot.send(event, Voice(path="data/autoReply/voiceReply/queryFalse.wav"))
-            else:
-                await bot.send(event, Voice(path="data/autoReply/voiceReply/queryFalse.wav"))
-
-    @bot.on(GroupMessage)
     async def CharacterQuery(event: GroupMessage):
         if "明日方舟查询" in str(event.message_chain) or "方舟查询" in str(event.message_chain):
             aimCharacter = str(event.message_chain).split("查询")[1]
@@ -170,7 +121,7 @@ def main(bot,logger):
 
                 try:
                     #webScreenShoot(url,path,1200,9500)
-                    await screenshot_to_pdf_and_png(url, path,5)
+                    await screenshot_to_pdf_and_png(url, path)
                 except:
                     logger.warning("查询方舟角色:" + aimCharacter + " 失败，未收录对应数据")
                     logger.info("发送语音()：数据库里好像没有这个角色呢,要再检查一下吗？")
@@ -262,7 +213,7 @@ def main(bot,logger):
 
                 try:
                     # webScreenShoot(url,path,1200,9500)
-                    await screenshot_to_pdf_and_png(url, path, 5)
+                    await screenshot_to_pdf_and_png(url, path)
                 except:
                     logger.warning("查询后室层级:" + aimCharacter + " 失败，未收录对应数据")
                     logger.info("发送语音()：数据库里好像没有这个层级呢,要再检查一下吗？")

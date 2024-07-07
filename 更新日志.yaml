@@ -285,3 +285,9 @@
   - firefly语音合成模式全部失效，新增FishTTS模式
   - 看https://github.com/avilliai/Manyana/issues/19
   - 应该需要代理(填proxy)
+2024/7/7:
+  - 恢复了如下指令
+  - 方舟查询xxx
+  - 战双查询xxx
+  - 后室查询xxx
+  - 截图#网址
