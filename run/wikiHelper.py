@@ -69,13 +69,7 @@ def main(bot,logger):
                         except:
                             logger.warning("查询战双角色:" + aimCharacter + " 失败，未收录对应数据")
                             logger.info("发送语音()：数据库里好像没有这个角色呢,要再检查一下吗？")
-                            if os.path.exists("data/autoReply/voiceReply/queryFalse.wav") == False:
-                                data = {"text": "[ZH]数据库里好像没有这个角色呢,要再检查一下吗？[ZH]",
-                                        "out": "data/autoReply/voiceReply/queryFalse.wav"}
-                                await voiceGenerate(data)
-                                await bot.send(event, Voice(path="data/autoReply/voiceReply/queryFalse.wav"))
-                            else:
-                                await bot.send(event, Voice(path="data/autoReply/voiceReply/queryFalse.wav"))
+                            await bot.send(event,"查询战双角色:" + aimCharacter + " 失败，未收录对应数据")
                             return
                         data1["detail"] = path
                         punishing[i] = data1
@@ -89,14 +83,6 @@ def main(bot,logger):
                     return
                 else:
                     continue
-            logger.warning("查询战双角色:" + aimCharacter + " 失败，未收录对应数据")
-            logger.info("发送语音(日)：数据库里好像没有这个角色呢,要再检查一下吗？")
-            if os.path.exists("data/autoReply/voiceReply/queryFalse.wav") == False:
-                data = {"text": "[ZH]数据库里好像没有这个角色呢,要再检查一下吗？[ZH]", "out": "data/autoReply/voiceReply/queryFalse.wav"}
-                await voiceGenerate(data)
-                await bot.send(event, Voice(path="data/autoReply/voiceReply/queryFalse.wav"))
-            else:
-                await bot.send(event, Voice(path="data/autoReply/voiceReply/queryFalse.wav"))
 
     @bot.on(GroupMessage)
     async def CharacterQuery(event: GroupMessage):
@@ -124,16 +110,8 @@ def main(bot,logger):
                     await screenshot_to_pdf_and_png(url, path)
                 except:
                     logger.warning("查询方舟角色:" + aimCharacter + " 失败，未收录对应数据")
-                    logger.info("发送语音()：数据库里好像没有这个角色呢,要再检查一下吗？")
-                    if os.path.exists("data/autoReply/voiceReply/queryFalse.wav") == False:
-                        data = {"text": "[ZH]数据库里好像没有这个角色呢,要再检查一下吗？[ZH]",
-                                "out": "data/autoReply/voiceReply/queryFalse.wav"}
-                        await voiceGenerate(data)
-                        await bot.send(event, Voice(path="data/autoReply/voiceReply/queryFalse.wav"))
-                    else:
-                        await bot.send(event, Voice(path="data/autoReply/voiceReply/queryFalse.wav"))
-                        return
-
+                    await bot.send(event,"查询方舟角色:" + aimCharacter + " 失败")
+                    return
                 await bot.send(event, Image(path=path))
                 logger.info("发送成功")
                 return
@@ -217,14 +195,8 @@ def main(bot,logger):
                 except:
                     logger.warning("查询后室层级:" + aimCharacter + " 失败，未收录对应数据")
                     logger.info("发送语音()：数据库里好像没有这个层级呢,要再检查一下吗？")
-                    if os.path.exists("data/autoReply/voiceReply/queryFalse.wav") == False:
-                        data = {"text": "[ZH]数据库里好像没有这个层级呢,要再检查一下吗？[ZH]",
-                                "out": "data/autoReply/voiceReply/queryFalse.wav"}
-                        await voiceGenerate(data)
-                        await bot.send(event, Voice(path="data/autoReply/voiceReply/queryFalse.wav"))
-                    else:
-                        await bot.send(event, Voice(path="data/autoReply/voiceReply/queryFalse.wav"))
-                        return
+                    await bot.send(event,"查询失败")
+                    return
 
                 await bot.send(event, Image(path=path))
                 logger.info("发送成功")
