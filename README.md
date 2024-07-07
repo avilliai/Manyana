@@ -35,7 +35,7 @@
 - 从[release](https://github.com/avilliai/Manyana/releases)下载LAUNCHER-all-requirements.rar并解压
   - 如果下载过慢，你也可以从Q群628763673获得这个压缩包
 - 运行launcher.exe<br>
-- 克隆仓库(没有自己的onebot实现的，需要额外安装onebot文件夹下的两个文件，先qq后llob_install)
+- 点击主界面 克隆仓库(没有自己的onebot实现的，需要额外安装onebot文件夹下的两个文件，先qq后llob_install)
 - 关闭launcher，重启launcher
 - 此时可以看到主界面已经变化，填写主界面设置并保存。使用压缩包仅需修改前四项。<br>
 - 在第二个页面，依次启动overflow和Manyana<br>
