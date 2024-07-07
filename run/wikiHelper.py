@@ -52,7 +52,7 @@ def main(bot,logger):
                         logger.info("存在本地数据文件，直接发送")
                         path = punishing.get(i).get("detail")
                         try:
-                            await bot.send(event, Image(path=path))
+                            await bot.send(event, Image(path=path),True)
                             return
                         except:
                             logger.error("失败，重新抓取")
@@ -79,7 +79,7 @@ def main(bot,logger):
                             yaml.dump(punishing, file, allow_unicode=True)
 
                         logger.info("发送成功")
-                        await bot.send(event, Image(path=path))
+                        await bot.send(event, Image(path=path),True)
                     return
                 else:
                     continue
@@ -94,7 +94,7 @@ def main(bot,logger):
                 logger.info("存在本地数据文件，直接发送")
                 path = "data/arknights/"+aimCharacter+".png"
                 try:
-                    await bot.send(event, Image(path=path))
+                    await bot.send(event, Image(path=path),True)
                     return
                 except:
                     logger.error("失败，重新抓取")
@@ -112,7 +112,7 @@ def main(bot,logger):
                     logger.warning("查询方舟角色:" + aimCharacter + " 失败，未收录对应数据")
                     await bot.send(event,"查询方舟角色:" + aimCharacter + " 失败")
                     return
-                await bot.send(event, Image(path=path))
+                await bot.send(event, Image(path=path),True)
                 logger.info("发送成功")
                 return
 
@@ -178,7 +178,7 @@ def main(bot,logger):
                 logger.info("存在本地数据文件，直接发送")
                 path = "data/backrooms/" + aimCharacter + ".png"
                 try:
-                    await bot.send(event, Image(path=path))
+                    await bot.send(event, Image(path=path),True)
                     return
                 except:
                     logger.error("失败，重新抓取")
@@ -198,6 +198,6 @@ def main(bot,logger):
                     await bot.send(event,"查询失败")
                     return
 
-                await bot.send(event, Image(path=path))
+                await bot.send(event, Image(path=path),True)
                 logger.info("发送成功")
                 return
