@@ -23,6 +23,7 @@ from plugins.RandomStr import random_str
 from plugins.aiReplyCore import modelReply
 from plugins.arkOperator import arkOperator
 from plugins.extraParts import get_cp_mesg, emojimix
+from plugins.emojimixhandle import emojimix2
 from plugins.gacha import arkGacha, starRailGacha, bbbgacha
 from plugins.genshinGo import genshinDraw, qianCao
 from plugins.historicalToday import hisToday, steamEpic
@@ -243,12 +244,32 @@ def main(bot,logger):
         if len(str(event.message_chain))==2:
             r=list(str(event.message_chain))
             try:
-                p=await emojimix(r[0],r[1])
+                p=await emojimix2(r[0],r[1])
             except:
                 return
-            if p!=None:
+#            if p!=None:
+#                logger.info(f"emoji合成：{r[0]} + {r[1]}")
+#                await bot.send(event,Image(path=p),True)
+            if p == 'a':
+                msg = (f'不正确的参数：{r[0]}')
+            elif p == 'b':
+                msg = (f'不正确的参数：{r[1]}')
+            elif p == None:
+                msg = '表情不支持，请重新选择'
+            else:
                 logger.info(f"emoji合成：{r[0]} + {r[1]}")
-                await bot.send(event,Image(path=p),True)
+                if p.startswith('https://'):
+                    png_path = "data/pictures/cache/" + random_str() + ".png"
+                    async with httpx.AsyncClient(timeout=20) as client:
+                        r = await client.get(p)
+                        with open(png_path,"wb") as f:
+                            f.write(r.content)# 从二进制数据创建图片对象
+                    #msg = MessageSegment.image(result)
+                    await bot.send(event,Image(path=png_path),True)
+                else:
+                    await bot.send(event,Image(path=p),True)
+                    #msg = MessageSegment.image('file://'+result)
+            #await emojimix.send(msg)
 
     @bot.on(GroupMessage)
     async def historyToday(event:GroupMessage):
