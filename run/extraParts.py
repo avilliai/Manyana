@@ -23,7 +23,7 @@ from plugins.RandomStr import random_str
 from plugins.aiReplyCore import modelReply
 from plugins.arkOperator import arkOperator
 from plugins.extraParts import get_cp_mesg, emojimix
-from plugins.emojimixhandle import emojimix2
+from plugins.emojimixhandle import emojimix_handle
 from plugins.gacha import arkGacha, starRailGacha, bbbgacha
 from plugins.genshinGo import genshinDraw, qianCao
 from plugins.historicalToday import hisToday, steamEpic
@@ -244,7 +244,7 @@ def main(bot,logger):
         if len(str(event.message_chain))==2:
             r=list(str(event.message_chain))
             try:
-                p=await emojimix2(r[0],r[1])
+                p=await emojimix_handle(r[0],r[1])
             except:
                 return
 #            if p!=None:
