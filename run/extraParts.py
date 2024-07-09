@@ -250,7 +250,9 @@ def main(bot,logger):
 #            if p!=None:
 #                logger.info(f"emoji合成：{r[0]} + {r[1]}")
 #                await bot.send(event,Image(path=p),True)
-            if p == 'a':
+            if p == "not_emoji":
+                return
+            elif p == 'a':
                 msg = (f'不正确的参数：{r[0]}')
             elif p == 'b':
                 msg = (f'不正确的参数：{r[1]}')
