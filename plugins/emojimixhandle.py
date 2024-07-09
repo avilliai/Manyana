@@ -21,6 +21,11 @@ emoji_list = emoji_list['knownSupportedEmoji']
 local_path = os.path.join(os.getcwd(), 'data', 'pictures', 'emojimix')
 
 async def emojimix_handle(a,b):
+    pattern = "[\U0001F300-\U0001F9FF]"
+    def is_emoji(text):
+        return all(char in pattern for char in text)
+    if is_emoji(a) and is_emoji(b):
+        return "not_emoji"
     try:
         if not os.path.exists(local_path):
             os.makedirs(local_path)
