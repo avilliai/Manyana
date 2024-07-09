@@ -20,7 +20,7 @@ emoji_list = emoji_list['knownSupportedEmoji']
 # 定义本地存储路径
 local_path = os.path.join(os.getcwd(), 'data', 'pictures', 'emojimix')
 
-async def emojimix2(a,b):
+async def emojimix_handle(a,b):
     try:
         if not os.path.exists(local_path):
             os.makedirs(local_path)
