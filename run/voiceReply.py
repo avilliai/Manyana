@@ -167,7 +167,7 @@ def main(bot,master,logger):
                 str1+=i+" |"
             str1+="\n\nbert_vits2可用角色如下：\n"+str(["BT","塔菲","阿梓","otto","丁真","星瞳","东雪莲","嘉然","孙笑川","亚托克斯","文静","鹿鸣","奶绿","七海","恬豆","科比"])+"\n\nFishTTS可用角色请查看https://fish.audio/zh-CN/，均可通过 xx说调用。\n"
             #print(str1)
-            #await bot.send(event, [str1,Image(path="data/fonts/图片-1717384652980.png")])
+            await bot.send(event, str1)
             #await bot.send(event,Image(path="data/fonts/fireflyspeakers.jpg"))
             await bot.send(event,"可发送 xx说.......  以进行语音合成")
 
