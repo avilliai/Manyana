@@ -248,7 +248,7 @@ async def superVG(data,mode,urls="",langmode="<zh>"):
                 proxy=res.get("proxy")
                 Authorization=res.get("FishTTSAuthorization")
         if len(modelid)<15:
-            modelid=fetch_FishTTS_ModelId(proxy,Authorization,modelid)
+            modelid=await fetch_FishTTS_ModelId(proxy,Authorization,modelid)
         if proxy=="" or proxy==" ":
             async with httpx.AsyncClient(timeout=20, verify=False) as client:
                 async def send_options_request(client):
