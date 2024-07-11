@@ -240,12 +240,15 @@ async def superVG(data,mode,urls="",langmode="<zh>"):
             return p
     elif mode=="FishTTS":
         modelid = data.get("speaker")
+
         text = data.get("text")
         if os.path.exists("./config/api.yaml"):
             with open('config/api.yaml', 'r', encoding='utf-8') as f:
                 res = yaml.load(f.read(), Loader=yaml.FullLoader)
                 proxy=res.get("proxy")
                 Authorization=res.get("FishTTSAuthorization")
+        if len(modelid)<15:
+            modelid=fetch_FishTTS_ModelId(proxy,Authorization,modelid)
         if proxy=="" or proxy==" ":
             async with httpx.AsyncClient(timeout=20, verify=False) as client:
                 async def send_options_request(client):
@@ -266,7 +269,7 @@ async def superVG(data,mode,urls="",langmode="<zh>"):
 
                     try:
                         response = await client.options(url, headers=headers)
-                        print("POST Response Status:", response.status_code)
+                        #print("POST Response Status:", response.status_code)
                         # print("POST Response Headers:", response.headers)
                         # print("POST Response Text:", response.text)
                     except httpx.HTTPStatusError as e:
@@ -390,7 +393,7 @@ async def superVG(data,mode,urls="",langmode="<zh>"):
 
                     try:
                         response = await client.options(url, headers=headers)
-                        print("POST Response Status:", response.status_code)
+                        #print("POST Response Status:", response.status_code)
                         #print("POST Response Headers:", response.headers)
                         # print("POST Response Text:", response.text)
                     except httpx.HTTPStatusError as e:
@@ -557,7 +560,49 @@ async def superVG(data,mode,urls="",langmode="<zh>"):
                     f.write(r.content)
                 return p
 
+async def fetch_FishTTS_ModelId(proxy,Authorization,speaker):
+    proxies = {
+        "http://": proxy,
+        "https://": proxy
+    }
 
+    url = "https://api.fish.audio/model"
+    headers = {
+        "Accept": "application/json",
+        "Accept-Encoding": "gzip, deflate, br, zstd",
+        "Accept-Language": "zh-CN,zh;q=0.9,en;q=0.8,en-GB;q=0.7,en-US;q=0.6",
+        "Authorization": Authorization,
+        "Origin": "https://fish.audio",
+        "Referer": "https://fish.audio/",
+        "Sec-Ch-Ua": '"Microsoft Edge";v="125", "Chromium";v="125", "Not.A/Brand";v="24"',
+        "Sec-Ch-Ua-Mobile": "?0",
+        "Sec-Ch-Ua-Platform": '"Windows"',
+        "Sec-Fetch-Dest": "empty",
+        "Sec-Fetch-Mode": "cors",
+        "Sec-Fetch-Site": "same-site",
+        "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/125.0.0.0 Safari/537.36 Edg/125.0.0.0"
+    }
+
+    params = {
+        "page_size": 10,
+        "page_number": 1,
+        "self": "false",
+        "title": speaker
+    }
+    if proxy=="" or proxy==" ":
+        async with httpx.AsyncClient(timeout=20) as client:
+            response = await client.get(url, headers=headers, params=params)
+            if response.status_code == 200:
+                data = response.json()
+                # print(data)
+                return data["items"][0]["_id"]
+    else:
+        async with httpx.AsyncClient(proxies=proxies,timeout=20) as client:
+            response = await client.get(url, headers=headers, params=params)
+            if response.status_code == 200:
+                data = response.json()
+                #print(data)
+                return data["items"][0]["_id"]
 async def edgetts(data):
     speaker=data.get("speaker")
     text=data.get("text")
