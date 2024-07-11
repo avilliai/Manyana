@@ -65,6 +65,7 @@ def main(bot, master, logger):
     replyModel = result.get("chatGLM").get("model")
     trustglmReply = result.get("chatGLM").get("trustglmReply")
     allcharacters = result.get("chatGLM").get("bot_info")
+    allowUserSetModel=result.get("chatGLM").get("allowUserSetModel")
     maxTextLen = result.get("chatGLM").get("maxLen")
     voiceRate = result.get("chatGLM").get("voiceRate")
     withText = result.get("chatGLM").get("withText")
@@ -198,7 +199,7 @@ def main(bot, master, logger):
     async def setCharacter(event: FriendMessage):
         global chatGLMCharacters
         if str(event.message_chain).startswith("设定#"):
-            if str(event.message_chain).split("#")[1] in allcharacters:
+            if str(event.message_chain).split("#")[1] in allcharacters and allowUserSetModel:
                 meta12 = str(event.message_chain).split("#")[1]
 
                 chatGLMCharacters[event.sender.id] = meta12
@@ -207,7 +208,10 @@ def main(bot, master, logger):
                     yaml.dump(chatGLMCharacters, file, allow_unicode=True)
                 await bot.send(event, "设定成功")
             else:
-                await bot.send(event, "不存在的角色")
+                if allowUserSetModel:
+                    await bot.send(event, "不存在的角色")
+                else:
+                    await bot.send(event,"禁止用户自行设定模型(可联系master修改配置)")
 
     # print(trustUser)
     @bot.on(GroupMessage)
@@ -223,7 +227,7 @@ def main(bot, master, logger):
     async def setCharacter(event: GroupMessage):
         global chatGLMCharacters, userdict
         if str(event.message_chain).startswith("设定#"):
-            if str(event.message_chain).split("#")[1] in allcharacters:
+            if str(event.message_chain).split("#")[1] in allcharacters and allowUserSetModel:
                 meta12 = str(event.message_chain).split("#")[1]
 
                 chatGLMCharacters[event.sender.id] = meta12
@@ -232,7 +236,10 @@ def main(bot, master, logger):
                     yaml.dump(chatGLMCharacters, file, allow_unicode=True)
                 await bot.send(event, "设定成功")
             else:
-                await bot.send(event, "不存在的角色")
+                if allowUserSetModel:
+                    await bot.send(event, "不存在的角色")
+                else:
+                    await bot.send(event, "禁止用户自行设定模型(可联系master修改配置)")
 
     @bot.on(Startup)
     async def upDate(event: Startup):
