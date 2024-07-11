@@ -291,3 +291,6 @@
   - 战双查询xxx
   - 后室查询xxx
   - 截图#网址
+2024/7/11:
+  - fishTTS优化，https://github.com/avilliai/Manyana/issues/19
+  - 支持通过 xx说 方式调用，但目前无法显示所有可用speaker
