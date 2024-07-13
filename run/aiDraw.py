@@ -20,6 +20,7 @@ def main(bot,logger):
         result = yaml.load(f.read(), Loader=yaml.FullLoader)
     moderateK = result.get("moderate")
     proxy=result.get("proxy")
+    sdUrl=result.get("sdUrl")
     with open('config/settings.yaml', 'r', encoding='utf-8') as f:
         result1 = yaml.load(f.read(), Loader=yaml.FullLoader)
     selfsensor=result1.get("moderate").get("selfsensor")
@@ -40,10 +41,9 @@ def main(bot,logger):
             logger.info("发起SDai绘画请求，path:" + path + "|prompt:" + tag)
             try:
                 #没啥好审的，controller直接自个写了。
-                p = await SdDraw(tag+positive_prompt, negative_prompt,path)
+                p = await SdDraw(tag+positive_prompt, negative_prompt,path,sdUrl)
                 #logger.error(str(p))
-                image = PIM.open(io.BytesIO(base64.b64decode(p)))
-                image.save(f'{path}')
+
                 await bot.send(event, [Image(path=path)], True)
                 #logger.info("success")
             except Exception as e:

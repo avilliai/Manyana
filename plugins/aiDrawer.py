@@ -11,8 +11,8 @@ from PIL import Image
 
 from plugins.RandomStr import random_str
 
-async def SdDraw(prompt, negative_prompt,path="./output.png"):
-    url = "http://166.0.199.118:17858"
+async def SdDraw(prompt, negative_prompt,path,sdurl="http://166.0.199.118:17858"):
+    url = sdurl
     
     payload = {
         "denoising_strength": 0,
@@ -33,10 +33,11 @@ async def SdDraw(prompt, negative_prompt,path="./output.png"):
         response = await client.post(url=f'{url}/sdapi/v1/txt2img', json=payload)
     r = response.json()
     #我的建议是，直接返回base64，让它去审查
-    return r['images'][0]
+    #return r['images'][0]
     image = Image.open(io.BytesIO(base64.b64decode(r['images'][0])))
+    #image = Image.open(io.BytesIO(base64.b64decode(p)))
     image.save(f'{path}')
-        
+    #image.save(f'{path}')
     return path
 async def draw2(prompt,path= "./test.png"):
     url=f"https://api.lolimi.cn/API/AI/sd.php?msg={prompt}&mode=动漫"
