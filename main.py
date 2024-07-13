@@ -20,7 +20,7 @@ from mirai import Mirai, WebSocketAdapter, GroupMessage, Image, At, Startup, Fri
 from plugins.RandomStr import random_str
 from plugins.newLogger import newLogger
 from plugins.systeminfo import get_system_info
-from run import aiReply, voiceReply, nudgeReply, wikiHelper, imgSearch, extraParts, wReply, userSign, groupManager,musicShare, LiveMonitor, bertVits2, aronaapi, groupGames, musicpick, scheduledTasks, sovits2, appCard, aiDraw, starRail
+from run import aiReply, voiceReply, nudgeReply, wikiHelper, imgSearch, extraParts, wReply, userSign, groupManager,musicShare, LiveMonitor, aronaapi, groupGames, musicpick, scheduledTasks, appCard, aiDraw, starRail
 
 if __name__ == '__main__':
     with open('config.json', 'r', encoding='utf-8') as f:
@@ -243,12 +243,10 @@ if __name__ == '__main__':
     groupManager.main(bot, config, moderate, logger)
     musicShare.main(bot, master, botName, logger)
     LiveMonitor.main(bot, master, botName, logger)
-    bertVits2.main(bot,  logger,berturl,proxy)
     aronaapi.main(bot,logger)
     scheduledTasks.main(bot,proxy,nasa_api,logger)
     groupGames.main(bot,logger)
     musicpick.main(bot,logger)
-    sovits2.main(bot,logger)
     appCard.main(bot,logger)
     aiDraw.main(bot,logger)
     starRail.main(bot,logger)

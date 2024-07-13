@@ -18,15 +18,19 @@ from mirai import Mirai, WebSocketAdapter, FriendMessage, GroupMessage, At, Plai
 from plugins.RandomStr import random_str
 
 from plugins.translater import translate
-from plugins.vitsGenerate import voiceGenerate, superVG, fetch_FishTTS_ModelId
+from plugins.vitsGenerate import voiceGenerate, superVG, fetch_FishTTS_ModelId, sovits, edgetts, taffySayTest
 
 
 def main(bot,master,logger):
     with open('config/api.yaml', 'r', encoding='utf-8') as f:
         result0 = yaml.load(f.read(), Loader=yaml.FullLoader)
     FishTTSAuthorization=result0.get("FishTTSAuthorization")
+    berturl=result0.get("bert_colab")
     proxy=result0.get("proxy")
-
+    with open('config/settings.yaml', 'r', encoding='utf-8') as f:
+        result = yaml.load(f.read(), Loader=yaml.FullLoader)
+    spe=result.get("语音功能设置").get("bert_speakers")
+    modelScope=["BT","塔菲","阿梓","otto","丁真","星瞳","东雪莲","嘉然","孙笑川","亚托克斯","文静","鹿鸣","奶绿","七海","恬豆","科比"]
 
     with open('config/autoSettings.yaml', 'r', encoding='utf-8') as f:
         result2 = yaml.load(f.read(), Loader=yaml.FullLoader)
@@ -107,6 +111,18 @@ def main(bot,master,logger):
                 data = {"text": "[JA]" + text + "[JA]", "out": path,'speaker':characters.get(speaker)[0],'modelSelect':characters.get(speaker)[1]}
                 await voiceGenerate(data)
                 await bot.send(event, Voice(path=path))
+            if str(event.message_chain).split("说")[0] in modelScope:
+                try:
+                    data = {}
+                    data["speaker"] = str(event.message_chain).split("说")[0]
+                    data["text"] = str(event.message_chain).replace(str(event.message_chain).split("说")[0] + "说", "")
+                    logger.info("modelscopeTTS语音合成:" + data["text"])
+                    path = await superVG(data, "modelscopeTTS")
+                    await bot.send(event, Voice(path=path))
+                    return
+                except Exception as e:
+                    logger.error(e)
+                    await bot.send(event, "出错了喵，呜呜呜", True)
             try:
                 sp1=await fetch_FishTTS_ModelId(proxy,FishTTSAuthorization,str(event.message_chain).split("说")[0])
                 if sp1==None or sp1=="":
@@ -171,5 +187,37 @@ def main(bot,master,logger):
             #await bot.send(event,Image(path="data/fonts/fireflyspeakers.jpg"))
             await bot.send(event,"可发送 xx说.......  以进行语音合成")
 
+    @bot.on(GroupMessage)
+    async def sovitsHelper(event: GroupMessage):
+        if str(event.message_chain).startswith("/sovits"):
+            with open('config/settings.yaml', 'r', encoding='utf-8') as f:
+                result = yaml.load(f.read(), Loader=yaml.FullLoader)
+            speaker1 = result.get("chatGLM").get("speaker")
+            bsf = str(event.message_chain).replace("/sovits", "")
+            logger.info("sovits文本推理任务：" + bsf)
+            r = await sovits({"text": bsf, "speaker": speaker1})
+            logger.info("tts 完成")
+            await bot.send(event, Voice(path=r))
 
+    '''@bot.on(GroupMessage)
+    async def edgettsHelper(event: GroupMessage):
+        if str(event.message_chain).startswith("/edgetts"):
+            bsf = str(event.message_chain).replace("/edgetts", "")
+            logger.info("edgetts文本推理任务：" + bsf)
+            r = await edgetts({"text": bsf, "speaker": speaker})
+            logger.info("edgetts 完成")
+            await bot.send(event, Voice(path=r))'''
+    #外部bert_vits2以及Modelscopetts
+    @bot.on(GroupMessage)
+    async def taffySayf(event: GroupMessage):
+        if "说" in str(event.message_chain) and str(event.message_chain).split("说")[0] in spe:
+            data = {}
+
+            data["speaker"] = str(event.message_chain).split("说")[0]
+            data["text"] = str(event.message_chain).replace(str(event.message_chain).split("说")[0] + "说", "")
+            try:
+                path = await taffySayTest(data, berturl, proxy)
+                await bot.send(event, Voice(path=path))
+            except:
+                pass
 
