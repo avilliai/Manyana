@@ -665,6 +665,7 @@ def main(bot,config,moderateKey,logger):
     async def AddRemoveBl(event: GroupMessage):
         global superUser,blackList,superBlGroups
         if event.group.id in superBlGroups:
+            await bot.send(event,"本群在黑名单内")
             await bot.quit(event.group.id)
             logger.warning(f"已清退永久黑名单群{event.group.id}")
         if event.sender.id == master :
@@ -752,10 +753,13 @@ def main(bot,config,moderateKey,logger):
     async def removeBl(event:GroupMessage):
         if event.sender.id == master or event.sender.id in superUser or event.group.id==mainGroup:
             global blackList
-            global blGroups
+            global blGroups,superBlGroups
             if str(event.message_chain).startswith("/blgroup remove ") or str(event.message_chain).startswith("移除黑名单群 "):
                 try:
                     groupId=int(str(event.message_chain).split(" ")[-1])
+                    if groupId in superBlGroups:
+                        await bot.send(event,"无法解除群黑名单，拉黑等级过高")
+                        return
                     blGroups.remove(groupId)
                     logger.info("成功移除黑名单群"+str(groupId))
                     await bot.send(event,"成功移除黑名单群"+str(groupId))
