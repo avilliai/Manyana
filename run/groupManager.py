@@ -344,7 +344,7 @@ def main(bot,config,moderateKey,logger):
         if event.operator.group.id in blGroups:
             logger.info("已有黑名单群" + str(event.operator.group.id))
         else:
-            if envent.operator.group.id!=mainGroup:
+            if event.operator.group.id!=mainGroup:
                 blGroups.append(event.operator.group.id)
             else:
                 return
