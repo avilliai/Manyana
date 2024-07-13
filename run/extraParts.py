@@ -69,7 +69,7 @@ def main(bot,logger):
             trustUser.append(str(i))
     with open('config/settings.yaml', 'r', encoding='utf-8') as f:
         result1 = yaml.load(f.read(), Loader=yaml.FullLoader)
-    with open('config/settings.yaml', 'r', encoding='utf-8') as f:
+    with open('config/controller.yaml', 'r', encoding='utf-8') as f:
         controllerResult = yaml.load(f.read(), Loader=yaml.FullLoader)
     r18 = controllerResult.get("图片相关").get("r18Pic")
     onlyTrustUserR18=controllerResult.get("图片相关").get("onlyTrustUserR18")
