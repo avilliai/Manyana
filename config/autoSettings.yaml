@@ -10,6 +10,8 @@ banUser:
 - 1
 - 4564949845
 - 1840094972
+superBlGroups:
+  - 967444654
 moderate:
   apiKeys:
     '699455559': fadfasfasf

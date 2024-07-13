@@ -70,6 +70,8 @@ def main(bot,config,moderateKey,logger):
     blackList= result.get("banUser")
     global blGroups
     blGroups= result.get("banGroups")
+    global superBlGroups
+    superBlGroups=result.get("superBlGroups")
 
 
     global blackListID
@@ -155,13 +157,19 @@ def main(bot,config,moderateKey,logger):
         result["banGroups"] = blGroups
         with open('config/autoSettings.yaml', 'w', encoding="utf-8") as file:
             yaml.dump(result, file, allow_unicode=True)
+    #处理加群邀请
     @bot.on(BotInvitedJoinGroupRequestEvent)
     async def checkAllowGroup(event: BotInvitedJoinGroupRequestEvent):
+        global superBlGroups
         logger.info("接收来自 " + str(event.from_id) + " 的加群邀请")
         if GroupSensor == True:
             with open('config/autoSettings.yaml', 'r', encoding='utf-8') as f:
                 result23 = yaml.load(f.read(), Loader=yaml.FullLoader)
             youquan = result23.get("trustGroups")
+
+            if event.group_id in superBlGroups:
+                await bot.send_friend_message(event.from_id,"该群在禁止名单中！")
+                return
             if event.group_id in youquan or event.sender.id==master:
                 logger.info("同意")
                 al = '同意'
@@ -178,6 +186,9 @@ def main(bot,config,moderateKey,logger):
             if str(event.from_id) in userdict.keys():
                 try:
                     if int(userdict.get(str(event.from_id)).get("sts")) > qiandaoT or event.sender.id==master:
+                        if event.group_id in superBlGroups:
+                            await bot.send_friend_message(event.from_id,"该群已被禁止")
+                            return
                         if event.group_id in blGroups:
                             await bot.send_friend_message(event.from_id, "该群在黑名单内.\n解除拉黑请前往本bot用户群" + str(
                                 mainGroup) + "在群内发送\n/blgroup remove 群号")
@@ -203,6 +214,7 @@ def main(bot,config,moderateKey,logger):
                     mainGroup) + " 获取授权\n在该群内发送:\n授权#你的QQ")
         await bot.send_friend_message(master, '有新的加群申请\n来自：' + str(event.from_id) + '\n目标群：' + str(
             event.group_id) + '\n昵称：' + event.nick + '\n状态：' + al)
+    #新人入群欢迎
     @bot.on(MemberJoinEvent)
     async def MemberJoinHelper(event:MemberJoinEvent):
         if random.choice(memberJoinWelcome)==1:
@@ -211,7 +223,7 @@ def main(bot,config,moderateKey,logger):
             await bot.send_group_message(event.member.group.id,[At(event.member.id),"\n提问前请翻阅：\n常见问题汇总：https://docs.qq.com/aio/DTXNRVnZYYm5TQWhM\n项目wiki:https://github.com/avilliai/Manyana/wiki\n项目文档：https://github.com/avilliai/Manyana\n\n提问附上控制台截图。"])
             return
         await bot.send_group_message(event.member.group.id,(At(event.member.id),random.choice(memberJoinWelcome).replace("botName",botName).replace(r"\n","\n")))
-
+    #bot加群
     @bot.on(BotJoinGroupEvent)
     async def botJoin(event:BotJoinGroupEvent):
 
@@ -238,6 +250,7 @@ def main(bot,config,moderateKey,logger):
             except Exception as e:
                 logger.error(e)
         await bot.send_group_message(event.group.id,"发送 @"+str(botName)+" 帮助 以获取功能列表\n项目地址：https://github.com/avilliai/Manyana\n喜欢bot的话可以给个star哦(≧∇≦)ﾉ")
+    #自动更新数据
     @bot.on(Startup)
     async def updateData(event: Startup):
         while True:
@@ -294,9 +307,10 @@ def main(bot,config,moderateKey,logger):
             severGroups = moderate.get("groups")
 
 
-
+    #处理好友申请
     @bot.on(NewFriendRequestEvent)
     async def allowStranger(event: NewFriendRequestEvent):
+        global userdict
         logger.info("新的好友申请，来自"+str(event.from_id))
         if (str(event.from_id) in userdict.keys() and int(userdict.get(str(event.from_id)).get("sts"))>allowFriendstimes) or autoallowFriend==True:
             logger.info("有用户记录，同意")
@@ -314,20 +328,20 @@ def main(bot,config,moderateKey,logger):
         await bot.send_friend_message(master,'有新的好友申请\n来自：'+str(event.from_id)+'\n来自群：'+str(event.group_id)+'\n昵称：'+event.nick+'\n状态：'+al)
 
 
-
+    #处理新成员加群申请
     @bot.on(MemberJoinRequestEvent)
     async def allowStrangerInvite(event: MemberJoinRequestEvent):
         logger.info("有新群员加群申请")
         if event.from_id in blackList:
             await bot.send_group_message(event.group_id,"有新的入群请求，存在bot黑名单记录")
         else:
-            await bot.send_group_message(event.group_id,'有新的入群请求.....管理员快去看看吧\nQQ：'+str(event.from_id)+'\n昵称：'+event.nick+'\nextra:：'+event.message)
-
+            await bot.send_group_message(event.group_id,'有新的入群请求.....管理员快去看看吧\nQQ：'+str(event.from_id)+'\n昵称：'+event.nick+'\n'+event.message)
+    #群员称号改变
     @bot.on(MemberSpecialTitleChangeEvent)
     async def honorChange(event: MemberSpecialTitleChangeEvent):
         logger.info("群员称号改变")
         await bot.send_group_message(event.member.group.id, str(event.member.member_name) + '获得了称号：' + str(event.current))
-
+    #群员昵称改变
     @bot.on(MemberCardChangeEvent)
     async def nameChange(event: MemberCardChangeEvent):
         if len(event.current) > 0:
@@ -363,6 +377,7 @@ def main(bot,config,moderateKey,logger):
         with open('config/autoSettings.yaml', 'w', encoding="utf-8") as file:
             yaml.dump(result, file, allow_unicode=True)
         await bot.send_friend_message(master,'bot在群:\n'+str(event.operator.group.name)+str(event.operator.group.id)+'\n被禁言'+str(event.duration_seconds)+'秒\n操作者id：'+str(event.operator.id)+'\nname:('+str(event.operator.member_name)+')\n已退群并增加不良记录')
+        await bot.send_friend_message(master,"可使用\n/sb add 群号\n以永久拉黑此群\n/sb remove 群号\n则为移除该群黑名单")
         await bot.quit(event.operator.group.id)
         logger.info("已退出群 "+str(event.operator.group.id)+" 并拉黑")
 
@@ -624,26 +639,28 @@ def main(bot,config,moderateKey,logger):
                     return
 
     @bot.on(GroupMessage)
-    async def removeBl(event: GroupMessage):
-        global superUser
+    async def AddRemoveBl(event: GroupMessage):
+        global superUser,blackList,superBlGroups
+        if event.group.id in superBlGroups:
+            await bot.quit(event.group.id)
+            logger.warning(f"已清退永久黑名单群{event.group.id}")
         if event.sender.id == master :
-            global blackList
-            if str(event.message_chain).startswith("/bl add ") or str(event.message_chain).startswith("添加黑名单用户 "):
-                groupId = int(str(event.message_chain).split(" ")[-1])
-                if groupId not in blackList:
-                    blackList.append(groupId)
-                    logger.info("成功添加黑名单用户" + str(groupId))
-                    await bot.send(event, "成功添加黑名单用户" + str(groupId))
+            if str(event.message_chain).startswith("/sb "):
+                if str(event.message_chain).startswith("/sb add "):
+                    groupId = int(str(event.message_chain).split(" ")[-1])
+                    superBlGroups.append(groupId)
+                    await bot.send(event,f"成功添加永久黑名单群{groupId}")
+                if str(event.message_chain).startswith("/sb remove "):
+                    groupId = int(str(event.message_chain).split(" ")[-1])
+                    superBlGroups.remove(groupId)
+                    await bot.send(event, f"成功移除永久黑名单群{groupId}")
+                with open('config/autoSettings.yaml', 'r', encoding='utf-8') as f:
+                    result = yaml.load(f.read(), Loader=yaml.FullLoader)
+                logger.info("当前黑名单" + str(blackList))
+                result["superBlGroups"] = superBlGroups
+                with open('config/autoSettings.yaml', 'w', encoding="utf-8") as file:
+                    yaml.dump(result, file, allow_unicode=True)
 
-                    with open('config/autoSettings.yaml', 'r', encoding='utf-8') as f:
-                        result = yaml.load(f.read(), Loader=yaml.FullLoader)
-                    logger.info("当前黑名单"+str(blackList))
-                    result["banUser"] = blackList
-                    with open('config/autoSettings.yaml', 'w', encoding="utf-8") as file:
-                        yaml.dump(result, file, allow_unicode=True)
-
-                else:
-                    await bot.send(event,"该用户已被拉黑")
     @bot.on(GroupMessage)
     async def quitgrrrr(event: GroupMessage):
         if event.sender.id==master and (str(event.message_chain).startswith("/quit<") or str(event.message_chain).startswith("/quit＜")):
