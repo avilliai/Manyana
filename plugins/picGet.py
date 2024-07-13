@@ -44,7 +44,7 @@ from io import BytesIO
 import httpx
 from PIL import Image
 
-async def setuGet(data):
+async def setuGet(data,withPic):
     ranpath = random_str()
     path="data/pictures/wallpaper/" + ranpath + ".png"
     url="https://api.lolicon.app/setu/v2?"
@@ -52,6 +52,8 @@ async def setuGet(data):
         r = await client.get(url,params=data)
         #print(r.json().get("data")[0].get("urls").get("regular"))
         url=r.json().get("data")[0].get("urls").get("regular")
+        if withPic==False:
+            return url,None
     async with httpx.AsyncClient(timeout=20) as client:
         r = await client.get(url)
         img = Image.open(BytesIO(r.content))  # 从二进制数据创建图片对象

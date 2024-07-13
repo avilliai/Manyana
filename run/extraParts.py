@@ -72,6 +72,8 @@ def main(bot,logger):
     with open('config/settings.yaml', 'r', encoding='utf-8') as f:
         controllerResult = yaml.load(f.read(), Loader=yaml.FullLoader)
     r18 = controllerResult.get("图片相关").get("r18Pic")
+    onlyTrustUserR18=controllerResult.get("图片相关").get("onlyTrustUserR18")
+    withPic=controllerResult.get("图片相关").get("withPic")
     allowPic=controllerResult.get("图片相关").get("allowPic")
     selfsensor=result1.get("moderate").get("selfsensor")
     selfthreshold=result1.get("moderate").get("selfthreshold")
@@ -194,7 +196,7 @@ def main(bot,logger):
                 logger.info("提取图片关键字。 数量: "+str(match1.group(1))+" 关键字: "+match1.group(2))
                 data={"tag":""}
                 if "r18" in str(event.message_chain) or "色图" in str(event.message_chain) or "涩图" in str(event.message_chain):
-                    if str(event.sender.id) in trustUser and r18==True :
+                    if (str(event.sender.id) in trustUser and onlyTrustUserR18) or r18:
                         data["r18"]=1
                     else:
                         await bot.send(event,"r18模式已关闭")
@@ -209,16 +211,16 @@ def main(bot,logger):
                 fordMes=[]
                 for i in range(a):
                     try:
-                        url,path=await setuGet(data)
+                        url,path=await setuGet(data,withPic)
                     except:
                         logger.error("涩图请求出错")
                         #await bot.send(event,"请求出错，请稍后再试")
                         continue
-                    logger.info("获取到图片: "+path)
+                    logger.info(f"获取到图片: {url} {path}")
 
                     if selfsensor==True:
                         try:
-                            thurs=await setuModerate(path,moderateK)
+                            thurs=await setuModerate(url,moderateK)
                             logger.info(f"获取到审核结果： adult- {thurs}")
                             if int(thurs)>selfthreshold:
                                 logger.warning(f"不安全的图片，自我审核过滤")
@@ -229,8 +231,12 @@ def main(bot,logger):
                             logger.error("无法进行自我审核，错误的网络环境或apikey")
                             await bot.send(event,["审核策略失效，为确保安全，不显示本图片",Image(path="data/colorfulAnimeCharacter/"+random.choice(os.listdir("data/colorfulAnimeCharacter")))])
                             continue
-                    b1 = ForwardMessageNode(sender_id=bot.qq, sender_name="Manyana",
-                                            message_chain=MessageChain([url, Image(path=path)]))
+                    if withPic:
+                        b1 = ForwardMessageNode(sender_id=bot.qq, sender_name="Manyana",
+                                                message_chain=MessageChain([url, Image(path=path)]))
+                    else:
+                        b1 = ForwardMessageNode(sender_id=bot.qq, sender_name="Manyana",
+                                                message_chain=MessageChain([url]))
                     fordMes.append(b1)
                     #await bot.send(event, Image(url=path))
                     logger.info("图片获取成功")
