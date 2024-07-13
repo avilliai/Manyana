@@ -74,6 +74,7 @@ def main(bot,logger):
     r18 = controllerResult.get("图片相关").get("r18Pic")
     onlyTrustUserR18=controllerResult.get("图片相关").get("onlyTrustUserR18")
     withPic=controllerResult.get("图片相关").get("withPic")
+    grayPic = controllerResult.get("图片相关").get("grayPic")
     allowPic=controllerResult.get("图片相关").get("allowPic")
     selfsensor=result1.get("moderate").get("selfsensor")
     selfthreshold=result1.get("moderate").get("selfthreshold")
@@ -211,8 +212,9 @@ def main(bot,logger):
                 fordMes=[]
                 for i in range(a):
                     try:
-                        url,path=await setuGet(data,withPic)
-                    except:
+                        url,path=await setuGet(data,withPic,grayPic)
+                    except Exception as e:
+                        logger.error(e)
                         logger.error("涩图请求出错")
                         #await bot.send(event,"请求出错，请稍后再试")
                         continue
