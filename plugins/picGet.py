@@ -50,14 +50,13 @@ async def setuGet(data):
     url="https://api.lolicon.app/setu/v2?"
     async with httpx.AsyncClient(timeout=100) as client:
         r = await client.get(url,params=data)
-        print(r.json().get("data")[0].get("urls").get("regular"))
+        #print(r.json().get("data")[0].get("urls").get("regular"))
         url=r.json().get("data")[0].get("urls").get("regular")
-        return url
     async with httpx.AsyncClient(timeout=20) as client:
         r = await client.get(url)
         img = Image.open(BytesIO(r.content))  # 从二进制数据创建图片对象
         img.save(path)  # 使用PIL库保存图片
-        return path
+        return url,path
 async def picDwn(url,path):
     async with httpx.AsyncClient(timeout=20) as client:
         r = await client.get(url)
