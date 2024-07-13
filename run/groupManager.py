@@ -391,6 +391,29 @@ def main(bot,config,moderateKey,logger):
                 await bot.send_friend_message(int(master),"已退出: "+str(dataG))
             except:
                 logger.warning("不正确的群号")
+        if event.sender.id == master :
+            global superBlGroups
+            if str(event.message_chain).startswith("/sb "):
+                if str(event.message_chain).startswith("/sb add "):
+                    groupId = int(str(event.message_chain).split(" ")[-1])
+                    if groupId in superBlGroups:
+                        await bot.send(event,f"已存在永久黑名单群{groupId}")
+                        return
+                    superBlGroups.append(groupId)
+                    await bot.send(event,f"成功添加永久黑名单群{groupId}")
+                if str(event.message_chain).startswith("/sb remove "):
+                    groupId = int(str(event.message_chain).split(" ")[-1])
+                    if groupId not in superBlGroups:
+                        await bot.send(event,f"不存在永久黑名单群{groupId}")
+                        return
+                    superBlGroups.remove(groupId)
+                    await bot.send(event, f"成功移除永久黑名单群{groupId}")
+                with open('config/autoSettings.yaml', 'r', encoding='utf-8') as f:
+                    result = yaml.load(f.read(), Loader=yaml.FullLoader)
+                logger.info("当前黑名单" + str(blackList))
+                result["superBlGroups"] = superBlGroups
+                with open('config/autoSettings.yaml', 'w', encoding="utf-8") as file:
+                    yaml.dump(result, file, allow_unicode=True)
 
     @bot.on(GroupMessage)
     async def help(event: GroupMessage):
@@ -648,10 +671,16 @@ def main(bot,config,moderateKey,logger):
             if str(event.message_chain).startswith("/sb "):
                 if str(event.message_chain).startswith("/sb add "):
                     groupId = int(str(event.message_chain).split(" ")[-1])
+                    if groupId in superBlGroups:
+                        await bot.send(event,f"已存在永久黑名单群{groupId}")
+                        return
                     superBlGroups.append(groupId)
                     await bot.send(event,f"成功添加永久黑名单群{groupId}")
                 if str(event.message_chain).startswith("/sb remove "):
                     groupId = int(str(event.message_chain).split(" ")[-1])
+                    if groupId not in superBlGroups:
+                        await bot.send(event,f"不存在永久黑名单群{groupId}")
+                        return
                     superBlGroups.remove(groupId)
                     await bot.send(event, f"成功移除永久黑名单群{groupId}")
                 with open('config/autoSettings.yaml', 'r', encoding='utf-8') as f:
