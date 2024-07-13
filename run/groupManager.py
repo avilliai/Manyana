@@ -176,23 +176,26 @@ def main(bot,config,moderateKey,logger):
                 await bot.send_friend_message(event.from_id, "该群无授权，请在bot用户群："+str(mainGroup)+"\n联系机器人管理员获取授权")
         else:
             if str(event.from_id) in userdict.keys():
-                if int(userdict.get(str(event.from_id)).get("sts")) > qiandaoT or event.sender.id==master:
-                    if event.group_id in blGroups:
-                        await bot.send_friend_message(event.from_id, "该群在黑名单内.\n解除拉黑请前往本bot用户群" + str(
-                            mainGroup) + "在群内发送\n/blgroup remove 群号")
-                        return
-                    logger.info("同意")
-                    al = '同意'
-                    sdf = "请先向目标群群员确认是否愿意接受bot加群"
-                    await bot.send_friend_message(event.from_id, sdf)
-                    await bot.send_friend_message(event.from_id, "40秒后自动同意")
-                    await sleep(40)
-                    await bot.allow(event)
-                else:
-                    logger.info("签到天数不够，拒绝")
-                    al = '拒绝'
-                    await bot.send_friend_message(event.from_id, "群内签到天数不够呢，需要的签到天数"+str(qiandaoT)+"。\n也可前往用户群" + str(
-                        mainGroup) + " 获取授权\n在该群内发送:\n授权#你的QQ")
+                try:
+                    if int(userdict.get(str(event.from_id)).get("sts")) > qiandaoT or event.sender.id==master:
+                        if event.group_id in blGroups:
+                            await bot.send_friend_message(event.from_id, "该群在黑名单内.\n解除拉黑请前往本bot用户群" + str(
+                                mainGroup) + "在群内发送\n/blgroup remove 群号")
+                            return
+                        logger.info("同意")
+                        al = '同意'
+                        sdf = "请先向目标群群员确认是否愿意接受bot加群"
+                        await bot.send_friend_message(event.from_id, sdf)
+                        await bot.send_friend_message(event.from_id, "40秒后自动同意")
+                        await sleep(40)
+                        await bot.allow(event)
+                    else:
+                        logger.info("签到天数不够，拒绝")
+                        al = '拒绝'
+                        await bot.send_friend_message(event.from_id, "群内签到天数不够呢，需要的签到天数"+str(qiandaoT)+"。\n也可前往用户群" + str(
+                            mainGroup) + " 获取授权\n在该群内发送:\n授权#你的QQ")
+                except:
+                    pass
             else:
                 logger.info("非用户，拒绝")
                 al = '拒绝'

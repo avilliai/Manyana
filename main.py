@@ -84,31 +84,25 @@ if __name__ == '__main__':
         global notice
         if notice==1 and event.sender.id==master:
             notice=0
-            file = open('data/music/groups.txt', 'r')
-            js = file.read()
-            severGroupsa = json.loads(js)
-            dat = []
-            for i in severGroupsa:
+            asf = await bot.group_list()
+            await bot.send(event,"收到，正在推送......")
+            #print(asf.data)
+            for i in asf.data:
+                #print(i.id, i.name)
                 await sleep1(random.randint(2,10))
-                logger.info("向群："+i +" 推送公告")
+                logger.info("向群："+i.name +" 推送公告")
                 try:
                     if event.message_chain.count(Image):
-                        await bot.send_group_message(int(i),(event.message_chain+"\n==================\n随机码："+random_str()))
+                        await bot.send_group_message(int(i.id),event.message_chain)
                     else:
                         try:
-                            await bot.send_group_message(int(i), (event.message_chain +"\n==============\n随机码：" + random_str()))
+                            await bot.send_group_message(int(i.id), (event.message_chain +"\n==============\n随机码：" + random_str()))
                         except:
-                            await bot.send_group_message(int(i), event.message_chain)
+                            await bot.send_group_message(int(i.id), event.message_chain)
                 except:
-                    logger.error("不存在的群："+str(i))
-                    dat.append(str(i))
+                    logger.error("无效的群："+str(i))
                     continue
-            logger.warning("清除无效群")
-            for i in dat:
-                severGroupsa.pop(i)
-            newData = json.dumps(severGroupsa)
-            with open('data/music/groups.txt', 'w') as fp:
-                fp.write(newData)
+
 
 
 
@@ -133,6 +127,8 @@ if __name__ == '__main__':
 
     @bot.on(Startup)
     async def clearCache(event:Startup):
+
+
         logger.info("执行清理缓存操作")
         ls1 = os.listdir("data/pictures/avatars")
         for i in ls1:
@@ -171,10 +167,9 @@ if __name__ == '__main__':
         logger.info("清理语音缓存完成")
         logger.info("请定期执行launcher.exe或者Manyana/更新脚本.bat 的更新功能以获取最新版Manyana")
 
-        file = open('data/music/groups.txt', 'r')
-        js = file.read()
-        severGroupsa = json.loads(js)
-        logger.info('已读取服务群聊:' + str(len(severGroupsa)) + '个')
+        asf = await bot.group_list()
+        #print(asf.data)
+        logger.info('已读取服务群聊:' + str(len(asf.data)) + '个')
 
 
         with open('data/userData.yaml', 'r', encoding='utf-8') as file:
@@ -203,7 +198,7 @@ if __name__ == '__main__':
         # 修改为你bot的名字
         logger.info('botName:' + botName + '     |     master:' + str(master))
         time1 = datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')
-        await bot.send_friend_message(master,time1 + '\n已读取服务群聊:' + str(len(severGroupsa)) + '个')
+        await bot.send_friend_message(master,time1 + '\n已读取服务群聊:' + str(len(asf.data)) + '个')
         await bot.send_friend_message(master,time1 + '\n已读取有记录用户:' + str(len(userCount)) + '个')
         await bot.send_friend_message(master,time1 + '\n功能已加载完毕，欢迎使用')
         await bot.send_friend_message(master,Image(path="data/fonts/master.png"))
