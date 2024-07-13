@@ -165,8 +165,9 @@ async def superVG(data,mode,urls="",langmode="<zh>"):
             newurp = "https://s5k.cn/api/v1/studio/MiDd1Eye/DZ-Bert-VITS2/gradio/file="
             speaker = "Speaker"
         elif speaker == "东雪莲":
-            url = "https://www.modelscope.cn/api/v1/studio/xzjosh/Azuma-Bert-VITS2-2.3/gradio/run/predict"
-            newurp = "https://www.modelscope.cn/api/v1/studio/xzjosh/Azuma-Bert-VITS2-2.3/gradio/file="
+            speaker = "Azuma"
+            url = "https://s5k.cn/api/v1/studio/Outcast/Azuma-Bert-VITS2/gradio/run/predict"
+            newurp = "https://s5k.cn/api/v1/studio/Outcast/Azuma-Bert-VITS2/gradio/file="
         elif speaker == "嘉然":
             url = "https://www.modelscope.cn/api/v1/studio/xzjosh/Diana-Bert-VITS2-2.3/gradio/run/predict"
             newurp = "https://www.modelscope.cn/api/v1/studio/xzjosh/Diana-Bert-VITS2-2.3/gradio/file="
