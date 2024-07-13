@@ -18,6 +18,10 @@ ai绘画:
   musicToVoice: true        #是否以语音方式点歌
 图片相关:
   allowPic: True            #是否启用发图功能
-  r18Pic: True              #涩图r18模式
-  lockLuck: false           #是否锁定运势等功能的结果
+  onlyTrustUserR18: True    #仅允许信任用户使用r18
+  r18Pic: True              #对所有人开放涩图r18模式
+  withPic: False            #是否展示图片预览，不建议开，容易被吞
   InternetMeme: False       #是否启用网络Meme（英文meme）
+运势&塔罗:
+  lockLuck: false           #是否锁定运势等功能的结果
+

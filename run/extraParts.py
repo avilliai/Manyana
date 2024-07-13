@@ -77,7 +77,7 @@ def main(bot,logger):
     selfthreshold=result1.get("moderate").get("selfthreshold")
     aiReplyCore=result1.get("chatGLM").get("aiReplyCore")
     colorfulCharacterList = os.listdir("data/colorfulAnimeCharacter")
-    lockResult = controllerResult.get("图片相关").get("lockLuck")
+    lockResult = controllerResult.get("运势&塔罗").get("lockLuck")
     InternetMeme = controllerResult.get("图片相关").get("InternetMeme")
 
     global picData
