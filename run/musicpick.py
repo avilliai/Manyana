@@ -24,12 +24,10 @@ def main(bot,logger):
     logger.warning("语音点歌 loaded")
     global musicTask
     musicTask={}
-    with open('config/settings.yaml', 'r', encoding='utf-8') as f:
-        resulta = yaml.load(f.read(), Loader=yaml.FullLoader)
-    musicToVoice=resulta.get("musicToVoice")
     with open('config/controller.yaml', 'r', encoding='utf-8') as f:
         controller = yaml.load(f.read(), Loader=yaml.FullLoader)
     downloadMusicUrl=controller.get("点歌").get("下载链接")
+    musicToVoice = controller.get("点歌").get("musicToVoice")
     @bot.on(GroupMessage)
     async def dianzibofangqi(event: GroupMessage):
         if str(event.message_chain)=="开溜" or (At(bot.qq) in event.message_chain and "唱歌" in str(event.message_chain)):

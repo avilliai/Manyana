@@ -69,15 +69,16 @@ def main(bot,logger):
             trustUser.append(str(i))
     with open('config/settings.yaml', 'r', encoding='utf-8') as f:
         result1 = yaml.load(f.read(), Loader=yaml.FullLoader)
-    r18 = result1.get("r18Pic")
-    cardPic = result1.get("cardPic")
-    allowPic=result1.get("allowPic")
+    with open('config/settings.yaml', 'r', encoding='utf-8') as f:
+        controllerResult = yaml.load(f.read(), Loader=yaml.FullLoader)
+    r18 = controllerResult.get("图片相关").get("r18Pic")
+    allowPic=controllerResult.get("图片相关").get("allowPic")
     selfsensor=result1.get("moderate").get("selfsensor")
     selfthreshold=result1.get("moderate").get("selfthreshold")
     aiReplyCore=result1.get("chatGLM").get("aiReplyCore")
     colorfulCharacterList = os.listdir("data/colorfulAnimeCharacter")
-    lockResult = result1.get("lockLuck")
-    InternetMeme = result1.get("InternetMeme")
+    lockResult = controllerResult.get("图片相关").get("lockLuck")
+    InternetMeme = controllerResult.get("图片相关").get("InternetMeme")
 
     global picData
     picData={}
