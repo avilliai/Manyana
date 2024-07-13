@@ -377,7 +377,7 @@ def main(bot,config,moderateKey,logger):
         with open('config/autoSettings.yaml', 'w', encoding="utf-8") as file:
             yaml.dump(result, file, allow_unicode=True)
         await bot.send_friend_message(master,'bot在群:\n'+str(event.operator.group.name)+str(event.operator.group.id)+'\n被禁言'+str(event.duration_seconds)+'秒\n操作者id：'+str(event.operator.id)+'\nname:('+str(event.operator.member_name)+')\n已退群并增加不良记录')
-        await bot.send_friend_message(master,"可使用\n/sb add 群号\n以永久拉黑此群\n/sb remove 群号\n则为移除该群黑名单")
+        await bot.send_friend_message(master,"可使用\n/sbg add 群号\n以永久拉黑此群\n/sbg remove 群号\n则为移除该群黑名单")
         await bot.quit(event.operator.group.id)
         logger.info("已退出群 "+str(event.operator.group.id)+" 并拉黑")
 
@@ -393,15 +393,15 @@ def main(bot,config,moderateKey,logger):
                 logger.warning("不正确的群号")
         if event.sender.id == master :
             global superBlGroups
-            if str(event.message_chain).startswith("/sb "):
-                if str(event.message_chain).startswith("/sb add "):
+            if str(event.message_chain).startswith("/sbg "):
+                if str(event.message_chain).startswith("/sbg add "):
                     groupId = int(str(event.message_chain).split(" ")[-1])
                     if groupId in superBlGroups:
                         await bot.send(event,f"已存在永久黑名单群{groupId}")
                         return
                     superBlGroups.append(groupId)
                     await bot.send(event,f"成功添加永久黑名单群{groupId}")
-                if str(event.message_chain).startswith("/sb remove "):
+                if str(event.message_chain).startswith("/sbg remove "):
                     groupId = int(str(event.message_chain).split(" ")[-1])
                     if groupId not in superBlGroups:
                         await bot.send(event,f"不存在永久黑名单群{groupId}")
@@ -669,15 +669,15 @@ def main(bot,config,moderateKey,logger):
             await bot.quit(event.group.id)
             logger.warning(f"已清退永久黑名单群{event.group.id}")
         if event.sender.id == master :
-            if str(event.message_chain).startswith("/sb "):
-                if str(event.message_chain).startswith("/sb add "):
+            if str(event.message_chain).startswith("/sbg "):
+                if str(event.message_chain).startswith("/sbg add "):
                     groupId = int(str(event.message_chain).split(" ")[-1])
                     if groupId in superBlGroups:
                         await bot.send(event,f"已存在永久黑名单群{groupId}")
                         return
                     superBlGroups.append(groupId)
                     await bot.send(event,f"成功添加永久黑名单群{groupId}")
-                if str(event.message_chain).startswith("/sb remove "):
+                if str(event.message_chain).startswith("/sbg remove "):
                     groupId = int(str(event.message_chain).split(" ")[-1])
                     if groupId not in superBlGroups:
                         await bot.send(event,f"不存在永久黑名单群{groupId}")
