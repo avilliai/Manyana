@@ -764,6 +764,8 @@ def main(bot, config, moderateKey, logger):
     async def quitgrrrrr(event: GroupMessage):
         if fuckinggroup:
             gid = event.group.id
+            if gid==int(mainGroup):
+                return
             with open('config/autoSettings.yaml', 'r', encoding='utf-8') as f:
                 result23 = yaml.load(f.read(), Loader=yaml.FullLoader)
             youquan1 = result23.get("trustGroups")
