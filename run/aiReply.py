@@ -3,18 +3,17 @@ import asyncio
 import datetime
 import os
 import random
-import re
 import shutil
-import yaml
-from mirai import Image, Voice, Startup
-from mirai import Mirai, WebSocketAdapter, FriendMessage, GroupMessage, At, Plain
-from mirai.models import NudgeEvent
 import threading
 from asyncio import sleep
 
+import yaml
+from mirai import FriendMessage, GroupMessage, At
+from mirai import Voice, Startup
+from mirai.models import NudgeEvent
+
 from plugins.aiReplyCore import modelReply, clearAllPrompts, tstt, clearsinglePrompt
 from plugins.wReply.wontRep import wontrep
-
 
 
 # 1
@@ -42,7 +41,7 @@ def main(bot, master, logger):
     with open('config/api.yaml', 'r', encoding='utf-8') as f:
         resulttr = yaml.load(f.read(), Loader=yaml.FullLoader)
     proxy = resulttr.get("proxy")
-    if proxy!="":
+    if proxy != "":
         os.environ["http_proxy"] = proxy
     with open('data/chatGLMData.yaml', 'r', encoding='utf-8') as f:
         cha = yaml.load(f.read(), Loader=yaml.FullLoader)
@@ -52,7 +51,6 @@ def main(bot, master, logger):
     with open('config/noResponse.yaml', 'r', encoding='utf-8') as f:
         noRes1 = yaml.load(f.read(), Loader=yaml.FullLoader)
 
-
     global totallink
     totallink = False
     with open('config/settings.yaml', 'r', encoding='utf-8') as f:
@@ -61,11 +59,11 @@ def main(bot, master, logger):
     trustDays = friendsAndGroups.get("trustDays")
     glmReply = result.get("chatGLM").get("glmReply")
     privateGlmReply = result.get("chatGLM").get("privateGlmReply")
-    nudgeornot=result.get("chatGLM").get("nudgeReply")
+    nudgeornot = result.get("chatGLM").get("nudgeReply")
     replyModel = result.get("chatGLM").get("model")
     trustglmReply = result.get("chatGLM").get("trustglmReply")
     allcharacters = result.get("chatGLM").get("bot_info")
-    allowUserSetModel=result.get("chatGLM").get("allowUserSetModel")
+    allowUserSetModel = result.get("chatGLM").get("allowUserSetModel")
     maxTextLen = result.get("chatGLM").get("maxLen")
     voiceRate = result.get("chatGLM").get("voiceRate")
     withText = result.get("chatGLM").get("withText")
@@ -80,7 +78,8 @@ def main(bot, master, logger):
     except Exception as e:
         #logger.error(e)
         logger.error("用户数据文件出错，自动使用最新备用文件替换")
-        logger.warning("备份文件在temp/userDataBack文件夹下，如数据不正确，请手动使用更早的备份，重命名并替换data/userData.yaml")
+        logger.warning(
+            "备份文件在temp/userDataBack文件夹下，如数据不正确，请手动使用更早的备份，重命名并替换data/userData.yaml")
         directory = 'temp/userDataBack'
 
         # 列出文件夹中的所有文件，并按日期排序
@@ -111,7 +110,6 @@ def main(bot, master, logger):
             logger.error(f"用户{i}的sts数值出错，请打开data/userData.yaml检查，将其修改为正常数值")
     logger.info('chatglm部分已读取信任用户' + str(len(trustUser)) + '个')
 
-
     global coziData
     coziData = {}
     # 线程预备
@@ -119,28 +117,30 @@ def main(bot, master, logger):
     listen = CListen(newLoop)
     listen.setDaemon(True)
     listen.start()
+
     @bot.on(NudgeEvent)
-    async def NudgeReply(event:NudgeEvent):
+    async def NudgeReply(event: NudgeEvent):
         global trustUser
         #戳一戳使用ai回复的话，和这部分放在一起会更好。
-        if event.target==bot.qq and nudgeornot:
+        if event.target == bot.qq and nudgeornot:
             global chatGLMCharacters
             logger.info("接收到来自" + str(event.from_id) + "的戳一戳")
 
             text = random.choice(["戳你一下", "摸摸头", "戳戳你的头", "摸摸~"])
             if event.from_id in chatGLMCharacters:
                 print(chatGLMCharacters.get(event.target), type(chatGLMCharacters.get(event.target)))
-                r,t=await modelReply("指挥",event.from_id,text, chatGLMCharacters.get(event.target),trustUser)
+                r, t = await modelReply("指挥", event.from_id, text, chatGLMCharacters.get(event.target), trustUser)
             # 判断模型类型
             else:
-                r,t=await modelReply("指挥", event.from_id, text, replyModel, trustUser)
+                r, t = await modelReply("指挥", event.from_id, text, replyModel, trustUser)
+
     # 私聊使用chatGLM,对信任用户或配置了apiKey的用户开启
     @bot.on(FriendMessage)
     async def GLMFriendChat(event: FriendMessage):
         # 用非常丑陋的复制粘贴临时解决bug，这下成石山代码了
         global chatGLMData, chatGLMCharacters, trustUser, userdict
         text = str(event.message_chain)
-        if text=="/clear":
+        if text == "/clear":
             return
         if event.sender.id == master:
             noresm = ["群列表", "/bl", "退群#", "/quit"]
@@ -148,30 +148,32 @@ def main(bot, master, logger):
                 if text == saa or text.startswith(saa):
                     logger.warning("与屏蔽词匹配，不回复")
                     return
-        if privateGlmReply==True or (trustglmReply == True and str(event.sender.id) in trustUser):
+        if privateGlmReply == True or (trustglmReply == True and str(event.sender.id) in trustUser):
             pass
-        else: 
+        else:
             return
-        text=str(event.message_chain)
+        text = str(event.message_chain)
         if event.sender.id in chatGLMCharacters:
             print(type(chatGLMCharacters.get(event.sender.id)), chatGLMCharacters.get(event.sender.id))
-            r,firstRep = await modelReply(event.sender.nickname,event.sender.id,text, chatGLMCharacters.get(event.sender.id), trustUser,checkIfRepFirstTime=True)
+            r, firstRep = await modelReply(event.sender.nickname, event.sender.id, text,
+                                           chatGLMCharacters.get(event.sender.id), trustUser, checkIfRepFirstTime=True)
         # 判断模型
         else:
-            r,firstRep = await modelReply(event.sender.nickname,event.sender.id,text, replyModel, trustUser,checkIfRepFirstTime=True)
+            r, firstRep = await modelReply(event.sender.nickname, event.sender.id, text, replyModel, trustUser,
+                                           checkIfRepFirstTime=True)
         if firstRep:
-            await bot.send(event,"如对话异常请发送 /clear 以清理对话",True)
+            await bot.send(event, "如对话异常请发送 /clear 以清理对话", True)
         if len(r) < maxTextLen and random.randint(0, 100) < voiceRate:
             try:
                 voiceP = await tstt(r)
                 await bot.send(event, Voice(path=voiceP))
                 if withText:
-                    await bot.send(event, r,True)
+                    await bot.send(event, r, True)
             except:
                 logger.error("语音合成调用失败")
-                await bot.send(event, r,True)
+                await bot.send(event, r, True)
         else:
-            await bot.send(event, r,True)
+            await bot.send(event, r, True)
 
     # 私聊中chatGLM清除本地缓存
     @bot.on(FriendMessage)
@@ -183,7 +185,6 @@ def main(bot, master, logger):
         elif str(event.message_chain) == "/allclear" and event.sender.id == master:
             reff = await clearAllPrompts()
             await bot.send(event, reff, True)
-
 
     # 私聊设置bot角色
     # print(trustUser)
@@ -211,7 +212,7 @@ def main(bot, master, logger):
                 if allowUserSetModel:
                     await bot.send(event, "不存在的角色")
                 else:
-                    await bot.send(event,"禁止用户自行设定模型(可联系master修改配置)")
+                    await bot.send(event, "禁止用户自行设定模型(可联系master修改配置)")
 
     # print(trustUser)
     @bot.on(GroupMessage)
@@ -283,10 +284,11 @@ def main(bot, master, logger):
     # 群内chatGLM回复
     @bot.on(GroupMessage)
     async def atReply(event: GroupMessage):
-        global trustUser,  chatGLMData, chatGLMCharacters, userdict,coziData, trustG
+        global trustUser, chatGLMData, chatGLMCharacters, userdict, coziData, trustG
         if At(bot.qq) in event.message_chain:
             try:
-                if wontrep(noRes1, str(event.message_chain).replace(str(At(bot.qq)), "").replace(" ", ""),logger)==False:
+                if not wontrep(noRes1, str(event.message_chain).replace(str(At(bot.qq)), "").replace(" ", ""),
+                               logger):
                     return
             except Exception as e:
                 logger.error("无法运行屏蔽词审核，请检查noResponse.yaml配置格式")
@@ -299,32 +301,32 @@ def main(bot, master, logger):
 
         if event.sender.id in chatGLMCharacters:
             print(type(chatGLMCharacters.get(event.sender.id)), chatGLMCharacters.get(event.sender.id))
-            r,firstRep=await modelReply(event.sender.member_name,event.sender.id,text, chatGLMCharacters.get(event.sender.id),trustUser,True)
+            r, firstRep = await modelReply(event.sender.member_name, event.sender.id, text,
+                                           chatGLMCharacters.get(event.sender.id), trustUser, True)
         # 判断模型
         else:
-            r,firstRep=await modelReply(event.sender.member_name,event.sender.id,text,replyModel,trustUser,True)
+            r, firstRep = await modelReply(event.sender.member_name, event.sender.id, text, replyModel, trustUser, True)
         if firstRep:
-            await bot.send(event,"如对话异常请发送 /clear",True)
+            await bot.send(event, "如对话异常请发送 /clear", True)
         if len(r) < maxTextLen and random.randint(0, 100) < voiceRate:
             try:
-                voiceP=await tstt(r)
-                await bot.send(event,Voice(path=voiceP))
+                voiceP = await tstt(r)
+                await bot.send(event, Voice(path=voiceP))
                 if withText:
-                    await bot.send(event,r,True)
+                    await bot.send(event, r, True)
             except:
                 logger.error("语音合成失败")
-                await bot.send(event, r,True)
+                await bot.send(event, r, True)
         else:
-            await bot.send(event, r,True)
+            await bot.send(event, r, True)
+
     # 用于chatGLM清除本地缓存
     @bot.on(GroupMessage)
     async def clearPrompt(event: GroupMessage):
         global chatGLMData, coziData
         if str(event.message_chain) == "/clear":
-            reff=await clearsinglePrompt(event.sender.id)
-            await bot.send(event,reff,True)
-        elif str(event.message_chain) == "/allclear" and event.sender.id == master:
-            reff=await clearAllPrompts()
+            reff = await clearsinglePrompt(event.sender.id)
             await bot.send(event, reff, True)
-
-
+        elif str(event.message_chain) == "/allclear" and event.sender.id == master:
+            reff = await clearAllPrompts()
+            await bot.send(event, reff, True)

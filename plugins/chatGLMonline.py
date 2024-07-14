@@ -1,11 +1,12 @@
 # -*- coding: utf-8 -*-
 import asyncio
 import threading
-from asyncio import sleep
 
 import httpx
 import zhipuai
-def chatGLM1(api_key,bot_info,text):
+
+
+def chatGLM1(api_key, bot_info, text):
     prompt = [
         {
             "role": "user",
@@ -15,38 +16,41 @@ def chatGLM1(api_key,bot_info,text):
     zhipuai.api_key = api_key
     response = zhipuai.model_api.sse_invoke(
         model="characterglm",
-        meta= bot_info,
-        prompt= prompt,
+        meta=bot_info,
+        prompt=prompt,
         incremental=True
     )
-    str1=""
+    str1 = ""
     for event in response.events():
-      if event.event == "add":
-          str1+=event.data
-          #print(event.data)
-      elif event.event == "error" or event.event == "interrupted":
-          str1 += event.data
-          #print(event.data)
-      elif event.event == "finish":
-          str1 += event.data
-          #print(event.data)
-          print(event.meta)
-      else:
-          str1 += event.data
-          #print(event.data)
+        if event.event == "add":
+            str1 += event.data
+            #print(event.data)
+        elif event.event == "error" or event.event == "interrupted":
+            str1 += event.data
+            #print(event.data)
+        elif event.event == "finish":
+            str1 += event.data
+            #print(event.data)
+            print(event.meta)
+        else:
+            str1 += event.data
+            #print(event.data)
     #print(str1)
     return str1
-async def glm4(prompt,meta):
-    prompt.insert(0,{"role":"user","content":meta})
+
+
+async def glm4(prompt, meta):
+    prompt.insert(0, {"role": "user", "content": meta})
     prompt.insert(1, {"role": "assistant", "content": "好的~"})
     url = f"https://api.lolimi.cn/API/AI/zp.php?msg={str(prompt)}"
     async with httpx.AsyncClient(timeout=100) as client:  # 100s超时
         r = await client.get(url)  # 发起请求
         #print(r.json())
         return {"role": "assistant", "content": r.json().get("data").get("output")}
-# 创建一个异步函数
-async def main(apiKey,bot_info,prompt):
 
+
+# 创建一个异步函数
+async def main(apiKey, bot_info, prompt):
     '''# 获取事件循环
     apiKey = "a
     print("接收提问:"+text)
@@ -71,6 +75,7 @@ async def main(apiKey,bot_info,prompt):
     # 打印结果
     #print(result)
 
+
 # 运行异步函数
 
 class CListen(threading.Thread):
@@ -82,7 +87,3 @@ class CListen(threading.Thread):
         asyncio.set_event_loop(self.mLoop)  # 在新线程中开启一个事件循环
 
         self.mLoop.run_forever()
-
-
-
-

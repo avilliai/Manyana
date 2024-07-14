@@ -3,8 +3,8 @@ import asyncio
 import httpx
 
 
-async def screenshot_to_pdf_and_png(url,path,width=1024,height=9680):
-    url=f"https://mini.s-shot.ru/{width}x{height}/PNG/1800/?{url}"
+async def screenshot_to_pdf_and_png(url, path, width=1024, height=9680):
+    url = f"https://mini.s-shot.ru/{width}x{height}/PNG/1800/?{url}"
     async with httpx.AsyncClient(timeout=200) as client:
         r = await client.get(url)
         with open(path, "wb") as f:
@@ -16,8 +16,6 @@ async def screenshot_to_pdf_and_png(url,path,width=1024,height=9680):
              解决了懒加载问题
              保存俩种图片格式
     '''
-
-
 
     '''driver = webdriver.Firefox()
     # 6> 模仿手动滑动滚动条，解决懒加载问题
@@ -67,14 +65,17 @@ async def screenshot_to_pdf_and_png(url,path,width=1024,height=9680):
     except Exception as e:
         print(e)'''
 
-async def webScreenShot(url,path):
-    url=f"https://mini.s-shot.ru/1080x980/PNG/2024/?{url}"
+
+async def webScreenShot(url, path):
+    url = f"https://mini.s-shot.ru/1080x980/PNG/2024/?{url}"
     async with httpx.AsyncClient(timeout=20) as client:
         r = await client.get(url)
-        with open(path,"wb") as f:
+        with open(path, "wb") as f:
             f.write(r.content)
+
+
 if __name__ == '__main__':
-    asyncio.run(webScreenShot("https://prts.wiki/w/波登可","./test.png"))
+    asyncio.run(webScreenShot("https://prts.wiki/w/波登可", "./test.png"))
     #asyncio.run(screenshot_to_pdf_and_png("https://prts.wiki/w/斯卡蒂", "./test.png"))
 
     #webScreenShoot("https://prts.wiki/w/w","test.png",1200,7500)

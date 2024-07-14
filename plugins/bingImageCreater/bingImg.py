@@ -1,16 +1,20 @@
-import requests
 import re
 import time
-import os
-import psutil
-import browser_cookie_3x as bc
 from urllib.parse import urlencode
+
+import browser_cookie_3x as bc
+import psutil
+import requests
+
 
 class AuthCookieError(Exception):
     pass
 
+
 class PromptRejectedError(Exception):
     pass
+
+
 class BingArt:
     browser_procs = {
         bc.chrome: 'chrome.exe',
@@ -98,7 +102,8 @@ class BingArt:
     def _fetch_images(self, encoded_query, ID, IG):
         images = []
         while True:
-            response = self.session.get(f'{self.base_url}/async/results/{ID}?{encoded_query}&IG={IG}&IID=images.as'.replace('&amp;nfy=1', ''))
+            response = self.session.get(
+                f'{self.base_url}/async/results/{ID}?{encoded_query}&IG={IG}&IID=images.as'.replace('&amp;nfy=1', ''))
             if 'text/css' in response.text:
                 src_urls = re.findall(r'src="([^"]+)"', response.text)
                 for src_url in src_urls:

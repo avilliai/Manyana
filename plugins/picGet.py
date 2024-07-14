@@ -1,13 +1,8 @@
 # -*- coding: utf-8 -*-
-import os
-
-import httpx
-import asyncio
 
 import requests
 
 from plugins.RandomStr import random_str
-
 
 '''async def pic():
 
@@ -38,22 +33,25 @@ def pic():
     with open("data/pictures/wallpaper/" + ranpath + ".png", mode="wb") as f:
         f.write(r)  # 图片内容写入文件
     return "data/pictures/wallpaper/" + ranpath + ".png"
+
+
 import asyncio
 from io import BytesIO
 
 import httpx
 from PIL import Image
 
-async def setuGet(data,withPic,grayPic):
+
+async def setuGet(data, withPic, grayPic):
     ranpath = random_str()
-    path="data/pictures/wallpaper/" + ranpath + ".png"
-    url="https://api.lolicon.app/setu/v2?"
+    path = "data/pictures/wallpaper/" + ranpath + ".png"
+    url = "https://api.lolicon.app/setu/v2?"
     async with httpx.AsyncClient(timeout=100) as client:
-        r = await client.get(url,params=data)
+        r = await client.get(url, params=data)
         #print(r.json().get("data")[0].get("urls").get("regular"))
-        url=r.json().get("data")[0].get("urls").get("regular")
-        if withPic==False:
-            return url,None
+        url = r.json().get("data")[0].get("urls").get("regular")
+        if not withPic:
+            return url, None
     async with httpx.AsyncClient(timeout=20) as client:
         r = await client.get(url)
         img = Image.open(BytesIO(r.content))  # 从二进制数据创建图片对象
@@ -66,14 +64,17 @@ async def setuGet(data,withPic,grayPic):
             return url, path
             #image_black_white.show()
         img.save(path)  # 使用PIL库保存图片
-        return url,path
-async def picDwn(url,path):
+        return url, path
+
+
+async def picDwn(url, path):
     async with httpx.AsyncClient(timeout=20) as client:
         r = await client.get(url)
         img = Image.open(BytesIO(r.content))  # 从二进制数据创建图片对象
         img.save(path)  # 使用PIL库保存图片
         return path
 
+
 if __name__ == '__main__':
-    asyncio.run(picDwn("https://blue-utils.me/img/common/profile/Skill_Portrait_CH0135.png","./ba.png"))
+    asyncio.run(picDwn("https://blue-utils.me/img/common/profile/Skill_Portrait_CH0135.png", "./ba.png"))
     #pic()
