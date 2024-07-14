@@ -162,10 +162,10 @@ async def modelScopeDrawer(prompt, negative_prompt):
 
     async with httpx.AsyncClient(headers=headers) as client:
         response = await client.post(url, json=data, params=params)
-        print(f"POST request status code: {response.status_code}")
+        #print(f"POST request status code: {response.status_code}")
         response_data =response.json()
         event_id = response_data['event_id']
-        print(f"Received event_id: {event_id}")
+        #print(f"Received event_id: {event_id}")
 
         # Now start listening to event stream
         event_stream_url = f"https://s5k.cn/api/v1/studio/AI-ModelScope/stable-diffusion-3-medium/gradio/queue/data?session_hash=oxm1sjlvnr&studio_token=2aebd9a6-3f8e-4907-ba0e-1ac759249c24"
@@ -185,4 +185,4 @@ async def modelScopeDrawer(prompt, negative_prompt):
                 #print(line.strip())
 # 运行 Flask 应用
 if __name__ == "__main__":
-    asyncio.run(draw6("a 2D girlish, with only 1 character in the picture.Wearing a choker.White and light blue long hair, exquisite and cute hairstyle，Tips of hair are light blue.Cute face，Loving gaze，Light purple eyes，must leave a small amount of blank space between the top of the charater's head and the top of the picture.Wearing a exquisite white dress.Cute playful action.a character portrait by Muqi, pixiv contest winner, rococo,booru, official art，drawing the character as avatar。"))
+    asyncio.run(modelScopeDrawer("a 2D girlish","nsfw"))

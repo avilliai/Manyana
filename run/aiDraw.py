@@ -37,8 +37,12 @@ def main(bot,logger):
         if str(event.message_chain).startswith("画 ") and aiDrawController.get("modelscopeSD"):
             tag = str(event.message_chain).replace("画 ", "")
             logger.info("发起modelscope SDai绘画请求，prompt:" + tag)
-            p=await modelScopeDrawer(tag+positive_prompt, negative_prompt)
-            await bot.send(event,Image(path=p),True)
+            try:
+                p=await modelScopeDrawer(tag, negative_prompt)
+                await bot.send(event,Image(path=p),True)
+            except Exception as e:
+                logger.error(e)
+                logger.error("modelscope Draw出错")
     @bot.on(GroupMessage)
     async def AiSdDraw(event: GroupMessage):
         if str(event.message_chain).startswith("画 ") and aiDrawController.get("sd接口"):
