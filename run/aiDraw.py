@@ -7,7 +7,7 @@ from mirai import GroupMessage
 
 from plugins.RandomStr import random_str
 from plugins.setuModerate import fileImgModerate
-from plugins.aiDrawer import SdDraw, draw2, airedraw, draw1, draw3, tiktokredraw, draw5, draw4, draw6
+from plugins.aiDrawer import SdDraw, draw2, airedraw, draw1, draw3, tiktokredraw, draw5, draw4, draw6, modelScopeDrawer
 
 from io import BytesIO
 import io
@@ -32,7 +32,13 @@ def main(bot,logger):
     positive_prompt=aiDrawController.get("positive_prompt")
     global redraw
     redraw={}
-    
+    @bot.on(GroupMessage)
+    async def msDrawer(event:GroupMessage):
+        if str(event.message_chain).startswith("画 ") and aiDrawController.get("modelscopeSD"):
+            tag = str(event.message_chain).replace("画 ", "")
+            logger.info("发起modelscope SDai绘画请求，prompt:" + tag)
+            p=await modelScopeDrawer(tag+positive_prompt, negative_prompt)
+            await bot.send(event,Image(path=p),True)
     @bot.on(GroupMessage)
     async def AiSdDraw(event: GroupMessage):
         if str(event.message_chain).startswith("画 ") and aiDrawController.get("sd接口"):
