@@ -25,6 +25,7 @@ def main(bot, proxy, nasa_api, logger):
     global data
     with open('data/scheduledTasks.yaml', 'r', encoding='utf-8') as file:
         data = yaml.load(file, Loader=yaml.FullLoader)
+    keys = data.keys()
     newsT = data.get("news").get("time").split("/")
     steamadd1 = data.get("steamadd1").get("time").split("/")
     astronomy = data.get("astronomy").get("time").split("/")
@@ -139,7 +140,7 @@ def main(bot, proxy, nasa_api, logger):
         logger.info("推送今日喜加一列表")
         for i in data.get("steamadd1").get("groups"):
             try:
-                if path is None or path == "":
+                if path == None or path == "":
                     return
                 await bot.send_group_message(int(i), [data.get("steamadd1").get("text"), path])
             except:
@@ -224,6 +225,15 @@ def main(bot, proxy, nasa_api, logger):
         elif str(event.message_chain) == "/推送 单向历":
             key = "danxiangli"
         else:
+            if str(event.message_chain) == "/推送 所有订阅":
+                for key in keys:
+                    la = data.get(key).get("groups")
+                    if event.group.id not in la:
+                        la.append(event.group.id)
+                        data[key]["groups"] = la
+                with open('data/scheduledTasks.yaml', 'w', encoding="utf-8") as file:
+                    yaml.dump(data, file, allow_unicode=True)
+                await bot.send(event, "添加所有订阅成功")
             return
         la = data.get(key).get("groups")
         if event.group.id not in la:
@@ -242,7 +252,7 @@ def main(bot, proxy, nasa_api, logger):
         logger.info("推送单向历")
         for i in data.get("danxiangli").get("groups"):
             try:
-                if path == None:
+                if path is None:
                     return
                 await bot.send_group_message(int(i), [data.get("danxiangli").get("text"), Image(path=path)])
             except:
@@ -264,10 +274,22 @@ def main(bot, proxy, nasa_api, logger):
         elif str(event.message_chain) == "/取消 单向历":
             key = "danxiangli"
         else:
+            if str(event.message_chain) == "/取消 所有订阅":
+                for key in keys:
+                    la = data.get(key).get("groups")
+                    if event.group.id in la:
+                        la.remove(event.group.id)
+                        data[key]["groups"] = la
+                with open('data/scheduledTasks.yaml', 'w', encoding="utf-8") as file:
+                    yaml.dump(data, file, allow_unicode=True)
+                await bot.send(event, "取消所有订阅成功")
             return
         la = data.get(key).get("groups")
-        la.remove(event.group.id)
-        data[key]["groups"] = la
-        with open('data/scheduledTasks.yaml', 'w', encoding="utf-8") as file:
-            yaml.dump(data, file, allow_unicode=True)
-        await bot.send(event, "取消订阅成功")
+        if event.group.id in la:
+            la.remove(event.group.id)
+            data[key]["groups"] = la
+            with open('data/scheduledTasks.yaml', 'w', encoding="utf-8") as file:
+                yaml.dump(data, file, allow_unicode=True)
+            await bot.send(event, "取消订阅成功")
+        else:
+            await bot.send(event, "取消失败，没有添加过对应的任务。")
