@@ -120,7 +120,7 @@ def main(bot, proxy, nasa_api, logger):
             for i in trustUser:
                 try:
                     city = userdict.get(i).get("city")
-                    logger.info("查询 " + city + " 天气")
+                    logger.info(f"查询 {city} 天气")
                     wSult = await weatherQuery.querys(city, api_KEY)
                     # 发送天气消息
                     if aiReplyCore:
@@ -140,7 +140,7 @@ def main(bot, proxy, nasa_api, logger):
         logger.info("推送今日喜加一列表")
         for i in data.get("steamadd1").get("groups"):
             try:
-                if path == None or path == "":
+                if path is None or path == "":
                     return
                 await bot.send_group_message(int(i), [data.get("steamadd1").get("text"), path])
             except:
@@ -212,38 +212,36 @@ def main(bot, proxy, nasa_api, logger):
     @bot.on(GroupMessage)
     async def addSubds(event: GroupMessage):
         global data
-        if str(event.message_chain) == "/推送 摸鱼人日历":
-            key = "moyu"
-        elif str(event.message_chain) == "/推送 每日天文":
-            key = "astronomy"
-        elif str(event.message_chain) == "/推送 每日新闻":
-            key = "news"
-        elif str(event.message_chain) == "/推送 喜加一":
-            key = "steamadd1"
-        elif str(event.message_chain) == "/推送 每日星座":
-            key = "constellation"
-        elif str(event.message_chain) == "/推送 单向历":
-            key = "danxiangli"
-        else:
-            if str(event.message_chain) == "/推送 所有订阅":
-                for key in keys:
-                    la = data.get(key).get("groups")
-                    if event.group.id not in la:
-                        la.append(event.group.id)
-                        data[key]["groups"] = la
-                with open('data/scheduledTasks.yaml', 'w', encoding="utf-8") as file:
-                    yaml.dump(data, file, allow_unicode=True)
-                await bot.send(event, "添加所有订阅成功")
+        try:
+            head, cmd, *o = str(event.message_chain).strip().split()
+        except ValueError:
             return
-        la = data.get(key).get("groups")
-        if event.group.id not in la:
-            la.append(event.group.id)
-            data[key]["groups"] = la
+        if o or head != '/推送' or not cmd:
+            return
+        cmds = {"摸鱼人日历": "moyu", "每日天文": "astronomy", "每日新闻": "news", "喜加一": "steamadd1",
+                "每日星座": "constellation", "单向历": "danxiangli", }
+        key = cmds.get(cmd, 'unknown')
+        if key == 'unknown':
+            return
+        if cmd == "所有订阅":
+            for key in keys:
+                la = data.get(key).get("groups")
+                if event.group.id not in la:
+                    la.append(event.group.id)
+                    data[key]["groups"] = la
             with open('data/scheduledTasks.yaml', 'w', encoding="utf-8") as file:
                 yaml.dump(data, file, allow_unicode=True)
-            await bot.send(event, "添加订阅成功，推送时间：" + str(data.get(key).get("time")))
+            await bot.send(event, "添加所有订阅成功")
         else:
-            await bot.send(event, "添加失败，已经添加过对应的任务。")
+            la = data.get(key).get("groups")
+            if event.group.id not in la:
+                la.append(event.group.id)
+                data[key]["groups"] = la
+                with open('data/scheduledTasks.yaml', 'w', encoding="utf-8") as file:
+                    yaml.dump(data, file, allow_unicode=True)
+                await bot.send(event, "添加订阅成功，推送时间：" + str(data.get(key).get("time")))
+            else:
+                await bot.send(event, "添加失败，已经添加过对应的任务。")
 
     @scheduler.scheduled_job(CronTrigger(hour=int(danxiangli[0]), minute=int(danxiangli[1])))
     async def danxiangliy():
