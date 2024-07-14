@@ -2,18 +2,18 @@ import asyncio
 import os
 import random
 import re
-#注释
+
+# 注释
 import yaml
 from mirai import logger
-from plugins.chatGLMonline import  glm4
+
+from plugins.RandomStr import random_str
+from plugins.ReplyModels import gptOfficial, gptUnofficial, kimi, qingyan, lingyi, stepAI, qwen, gptvvvv, grop, \
+    gpt4hahaha, anotherGPT35, chatGLM, relolimigpt2, xinghuo
 from plugins.cozeBot import cozeBotRep
 from plugins.googleGemini import geminirep
-from plugins.ReplyModels import gptOfficial, gptUnofficial, kimi, qingyan, lingyi, stepAI, qwen, gptvvvv, grop, \
-    gpt4hahaha, localAurona, anotherGPT35, chatGLM, lolimigpt2, relolimigpt2, xinghuo
-from plugins.RandomStr import random_str
 from plugins.translater import translate
 from plugins.vitsGenerate import voiceGenerate, superVG
-
 
 with open('config/api.yaml', 'r', encoding='utf-8') as f:
     resulttr = yaml.load(f.read(), Loader=yaml.FullLoader)
@@ -33,7 +33,7 @@ with open('config.json', 'r', encoding='utf-8') as f:
 config = data
 mainGroup = int(config.get("mainGroup"))
 botName = config.get("botName")
-botqq=int(config.get("botQQ"))
+botqq = int(config.get("botQQ"))
 with open('config/settings.yaml', 'r', encoding='utf-8') as f:
     result = yaml.load(f.read(), Loader=yaml.FullLoader)
 voicegg = result.get("语音功能设置").get("voicegenerate")
@@ -58,9 +58,10 @@ with open('data/chatGLMData.yaml', 'r', encoding='utf-8') as f:
     cha = yaml.load(f.read(), Loader=yaml.FullLoader)
 
 chatGLMData = cha
+
+
 async def tstt(r):
-    data1 = {}
-    data1['speaker'] = speaker
+    data1 = {'speaker': speaker}
     st8 = re.sub(r"（[^）]*）", "", r)  # 使用r前缀表示原始字符串，避免转义字符的问题
     data1["text"] = st8
     if voicegg == "vits":
@@ -84,6 +85,7 @@ async def tstt(r):
         path = await superVG(data1, voicegg, berturl, voiceLangType)
     return path
 
+
 async def loop_run_in_executor(executor, func, *args):
     try:
         r = await executor.run_in_executor(None, func, *args)
@@ -92,8 +94,10 @@ async def loop_run_in_executor(executor, func, *args):
     except Exception as e:
         # logger.error(f"Error running {func.__name__}: {e}")
         return [str(func.__name__), None]
+
+
 # 运行异步函数
-async def modelReply(senderName,senderId, text,modelHere=modelDefault, trustUser=None,checkIfRepFirstTime=False):
+async def modelReply(senderName, senderId, text, modelHere=modelDefault, trustUser=None, checkIfRepFirstTime=False):
     global chatGLMData
     logger.info(modelHere)
     try:
@@ -103,9 +107,9 @@ async def modelReply(senderName,senderId, text,modelHere=modelDefault, trustUser
             meta1 = resy.get("chatGLM").get("bot_info").get(modelHere)
             meta1["user_name"] = senderName
             meta1["user_info"] = meta1.get("user_info").replace("【用户】", senderName).replace("【bot】",
-                                                                                                          botName)
+                                                                                              botName)
             meta1["bot_info"] = meta1.get("bot_info").replace("【用户】", senderName).replace("【bot】",
-                                                                                                        botName)
+                                                                                            botName)
             meta1["bot_name"] = botName
             bot_in = meta1
         else:
@@ -121,7 +125,7 @@ async def modelReply(senderName,senderId, text,modelHere=modelDefault, trustUser
                                     botName).replace("【用户】", "我")
         except:
             if checkIfRepFirstTime:
-                return "模型不可用，请发送 可用角色模板 并重新设定模型",False
+                return "模型不可用，请发送 可用角色模板 并重新设定模型", False
             else:
                 return "模型不可用，请发送 可用角色模板 并重新设定模型"
     try:
@@ -133,7 +137,7 @@ async def modelReply(senderName,senderId, text,modelHere=modelDefault, trustUser
         if senderId in chatGLMData:
             prompt1 = chatGLMData.get(senderId)
             prompt1.append({"content": text, "role": "user"})
-            firstRep=False
+            firstRep = False
         else:
             prompt1 = [{"content": text, "role": "user"}]
             if modelHere == "anotherGPT3.5" or modelHere == "random":
@@ -142,7 +146,7 @@ async def modelReply(senderName,senderId, text,modelHere=modelDefault, trustUser
                                                      senderId)
                 except:
                     logger.error("初始化anotherGPT3.5失败")
-            firstRep=True
+            firstRep = True
         logger.info(f"{modelHere}  bot 接受提问：" + text)
 
         if modelHere == "random":
@@ -178,12 +182,15 @@ async def modelReply(senderName,senderId, text,modelHere=modelDefault, trustUser
                 if result is not None:
                     if "content" not in result:
                         continue
-                    if "无法解析" in result.get("content") or "账户余额不足" in result.get("content") or "令牌额度" in result.get(
-                            "content") or "敏感词汇" in result.get("content") or "request id" in result.get(
+                    if "无法解析" in result.get("content") or "账户余额不足" in result.get(
+                            "content") or "令牌额度" in result.get(
+                        "content") or "敏感词汇" in result.get("content") or "request id" in result.get(
                         "content") or "This model's maximum" in result.get(
                         "content") or "solve CAPTCHA to" in result.get("content") or "输出错误请联系站长" in result.get(
                         "content") or "接口失败" in result.get("content") or "ip请求过多" in result.get(
-                        "content") or "第三方响应错误" in result.get("content") or "access the URL on this server" in result.get("content") or "正常人完全够用" in result.get("content"):
+                        "content") or "第三方响应错误" in result.get(
+                        "content") or "access the URL on this server" in result.get(
+                        "content") or "正常人完全够用" in result.get("content"):
                         continue
                     reps[task.result()[0]] = task.result()[1]
                     # reps.append(task.result())  # 添加可用结果
@@ -194,7 +201,7 @@ async def modelReply(senderName,senderId, text,modelHere=modelDefault, trustUser
                 raise Exception
             # print(reps)
             modeltrans = {"gptX": "gptvvvv", "清言": "qingyan", "通义千问": "qwen", "anotherGPT3.5": "anotherGPT35",
-                          "lolimigpt": "relolimigpt2", "step": "stepAI","讯飞星火":"xinghuo"}
+                          "lolimigpt": "relolimigpt2", "step": "stepAI", "讯飞星火": "xinghuo"}
             for priority in randomModelPriority:
                 if priority in modeltrans:
                     priority = modeltrans.get(priority)
@@ -203,21 +210,20 @@ async def modelReply(senderName,senderId, text,modelHere=modelDefault, trustUser
                     logger.info(f"random模型选择结果：{priority}: {rep}")
                     break
         if modelHere == "gpt3.5":
-            if gptdev == True:
+            if gptdev:
                 rep = await loop.run_in_executor(None, gptUnofficial, prompt1, gptkeys, proxy, bot_in)
             else:
                 rep = await loop.run_in_executor(None, gptOfficial, prompt1, gptkeys, proxy, bot_in)
 
-
-
         elif modelHere == "Gemini":
-            r = await geminirep(ak=random.choice(geminiapikey), messages=prompt1, bot_info=bot_in,GeminiRevProxy=GeminiRevProxy),
+            r = await geminirep(ak=random.choice(geminiapikey), messages=prompt1, bot_info=bot_in,
+                                GeminiRevProxy=GeminiRevProxy),
             #print(r,type(r))
-            rep = {"role": "assistant", "content": r[0].replace(r"\n","\n")}
+            rep = {"role": "assistant", "content": r[0].replace(r"\n", "\n")}
         elif type(allcharacters.get(modelHere)) == dict:
-            if (str(senderId) not in trustUser and trustglmReply) and trustUser!=None:
+            if (str(senderId) not in trustUser and trustglmReply) and trustUser != None:
                 if checkIfRepFirstTime:
-                    return "无模型使用权限！",False
+                    return "无模型使用权限！", False
                 else:
                     return "无模型使用权限"
             else:
@@ -236,7 +242,7 @@ async def modelReply(senderName,senderId, text,modelHere=modelDefault, trustUser
         #print(rep.get('content'),type(rep.get('content')))
         logger.info(f"{modelHere} bot 回复：" + rep.get('content'))
         if checkIfRepFirstTime:
-            return rep.get("content"),firstRep
+            return rep.get("content"), firstRep
         else:
             return rep.get("content")
         #await tstt(rep.get('content'), event)
@@ -247,9 +253,11 @@ async def modelReply(senderName,senderId, text,modelHere=modelDefault, trustUser
         except Exception as e:
             logger.error("清理用户prompt出错")
         if checkIfRepFirstTime:
-            return "出错，请重试\n或发送 \n@bot 可用角色模板\n 以更换其他模型",False
+            return "出错，请重试\n或发送 \n@bot 可用角色模板\n 以更换其他模型", False
         else:
             return "出错，请重试\n或发送 \n@bot 可用角色模板\n 以更换其他模型"
+
+
 async def clearsinglePrompt(senderid):
     global chatGLMData
     try:
@@ -261,6 +269,8 @@ async def clearsinglePrompt(senderid):
     except:
         logger.error("清理缓存出错，无本地对话记录")
         return "无本地对话记录"
+
+
 async def clearAllPrompts():
     global chatGLMData
     try:
@@ -273,4 +283,3 @@ async def clearAllPrompts():
         return "已清除所有用户的prompt"
     except:
         return "清理缓存出错，无本地对话记录"
-

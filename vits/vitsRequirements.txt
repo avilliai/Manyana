@@ -18,3 +18,4 @@ eng-to-ipa==0.0.2
 indic-transliteration==2.3.44
 num-thai==0.0.5
 ko-pron==1.3
+ruamel.yaml

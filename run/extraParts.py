@@ -1,45 +1,37 @@
 # -*- coding: utf-8 -*-
-import asyncio
+import datetime
 import json
 import os
-import datetime
 import random
 import re
-import time
-import sys
-import socket
 from asyncio import sleep
+from io import BytesIO
 
 import httpx
 import requests
-import utils
 import yaml
+from PIL import Image as Image1
+from mirai import GroupMessage, At, Plain
 from mirai import Image, Voice, Startup, MessageChain
-from mirai import Mirai, WebSocketAdapter, FriendMessage, GroupMessage, At, Plain
-from mirai.models import ForwardMessageNode, Forward, App
+from mirai.models import ForwardMessageNode, Forward
 
 from plugins import weatherQuery
 from plugins.RandomStr import random_str
 from plugins.aiReplyCore import modelReply
 from plugins.arkOperator import arkOperator
-from plugins.extraParts import get_cp_mesg, emojimix
 from plugins.emojimixhandle import emojimix_handle
+from plugins.extraParts import get_cp_mesg
 from plugins.gacha import arkGacha, starRailGacha, bbbgacha
 from plugins.genshinGo import genshinDraw, qianCao
 from plugins.historicalToday import hisToday, steamEpic
 from plugins.jokeMaker import get_joke
-
-from plugins.newsEveryDay import news, moyu, xingzuo, sd, chaijun, danxianglii, beCrazy,handwrite
-from plugins.arksign import arkSign
+from plugins.newsEveryDay import news, moyu, xingzuo, sd, chaijun, danxianglii, beCrazy
 from plugins.picGet import pic, setuGet, picDwn
 from plugins.setuModerate import setuModerate
 from plugins.tarot import tarotChoice
-from plugins.translater import translate
-from PIL import Image as Image1
-from plugins.webScreenShoot import  screenshot_to_pdf_and_png
-from io import BytesIO
 
-def main(bot,logger):
+
+def main(bot, logger):
     # 读取api列表
     with open('config/api.yaml', 'r', encoding='utf-8') as f:
         result = yaml.load(f.read(), Loader=yaml.FullLoader)
@@ -50,14 +42,14 @@ def main(bot,logger):
     proxy = result.get("proxy")
 
     logger.info("额外的功能 启动完成")
-    with open("data/odes.json",encoding="utf-8") as fp:
-        odes=json.loads(fp.read())
-    with open("data/IChing.json",encoding="utf-8") as fp:
-        IChing=json.loads(fp.read())
+    with open("data/odes.json", encoding="utf-8") as fp:
+        odes = json.loads(fp.read())
+    with open("data/IChing.json", encoding="utf-8") as fp:
+        IChing = json.loads(fp.read())
     global data
-    with open('data/nasaTasks.yaml', 'r',encoding='utf-8') as file:
+    with open('data/nasaTasks.yaml', 'r', encoding='utf-8') as file:
         data = yaml.load(file, Loader=yaml.FullLoader)
-    with open('data/userData.yaml', 'r',encoding='utf-8') as file:
+    with open('data/userData.yaml', 'r', encoding='utf-8') as file:
         data1 = yaml.load(file, Loader=yaml.FullLoader)
     global trustUser
     userdict = data1
@@ -72,36 +64,37 @@ def main(bot,logger):
     with open('config/controller.yaml', 'r', encoding='utf-8') as f:
         controllerResult = yaml.load(f.read(), Loader=yaml.FullLoader)
     r18 = controllerResult.get("图片相关").get("r18Pic")
-    onlyTrustUserR18=controllerResult.get("图片相关").get("onlyTrustUserR18")
-    withPic=controllerResult.get("图片相关").get("withPic")
+    onlyTrustUserR18 = controllerResult.get("图片相关").get("onlyTrustUserR18")
+    withPic = controllerResult.get("图片相关").get("withPic")
     grayPic = controllerResult.get("图片相关").get("grayPic")
-    allowPic=controllerResult.get("图片相关").get("allowPic")
-    selfsensor=result1.get("moderate").get("selfsensor")
-    selfthreshold=result1.get("moderate").get("selfthreshold")
-    aiReplyCore=result1.get("chatGLM").get("aiReplyCore")
+    allowPic = controllerResult.get("图片相关").get("allowPic")
+    selfsensor = result1.get("moderate").get("selfsensor")
+    selfthreshold = result1.get("moderate").get("selfthreshold")
+    aiReplyCore = result1.get("chatGLM").get("aiReplyCore")
     colorfulCharacterList = os.listdir("data/colorfulAnimeCharacter")
     lockResult = controllerResult.get("运势&塔罗").get("lockLuck")
     InternetMeme = controllerResult.get("图片相关").get("InternetMeme")
 
     global picData
-    picData={}
+    picData = {}
     with open('config/gachaSettings.yaml', 'r', encoding='utf-8') as f:
         resultp = yaml.load(f.read(), Loader=yaml.FullLoader)
     bbb = resultp.get("blueArchiveGacha")
-    if lockResult==True:
+    if lockResult:
         with open('data/lockLuck.yaml', 'r', encoding='utf-8') as f:
             result2 = yaml.load(f.read(), Loader=yaml.FullLoader)
         global luckList
         global tod
         tod = str(datetime.date.today())
         if tod in result2:
-             luckList= result2
+            luckList = result2
         else:
-            luckList = {str(tod): {"运势":{123:"",456:""},"塔罗":{123:{"text":"hahaha","path":",,,"}}}}
+            luckList = {str(tod): {"运势": {123: "", 456: ""}, "塔罗": {123: {"text": "hahaha", "path": ",,,"}}}}
             with open('data/lockLuck.yaml', 'w', encoding="utf-8") as file:
                 yaml.dump(luckList, file, allow_unicode=True)
+
     @bot.on(Startup)
-    async def update(event:Startup):
+    async def update(event: Startup):
         while True:
             await sleep(300)
             logger.info("更新用户数据")
@@ -115,47 +108,52 @@ def main(bot,logger):
                 times = int(str(data3.get('sts')))
                 if times > 20:
                     trustUser.append(str(i))
+
     @bot.on(GroupMessage)
     async def chaijunmaomao(event: GroupMessage):
-        if str(event.message_chain)=="柴郡" or (At(bot.qq) in event.message_chain and "柴郡" in str(event.message_chain)):
+        if str(event.message_chain) == "柴郡" or (
+                At(bot.qq) in event.message_chain and "柴郡" in str(event.message_chain)):
             try:
                 logger.info("有楠桐调用了柴郡猫猫图")
-                asffd=await chaijun()
-                await bot.send(event,Image(path=asffd))
-                asffd=await chaijun()
-                await bot.send(event,Image(path=asffd))
+                asffd = await chaijun()
+                await bot.send(event, Image(path=asffd))
+                asffd = await chaijun()
+                await bot.send(event, Image(path=asffd))
             except:
                 logger.error("获取柴郡.png失败")
-                await bot.send(event,"获取失败，请检查网络连接")
+                await bot.send(event, "获取失败，请检查网络连接")
 
     @bot.on(GroupMessage)
     async def fabing(event: GroupMessage):
-        if str(event.message_chain).startswith("发病 ") or (At(bot.qq) in event.message_chain and "发病 " in str(event.message_chain)):
+        if str(event.message_chain).startswith("发病 ") or (
+                At(bot.qq) in event.message_chain and "发病 " in str(event.message_chain)):
             try:
                 logger.info("开始发病")
-                aim=str(event.message_chain).replace(str(At(bot.qq)),"").replace("发病 ","")
+                aim = str(event.message_chain).replace(str(At(bot.qq)), "").replace("发病 ", "")
                 asffd = await beCrazy(aim)
                 logger.info(asffd)
                 await bot.send(event, asffd)
             except:
                 logger.error("调用接口失败")
                 await bot.send(event, "获取失败，请检查网络连接")
+
     @bot.on(GroupMessage)
     async def handle_group_message(event: GroupMessage):
         # if str(event.message_chain) == '/pic':
         if At(bot.qq) not in event.message_chain:
             if '/pic' in str(event.message_chain):
                 picNum = int((str(event.message_chain))[4:])
-            elif "@"+str(bot.qq) not in str(event.message_chain) and event.message_chain.count(Image)<1 and len(str(event.message_chain))<6:
-                if get_number(str(event.message_chain))==None:
+            elif "@" + str(bot.qq) not in str(event.message_chain) and event.message_chain.count(Image) < 1 and len(
+                    str(event.message_chain)) < 6:
+                if get_number(str(event.message_chain)) is None:
                     return
                 else:
-                    picNum=int(get_number(str(event.message_chain)))
+                    picNum = int(get_number(str(event.message_chain)))
 
             else:
                 return
-            logger.info("图片获取指令....数量："+str(picNum))
-            if picNum < 10 and picNum > -1:
+            logger.info("图片获取指令....数量：" + str(picNum))
+            if 10 > picNum > -1:
                 for i in range(picNum):
                     logger.info("获取壁纸")
                     a = pic()
@@ -183,36 +181,40 @@ def main(bot,logger):
                 return match.group(3)
         else:
             return None
+
     @bot.on(GroupMessage)
-    async def setuHelper(event:GroupMessage):
+    async def setuHelper(event: GroupMessage):
         pattern1 = r'(\d+)张(\w+)'
         global picData
         if At(bot.qq) in event.message_chain:
-            text1=str(event.message_chain).replace("壁纸","").replace("涩图","").replace("色图","").replace("图","").replace("r18","")
+            text1 = str(event.message_chain).replace("壁纸", "").replace("涩图", "").replace("色图", "").replace("图",
+                                                                                                                 "").replace(
+                "r18", "")
             match1 = re.search(pattern1, text1)
             if match1:
-                if allowPic==False:
-                    await bot.send(event,"发图功能已关闭，可使用 5图 指令使用备用发图功能")
+                if allowPic == False:
+                    await bot.send(event, "发图功能已关闭，可使用 5图 指令使用备用发图功能")
                     return
-                logger.info("提取图片关键字。 数量: "+str(match1.group(1))+" 关键字: "+match1.group(2))
-                data={"tag":""}
-                if "r18" in str(event.message_chain) or "色图" in str(event.message_chain) or "涩图" in str(event.message_chain):
+                logger.info("提取图片关键字。 数量: " + str(match1.group(1)) + " 关键字: " + match1.group(2))
+                data = {"tag": ""}
+                if "r18" in str(event.message_chain) or "色图" in str(event.message_chain) or "涩图" in str(
+                        event.message_chain):
                     if (str(event.sender.id) in trustUser and onlyTrustUserR18) or r18:
-                        data["r18"]=1
+                        data["r18"] = 1
                     else:
-                        await bot.send(event,"r18模式已关闭")
-                picData[event.sender.id]=[]
-                data["tag"]=match1.group(2)
+                        await bot.send(event, "r18模式已关闭")
+                picData[event.sender.id] = []
+                data["tag"] = match1.group(2)
                 data["size"] = "regular"
-                logger.info("组装数据完成："+str(data))
-                a=int(match1.group(1))
-                if int(match1.group(1))>6:
-                    a=5
-                    await bot.send(event,"api访问限制，修改获取张数为 5")
-                fordMes=[]
+                logger.info("组装数据完成：" + str(data))
+                a = int(match1.group(1))
+                if int(match1.group(1)) > 6:
+                    a = 5
+                    await bot.send(event, "api访问限制，修改获取张数为 5")
+                fordMes = []
                 for i in range(a):
                     try:
-                        url,path=await setuGet(data,withPic,grayPic)
+                        url, path = await setuGet(data, withPic, grayPic)
                     except Exception as e:
                         logger.error(e)
                         logger.error("涩图请求出错")
@@ -220,18 +222,22 @@ def main(bot,logger):
                         continue
                     logger.info(f"获取到图片: {url} {path}")
 
-                    if selfsensor==True:
+                    if selfsensor:
                         try:
-                            thurs=await setuModerate(url,moderateK)
+                            thurs = await setuModerate(url, moderateK)
                             logger.info(f"获取到审核结果： adult- {thurs}")
-                            if int(thurs)>selfthreshold:
+                            if int(thurs) > selfthreshold:
                                 logger.warning(f"不安全的图片，自我审核过滤")
-                                await bot.send(event,["nsfw内容已过滤",Image(path="data/colorfulAnimeCharacter/"+random.choice(os.listdir("data/colorfulAnimeCharacter")))])
+                                await bot.send(event, ["nsfw内容已过滤", Image(
+                                    path="data/colorfulAnimeCharacter/" + random.choice(
+                                        os.listdir("data/colorfulAnimeCharacter")))])
                                 continue
                         except Exception as e:
                             logger.error(e)
                             logger.error("无法进行自我审核，错误的网络环境或apikey")
-                            await bot.send(event,["审核策略失效，为确保安全，不显示本图片",Image(path="data/colorfulAnimeCharacter/"+random.choice(os.listdir("data/colorfulAnimeCharacter")))])
+                            await bot.send(event, ["审核策略失效，为确保安全，不显示本图片", Image(
+                                path="data/colorfulAnimeCharacter/" + random.choice(
+                                    os.listdir("data/colorfulAnimeCharacter")))])
                             continue
                     if withPic:
                         b1 = ForwardMessageNode(sender_id=bot.qq, sender_name="Manyana",
@@ -251,22 +257,22 @@ def main(bot,logger):
 
     @bot.on(GroupMessage)
     async def emojiMix(event: GroupMessage):
-        if len(str(event.message_chain))==2:
-            r=list(str(event.message_chain))
+        if len(str(event.message_chain)) == 2:
+            r = list(str(event.message_chain))
             try:
-                p=await emojimix_handle(r[0],r[1])
+                p = await emojimix_handle(r[0], r[1])
             except:
                 return
-#            if p!=None:
-#                logger.info(f"emoji合成：{r[0]} + {r[1]}")
-#                await bot.send(event,Image(path=p),True)
+            #            if p!=None:
+            #                logger.info(f"emoji合成：{r[0]} + {r[1]}")
+            #                await bot.send(event,Image(path=p),True)
             if p == "not_emoji":
                 return
             elif p == 'a':
-                msg = (f'不正确的参数：{r[0]}')
+                msg = f'不正确的参数：{r[0]}'
             elif p == 'b':
-                msg = (f'不正确的参数：{r[1]}')
-            elif p == None:
+                msg = f'不正确的参数：{r[1]}'
+            elif p is None:
                 msg = '表情不支持，请重新选择'
             else:
                 logger.info(f"emoji合成：{r[0]} + {r[1]}")
@@ -274,26 +280,29 @@ def main(bot,logger):
                     png_path = "data/pictures/cache/" + random_str() + ".png"
                     async with httpx.AsyncClient(timeout=20) as client:
                         r = await client.get(p)
-                        with open(png_path,"wb") as f:
-                            f.write(r.content)# 从二进制数据创建图片对象
+                        with open(png_path, "wb") as f:
+                            f.write(r.content)  # 从二进制数据创建图片对象
                     #msg = MessageSegment.image(result)
-                    await bot.send(event,Image(path=png_path),True)
+                    await bot.send(event, Image(path=png_path), True)
                 else:
-                    await bot.send(event,Image(path=p),True)
+                    await bot.send(event, Image(path=p), True)
                     #msg = MessageSegment.image('file://'+result)
             #await emojimix.send(msg)
 
     @bot.on(GroupMessage)
-    async def historyToday(event:GroupMessage):
+    async def historyToday(event: GroupMessage):
         pattern = r".*史.*今.*|.*今.*史.*"
         string = str(event.message_chain)
         match = re.search(pattern, string)
         if match:
-            dataBack=await hisToday()
+            dataBack = await hisToday()
             logger.info("获取历史上的今天")
             logger.info(str(dataBack))
-            sendData=str(dataBack.get("result")).replace("["," ").replace("{'year': '","").replace("'}","").replace("]","").replace("', 'title': '"," ").replace(",","\n")
-            await bot.send(event,sendData)
+            sendData = str(dataBack.get("result")).replace("[", " ").replace("{'year': '", "").replace("'}",
+                                                                                                       "").replace("]",
+                                                                                                                   "").replace(
+                "', 'title': '", " ").replace(",", "\n")
+            await bot.send(event, sendData)
 
     @bot.on(GroupMessage)
     async def weather_query(event: GroupMessage):
@@ -304,32 +313,39 @@ def main(bot,logger):
         if m:
             # 取出指令中的地名
             city = m.group(1)
-            logger.info("查询 "+city+" 天气")
+            logger.info("查询 " + city + " 天气")
             await bot.send(event, '查询中……')
-            wSult=await weatherQuery.querys(city,api_KEY)
+            wSult = await weatherQuery.querys(city, api_KEY)
             # 发送天气消息
             if aiReplyCore:
-                r=await modelReply(event.sender.member_name,event.sender.id,f"请你为我进行天气播报，下面是天气查询的结果：{wSult}")
-                await bot.send(event,r,True)
+                r = await modelReply(event.sender.member_name, event.sender.id,
+                                     f"请你为我进行天气播报，下面是天气查询的结果：{wSult}")
+                await bot.send(event, r, True)
             else:
-                await bot.send(event, wSult,True)
+                await bot.send(event, wSult, True)
+
     @bot.on(GroupMessage)
-    async def newsToday(event:GroupMessage):
-        if ("新闻" in str(event.message_chain) and At(bot.qq) in event.message_chain) or str(event.message_chain)=="新闻":
+    async def newsToday(event: GroupMessage):
+        if ("新闻" in str(event.message_chain) and At(bot.qq) in event.message_chain) or str(
+                event.message_chain) == "新闻":
             logger.info("获取新闻")
-            path=await news()
+            path = await news()
             logger.info("成功获取到今日新闻")
-            await bot.send(event,Image(path=path))
+            await bot.send(event, Image(path=path))
+
     @bot.on(GroupMessage)
-    async def onedimensionli(event:GroupMessage):
-        if ("单向历" in str(event.message_chain) and At(bot.qq) in event.message_chain) or str(event.message_chain)=="单向历":
+    async def onedimensionli(event: GroupMessage):
+        if ("单向历" in str(event.message_chain) and At(bot.qq) in event.message_chain) or str(
+                event.message_chain) == "单向历":
             logger.info("获取单向历")
-            path=await danxianglii()
+            path = await danxianglii()
             logger.info("成功获取到单向历")
-            await bot.send(event,Image(path=path))
+            await bot.send(event, Image(path=path))
+
     @bot.on(GroupMessage)
     async def moyuToday(event: GroupMessage):
-        if ("摸鱼" in str(event.message_chain) and At(bot.qq) in event.message_chain) or str(event.message_chain)=="摸鱼":
+        if ("摸鱼" in str(event.message_chain) and At(bot.qq) in event.message_chain) or str(
+                event.message_chain) == "摸鱼":
             logger.info("获取摸鱼人日历")
             path = await moyu()
             logger.info("成功获取到摸鱼人日历")
@@ -337,7 +353,8 @@ def main(bot,logger):
 
     @bot.on(GroupMessage)
     async def moyuToday(event: GroupMessage):
-        if ("星座" in str(event.message_chain) and At(bot.qq) in event.message_chain) or str(event.message_chain) == "星座":
+        if ("星座" in str(event.message_chain) and At(bot.qq) in event.message_chain) or str(
+                event.message_chain) == "星座":
             logger.info("获取星座运势")
             path = await xingzuo()
             logger.info("成功获取到星座运势")
@@ -357,7 +374,6 @@ def main(bot,logger):
             x = str(event.message_chain).replace('/cp ', '', 1)
             x = x.split(' ')
             if len(x) != 2:
-
                 await bot.send(event, 'エラーが発生しました。再入力してください')
                 return
             mesg = get_cp_mesg(x[0], x[1])
@@ -369,13 +385,13 @@ def main(bot,logger):
         if At(bot.qq) in event.message_chain and "天文" in str(event.message_chain):
             #logger.info(str(data.keys()))
             if datetime.datetime.now().strftime('%Y-%m-%d') in data.keys():
-                todayNasa=data.get(datetime.datetime.now().strftime('%Y-%m-%d'))
-                path=todayNasa.get("path")
-                txt=todayNasa.get("transTxt")
+                todayNasa = data.get(datetime.datetime.now().strftime('%Y-%m-%d'))
+                path = todayNasa.get("path")
+                txt = todayNasa.get("transTxt")
                 try:
                     await bot.send(event, (Image(path=path), txt))
                 except:
-                    await bot.send(event,txt)
+                    await bot.send(event, txt)
             else:
                 proxies = {
                     "http://": proxy,
@@ -393,61 +409,68 @@ def main(bot,logger):
                     # response = requests.post(url="https://saucenao.com/search.php", data=dataa, proxies=proxies)
                     logger.info("获取到结果" + str(response.json()))
                     # logger.info("下载缩略图")
-                    filename = await picDwn(response.json().get("url"), "data/pictures/nasa/"+response.json().get("date")+".png")
+                    filename = await picDwn(response.json().get("url"),
+                                            "data/pictures/nasa/" + response.json().get("date") + ".png")
 
-                    txt = response.json().get("date") + "\n" + response.json().get("title") + "\n" + response.json().get("explanation")
+                    txt = response.json().get("date") + "\n" + response.json().get(
+                        "title") + "\n" + response.json().get("explanation")
                     if aiReplyCore:
-                        txt = await modelReply(event.sender.member_name, event.sender.id, f"将下面这段内容翻译为中文:{txt}")
-                    temp={"path":"data/pictures/nasa/"+response.json().get("date")+".png","oriTxt":response.json().get("explanation"),"transTxt":txt}
+                        txt = await modelReply(event.sender.member_name, event.sender.id,
+                                               f"将下面这段内容翻译为中文:{txt}")
+                    temp = {"path": "data/pictures/nasa/" + response.json().get("date") + ".png",
+                            "oriTxt": response.json().get("explanation"), "transTxt": txt}
 
-                    data[datetime.datetime.now().strftime('%Y-%m-%d')]=temp
+                    data[datetime.datetime.now().strftime('%Y-%m-%d')] = temp
 
                     with open('data/nasaTasks.yaml', 'w', encoding="utf-8") as file:
                         yaml.dump(data, file, allow_unicode=True)
 
-
-                    await bot.send(event,(Image(path=filename),txt))
+                    await bot.send(event, (Image(path=filename), txt))
 
                 except:
                     logger.warning("获取每日天文图片失败")
-                    await bot.send(event,"获取失败，请联系master检查代理或api_key是否可用")
-    @bot.on(GroupMessage)
-    async def arkGene(event:GroupMessage):
-        if "干员" in str(event.message_chain) and "生成" in str(event.message_chain):
-            logger.info("又有皱皮了，生成干员信息中.....")
-            o=arkOperator()
-            o=o.replace("为生成",event.sender.member_name)
-            await bot.send(event,o,True)
+                    await bot.send(event, "获取失败，请联系master检查代理或api_key是否可用")
 
     @bot.on(GroupMessage)
-    async def genshin1(event: GroupMessage):
-        if ("原神" in str(event.message_chain) and "启动" in str(event.message_chain)) or ("抽签" in str(event.message_chain) and "原" in str(event.message_chain)):
-            logger.info("有原皮！获取抽签信息中....")
-            o = genshinDraw()
-            logger.info("\n"+o)
+    async def arkGene(event: GroupMessage):
+        if "干员" in str(event.message_chain) and "生成" in str(event.message_chain):
+            logger.info("又有皱皮了，生成干员信息中.....")
+            o = arkOperator()
+            o = o.replace("为生成", event.sender.member_name)
             await bot.send(event, o, True)
 
     @bot.on(GroupMessage)
     async def genshin1(event: GroupMessage):
-        if ("抽签" in str(event.message_chain) and At(bot.qq) in event.message_chain) or "抽签"==str(event.message_chain):
+        if ("原神" in str(event.message_chain) and "启动" in str(event.message_chain)) or (
+                "抽签" in str(event.message_chain) and "原" in str(event.message_chain)):
+            logger.info("有原皮！获取抽签信息中....")
+            o = genshinDraw()
+            logger.info("\n" + o)
+            await bot.send(event, o, True)
+
+    @bot.on(GroupMessage)
+    async def genshin1(event: GroupMessage):
+        if ("抽签" in str(event.message_chain) and At(bot.qq) in event.message_chain) or "抽签" == str(
+                event.message_chain):
             logger.info("获取浅草百签")
             o = qianCao()
             logger.info(o)
             await bot.send(event, o, True)
             if aiReplyCore:
                 r = await modelReply(event.sender.member_name, event.sender.id, f"为我进行解签，下面是抽签的结果:{o}")
-                await bot.send(event, r,True)
+                await bot.send(event, r, True)
 
     @bot.on(GroupMessage)
     async def NasaHelper(event: GroupMessage):
         if At(bot.qq) in event.message_chain and "诗经" in str(event.message_chain):
             logger.info("获取一篇诗经")
-            ode=random.choice(odes.get("诗经"))
-            logger.info("\n"+ode)
-            await bot.send(event,ode)
+            ode = random.choice(odes.get("诗经"))
+            logger.info("\n" + ode)
+            await bot.send(event, ode)
             if aiReplyCore:
-                r = await modelReply(event.sender.member_name, event.sender.id, f"下面这首诗来自《诗经》，为我介绍它:{ode}")
-                await bot.send(event, r,True)
+                r = await modelReply(event.sender.member_name, event.sender.id,
+                                     f"下面这首诗来自《诗经》，为我介绍它:{ode}")
+                await bot.send(event, r, True)
 
     @bot.on(GroupMessage)
     async def NasaHelper(event: GroupMessage):
@@ -457,77 +480,82 @@ def main(bot,logger):
             logger.info("\n" + IChing1)
             await bot.send(event, IChing1)
 
-
-
     @bot.on(GroupMessage)
     async def handwrite(event: GroupMessage):
         if str(event.message_chain).startswith("手写 "):
-            msg=str(event.message_chain).replace("手写 ","")
-            logger.info("手写模拟:"+msg)
+            msg = str(event.message_chain).replace("手写 ", "")
+            logger.info("手写模拟:" + msg)
             try:
-                path=await handwrite(msg)
+                path = await handwrite(msg)
                 await bot.send(event, Image(path=path), True)
             except:
                 logger.error("调用手写模拟器失败")
 
     @bot.on(GroupMessage)
-    async def jiangzhuang(event:GroupMessage):
+    async def jiangzhuang(event: GroupMessage):
         if str(event.message_chain).startswith("/奖状") or str(event.message_chain).startswith("/证书"):
             try:
-                t=str(event.message_chain)[3:].split("#")
+                t = str(event.message_chain)[3:].split("#")
                 if str(event.message_chain).startswith("/奖状"):
-                    url="https://api.pearktrue.cn/api/certcommend/?name="+t[0]+"&title="+t[1]+"&classname="+t[2]
+                    url = "https://api.pearktrue.cn/api/certcommend/?name=" + t[0] + "&title=" + t[1] + "&classname=" + \
+                          t[2]
                 else:
-                    url="https://api.pearktrue.cn/api/certificate/?name="+t[0]+"&title="+t[1]+"&text="+t[2]
-                p=await sd(url,"data/pictures/cache/"+random_str()+".png")
-                await bot.send(event,Image(path=p))
+                    url = "https://api.pearktrue.cn/api/certificate/?name=" + t[0] + "&title=" + t[1] + "&text=" + t[2]
+                p = await sd(url, "data/pictures/cache/" + random_str() + ".png")
+                await bot.send(event, Image(path=p))
             except:
-                await bot.send(event,"出错\n格式请按照/奖状 name#title#text\n例子\n/奖状 牢大#耐摔王#康师傅冰红茶")
+                await bot.send(event, "出错\n格式请按照/奖状 name#title#text\n例子\n/奖状 牢大#耐摔王#康师傅冰红茶")
 
     @bot.on(GroupMessage)
-    async def jiangzhuang(event:GroupMessage):
+    async def jiangzhuang(event: GroupMessage):
         if str(event.message_chain).startswith("/ba ") and "#" in str(event.message_chain):
             try:
-                t=str(event.message_chain).replace("/ba ","").split("#")
-                url="https://oiapi.net/API/BlueArchive?startText="+t[0]+"&endText="+t[1]
+                t = str(event.message_chain).replace("/ba ", "").split("#")
+                url = "https://oiapi.net/API/BlueArchive?startText=" + t[0] + "&endText=" + t[1]
 
-                p=await sd(url,"data/pictures/cache/"+random_str()+".png")
-                await bot.send(event,Image(path=p))
+                p = await sd(url, "data/pictures/cache/" + random_str() + ".png")
+                await bot.send(event, Image(path=p))
             except:
-                await bot.send(event,"出错，格式请按照/ba Blue#Archive")
+                await bot.send(event, "出错，格式请按照/ba Blue#Archive")
+
     @bot.on(GroupMessage)
     async def moyuToday(event: GroupMessage):
-        if ("方舟十连" in str(event.message_chain) and At(bot.qq) in event.message_chain) or str(event.message_chain) == "方舟十连":
+        if ("方舟十连" in str(event.message_chain) and At(bot.qq) in event.message_chain) or str(
+                event.message_chain) == "方舟十连":
             logger.info("获取方舟抽卡结果")
             try:
                 path = await arkGacha()
                 logger.info("成功获取到抽卡结果")
-                await bot.send(event, Image(path=path),True)
+                await bot.send(event, Image(path=path), True)
             except:
                 logger.error("皱皮衮")
-                await bot.send(event,"获取抽卡结果失败，请稍后再试")
+                await bot.send(event, "获取抽卡结果失败，请稍后再试")
+
     @bot.on(GroupMessage)
     async def moyuToday(event: GroupMessage):
-        if ("星铁十连" in str(event.message_chain) and At(bot.qq) in event.message_chain) or str(event.message_chain) == "星铁十连":
+        if ("星铁十连" in str(event.message_chain) and At(bot.qq) in event.message_chain) or str(
+                event.message_chain) == "星铁十连":
             logger.info("获取星铁抽卡结果")
             try:
                 path = await starRailGacha()
                 logger.info("成功获取到星铁抽卡结果")
-                await bot.send(event, Image(path=path),True)
+                await bot.send(event, Image(path=path), True)
             except:
                 logger.error("穹批衮")
-                await bot.send(event,"获取抽卡结果失败，请稍后再试")
+                await bot.send(event, "获取抽卡结果失败，请稍后再试")
+
     @bot.on(GroupMessage)
     async def moyuToday(event: GroupMessage):
-        if ("ba十连" in str(event.message_chain) and At(bot.qq) in event.message_chain) or str(event.message_chain) == "ba十连":
+        if ("ba十连" in str(event.message_chain) and At(bot.qq) in event.message_chain) or str(
+                event.message_chain) == "ba十连":
             logger.info("获取ba抽卡结果")
             try:
                 path = await bbbgacha(bbb)
                 logger.info("成功获取到ba抽卡结果")
-                await bot.send(event, Image(path=path),True)
+                await bot.send(event, Image(path=path), True)
             except:
                 logger.error("碧批衮")
-                await bot.send(event,"获取抽卡结果失败，请稍后再试")
+                await bot.send(event, "获取抽卡结果失败，请稍后再试")
 
     @bot.on(GroupMessage)
     async def moyuToday(event: GroupMessage):
@@ -541,35 +569,38 @@ def main(bot,logger):
             except:
                 logger.error("衮")
                 await bot.send(event, "获取喜加一结果失败，请稍后再试")
+
     @bot.on(GroupMessage)
     async def tail(event: GroupMessage):
         if str(event.message_chain).startswith("小尾巴 "):
-            tail=str(event.message_chain).replace("小尾巴","")
-            url=f"https://www.oexan.cn/API/ncwb.php?name=后缀：&wb={tail}"
+            tail = str(event.message_chain).replace("小尾巴", "")
+            url = f"https://www.oexan.cn/API/ncwb.php?name=后缀：&wb={tail}"
             async with httpx.AsyncClient(timeout=40) as client:
                 r1 = await client.get(url)
-            await bot.send(event,"请完整复制如下内容，否则无法使用",True)
-            await bot.send(event,r1.text.replace("后缀：",""))
+            await bot.send(event, "请完整复制如下内容，否则无法使用", True)
+            await bot.send(event, r1.text.replace("后缀：", ""))
+
     @bot.on(GroupMessage)
     async def zhifubao(event: GroupMessage):
         if str(event.message_chain).startswith("支付宝到账 "):
             try:
-                numb=str(event.message_chain).replace("支付宝到账 ","")
-                url=f"https://free.wqwlkj.cn/wqwlapi/alipay_yy.php?money={str(numb)}"
-                r=requests.get(url)
+                numb = str(event.message_chain).replace("支付宝到账 ", "")
+                url = f"https://free.wqwlkj.cn/wqwlapi/alipay_yy.php?money={str(numb)}"
+                r = requests.get(url)
                 p = "data/voices/" + random_str() + '.wav'
                 logger.info(f"支付宝到账：{numb}")
                 with open(p, "wb") as f:
                     f.write(r.content)
-                await bot.send(event,Voice(path=p))
+                await bot.send(event, Voice(path=p))
             except Exception as e:
                 logger.error(e)
-                await bot.send(event,"生成失败，请检查数额")
+                await bot.send(event, "生成失败，请检查数额")
 
     @bot.on(GroupMessage)
     async def meme(event: GroupMessage):
         global memeData
-        if str(event.message_chain) == "meme" or ("meme" in str(event.message_chain) and At(bot.qq) in event.message_chain):
+        if str(event.message_chain) == "meme" or (
+                "meme" in str(event.message_chain) and At(bot.qq) in event.message_chain):
             if InternetMeme:
                 logger.info("使用网络meme")
 
@@ -597,9 +628,10 @@ def main(bot,logger):
 
     @bot.on(GroupMessage)
     async def meme(event: GroupMessage):
-        global memeData,luckList,tod
-        if ("运势" in str(event.message_chain) and At(bot.qq) in event.message_chain) or str(event.message_chain)=="运势":
-            if lockResult==False:
+        global memeData, luckList, tod
+        if ("运势" in str(event.message_chain) and At(bot.qq) in event.message_chain) or str(
+                event.message_chain) == "运势":
+            if not lockResult:
                 la = os.listdir("data/pictures/amm")
                 la = "data/pictures/amm/" + random.choice(la)
                 logger.info("执行运势查询")
@@ -610,9 +642,9 @@ def main(bot,logger):
                     la = "data/pictures/amm/" + random.choice(la)
                     logger.info("执行运势查询")
                     await bot.send(event, (str(event.sender.member_name) + "今天的运势是", Image(path=la)))
-                    luckList[str(tod)]["运势"][event.sender.id]=la
+                    luckList[str(tod)]["运势"][event.sender.id] = la
                 else:
-                    la=luckList.get(str(tod)).get("运势").get(event.sender.id)
+                    la = luckList.get(str(tod)).get("运势").get(event.sender.id)
                     logger.info("执行运势查询")
                     await bot.send(event, (str(event.sender.member_name) + "今天的运势是", Image(path=la)))
                 with open('data/lockLuck.yaml', 'w', encoding="utf-8") as file:
@@ -620,17 +652,18 @@ def main(bot,logger):
 
     @bot.on(GroupMessage)
     async def tarotToday(event: GroupMessage):
-        global luckList,tod
+        global luckList, tod
         if ("今日塔罗" in str(event.message_chain) and At(bot.qq) in event.message_chain) or str(
                 event.message_chain) == "今日塔罗":
             logger.info("获取今日塔罗")
-            if lockResult == False:
+            if not lockResult:
                 txt, img = tarotChoice()
                 logger.info("成功获取到今日塔罗")
-                await bot.send(event, [txt,Image(path=img)])
+                await bot.send(event, [txt, Image(path=img)])
                 if aiReplyCore:
-                    r=await modelReply(event.sender.member_name,event.sender.id,f"为我进行塔罗牌播报，下面是塔罗占卜的结果{txt}")
-                    await bot.send(event,r,True)
+                    r = await modelReply(event.sender.member_name, event.sender.id,
+                                         f"为我进行塔罗牌播报，下面是塔罗占卜的结果{txt}")
+                    await bot.send(event, r, True)
 
             else:
                 if event.sender.id not in luckList.get(tod).get("塔罗"):
@@ -638,16 +671,17 @@ def main(bot,logger):
                     logger.info("成功获取到今日塔罗")
                     await bot.send(event, txt)
                     await bot.send(event, Image(path=img))
-                    luckList[str(tod)]["塔罗"][event.sender.id]={"text":txt,"img":img}
+                    luckList[str(tod)]["塔罗"][event.sender.id] = {"text": txt, "img": img}
                 else:
-                    la=luckList.get(str(tod)).get("塔罗").get(event.sender.id)
+                    la = luckList.get(str(tod)).get("塔罗").get(event.sender.id)
                     logger.info("获取塔罗")
 
                     await bot.send(event, la.get("text"))
                     await bot.send(event, Image(path=la.get("img")))
                 if aiReplyCore:
-                    r=await modelReply(event.sender.member_name,event.sender.id,f"为我进行塔罗牌播报，下面是塔罗占卜的结果:{txt}")
-                    await bot.send(event,r,True)
+                    r = await modelReply(event.sender.member_name, event.sender.id,
+                                         f"为我进行塔罗牌播报，下面是塔罗占卜的结果:{txt}")
+                    await bot.send(event, r, True)
                 with open('data/lockLuck.yaml', 'w', encoding="utf-8") as file:
                     yaml.dump(luckList, file, allow_unicode=True)
 
@@ -659,19 +693,19 @@ def main(bot,logger):
             c = random.choice(colorfulCharacterList)
             await bot.send(event, Image(path="data/colorfulAnimeCharacter/" + c))
 
-
     @bot.on(Startup)
     async def updateData(event: Startup):
         while True:
             await sleep(60)
-            if lockResult == True:
+            if lockResult:
                 with open('data/lockLuck.yaml', 'r', encoding='utf-8') as f:
                     result2 = yaml.load(f.read(), Loader=yaml.FullLoader)
-                global luckList,tod
+                global luckList, tod
                 tod = str(datetime.date.today())
                 if tod in result2:
                     luckList = result2
                 else:
-                    luckList = {str(tod): {"运势": {123: "", 456: ""}, "塔罗": {123: {"text": "hahaha", "path": ",,,"}}}}
+                    luckList = {
+                        str(tod): {"运势": {123: "", 456: ""}, "塔罗": {123: {"text": "hahaha", "path": ",,,"}}}}
                     with open('data/lockLuck.yaml', 'w', encoding="utf-8") as file:
                         yaml.dump(luckList, file, allow_unicode=True)

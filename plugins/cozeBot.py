@@ -3,7 +3,8 @@ import os
 
 import requests
 
-def cozeBotRep(url,text,proxy,channelid=None):
+
+def cozeBotRep(url, text, proxy, channelid=None):
     os.environ["http_proxy"] = proxy
     headers = {
         'accept': 'application/json',
@@ -24,8 +25,6 @@ def cozeBotRep(url,text,proxy,channelid=None):
 
     else:
         print(f'Error: {r.status_code}')
-
-
 
 #cozeBotRep(url,text,proxy)
 #creatChannel("http://127.0.0.1:10809")

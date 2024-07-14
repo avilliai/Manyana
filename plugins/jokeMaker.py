@@ -3,6 +3,7 @@
 @author: zyckk4  https://github.com/zyckk4
 """
 import random
+
 jokes = [
     'Erdos相信上帝有一本记录所有数学中绝妙证明的书，上帝相信这本书在%name%手里',
     '有一次费马惹怒了%name%，于是就有了费马最后定理',

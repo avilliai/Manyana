@@ -333,7 +333,7 @@ class _LinuxPasswordManager:
             return password.encode('utf-8')
 
 
-class _DatabaseConnetion():
+class _DatabaseConnetion:
     def __init__(self, database_file: os.PathLike, try_legacy_first: bool = False):
         self.__database_file = database_file
         self.__temp_cookie_file = None
@@ -506,7 +506,7 @@ class ChromiumBased:
                 # http.cookiejar stores cookies' expiration timestamps as SECONDS since the Unix epoch
                 # (1970-01-01 0:00:00 GMT, or None for session cookies.
                 host, path, secure, expires_nt_time_epoch, name, value, enc_value, http_only = item
-                if (expires_nt_time_epoch == 0):
+                if expires_nt_time_epoch == 0:
                     expires = None
                 else:
                     expires = (expires_nt_time_epoch / 1000000) - \

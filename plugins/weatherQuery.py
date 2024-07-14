@@ -1,9 +1,11 @@
-
 import asyncio
 
 import httpx
-apiKey=""
-url="https://api.openweathermap.org/data/2.5/weather?q=BeiJing&appid="+apiKey+"&lang=zh_cn"
+
+apiKey = ""
+url = "https://api.openweathermap.org/data/2.5/weather?q=BeiJing&appid=" + apiKey + "&lang=zh_cn"
+
+
 async def weatherQuery1(proxy):
     proxies = {
         "http://": proxy,
@@ -13,7 +15,9 @@ async def weatherQuery1(proxy):
         r = await client.get(url)
         print(r.json())
         return r.json()
-async def querys(city,API_KEY) -> str:
+
+
+async def querys(city, API_KEY) -> str:
     """查询天气数据。"""
     async with httpx.AsyncClient(timeout=20) as client:
         try:
@@ -26,10 +30,11 @@ async def querys(city,API_KEY) -> str:
             resp.raise_for_status()
             data = resp.json()
             return f'当前{data["results"][0]["location"]["name"]}天气为' \
-                f'{data["results"][0]["now"]["text"]}，' \
-                f'气温{data["results"][0]["now"]["temperature"]}℃。'
+                   f'{data["results"][0]["now"]["text"]}，' \
+                   f'气温{data["results"][0]["now"]["temperature"]}℃。'
         except (httpx.NetworkError, httpx.HTTPStatusError, KeyError):
             return f'抱歉，没有找到{city}的天气数据。'
-if __name__ == '__main__':
 
+
+if __name__ == '__main__':
     asyncio.run(weatherQuery1("http://127.0.0.1:1080"))

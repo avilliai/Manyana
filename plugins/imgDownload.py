@@ -16,7 +16,7 @@ def dict_download_img(url,dirc):
         else:
             img_name = ranpath+".jpg"
         filename = dirc+"/"+ img_name
-        if (response.getcode() == 200):
+        if response.getcode() == 200:
             with open(filename, "wb") as f:
                 f.write(response.read()) # 将内容写入图片
             return filename

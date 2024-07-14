@@ -1,12 +1,11 @@
 # -*- coding:utf-8 -*-
 import logging
 import os
+import shutil
 import subprocess
-import sys
 
 import colorlog
 
-import shutil
 current_dir = os.getcwd()
 
 # 获取上一级目录
@@ -24,11 +23,13 @@ if os.path.exists(custom_python_path):
     python_path = custom_python_path
 else:
     python_path = "python"
-custom_pip_path = os.path.join(parent_dir, "environments", "Python39", "Scripts","pip.exe")
+custom_pip_path = os.path.join(parent_dir, "environments", "Python39", "Scripts", "pip.exe")
 if os.path.exists(custom_pip_path):
     pip_path = custom_pip_path
 else:
     pip_path = "pip"
+
+
 def newLogger():
     # 创建一个logger对象
     logger = logging.getLogger("villia")
@@ -52,20 +53,24 @@ def newLogger():
     logger.addHandler(console_handler)
     return logger
 
-logger = newLogger()
-def main():
-    print("请输入要执行的指令：\n1 绑定到远程仓库(如果通过源码包安装请执行)\n2 更新bot代码\n3 清理无用数据(如缓存图片)\n4 导出群信息，制作一个chatLearning可用的配置文件\n5 其他素材下载(可选)\n6 安装vits功能对应依赖")
 
-    a=input("输入要执行的数字")
-    if a=="1":
+logger = newLogger()
+
+
+def main():
+    print(
+        "请输入要执行的指令：\n1 绑定到远程仓库(如果通过源码包安装请执行)\n2 更新bot代码\n3 清理无用数据(如缓存图片)\n4 导出群信息，制作一个chatLearning可用的配置文件\n5 其他素材下载(可选)\n6 安装vits功能对应依赖")
+
+    a = input("输入要执行的数字")
+    if a == "1":
         os.system(f"{git_path} init")
         os.system(f"{git_path} remote add origin https://github.com/avilliai/Manyana.git")
         print("正在添加文件.....这可能需要较长时间")
         os.system(f"{git_path} add .")
         print("over")
-    elif a=="2":
+    elif a == "2":
         updaat()
-    elif a=="3":
+    elif a == "3":
         print("执行清理缓存操作")
         ls1 = os.listdir("data/pictures/avatars")
         for i in ls1:
@@ -133,9 +138,10 @@ def main():
                 continue
         print("清理本地图库缓存完成")
         print("清理缓存完成")
-    elif a=="4":
+    elif a == "4":
         import json
-        print("chatLearning： https://mirai.mamoe.net/topic/1018/chatlearning-%E8%AE%A9bot%E5%AD%A6%E4%BC%9A%E4%BD%A0%E7%9A%84%E7%BE%A4%E8%81%8A/8")
+        print(
+            "chatLearning： https://mirai.mamoe.net/topic/1018/chatlearning-%E8%AE%A9bot%E5%AD%A6%E4%BC%9A%E4%BD%A0%E7%9A%84%E7%BE%A4%E8%81%8A/8")
         if os.path.exists("config.clc"):
             with open("config.clc", "r", encoding="utf_8_sig") as ass:
                 p = json.loads(ass.read())
@@ -201,14 +207,14 @@ def main():
         print(list(da), type(list(da)))
         p["replygrouplist"] = list(da)
         p["learninggrouplist"] = list(da)
-        ja = json.dumps(p,ensure_ascii=False,indent=1)
-        with open("config.clc", "w", encoding="utf_8_sig",newline='\n') as fp:
+        ja = json.dumps(p, ensure_ascii=False, indent=1)
+        with open("config.clc", "w", encoding="utf_8_sig", newline='\n') as fp:
             fp.write(ja)
         print("完毕，请用config.clc覆盖chatLearning文件夹下同名文件")
-    elif a=="5":
+    elif a == "5":
         logger.info("图片素材下载/更新\n输入要执行的指令：\n1 下载/更新星穹铁道资源")
-        orderP=input("在这里输入指令：")
-        if orderP=="1":
+        orderP = input("在这里输入指令：")
+        if orderP == "1":
             if os.path.exists("./data/star-rail-atlas"):
                 os.chdir("./data")
                 logger.info("文件夹已存在，进入更新模式")
@@ -217,37 +223,43 @@ def main():
                 os.chdir("./data")
                 logger.info("文件夹不存在，拉取素材")
                 os.system(f"{git_path} clone https://gitee.com/Nwflower/star-rail-atlas.git")
-    elif a=="6":
+    elif a == "6":
         logger.info("开始安装vits语音模块相关依赖")
         os.system(f"{custom_pip_path} install -r vits/vitsRequirements.txt")
     else:
         print("结束")
-def updaat(f=False,jump=False,source=None):
-    if jump==False:
+
+
+def updaat(f=False, jump=False, source=None):
+    if not jump:
         logger.warning("更新python库，按1跳过，如果最近没有更新过，不建议跳过，可能错过某些更新。")
         if input("在这里输入:") != "1":
             logger.warning("即将开始更新依赖库，请确保已关闭代理，否则无法安装依赖库")
             input("按任意键继续：")
             os.system(f"{custom_pip_path} install bingart")
             os.system(f"{custom_pip_path} install emoji")
-    if source==None:
+    if source is None:
         logger.info("拉取bot代码\n--------------------")
-        logger.info("选择更新源(git源 镜像源相互兼容)：\n1 git源\n2 镜像源1\n3 镜像源2 \n4 中国计算机协会源(搭建用的默认gitlink源就选这个，不兼容上述源)")
+        logger.info(
+            "选择更新源(git源 镜像源相互兼容)：\n1 git源\n2 镜像源1\n3 镜像源2 \n4 中国计算机协会源(搭建用的默认gitlink源就选这个，不兼容上述源)")
         source = input("选择更新源(输入数字 )：")
     else:
-        source=str(source)
+        source = str(source)
     if source == "1":
         # os.system("git pull https://github.com/avilliai/Manyana.git")
         # 启动进程
         p = subprocess.Popen([f'{git_path}', 'pull', 'https://github.com/avilliai/Manyana.git'], stdout=subprocess.PIPE,
                              stderr=subprocess.PIPE)
-    elif source=="2":
-        p = subprocess.Popen([f'{git_path}', 'pull', 'https://github.moeyy.xyz/https://github.com/avilliai/Manyana'], stdout=subprocess.PIPE,
+    elif source == "2":
+        p = subprocess.Popen([f'{git_path}', 'pull', 'https://github.moeyy.xyz/https://github.com/avilliai/Manyana'],
+                             stdout=subprocess.PIPE,
                              stderr=subprocess.PIPE)
-    elif source=="3":
-        p=subprocess.Popen([f'{git_path}', 'pull', 'https://mirror.ghproxy.com/https://github.com/avilliai/Manyana'], stdout=subprocess.PIPE,stderr=subprocess.PIPE)
-    elif source=="4":
-        p=subprocess.Popen([f'{git_path}', 'pull', 'https://www.gitlink.org.cn/lux-QAQ/Manyana'], stdout=subprocess.PIPE,stderr=subprocess.PIPE)
+    elif source == "3":
+        p = subprocess.Popen([f'{git_path}', 'pull', 'https://mirror.ghproxy.com/https://github.com/avilliai/Manyana'],
+                             stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+    elif source == "4":
+        p = subprocess.Popen([f'{git_path}', 'pull', 'https://www.gitlink.org.cn/lux-QAQ/Manyana'],
+                             stdout=subprocess.PIPE, stderr=subprocess.PIPE)
     else:
         logger.error("无效输入，重新执行")
         updaat()
@@ -263,21 +275,22 @@ def updaat(f=False,jump=False,source=None):
 
     # 存放冲突文件名的列表
     conflict_files = []
-    if f==True:
+    if f:
         if os.path.exists("./temp"):
             if len(os.listdir("./config")) != 14:
-                logger.error("文件数目异常，请参考远程仓库config文件夹https://github.com/avilliai/Manyana/tree/main/config补全缺失文件。")
+                logger.error(
+                    "文件数目异常，请参考远程仓库config文件夹https://github.com/avilliai/Manyana/tree/main/config补全缺失文件。")
                 input("如已补全请按任意键继续：")
             for i in os.listdir("./temp"):
-                logger.info("开始处理"+i)
-                if os.path.exists("config/"+i):
-                    conflict_file_dealter("./temp/"+i,"config/"+i)
+                logger.info("开始处理" + i)
+                if os.path.exists("config/" + i):
+                    conflict_file_dealter("./temp/" + i, "config/" + i)
                     if os.path.exists("./temp/conflict " + i):
                         os.remove("./temp/conflict " + i)
                     os.rename("./temp/" + i, "./temp/conflict " + i)
                 else:
                     continue
-            #shutil.rmtree("./temp")
+            # shutil.rmtree("./temp")
         logger.info("处理冲突文件完成")
         logger.info("旧的冲突文件被保存到了temp文件夹，以防万一你需要它们。")
         logger.info("你可以关闭此窗口了")
@@ -290,13 +303,13 @@ def updaat(f=False,jump=False,source=None):
             in_error_info = True
             continue  # 结束当前循环，进入下一个循环
         elif 'error: 您对下列文件的本地修改将被合并操作覆盖：' in line:
-            in_error_info=True
+            in_error_info = True
             continue
         # 标记冲突文件名结束位置
         if 'Please commit your changes or stash them before you merge.' in line:
             in_error_info = False
         elif '请在合并前提交或贮藏您的修改。' in line:
-            in_error_info=False
+            in_error_info = False
         # 将冲突文件名添加到列表
         if in_error_info:
             conflict_files.append(line.strip())
@@ -315,7 +328,7 @@ def updaat(f=False,jump=False,source=None):
 
             if os.path.exists("./temp"):
                 try:
-                    shutil.copyfile(file, file.replace("config/", "temp/").replace("data/","temp/"))
+                    shutil.copyfile(file, file.replace("config/", "temp/").replace("data/", "temp/"))
                     os.remove(file)
                 except:
                     continue
@@ -326,16 +339,17 @@ def updaat(f=False,jump=False,source=None):
         else:
             os.remove(file)
             logger.warning("移除了 " + file)
-            #logger.warning("请自行决定删除或修改文件名称，在重新拉取后根据旧文件重新填写新文件")
+            # logger.warning("请自行决定删除或修改文件名称，在重新拉取后根据旧文件重新填写新文件")
     logger.warning("开始处理冲突文件")
     logger.info("即将再次执行拉取操作")
-    updaat(True,True,str(source))
+    updaat(True, True, str(source))
     # 不要忘了等待进程结束
     p.wait()
 
-
     logger.info("结束")
     logger.info("如更新成功请自行查看 更新日志.yaml")
+
+
 # 创建一个YAML对象来加载和存储YAML数据
 try:
     from ruamel.yaml import YAML
@@ -346,6 +360,7 @@ except Exception as e:
 # 创建一个YAML对象来加载和存储YAML数据
 yaml = YAML()
 
+
 def merge_dicts(old, new):
     for k, v in old.items():
         # 如果值是一个字典，并且键在新的yaml文件中，那么我们就递归地更新键值对
@@ -353,25 +368,25 @@ def merge_dicts(old, new):
             merge_dicts(v, new[k])
         # 如果键在新的yaml文件中，我们就更新它的值
         elif k in new:
-            logger.info("更新key"+str(k)+" value"+str(v))
+            logger.info("更新key" + str(k) + " value" + str(v))
             new[k] = v
+
 
 def conflict_file_dealter(file_old='old_aiReply.yaml', file_new='new_aiReply.yaml'):
     # 加载旧的YAML文件
-    with open(file_old, 'r',encoding="utf-8") as file:
+    with open(file_old, 'r', encoding="utf-8") as file:
         old_data = yaml.load(file)
 
     # 加载新的YAML文件
-    with open(file_new, 'r',encoding="utf-8") as file:
+    with open(file_new, 'r', encoding="utf-8") as file:
         new_data = yaml.load(file)
 
     # 遍历旧的YAML数据并更新新的YAML数据中的相应值
     merge_dicts(old_data, new_data)
 
     # 把新的YAML数据保存到新的文件中
-    with open(file_new, 'w',encoding="utf-8") as file:
+    with open(file_new, 'w', encoding="utf-8") as file:
         yaml.dump(new_data, file)
-
 
 
 # 添加远程仓库
