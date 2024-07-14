@@ -762,13 +762,11 @@ def main(bot, config, moderateKey, logger):
 
     @bot.on(GroupMessage)
     async def quitgrrrrr(event: GroupMessage):
-        if fuckinggroup == True:
+        if fuckinggroup:
             gid = event.group.id
-
             with open('config/autoSettings.yaml', 'r', encoding='utf-8') as f:
                 result23 = yaml.load(f.read(), Loader=yaml.FullLoader)
             youquan1 = result23.get("trustGroups")
-
             try:
                 sf = await bot.member_list(int(gid))
                 sf = len(sf.data)
@@ -777,7 +775,7 @@ def main(bot, config, moderateKey, logger):
                 return
             try:
                 if sf < fuckingnumber and gid not in youquan1:
-                    await bot.send_group_message(gid, "无授权小群，自动退出。")
+                    await bot.send_group_message(gid, "无授权群，自动退出。")
                     logger.warning("已清退:" + str(gid))
                     await bot.quit(gid)
             except Exception as e:
