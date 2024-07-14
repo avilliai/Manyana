@@ -220,7 +220,7 @@ def main(bot, config, moderateKey, logger):
     async def MemberJoinHelper(event: MemberJoinEvent):
         if random.choice(memberJoinWelcome) == 1:
             return
-        if event.member.group.id == 628763673:
+        if event.member.group.id == 623265372:
             await bot.send_group_message(event.member.group.id, [At(event.member.id),
                                                                  "\n提问前请翻阅：\n常见问题汇总：https://docs.qq.com/aio/DTXNRVnZYYm5TQWhM\n项目wiki:https://github.com/avilliai/Manyana/wiki\n项目文档：https://github.com/avilliai/Manyana\n\n提问附上控制台截图。"])
             return
