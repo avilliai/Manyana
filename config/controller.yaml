@@ -6,6 +6,7 @@ ai绘画:
   接口4: true
   接口5: true
   接口6: true    #朦胧(还行，只支持英文prompt)
+  modelscopeSD: True  #modelscope逆向ai绘图，较为稳定
   sd接口: true   #anything v3
   ai重绘: false  #目前应该是不可用的
   ai重绘2: false #同上

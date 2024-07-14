@@ -1,4 +1,6 @@
 # -*- coding: utf-8 -*-
+import re
+
 import asyncio
 import base64
 import io
@@ -126,8 +128,77 @@ async def draw6(prompt, path="./test.png"):
         f.write(r1.content)
     return path
 
+async def modelScopeDrawer(prompt, negative_prompt):
+    url = "https://s5k.cn/api/v1/studio/AI-ModelScope/stable-diffusion-3-medium/gradio/queue/join"
+    params = {
+        "backend_url": "/api/v1/studio/AI-ModelScope/stable-diffusion-3-medium/gradio/",
+        "sdk_version": "4.31.3",
+        "t": "1720966413219",
+        "studio_token": "2aebd9a6-3f8e-4907-ba0e-1ac759249c24"
+    }
 
+    headers = {
+        "Accept": "*/*",
+        "Accept-Encoding": "gzip, deflate, br, zstd",
+        "Accept-Language": "zh-CN,zh;q=0.9,en;q=0.8,en-GB;q=0.7,en-US;q=0.6",
+        "Connection": "keep-alive",
+        "Content-Type": "application/json",
+        "Cookie": "_gid=GA1.2.685814012.1720887454; _ga=GA1.2.1599116772.1719823591; _ga_R1FN4KJKJH=GS1.1.1720887453.2.1.1720888543.0.0.0",
+        "Host": "s5k.cn",
+        "Origin": "https://s5k.cn",
+        "Referer": "https://s5k.cn/inner/studio/gradio?backend_url=/api/v1/studio/AI-ModelScope/stable-diffusion-3-medium/gradio/&sdk_version=4.31.3&t=1720966413219&studio_token=2aebd9a6-3f8e-4907-ba0e-1ac759249c24",
+        "Sec-Ch-Ua": "\"Microsoft Edge\";v=\"125\", \"Chromium\";v=\"125\", \"Not.A/Brand\";v=\"24\"",
+        "Sec-Ch-Ua-Mobile": "?0",
+        "Sec-Ch-Ua-Platform": "\"Windows\"",
+        "Sec-Fetch-Dest": "empty",
+        "Sec-Fetch-Mode": "cors",
+        "Sec-Fetch-Site": "same-origin",
+        "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/125.0.0.0 Safari/537.36 Edg/125.0.0.0",
+        "X-Studio-Token": "2aebd9a6-3f8e-4907-ba0e-1ac759249c24"
+    }
+
+    data = {
+        "data": [
+            prompt,
+            negative_prompt,
+            1587008566,
+            True,
+            1024,
+            1024,
+            5,
+            28
+        ],
+        "event_data": None,
+        "fn_index": 1,
+        "trigger_id": 5,
+        "dataType": ["textbox", "textbox", "slider", "checkbox", "slider", "slider", "slider", "slider"],
+        "session_hash": "oxm1sjlvnr"
+    }
+
+    async with httpx.AsyncClient(headers=headers) as client:
+        response = await client.post(url, json=data, params=params)
+        #print(f"POST request status code: {response.status_code}")
+        response_data =response.json()
+        event_id = response_data['event_id']
+        #print(f"Received event_id: {event_id}")
+
+        # Now start listening to event stream
+        event_stream_url = f"https://s5k.cn/api/v1/studio/AI-ModelScope/stable-diffusion-3-medium/gradio/queue/data?session_hash=oxm1sjlvnr&studio_token=2aebd9a6-3f8e-4907-ba0e-1ac759249c24"
+        async with client.stream("GET", event_stream_url, headers=headers) as event_stream_response:
+            async for line in event_stream_response.aiter_text():
+                # Check if line contains "url"
+                url_match = re.search(r'"url":"([^"]+)"', line)
+                if url_match:
+                    url = url_match.group(1)
+                    async with httpx.AsyncClient(timeout=40) as client:
+                        r1 = await client.get(url)
+                    path = "data/pictures/cache/" + random_str() + ".png"
+                    with open(path, "wb") as f:
+                        f.write(r1.content)
+                    #print(f"Received URL: {url}")
+                    return path
+                #print(line.strip())
 # 运行 Flask 应用
 if __name__ == "__main__":
-    asyncio.run(draw6(
-        "a 2D girlish, with only 1 character in the picture.Wearing a choker.White and light blue long hair, exquisite and cute hairstyle，Tips of hair are light blue.Cute face，Loving gaze，Light purple eyes，must leave a small amount of blank space between the top of the charater's head and the top of the picture.Wearing a exquisite white dress.Cute playful action.a character portrait by Muqi, pixiv contest winner, rococo,booru, official art，drawing the character as avatar。"))
+    asyncio.run(modelScopeDrawer("a 2D girlish","nsfw"))
+
