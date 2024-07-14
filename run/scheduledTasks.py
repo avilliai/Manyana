@@ -226,8 +226,8 @@ def main(bot,proxy,nasa_api,logger):
                     if event.group.id not in la:
                         la.append(event.group.id)
                         data[key]["groups"]=la
-                        with open('data/scheduledTasks.yaml', 'w', encoding="utf-8") as file:
-                            yaml.dump(data, file, allow_unicode=True)
+                with open('data/scheduledTasks.yaml', 'w', encoding="utf-8") as file:
+                    yaml.dump(data, file, allow_unicode=True)
                 await bot.send(event,"添加所有订阅成功")
             return
         la=data.get(key).get("groups")
@@ -271,10 +271,11 @@ def main(bot,proxy,nasa_api,logger):
             if str(event.message_chain)=="/取消 所有订阅":
                 for key in keys:
                     la=data.get(key).get("groups")
-                    la.remove(event.group.id)
-                    data[key]["groups"]=la
-                    with open('data/scheduledTasks.yaml', 'w', encoding="utf-8") as file:
-                        yaml.dump(data, file, allow_unicode=True)
+                    if event.group.id in la:
+                        la.remove(event.group.id)
+                        data[key]["groups"]=la
+                with open('data/scheduledTasks.yaml', 'w', encoding="utf-8") as file:
+                    yaml.dump(data, file, allow_unicode=True)
                 await bot.send(event,"取消所有订阅成功")
             return
         la=data.get(key).get("groups")
