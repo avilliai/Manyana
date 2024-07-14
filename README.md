@@ -13,7 +13,7 @@
 - [arona api](https://doc.arona.diyigemt.com/)  提供blueArchive数据支持
 - [star-rail-atlas](https://gitee.com/Nwflower/star-rail-atlas)  数据支持
 - [Yiri-mirai](https://github.com/YiriMiraiProject/YiriMirai)  很好的python sdk
-- 如果遇到使用问题，请在QQ群628763673反馈
+- 如果遇到使用问题，请在QQ群623265372反馈
 
 
 <div align="center">
@@ -33,7 +33,7 @@
 ## 方法1：搭建工具部署(推荐)
 **如果你觉得自己从零开始搭建bot比较困难，请使用此方案**
 - 从[release](https://github.com/avilliai/Manyana/releases)下载LAUNCHER-all-requirements.rar并解压
-  - 如果下载过慢，你也可以从Q群628763673获得这个压缩包
+  - 如果下载过慢，你也可以从Q群623265372获得这个压缩包
 - 运行launcher.exe<br>
 - 点击主界面 克隆仓库(没有自己的onebot实现的，需要额外安装onebot文件夹下的两个文件，先qq后llob_install)
 - 关闭launcher，重启launcher
@@ -73,7 +73,7 @@ git clone --depth 1 https://www.gitlink.org.cn/lux-QAQ/Manyana
 Manyana/config.json的填写示例如下。
 {"botName": "机器人名字", "botQQ": "机器人QQ", "master": "你的QQ", "mainGroup": "你自己群的群号","vertify_key": "这里写你http-api的key,尖括号不用带", "port": "httpapi的ws运行端口"}
 下面是一个config.json填写实例，如使用整合包，不要修改后两项
-{"botName": "Manyana", "botQQ": "1283992481", "master": "1840094972","mainGroup": "628763673", "vertify_key": "1234567890", "port": "23456"}
+{"botName": "Manyana", "botQQ": "1283992481", "master": "1840094972","mainGroup": "623265372", "vertify_key": "1234567890", "port": "23456"}
 ```
 ---
 # 🍩功能
