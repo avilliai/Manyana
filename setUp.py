@@ -59,7 +59,13 @@ logger = newLogger()
 
 def main():
     print(
-        "请输入要执行的指令：\n1 绑定到远程仓库(如果通过源码包安装请执行)\n2 更新bot代码\n3 清理无用数据(如缓存图片)\n4 导出群信息，制作一个chatLearning可用的配置文件\n5 其他素材下载(可选)\n6 安装vits功能对应依赖")
+        """请输入要执行的指令：
+        1 绑定到远程仓库(如果通过源码包安装请执行)
+        2 更新bot代码
+        3 清理无用数据(如缓存图片)
+        4 导出群信息，制作一个chatLearning可用的配置文件
+        5 其他素材下载(可选)
+        6 安装vits功能对应依赖""")
 
     a = input("输入要执行的数字")
     if a == "1":
@@ -248,17 +254,17 @@ def updaat(f=False, jump=False, source=None):
     if source == "1":
         # os.system("git pull https://github.com/avilliai/Manyana.git")
         # 启动进程
-        p = subprocess.Popen([f'{git_path}', 'pull', 'https://github.com/avilliai/Manyana.git'], stdout=subprocess.PIPE,
+        p = subprocess.Popen([git_path, 'pull', 'https://github.com/avilliai/Manyana.git'], stdout=subprocess.PIPE,
                              stderr=subprocess.PIPE)
     elif source == "2":
-        p = subprocess.Popen([f'{git_path}', 'pull', 'https://github.moeyy.xyz/https://github.com/avilliai/Manyana'],
+        p = subprocess.Popen([git_path, 'pull', 'https://github.moeyy.xyz/https://github.com/avilliai/Manyana'],
                              stdout=subprocess.PIPE,
                              stderr=subprocess.PIPE)
     elif source == "3":
-        p = subprocess.Popen([f'{git_path}', 'pull', 'https://mirror.ghproxy.com/https://github.com/avilliai/Manyana'],
+        p = subprocess.Popen([git_path, 'pull', 'https://mirror.ghproxy.com/https://github.com/avilliai/Manyana'],
                              stdout=subprocess.PIPE, stderr=subprocess.PIPE)
     elif source == "4":
-        p = subprocess.Popen([f'{git_path}', 'pull', 'https://www.gitlink.org.cn/lux-QAQ/Manyana'],
+        p = subprocess.Popen([git_path, 'pull', 'https://www.gitlink.org.cn/lux-QAQ/Manyana'],
                              stdout=subprocess.PIPE, stderr=subprocess.PIPE)
     else:
         logger.error("无效输入，重新执行")
