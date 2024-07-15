@@ -124,9 +124,9 @@ async def modelReply(senderName, senderId, text, modelHere=modelDefault, trustUs
                                     botName).replace("【用户】", "我")
         except:
             if checkIfRepFirstTime:
-                return "模型不可用，请发送 可用角色模板 并重新设定模型", False
+                return "模型不可用，请联系master重新设定模型", False
             else:
-                return "模型不可用，请发送 可用角色模板 并重新设定模型"
+                return "模型不可用，请联系master重新设定模型"
     try:
         loop = asyncio.get_event_loop()
 
@@ -254,9 +254,9 @@ async def modelReply(senderName, senderId, text, modelHere=modelDefault, trustUs
         except Exception as e:
             logger.error("清理用户prompt出错")
         if checkIfRepFirstTime:
-            return "出错，请重试\n或发送 \n@bot 可用角色模板\n 以更换其他模型", False
+            return "出错，请重试\n或联系master更换默认模型", False
         else:
-            return "出错，请重试\n或发送 \n@bot 可用角色模板\n 以更换其他模型"
+            return "出错，请重试\n或联系master更换默认模型"
 
 
 async def clearsinglePrompt(senderid):
