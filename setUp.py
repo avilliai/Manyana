@@ -3,7 +3,7 @@ import logging
 import os
 import shutil
 import subprocess
-
+import sys
 import colorlog
 
 current_dir = os.getcwd()
@@ -23,13 +23,11 @@ if os.path.exists(custom_python_path):
     python_path = custom_python_path
 else:
     python_path = "python"
-custom_pip_path = os.path.join(parent_dir, "environments", "Python39", "Scripts", "pip.exe")
+custom_pip_path = os.path.join(parent_dir, "environments", "Python39", "Scripts","pip.exe")
 if os.path.exists(custom_pip_path):
     pip_path = custom_pip_path
 else:
     pip_path = "pip"
-
-
 def newLogger():
     # 创建一个logger对象
     logger = logging.getLogger("villia")
@@ -53,10 +51,7 @@ def newLogger():
     logger.addHandler(console_handler)
     return logger
 
-
 logger = newLogger()
-
-
 def main():
     print(
         """请输入要执行的指令：
@@ -66,7 +61,6 @@ def main():
         4 导出群信息，制作一个chatLearning可用的配置文件
         5 其他素材下载(可选)
         6 安装vits功能对应依赖""")
-
     a = input("输入要执行的数字")
     if a == "1":
         os.system(f"{git_path} init")
@@ -160,7 +154,7 @@ def main():
         with open("config.clc", "w", encoding="utf_8_sig", newline='\n') as fp:
             fp.write(ja)
         print("完毕，请用config.clc覆盖chatLearning文件夹下同名文件")
-    elif a == "5":
+    elif a=="5":
         logger.info("图片素材下载/更新\n输入要执行的指令：\n1 下载/更新星穹铁道资源")
         orderP = input("在这里输入指令：")
         if orderP == "1":
@@ -177,8 +171,6 @@ def main():
         os.system(f"{custom_pip_path} install -r vits/vitsRequirements.txt")
     else:
         print("结束")
-
-
 def updaat(f=False, jump=False, source=None):
     if not jump:
         logger.warning("更新python库，按1跳过，如果更新后启动失败，请回来执行此步骤。")
@@ -197,17 +189,17 @@ def updaat(f=False, jump=False, source=None):
     if source == "1":
         # os.system("git pull https://github.com/avilliai/Manyana.git")
         # 启动进程
-        p = subprocess.Popen([git_path, 'pull', 'https://github.com/avilliai/Manyana.git'], stdout=subprocess.PIPE,
+        p = subprocess.Popen([f'{git_path}', 'pull', 'https://github.com/avilliai/Manyana.git'], stdout=subprocess.PIPE,
                              stderr=subprocess.PIPE)
     elif source == "2":
-        p = subprocess.Popen([git_path, 'pull', 'https://github.moeyy.xyz/https://github.com/avilliai/Manyana'],
+        p = subprocess.Popen([f'{git_path}', 'pull', 'https://github.moeyy.xyz/https://github.com/avilliai/Manyana'],
                              stdout=subprocess.PIPE,
                              stderr=subprocess.PIPE)
     elif source == "3":
-        p = subprocess.Popen([git_path, 'pull', 'https://mirror.ghproxy.com/https://github.com/avilliai/Manyana'],
+        p = subprocess.Popen([f'{git_path}', 'pull', 'https://mirror.ghproxy.com/https://github.com/avilliai/Manyana'],
                              stdout=subprocess.PIPE, stderr=subprocess.PIPE)
     elif source == "4":
-        p = subprocess.Popen([git_path, 'pull', 'https://www.gitlink.org.cn/lux-QAQ/Manyana'],
+        p = subprocess.Popen([f'{git_path}', 'pull', 'https://www.gitlink.org.cn/lux-QAQ/Manyana'],
                              stdout=subprocess.PIPE, stderr=subprocess.PIPE)
     else:
         logger.error("无效输入，重新执行")
