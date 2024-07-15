@@ -51,7 +51,7 @@ def importDict(xlsxPath='data/autoReply/lexicon/public.xlsx'):
                     key = i.get('key')
                     value = i.get('value')
 
-                    if (key in newDict):
+                    if key in newDict:
                         replyValue = newDict.get(key)
                         if value in replyValue:
                             pass

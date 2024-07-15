@@ -98,7 +98,7 @@ def main(bot, logger):
 
     @bot.on(GroupMessage)
     async def aronad(event: GroupMessage):
-        if str(event.message_chain) == ("/arona"):
+        if str(event.message_chain) == "/arona":
             url = "杂图"
             logger.info("查询攻略：" + url)
             try:

@@ -135,7 +135,7 @@ def main(bot, master, logger):
             try:
                 sp1 = await fetch_FishTTS_ModelId(proxy, FishTTSAuthorization,
                                                   str(event.message_chain).split("日文")[0])
-                if sp1 == None or sp1 == "":
+                if sp1 is None or sp1 == "":
                     logger.warning("未能在FishTTS中找到对应角色")
                     return
                 else:

@@ -356,7 +356,7 @@ def main(bot, config, sizhiKey, logger):
         global botName, likeindex, temp, sizhi, transLateData, trustuser, chatGLMapikeys, chatGLMsingelUserKey
         if True:
             if At(bot.qq) in event.message_chain:
-                if replyModel != None and (
+                if replyModel is not None and (
                         (trustglmReply == True and str(event.sender.id) in trustUser) or glmReply == True):
                     return
                 elif event.group.id in chatGLMapikeys:
@@ -482,14 +482,14 @@ def main(bot, config, sizhiKey, logger):
                                 if int(best_matches[0][1]) < 50:
                                     logger.warning("匹配相似度过低，不发送")
                                     return
-                                replyssssss = random.choice(superDict.get("public").get(str((best_matches)[0][0])))
+                                replyssssss = random.choice(superDict.get("public").get(str(best_matches[0][0])))
                 elif At(bot.qq) in event.message_chain:
                     best_matches = process.extractBests(getStr, superDict.get("public").keys(), limit=3)
                     logger.info("获取匹配结果：key:" + getStr + "|" + str(best_matches))
                     if int(best_matches[0][1]) < 50:
                         logger.warning("匹配相似度过低，不发送")
                         return
-                    replyssssss = random.choice(superDict.get("public").get(str((best_matches)[0][0])))
+                    replyssssss = random.choice(superDict.get("public").get(str(best_matches[0][0])))
                 else:
                     return
 
@@ -649,7 +649,7 @@ def main(bot, config, sizhiKey, logger):
                     "哥哥", str(event.sender.nickname))
             else:
                 setName = userdict.get(str(event.sender.id)).get("userName")
-                if setName == None:
+                if setName is None:
                     setName = event.sender.nickname
                 replyssssss = replyssssss.replace("name", setName).replace("{name}", setName).replace("哥哥", setName)
 

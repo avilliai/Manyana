@@ -31,15 +31,14 @@ def main(bot, logger):
     global redraw
     redraw = {}
 
-
     @bot.on(GroupMessage)
-    async def msDrawer(event:GroupMessage):
+    async def msDrawer(event: GroupMessage):
         if str(event.message_chain).startswith("画 ") and aiDrawController.get("modelscopeSD"):
             tag = str(event.message_chain).replace("画 ", "")
             logger.info("发起modelscope SDai绘画请求，prompt:" + tag)
             try:
-                p=await modelScopeDrawer(tag, negative_prompt)
-                await bot.send(event,Image(path=p),True)
+                p = await modelScopeDrawer(tag, negative_prompt)
+                await bot.send(event, Image(path=p), True)
             except Exception as e:
                 logger.error(e)
                 logger.error("modelscope Draw出错")
@@ -48,8 +47,8 @@ def main(bot, logger):
     async def AiSdDraw(event: GroupMessage):
         if str(event.message_chain).startswith("画 ") and aiDrawController.get("sd接口"):
             tag = str(event.message_chain).replace("画 ", "")
-            path = "data/pictures/cache/" + random_str() + ".png"
-            logger.info("发起SDai绘画请求，path:" + path + "|prompt:" + tag)
+            path = f"data/pictures/cache/{random_str()}.png"
+            logger.info(f"发起SDai绘画请求，path:{path}|prompt:{tag}")
             try:
                 # 没啥好审的，controller直接自个写了。
                 p = await SdDraw(tag + positive_prompt, negative_prompt, path, sdUrl)

@@ -221,7 +221,7 @@ async def modelReply(senderName, senderId, text, modelHere=modelDefault, trustUs
             #print(r,type(r))
             rep = {"role": "assistant", "content": r[0].replace(r"\n", "\n")}
         elif type(allcharacters.get(modelHere)) == dict:
-            if (str(senderId) not in trustUser and trustglmReply) and trustUser != None:
+            if (str(senderId) not in trustUser and trustglmReply) and trustUser is not None:
                 if checkIfRepFirstTime:
                     return "无模型使用权限！", False
                 else:

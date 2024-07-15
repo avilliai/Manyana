@@ -52,8 +52,7 @@ def main(bot, master, botName, logger):
             global sender
             global times
 
-            temp = {}
-            temp["step"] = 0
+            temp = {"step": 0}
             sender[str(event.sender.id)] = temp
 
             await bot.send(event, "请依次发送留言和从平台分享的音乐卡片(推荐网易云).....")
@@ -66,7 +65,7 @@ def main(bot, master, botName, logger):
         global message
         if event.message_chain.count(MusicShare):
             logger.info("点歌链接收到")
-        if (str(event.sender.id) in sender.keys()):
+        if str(event.sender.id) in sender.keys():
             logger.info("senderOk")
         try:
             if sender.get(str(event.sender.id)).get("step") == 1:
@@ -89,18 +88,11 @@ def main(bot, master, botName, logger):
             print(share[0].picture_url)
             print(share[0].summary)'''
             logger.info("构建数据")
-            valuea = {}
-            valuea["kind"] = share[0].kind
-            valuea["title"] = share[0].title
-            valuea["type"] = share[0].type
-            valuea["brief"] = share[0].brief
-            valuea["jump_url"] = share[0].jump_url
-            valuea["music_url"] = share[0].music_url
-            valuea["picture_url"] = share[0].picture_url
-            valuea["summary"] = share[0].summary
-            valuea["message"] = sender.get(str(event.sender.id)).get("message")
-            valuea["user"] = str(event.sender.nickname)
-            valuea["userid"] = str(event.sender.id)
+            valuea = {"kind": share[0].kind, "title": share[0].title, "type": share[0].type, "brief": share[0].brief,
+                      "jump_url": share[0].jump_url, "music_url": share[0].music_url,
+                      "picture_url": share[0].picture_url, "summary": share[0].summary,
+                      "message": sender.get(str(event.sender.id)).get("message"), "user": str(event.sender.nickname),
+                      "userid": str(event.sender.id)}
 
             today = datetime.date.today()
 
