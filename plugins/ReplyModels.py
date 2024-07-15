@@ -111,7 +111,13 @@ def Gemma(prompt,bot_info):
     url=f"https://api.alcex.cn/API/Gemma/?messages={prompt}"
     r = requests.get(url, timeout=20).json()
     return {"role": "assistant", "content": r["choices"][0]["message"]["content"]}
-
+def binggpt4(prompt,bot_info):
+    prompt.insert(0, {"role": "user", "content": bot_info})
+    prompt.insert(1, {"role": "assistant", "content": "好的，已了解您的需求~我会扮演好您设定的角色。"})
+    prompt = str(prompt).replace("\"", "%22").replace("\'", "%22")
+    url=f"https://api.alcex.cn/API/gpt-4/?messages={prompt}"
+    r = requests.get(url, timeout=20).json()
+    return {"role": "assistant", "content": r["choices"][0]["message"]["content"]}
 def grop(prompt, bot_info):
     prompt.insert(0, {"role": "user", "content": bot_info})
     prompt.insert(1, {"role": "assistant", "content": "好的，已了解您的需求~我会扮演好您设定的角色。"})
@@ -246,7 +252,7 @@ def freeGemini(prompt, bot_info):
 
 
 if __name__ == '__main__':
-    k = Gemma([{"role": "user", "content": "谁赢得了2020年的世界职业棒球大赛?"},
+    k = binggpt4([{"role": "user", "content": "谁赢得了2020年的世界职业棒球大赛?"},
                  {"role": "assistant", "content": "洛杉矶道奇队在2020年赢得了世界职业棒球大赛冠军."},
                  {"role": "user", "content": "它在哪里举办的?"}], "你是一只猫娘")
     print(k)
