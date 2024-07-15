@@ -10,9 +10,8 @@ nasa_api: HSxxxxxxx              #nasa相关天文api 从https://api.nasa.gov/in
 chatGLM: 69xxxxxxx               #chatGLM的apiKey，从https://open.bigmodel.cn/获取
 gemini:                          #谷歌的gemini api，免费的，有几个填几个，在https://ai.google.dev/tutorials/setup?hl=zh-cn获取，需要配置proxy或GeminiRevProxy，否则无法使用
   - AIxxxxxxxxxx
-openai-keys:                     #openai官方的apikey，或免费(不推荐，已经加了限制。random模式够你用了)从https://github.com/chatanywhere/GPT_API_free?tab=readme-ov-file申请
+openai-keys:                     #openai官方的apikey
   - sk-Mxxxxxxxxxxx
-gpt3.5-dev: false                #如果是从https://github.com/chatanywhere/GPT_API_free?tab=readme-ov-file申请openai-apikey，请打开此开关，这样就无需代理即可使用
 bing-image-creator:              #bing的ai绘画，参考https://github.com/avilliai/Manyana/issues/8
   _U: ""
   KievRPSSecAuth: ""
@@ -24,4 +23,4 @@ sdUrl: ""                        #你自己搭建的sd，地址，示例http://1
 #下面的不建议你去折腾哈
 modelscopeCookie: ''            #modescopeTTS增加反爬虫，默认留空用我的，如不能用了自行抓取cookie，查看https://github.com/avilliai/Manyana/issues/7
 bert_colab: https://mess-addressed-openings-exposed.trycloudflare.com/synthesize        #新版本Manyana无需配置此功能，语音合成选modelscopeTTS模式可直接使用。但如果你喜欢折腾：bert_vits_colab部署：https://colab.research.google.com/drive/1n8lI6pOiDtli2zC5fL9PZ9TZqbOafqma?usp=sharing 请注意，使用此功能必须配置上面的proxy项
-cozi: https://avillia.zeabur.app/v1/chat/completions # https://github.com/avilliai/Manyana/issues/4
+cozi: ""                        #已不推荐，https://github.com/avilliai/Manyana/issues/4

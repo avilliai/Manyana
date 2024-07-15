@@ -9,7 +9,7 @@ from mirai import logger
 
 from plugins.RandomStr import random_str
 from plugins.ReplyModels import gptOfficial, gptUnofficial, kimi, qingyan, lingyi, stepAI, qwen, gptvvvv, grop, \
-    gpt4hahaha, anotherGPT35, chatGLM, relolimigpt2, xinghuo, Gemma
+    gpt4hahaha, anotherGPT35, chatGLM, relolimigpt2, xinghuo, Gemma, binggpt4
 from plugins.cozeBot import cozeBotRep
 from plugins.googleGemini import geminirep
 from plugins.translater import translate
@@ -18,7 +18,6 @@ from plugins.vitsGenerate import voiceGenerate, superVG
 with open('config/api.yaml', 'r', encoding='utf-8') as f:
     resulttr = yaml.load(f.read(), Loader=yaml.FullLoader)
 CoziUrl = resulttr.get("cozi")
-gptdev = resulttr.get("gpt3.5-dev")
 geminiapikey = resulttr.get("gemini")
 proxy = resulttr.get("proxy")
 
@@ -153,7 +152,6 @@ async def modelReply(senderName, senderId, text, modelHere=modelDefault, trustUs
             tasks = []
             logger.warning("请求所有模型接口")
             # 将所有模型的执行代码包装成异步任务，并添加到任务列表
-            # tasks.append(loop_run_in_executor(loop, gptUnofficial if gptdev else gptOfficial, prompt1, gptkeys, proxy,bot_in))
             tasks.append(loop_run_in_executor(loop, cozeBotRep, CoziUrl, prompt1, proxy))
             tasks.append(loop_run_in_executor(loop, kimi, prompt1, bot_in))
             tasks.append(loop_run_in_executor(loop, qingyan, prompt1, bot_in))
@@ -211,11 +209,10 @@ async def modelReply(senderName, senderId, text, modelHere=modelDefault, trustUs
                     logger.info(f"random模型选择结果：{priority}: {rep}")
                     break
         if modelHere == "gpt3.5":
-            if gptdev:
-                rep = await loop.run_in_executor(None, gptUnofficial, prompt1, gptkeys, proxy, bot_in)
-            else:
-                rep = await loop.run_in_executor(None, gptOfficial, prompt1, gptkeys, proxy, bot_in)
 
+            rep = await loop.run_in_executor(None, gptOfficial, prompt1, gptkeys, proxy, bot_in)
+        elif modelHere=="binggpt4":
+            rep=await loop_run_in_executor(None,binggpt4,prompt1,bot_in)
         elif modelHere == "Gemini":
             r = await geminirep(ak=random.choice(geminiapikey), messages=prompt1, bot_info=bot_in,
                                 GeminiRevProxy=GeminiRevProxy),
