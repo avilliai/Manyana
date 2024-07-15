@@ -147,7 +147,6 @@ async def modelReply(senderName, senderId, text, modelHere=modelDefault, trustUs
                     logger.error("初始化anotherGPT3.5失败")
             firstRep = True
         logger.info(f"{modelHere}  bot 接受提问：" + text)
-
         if modelHere == "random":
             tasks = []
             logger.warning("请求所有模型接口")
@@ -208,11 +207,14 @@ async def modelReply(senderName, senderId, text, modelHere=modelDefault, trustUs
                     rep = reps.get(priority)
                     logger.info(f"random模型选择结果：{priority}: {rep}")
                     break
-        if modelHere == "gpt3.5":
+        elif modelHere == "gpt3.5":
 
             rep = await loop.run_in_executor(None, gptOfficial, prompt1, gptkeys, proxy, bot_in)
         elif modelHere=="binggpt4":
+            #print(1)
             rep=await loop_run_in_executor(None,binggpt4,prompt1,bot_in)
+            if type(rep)==list:
+                return "模型不可用，请更换模型。"
         elif modelHere == "Gemini":
             r = await geminirep(ak=random.choice(geminiapikey), messages=prompt1, bot_info=bot_in,
                                 GeminiRevProxy=GeminiRevProxy),
@@ -238,6 +240,7 @@ async def modelReply(senderName, senderId, text, modelHere=modelDefault, trustUs
         with open('data/chatGLMData.yaml', 'w', encoding="utf-8") as file:
             yaml.dump(chatGLMData, file, allow_unicode=True)
         #print(rep.get('content'),type(rep.get('content')))
+        print(rep,type(rep))
         logger.info(f"{modelHere} bot 回复：" + rep.get('content'))
         if checkIfRepFirstTime:
             return rep.get("content"), firstRep
