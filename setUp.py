@@ -3,7 +3,6 @@ import logging
 import os
 import shutil
 import subprocess
-import sys
 import colorlog
 import sys
 
