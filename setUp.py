@@ -78,71 +78,14 @@ def main():
         updaat()
     elif a == "3":
         print("执行清理缓存操作")
-        ls1 = os.listdir("data/pictures/avatars")
-        for i in ls1:
-            try:
-                os.remove("data/pictures/avatars/" + i)
-            except:
-                continue
-        print("清理头像缓存完成")
-        ls1 = os.listdir("data/voices")
-        for i in ls1:
-            try:
-                os.remove("data/voices/" + i)
-            except:
-                continue
-        ls1 = os.listdir("data/music/musicCache")
-        for i in ls1:
-            try:
-                os.remove("data/music/musicCache/" + i)
-            except:
-                continue
-        print("清理音频缓存完成")
-        ls1 = os.listdir("data/pictures/cache")
-        for i in ls1:
-            try:
-                os.remove("data/pictures/cache/" + i)
-            except:
-                continue
-
-        ls1 = os.listdir("data/pictures/wallpaper")
-        for i in ls1:
-            try:
-                os.remove("data/pictures/wallpaper/" + i)
-            except:
-                continue
-        ls1 = os.listdir("data/blueArchive/arona")
-        for i in ls1:
-            try:
-                os.remove("data/blueArchive/arona/" + i)
-            except:
-                continue
-        ls1 = os.listdir("data/blueArchive/cache")
-        for i in ls1:
-            try:
-                os.remove("data/blueArchive/cache/" + i)
-            except:
-                continue
-        ls1 = os.listdir("data/Elo")
-        for i in ls1:
-            try:
-                os.remove("data/Elo/" + i)
-            except:
-                continue
-        ls1 = os.listdir("data/arknights")
-        for i in ls1:
-            try:
-                os.remove("data/arknights/" + i)
-            except:
-                continue
-
-        ls1 = os.listdir("data/backrooms")
-        for i in ls1:
-            try:
-                os.remove("data/backrooms/" + i)
-            except:
-                continue
-        print("清理本地图库缓存完成")
+        aimdir=["data/pictures/avatars","data/voices","data/music/musicCache","data/pictures/cache","data/pictures/wallpaper","data/blueArchive/arona","data/blueArchive/cache","data/Elo","data/arknights","data/backrooms"]
+        for ib in aimdir:
+            ls1 = os.listdir(ib)
+            for i in ls1:
+                try:
+                    os.remove(f"{ib}/" + i)
+                except:
+                    continue
         print("清理缓存完成")
     elif a == "4":
         import json
@@ -238,7 +181,7 @@ def main():
 
 def updaat(f=False, jump=False, source=None):
     if not jump:
-        logger.warning("更新python库，按1跳过，如果最近没有更新过，不建议跳过，可能错过某些更新。")
+        logger.warning("更新python库，按1跳过，如果更新后启动失败，请回来执行此步骤。")
         if input("在这里输入:") != "1":
             logger.warning("即将开始更新依赖库，请确保已关闭代理，否则无法安装依赖库")
             input("按任意键继续：")
