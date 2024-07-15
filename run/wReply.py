@@ -95,9 +95,8 @@ def main(bot, config, sizhiKey, logger):
         except:
             logger.error("备用文件损坏，词库功能失效")
             return
-    file = open('config/superDict.txt', 'r')
-    jss = file.read()
-    file.close()
+    with open('config/superDict.txt', 'r') as file:
+        jss = file.read()
 
     global superDict
     superDict = json.loads(jss)
@@ -167,7 +166,7 @@ def main(bot, config, sizhiKey, logger):
     async def autoCreatNewLexion(event: GroupMessage):
         global osa
         global superDict
-        if AutoCreatLexicon == True and str(event.group.id) + ".xlsx" not in osa:
+        if AutoCreatLexicon and str(event.group.id) + ".xlsx" not in osa:
             await bot.send(event, "正在创建本群专有词库")
             shutil.copyfile('data/autoReply/lexicon/init.xlsx',
                             'data/autoReply/lexicon/' + str(event.group.id) + ".xlsx")
@@ -301,9 +300,9 @@ def main(bot, config, sizhiKey, logger):
                             except Exception as e:
                                 logger.error(e)
                                 ranpath = random_str()
-                                path = 'data/autoReply/voiceReply/' + ranpath + '.wav'
+                                path = f'data/autoReply/voiceReply/{ranpath}.wav'
                                 text = await translate(str(event.message_chain)[2:])
-                                tex = '[JA]' + text + '[JA]'
+                                tex = f'[JA]{text}[JA]'
                                 await voiceGenerate(
                                     {"text": tex, "out": path, "speaker": speaker, "modelSelect": modelSelect})
                                 value = ranpath + '.wav'
@@ -356,8 +355,8 @@ def main(bot, config, sizhiKey, logger):
         global botName, likeindex, temp, sizhi, transLateData, trustuser, chatGLMapikeys, chatGLMsingelUserKey
         if True:
             if At(bot.qq) in event.message_chain:
-                if replyModel != None and (
-                        (trustglmReply == True and str(event.sender.id) in trustUser) or glmReply == True):
+                if replyModel is not None and (
+                        (trustglmReply and str(event.sender.id) in trustUser) or glmReply):
                     return
                 elif event.group.id in chatGLMapikeys:
                     return
@@ -377,7 +376,7 @@ def main(bot, config, sizhiKey, logger):
                 else:
                     getStr = str(event.message_chain)
 
-            if sizhi == True and At(bot.qq) in event.message_chain:
+            if sizhi and At(bot.qq) in event.message_chain:
 
                 if random.randint(0, 100) < colorfulCharacter:
                     logger.info("彩色小人，启动！")
@@ -482,14 +481,14 @@ def main(bot, config, sizhiKey, logger):
                                 if int(best_matches[0][1]) < 50:
                                     logger.warning("匹配相似度过低，不发送")
                                     return
-                                replyssssss = random.choice(superDict.get("public").get(str((best_matches)[0][0])))
+                                replyssssss = random.choice(superDict.get("public").get(str(best_matches[0][0])))
                 elif At(bot.qq) in event.message_chain:
                     best_matches = process.extractBests(getStr, superDict.get("public").keys(), limit=3)
                     logger.info("获取匹配结果：key:" + getStr + "|" + str(best_matches))
                     if int(best_matches[0][1]) < 50:
                         logger.warning("匹配相似度过低，不发送")
                         return
-                    replyssssss = random.choice(superDict.get("public").get(str((best_matches)[0][0])))
+                    replyssssss = random.choice(superDict.get("public").get(str(best_matches[0][0])))
                 else:
                     return
 
@@ -649,7 +648,7 @@ def main(bot, config, sizhiKey, logger):
                     "哥哥", str(event.sender.nickname))
             else:
                 setName = userdict.get(str(event.sender.id)).get("userName")
-                if setName == None:
+                if setName is None:
                     setName = event.sender.nickname
                 replyssssss = replyssssss.replace("name", setName).replace("{name}", setName).replace("哥哥", setName)
 

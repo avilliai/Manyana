@@ -6,22 +6,20 @@ from mirai.models import App
 
 from plugins.arksign import arkSign
 
+u = []
+
 
 def main(bot, logger):
     logger.info("卡片构建已启用")
-    global u
-    u = []
 
     @bot.on(GroupMessage)
     async def arkbegin(event: GroupMessage):
-        global u
         if str(event.message_chain) == "转卡片":
             await bot.send(event, "请发送图片(腾子限制，bot有可能获取不到你的图片)")
             u.append(event.sender.id)
 
     @bot.on(GroupMessage)
     async def arkkapian(event: GroupMessage):
-        global u
         if event.message_chain.count(Image):
             if event.sender.id not in u:
                 return

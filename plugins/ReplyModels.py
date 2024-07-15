@@ -176,7 +176,7 @@ def chatGLM(api_key, bot_info, prompt):
 
 
 async def yubanGPTReply(text, id=None):
-    if id != None:
+    if id is not None:
         url = "https://ybapi.cn/API/gpt.php?type=1&msg=" + text + "&id=" + id
     else:
         url = "https://ybapi.cn/API/gpt.php?type=1&msg=" + text
@@ -186,7 +186,7 @@ async def yubanGPTReply(text, id=None):
 
 
 async def luoyueGPTReply(text, id=None):
-    if id != None:
+    if id is not None:
         url = "https://api.vkeys.cn/API/gpt?msg=" + text + "&session_id=" + id
     else:
         url = "https://api.vkeys.cn/API/gpt?msg=" + text

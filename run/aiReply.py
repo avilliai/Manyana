@@ -148,7 +148,7 @@ def main(bot, master, logger):
                 if text == saa or text.startswith(saa):
                     logger.warning("与屏蔽词匹配，不回复")
                     return
-        if privateGlmReply == True or (trustglmReply == True and str(event.sender.id) in trustUser):
+        if privateGlmReply or (trustglmReply and str(event.sender.id) in trustUser):
             pass
         else:
             return
@@ -291,8 +291,8 @@ def main(bot, master, logger):
                                logger):
                     return
             except Exception as e:
-                logger.error("无法运行屏蔽词审核，请检查noResponse.yaml配置格式")
-        if (At(bot.qq) in event.message_chain) and (glmReply == True or (trustglmReply == True and str(
+                logger.error(f"无法运行屏蔽词审核，请检查noResponse.yaml配置格式--{e}")
+        if (At(bot.qq) in event.message_chain) and (glmReply or (trustglmReply and str(
                 event.sender.id) in trustUser) or event.group.id in trustG or event.group.id == int(mainGroup)):
             logger.info("ai聊天启动")
         else:

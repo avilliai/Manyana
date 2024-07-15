@@ -192,7 +192,7 @@ def main(bot, logger):
                 "r18", "")
             match1 = re.search(pattern1, text1)
             if match1:
-                if allowPic == False:
+                if not allowPic:
                     await bot.send(event, "发图功能已关闭，可使用 5图 指令使用备用发图功能")
                     return
                 logger.info("提取图片关键字。 数量: " + str(match1.group(1)) + " 关键字: " + match1.group(2))

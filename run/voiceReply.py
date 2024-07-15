@@ -53,14 +53,13 @@ def main(bot, master, logger):
     # modelSelect=['voiceModel/selina/selina.pth','voiceModel/selina/config.json']
     # print('------\n'+str(CHOISE))
 
-
     @bot.on(GroupMessage)
     async def characterSpeake(event: GroupMessage):
-        if "说" in str(event.message_chain) and str(event.message_chain).startswith("说") == False:
+        if "说" in str(event.message_chain) and not str(event.message_chain).startswith("说"):
 
             text = str(event.message_chain)[len(str(event.message_chain).split("说")[0]) + 1:]
-            try:
-                if str(event.message_chain).split("说")[0] in characters:
+
+            if str(event.message_chain).split("说")[0] in characters:
                     speaker = str(event.message_chain).split("说")[0]
                     text = await translate(text)
                     path = 'data/voices/' + random_str() + '.wav'
@@ -70,8 +69,7 @@ def main(bot, master, logger):
                             'modelSelect': characters.get(speaker)[1]}
                     await voiceGenerate(data)
                     await bot.send(event, Voice(path=path))
-            except:
-                pass #linux用户的幺蛾子
+
             if str(event.message_chain).split("说")[0] in modelScope:
                 try:
                     data = {"speaker": str(event.message_chain).split("说")[0],
@@ -98,21 +96,17 @@ def main(bot, master, logger):
 
     @bot.on(GroupMessage)
     async def characterSpeake(event: GroupMessage):
-        try:
-            if "中文" in str(event.message_chain) and str(event.message_chain).split("中文")[0] in characters:
-                speaker = str(event.message_chain).split("中文")[0]
-                text = str(event.message_chain).split("中文")[1]
+        if "中文" in str(event.message_chain) and str(event.message_chain).split("中文")[0] in characters:
+            speaker = str(event.message_chain).split("中文")[0]
+            text = str(event.message_chain).split("中文")[1]
 
-                path = 'data/voices/' + random_str() + '.wav'
-                logger.info("语音生成_文本" + text)
-                logger.info("语音生成_模型:" + speaker + str(characters.get(speaker)[1]))
-                data = {"text": "[ZH]" + text + "[ZH]", "out": path, 'speaker': characters.get(speaker)[0],
-                        'modelSelect': characters.get(speaker)[1]}
-                await voiceGenerate(data)
-                await bot.send(event, Voice(path=path))
-        except:
-            pass
-            #奇怪报错，先catch
+            path = f'data/voices/{random_str()}.wav'
+            logger.info("语音生成_文本" + text)
+            logger.info("语音生成_模型:" + speaker + str(characters.get(speaker)[1]))
+            data = {"text": "[ZH]" + text + "[ZH]", "out": path, 'speaker': characters.get(speaker)[0],
+                    'modelSelect': characters.get(speaker)[1]}
+            await voiceGenerate(data)
+            await bot.send(event, Voice(path=path))
 
     @bot.on(GroupMessage)
     async def characterSpeake(event: GroupMessage):
@@ -121,21 +115,18 @@ def main(bot, master, logger):
             text = str(event.message_chain)[len(str(event.message_chain).split("日文")[0]) + 1:]
 
             logger.info("语音生成_文本" + text)
-            try:
-                if str(event.message_chain).split("日文")[0] in characters:
-                    path = 'data/voices/' + random_str() + '.wav'
-                    logger.info("语音生成_模型:" + speaker + str(characters.get(speaker)[1]))
-                    data = {"text": "[JA]" + text + "[JA]", "out": path, 'speaker': characters.get(speaker)[0],
-                            'modelSelect': characters.get(speaker)[1]}
-                    await voiceGenerate(data)
-                    await bot.send(event, Voice(path=path))
-            except:
-                pass
-            #同样的，linux用户幺蛾子真多😡
+            if str(event.message_chain).split("日文")[0] in characters:
+                path = f'data/voices/{random_str()}.wav'
+                logger.info("语音生成_模型:" + speaker + str(characters.get(speaker)[1]))
+                data = {"text": f"[JA]{text}[JA]", "out": path, 'speaker': characters.get(speaker)[0],
+                        'modelSelect': characters.get(speaker)[1]}
+                await voiceGenerate(data)
+                await bot.send(event, Voice(path=path))
+
             try:
                 sp1 = await fetch_FishTTS_ModelId(proxy, FishTTSAuthorization,
                                                   str(event.message_chain).split("日文")[0])
-                if sp1 == None or sp1 == "":
+                if sp1 is None or sp1 == "":
                     logger.warning("未能在FishTTS中找到对应角色")
                     return
                 else:
@@ -150,13 +141,12 @@ def main(bot, master, logger):
         if "角色" in str(event.message_chain) and At(bot.qq) in event.message_chain and "模板" not in str(
                 event.message_chain):
 
-
             try:
                 str1 = "vits可用角色如下：\n"
                 for i in characters:
                     str1 += i + " |"
             except:
-                str1=""
+                str1 = ""
             str1 += "\n\nbert_vits2可用角色如下：\n" + str(
                 ["BT", "塔菲", "阿梓", "otto", "丁真", "星瞳", "东雪莲", "嘉然", "孙笑川", "亚托克斯", "文静", "鹿鸣",
                  "奶绿", "七海", "恬豆", "科比"]) + "\n\nFishTTS可用角色请查看https://fish.audio/zh-CN/，均可通过 xx说调用。\n"

@@ -317,7 +317,7 @@ def main(bot, config, moderateKey, logger):
         global userdict
         logger.info("新的好友申请，来自" + str(event.from_id))
         if (str(event.from_id) in userdict.keys() and int(
-                userdict.get(str(event.from_id)).get("sts")) > allowFriendstimes) or autoallowFriend == True:
+                userdict.get(str(event.from_id)).get("sts")) > allowFriendstimes) or autoallowFriend:
             logger.info("有用户记录，同意")
             al = '同意'
             await bot.allow(event)
