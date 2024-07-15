@@ -95,9 +95,8 @@ def main(bot, config, sizhiKey, logger):
         except:
             logger.error("备用文件损坏，词库功能失效")
             return
-    file = open('config/superDict.txt', 'r')
-    jss = file.read()
-    file.close()
+    with open('config/superDict.txt', 'r') as file:
+        jss = file.read()
 
     global superDict
     superDict = json.loads(jss)
@@ -167,7 +166,7 @@ def main(bot, config, sizhiKey, logger):
     async def autoCreatNewLexion(event: GroupMessage):
         global osa
         global superDict
-        if AutoCreatLexicon == True and str(event.group.id) + ".xlsx" not in osa:
+        if AutoCreatLexicon and str(event.group.id) + ".xlsx" not in osa:
             await bot.send(event, "正在创建本群专有词库")
             shutil.copyfile('data/autoReply/lexicon/init.xlsx',
                             'data/autoReply/lexicon/' + str(event.group.id) + ".xlsx")
@@ -357,7 +356,7 @@ def main(bot, config, sizhiKey, logger):
         if True:
             if At(bot.qq) in event.message_chain:
                 if replyModel is not None and (
-                        (trustglmReply == True and str(event.sender.id) in trustUser) or glmReply == True):
+                        (trustglmReply and str(event.sender.id) in trustUser) or glmReply):
                     return
                 elif event.group.id in chatGLMapikeys:
                     return
@@ -377,7 +376,7 @@ def main(bot, config, sizhiKey, logger):
                 else:
                     getStr = str(event.message_chain)
 
-            if sizhi == True and At(bot.qq) in event.message_chain:
+            if sizhi and At(bot.qq) in event.message_chain:
 
                 if random.randint(0, 100) < colorfulCharacter:
                     logger.info("彩色小人，启动！")

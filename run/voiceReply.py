@@ -53,10 +53,9 @@ def main(bot, master, logger):
     # modelSelect=['voiceModel/selina/selina.pth','voiceModel/selina/config.json']
     # print('------\n'+str(CHOISE))
 
-
     @bot.on(GroupMessage)
     async def characterSpeake(event: GroupMessage):
-        if "说" in str(event.message_chain) and str(event.message_chain).startswith("说") == False:
+        if "说" in str(event.message_chain) and not str(event.message_chain).startswith("说"):
 
             text = str(event.message_chain)[len(str(event.message_chain).split("说")[0]) + 1:]
             try:
@@ -71,7 +70,7 @@ def main(bot, master, logger):
                     await voiceGenerate(data)
                     await bot.send(event, Voice(path=path))
             except:
-                pass #linux用户的幺蛾子
+                pass  #linux用户的幺蛾子
             if str(event.message_chain).split("说")[0] in modelScope:
                 try:
                     data = {"speaker": str(event.message_chain).split("说")[0],
@@ -150,13 +149,12 @@ def main(bot, master, logger):
         if "角色" in str(event.message_chain) and At(bot.qq) in event.message_chain and "模板" not in str(
                 event.message_chain):
 
-
             try:
                 str1 = "vits可用角色如下：\n"
                 for i in characters:
                     str1 += i + " |"
             except:
-                str1=""
+                str1 = ""
             str1 += "\n\nbert_vits2可用角色如下：\n" + str(
                 ["BT", "塔菲", "阿梓", "otto", "丁真", "星瞳", "东雪莲", "嘉然", "孙笑川", "亚托克斯", "文静", "鹿鸣",
                  "奶绿", "七海", "恬豆", "科比"]) + "\n\nFishTTS可用角色请查看https://fish.audio/zh-CN/，均可通过 xx说调用。\n"

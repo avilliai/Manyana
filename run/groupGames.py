@@ -4,17 +4,17 @@ import random
 import yaml
 from mirai import GroupMessage
 
+Roulette = {}
+
 
 def main(bot, logger):
     with open('config/GroupGameSettings.yaml', 'r', encoding='utf-8') as file:
         ggs = yaml.load(file, Loader=yaml.FullLoader)
     RouletteGGS = ggs.get("RouletteGame")
-    global Roulette
-    Roulette = {}
 
     @bot.on(GroupMessage)
     async def startRoulette(event: GroupMessage):
-        global Roulette
+
         if str(event.message_chain).startswith("/赌 "):
             if event.group.id in Roulette:
                 await bot.send(event, random.choice(RouletteGGS.get("prohibited")))
@@ -39,7 +39,6 @@ def main(bot, logger):
 
     @bot.on(GroupMessage)
     async def runningRoulette(event: GroupMessage):
-        global Roulette
         if str(event.message_chain) == "s" and event.group.id in Roulette:
             a = random.choice(Roulette.get(event.group.id))
             logger.info("===========")
@@ -66,7 +65,7 @@ def main(bot, logger):
 
             if len(lia) < 1 or not lia.count(1):
                 Roulette.pop(event.group.id)
-                #print("赌局结束")
+                # print("赌局结束")
                 await bot.send(event, "赌局结束")
                 return
             Roulette[event.group.id] = lia

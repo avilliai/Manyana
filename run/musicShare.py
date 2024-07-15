@@ -124,7 +124,7 @@ def main(bot, master, botName, logger):
         global message
         global ask
         adsf = 0
-        if str(event.sender.id) in sender.keys() and event.message_chain.count(MusicShare) == False and sender.get(
+        if str(event.sender.id) in sender.keys() and not event.message_chain.count(MusicShare) and sender.get(
                 str(event.sender.id)).get("step") == 0 and str(event.message_chain) != "点歌":
             if len(event.message_chain) > 150:
                 await bot.send(event, "文本太长了，大概率会被腾讯吞的.....试着发短点的吧....")
