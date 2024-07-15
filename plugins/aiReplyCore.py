@@ -9,7 +9,7 @@ from mirai import logger
 
 from plugins.RandomStr import random_str
 from plugins.ReplyModels import gptOfficial, gptUnofficial, kimi, qingyan, lingyi, stepAI, qwen, gptvvvv, grop, \
-    gpt4hahaha, anotherGPT35, chatGLM, relolimigpt2, xinghuo
+    gpt4hahaha, anotherGPT35, chatGLM, relolimigpt2, xinghuo, Gemma
 from plugins.cozeBot import cozeBotRep
 from plugins.googleGemini import geminirep
 from plugins.translater import translate
@@ -166,6 +166,7 @@ async def modelReply(senderName, senderId, text, modelHere=modelDefault, trustUs
             tasks.append(loop_run_in_executor(loop, gpt4hahaha, prompt1, bot_in))
             tasks.append(loop_run_in_executor(loop, anotherGPT35, prompt1, senderId))
             tasks.append(loop_run_in_executor(loop, xinghuo, prompt1, senderId))
+            tasks.append(loop_run_in_executor(loop,Gemma,prompt1,bot_in))
             # tasks.append(loop_run_in_executor(loop,localAurona,prompt1,bot_in))
             # ... 添加其他模型的任务 ...
             aim = {"role": "user", "content": bot_in}
