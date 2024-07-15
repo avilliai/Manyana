@@ -75,15 +75,3 @@ async def main(apiKey, bot_info, prompt):
     # 打印结果
     #print(result)
 
-
-# 运行异步函数
-
-class CListen(threading.Thread):
-    def __init__(self, loop):
-        threading.Thread.__init__(self)
-        self.mLoop = loop
-
-    def run(self):
-        asyncio.set_event_loop(self.mLoop)  # 在新线程中开启一个事件循环
-
-        self.mLoop.run_forever()
