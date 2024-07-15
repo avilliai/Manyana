@@ -20,15 +20,4 @@ openai
 anthropic
 bingart
 emoji
-num_thai
-jamo
-ko_pron
-cn2an
-opencc
-indic_transliteration
-jieba
-pypinyin
-unidecode
-pyopenjtalk
-inflect
-eng_to_ipa
+

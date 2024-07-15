@@ -128,42 +128,20 @@ if __name__ == '__main__':
     async def clearCache(event: Startup):
 
         logger.info("执行清理缓存操作")
-        ls1 = os.listdir("data/pictures/avatars")
-        for i in ls1:
-            try:
-                if i.endswith(".py"):
+        aimdir=["data/pictures/avatars","data/pictures/cache","data/pictures/new_sign_Image","data/voices"]
+        for ib in aimdir:
+            ls1 = os.listdir(ib)
+            for i in ls1:
+                try:
+                    if i.endswith(".py"):
+                        continue
+                    if i.endswith("zYz.png"):
+                        continue
+                    os.remove(f"{ib}/" + i)
+                except:
                     continue
-                os.remove("data/pictures/avatars/" + i)
-            except:
-                continue
-        logger.info("清理头像缓存完成")
-        ls1 = os.listdir("data/pictures/cache")
-        for i in ls1:
-            try:
-                if i.endswith(".py"):
-                    continue
-                os.remove("data/pictures/cache/" + i)
-            except:
-                continue
-        ls1 = os.listdir("data/pictures/new_sign_Image")
-        for i in ls1:
-            try:
-                if i.endswith("zYz.png"):
-                    continue
-                os.remove("data/pictures/new_sign_Image/" + i)
-            except:
-                continue
-        logger.info("清理图片缓存完成")
-        ls1 = os.listdir("data/voices")
-        for i in ls1:
-            try:
-                if i.endswith(".py"):
-                    continue
-                os.remove("data/voices/" + i)
-            except:
-                continue
-        logger.info("清理语音缓存完成")
-        logger.info("请定期执行launcher.exe或者Manyana/更新脚本.bat 的更新功能以获取最新版Manyana")
+        logger.info("清理缓存完成")
+        logger.info("请定期执行launcher.exe的更新功能以获取最新版Manyana")
 
         asf = await bot.group_list()
         #print(asf.data)
@@ -199,20 +177,6 @@ if __name__ == '__main__':
         await bot.send_friend_message(master, time1 + '\n已读取有记录用户:' + str(len(userCount)) + '个')
         await bot.send_friend_message(master, time1 + '\n功能已加载完毕，欢迎使用')
         await bot.send_friend_message(master, Image(path="data/fonts/master.png"))
-        # infof = get_system_info()
-        # await bot.send_friend_message(master,"当前系统信息如下，可使用.system指令查看当前系统信息")
-        # await bot.send_friend_message(master, infof)
-
-
-    # logger.info("如果遇到卡顿请按ctrl+c | 如成功更新了某些文件，请重启main.py以应用更新")
-
-    '''try:
-        logger.warning("如果出现 Merge冲突 请重命名本地的对应文件，拉取后将你的数据重新导入")
-        logger.warning("merge冲突示例：Your local changes to the following files would be overwritten by merge:")
-        os.system("git pull https://github.com/avilliai/Manyana.git")
-        logger.info("over")
-    except:
-        logger.error("取消github更新")'''
 
     logger.info("当前语音合成模式：" + voicegg)
 
