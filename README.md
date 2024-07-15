@@ -125,7 +125,6 @@ Manyana/config.json的填写示例如下。
 | Gemini                        | 谷歌Gemini，在这里[申请apikey](https://ai.google.dev/tutorials/setup?hl=zh-cn)，需配置proxy或[GeminiRevProxy](https://github.com/avilliai/Manyana/issues/17)                                                      | gemini<br>proxy或[GeminiRevProxy](https://github.com/avilliai/Manyana/issues/17)              | 免费，稳定,推荐                                     |
 | random | 稳定，免费，无代理首选，包括下面列出的所有无需配置的免费模型。配置random&PriorityModel以调整优先级                                                                                                                 | 【无需配置】                    | 免费，稳定，无需代理，全局代理模式下无法使用，学着用规则代理/pac吧哥                               |
 | gpt3.5                        | 官方gpt3.5，需要填写代理proxy项                                                                                                                | openai-keys<br>proxy      | 不建议使用，官方贵，并且需要配置代理                               |
-| gpt3.5                        | 同样是gpt3.5，无需代理，[免费申请apikey](https://github.com/chatanywhere/GPT_API_free?tab=readme-ov-file) 使用此apikey需要把gpt3.5-dev的值修改为true         | openai-keys<br>gpt3.5-dev | 不建议使用，免费，稳定，每天限制100次                                   |
 | Cozi                          | GPT4，基于[coze-discord](https://github.com/deanxv/coze-discord-proxy)，教程请查看[Here](https://github.com/avilliai/Manyana/issues/4)，最好配置代理 | cozi<br>proxy(建议)         | 不推荐。需要discord小号，每个账号每天都有次数限制(gpt4 100次/天)，可配置多个小号 |
 
 </details>
