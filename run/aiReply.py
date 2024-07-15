@@ -200,7 +200,7 @@ def main(bot, master, logger):
     async def setCharacter(event: FriendMessage):
         global chatGLMCharacters
         if str(event.message_chain).startswith("设定#"):
-            if str(event.message_chain).split("#")[1] in allcharacters and allowUserSetModel:
+            if str(event.message_chain).split("#")[1] in allcharacters and (allowUserSetModel or event.sender.id==master):
                 meta12 = str(event.message_chain).split("#")[1]
 
                 chatGLMCharacters[event.sender.id] = meta12
@@ -228,7 +228,7 @@ def main(bot, master, logger):
     async def setCharacter(event: GroupMessage):
         global chatGLMCharacters, userdict
         if str(event.message_chain).startswith("设定#"):
-            if str(event.message_chain).split("#")[1] in allcharacters and allowUserSetModel:
+            if str(event.message_chain).split("#")[1] in allcharacters and (allowUserSetModel or event.sender.id==master):
                 meta12 = str(event.message_chain).split("#")[1]
 
                 chatGLMCharacters[event.sender.id] = meta12
