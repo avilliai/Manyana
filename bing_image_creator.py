@@ -1,10 +1,7 @@
 # -*- coding:utf-8 -*-
 import os
-
-# 将工作目录设置为脚本所在目录
+#下面的两行是launcher启动必要设置，勿动。
 os.chdir(os.path.dirname(os.path.abspath(__file__)))
-
-# 将当前目录添加到sys.path中，别动这里。
 sys.path.append(os.path.dirname(os.path.abspath(__file__)))
 import yaml
 from mirai import Mirai, WebSocketAdapter, GroupMessage, Image
