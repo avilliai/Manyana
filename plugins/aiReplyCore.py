@@ -280,7 +280,7 @@ async def clearAllPrompts():
         # 写入文件
         with open('data/chatGLMData.yaml', 'w', encoding="utf-8") as file:
             yaml.dump(chatGLMData, file, allow_unicode=True)
-        print(chatGLMData)
+        #print(chatGLMData)
         return "已清除所有用户的prompt"
     except:
         return "清理缓存出错，无本地对话记录"

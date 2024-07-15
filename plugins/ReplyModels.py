@@ -72,7 +72,6 @@ def lingyi(prompt, bot_info):
     prompt = str(prompt).replace("\"", "%22").replace("\'", "%22")
 
     url = f"https://api.alcex.cn/API/ai/zeroyi.php?messages={prompt}"
-    #print(url)
     r = requests.get(url, timeout=20).json()
     return {"role": "assistant", "content": r["choices"][0]["message"]["content"]}
 
@@ -83,7 +82,6 @@ def stepAI(prompt, bot_info):
     prompt = str(prompt).replace("\"", "%22").replace("\'", "%22")
 
     url = f"https://api.alcex.cn/API/ai/step.php?messages={prompt}"
-    #print(url)
     r = requests.get(url, timeout=20).json()
     return {"role": "assistant", "content": r["choices"][0]["message"]["content"]}
 
@@ -94,7 +92,6 @@ def qwen(prompt, bot_info):
     prompt = str(prompt).replace("\"", "%22").replace("\'", "%22")
 
     url = f"https://api.alcex.cn/API/ai/qwen.php?messages={prompt}"
-    #print(url)
     r = requests.get(url, timeout=20).json()
     return {"role": "assistant", "content": r["choices"][0]["message"]["content"]}
 
@@ -105,7 +102,6 @@ def gptvvvv(prompt, bot_info):
     prompt = str(prompt).replace("\"", "%22").replace("\'", "%22")
 
     url = f"https://api.alcex.cn/API/gpt-4/v2.php?messages={prompt}&model=gpt-3.5-turbo"
-    #print(url)
     r = requests.get(url, timeout=20).json()
     return {"role": "assistant", "content": r["choices"][0]["message"]["content"]}
 def Gemma(prompt,bot_info):
@@ -166,18 +162,13 @@ def chatGLM(api_key, bot_info, prompt):
     for event in response.events():
         if event.event == "add":
             str1 += event.data
-            # print(event.data)
         elif event.event == "error" or event.event == "interrupted":
             str1 += event.data
-            # print(event.data)
         elif event.event == "finish":
             str1 += event.data
-            # print(event.data)
-            print(event.meta)
+
         else:
             str1 += event.data
-            # print(event.data)
-    # print(str1)
     return str1
 
 
@@ -247,12 +238,10 @@ def freeGemini(prompt, bot_info):
     prompt.insert(1, {"role": "assistant", "content": "好的，已了解您的需求~我会扮演好您设定的角色。"})
     pro1 = {"contents": prompt}
     prompt1 = str(pro1).replace("\"", "%22").replace("\'", "%22").rstrip()
-    print(prompt1, type(prompt))
     r = "{%22contents%22:[{%22parts%22:[{%22text%22:%22%E4%BD%A0%E5%A5%BD%22}]}]}"
 
     url = f"https://api.alcex.cn/API/gemini/?q={prompt1}"
     r = requests.get(url)
-    print(r.json())
     return {"role": "assistant", "content": r.json()["answer"]["candidates"][0]["content"]["parts"][0]["text"]}
 
 
