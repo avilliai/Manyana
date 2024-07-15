@@ -62,7 +62,7 @@ chatGLMData = cha
 async def tstt(r):
     data1 = {'speaker': speaker}
     st8 = re.sub(r"（[^）]*）", "", r)  # 使用r前缀表示原始字符串，避免转义字符的问题
-    data1["text"] = st8
+    data1["text"] = st8.replace("~","")
     if voicegg == "vits":
         logger.info("调用vits语音回复")
 

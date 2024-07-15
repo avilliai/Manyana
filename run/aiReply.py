@@ -128,7 +128,7 @@ def main(bot, master, logger):
 
             text = random.choice(["戳你一下", "摸摸头", "戳戳你的头", "摸摸~"])
             if event.from_id in chatGLMCharacters:
-                print(chatGLMCharacters.get(event.target), type(chatGLMCharacters.get(event.target)))
+                #print(chatGLMCharacters.get(event.target), type(chatGLMCharacters.get(event.target)))
                 r, t = await modelReply("指挥", event.from_id, text, chatGLMCharacters.get(event.target), trustUser)
             # 判断模型类型
             else:
