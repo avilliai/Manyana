@@ -4,6 +4,8 @@ import datetime
 import os
 import random
 import shutil
+import sys
+
 from asyncio import sleep as sleep1
 
 #下面的两行是launcher启动必要设置，勿动。

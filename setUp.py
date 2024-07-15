@@ -5,7 +5,11 @@ import shutil
 import subprocess
 import sys
 import colorlog
+import sys
 
+#下面的两行是launcher启动必要设置，勿动。
+os.chdir(os.path.dirname(os.path.abspath(__file__)))
+sys.path.append(os.path.dirname(os.path.abspath(__file__)))
 current_dir = os.getcwd()
 
 # 获取上一级目录
