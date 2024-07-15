@@ -62,7 +62,7 @@ chatGLMData = cha
 async def tstt(r):
     data1 = {'speaker': speaker}
     st8 = re.sub(r"（[^）]*）", "", r)  # 使用r前缀表示原始字符串，避免转义字符的问题
-    data1["text"] = st8.replace("~","")
+    data1["text"] = st8
     if voicegg == "vits":
         logger.info("调用vits语音回复")
 
@@ -240,7 +240,7 @@ async def modelReply(senderName, senderId, text, modelHere=modelDefault, trustUs
         with open('data/chatGLMData.yaml', 'w', encoding="utf-8") as file:
             yaml.dump(chatGLMData, file, allow_unicode=True)
         #print(rep.get('content'),type(rep.get('content')))
-        print(rep,type(rep))
+        #print(rep,type(rep))
         logger.info(f"{modelHere} bot 回复：" + rep.get('content'))
         if checkIfRepFirstTime:
             return rep.get("content"), firstRep

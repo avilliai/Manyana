@@ -31,7 +31,7 @@ async def superVG(data, mode, urls="", langmode="<zh>"):
 
     # 去除括号及其中的内容
     cleaned_text = pattern.sub('', data.get("text"))
-    data["text"] = cleaned_text.replace("·", "").replace("~", "")
+    data["text"] = cleaned_text.replace("·", "").replace("~", "").replace("-","")
     if langmode == "<zh>":
         speaker = data.get("speaker")
         if "_" in str(speaker):
