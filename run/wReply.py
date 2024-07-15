@@ -300,9 +300,9 @@ def main(bot, config, sizhiKey, logger):
                             except Exception as e:
                                 logger.error(e)
                                 ranpath = random_str()
-                                path = 'data/autoReply/voiceReply/' + ranpath + '.wav'
+                                path = f'data/autoReply/voiceReply/{ranpath}.wav'
                                 text = await translate(str(event.message_chain)[2:])
-                                tex = '[JA]' + text + '[JA]'
+                                tex = f'[JA]{text}[JA]'
                                 await voiceGenerate(
                                     {"text": tex, "out": path, "speaker": speaker, "modelSelect": modelSelect})
                                 value = ranpath + '.wav'
