@@ -1,6 +1,7 @@
+import math
 import torch
-import torch.jit
 from torch.nn import functional as F
+import torch.jit
 
 
 def script_method(fn, _rcb=None):
@@ -80,9 +81,9 @@ def sequence_mask(length, max_length=None):
 
 def generate_path(duration, mask):
     """
-  duration: [b, 1, t_x]
-  mask: [b, 1, t_y, t_x]
-  """
+    duration: [b, 1, t_x]
+    mask: [b, 1, t_y, t_x]
+    """
     device = duration.device
 
     b, _, t_y, t_x = mask.shape

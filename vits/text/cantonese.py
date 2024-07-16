@@ -2,6 +2,7 @@ import re
 import cn2an
 import opencc
 
+
 converter = opencc.OpenCC('jyutjyu')
 
 # List of (Latin alphabet, ipa) pairs:
@@ -47,8 +48,8 @@ def latin_to_ipa(text):
 
 def cantonese_to_ipa(text):
     text = number_to_cantonese(text.upper())
-    text = converter.convert(text).replace('-', '').replace('$', ' ')
-    text = re.sub(r'[A-Z]', lambda x: latin_to_ipa(x.group()) + ' ', text)
+    text = converter.convert(text).replace('-','').replace('$',' ')
+    text = re.sub(r'[A-Z]', lambda x: latin_to_ipa(x.group())+' ', text)
     text = re.sub(r'[、；：]', '，', text)
     text = re.sub(r'\s*，\s*', ', ', text)
     text = re.sub(r'\s*。\s*', '. ', text)

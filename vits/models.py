@@ -299,8 +299,8 @@ class Generator(torch.nn.Module):
 
 class SynthesizerTrn(nn.Module):
     """
-  Synthesizer for Training
-  """
+    Synthesizer for Training
+    """
 
     def __init__(self,
                  n_vocab,
@@ -407,3 +407,4 @@ class SynthesizerTrn(nn.Module):
         z_hat = self.flow(z_p, y_mask, g=g_tgt, reverse=True)
         o_hat = self.dec(z_hat * y_mask, g=g_tgt)
         return o_hat, y_mask, (z, z_p, z_hat)
+

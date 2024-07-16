@@ -1,9 +1,10 @@
-import logging
+import os
+import sys
 import re
-
-import cn2an
-import jieba
 from pypinyin import lazy_pinyin, BOPOMOFO
+import jieba
+import cn2an
+import logging
 
 logging.getLogger('jieba').setLevel(logging.WARNING)
 jieba.set_dictionary('./vits/jieba/dict.txt')

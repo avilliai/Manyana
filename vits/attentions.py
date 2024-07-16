@@ -81,9 +81,9 @@ class Decoder(nn.Module):
 
     def forward(self, x, x_mask, h, h_mask):
         """
-    x: decoder input
-    h: encoder output
-    """
+        x: decoder input
+        h: encoder output
+        """
         self_attn_mask = commons.subsequent_mask(x_mask.size(2)).to(device=x.device, dtype=x.dtype)
         encdec_attn_mask = h_mask.unsqueeze(2) * x_mask.unsqueeze(-1)
         x = x * x_mask
@@ -186,19 +186,19 @@ class MultiHeadAttention(nn.Module):
 
     def _matmul_with_relative_values(self, x, y):
         """
-    x: [b, h, l, m]
-    y: [h or 1, m, d]
-    ret: [b, h, l, d]
-    """
+        x: [b, h, l, m]
+        y: [h or 1, m, d]
+        ret: [b, h, l, d]
+        """
         ret = torch.matmul(x, y.unsqueeze(0))
         return ret
 
     def _matmul_with_relative_keys(self, x, y):
         """
-    x: [b, h, l, d]
-    y: [h or 1, m, d]
-    ret: [b, h, l, m]
-    """
+        x: [b, h, l, d]
+        y: [h or 1, m, d]
+        ret: [b, h, l, m]
+        """
         ret = torch.matmul(x, y.unsqueeze(0).transpose(-2, -1))
         return ret
 
@@ -219,9 +219,9 @@ class MultiHeadAttention(nn.Module):
 
     def _relative_position_to_absolute_position(self, x):
         """
-    x: [b, h, l, 2*l-1]
-    ret: [b, h, l, l]
-    """
+        x: [b, h, l, 2*l-1]
+        ret: [b, h, l, l]
+        """
         batch, heads, length, _ = x.size()
         # Concat columns of pad to shift from relative to absolute indexing.
         x = F.pad(x, commons.convert_pad_shape([[0, 0], [0, 0], [0, 0], [0, 1]]))
@@ -236,9 +236,9 @@ class MultiHeadAttention(nn.Module):
 
     def _absolute_position_to_relative_position(self, x):
         """
-    x: [b, h, l, l]
-    ret: [b, h, l, 2*l-1]
-    """
+        x: [b, h, l, l]
+        ret: [b, h, l, 2*l-1]
+        """
         batch, heads, length, _ = x.size()
         # padd along column
         x = F.pad(x, commons.convert_pad_shape([[0, 0], [0, 0], [0, 0], [0, length - 1]]))
@@ -250,11 +250,11 @@ class MultiHeadAttention(nn.Module):
 
     def _attention_bias_proximal(self, length):
         """Bias for self-attention to encourage attention to close positions.
-    Args:
-      length: an integer scalar.
-    Returns:
-      a Tensor with shape [1, 1, length, length]
-    """
+        Args:
+          length: an integer scalar.
+        Returns:
+          a Tensor with shape [1, 1, length, length]
+        """
         r = torch.arange(length, dtype=torch.float32)
         diff = torch.unsqueeze(r, 0) - torch.unsqueeze(r, 1)
         return torch.unsqueeze(torch.unsqueeze(-torch.log1p(torch.abs(diff)), 0), 0)

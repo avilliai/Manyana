@@ -1,20 +1,27 @@
 # -*- coding:utf-8 -*-
 import asyncio
-import logging
-import re
-import sys
+import datetime
+import os
+from asyncio import sleep
 
 import httpx
 import librosa
 import soundfile
 from scipy.io.wavfile import write
-from torch import no_grad, LongTensor
 
-from . import commons
-from . import utils
+
 from .mel_processing import spectrogram_torch
-from .models import SynthesizerTrn
+
 from .text import text_to_sequence, _clean_text
+from .models import SynthesizerTrn
+from . import utils
+from . import commons
+import sys
+import re
+from torch import no_grad, LongTensor
+import logging
+
+
 
 logging.getLogger('numba').setLevel(logging.WARNING)
 
@@ -83,16 +90,15 @@ def get_label(text, label):
     else:
         return False, text
 
+async def vG(tex,out,speakerID=2,modelSelect=['vits/voiceModel/nene/1374_epochsm.pth','vits/voiceModel/nene/config.json'] ):
+    if len(tex)>150:
 
-async def vG(tex, out, speakerID=2,
-             modelSelect=['vits/voiceModel/nene/1374_epochsm.pth', 'vits/voiceModel/nene/config.json']):
-    if len(tex) > 150:
-        tex = '[JA]長すぎるああ、こんなに長い声..... んもう~[JA]'
-        speakerID = 0
+        tex='[JA]長すぎるああ、こんなに長い声..... んもう~[JA]'
+        speakerID=0
     #if modelSelect == ['voiceModel/amm/amamiyam.pth','voiceModel/amm/config.json']:
-    #tex=tex.replace('[JA]','')
-    text = tex
-    out_path = out
+        #tex=tex.replace('[JA]','')
+    text=tex
+    out_path=out
 
     if '--escape' in sys.argv:
         escape = True
@@ -100,8 +106,8 @@ async def vG(tex, out, speakerID=2,
         escape = False
     if modelSelect[0].startswith("vits/"):
 
-        model = modelSelect[0]
-        config = modelSelect[1]
+        model=modelSelect[0]
+        config=modelSelect[1]
     else:
         model = modelSelect[0]
         config = modelSelect[1]
@@ -123,11 +129,14 @@ async def vG(tex, out, speakerID=2,
     _ = net_g_ms.eval()
     utils.load_checkpoint(model, net_g_ms)
 
+
+
     if text == '[ADVANCED]':
         text = input('Raw text:')
         print('Cleaned text is:')
         ex_print(_clean_text(
             text, hps_ms.data.text_cleaners), escape)
+
 
     length_scale, text = get_label_value(
         text, 'LENGTH', 1.16, 'length scale')
@@ -137,9 +146,12 @@ async def vG(tex, out, speakerID=2,
         text, 'NOISEW', 0.7, 'deviation of noise')
     cleaned, text = get_label(text, 'CLEANED')
 
+
+
     stn_tst = get_text(text, hps_ms, cleaned=cleaned)
 
     #print_speakers(speakers, escape)
+
 
     speaker_id = int(speakerID)
 
@@ -151,11 +163,11 @@ async def vG(tex, out, speakerID=2,
                                noise_scale_w=noise_scale_w, length_scale=length_scale)[0][
             0, 0].data.cpu().float().numpy()
 
-    write(out_path, hps_ms.data.sampling_rate, audio)  #将生成的语音文件写入本地
+
+
+    write(out_path, hps_ms.data.sampling_rate, audio)#将生成的语音文件写入本地
     await change_sample_rate(out_path)
-
-
-async def change_sample_rate(path, new_sample_rate=44100):
+async def change_sample_rate(path,new_sample_rate=44100):
     #wavfile = path  # 提取音频文件名，如“1.wav"
     # new_file_name = wavfile.split('.')[0] + '_8k.wav'      #此行代码可用于对转换后的文件进行重命名（如有需要）
 
@@ -163,7 +175,7 @@ async def change_sample_rate(path, new_sample_rate=44100):
 
     new_signal = librosa.resample(signal, orig_sr=sr, target_sr=new_sample_rate)  # 调用librosa进行音频采样率转换
 
-    new_path = path  # 指定输出音频的路径，音频文件与原音频同名
+    new_path = path # 指定输出音频的路径，音频文件与原音频同名
     # new_path = os.path.join(new_dir_path, new_file_name)      #若需要改名则启用此行代码
     #print("?")
     #print(new_path)
@@ -172,12 +184,12 @@ async def change_sample_rate(path, new_sample_rate=44100):
     soundfile.write(new_path, new_signal, new_sample_rate)
 
 
-def voice_conversion(sourcepath, speaker=0):
+def voice_conversion(sourcepath,speaker=0):
     if '--escape' in sys.argv:
         escape = True
     else:
         escape = False
-    afd = ['voiceModel/nene/1374_epochsm.pth', 'voiceModel/nene/config.json']
+    afd=['voiceModel/nene/1374_epochsm.pth', 'voiceModel/nene/config.json']
     model = afd[0]
     config = afd[1]
 
@@ -220,21 +232,16 @@ def voice_conversion(sourcepath, speaker=0):
             0][0, 0].data.cpu().float().numpy()
     write(out_path, hps_ms.data.sampling_rate, audio)
     print('Successfully saved!')
-
-
 async def ttsOnline(txt):
-    url = 'https://api.oick.cn/txt/apiz.php'
-    data = {"text": txt, "spd": 6}
+    url='https://api.oick.cn/txt/apiz.php'
+    data={"text":txt,"spd":6}
     async with httpx.AsyncClient(timeout=100) as client:
-        r = await client.get(url, params=data)
+        r = await client.get(url,params=data)
         with open('song.mp3', 'wb') as f:
             f.write(r.content)
         voice_conversion("song.mp3")
         #return url
-
-
 if __name__ == '__main__':
     #voice_conversion("plugins/voices/sing/rest.wav")
-    asyncio.run(vG('[JA]先生,ちょっとお時間..いただけますか1?[JA]', '2.wav', 0,
-                   ["voiceModel/bolv.pth", "voiceModel/config.json"]))
+    asyncio.run(vG('[JA]先生,ちょっとお時間..いただけますか1?[JA]', '2.wav',0,["voiceModel/bolv.pth","voiceModel/config.json"]))
     print("任务1")
