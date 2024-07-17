@@ -8,6 +8,8 @@ import zhipuai
 from openai import OpenAI
 
 
+
+
 def gptOfficial(prompt, apikeys, proxy, bot_info):
     os.environ["OPENAI_API_KEY"] = random.choice(apikeys)
     os.environ["http_proxy"] = proxy  # 指定代理，解决连接问题
@@ -43,7 +45,7 @@ def gptUnofficial(prompt, apikeys, proxy, bot_info):
     # print(chat_completion.choices[0].message.content)
     return {"role": "assistant", "content": chat_completion.choices[0].message.content}
 
-
+#以下是api.alcex.cn的各种AI接口
 def kimi(prompt, bot_info):
     prompt.insert(0, {"role": "user", "content": bot_info})
     prompt.insert(1, {"role": "assistant", "content": "好的，已了解您的需求~我会扮演好您设定的角色。"})
@@ -104,6 +106,7 @@ def gptvvvv(prompt, bot_info):
     url = f"https://api.alcex.cn/API/gpt-4/v2.php?messages={prompt}&model=gpt-3.5-turbo"
     r = requests.get(url, timeout=20).json()
     return {"role": "assistant", "content": r["choices"][0]["message"]["content"]}
+
 def Gemma(prompt,bot_info):
     prompt.insert(0, {"role": "user", "content": bot_info})
     prompt.insert(1, {"role": "assistant", "content": "好的，已了解您的需求~我会扮演好您设定的角色。"})
@@ -111,6 +114,15 @@ def Gemma(prompt,bot_info):
     url=f"https://api.alcex.cn/API/Gemma/?messages={prompt}"
     r = requests.get(url, timeout=20).json()
     return {"role": "assistant", "content": r["choices"][0]["message"]["content"]}
+
+def alcex_GPT3_5(prompt,bot_info):
+    prompt.insert(0, {"role": "user", "content": bot_info})
+    prompt.insert(1, {"role": "assistant", "content": "好的，已了解您的需求~我会扮演好您设定的角色。"})
+    prompt = str(prompt).replace("\"", "%22").replace("\'", "%22")
+    url=f"https://api.alcex.cn/API/gpt-3.5/?messages={prompt}"
+    r = requests.get(url, timeout=20).json()
+    return {"role": "assistant", "content": r["choices"][0]["message"]["content"]}
+
 def binggpt4(prompt,bot_info):
     prompt.insert(0, {"role": "user", "content": bot_info})
     prompt.insert(1, {"role": "assistant", "content": "好的，已了解您的需求~我会扮演好您设定的角色。"})
@@ -118,6 +130,10 @@ def binggpt4(prompt,bot_info):
     url=f"https://api.alcex.cn/API/gpt-4/?messages={prompt}"
     r = requests.get(url, timeout=20).json()
     return {"role": "assistant", "content": r["choices"][0]["message"]["content"]}
+
+
+    
+
 def grop(prompt, bot_info):
     prompt.insert(0, {"role": "user", "content": bot_info})
     prompt.insert(1, {"role": "assistant", "content": "好的，已了解您的需求~我会扮演好您设定的角色。"})
@@ -135,6 +151,26 @@ def gpt4hahaha(prompt, meta):
     r = requests.get(url, timeout=20).json()
     return {"role": "assistant", "content": r["choices"][0]["message"]["content"]}
 
+def xinghuo(prompt, meta):
+    prompt.insert(0, {"role": "user", "content": meta})
+    prompt.insert(1, {"role": "assistant", "content": "好的~"})
+    prompt = str(prompt).replace("\"", "%22").replace("\'", "%22")
+    url = f"https://api.alcex.cn/API/spark/?messages={str(prompt)}"
+    r = requests.get(url, timeout=20).json()
+    return {"role": "assistant", "content": r["choices"][0]["message"]["content"]}
+
+
+def freeGemini(prompt, bot_info):
+    prompt.insert(0, {"role": "user", "content": bot_info})
+    prompt.insert(1, {"role": "assistant", "content": "好的，已了解您的需求~我会扮演好您设定的角色。"})
+    pro1 = {"contents": prompt}
+    prompt1 = str(pro1).replace("\"", "%22").replace("\'", "%22").rstrip()
+    r = "{%22contents%22:[{%22parts%22:[{%22text%22:%22%E4%BD%A0%E5%A5%BD%22}]}]}"
+
+    url = f"https://api.alcex.cn/API/gemini/?q={prompt1}"
+    r = requests.get(url)
+    return {"role": "assistant", "content": r.json()["answer"]["candidates"][0]["content"]["parts"][0]["text"]}
+#以上是api.alcex.cn的各种AI接口
 
 def localAurona(prompt, meta):
     url = "http://127.0.0.1:3040/v1/chat/completions"
@@ -230,25 +266,6 @@ def glm4hahaha(prompt, meta):
     return {"role": "assistant", "content": r.json().get("data").get("output")}
 
 
-def xinghuo(prompt, meta):
-    prompt.insert(0, {"role": "user", "content": meta})
-    prompt.insert(1, {"role": "assistant", "content": "好的~"})
-    prompt = str(prompt).replace("\"", "%22").replace("\'", "%22")
-    url = f"https://api.alcex.cn/API/spark/?messages={str(prompt)}"
-    r = requests.get(url, timeout=20).json()
-    return {"role": "assistant", "content": r["choices"][0]["message"]["content"]}
-
-
-def freeGemini(prompt, bot_info):
-    prompt.insert(0, {"role": "user", "content": bot_info})
-    prompt.insert(1, {"role": "assistant", "content": "好的，已了解您的需求~我会扮演好您设定的角色。"})
-    pro1 = {"contents": prompt}
-    prompt1 = str(pro1).replace("\"", "%22").replace("\'", "%22").rstrip()
-    r = "{%22contents%22:[{%22parts%22:[{%22text%22:%22%E4%BD%A0%E5%A5%BD%22}]}]}"
-
-    url = f"https://api.alcex.cn/API/gemini/?q={prompt1}"
-    r = requests.get(url)
-    return {"role": "assistant", "content": r.json()["answer"]["candidates"][0]["content"]["parts"][0]["text"]}
 
 
 if __name__ == '__main__':
