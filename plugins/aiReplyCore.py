@@ -168,7 +168,7 @@ async def modelReply(senderName, senderId, text, modelHere=modelDefault, trustUs
             tasks.append(loop_run_in_executor(loop, xinghuo, prompt1, senderId))
             tasks.append(loop_run_in_executor(loop,Gemma,prompt1,bot_in))#2024-07-17测试通过
             tasks.append(loop_run_in_executor(loop,alcex_GPT3_5,prompt1,bot_in))#2024-07-17测试通过
-            tasks.append(loop_run_in_executor(loop,alcex_Gemini,prompt1,bot_in))
+            tasks.append(loop_run_in_executor(loop,freeGemini,prompt1,bot_in))
             
             # tasks.append(loop_run_in_executor(loop,localAurona,prompt1,bot_in))
             # ... 添加其他模型的任务 ...
