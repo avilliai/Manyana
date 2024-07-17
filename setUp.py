@@ -30,7 +30,7 @@ custom_pip_path = os.path.join(parent_dir, "environments", "Python39", "Scripts"
 venv_pip=os.path.join("venv", "Scripts","pip.exe")
 if os.path.exists(custom_pip_path):
     pip_path = custom_pip_path
-elif os.path.exists():
+elif os.path.exists(venv_pip):
     pip_path=venv_pip
 else:
     pip_path = "pip"
