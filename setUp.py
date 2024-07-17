@@ -27,8 +27,11 @@ if os.path.exists(custom_python_path):
 else:
     python_path = "python"
 custom_pip_path = os.path.join(parent_dir, "environments", "Python39", "Scripts","pip.exe")
+venv_pip=os.path.join("venv", "Scripts","pip.exe")
 if os.path.exists(custom_pip_path):
     pip_path = custom_pip_path
+elif os.path.exists():
+    pip_path=venv_pip
 else:
     pip_path = "pip"
 def newLogger():
