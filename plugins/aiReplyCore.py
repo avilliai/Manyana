@@ -9,7 +9,7 @@ from mirai import logger
 
 from plugins.RandomStr import random_str
 from plugins.ReplyModels import gptOfficial, gptUnofficial, kimi, qingyan, lingyi, stepAI, qwen, gptvvvv, grop, \
-    gpt4hahaha, anotherGPT35, chatGLM, relolimigpt2, xinghuo, Gemma, binggpt4,alcex_GPT3_5,alcex_Gemini
+    gpt4hahaha, anotherGPT35, chatGLM, relolimigpt2, xinghuo, Gemma, binggpt4,alcex_GPT3_5,freeGemini
 from plugins.cozeBot import cozeBotRep
 from plugins.googleGemini import geminirep
 from plugins.translater import translate
