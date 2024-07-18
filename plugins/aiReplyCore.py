@@ -154,21 +154,21 @@ async def modelReply(senderName, senderId, text, modelHere=modelDefault, trustUs
             tasks = []
             logger.warning("请求所有模型接口")
             # 将所有模型的执行代码包装成异步任务，并添加到任务列表
-            tasks.append(loop_run_in_executor(loop, cozeBotRep, CoziUrl, prompt1, proxy))
-            tasks.append(loop_run_in_executor(loop, kimi, prompt1, bot_in))
-            tasks.append(loop_run_in_executor(loop, qingyan, prompt1, bot_in))
-            tasks.append(loop_run_in_executor(loop, grop, prompt1, bot_in))
-            tasks.append(loop_run_in_executor(loop, lingyi, prompt1, bot_in))
-            tasks.append(loop_run_in_executor(loop, relolimigpt2, prompt1, bot_in))
-            tasks.append(loop_run_in_executor(loop, stepAI, prompt1, bot_in))
-            tasks.append(loop_run_in_executor(loop, qwen, prompt1, bot_in))
-            tasks.append(loop_run_in_executor(loop, gptvvvv, prompt1, bot_in))
-            tasks.append(loop_run_in_executor(loop, gpt4hahaha, prompt1, bot_in))
-            tasks.append(loop_run_in_executor(loop, anotherGPT35, prompt1, senderId))
-            tasks.append(loop_run_in_executor(loop, xinghuo, prompt1, senderId))
-            tasks.append(loop_run_in_executor(loop,Gemma,prompt1,bot_in))#2024-07-17测试通过
-            tasks.append(loop_run_in_executor(loop,alcex_GPT3_5,prompt1,bot_in))#2024-07-17测试通过
-            tasks.append(loop_run_in_executor(loop,freeGemini,prompt1,bot_in))
+        #    tasks.append(loop_run_in_executor(loop, cozeBotRep, CoziUrl, prompt1, proxy))# 2024-07-17测试无效
+        #    tasks.append(loop_run_in_executor(loop, kimi, prompt1, bot_in))              # 2024-07-17测试无效
+        #    tasks.append(loop_run_in_executor(loop, qingyan, prompt1, bot_in))           # 2024-07-17测试无效
+        #    tasks.append(loop_run_in_executor(loop, grop, prompt1, bot_in))              # 2024-07-17测试无效
+        #    tasks.append(loop_run_in_executor(loop, lingyi, prompt1, bot_in))            # 2024-07-17测试无效
+        #    tasks.append(loop_run_in_executor(loop, relolimigpt2, prompt1, bot_in))      # 2024-07-17测试无法解析API
+        #    tasks.append(loop_run_in_executor(loop, stepAI, prompt1, bot_in))            # 2024-07-17测试无效
+        #    tasks.append(loop_run_in_executor(loop, qwen, prompt1, bot_in))              # 2024-07-17测试无效
+        #    tasks.append(loop_run_in_executor(loop, gptvvvv, prompt1, bot_in))           # 2024-07-17测试无效
+        #    tasks.append(loop_run_in_executor(loop, gpt4hahaha, prompt1, bot_in))        # 2024-07-17测试无效
+        #    tasks.append(loop_run_in_executor(loop, anotherGPT35, prompt1, senderId))    # 2024-07-17测试 初始化失败
+        #    tasks.append(loop_run_in_executor(loop, xinghuo, prompt1, senderId))         # 2024-07-17测试无效
+            tasks.append(loop_run_in_executor(loop,Gemma,prompt1,bot_in))                 # 2024-07-17测试通过
+            tasks.append(loop_run_in_executor(loop,alcex_GPT3_5,prompt1,bot_in))          # 2024-07-17测试通过
+        #    tasks.append(loop_run_in_executor(loop,freeGemini,prompt1,bot_in))           # 2024-07-17测试无效
             
             # tasks.append(loop_run_in_executor(loop,localAurona,prompt1,bot_in))
             # ... 添加其他模型的任务 ...
