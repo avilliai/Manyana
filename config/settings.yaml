@@ -46,7 +46,7 @@ chatGLM:                   #对话模型通用设置
   privateGlmReply: True    #开放私聊ai回复
   trustglmReply: false     #开启后仅【信任用户】可用，对characterglm始终生效
   maxPrompt: 10            #上下文模式开启时，最多记录的问答数量，默认10，即记录5对问答
-  allowUserSetModel: false #允许用户自行设定模型，别开，不看文档就开等出问题没人会回答你。
+  allowUserSetModel: false #等你学会读文档再动这个开关:允许用户自行设定模型，别开，不看文档就开等出问题没人会回答你。
   #语音合成通用设置
   maxLen: 100              #语音合成最大长度限制，超出则返回文本。
   voiceRate: 60            #语音回复几率
