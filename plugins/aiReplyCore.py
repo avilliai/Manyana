@@ -2,14 +2,14 @@ import asyncio
 import os
 import random
 import re
-
+import copy
 # 注释
 import yaml
 from mirai import logger
 
 from plugins.RandomStr import random_str
 from plugins.ReplyModels import gptOfficial, gptUnofficial, kimi, qingyan, lingyi, stepAI, qwen, gptvvvv, grop, \
-    gpt4hahaha, anotherGPT35, chatGLM, relolimigpt2, xinghuo, Gemma, binggpt4
+    gpt4hahaha, anotherGPT35, chatGLM, relolimigpt2, xinghuo, Gemma, binggpt4,alcex_GPT3_5,freeGemini
 from plugins.cozeBot import cozeBotRep
 from plugins.googleGemini import geminirep
 from plugins.translater import translate
@@ -41,7 +41,7 @@ trustDays = friendsAndGroups.get("trustDays")
 glmReply = result.get("chatGLM").get("glmReply")
 modelDefault = result.get("chatGLM").get("model")
 privateGlmReply = result.get("chatGLM").get("privateGlmReply")
-randomModelPriority = result.get("chatGLM").get("randomModel&Priority")
+randomModelPriority = result.get("chatGLM").get("randomModel&&Priority")
 replyModel = result.get("chatGLM").get("model")
 trustglmReply = result.get("chatGLM").get("trustglmReply")
 maxPrompt = result.get("chatGLM").get("maxPrompt")
@@ -147,29 +147,37 @@ async def modelReply(senderName, senderId, text, modelHere=modelDefault, trustUs
                     logger.error("初始化anotherGPT3.5失败")
             firstRep = True
         logger.info(f"{modelHere}  bot 接受提问：" + text)
+        
+        
         if modelHere == "random":
+            prompt1 = copy.deepcopy(prompt1)#去重人设
             tasks = []
             logger.warning("请求所有模型接口")
             # 将所有模型的执行代码包装成异步任务，并添加到任务列表
-            tasks.append(loop_run_in_executor(loop, cozeBotRep, CoziUrl, prompt1, proxy))
-            tasks.append(loop_run_in_executor(loop, kimi, prompt1, bot_in))
-            tasks.append(loop_run_in_executor(loop, qingyan, prompt1, bot_in))
-            tasks.append(loop_run_in_executor(loop, grop, prompt1, bot_in))
-            tasks.append(loop_run_in_executor(loop, lingyi, prompt1, bot_in))
-            tasks.append(loop_run_in_executor(loop, relolimigpt2, prompt1, bot_in))
-            tasks.append(loop_run_in_executor(loop, stepAI, prompt1, bot_in))
-            tasks.append(loop_run_in_executor(loop, qwen, prompt1, bot_in))
-            tasks.append(loop_run_in_executor(loop, gptvvvv, prompt1, bot_in))
-            tasks.append(loop_run_in_executor(loop, gpt4hahaha, prompt1, bot_in))
-            tasks.append(loop_run_in_executor(loop, anotherGPT35, prompt1, senderId))
-            tasks.append(loop_run_in_executor(loop, xinghuo, prompt1, senderId))
-            tasks.append(loop_run_in_executor(loop,Gemma,prompt1,bot_in))
+        #    tasks.append(loop_run_in_executor(loop, cozeBotRep, CoziUrl, prompt1, proxy))# 2024-07-17测试无效
+        #    tasks.append(loop_run_in_executor(loop, kimi, prompt1, bot_in))              # 2024-07-17测试无效
+        #    tasks.append(loop_run_in_executor(loop, qingyan, prompt1, bot_in))           # 2024-07-17测试无效
+        #    tasks.append(loop_run_in_executor(loop, grop, prompt1, bot_in))              # 2024-07-17测试无效
+        #    tasks.append(loop_run_in_executor(loop, lingyi, prompt1, bot_in))            # 2024-07-17测试无效
+        #    tasks.append(loop_run_in_executor(loop, relolimigpt2, prompt1, bot_in))      # 2024-07-17测试无法解析API
+        #    tasks.append(loop_run_in_executor(loop, stepAI, prompt1, bot_in))            # 2024-07-17测试无效
+        #    tasks.append(loop_run_in_executor(loop, qwen, prompt1, bot_in))              # 2024-07-17测试无效
+        #    tasks.append(loop_run_in_executor(loop, gptvvvv, prompt1, bot_in))           # 2024-07-17测试无效
+        #    tasks.append(loop_run_in_executor(loop, gpt4hahaha, prompt1, bot_in))        # 2024-07-17测试无效
+        #    tasks.append(loop_run_in_executor(loop, anotherGPT35, prompt1, senderId))    # 2024-07-17测试 初始化失败
+        #    tasks.append(loop_run_in_executor(loop, xinghuo, prompt1, senderId))         # 2024-07-17测试无效
+            tasks.append(loop_run_in_executor(loop,Gemma,prompt1,bot_in))                 # 2024-07-17测试通过
+            tasks.append(loop_run_in_executor(loop,alcex_GPT3_5,prompt1,bot_in))          # 2024-07-17测试通过
+        #    tasks.append(loop_run_in_executor(loop,freeGemini,prompt1,bot_in))           # 2024-07-17测试无效
+            
             # tasks.append(loop_run_in_executor(loop,localAurona,prompt1,bot_in))
             # ... 添加其他模型的任务 ...
             aim = {"role": "user", "content": bot_in}
             prompt1 = [i for i in prompt1 if i != aim]
+            #prompt1 = [i for i in prompt1 if not (i.get("role") == aim["role"] and i.get("content") == aim["content"])]
             aim = {"role": "assistant", "content": "好的，已了解您的需求~我会扮演好您设定的角色。"}
             prompt1 = [i for i in prompt1 if i != aim]
+            #prompt1 = [i for i in prompt1 if not (i.get("role") == aim["role"] and i.get("content") == aim["content"])]
 
             done, pending = await asyncio.wait(tasks, return_when=asyncio.ALL_COMPLETED)
             reps = {}
