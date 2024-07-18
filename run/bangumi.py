@@ -122,8 +122,6 @@ def main(bot,logger):
 
         except:
              pass
-        #等待5秒，防止请求过快
-        await sleep(5)
         try:
             try:
                 await webScreenShot(url,path,1080,1750)
