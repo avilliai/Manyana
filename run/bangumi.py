@@ -5,8 +5,8 @@ import re
 from asyncio import sleep
 import httpx
 import yaml
-import requests  # 导入requests模块
-from bs4 import BeautifulSoup   # 导入Beautiful Soup模块
+import requests
+from bs4 import BeautifulSoup
 
 from mirai import Image, Voice, Startup
 from mirai import Mirai, WebSocketAdapter, FriendMessage, GroupMessage, At, Plain
@@ -20,7 +20,7 @@ from plugins.webScreenShoot import webScreenShot,webScreenShoot
 def main(bot,logger):
     
     @bot.on(GroupMessage)
-    async def animerank(event: GroupMessage):   # 定义函数，获取番剧排行
+    async def animerank(event: GroupMessage):
         if ("新番排行" in str(event.message_chain)) or ("新番top" in str(event.message_chain)):
             year=datetime.datetime.now().strftime("%Y")    # 默认当前年份
             month=datetime.datetime.now().strftime("%m")   # 默认当前月份
@@ -85,7 +85,7 @@ def main(bot,logger):
             await bot.send(event,"获取番剧信息失败，请稍后再试")   
 
     @bot.on(GroupMessage)
-    async def bangumi_search(event: GroupMessage):                   # 定义函数，查询信息
+    async def bangumi_search(event: GroupMessage):
         if "bangumi查询" in str(event.message_chain):
                 #url="https://api.bgm.tv/search/subject/"+str(event.message_chain).split(" ")[1]
                 cat="all";type="subject";sign="h3"
@@ -146,7 +146,7 @@ def main(bot,logger):
         elif "bangumi周表" in str(event.message_chain):
             #url = "https://api.bgm.tv/calendar"
             url = "https://bgm.tv/calendar"
-            path = "data/pictures/bangumi/calender/week-"
+            path = "data/pictures/bangumi/calendar/week-"
             width = 1080;height = 3000  
         else:
             return
