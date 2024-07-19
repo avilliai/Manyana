@@ -12,10 +12,10 @@ chatGLM: 69xxxxxxx               #chatGLM的apiKey，从https://open.bigmodel.cn
 gemini:                          #谷歌的gemini api，免费的，有几个填几个，在https://ai.google.dev/tutorials/setup?hl=zh-cn获取，需要配置proxy或GeminiRevProxy，否则无法使用
   - AIxxxxxxxxxx
 openaiSettings:
-  openai-keys:                     #openai官方的apikey
+  openai-keys:                   #openai官方的apikey
     - sk-Mxxxxxxxxxxx
-  openai-model: "gpt-3.5-turbo"    #调用openai api对应的模型，前提：在settings.yaml默认模型已经设置为gpt3.5，并配置了apikey
-  openai-transit: ""               #你自己的chatGPT中转站，你最好知道这是什么，否则就不要动。
+  openai-model: "gpt-3.5-turbo"  #调用openai api对应的模型，前提：在settings.yaml默认模型已经设置为gpt3.5，并配置了apikey
+  openai-transit: ""             #你自己的chatGPT中转站，你最好知道这是什么，否则就不要动。
 
 bing-image-creator:              #bing的ai绘画，参考https://github.com/avilliai/Manyana/issues/8
   _U: ""
