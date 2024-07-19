@@ -20,13 +20,15 @@ with open('config/api.yaml', 'r', encoding='utf-8') as f:
 CoziUrl = resulttr.get("cozi")
 geminiapikey = resulttr.get("gemini")
 proxy = resulttr.get("proxy")
-openai_transit=resulttr.get("openai-transit")
-
+openai_transit=resulttr.get("openaiSettings").get("openai-transit")
+gptkeys = resulttr.get("openaiSettings").get("openai-keys")
+openai_model=resulttr.get("openaiSettings").get("openai-model")
 GeminiRevProxy = resulttr.get("GeminiRevProxy")
 berturl = resulttr.get("bert_colab")
 if proxy != "":
     os.environ["http_proxy"] = proxy
-gptkeys = resulttr.get("openai-keys")
+
+
 chatGLM_api_key = resulttr.get("chatGLM")
 with open('config.json', 'r', encoding='utf-8') as f:
     data = yaml.load(f.read(), Loader=yaml.FullLoader)
@@ -218,9 +220,9 @@ async def modelReply(senderName, senderId, text, modelHere=modelDefault, trustUs
                     break
         elif modelHere == "gpt3.5":
             if openai_transit=="" or openai_transit==" ":
-                rep = await loop.run_in_executor(None, gptOfficial, prompt1, gptkeys, proxy, bot_in)
+                rep = await loop.run_in_executor(None, gptOfficial, prompt1, gptkeys, proxy, bot_in,openai_model)
             else:
-                rep = await loop.run_in_executor(None, gptUnofficial, prompt1, gptkeys, openai_transit, bot_in)
+                rep = await loop.run_in_executor(None, gptUnofficial, prompt1, gptkeys, openai_transit, bot_in,openai_model)
         elif modelHere=="binggpt4":
             #print(1)
             rep=await loop_run_in_executor(None,binggpt4,prompt1,bot_in)
