@@ -1,6 +1,5 @@
 # -*- coding: utf-8 -*-
 import datetime
-import json
 import sys
 from asyncio import sleep
 
@@ -8,9 +7,8 @@ import httpx
 import yaml
 from apscheduler.schedulers.asyncio import AsyncIOScheduler
 from apscheduler.triggers.cron import CronTrigger
-from mirai import Image, Voice
-from mirai import Mirai, WebSocketAdapter, FriendMessage, GroupMessage, At, Plain
-from mirai.models import MusicShare
+from mirai import GroupMessage
+from mirai import Image
 from mirai import Startup, Shutdown
 
 from plugins import weatherQuery
@@ -18,38 +16,28 @@ from plugins.aiReplyCore import modelReply
 from plugins.historicalToday import steamEpic
 from plugins.newsEveryDay import news, danxianglii, moyu, xingzuo
 from plugins.picGet import picDwn
-from plugins.translater import translate
-from plugins.webScreenShoot import webScreenShot,webScreenShoot
-
-import random
-import os
 
 
-def main(bot,proxy,nasa_api,logger):
+def main(bot, proxy, nasa_api, logger):
     with open('config/api.yaml', 'r', encoding='utf-8') as f:
         result = yaml.load(f.read(), Loader=yaml.FullLoader)
     api_KEY = result.get("weatherXinZhi")
     global data
-    with open('data/scheduledTasks.yaml', 'r',encoding='utf-8') as file:
+    with open('data/scheduledTasks.yaml', 'r', encoding='utf-8') as file:
         data = yaml.load(file, Loader=yaml.FullLoader)
-
-    keys=data.keys()
-    newsT=data.get("news").get("time").split("/")
+    keys = data.keys()
+    newsT = data.get("news").get("time").split("/")
     steamadd1 = data.get("steamadd1").get("time").split("/")
-    astronomy=data.get("astronomy").get("time").split("/")
+    astronomy = data.get("astronomy").get("time").split("/")
     moyur = data.get("moyu").get("time").split("/")
-    constellation=data.get("constellation").get("time").split("/")
-    sleepassistant=data.get("sleepassistant").get("time").split("/")
-    nightASMR=data.get("nightASMR").get("time").split("/")
-    bangumieveryday=data.get("bangumieveryday").get("time").split("/")
-    omofuneveryday=data.get("omofuneveryday").get("time").split("/")
+    constellation = data.get("constellation").get("time").split("/")
     if "danxiangli" in data:
-        danxiangli=data.get("danxiangli").get("time").split("/")
+        danxiangli = data.get("danxiangli").get("time").split("/")
     else:
-        danxiangli="16/10".split("/")
-        data["danxiangli"]={"text":"今日单向历"}
-        data["danxiangli"]["time"]="16/10"
-        data["danxiangli"]["groups"]=[699455559,12345]
+        danxiangli = "16/10".split("/")
+        data["danxiangli"] = {"text": "今日单向历"}
+        data["danxiangli"]["time"] = "16/10"
+        data["danxiangli"]["groups"] = [699455559, 12345]
         with open('data/scheduledTasks.yaml', 'w', encoding="utf-8") as file:
             yaml.dump(data, file, allow_unicode=True)
     global scheduler
@@ -61,9 +49,9 @@ def main(bot,proxy,nasa_api,logger):
     friendsAndGroups = result.get("加群和好友")
     aiReplyCore = result.get("chatGLM").get("aiReplyCore")
     trustDays = friendsAndGroups.get("trustDays")
-    scheduledTasks=result.get("scheduledTasks")
-    morningTime=str(scheduledTasks.get("morning").get("time")).split("/")
-    morningText=scheduledTasks.get("morning").get("text")
+    scheduledTasks = result.get("scheduledTasks")
+    morningTime = str(scheduledTasks.get("morning").get("time")).split("/")
+    morningText = scheduledTasks.get("morning").get("text")
     morningEnable = scheduledTasks.get("morning").get("enable")
 
     with open('data/userData.yaml', 'r', encoding='utf-8') as file:
@@ -97,6 +85,7 @@ def main(bot,proxy,nasa_api,logger):
                 times = int(str(Userdata.get('sts')))
                 if times > trustDays:
                     trustUser.append(str(i))
+
     @bot.on(Startup)
     def start_scheduler(_):
         scheduler.start()  # 启动定时器
@@ -111,6 +100,7 @@ def main(bot,proxy,nasa_api,logger):
             sys.exit(1)
         except:
             pass
+
     @scheduler.scheduled_job(CronTrigger(hour=int(newsT[0]), minute=int(newsT[1])))
     async def newsEveryDay():
         logger.info("获取新闻")
@@ -118,29 +108,31 @@ def main(bot,proxy,nasa_api,logger):
         logger.info("推送今日新闻")
         for i in data.get("news").get("groups"):
             try:
-                await bot.send_group_message(int(i), [data.get("news").get("text"),Image(path=path)])
+                await bot.send_group_message(int(i), [data.get("news").get("text"), Image(path=path)])
             except:
-                logger.error("不存在的群"+str(i))
+                logger.error("不存在的群" + str(i))
 
     @scheduler.scheduled_job(CronTrigger(hour=int(morningTime[0]), minute=int(morningTime[1])))
     async def MorningSendHello():
-        global trustUser,userdict
+        global trustUser, userdict
         logger.info("早间天气推送")
         if morningEnable:
             for i in trustUser:
                 try:
-                    city=userdict.get(i).get("city")
-                    logger.info("查询 " + city + " 天气")
+                    city = userdict.get(i).get("city")
+                    logger.info(f"查询 {city} 天气")
                     wSult = await weatherQuery.querys(city, api_KEY)
                     # 发送天气消息
                     if aiReplyCore:
-                        r = await modelReply(userdict.get(i).get("userName"), int(i), f"请你为我进行天气播报，下面是天气查询的结果：{wSult}")
-                        await bot.send_friend_message(int(i),r)
+                        r = await modelReply(userdict.get(i).get("userName"), int(i),
+                                             f"请你为我进行天气播报，下面是天气查询的结果：{wSult}")
+                        await bot.send_friend_message(int(i), r)
                     else:
-                        await bot.send_friend_message(int(i),morningText+wSult)
+                        await bot.send_friend_message(int(i), morningText + wSult)
                 except Exception as e:
                     logger.error(e)
                     continue
+
     @scheduler.scheduled_job(CronTrigger(hour=int(steamadd1[0]), minute=int(steamadd1[1])))
     async def steamEveryDay():
         logger.info("获取steam喜加一")
@@ -148,11 +140,12 @@ def main(bot,proxy,nasa_api,logger):
         logger.info("推送今日喜加一列表")
         for i in data.get("steamadd1").get("groups"):
             try:
-                if path==None or path=="":
+                if path is None or path == "":
                     return
-                await bot.send_group_message(int(i), [data.get("steamadd1").get("text")+"\n", path,Image(path="data\pictures\others\steamadd1.jpg")])
+                await bot.send_group_message(int(i), [data.get("steamadd1").get("text"), path])
             except:
-                logger.error("不存在的群"+str(i))
+                logger.error("不存在的群" + str(i))
+
     @scheduler.scheduled_job(CronTrigger(hour=int(astronomy[0]), minute=int(astronomy[1])))
     async def asffEveryDay():
         logger.info("获取今日nasa天文信息推送")
@@ -174,7 +167,7 @@ def main(bot,proxy,nasa_api,logger):
             # logger.info("下载缩略图")
             filename = await picDwn(response.json().get("url"),
                                     "data/pictures/nasa/" + response.json().get("date") + ".png")
-            txta = response.json().get("explanation")#await translate(response.json().get("explanation"), "EN2ZH_CN")
+            txta = response.json().get("explanation")  #await translate(response.json().get("explanation"), "EN2ZH_CN")
             txt = response.json().get("date") + "\n" + response.json().get("title") + "\n" + txta
             temp = {"path": "data/pictures/nasa/" + response.json().get("date") + ".png",
                     "oriTxt": response.json().get("explanation"), "transTxt": txt}
@@ -188,67 +181,11 @@ def main(bot,proxy,nasa_api,logger):
                 txt = r
             for i in data.get("astronomy").get("groups"):
                 try:
-                    await bot.send_group_message(int(i), [data.get("astronomy").get("text"), Image(path=filename),txt])
+                    await bot.send_group_message(int(i), [data.get("astronomy").get("text"), Image(path=filename), txt])
                 except:
                     logger.error("不存在的群" + str(i))
         except:
             logger.warning("获取每日天文图片失败")
-
-    @scheduler.scheduled_job(CronTrigger(hour=int(sleepassistant[0]), minute=int(sleepassistant[1])))
-    async def sleepAssistantEveryDay():
-        logger.info("获取提醒睡觉小助手")
-        logger.info("推送提醒睡觉小助手")
-        for i in data.get("sleepassistant").get("groups"):
-            try:
-                await bot.send_group_message(int(i), [data.get("sleepassistant").get("text"),Image(path="data\pictures\others\sleepassistant.png") ])
-            except:
-                logger.error("不存在的群"+str(i))
-
-    @scheduler.scheduled_job(CronTrigger(hour=int(nightASMR[0]), minute=int(nightASMR[1])))
-    async def nightASMREveryDay():
-        logger.info("获取晚安ASMR")
-        nightASMRList = os.listdir("data/ASMR/nightASMR")
-        c = random.choice(nightASMRList)
-        ASMRtitle=c.split("(")[0]
-        CV=c.split("(")[1].split(")")[0]
-        st1="今日ASMR:"+ASMRtitle+"\n"
-        st1+="CV："+CV+"\n"
-        st2="======================\n"
-        st2+=data.get("nightASMR").get("text")
-        logger.info("推送晚安ASMR")
-        for i in data.get("nightASMR").get("groups"):
-            try:
-                await bot.send_group_message(int(i), Voice(path="data/ASMR/nightASMR/" + c))
-                await bot.send_group_message(int(i), [st1,Image(path="data/ASMR/"+ASMRtitle+".jpg"),st2])
-            except:
-                logger.error("不存在的群"+str(i))
-        os.rename("data/ASMR/nightASMR/"+c,"data/ASMR/randomASMR/"+c)   #移动抽取文件到data/ASMR/randomASMR文件夹
-
-    @scheduler.scheduled_job(CronTrigger(hour=int(bangumieveryday[0]), minute=int(bangumieveryday[1])))
-    async def bangumieveryday():
-        logger.info("获取bangumi每日放送")
-        url = "https://www.bangumi.app/calendar/today"
-        path="data/pictures/bangumi/bangumieveryday.png"
-        webScreenShoot(url,path,1080,3000)              
-        logger.info("推送bangumi每日放送")
-        # 发送动画消息
-        for i in data.get("bangumieveryday").get("groups"):
-            try:
-                await bot.send_group_message(int(i), [data.get("bangumieveryday").get("text"),Image(path=path)])
-            except:
-                logger.error("不存在的群"+str(i))
-    @scheduler.scheduled_job(CronTrigger(hour=int(omofuneveryday[0]), minute=int(omofuneveryday[1])))
-    async def omofuneveryday():
-        logger.info("获取omofun每日放送")
-        url = "https://omofuns.top/label/week.html"
-        path="data/pictures/bangumi/omofuneveryday.png"
-        webScreenShoot(url,path,1080,3000)              
-        logger.info("推送omofun每日放送")
-        for i in data.get("omofuneveryday").get("groups"):
-            try:
-                await bot.send_group_message(int(i), [data.get("omofuneveryday").get("text"),Image(path=path)])
-            except:
-                logger.error("不存在的群"+str(i))
 
     @scheduler.scheduled_job(CronTrigger(hour=int(moyur[0]), minute=int(moyur[1])))
     async def moyuEveryDay():
@@ -257,9 +194,10 @@ def main(bot,proxy,nasa_api,logger):
         logger.info("推送摸鱼人日历")
         for i in data.get("moyu").get("groups"):
             try:
-                await bot.send_group_message(int(i), [data.get("moyu").get("text"),Image(path=path)])
+                await bot.send_group_message(int(i), [data.get("moyu").get("text"), Image(path=path)])
             except:
-                logger.error("不存在的群"+str(i))
+                logger.error("不存在的群" + str(i))
+
     @scheduler.scheduled_job(CronTrigger(hour=int(constellation[0]), minute=int(constellation[1])))
     async def constellationEveryDay():
         logger.info("获取星座运势")
@@ -267,48 +205,43 @@ def main(bot,proxy,nasa_api,logger):
         logger.info("推送星座运势")
         for i in data.get("constellation").get("groups"):
             try:
-                await bot.send_group_message(int(i), [data.get("constellation").get("text"),Image(path=path)])
+                await bot.send_group_message(int(i), [data.get("constellation").get("text"), Image(path=path)])
             except:
-                logger.error("不存在的群"+str(i))
+                logger.error("不存在的群" + str(i))
+
     @bot.on(GroupMessage)
     async def addSubds(event: GroupMessage):
         global data
-        if str(event.message_chain)=="/推送 摸鱼人日历":
-            key="moyu"
-        elif str(event.message_chain)=="/推送 每日天文":
-            key="astronomy"
-        elif str(event.message_chain)=="/推送 每日新闻":
-            key="news"
-        elif str(event.message_chain)=="/推送 喜加一":
-            key="steamadd1"
-        elif str(event.message_chain)=="/推送 每日星座":
-            key="constellation"
-        elif str(event.message_chain)=="/推送 单向历":
-            key="danxiangli"
-        elif str(event.message_chain)=="/推送 提醒睡觉小助手":
-            key="sleepassistant"
-        elif str(event.message_chain)=="/推送 晚安ASMR":
-            key="nightASMR"
-        else:
-            if str(event.message_chain)=="/推送 所有订阅":
-                for key in keys:
-                    la=data.get(key).get("groups")
-                    if event.group.id not in la:
-                        la.append(event.group.id)
-                        data[key]["groups"]=la
-                        with open('data/scheduledTasks.yaml', 'w', encoding="utf-8") as file:
-                            yaml.dump(data, file, allow_unicode=True)
-                await bot.send(event,"添加所有订阅成功")
+        try:
+            head, cmd, *o = str(event.message_chain).strip().split()
+        except ValueError:
             return
-        la=data.get(key).get("groups")
-        if event.group.id not in la:
-            la.append(event.group.id)
-            data[key]["groups"]=la
+        if o or head != '/推送' or not cmd:
+            return
+        cmds = {"摸鱼人日历": "moyu", "每日天文": "astronomy", "每日新闻": "news", "喜加一": "steamadd1",
+                "每日星座": "constellation", "单向历": "danxiangli", }
+        key = cmds.get(cmd, 'unknown')
+        if key == 'unknown':
+            return
+        if cmd == "所有订阅":
+            for key in keys:
+                la = data.get(key).get("groups")
+                if event.group.id not in la:
+                    la.append(event.group.id)
+                    data[key]["groups"] = la
             with open('data/scheduledTasks.yaml', 'w', encoding="utf-8") as file:
                 yaml.dump(data, file, allow_unicode=True)
-            await bot.send(event,"添加订阅成功，推送时间："+str(data.get(key).get("time")))
+            await bot.send(event, "添加所有订阅成功")
         else:
-            await bot.send(event,"添加失败，已经添加过对应的任务。")
+            la = data.get(key).get("groups")
+            if event.group.id not in la:
+                la.append(event.group.id)
+                data[key]["groups"] = la
+                with open('data/scheduledTasks.yaml', 'w', encoding="utf-8") as file:
+                    yaml.dump(data, file, allow_unicode=True)
+                await bot.send(event, "添加订阅成功，推送时间：" + str(data.get(key).get("time")))
+            else:
+                await bot.send(event, "添加失败，已经添加过对应的任务。")
 
     @scheduler.scheduled_job(CronTrigger(hour=int(danxiangli[0]), minute=int(danxiangli[1])))
     async def danxiangliy():
@@ -317,46 +250,44 @@ def main(bot,proxy,nasa_api,logger):
         logger.info("推送单向历")
         for i in data.get("danxiangli").get("groups"):
             try:
-                if path == None:
+                if path is None:
                     return
-                await bot.send_group_message(int(i), [data.get("danxiangli").get("text"),Image(path=path)])
+                await bot.send_group_message(int(i), [data.get("danxiangli").get("text"), Image(path=path)])
             except:
                 logger.error("不存在的群" + str(i))
+
     @bot.on(GroupMessage)
     async def cancelSubds(event: GroupMessage):
         global data
-        if str(event.message_chain)=="/取消 摸鱼人日历":
-            key="moyu"
-        elif str(event.message_chain)=="/取消 每日天文":
-            key="astronomy"
-        elif str(event.message_chain)=="/取消 每日新闻":
-            key="news"
-        elif str(event.message_chain)=="/取消 喜加一":
-            key="steamadd1"
-        elif str(event.message_chain)=="/取消 每日星座":
-            key="constellation"
-        elif str(event.message_chain)=="/取消 单向历":
-            key="danxiangli"
-        elif str(event.message_chain)=="/取消 提醒睡觉小助手":
-            key="sleepassistant"
-        elif str(event.message_chain)=="/取消 晚安ASMR":
-            key="nightASMR"
+        if str(event.message_chain) == "/取消 摸鱼人日历":
+            key = "moyu"
+        elif str(event.message_chain) == "/取消 每日天文":
+            key = "astronomy"
+        elif str(event.message_chain) == "/取消 每日新闻":
+            key = "news"
+        elif str(event.message_chain) == "/取消 喜加一":
+            key = "steamadd1"
+        elif str(event.message_chain) == "/取消 每日星座":
+            key = "constellation"
+        elif str(event.message_chain) == "/取消 单向历":
+            key = "danxiangli"
         else:
-            if str(event.message_chain)=="/取消 所有订阅":
+            if str(event.message_chain) == "/取消 所有订阅":
                 for key in keys:
-                    la=data.get(key).get("groups")
-                    la.remove(event.group.id)
-                    data[key]["groups"]=la
-                    with open('data/scheduledTasks.yaml', 'w', encoding="utf-8") as file:
-                        yaml.dump(data, file, allow_unicode=True)
-                await bot.send(event,"取消所有订阅成功")
+                    la = data.get(key).get("groups")
+                    if event.group.id in la:
+                        la.remove(event.group.id)
+                        data[key]["groups"] = la
+                with open('data/scheduledTasks.yaml', 'w', encoding="utf-8") as file:
+                    yaml.dump(data, file, allow_unicode=True)
+                await bot.send(event, "取消所有订阅成功")
             return
-        la=data.get(key).get("groups")
+        la = data.get(key).get("groups")
         if event.group.id in la:
             la.remove(event.group.id)
-            data[key]["groups"]=la
+            data[key]["groups"] = la
             with open('data/scheduledTasks.yaml', 'w', encoding="utf-8") as file:
                 yaml.dump(data, file, allow_unicode=True)
-            await bot.send(event,"取消订阅成功")
+            await bot.send(event, "取消订阅成功")
         else:
-            await bot.send(event,"取消失败，没有添加过对应的任务。")
+            await bot.send(event, "取消失败，没有添加过对应的任务。")
