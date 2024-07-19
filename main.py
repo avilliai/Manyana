@@ -19,7 +19,7 @@ from plugins.RandomStr import random_str
 from plugins.newLogger import newLogger
 from plugins.systeminfo import get_system_info
 from run import aiReply, voiceReply, nudgeReply, wikiHelper, imgSearch, extraParts, wReply, userSign, groupManager, \
-    musicShare, LiveMonitor, aronaapi, groupGames, musicpick, scheduledTasks, appCard, aiDraw, starRail,bangumi,osu
+    musicShare, LiveMonitor, aronaapi, groupGames, musicpick, scheduledTasks, appCard, aiDraw, starRail,bangumi
 
 if __name__ == '__main__':
     with open('config.json', 'r', encoding='utf-8') as f:
