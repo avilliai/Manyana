@@ -15,7 +15,7 @@ from mirai.models.events import BotInvitedJoinGroupRequestEvent, NewFriendReques
     MemberJoinEvent, MemberMuteEvent, MemberUnmuteEvent, BotUnmuteEvent, BotLeaveEventKick, MemberLeaveEventKick, \
     MemberLeaveEventQuit
 from plugins.newsEveryDay import get_headers
-from plugins.webScreenShoot import webScreenShoot
+from plugins.webScreenShoot import screenshot_to_pdf_and_png
 from plugins.bangumisearch import bangumisearch
 
 def main(bot,logger):
@@ -105,7 +105,7 @@ def main(bot,logger):
         today = datetime.datetime.now().strftime("%Y-%m-%d")
         path = path+today+".png"   
         try:
-            webScreenShoot(url,path,1080,3000)                
+            screenshot_to_pdf_and_png(url,path,1080,3000)                
             await bot.send(event,[f"{str(event.message_chain)} {today}：",Image(path=path)], True)  
         except Exception as  e:
             logger.error(e)   
@@ -141,7 +141,7 @@ def main(bot,logger):
         path = "data/pictures/bangumi/search/"+keywords+".png"
         try:
             str0 = f"{bangumisearch(url)[0]}\n请发送编号进入详情页，或发送退出退出查询"
-            webScreenShoot(url,path,1080,1750)
+            screenshot_to_pdf_and_png(url,path,1080,1750)
             await bot.send(event,[str0,Image(path=path)],True)
             global switch
             global searchtask
@@ -184,7 +184,7 @@ def main(bot,logger):
                     return
                 try:
                     logger.info("正在获取"+title+"详情")
-                    webScreenShoot(url,path,1080,1750)
+                    screenshot_to_pdf_and_png(url,path,1080,1750)
                     await bot.send(event,["查询结果：",title,Image(path=path)], True)
                 except Exception as  e:
                     logger.error(e)
