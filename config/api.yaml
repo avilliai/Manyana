@@ -7,19 +7,27 @@ siZhiAi:                         #思知ai，已不建议使用，建议用ai，
   - 5298b4b366987f06ab07b9015bb6a5a2    # 第一个apiKey
   - 806948824e6e559ff64ba689901483be    # 第二个，所有多apikey都可以这样填写
 nasa_api: HSxxxxxxx              #nasa相关天文api 从https://api.nasa.gov/index.html#main-content申请
+
 chatGLM: 69xxxxxxx               #chatGLM的apiKey，从https://open.bigmodel.cn/获取
 gemini:                          #谷歌的gemini api，免费的，有几个填几个，在https://ai.google.dev/tutorials/setup?hl=zh-cn获取，需要配置proxy或GeminiRevProxy，否则无法使用
   - AIxxxxxxxxxx
-openai-keys:                     #openai官方的apikey
-  - sk-Mxxxxxxxxxxx
+openaiSettings:
+  openai-keys:                   #openai官方的apikey
+    - sk-Mxxxxxxxxxxx
+  openai-model: "gpt-3.5-turbo"  #调用openai api对应的模型，前提：在settings.yaml默认模型已经设置为gpt3.5，并配置了apikey
+  openai-transit: ""             #你自己的chatGPT中转站，你最好知道这是什么，否则就不要动。
+
 bing-image-creator:              #bing的ai绘画，参考https://github.com/avilliai/Manyana/issues/8
   _U: ""
   KievRPSSecAuth: ""
+
 proxy: ''                        #代理 http://127.0.0.1:端口 如http://127.0.0.1:10809 自己设置对应的端口，没有就不填，v2ray一般是10809，clash一般7890，ssr一般1080
 sock5-proxy: ""                  #sock5代理，如使用bing-imagecreator必须配置，取决于你自己代理的端口。
 GeminiRevProxy: ""               #基于netlify反向代理，搭建后本地环境无需开启代理即可访问Gemini，参考https://github.com/avilliai/Manyana/issues/17
+
 FishTTSAuthorization: ""         #FishTTS语音合成必要参数，看https://github.com/avilliai/Manyana/issues/19
 sdUrl: ""                        #你自己搭建的sd，地址，示例http://127.0.0.1:17858（示例≠你能直接填示例用），部署https://www.bilibili.com/video/BV1iM4y1y7oA/
+
 #下面的不建议你去折腾哈
 modelscopeCookie: ''            #modescopeTTS增加反爬虫，默认留空用我的，如不能用了自行抓取cookie，查看https://github.com/avilliai/Manyana/issues/7
 bert_colab: https://mess-addressed-openings-exposed.trycloudflare.com/synthesize        #新版本Manyana无需配置此功能，语音合成选modelscopeTTS模式可直接使用。但如果你喜欢折腾：bert_vits_colab部署：https://colab.research.google.com/drive/1n8lI6pOiDtli2zC5fL9PZ9TZqbOafqma?usp=sharing 请注意，使用此功能必须配置上面的proxy项
