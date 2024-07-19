@@ -1,4 +1,5 @@
 # -*- coding:utf-8 -*-
+import copy
 import os
 import random
 
@@ -28,17 +29,18 @@ def gptOfficial(prompt, apikeys, proxy, bot_info):
     return {"role": "assistant", "content": chat_completion.choices[0].message.content}
 
 
-def gptUnofficial(prompt, apikeys, proxy, bot_info):
+def gptUnofficial(prompt, apikeys, transitURL, bot_info):
     os.environ["OPENAI_API_KEY"] = random.choice(apikeys)
     client = OpenAI(
         # This is the default and can be omitted
-        base_url="https://api.chatanywhere.com.cn",
+        base_url=transitURL,
         api_key=os.environ.get("OPENAI_API_KEY"),
     )
-    prompt.insert(0, {"role": "user", "content": bot_info})
-    prompt.insert(1, {"role": "assistant", "content": "好的，已了解您的需求~我会扮演好您设定的角色。"})
+    prompt_copy = copy.deepcopy(prompt)
+    prompt_copy.insert(0, {"role": "user", "content": bot_info})
+    prompt_copy.insert(1, {"role": "assistant", "content": "好的，已了解您的需求~我会扮演好您设定的角色。"})
     chat_completion = client.chat.completions.create(
-        messages=prompt,
+        messages=prompt_copy,
         model="gpt-3.5-turbo",
         stream=False,
     )

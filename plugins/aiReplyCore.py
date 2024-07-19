@@ -20,6 +20,7 @@ with open('config/api.yaml', 'r', encoding='utf-8') as f:
 CoziUrl = resulttr.get("cozi")
 geminiapikey = resulttr.get("gemini")
 proxy = resulttr.get("proxy")
+openai_transit=resulttr.get("openai-transit")
 
 GeminiRevProxy = resulttr.get("GeminiRevProxy")
 berturl = resulttr.get("bert_colab")
@@ -216,8 +217,10 @@ async def modelReply(senderName, senderId, text, modelHere=modelDefault, trustUs
                     logger.info(f"random模型选择结果：{priority}: {rep}")
                     break
         elif modelHere == "gpt3.5":
-
-            rep = await loop.run_in_executor(None, gptOfficial, prompt1, gptkeys, proxy, bot_in)
+            if openai_transit=="" or openai_transit==" ":
+                rep = await loop.run_in_executor(None, gptOfficial, prompt1, gptkeys, proxy, bot_in)
+            else:
+                rep = await loop.run_in_executor(None, gptUnofficial, prompt1, gptkeys, openai_transit, bot_in)
         elif modelHere=="binggpt4":
             #print(1)
             rep=await loop_run_in_executor(None,binggpt4,prompt1,bot_in)

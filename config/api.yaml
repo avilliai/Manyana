@@ -12,6 +12,7 @@ gemini:                          #谷歌的gemini api，免费的，有几个填
   - AIxxxxxxxxxx
 openai-keys:                     #openai官方的apikey
   - sk-Mxxxxxxxxxxx
+openai-transit: ""               #你自己的chatGPT中转站，你最好知道这是什么，否则就不要动。
 bing-image-creator:              #bing的ai绘画，参考https://github.com/avilliai/Manyana/issues/8
   _U: ""
   KievRPSSecAuth: ""
