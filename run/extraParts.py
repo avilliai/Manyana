@@ -650,7 +650,6 @@ def main(bot,logger):
             c = random.choice(colorfulCharacterList)
             await bot.send(event, Image(path="data/colorfulAnimeCharacter/" + c))
 
-
     @bot.on(Startup)
     async def updateData(event: Startup):
         while True:
@@ -669,15 +668,14 @@ def main(bot,logger):
 
     @bot.on(GroupMessage)
     async def randomASMR(event: GroupMessage):
-        if ("随机奥术" in str(event.message_chain) and At(bot.qq) in event.message_chain) or str(
-                event.message_chain) == "随机奥术":
+        if ("奥术魔刃" in str(event.message_chain) and At(bot.qq) in event.message_chain) or str(event.message_chain) == "奥术魔刃":
             logger.info("奥术魔刃，启动！")
             c = random.choice(randomASMRList)
-            ASMRtitle=c.split("(")[0]
-            CV=c.split("(")[1].split(")")[0]
-            st1="Title:"+ASMRtitle+"\n"
-            st1+="CV："+CV+"\n"
-            st2="======================\n"
+            ASMRtitle = c.split("(")[0]
+            CV = c.split("(")[1].split(")")[0]
+            st1 = "Title:"+ASMRtitle+"\n"
+            st1 += "CV："+CV+"\n"
+            st2 = "======================\n"
             await bot.send(event,Voice(path="data/ASMR/randomASMR/" + c))
             await bot.send(event,[st1,Image(path="data/ASMR/"+ASMRtitle+".jpg"),st2])
 
@@ -712,7 +710,7 @@ def main(bot,logger):
                     #await bot.send(event, f"{r.json().get("hitokoto")}\n——《{r.json().get("from")}》 {r.json().get("from_who")}")
                     await bot.send(event, r.json().get("hitokoto")+"\n——《"+r.json().get("from")+"》 "+r.json().get("from_who"))
                 except:
-                    logger.error("角色未知，重新发送")
+                    logger.error("来源角色未知，重新发送")
                     await bot.send(event, r.json().get("hitokoto")+"\n——《"+r.json().get("from")+"》 ")
         except Exception as e:
             logger.error(e)
@@ -733,3 +731,37 @@ def main(bot,logger):
             except Exception as e:
                 logger.error(e)
                 await bot.send(event, "穿越失败，请稍后再试")
+
+    @bot.on(GroupMessage)
+    async def Anime_listentest(event: GroupMessage):
+        if str(event.message_chain).startswith("听音猜动漫"):
+            try:
+                name=event.sender.member_name
+                if At in event.message_chain:
+                    id=event.message_chain.split("at:")[1].split("]")[0]
+                    name=id
+                url = 'https://api.lolimi.cn/API/ListenTest/?name='+ name
+                async with httpx.AsyncClient(timeout=20) as client:
+                    r = await client.get(url)
+                    logger.info(r.json().get("text"))
+                    await bot.send(event,r.json().get("text"))
+            except Exception as e:
+                logger.error(e)
+                await bot.send(event, "听音猜动漫失败，请稍后再试")
+
+    @bot.on(GroupMessage)
+    async def Anime_listentest(event: GroupMessage):
+        if str(event.message_chain).startswith("听音猜动漫"):
+            try:
+                name=event.sender.member_name
+                if At in event.message_chain:
+                    id=event.message_chain.split("at:")[1].split("]")[0]
+                    name=id
+                url = 'https://api.lolimi.cn/API/ListenTest/?name='+ name
+                async with httpx.AsyncClient(timeout=20) as client:
+                    r = await client.get(url)
+                    logger.info(r.json().get("text"))
+                    await bot.send(event,r.json().get("text"))
+            except Exception as e:
+                logger.error(e)
+                await bot.send(event, "听音猜动漫失败，请稍后再试")
