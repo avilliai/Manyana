@@ -1,178 +1,66 @@
-# -*- coding:utf-8 -*-
-import datetime
-import re
-from asyncio import sleep
-from mirai.models import ForwardMessageNode, Forward
-from mirai import Image, Voice, Startup, MessageChain
-from mirai import GroupMessage
-from plugins.webScreenShoot import screenshot_to_pdf_and_png
-from plugins.bangumisearch import bangumisearch, banguimiList
 
+from bs4 import BeautifulSoup
 
-def main(bot,logger):
-    global searchtask
-    searchtask={}
-    global switch
-    switch=0
-    logger.info("Bangumi功能已启动")
-    @bot.on(GroupMessage)
-    async def animerank(event: GroupMessage):
-        if ("新番排行" in str(event.message_chain)) or ("新番top" in str(event.message_chain)):
-            year=datetime.datetime.now().strftime("%Y")    # 默认当前年份，修一个问题
-            month=datetime.datetime.now().strftime("%m")   # 默认当前月份
-        elif ("番剧排行" in str(event.message_chain)) or ("番剧top" in str(event.message_chain))\
-            or ("动画排行" in str(event.message_chain)) or ("动画top" in str(event.message_chain)):
-            year=""                                        # 默认空值,表示全部
-            month=""                                       # 默认空值,表示全部         
-        else:
-            return
-        try:
-            finalT,finalC=await banguimiList(year,month)
-            str0 = year + "年" + month + "月 | Bangumi 番组计划\n"
-            combined_list = []
-            for elem1, elem2 in zip(finalT, finalC):
-                b1 = ForwardMessageNode(sender_id=bot.qq, sender_name="Manyana",
-                                        message_chain=MessageChain([Image(url=elem2),elem1]))
-                combined_list.append(b1)
+from plugins.newsEveryDay import get_headers
 
-            #print(combined_list)
+import httpx
+async def banguimiList(year,month,top):
 
-            logger.info("获取番剧排行成功")
-            await bot.send(event, Forward(node_list=combined_list))
-        except Exception as  e:
-            logger.error(e)
-            await bot.send(event,"获取番剧信息失败，请稍后再试")
+    rank = 1  # 排名
+    page = 1  # 页数
+    finNal_Cover = []
+    fiNal_Text=[]
+    isbottom = 0  # 标记是否到底
+    page = top // 24  # 计算页数
+    if top % 24 != 0:
+        page += 1  # 向上取整
+    for i in range(1, page + 1):
+        url = f"https://bgm.tv/anime/browser/airtime/{year}-{month}?sort=rank&page={i}"  # 构造请求网址，page参数为第i页
+        async with httpx.AsyncClient(timeout=20, headers=get_headers()) as client:  # 100s超时
+            response = await client.get(url)  # 发起请求
+        soup = BeautifulSoup(response.content, "html.parser")
+        name_list = soup.find_all("h3")  # 获取番剧名称列表
+        score_list = soup.find_all("small", class_="fade")  # 获取番剧评分列表
+        popularity_list = soup.find_all("span", class_="tip_j")  # 获取番剧评分人数列表)
+        anime_items = soup.find_all("img", class_="cover")
 
-    @bot.on(GroupMessage)
-    async def bangumi_calendar(event: GroupMessage):               
-        if str(event.message_chain)=="bangumi今日放送":
-            url = "https://www.bangumi.app/calendar/today"
-            path = "data/pictures/cache/today-"
-        elif str(event.message_chain)=="bangumi周表":
-            #url = "https://api.bgm.tv/calendar"
-            url = "https://bgm.tv/calendar"
-            path = "data/pictures/cache/week-"
-        elif str(event.message_chain)==("bangumi热门"):
-            url = "https://www.bangumi.app/hot/anime"
-            path = "data/pictures/cache/hot-"
-        else:
-            return
-        today = datetime.datetime.now().strftime("%Y-%m-%d")
-        path = path+today+".png"   
-        try:
-            await screenshot_to_pdf_and_png(url,path,1080,3000)
-            await bot.send(event,[f"{str(event.message_chain)} {today}：",Image(path=path)], True)  
-        except Exception as  e:
-            logger.error(e)   
-            await bot.send(event,"获取bangumi信息失败，请稍后再试")
+        for iCover in anime_items:
+            src_value = str(iCover).split('src="')[1].split('"')[0]
+            # 自动补全https前缀
+            src_url = f"https:{src_value}"
+            finNal_Cover.append(src_url)
 
-    @bot.on(GroupMessage)
-    async def bangumi_search(event: GroupMessage):
-        if "bangumi查询" in str(event.message_chain):
-                #url="https://api.bgm.tv/search/subject/"+str(event.message_chain).split(" ")[1]
-                cat="all"
-                keywords = str(event.message_chain).replace(" ", "").split("查询")[1]
-        elif "查询动画" in str(event.message_chain) or "查询番剧" in str(event.message_chain):
-                cat=2
-                keywords = str(event.message_chain).replace(" ", "").split("动画")[1]
-        elif "查询书籍" in str(event.message_chain):
-                cat=1
-                keywords = str(event.message_chain).replace(" ", "").split("书籍")[1]
-        elif "查询游戏" in str(event.message_chain):
-                cat=4
-                keywords = str(event.message_chain).replace(" ", "").split("游戏")[1]
-        elif "查询音乐" in str(event.message_chain):
-                cat=3
-                keywords = str(event.message_chain).replace(" ", "").split("音乐")[1]
-        elif "查询三次元" in str(event.message_chain):
-                cat=6
-                keywords = str(event.message_chain).replace(" ", "").split("三次元")[1]
-        # elif "查询人物" in str(event.message_chain):
-        #         cat="all";type="mono";sign="h2"
-        # elif "查询虚拟角色" in str(event.message_chain):
-        #         cat="crt";type="mono";sign="h2"
-        # elif "查询现实人物" in str(event.message_chain):
-        #         cat="prsn";type="mono";sign="h2"
-        else:
-            return
-        logger.info("正在查询：" + keywords)
-
-        url = f"https://bgm.tv/subject_search/{keywords}?cat={cat}"
-
-        path = "data/pictures/cache/"+keywords+".png"
-        global searchtask #变量提前，否则可能未定义
-        try:
-            r=await bangumisearch(url)
-            str0 = f"{r[0]}\n请发送编号进入详情页，或发送退出退出查询"
-            await screenshot_to_pdf_and_png(url,path,1080,1750)
-            await bot.send(event,[str0,Image(path=path)],True)
-            global switch
-
-            searchtask[event.sender.id]=keywords,cat
-            switch=1
-        except Exception as  e:
-            logger.error(e)
-            searchtask.pop(event.sender.id)
-            await bot.send(event,"查询失败，请稍后再试")       
-
-    @bot.on(GroupMessage)
-    async def bangumi_search_detail(event: GroupMessage):
-        global searchtask
-        if event.sender.id in searchtask:
+        for j in range(len(score_list)):
             try:
-                if str(event.message_chain) == "退出":
-                    searchtask.pop(event.sender.id)
-                    await bot.send(event,"已退出查询")
-                    return
-                keywords,cat=searchtask[event.sender.id]
-                url = f"https://bgm.tv/subject_search/{keywords}?cat={cat}"
-                resu=await bangumisearch(url) #原先两次查询，冗余了
-                subjectlist=resu[1]
-                crtlist=resu[2]
-                order = int(str(event.message_chain))
-                if str(event.message_chain).startswith("0") and order<=len(crtlist):
-                    crt = crtlist[order-1].find("a")["href"]
-                    url="https://bgm.tv"+crt
-                    logger.info("正在获取"+crt+"详情")
-                    path = f"data/pictures/cache/search-{keywords}-0{order}.png"
-                    title=crtlist[order-1].find("a").string
-                elif 1 <= order <= len(subjectlist):
-                    subject = subjectlist[order-1].find("a")["href"]
-                    url="https://bgm.tv"+subject
-                    logger.info("正在获取"+subject+"详情")
-                    path = f"data/pictures/cache/search-{keywords}-{order}.png"
-                    title=subjectlist[order-1].find("a").string
-                else:
-                    await bot.send(event,"查询失败！不规范的操作")
-                    searchtask.pop(event.sender.id)
-                    return
-                try:
-                    logger.info("正在获取"+title+"详情")
-                    await screenshot_to_pdf_and_png(url,path,1080,1750)
-                    await bot.send(event,["查询结果：",title,Image(path=path)], True)
-                except Exception as  e:
-                    logger.error(e)
-                    await bot.send(event,"查询失败，请稍后再试")
-                searchtask.pop(event.sender.id)
-            except Exception as  e:
-                logger.error(e)
-                searchtask.pop(event.sender.id)
-                await bot.send(event,"查询失败！不规范的操作")
+                name_jp = name_list[j].find("small", class_="grey").string + "\n    "  # 获取番剧日文名称
+            except:
+                name_jp = ""
+            name_ch = name_list[j].find("a", class_="l").string  # 获取番剧中文名称
+            score = score_list[j].string  # 获取番剧评分
+            popularity = popularity_list[j].string  # 获取番剧评分人数
+            fiNal_Text.append("{:<3}".format(rank)+f"{name_jp}{name_ch}\n    {score}☆  {popularity}\n")
+            if rank == top:  # 达到显示上限
+                break
+            rank += 1
+        if rank % 24 != 1 and rank < top:  # 到底了
+            isbottom = 1
+            break
+    return fiNal_Text,finNal_Cover,isbottom
 
-    @bot.on(GroupMessage)
-    async def bangumi_search_timeout(event: GroupMessage):
-        global searchtask
-        global switch
-        if event.sender.id in searchtask:
-            if switch:
-                switch=0    #保证只发送一次超时提示
-                await sleep(60*3)
-                if event.sender.id in searchtask:   #检验查询是否结束
-                    searchtask.pop(event.sender.id)
-                    await bot.send(event,"查询超时，已自动退出",True)
-
-
-        
-  
-                     
-            
+async def bangumisearch(url):
+    async with httpx.AsyncClient(timeout=20,headers=get_headers()) as client:  # 100s超时
+        response = await client.get(url)  # 发起请求
+    soup = BeautifulSoup(response.content, "html.parser")
+    subjectlist=soup.find_all("h3")[0:-2]
+    crtlist = soup.find_all("h3")[-2].find_all("dd")
+    if len(crtlist) == 0:
+        subjectlist=soup.find_all("h3")[0:-3]
+        crtlist = soup.find_all("h3")[-3].find_all("dd")
+    str0=soup.find("title").string+"\n"
+    for i in range(len(subjectlist)):
+        str0+=f"{i+1}.{subjectlist[i].find('a').string}\n"
+    str0+="相关人物：\n"
+    for j in range(len(crtlist)):
+        str0+=f"0{j+1}.{crtlist[j].string}\n"
+    list=[str0,subjectlist,crtlist]
+    return list
