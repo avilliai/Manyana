@@ -1,15 +1,12 @@
 # -*- coding:utf-8 -*-
 import datetime
-import json
 import re
 from asyncio import sleep
-import httpx
-import yaml
 import requests
 from bs4 import BeautifulSoup
 
-from mirai import Image, Voice, Startup
-from mirai import Mirai, WebSocketAdapter, FriendMessage, GroupMessage
+from mirai import Image
+from mirai import GroupMessage
 from plugins.newsEveryDay import get_headers
 from plugins.webScreenShoot import screenshot_to_pdf_and_png
 from plugins.bangumisearch import bangumisearch
@@ -23,7 +20,7 @@ def main(bot,logger):
     @bot.on(GroupMessage)
     async def animerank(event: GroupMessage):
         if ("新番排行" in str(event.message_chain)) or ("新番top" in str(event.message_chain)):
-            year=datetime.datetime.now().strftime新番排行("%Y")    # 默认当前年份
+            year=datetime.datetime.now().strftime("%Y")    # 默认当前年份，修一个问题
             month=datetime.datetime.now().strftime("%m")   # 默认当前月份
         elif ("番剧排行" in str(event.message_chain)) or ("番剧top" in str(event.message_chain))\
             or ("动画排行" in str(event.message_chain)) or ("动画top" in str(event.message_chain)):
@@ -102,7 +99,7 @@ def main(bot,logger):
         today = datetime.datetime.now().strftime("%Y-%m-%d")
         path = path+today+".png"   
         try:
-            screenshot_to_pdf_and_png(url,path,1080,3000)                
+            await screenshot_to_pdf_and_png(url,path,1080,3000)
             await bot.send(event,[f"{str(event.message_chain)} {today}：",Image(path=path)], True)  
         except Exception as  e:
             logger.error(e)   
@@ -132,16 +129,17 @@ def main(bot,logger):
         else:
             return
          
-        keywords = str(event.message_chain).split(" ")[1]
+        keywords = str(event.message_chain).split("查询")[1]
         url = f"https://bgm.tv/subject_search/{keywords}?cat={cat}"
         logger.info("正在查询："+keywords)
         path = "data/pictures/bangumi/search/"+keywords+".png"
+        global searchtask #变量提前，否则可能未定义
         try:
             str0 = f"{bangumisearch(url)[0]}\n请发送编号进入详情页，或发送退出退出查询"
-            screenshot_to_pdf_and_png(url,path,1080,1750)
+            await screenshot_to_pdf_and_png(url,path,1080,1750)
             await bot.send(event,[str0,Image(path=path)],True)
             global switch
-            global searchtask
+
             searchtask[event.sender.id]=keywords,cat
             switch=1
         except Exception as  e:
@@ -181,7 +179,7 @@ def main(bot,logger):
                     return
                 try:
                     logger.info("正在获取"+title+"详情")
-                    screenshot_to_pdf_and_png(url,path,1080,1750)
+                    await screenshot_to_pdf_and_png(url,path,1080,1750)
                     await bot.send(event,["查询结果：",title,Image(path=path)], True)
                 except Exception as  e:
                     logger.error(e)
