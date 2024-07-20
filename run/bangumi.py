@@ -9,11 +9,7 @@ import requests
 from bs4 import BeautifulSoup
 
 from mirai import Image, Voice, Startup
-from mirai import Mirai, WebSocketAdapter, FriendMessage, GroupMessage, At, Plain
-from mirai.models.events import BotInvitedJoinGroupRequestEvent, NewFriendRequestEvent, MemberJoinRequestEvent, \
-    MemberHonorChangeEvent, MemberCardChangeEvent, BotMuteEvent, MemberSpecialTitleChangeEvent, BotJoinGroupEvent, \
-    MemberJoinEvent, MemberMuteEvent, MemberUnmuteEvent, BotUnmuteEvent, BotLeaveEventKick, MemberLeaveEventKick, \
-    MemberLeaveEventQuit
+from mirai import Mirai, WebSocketAdapter, FriendMessage, GroupMessage
 from plugins.newsEveryDay import get_headers
 from plugins.webScreenShoot import screenshot_to_pdf_and_png
 from plugins.bangumisearch import bangumisearch
@@ -27,7 +23,7 @@ def main(bot,logger):
     @bot.on(GroupMessage)
     async def animerank(event: GroupMessage):
         if ("新番排行" in str(event.message_chain)) or ("新番top" in str(event.message_chain)):
-            year=datetime.datetime.now().strftime("%Y")    # 默认当前年份
+            year=datetime.datetime.now().strftime新番排行("%Y")    # 默认当前年份
             month=datetime.datetime.now().strftime("%m")   # 默认当前月份
         elif ("番剧排行" in str(event.message_chain)) or ("番剧top" in str(event.message_chain))\
             or ("动画排行" in str(event.message_chain)) or ("动画top" in str(event.message_chain)):
@@ -97,7 +93,8 @@ def main(bot,logger):
             #url = "https://api.bgm.tv/calendar"
             url = "https://bgm.tv/calendar"
             path = "data/pictures/bangumi/calendar/week-" 
-        elif str(event.message_chain)=="bangumi热门":
+        elif str(event.message_chain)==(""
+                                        ""):
             url = "https://www.bangumi.app/hot/anime"
             path = "data/pictures/bangumi/hot-"
         else:
