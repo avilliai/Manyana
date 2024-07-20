@@ -1,11 +1,12 @@
-import requests
+
 from bs4 import BeautifulSoup
 
 from plugins.newsEveryDay import get_headers
 
-
-def bangumisearch(url):       
-    response = requests.get(url, headers=get_headers())
+import httpx
+async def bangumisearch(url):
+    async with httpx.AsyncClient(timeout=20,headers=get_headers()) as client:  # 100s超时
+        response = await client.get(url)  # 发起请求
     soup = BeautifulSoup(response.content, "html.parser")
     subjectlist=soup.find_all("h3")[0:-2]
     crtlist = soup.find_all("h3")[-2].find_all("dd")

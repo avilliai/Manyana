@@ -13,8 +13,8 @@ from plugins.bangumisearch import bangumisearch
 
 def main(bot,logger):
     global searchtask
-    global switch
     searchtask={}
+    global switch
     switch=0
     logger.info("Bangumi功能已启动")
     @bot.on(GroupMessage)
@@ -110,16 +110,22 @@ def main(bot,logger):
         if "bangumi查询" in str(event.message_chain):
                 #url="https://api.bgm.tv/search/subject/"+str(event.message_chain).split(" ")[1]
                 cat="all"
+                keywords = str(event.message_chain).replace(" ", "").split("查询")[1]
         elif "查询动画" in str(event.message_chain) or "查询番剧" in str(event.message_chain):
                 cat=2
+                keywords = str(event.message_chain).replace(" ", "").split("动画")[1]
         elif "查询书籍" in str(event.message_chain):
                 cat=1
+                keywords = str(event.message_chain).replace(" ", "").split("书籍")[1]
         elif "查询游戏" in str(event.message_chain):
                 cat=4
+                keywords = str(event.message_chain).replace(" ", "").split("游戏")[1]
         elif "查询音乐" in str(event.message_chain):
                 cat=3
+                keywords = str(event.message_chain).replace(" ", "").split("音乐")[1]
         elif "查询三次元" in str(event.message_chain):
                 cat=6
+                keywords = str(event.message_chain).replace(" ", "").split("三次元")[1]
         # elif "查询人物" in str(event.message_chain):
         #         cat="all";type="mono";sign="h2"
         # elif "查询虚拟角色" in str(event.message_chain):
@@ -129,7 +135,7 @@ def main(bot,logger):
         else:
             return
          
-        keywords = str(event.message_chain).split("查询")[1]
+
         url = f"https://bgm.tv/subject_search/{keywords}?cat={cat}"
         logger.info("正在查询："+keywords)
         path = "data/pictures/bangumi/search/"+keywords+".png"
@@ -143,7 +149,7 @@ def main(bot,logger):
             searchtask[event.sender.id]=keywords,cat
             switch=1
         except Exception as  e:
-            logger.error(e)   
+            logger.error(e)
             searchtask.pop(event.sender.id)
             await bot.send(event,"查询失败，请稍后再试")       
 
@@ -158,8 +164,9 @@ def main(bot,logger):
                     return
                 keywords,cat=searchtask[event.sender.id]
                 url = f"https://bgm.tv/subject_search/{keywords}?cat={cat}"
-                subjectlist=bangumisearch(url)[1]
-                crtlist=bangumisearch(url)[2]
+                resu=bangumisearch(url) #原先两次查询，冗余了
+                subjectlist=resu[1]
+                crtlist=resu[2]
                 order = int(str(event.message_chain))
                 if str(event.message_chain).startswith("0") and order<=len(crtlist):
                     crt = crtlist[order-1].find("a")["href"]
@@ -183,12 +190,12 @@ def main(bot,logger):
                     await bot.send(event,["查询结果：",title,Image(path=path)], True)
                 except Exception as  e:
                     logger.error(e)
-                    await bot.send(event,"查询失败，请稍后再试")       
+                    await bot.send(event,"查询失败，请稍后再试")
                 searchtask.pop(event.sender.id)
             except Exception as  e:
                 logger.error(e)
                 searchtask.pop(event.sender.id)
-                await bot.send(event,"查询失败！不规范的操作")       
+                await bot.send(event,"查询失败！不规范的操作")
 
     @bot.on(GroupMessage)
     async def bangumi_search_timeout(event: GroupMessage):
