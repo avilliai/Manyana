@@ -271,7 +271,27 @@ def glm4hahaha(prompt, meta):
     url = f"https://api.lolimi.cn/API/AI/zp.php?msg={str(prompt)}"
     r = requests.get(url, timeout=20)
     return {"role": "assistant", "content": r.json().get("data").get("output")}
+def cozeBotRep(url, text, proxy, channelid=None):
+    os.environ["http_proxy"] = proxy
+    headers = {
+        'accept': 'application/json',
+        'Content-Type': 'application/json'
+    }
+    data = {
+        "messages": text,
+        "stream": False
+    }
 
+    r = requests.post(url, headers=headers, json=data)
+    print(r)
+    print(r.text)
+    print(r)
+    if r.status_code == 200:
+        result = r.json()
+        return result.get('choices')[0].get('message')
+
+    else:
+        print(f'Error: {r.status_code}')
 
 if __name__ == '__main__':
     k = binggpt4([{"role": "user", "content": "谁赢得了2020年的世界职业棒球大赛?"},

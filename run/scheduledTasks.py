@@ -13,7 +13,7 @@ from mirai import Startup, Shutdown
 
 from plugins import weatherQuery
 from plugins.aiReplyCore import modelReply
-from plugins.historicalToday import steamEpic
+from plugins.extraParts import steamEpic
 from plugins.newsEveryDay import news, danxianglii, moyu, xingzuo
 from plugins.picGet import picDwn
 
