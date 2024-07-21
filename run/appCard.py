@@ -4,7 +4,7 @@ from mirai import GroupMessage
 from mirai import Image
 from mirai.models import App
 
-from plugins.arksign import arkSign
+from plugins.extraParts import arkSign
 
 u = []
 

@@ -288,3 +288,10 @@ async def steamEpic():
             st += "======================\n"
         #print(st)
         return st
+async def arkSign(url):
+    url = f"https://api.lolimi.cn/API/ark/a2.php?img={url}"
+    async with httpx.AsyncClient(timeout=20) as client:
+        r = await client.get(url)
+    #print(r.text)
+    #print(r.text,type(r.json()))
+    return str(r.text)
