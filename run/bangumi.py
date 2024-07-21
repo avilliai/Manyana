@@ -26,25 +26,24 @@ def main(bot,logger):
             month = ""                                       # 默认空值,表示全部         
         else:
             return
-        top=24
+        if "年" in str(event.message_chain):
+            year = str(event.message_chain).split("年")[0]  # 获取年份参数
+            year = re.sub(r'[^\d]', '', year)[-4::]
+        if "月" in str(event.message_chain):    # 获取月份参数
+            try:
+                month = str(event.message_chain).split("年")[1].split("月")[0]  
+            except:
+                month = str(event.message_chain).split("月")[0]
+            if len(month) < 2:
+                month = "0" + month
         try:
-            if "年" in str(event.message_chain):
-                year = str(event.message_chain).split("年")[0]  # 获取年份参数
-                year = re.sub(r'[^\d]', '', year)[-4::]
-            if "月" in str(event.message_chain):    # 获取月份参数
-                try:
-                    month = str(event.message_chain).split("年")[1].split("月")[0]  
-                except:
-                    month = str(event.message_chain).split("月")[0]
-                if len(month) < 2:
-                    month = "0" + month
             if "top" in str(event.message_chain):
                 top = int(str(event.message_chain).split("top")[1])  # 获取top参数
             elif "排行" in str(event.message_chain):
                 top = int(str(event.message_chain).split("排行")[1])
         except:
-            logger.info("top")
-            pass
+            top = 24
+
         try:
             finalT,finalC,isbottom=await banguimiList(year,month,top)
             title = year + "年" + month + "月 | Bangumi 番组计划\n"
@@ -56,20 +55,21 @@ def main(bot,logger):
             combined_list = []
             rank=1            
             print(len(finalT))
-            time=len(finalT)//5
-            if len(finalT)%5!=0:
-                time+=1
-            for i in range(time):
+            times=len(finalT)//10
+            if len(finalT)%10!=0:
+                times+=1
+                
+            for i in range(times):
                 combined_str = ""
-                for j in range(5):  #5个一组发送消息
+                for j in range(10):  #10个一组发送消息
                     if i == 0:
-                        combined_str += "str0,"
+                        combined_str += "title,"
                     combined_str += f"Image(url=finalC[{rank-1}],cache=True),finalT[{rank-1}]"
-                    if j!=4:
-                        combined_str += ","
                     rank += 1
-                    if i*5+j+1 == len(finalT):
+                    if i*10+j+1 == len(finalT):
                         break
+                    if j!= 9:
+                        combined_str += ","
                 if isbottom:
                     combined_str += ",bottom"
                 b1 = ForwardMessageNode(sender_id=bot.qq, sender_name="Manyana",
@@ -126,12 +126,6 @@ def main(bot,logger):
         elif "查询三次元" in str(event.message_chain):
                 cat=6
                 keywords = str(event.message_chain).replace(" ", "").split("三次元")[1]
-        # elif "查询人物" in str(event.message_chain):
-        #         cat="all";type="mono";sign="h2"
-        # elif "查询虚拟角色" in str(event.message_chain):
-        #         cat="crt";type="mono";sign="h2"
-        # elif "查询现实人物" in str(event.message_chain):
-        #         cat="prsn";type="mono";sign="h2"
         else:
             return
         logger.info("正在查询：" + keywords)
