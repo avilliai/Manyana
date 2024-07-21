@@ -62,7 +62,7 @@ def main(bot,logger):
             for i in range(times):
                 combined_str = ""
                 for j in range(10):  #10个一组发送消息
-                    if i == 0:
+                    if [i,j] == [0,0]:
                         combined_str += "title,"
                     combined_str += f"Image(url=finalC[{rank-1}],cache=True),finalT[{rank-1}]"
                     rank += 1
