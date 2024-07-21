@@ -22,20 +22,59 @@ def main(bot,logger):
             month=datetime.datetime.now().strftime("%m")   # 默认当前月份
         elif ("番剧排行" in str(event.message_chain)) or ("番剧top" in str(event.message_chain))\
             or ("动画排行" in str(event.message_chain)) or ("动画top" in str(event.message_chain)):
-            year=""                                        # 默认空值,表示全部
-            month=""                                       # 默认空值,表示全部         
+            year = ""                                        # 默认空值,表示全部
+            month = ""                                       # 默认空值,表示全部         
         else:
             return
+        if "年" in str(event.message_chain):
+            year = str(event.message_chain).split("年")[0]  # 获取年份参数
+            year = re.sub(r'[^\d]', '', year)[-4::]
+        if "月" in str(event.message_chain):    # 获取月份参数
+            try:
+                month = str(event.message_chain).split("年")[1].split("月")[0]  
+            except:
+                month = str(event.message_chain).split("月")[0]
+            if len(month) < 2:
+                month = "0" + month
         try:
-            finalT,finalC=await banguimiList(year,month)
-            str0 = year + "年" + month + "月 | Bangumi 番组计划\n"
-            combined_list = []
-            for elem1, elem2 in zip(finalT, finalC):
-                b1 = ForwardMessageNode(sender_id=bot.qq, sender_name="Manyana",
-                                        message_chain=MessageChain([Image(url=elem2),elem1]))
-                combined_list.append(b1)
+            if "top" in str(event.message_chain):
+                top = int(str(event.message_chain).split("top")[1])  # 获取top参数
+            elif "排行" in str(event.message_chain):
+                top = int(str(event.message_chain).split("排行")[1])
+        except:
+            top = 24
 
-            #print(combined_list)
+        try:
+            finalT,finalC,isbottom=await banguimiList(year,month,top)
+            title = year + "年" + month + "月 | Bangumi 番组计划\n"
+            if year == "":
+                title = "| Bangumi 番组计划\n"
+            if month == "":
+                title = title.replace("月","")
+            bottom = "到底啦~"
+            combined_list = []
+            rank=1            
+            print(len(finalT))
+            times=len(finalT)//10
+            if len(finalT)%10!=0:
+                times+=1
+                
+            for i in range(times):
+                combined_str = ""
+                for j in range(10):  #10个一组发送消息
+                    if i == 0:
+                        combined_str += "title,"
+                    combined_str += f"Image(url=finalC[{rank-1}],cache=True),finalT[{rank-1}]"
+                    rank += 1
+                    if i*10+j+1 == len(finalT):
+                        break
+                    if j!= 9:
+                        combined_str += ","
+                if isbottom:
+                    combined_str += ",bottom"
+                b1 = ForwardMessageNode(sender_id=bot.qq, sender_name="Manyana",
+                                    message_chain=MessageChain(eval(combined_str)))
+                combined_list.append(b1)
 
             logger.info("获取番剧排行成功")
             await bot.send(event, Forward(node_list=combined_list))
@@ -87,12 +126,6 @@ def main(bot,logger):
         elif "查询三次元" in str(event.message_chain):
                 cat=6
                 keywords = str(event.message_chain).replace(" ", "").split("三次元")[1]
-        # elif "查询人物" in str(event.message_chain):
-        #         cat="all";type="mono";sign="h2"
-        # elif "查询虚拟角色" in str(event.message_chain):
-        #         cat="crt";type="mono";sign="h2"
-        # elif "查询现实人物" in str(event.message_chain):
-        #         cat="prsn";type="mono";sign="h2"
         else:
             return
         logger.info("正在查询：" + keywords)
@@ -126,7 +159,7 @@ def main(bot,logger):
                     return
                 keywords,cat=searchtask[event.sender.id]
                 url = f"https://bgm.tv/subject_search/{keywords}?cat={cat}"
-                resu=await bangumisearch(url) #原先两次查询，冗余了
+                resu=await bangumisearch(url)
                 subjectlist=resu[1]
                 crtlist=resu[2]
                 order = int(str(event.message_chain))
@@ -169,10 +202,4 @@ def main(bot,logger):
                 await sleep(60*3)
                 if event.sender.id in searchtask:   #检验查询是否结束
                     searchtask.pop(event.sender.id)
-                    await bot.send(event,"查询超时，已自动退出",True)
-
-
-        
-  
-                     
-            
+                    await bot.send(event,"查询超时，已自动退出",True)            
