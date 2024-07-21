@@ -33,7 +33,11 @@ chatGLM_api_key = resulttr.get("chatGLM")
 with open('config.json', 'r', encoding='utf-8') as f:
     data = yaml.load(f.read(), Loader=yaml.FullLoader)
 config = data
-mainGroup = int(config.get("mainGroup"))
+try:
+    mainGroup = int(config.get("mainGroup"))
+except Exception as e:
+    logger.error("mainGroup必须是int类型!请尽快修改！！")
+    mainGroup=623265372     #总有人mainGroup乱填
 botName = config.get("botName")
 botqq = int(config.get("botQQ"))
 with open('config/settings.yaml', 'r', encoding='utf-8') as f:
