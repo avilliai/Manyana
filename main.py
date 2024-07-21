@@ -11,9 +11,9 @@ from asyncio import sleep as sleep1
 #下面的两行是launcher启动必要设置，勿动。
 os.chdir(os.path.dirname(os.path.abspath(__file__)))
 sys.path.append(os.path.dirname(os.path.abspath(__file__)))
-
+from mirai.models import ForwardMessageNode, Forward
 import yaml
-from mirai import Mirai, WebSocketAdapter, GroupMessage, Image, At, Startup, FriendMessage, Shutdown
+from mirai import Mirai, WebSocketAdapter, GroupMessage, Image, At, Startup, FriendMessage, Shutdown,MessageChain
 
 from plugins.RandomStr import random_str
 from plugins.newLogger import newLogger
@@ -115,16 +115,18 @@ if __name__ == '__main__':
         if ('帮助' in str(event.message_chain) or '菜单' in str(event.message_chain) or "功能" in str(
                 event.message_chain)) and At(bot.qq) in event.message_chain:
             logger.info("获取菜单")
+            cmList=[]
+
             s = [Image(path='data/fonts/help1.png'), Image(path='data/fonts/help2.png'),
                  Image(path='data/fonts/help3.png')]
             for i in s:
-                await bot.send(event, i)
-            await bot.send(event, '这是' + botName + '的功能列表\nヾ(≧▽≦*)o\n发送 pet 以查看制图功能列表')
-        if '制图' in str(event.message_chain) and At(bot.qq) in event.message_chain:
-            logger.info("制图菜单")
-            await bot.send(event, '发送 pet 以查看制图功能列表')
-
-
+                b1 = ForwardMessageNode(sender_id=bot.qq, sender_name="Manyana",
+                                        message_chain=MessageChain(i))
+                cmList.append(b1)
+            b1 = ForwardMessageNode(sender_id=bot.qq, sender_name="Manyana",
+                                    message_chain=MessageChain('这是' + botName + '的功能列表\nヾ(≧▽≦*)o\n发送 pet 以查看制图功能列表\npetpet功能由https://github.com/Dituon/petpet提供'))
+            cmList.append(b1)
+            await bot.send(event, Forward(node_list=cmList))
     @bot.on(Startup)
     async def clearCache(event: Startup):
 
