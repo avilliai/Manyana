@@ -12,9 +12,19 @@ current_dir = os.getcwd()
 # 获取上一级目录
 parent_dir = os.path.dirname(current_dir)
 
-# 检测parent_dir目录下是否有environments文件夹
-environments_path = os.path.join(parent_dir, "environments")
-if os.path.exists(environments_path):
+# 检测parent_dir目录下是否有NTQQ_Launcher文件夹
+NTQQ_Launcher_path = os.path.join(parent_dir, "NTQQ_Launcher")
+if os.path.exists(NTQQ_Launcher_path):
+    # 如果有NTQQ_Launcher文件夹，则设置路径为parent_dir下的指定目录
+    git_path = os.path.join(parent_dir, "git","bin", "git.exe")
+    custom_python_path = os.path.join(parent_dir, "python", "python.exe")
+    python_path = custom_python_path
+    custom_pip_path = os.path.join(parent_dir, "python", "Scripts", "pip.exe")
+    pip_path = custom_pip_path
+    #print("{pip_path} -m {custom_pip_path} install --upgrade pip")
+    # os.system(f"\"{python_path}\" -m pip install --upgrade pip")
+    print("检测到NTQQ_Launcher文件夹，使用对应文件夹下的git、python、pip")
+else:
     # 检测上一级目录下的environments/MinGit/cmd/git.exe是否存在
     custom_git_path = os.path.join(parent_dir, "environments", "MinGit", "cmd", "git.exe")
     if os.path.exists(custom_git_path):
@@ -32,11 +42,11 @@ if os.path.exists(environments_path):
         pip_path = custom_pip_path
     else:
         pip_path = "pip"
-else:
-    # 如果没有environments文件夹，则设置路径为parent_dir下的指定目录
-    git_path = os.path.join(parent_dir, "git","bin", "git.exe")
-    python_path = os.path.join(parent_dir, "python", "python.exe")
-    custom_pip_path = os.path.join(parent_dir, "python", "Scripts", "pip.exe")
+    #print("未检测到NTQQ_Launcher文件夹，使用系统环境变量中的git、python、pip")
+#print("git路径：", git_path)
+#print("python路径：", python_path)
+#print("pip路径：", pip_path)
+os.system(f"\"{python_path}\" -m pip install --upgrade pip")
 def newLogger():
     # 创建一个logger对象
     logger = logging.getLogger("villia")
@@ -227,7 +237,7 @@ def main():
                 os.system(f"{git_path} clone https://gitee.com/Nwflower/star-rail-atlas.git")
     elif a=="6":
         logger.info("开始安装vits语音模块相关依赖")
-        os.system(f"{custom_pip_path} install -r vits/vitsRequirements.txt")
+        os.system(f"\"{python_path}\" -m pip install -r vits/vitsRequirements.txt")
     else:
         print("结束")
 def updaat(f=False,jump=False,source=None):
@@ -236,8 +246,9 @@ def updaat(f=False,jump=False,source=None):
         if input("在这里输入:") != "1":
             logger.warning("即将开始更新依赖库，请确保已关闭代理，否则无法安装依赖库")
             input("按任意键继续：")
-            os.system(f"{custom_pip_path} install bingart")
-            os.system(f"{custom_pip_path} install emoji")
+            #print(str(custom_pip_path)+"!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!5555555!!!!!!!!!!!!!!!")
+            os.system(f"\"{python_path}\" -m pip install bingart")
+            os.system(f"\"{python_path}\" -m pip install emoji")
     if source==None:
         logger.info("拉取bot代码\n--------------------")
         logger.info("选择更新源(git源 镜像源相互兼容)：\n1 git源\n2 镜像源1\n3 镜像源2 \n4 中国计算机协会源(搭建用的默认gitlink源就选这个，不兼容上述源)")
@@ -349,7 +360,7 @@ try:
     from ruamel.yaml import YAML
 except Exception as e:
     logger.error("未安装ruamel.yaml库，无法处理冲突文件，开始安装缺少的依赖")
-    os.system(f"{custom_pip_path} install ruamel.yaml")
+    os.system(f"\"{python_path}\" -m pip install ruamel.yaml")
     from ruamel.yaml import YAML
 # 创建一个YAML对象来加载和存储YAML数据
 yaml = YAML()
