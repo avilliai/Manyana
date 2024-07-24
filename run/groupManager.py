@@ -29,7 +29,11 @@ def main(bot, config, moderateKey, logger):
     global ModerateApiKeys
     ModerateApiKeys = result.get("moderate").get('apiKeys')
     global mainGroup
-    mainGroup = int(config.get("mainGroup"))
+    try:
+        mainGroup = int(config.get("mainGroup"))
+    except:
+        logger.error("致命错误！mainGroup只能填写一个群的群号!")
+        mainGroup = 0
     global banWords
     banWords = result.get("moderate").get("banWords")
     #读取用户数据

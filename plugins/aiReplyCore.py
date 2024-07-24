@@ -34,9 +34,9 @@ with open('config.json', 'r', encoding='utf-8') as f:
 config = data
 try:
     mainGroup = int(config.get("mainGroup"))
-except Exception as e:
-    logger.error("mainGroup必须是int类型!请尽快修改！！")
-    mainGroup=623265372     #总有人mainGroup乱填
+except:
+    logger.error("致命错误！mainGroup只能填写一个群的群号!")
+    mainGroup = 0
 botName = config.get("botName")
 botqq = int(config.get("botQQ"))
 with open('config/settings.yaml', 'r', encoding='utf-8') as f:

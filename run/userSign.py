@@ -46,7 +46,11 @@ def main(bot, api_KEY, master, config, logger):
     with open('data/userData.yaml', 'r', encoding='utf-8') as file:
         data = yaml.load(file, Loader=yaml.FullLoader)
     global mainGroup
-    mainGroup = int(config.get("mainGroup"))
+    try:
+        mainGroup = int(config.get("mainGroup"))
+    except:
+        logger.error("致命错误！ mainGroup只能填写一个群的群号!")
+        mainGroup = 0
     global userdict
     userdict = data
     logger.info("读取用户数据完成")

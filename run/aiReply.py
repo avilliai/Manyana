@@ -71,7 +71,12 @@ def main(bot, master, logger):
     with open('config.json', 'r', encoding='utf-8') as f:
         data = yaml.load(f.read(), Loader=yaml.FullLoader)
     config = data
-    mainGroup = int(config.get("mainGroup"))
+    global mainGroup
+    try:
+        mainGroup = int(config.get("mainGroup"))
+    except:
+        logger.error("致命错误！mainGroup只能填写一个群的群号!")
+        mainGroup = 0
     try:
         with open('data/userData.yaml', 'r', encoding='utf-8') as file:
             data = yaml.load(file, Loader=yaml.FullLoader)
