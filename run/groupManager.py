@@ -1087,7 +1087,7 @@ def main(bot, config, moderateKey, logger):
         path = await signPicMaker(imgurl, id, weather, nowTime, times, exp, startTime)
         logger.info("完成，发送签到图片")
         await bot.send(event, Image(path=path), True)
-
+    #自动更新到下一天
     @bot.on(Startup)
     async def upddddd(event: Startup):
         while True:
@@ -1108,6 +1108,7 @@ def main(bot, config, moderateKey, logger):
     async def changeCity(event: GroupMessage):
         if str(event.message_chain).startswith('修改城市#'):
             logger.info("接收城市修改请求")
+            global userdict
             city = str(event.message_chain)[5:]
             try:
 
