@@ -127,7 +127,7 @@ def main(bot, master, logger):
     timeout = datetime.timedelta(minutes=5) #5分钟没有对话则超时
     @bot.on(GroupMessage)
     async def AddChatWithoutAt(event: GroupMessage):
-        if str(event.message_chain)=="开始对话":
+        if str(event.message_chain)=="开始对话" or str(event.message_chain)=="开始聊天":
             global chattingUser
             user = str(event.sender.id)
             chattingUser[user] = datetime.datetime.now()
