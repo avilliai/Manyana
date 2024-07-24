@@ -33,7 +33,7 @@ def main(bot, config, sizhiKey, logger):
     blGroup = result.get("banGroups")
     with open('config/noResponse.yaml', 'r', encoding='utf-8') as f:
         noRes1 = yaml.load(f.read(), Loader=yaml.FullLoader)
-        noRes = noRes1.get("noRes")
+        noRes = noRes1.get("noRes1")
     with open('config/settings.yaml', 'r', encoding='utf-8') as f:
         result = yaml.load(f.read(), Loader=yaml.FullLoader)
     speaker92 = result.get("chatGLM").get("speaker")
