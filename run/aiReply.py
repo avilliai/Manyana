@@ -320,7 +320,7 @@ def main(bot, master, logger):
     @bot.on(GroupMessage)
     async def atReply(event: GroupMessage):
         global trustUser, chatGLMData, chatGLMCharacters, userdict, coziData, trustG,chattingUser
-        if At(bot.qq) in event.message_chain:
+        if At(bot.qq) in event.message_chain or str(event.sender.id) in chattingUser:
             try:
                 if not wontrep(noRes1, str(event.message_chain).replace(str(At(bot.qq)), "").replace(" ", ""),
                                logger):
