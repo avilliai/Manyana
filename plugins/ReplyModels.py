@@ -6,7 +6,10 @@ import random
 import httpx
 import requests
 import zhipuai
-from openai import OpenAI
+try:
+    from openai import OpenAI
+except:
+    pass#奇怪的报错
 
 
 def gptOfficial(prompt, apikeys, proxy, bot_info, model):
