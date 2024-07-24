@@ -45,17 +45,15 @@ def main(bot, config, moderateKey, logger):
     with open('config/settings.yaml', 'r', encoding='utf-8') as f:
         result1 = yaml.load(f.read(), Loader=yaml.FullLoader)
     friendsAndGroups = result1.get("加群和好友")
-    allowFriendstimes = friendsAndGroups.get("allowFriendstimes")
     GroupSensor = friendsAndGroups.get("GroupSensor")
-    autoallowFriend = friendsAndGroups.get("autoallowFriend")
+
     trustDays = friendsAndGroups.get("trustDays")
     fuckinggroup = friendsAndGroups.get("fuckinggroup")
     fuckingnumber = friendsAndGroups.get("fuckingnumber")  # 低于13人退
     qiandaoT = friendsAndGroups.get("signTimes")
 
-    privateGlmReply = result1.get("chatGLM").get("privateGlmReply")
-    trustglmReply = result1.get("chatGLM").get("trustglmReply")
-
+    #privateGlmReply = result1.get("chatGLM").get("privateGlmReply")
+    #trustglmReply = result1.get("chatGLM").get("trustglmReply")
     global superUser
     superUser = []
     for i in userdict.keys():
@@ -207,7 +205,7 @@ def main(bot, config, moderateKey, logger):
                         al = '拒绝'
                         await bot.send_friend_message(event.from_id, "群内签到天数不够呢，需要的签到天数" + str(
                             qiandaoT) + "。\n也可前往用户群" + str(
-                            mainGroup) + " 获取授权\n在该群内发送:\n授权#你的QQ")
+                            mainGroup) + " 获取授权\n在该群内发送:\n授权#你的QQ。如已签到请等待1min后数据同步")
                 except:
                     pass
             else:
@@ -275,8 +273,6 @@ def main(bot, config, moderateKey, logger):
 
             global ModerateApiKeys
             ModerateApiKeys = result.get("moderate").get('apiKeys')
-            global mainGroup
-            mainGroup = int(config.get("mainGroup"))
             global banWords
             banWords = result.get("moderate").get("banWords")
             # 读取用户数据
@@ -315,29 +311,7 @@ def main(bot, config, moderateKey, logger):
             global severGroups
             severGroups = moderate.get("groups")
 
-    #处理好友申请
-    @bot.on(NewFriendRequestEvent)
-    async def allowStranger(event: NewFriendRequestEvent):
-        global userdict
-        logger.info("新的好友申请，来自" + str(event.from_id))
-        if (str(event.from_id) in userdict.keys() and int(
-                userdict.get(str(event.from_id)).get("sts")) > allowFriendstimes) or autoallowFriend:
-            logger.info("有用户记录，同意")
-            al = '同意'
-            await bot.allow(event)
-            await sleep(5)
-            await bot.send_friend_message(event.from_id,
-                                          "你好ヾ(≧▽≦*)o，bot项目地址：https://github.com/avilliai/Manyana\n觉得还不错的话可以点个star哦")
-            await bot.send_friend_message(event.from_id, "群内发送 @" + str(botName) + " 帮助 获取功能列表")
-            await bot.send_friend_message(event.from_id, "本bot用户群" + str(mainGroup))
-            if not privateGlmReply and trustglmReply:
-                await bot.send_friend_message(event.from_id,
-                                              "在任意群内累计发送 签到 " + str(trustDays) + "天后将为您开放私聊ai权限")
-        else:
-            logger.info("无用户记录，拒绝")
-            al = '拒绝'
-        await bot.send_friend_message(master, '有新的好友申请\n来自：' + str(event.from_id) + '\n来自群：' + str(
-            event.group_id) + '\n昵称：' + event.nick + '\n状态：' + al)
+
 
     #处理新成员加群申请
     @bot.on(MemberJoinRequestEvent)

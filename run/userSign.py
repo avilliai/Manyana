@@ -11,7 +11,7 @@ from PIL import ImageDraw
 from PIL import ImageFont, ImageFilter
 from mirai import GroupMessage
 from mirai import Image as Im, Startup
-
+from mirai.models.events import BotInvitedJoinGroupRequestEvent, NewFriendRequestEvent
 from plugins.RandomStr import random_str
 from plugins.imgDownload import dict_download_img
 from plugins.weatherQuery import querys
@@ -51,6 +51,7 @@ def main(bot, api_KEY, master, config, logger):
     except:
         logger.error("致命错误！ mainGroup只能填写一个群的群号!")
         mainGroup = 0
+    botName=config.get("botName")
     global userdict
     userdict = data
     logger.info("读取用户数据完成")
@@ -62,6 +63,8 @@ def main(bot, api_KEY, master, config, logger):
     masterPermissionDays = friendsAndGroups.get("masterPermissionDays")
     userSelfPermissonDays = friendsAndGroups.get("userSelfPermissonDays")
     trustDays = friendsAndGroups.get("trustDays")
+    allowFriendstimes=friendsAndGroups.get("allowFriendstimes")
+    autoallowFriend = friendsAndGroups.get("autoallowFriend")
     with open('data/signs.yaml', 'r', encoding='utf-8') as f:
         signstoday = yaml.load(f.read(), Loader=yaml.FullLoader)
     global haveSign, tod
@@ -73,7 +76,29 @@ def main(bot, api_KEY, master, config, logger):
         paddd = {str(tod): haveSign}
         with open('data/signs.yaml', 'w', encoding="utf-8") as file:
             yaml.dump(paddd, file, allow_unicode=True)
-
+    #处理好友申请
+    @bot.on(NewFriendRequestEvent)
+    async def allowStranger(event: NewFriendRequestEvent):
+        global userdict
+        logger.info("新的好友申请，来自" + str(event.from_id))
+        if (str(event.from_id) in userdict.keys() and int(
+                userdict.get(str(event.from_id)).get("sts")) > allowFriendstimes) or autoallowFriend:
+            logger.info("有用户记录，同意")
+            al = '同意'
+            await bot.allow(event)
+            await sleep(5)
+            await bot.send_friend_message(event.from_id,
+                                          "你好ヾ(≧▽≦*)o，bot项目地址：https://github.com/avilliai/Manyana\n觉得还不错的话可以点个star哦")
+            await bot.send_friend_message(event.from_id, "群内发送 @" + str(botName) + " 帮助 获取功能列表")
+            await bot.send_friend_message(event.from_id, "本bot用户群" + str(mainGroup))
+            '''if not privateGlmReply and trustglmReply:
+                await bot.send_friend_message(event.from_id,
+                                              "在任意群内累计发送 签到 " + str(trustDays) + "天后将为您开放私聊ai权限")'''
+        else:
+            logger.info("无用户记录，拒绝")
+            al = '拒绝'
+        await bot.send_friend_message(master, '有新的好友申请\n来自：' + str(event.from_id) + '\n来自群：' + str(
+            event.group_id) + '\n昵称：' + event.nick + '\n状态：' + al)
     @bot.on(GroupMessage)
     async def handle_group_message(event: GroupMessage):
         global haveSign, tod
