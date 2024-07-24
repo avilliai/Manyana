@@ -28,21 +28,11 @@ moderate:
 chatGLM:                   #对话模型通用设置
   aiReplyCore: False  #ai回复核心，为大部分功能启用ai回复，可优化回复表现，目前为测试功能
   model: random  #ai模型，random(自动选取免费可用模型) |binggpt4(免费无需配置，速度较慢)| 后面几个需要自己配置api.yaml对应变量: characterglm(对应chatGLM),Gemini(同名),gpt3.5(openai-keys)
-  randomModel&&Priority:   #random模式下，模型优先使用顺序，确保稳定性,直接进文件里改。
+  randomModel&&&Priority:   #random模式下，模型优先使用顺序，确保稳定性,直接进文件里改。
     - Gemma
     - alcex_GPT3_5
-    - freeGemini
-    - 讯飞星火
-    - 通义千问
-    - gptX
-    - kimi
-    - 清言
-    - grop
-    - lingyi
-    - lolimigpt
-    - step
-    - gpt4hahaha
-    - anotherGPT3.5
+    - 猫娘米米
+    - 沫沫
   nudgeReply: false        #戳一戳，是否使用模型回复
   glmReply: True           #开放群聊内ai回复(建议)
   privateGlmReply: True    #开放私聊ai回复

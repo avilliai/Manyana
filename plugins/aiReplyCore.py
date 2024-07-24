@@ -9,7 +9,7 @@ from mirai import logger
 
 from plugins.RandomStr import random_str
 from plugins.ReplyModels import gptOfficial, gptUnofficial, kimi, qingyan, lingyi, stepAI, qwen, gptvvvv, grop, \
-    gpt4hahaha, anotherGPT35, chatGLM, relolimigpt2, xinghuo, Gemma, binggpt4,alcex_GPT3_5,freeGemini
+    gpt4hahaha, anotherGPT35, chatGLM, relolimigpt2, xinghuo, Gemma, binggpt4, alcex_GPT3_5, freeGemini, catRep, momoRep
 from plugins.googleGemini import geminirep
 from plugins.translater import translate
 from plugins.vitsGenerate import voiceGenerate, superVG
@@ -47,7 +47,7 @@ trustDays = friendsAndGroups.get("trustDays")
 glmReply = result.get("chatGLM").get("glmReply")
 modelDefault = result.get("chatGLM").get("model")
 privateGlmReply = result.get("chatGLM").get("privateGlmReply")
-randomModelPriority = result.get("chatGLM").get("randomModel&&Priority")
+randomModelPriority = result.get("chatGLM").get("randomModel&&&Priority")
 replyModel = result.get("chatGLM").get("model")
 trustglmReply = result.get("chatGLM").get("trustglmReply")
 maxPrompt = result.get("chatGLM").get("maxPrompt")
@@ -174,6 +174,8 @@ async def modelReply(senderName, senderId, text, modelHere=modelDefault, trustUs
         #    tasks.append(loop_run_in_executor(loop, xinghuo, prompt1, senderId))         # 2024-07-17测试无效
             tasks.append(loop_run_in_executor(loop,Gemma,prompt1,bot_in))                 # 2024-07-17测试通过
             tasks.append(loop_run_in_executor(loop,alcex_GPT3_5,prompt1,bot_in))          # 2024-07-17测试通过
+            tasks.append(loop_run_in_executor(loop,catRep,prompt1,bot_in))
+            tasks.append(loop_run_in_executor(loop,momoRep,prompt1,bot_in))
         #    tasks.append(loop_run_in_executor(loop,freeGemini,prompt1,bot_in))           # 2024-07-17测试无效
             
             # tasks.append(loop_run_in_executor(loop,localAurona,prompt1,bot_in))
@@ -213,7 +215,7 @@ async def modelReply(senderName, senderId, text, modelHere=modelDefault, trustUs
                 raise Exception
             # print(reps)
             modeltrans = {"gptX": "gptvvvv", "清言": "qingyan", "通义千问": "qwen", "anotherGPT3.5": "anotherGPT35",
-                          "lolimigpt": "relolimigpt2", "step": "stepAI", "讯飞星火": "xinghuo"}
+                          "lolimigpt": "relolimigpt2", "step": "stepAI", "讯飞星火": "xinghuo","猫娘米米": "catRep","沫沫":"momoRep"}
             for priority in randomModelPriority:
                 if priority in modeltrans:
                     priority = modeltrans.get(priority)

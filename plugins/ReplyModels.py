@@ -267,7 +267,7 @@ def relolimigpt2(prompt, meta):
 
 def glm4hahaha(prompt, meta):
     prompt.insert(0, {"role": "user", "content": meta})
-    prompt.insert(1, {"role": "assistant", "content": "好的~"})
+    prompt.insert(1, {"role": "assistant", "content": "好的，已了解您的需求~我会扮演好您设定的角色。"})
     url = f"https://api.lolimi.cn/API/AI/zp.php?msg={str(prompt)}"
     r = requests.get(url, timeout=20)
     return {"role": "assistant", "content": r.json().get("data").get("output")}
@@ -292,9 +292,20 @@ def cozeBotRep(url, text, proxy, channelid=None):
 
     else:
         print(f'Error: {r.status_code}')
-
+def catRep(prompt,meta):
+    prompt.insert(0, {"role": "user", "content": meta})
+    prompt.insert(1, {"role": "assistant", "content": "好的，已了解您的需求~我会扮演好您设定的角色。"})
+    url=f"https://api.mhimg.cn/api/gpt_aimaoniang/?prompt={prompt}"
+    r=requests.get(url,timeout=20)
+    return {"role": "assistant", "content": r.text}
+def momoRep(prompt,meta):
+    prompt.insert(0, {"role": "user", "content": meta})
+    prompt.insert(1, {"role": "assistant", "content": "好的，已了解您的需求~我会扮演好您设定的角色。"})
+    url=f"https://api.lolimi.cn/API/AI/mm.php?msg={prompt}"
+    r = requests.get(url, timeout=20)
+    return {"role": "assistant", "content": r.json().get("data").get("output")}
 if __name__ == '__main__':
-    k = binggpt4([{"role": "user", "content": "谁赢得了2020年的世界职业棒球大赛?"},
+    k = momoRep([{"role": "user", "content": "谁赢得了2020年的世界职业棒球大赛?"},
                   {"role": "assistant", "content": "洛杉矶道奇队在2020年赢得了世界职业棒球大赛冠军."},
-                  {"role": "user", "content": "它在哪里举办的?"}], "你是一只猫娘")
+                  {"role": "user", "content": "它在哪里举办的?"}],"你是猫娘")
     print(k)
