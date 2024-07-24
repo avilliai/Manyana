@@ -989,8 +989,8 @@ def main(bot, config, moderateKey, logger):
             event.group_id) + '\n昵称：' + event.nick + '\n状态：' + al)
 
     @bot.on(GroupMessage)
-    async def handle_group_message(event: GroupMessage):
-        global haveSign, tod
+    async def usersignandAdd(event: GroupMessage):
+        global haveSign, tod,userdict
         if '签到' == str(event.message_chain):
             logger.info("接收来自：" + event.sender.member_name + "(" + str(event.sender.id) + ") 的签到指令")
             if str(event.sender.id) in userdict.keys():
@@ -1039,7 +1039,7 @@ def main(bot, config, moderateKey, logger):
 
     @bot.on(GroupMessage)
     async def handle_group_message(event: GroupMessage):
-        global newUser, haveSign, tod
+        global newUser, haveSign, tod,userdict
         if str(event.sender.id) in newUser.keys():
             newUser.pop(str(event.sender.id))
             logger.info("用户+1：" + str(event.sender.member_name) + " (" + str(event.sender.id) + ")")

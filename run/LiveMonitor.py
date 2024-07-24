@@ -14,14 +14,14 @@ def main(bot, master, botName, logger):
     global live
     with open('data/biliMonitor.yaml', 'r', encoding='utf-8') as file:
         live = yaml.load(file, Loader=yaml.FullLoader)
-    print("live")
+    #print("live")
     global temp
     temp = {}
     global lists
     lists = {}
     for i in live:
         lists[i] = 0
-    print(lists)
+    logger.info(lists)
 
     @bot.on(Startup)
     async def monitor(event: GroupMessage):
