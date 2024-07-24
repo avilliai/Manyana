@@ -8,7 +8,7 @@ import threading
 from asyncio import sleep
 
 import yaml
-from mirai import FriendMessage, GroupMessage, At
+from mirai import FriendMessage, GroupMessage, At,Image
 from mirai import Voice, Startup
 from mirai.models import NudgeEvent
 
@@ -122,6 +122,23 @@ def main(bot, master, logger):
     listen = CListen(newLoop)
     listen.setDaemon(True)
     listen.start()
+    global chattingUser
+    chattingUser={} #无需艾特即可对话的用户列表
+    timeout = datetime.timedelta(minutes=5) #5分钟没有对话则超时
+    @bot.on(GroupMessage)
+    async def AddChatWithoutAt(event: GroupMessage):
+        if str(event.message_chain)=="开始对话":
+            global chattingUser
+            user = str(event.sender.id)
+            chattingUser[user] = datetime.datetime.now()
+            await bot.send(event, "发送 退出 可退出当前对话",True)
+    @bot.on(GroupMessage)
+    async def removeChatWithoutAt(event: GroupMessage):
+        global chattingUser
+        if str(event.message_chain)=="退出" and str(event.sender.id) in chattingUser:
+            user = str(event.sender.id)
+            chattingUser.pop(user)
+            await bot.send(event, "已结束当前对话",True)
 
     @bot.on(NudgeEvent)
     async def NudgeReply(event: NudgeEvent):
@@ -158,13 +175,21 @@ def main(bot, master, logger):
         else:
             return
         text = str(event.message_chain)
+        imgurl = None
+        if event.message_chain.count(Image):
+            lst_img = event.message_chain.get(Image)
+            imgurl = []
+            for i in lst_img:
+                url = i.url
+                imgurl.append(url)
+                # print(url)
         if event.sender.id in chatGLMCharacters:
             print(type(chatGLMCharacters.get(event.sender.id)), chatGLMCharacters.get(event.sender.id))
             r, firstRep = await modelReply(event.sender.nickname, event.sender.id, text,
-                                           chatGLMCharacters.get(event.sender.id), trustUser, checkIfRepFirstTime=True)
+                                           chatGLMCharacters.get(event.sender.id), trustUser, imgurl,checkIfRepFirstTime=True)
         # 判断模型
         else:
-            r, firstRep = await modelReply(event.sender.nickname, event.sender.id, text, replyModel, trustUser,
+            r, firstRep = await modelReply(event.sender.nickname, event.sender.id, text, replyModel, trustUser,imgurl,
                                            checkIfRepFirstTime=True)
         if firstRep:
             await bot.send(event, "如对话异常请发送 /clear 以清理对话", True)
@@ -262,8 +287,13 @@ def main(bot, master, logger):
                 times = int(str(data.get('sts')))
                 if times > trustDays:
                     trustUser.append(str(i))
-            logger.info('已读取信任用户' + str(len(trustUser)) + '个')
-
+            #定时清理用户
+            global chattingUser
+            now = datetime.datetime.now()
+            to_remove = [user for user, timestamp in chattingUser.items() if now - timestamp > timeout]
+            for user in to_remove:
+                del chattingUser[user]
+                logger.info(f"Removed user {user} due to inactivity")
     @bot.on(GroupMessage)
     async def upddd(event: GroupMessage):
         if str(event.message_chain).startswith("授权") and event.sender.id == master:
@@ -289,7 +319,7 @@ def main(bot, master, logger):
     # 群内chatGLM回复
     @bot.on(GroupMessage)
     async def atReply(event: GroupMessage):
-        global trustUser, chatGLMData, chatGLMCharacters, userdict, coziData, trustG
+        global trustUser, chatGLMData, chatGLMCharacters, userdict, coziData, trustG,chattingUser
         if At(bot.qq) in event.message_chain:
             try:
                 if not wontrep(noRes1, str(event.message_chain).replace(str(At(bot.qq)), "").replace(" ", ""),
@@ -297,22 +327,33 @@ def main(bot, master, logger):
                     return
             except Exception as e:
                 logger.error(f"无法运行屏蔽词审核，请检查noResponse.yaml配置格式--{e}")
-        if (At(bot.qq) in event.message_chain) and (glmReply or (trustglmReply and str(
+        if (At(bot.qq) in event.message_chain or str(event.sender.id) in chattingUser) and (glmReply or (trustglmReply and str(
                 event.sender.id) in trustUser) or event.group.id in trustG or event.group.id == int(mainGroup)):
             logger.info("ai聊天启动")
         else:
             return
         text = str(event.message_chain).replace("@" + str(bot.qq) + "", '')
-
+        imgurl = None
+        if event.message_chain.count(Image):
+            lst_img = event.message_chain.get(Image)
+            imgurl = []
+            for i in lst_img:
+                url = i.url
+                imgurl.append(url)
+                #print(url)
         if event.sender.id in chatGLMCharacters:
             print(type(chatGLMCharacters.get(event.sender.id)), chatGLMCharacters.get(event.sender.id))
             r, firstRep = await modelReply(event.sender.member_name, event.sender.id, text,
-                                           chatGLMCharacters.get(event.sender.id), trustUser, True)
+                                           chatGLMCharacters.get(event.sender.id), trustUser, imgurl,True)
         # 判断模型
         else:
-            r, firstRep = await modelReply(event.sender.member_name, event.sender.id, text, replyModel, trustUser, True)
+            r, firstRep = await modelReply(event.sender.member_name, event.sender.id, text, replyModel, trustUser, imgurl,True)
         if firstRep:
             await bot.send(event, "如对话异常请发送 /clear", True)
+        #刷新时间
+        user = str(event.sender.id)
+        if user in chattingUser:
+            chattingUser[user] = datetime.datetime.now()
         if len(r) < maxTextLen and random.randint(0, 100) < voiceRate:
             try:
                 voiceP = await tstt(r)

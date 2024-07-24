@@ -103,7 +103,7 @@ async def loop_run_in_executor(executor, func, *args):
 
 
 # 运行异步函数
-async def modelReply(senderName, senderId, text, modelHere=modelDefault, trustUser=None, checkIfRepFirstTime=False):
+async def modelReply(senderName, senderId, text, modelHere=modelDefault, trustUser=None, imgurls=None,checkIfRepFirstTime=False):
     global chatGLMData
     logger.info(modelHere)
     try:
@@ -235,8 +235,7 @@ async def modelReply(senderName, senderId, text, modelHere=modelDefault, trustUs
             if type(rep)==list:
                 return "模型不可用，请更换模型。"
         elif modelHere == "Gemini":
-            r = await geminirep(ak=random.choice(geminiapikey), messages=prompt1, bot_info=bot_in,
-                                GeminiRevProxy=GeminiRevProxy),
+            r = await geminirep(ak=random.choice(geminiapikey), messages=prompt1, bot_info=bot_in,GeminiRevProxy=GeminiRevProxy,imgurls=imgurls),
             #print(r,type(r))
             rep = {"role": "assistant", "content": r[0].replace(r"\n", "\n")}
         elif type(allcharacters.get(modelHere)) == dict:
