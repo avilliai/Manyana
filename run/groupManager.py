@@ -1,4 +1,6 @@
 # -*- coding:utf-8 -*-
+import asyncio
+import datetime
 import json
 import random
 import re
@@ -12,10 +14,35 @@ from mirai.models.events import BotInvitedJoinGroupRequestEvent, NewFriendReques
     MemberJoinEvent, MemberMuteEvent, MemberUnmuteEvent, BotUnmuteEvent, BotLeaveEventKick, MemberLeaveEventKick, \
     MemberLeaveEventQuit
 
+from plugins.RandomStr import random_str
+from plugins.imgDownload import get_user_image_url, signPicMaker
 from plugins.setuModerate import setuModerate
+from plugins.weatherQuery import querys
+from run.aiReply import CListen
 
 
 def main(bot, config, moderateKey, logger):
+    newLoop = asyncio.new_event_loop()
+    listen = CListen(newLoop)
+    listen.setDaemon(True)
+    listen.start()
+    logger.info("签到部分启动完成")
+    with open('data/signs.yaml', 'r', encoding='utf-8') as f:
+        signstoday = yaml.load(f.read(), Loader=yaml.FullLoader)
+    global haveSign, tod
+    tod = str(datetime.date.today())
+    if tod in signstoday:
+        haveSign = signstoday.get(tod)
+    else:
+        haveSign = [123]
+        paddd = {str(tod): haveSign}
+        with open('data/signs.yaml', 'w', encoding="utf-8") as file:
+            yaml.dump(paddd, file, allow_unicode=True)
+    global newUser
+    newUser = {}
+    with open('config/api.yaml', 'r', encoding='utf-8') as f:
+        apikeyresult = yaml.load(f.read(), Loader=yaml.FullLoader)
+    api_KEY=apikeyresult.get("weatherXinZhi")
     # 读取设置
     global moderateK
     moderateK = moderateKey
@@ -51,7 +78,10 @@ def main(bot, config, moderateKey, logger):
     fuckinggroup = friendsAndGroups.get("fuckinggroup")
     fuckingnumber = friendsAndGroups.get("fuckingnumber")  # 低于13人退
     qiandaoT = friendsAndGroups.get("signTimes")
-
+    masterPermissionDays = friendsAndGroups.get("masterPermissionDays")
+    userSelfPermissonDays = friendsAndGroups.get("userSelfPermissonDays")
+    allowFriendstimes = friendsAndGroups.get("allowFriendstimes")
+    autoallowFriend = friendsAndGroups.get("autoallowFriend")
     #privateGlmReply = result1.get("chatGLM").get("privateGlmReply")
     #trustglmReply = result1.get("chatGLM").get("trustglmReply")
     global superUser
@@ -168,7 +198,7 @@ def main(bot, config, moderateKey, logger):
             if event.group_id in superBlGroups:
                 await bot.send_friend_message(event.from_id, "该群在禁止名单中！")
                 return
-            if event.group_id in youquan or event.sender.id == master:
+            if event.group_id in youquan or event.from_id == master:
                 logger.info("同意")
                 al = '同意'
                 sdf = "请先向目标群群员确认是否愿意接受bot加群"
@@ -184,7 +214,7 @@ def main(bot, config, moderateKey, logger):
         else:
             if str(event.from_id) in userdict.keys():
                 try:
-                    if int(userdict.get(str(event.from_id)).get("sts")) > qiandaoT or event.sender.id == master:
+                    if int(userdict.get(str(event.from_id)).get("sts")) > qiandaoT or event.from_id == master:
                         if event.group_id in superBlGroups:
                             await bot.send_friend_message(event.from_id, "该群已被禁止")
                             return
@@ -891,3 +921,204 @@ def main(bot, config, moderateKey, logger):
                     continue
                     totalquit += 1
             await bot.send(event, "已退出" + str(totalquit) + "个群")
+    #mainGroup内自行授权
+    @bot.on(GroupMessage)
+    async def accessGiver(event: GroupMessage):
+        global userdict
+        if str(event.message_chain).startswith("授权#") and (event.group.id == mainGroup or event.sender.id == master):
+            try:
+                if event.sender.id == master:
+                    setN = str(masterPermissionDays)
+                    fsf = 0
+                else:
+                    if str(event.sender.id) != str(event.message_chain).split("#")[1]:
+                        await bot.send(event, "不匹配的账号，请发送 授权#你自己的QQ")
+                        return
+                    setN = str(userSelfPermissonDays)
+                    fsf = 1
+
+            except:
+                return
+
+            userId = str(event.message_chain).split("#")[1]
+            if userId in userdict:
+                data = userdict.get(userId)
+                if "selfAdded" in data and fsf == 1:
+                    await bot.send(event, "拒绝授权，您已为自己授权过", True)
+                    return
+                data["sts"] = str(int(data.get("sts")) + int(setN))
+                if fsf == 1:
+                    data["selfAdded"] = "True"
+                userdict[userId] = data
+            else:
+                time = datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')
+                userdict[userId] = {"city": "通辽", "st": time, "sts": setN, "exp": "0",
+                                    "id": "miav-" + random_str(), 'ok': time}
+            logger.info("更新用户数据中")
+            with open('data/userData.yaml', 'w', encoding="utf-8") as file:
+                yaml.dump(userdict, file, allow_unicode=True)
+            logger.info("授权" + userId + "完成")
+            await bot.send(event, "授权完成,一分钟后数据将完成同步")
+
+            if event.sender.id == master:
+                await bot.send_friend_message(int(userId), "授权完成,开放功能权限。")
+            else:
+                await bot.send_friend_message(int(userId), "授权完成，解锁部分bot权限(一分钟后)")
+
+    @bot.on(NewFriendRequestEvent)
+    async def allowStranger(event: NewFriendRequestEvent):
+        global userdict
+        logger.info("新的好友申请，来自" + str(event.from_id))
+        if (str(event.from_id) in userdict.keys() and int(
+                userdict.get(str(event.from_id)).get("sts")) > allowFriendstimes) or autoallowFriend:
+            logger.info("有用户记录，同意")
+            al = '同意'
+            await bot.allow(event)
+            await sleep(5)
+            await bot.send_friend_message(event.from_id,
+                                          "你好ヾ(≧▽≦*)o，bot项目地址：https://github.com/avilliai/Manyana\n觉得还不错的话可以点个star哦")
+            await bot.send_friend_message(event.from_id, "群内发送 @" + str(botName) + " 帮助 获取功能列表")
+            await bot.send_friend_message(event.from_id, "本bot用户群" + str(mainGroup))
+            '''if not privateGlmReply and trustglmReply:
+                await bot.send_friend_message(event.from_id,
+                                              "在任意群内累计发送 签到 " + str(trustDays) + "天后将为您开放私聊ai权限")'''
+        else:
+            logger.info("无用户记录，拒绝")
+            al = '拒绝'
+        await bot.send_friend_message(master, '有新的好友申请\n来自：' + str(event.from_id) + '\n来自群：' + str(
+            event.group_id) + '\n昵称：' + event.nick + '\n状态：' + al)
+
+    @bot.on(GroupMessage)
+    async def handle_group_message(event: GroupMessage):
+        global haveSign, tod
+        if '签到' == str(event.message_chain):
+            logger.info("接收来自：" + event.sender.member_name + "(" + str(event.sender.id) + ") 的签到指令")
+            if str(event.sender.id) in userdict.keys():
+                data = userdict.get(str(event.sender.id))
+                signOrNot = data.get('ok')
+                time114514 = str(datetime.datetime.now().strftime('%Y-%m-%d'))
+                if signOrNot != time114514 or event.sender.id == master:
+                    city = data.get('city')
+                    startTime = data.get('st')
+                    times = str(int(data.get('sts')) + 1)
+                    if times == trustDays:
+                        await bot.send(event, '已对您开启邀请bot加群与私聊chatglm权限', True)
+                    exp = str(int(data.get('exp')) + random.randint(1, 20))
+                    nowTime = datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')
+                    id = data.get('id')
+                    weather = await querys(city, api_KEY)
+                    logger.info(weather)
+                    imgurl = get_user_image_url(event.sender.id)
+                    logger.info("制作签到图片....")
+                    await bot.send(event,
+                                   f"{event.sender.member_name}是今天第{len(haveSign)}个签到的，正在制作签到图片.....")
+                    asyncio.run_coroutine_threadsafe(fuff(imgurl, id, weather, nowTime, times, exp, startTime, event),
+                                                     newLoop)
+
+                    logger.info("完成，发送签到图片")
+                    data['sts'] = times
+                    data['exp'] = exp
+                    data['ok'] = time114514
+                    userdict[str(event.sender.id)] = data
+                    logger.info("启动天气查询")
+                    logger.info("更新用户数据中")
+                    with open('data/userData.yaml', 'w', encoding="utf-8") as file:
+                        yaml.dump(userdict, file, allow_unicode=True)
+                    haveSign.append(event.sender.id)
+                    paddd = {str(tod): haveSign}
+                    with open('data/signs.yaml', 'w', encoding="utf-8") as file:
+                        yaml.dump(paddd, file, allow_unicode=True)
+                else:
+                    logger.info("签到过了，拒绝签到")
+                    await bot.send(event, '不要重复签到！笨蛋！', True)
+            else:
+                logger.info("未注册用户" + str(event.sender.id) + "，提醒注册")
+                await bot.send(event, '请完善用户信息\n发送 注册#城市名 以完善信息\n例如 注册#通辽', True)
+                global newUser
+                newUser[str(event.sender.id)] = 0
+
+    @bot.on(GroupMessage)
+    async def handle_group_message(event: GroupMessage):
+        global newUser, haveSign, tod
+        if str(event.sender.id) in newUser.keys():
+            newUser.pop(str(event.sender.id))
+            logger.info("用户+1：" + str(event.sender.member_name) + " (" + str(event.sender.id) + ")")
+            time114514 = str(datetime.datetime.now().strftime('%Y-%m-%d'))
+            time = datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')
+            try:
+                city = str(event.message_chain).split('#')[1]
+                weather = await querys(city, api_KEY)
+                logger.info("验证城市通过")
+            except:
+                await bot.send(event, 'error，默认执行 注册#通辽 ,随后可发送 修改城市#城市名 进行地区修改')
+                city = '通辽'
+                weather = await querys(city, api_KEY)
+                logger.info("城市验证未通过，送进通辽当可汗子民")
+            global userdict
+            userdict[str(event.sender.id)] = {"city": city, "st": time, "sts": "1", "exp": "0",
+                                              "id": "miav-" + random_str(6,
+                                                                         'AaBbCcDdEeFfGgHhIiJjKkLlMmNnOoPpQqRrSsTtUuVvWwXxYyZz0123456789'),
+                                              'ok': time114514}
+            data = userdict.get(str(event.sender.id))
+            city = data.get('city')
+            startTime = data.get('st')
+            times = str(int(data.get('sts')) + 1)
+            exp = str(int(data.get('exp')) + random.randint(1, 20))
+            nowTime = datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')
+            id = data.get('id')
+            data['sts'] = times
+            data['exp'] = exp
+            data['userName'] = event.sender.member_name
+            imgurl = get_user_image_url(event.sender.id)
+            logger.info("制作签到图片....")
+            await bot.send(event, f"{event.sender.member_name}是今天第{len(haveSign)}个签到的，正在制作签到图片.....")
+            asyncio.run_coroutine_threadsafe(fuff(imgurl, id, weather, nowTime, times, exp, startTime, event), newLoop)
+
+            userdict[str(event.sender.id)] = data
+            logger.info("更新用户数据中")
+            with open('data/userData.yaml', 'w', encoding="utf-8") as file:
+                yaml.dump(userdict, file, allow_unicode=True)
+            haveSign.append(event.sender.id)
+            paddd = {str(tod): haveSign}
+            with open('data/signs.yaml', 'w', encoding="utf-8") as file:
+                yaml.dump(paddd, file, allow_unicode=True)
+
+    async def fuff(imgurl, id, weather, nowTime, times, exp, startTime, event):
+        path = await signPicMaker(imgurl, id, weather, nowTime, times, exp, startTime)
+        logger.info("完成，发送签到图片")
+        await bot.send(event, Image(path=path), True)
+
+    @bot.on(Startup)
+    async def upddddd(event: Startup):
+        while True:
+            await sleep(60)
+            with open('data/signs.yaml', 'r', encoding='utf-8') as f:
+                signstoday = yaml.load(f.read(), Loader=yaml.FullLoader)
+            global haveSign, tod
+            tod = str(datetime.date.today())
+            if tod in signstoday:
+                haveSign = signstoday.get(tod)
+            else:
+                haveSign = [123]
+                paddd = {str(tod): haveSign}
+                with open('data/signs.yaml', 'w', encoding="utf-8") as file:
+                    yaml.dump(paddd, file, allow_unicode=True)
+
+    @bot.on(GroupMessage)
+    async def changeCity(event: GroupMessage):
+        if str(event.message_chain).startswith('修改城市#'):
+            logger.info("接收城市修改请求")
+            city = str(event.message_chain)[5:]
+            try:
+
+                data = userdict.get(str(event.sender.id))
+                await bot.send(event, '正在验证城市......，')
+                weather = await querys(city, api_KEY)
+                data['city'] = city
+                data["id"] = "miav-" + random_str(6, 'AaBbCcDdEeFfGgHhIiJjKkLlMmNnOoPpQqRrSsTtUuVvWwXxYyZz0123456789')
+                await bot.send(event, '成功')
+                userdict[str(event.sender.id)] = data
+                with open('data/userData.yaml', 'w', encoding="utf-8") as file:
+                    yaml.dump(userdict, file, allow_unicode=True)
+            except:
+                await bot.send(event, '没有对应的城市数据......，', True)

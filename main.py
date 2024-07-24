@@ -18,7 +18,7 @@ from mirai import Mirai, WebSocketAdapter, GroupMessage, Image, At, Startup, Fri
 from plugins.RandomStr import random_str
 from plugins.newLogger import newLogger
 from plugins.systeminfo import get_system_info
-from run import aiReply, voiceReply, nudgeReply, wikiHelper, imgSearch, extraParts, wReply, userSign, groupManager, \
+from run import aiReply, voiceReply, nudgeReply, wikiHelper, imgSearch, extraParts, wReply,groupManager, \
     musicShare, LiveMonitor, aronaapi, groupGames, musicpick, scheduledTasks, appCard, aiDraw, starRail,bangumi
 
 if __name__ == '__main__':
@@ -208,7 +208,6 @@ if __name__ == '__main__':
     extraParts.main(bot, logger)  # 额外小功能
     wReply.main(bot, config, sizhiKey, logger)
     wikiHelper.main(bot, logger)
-    userSign.main(bot, result.get("weatherXinZhi"), master, config, logger)
     groupManager.main(bot, config, moderate, logger)
     musicShare.main(bot, master, botName, logger)
     LiveMonitor.main(bot, master, botName, logger)
