@@ -19,6 +19,7 @@ def main(bot, master, logger):
     with open('config/settings.yaml', 'r', encoding='utf-8') as f:
         result = yaml.load(f.read(), Loader=yaml.FullLoader)
     spe = result.get("语音功能设置").get("bert_speakers")
+    prefix=result.get("语音功能设置").get("prefix")
     modelScope = ["BT", "塔菲", "阿梓", "otto", "丁真", "星瞳", "东雪莲", "嘉然", "孙笑川", "亚托克斯", "文静", "鹿鸣",
                   "奶绿", "七海", "恬豆", "科比"]
 
@@ -55,12 +56,11 @@ def main(bot, master, logger):
 
     @bot.on(GroupMessage)
     async def characterSpeake(event: GroupMessage):
-        if "说" in str(event.message_chain) and not str(event.message_chain).startswith("说"):
+        if "说" in str(event.message_chain) and str(event.message_chain).startswith(prefix):
 
             text = str(event.message_chain)[len(str(event.message_chain).split("说")[0]) + 1:]
-
-            if str(event.message_chain).split("说")[0] in characters:
-                    speaker = str(event.message_chain).split("说")[0]
+            speaker = str(event.message_chain).split("说")[0].replace(prefix,"")
+            if speaker in characters:
                     text = await translate(text)
                     path = 'data/voices/' + random_str() + '.wav'
                     logger.info("语音生成_文本" + text)
@@ -70,11 +70,10 @@ def main(bot, master, logger):
                     await voiceGenerate(data)
                     await bot.send(event, Voice(path=path))
 
-            if str(event.message_chain).split("说")[0] in modelScope:
+            if speaker in modelScope:
                 try:
-                    data = {"speaker": str(event.message_chain).split("说")[0],
-                            "text": str(event.message_chain).replace(str(event.message_chain).split("说")[0] + "说",
-                                                                     "")}
+                    data = {"speaker": speaker,
+                            "text": text}
                     logger.info("modelscopeTTS语音合成:" + data["text"])
                     path = await superVG(data, "modelscopeTTS")
                     await bot.send(event, Voice(path=path))
@@ -83,21 +82,21 @@ def main(bot, master, logger):
                     logger.error(e)
                     await bot.send(event, "出错了喵，呜呜呜", True)
             try:
-                sp1 = await fetch_FishTTS_ModelId(proxy, FishTTSAuthorization, str(event.message_chain).split("说")[0])
+                sp1 = await fetch_FishTTS_ModelId(proxy, FishTTSAuthorization, speaker)
                 if sp1 is None or sp1 == "":
                     logger.warning("未能在FishTTS中找到对应角色")
                     return
                 else:
-                    logger.info(f"获取到FishTTS模型id {str(event.message_chain).split('说')[0]} {sp1}")
-                    p = await superVG({"text": str(event.message_chain).split("说")[1], "speaker": sp1}, "FishTTS")
+                    logger.info(f"获取到FishTTS模型id {speaker} {sp1}")
+                    p = await superVG({"text": text, "speaker": sp1}, "FishTTS")
                     await bot.send(event, Voice(path=p))
             except Exception as e:
                 logger.error(e)
 
     @bot.on(GroupMessage)
     async def characterSpeake(event: GroupMessage):
-        if "中文" in str(event.message_chain) and str(event.message_chain).split("中文")[0] in characters:
-            speaker = str(event.message_chain).split("中文")[0]
+        if "中文" in str(event.message_chain) and str(event.message_chain).split("中文")[0].replace(prefix,"") in characters and str(event.message_chain).startswith(prefix):
+            speaker = str(event.message_chain).split("中文")[0].replace(prefix,"")
             text = str(event.message_chain).split("中文")[1]
 
             path = f'data/voices/{random_str()}.wav'
@@ -110,27 +109,26 @@ def main(bot, master, logger):
 
     @bot.on(GroupMessage)
     async def characterSpeake(event: GroupMessage):
-        if "日文" in str(event.message_chain):
-            speaker = str(event.message_chain).split("日文")[0]
+        if "日文" in str(event.message_chain) and str(event.message_chain).startswith(prefix):
+            speaker = str(event.message_chain).split("日文")[0].replace(prefix,"")
             text = str(event.message_chain)[len(str(event.message_chain).split("日文")[0]) + 1:]
 
             logger.info("语音生成_文本" + text)
-            if str(event.message_chain).split("日文")[0] in characters:
+            if speaker in characters:
                 path = f'data/voices/{random_str()}.wav'
                 logger.info("语音生成_模型:" + speaker + str(characters.get(speaker)[1]))
-                data = {"text": f"[JA]{text}[JA]", "out": path, 'speaker': characters.get(speaker)[0],
+                data = {"text": f"[JA]{text}[JA]", "out": path, 'speaker': speaker,
                         'modelSelect': characters.get(speaker)[1]}
                 await voiceGenerate(data)
                 await bot.send(event, Voice(path=path))
 
             try:
-                sp1 = await fetch_FishTTS_ModelId(proxy, FishTTSAuthorization,
-                                                  str(event.message_chain).split("日文")[0])
+                sp1 = await fetch_FishTTS_ModelId(proxy, FishTTSAuthorization,speaker)
                 if sp1 is None or sp1 == "":
                     logger.warning("未能在FishTTS中找到对应角色")
                     return
                 else:
-                    logger.info(f"获取到FishTTS模型id {str(event.message_chain).split('日文')[0]} {sp1}")
+                    logger.info(f"获取到FishTTS模型id {speaker} {sp1}")
                     p = await superVG(data={"text": text, "speaker": sp1}, mode="FishTTS", langmode="<jp>")
                     await bot.send(event, Voice(path=p))
             except Exception as e:
@@ -179,9 +177,9 @@ def main(bot, master, logger):
     #外部bert_vits2以及Modelscopetts
     @bot.on(GroupMessage)
     async def taffySayf(event: GroupMessage):
-        if "说" in str(event.message_chain) and str(event.message_chain).split("说")[0] in spe:
-            data = {"speaker": str(event.message_chain).split("说")[0],
-                    "text": str(event.message_chain).replace(str(event.message_chain).split("说")[0] + "说", "")}
+        if "说" in str(event.message_chain) and str(event.message_chain).split("说")[0] in spe and str(event.message_chain).startswith(prefix):
+            data = {"speaker": str(event.message_chain).split("说")[0].replace(prefix,""),
+                    "text": str(event.message_chain).replace(prefix,"").replace(str(event.message_chain).split("说")[0] + "说", "")}
 
             try:
                 path = await taffySayTest(data, berturl, proxy)
