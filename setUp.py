@@ -21,6 +21,7 @@ if os.path.exists(NTQQ_Launcher_path):
     python_path = custom_python_path
     custom_pip_path = os.path.join(parent_dir, "python", "Scripts", "pip.exe")
     pip_path = custom_pip_path
+    os.system(f"\"{python_path}\" -m pip install --upgrade pip")
     #print("{pip_path} -m {custom_pip_path} install --upgrade pip")
     # os.system(f"\"{python_path}\" -m pip install --upgrade pip")
     print("检测到NTQQ_Launcher文件夹，使用对应文件夹下的git、python、pip")
@@ -46,7 +47,7 @@ else:
 #print("git路径：", git_path)
 #print("python路径：", python_path)
 #print("pip路径：", pip_path)
-os.system(f"\"{python_path}\" -m pip install --upgrade pip")
+
 def newLogger():
     # 创建一个logger对象
     logger = logging.getLogger("villia")
