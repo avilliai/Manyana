@@ -1,5 +1,6 @@
 ﻿APScheduler==3.10.1
 asyncio==3.4.3
+beautifulsoup4
 colorlog==6.7.0
 edge-tts
 psutil
