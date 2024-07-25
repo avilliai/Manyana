@@ -73,9 +73,15 @@ def newLogger():
 
 logger = newLogger()
 def main():
-    print("请输入要执行的指令：\n1 绑定到远程仓库(如果通过源码包安装请执行)\n2 更新bot代码\n3 清理无用数据(如缓存图片)\n4 导出群信息，制作一个chatLearning可用的配置文件\n5 其他素材下载(可选)\n6 安装vits功能对应依赖")
-
-    a=input("输入要执行的数字")
+    print(
+        """请输入要执行的指令：
+        1 绑定到远程仓库(如果通过源码包安装请执行)
+        2 更新bot代码
+        3 清理无用数据(如缓存图片)
+        4 导出群信息，制作一个chatLearning可用的配置文件
+        5 其他素材下载(可选)
+        6 安装vits功能对应依赖""")
+    a = input("输入要执行的数字")
     if a=="1":
         os.system(f"{git_path} init")
         os.system(f"{git_path} remote add origin https://github.com/avilliai/Manyana.git")
@@ -86,71 +92,16 @@ def main():
         updaat()
     elif a=="3":
         print("执行清理缓存操作")
-        ls1 = os.listdir("data/pictures/avatars")
-        for i in ls1:
-            try:
-                os.remove("data/pictures/avatars/" + i)
-            except:
-                continue
-        print("清理头像缓存完成")
-        ls1 = os.listdir("data/voices")
-        for i in ls1:
-            try:
-                os.remove("data/voices/" + i)
-            except:
-                continue
-        ls1 = os.listdir("data/music/musicCache")
-        for i in ls1:
-            try:
-                os.remove("data/music/musicCache/" + i)
-            except:
-                continue
-        print("清理音频缓存完成")
-        ls1 = os.listdir("data/pictures/cache")
-        for i in ls1:
-            try:
-                os.remove("data/pictures/cache/" + i)
-            except:
-                continue
-
-        ls1 = os.listdir("data/pictures/wallpaper")
-        for i in ls1:
-            try:
-                os.remove("data/pictures/wallpaper/" + i)
-            except:
-                continue
-        ls1 = os.listdir("data/blueArchive/arona")
-        for i in ls1:
-            try:
-                os.remove("data/blueArchive/arona/" + i)
-            except:
-                continue
-        ls1 = os.listdir("data/blueArchive/cache")
-        for i in ls1:
-            try:
-                os.remove("data/blueArchive/cache/" + i)
-            except:
-                continue
-        ls1 = os.listdir("data/Elo")
-        for i in ls1:
-            try:
-                os.remove("data/Elo/" + i)
-            except:
-                continue
-        ls1 = os.listdir("data/arknights")
-        for i in ls1:
-            try:
-                os.remove("data/arknights/" + i)
-            except:
-                continue
-
-        ls1 = os.listdir("data/backrooms")
-        for i in ls1:
-            try:
-                os.remove("data/backrooms/" + i)
-            except:
-                continue
-        print("清理本地图库缓存完成")
+        aimdir = ["data/pictures/avatars", "data/voices", "data/music/musicCache", "data/pictures/cache",
+                  "data/pictures/wallpaper", "data/blueArchive/arona", "data/blueArchive/cache", "data/Elo",
+                  "data/arknights", "data/backrooms"]
+        for ib in aimdir:
+            ls1 = os.listdir(ib)
+            for i in ls1:
+                try:
+                    os.remove(f"{ib}/" + i)
+                except:
+                    continue
         print("清理缓存完成")
     elif a=="4":
         import json
