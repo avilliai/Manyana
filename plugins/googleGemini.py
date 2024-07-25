@@ -2,7 +2,7 @@
 import base64
 import io
 
-import PIL
+from PIL import Image
 import asyncio
 import copy
 
@@ -61,23 +61,29 @@ safety_settings = [
     },
 ]
 
-async def GeminiDownloadAllImagesAndSetPrompts(imgurls,rev=False):
-    imgresults=[]
+
+async def GeminiDownloadAllImagesAndSetPrompts(imgurls, rev=False):
+    imgresults = []
     for i in imgurls:
         async with httpx.AsyncClient(timeout=20) as client:
-            res =await client.get(i)
-            path=f"data/pictures/cache/{random_str()}.png"
-            with open(path, 'wb') as f:
-                f.write(res.content)
-            organ = PIL.Image.open(path)
-            organ = organ.resize(((600, int(organ.size[1] * 600 / organ.size[0]))), resample=PIL.Image.LANCZOS)
+            res = await client.get(i)
+            image = Image.open(io.BytesIO(res.content))
+            #进行图片压缩
+            quality = 85
+            while True:
+                img_byte_arr = io.BytesIO()
+                image.convert("RGB").save(img_byte_arr, format='JPEG', quality=quality)
+                size_kb = img_byte_arr.tell() / 1024
+                if size_kb <= 400 or quality <= 10:
+                    break
+                quality -= 5
+
             if rev:
-                buffer = io.BytesIO()
-                organ.save(buffer, format="PNG")
-                img_bytes = buffer.getvalue()
-                img_base64 = base64.b64encode(img_bytes).decode('utf-8')
+                img_base64 = base64.b64encode(img_byte_arr.getvalue()).decode('utf-8')
                 imgresults.append({"inline_data": {"mime_type": "image/jpeg", "data": img_base64}})
             else:
+                img_byte_arr.seek(0)
+                organ = Image.open(img_byte_arr)
                 imgresults.append(organ)
     return imgresults
 async def geminirep(ak, messages, bot_info, GeminiRevProxy="",imgurls=None):
