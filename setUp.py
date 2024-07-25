@@ -203,7 +203,7 @@ def updaat(f=False,jump=False,source=None):
             os.system(f"\"{python_path}\" -m pip install emoji")
     if source==None:
         logger.info("拉取bot代码\n--------------------")
-        logger.info("选择更新源(git源 镜像源相互兼容)：\n1 git源\n2 镜像源1\n3 镜像源2 \n4 中国计算机协会源(回车默认选择，这个是启动器搭建的默认源)")
+        logger.info("选择更新源(git源 镜像源相互兼容)：\n1 git源\n2 镜像源1\n3 镜像源2 \n4 中国计算机协会源(这个是启动器搭建的默认源，不知道选啥选这个)")
         source = input("选择更新源(输入数字 )：")
     else:
         source=str(source)
@@ -217,8 +217,11 @@ def updaat(f=False,jump=False,source=None):
                              stderr=subprocess.PIPE)
     elif source=="3":
         p=subprocess.Popen([f'{git_path}', 'pull', 'https://mirror.ghproxy.com/https://github.com/avilliai/Manyana'], stdout=subprocess.PIPE,stderr=subprocess.PIPE)
-    else:
+    elif source=="4":
         p=subprocess.Popen([f'{git_path}', 'pull', 'https://www.gitlink.org.cn/lux-QAQ/Manyana'], stdout=subprocess.PIPE,stderr=subprocess.PIPE)
+    else:
+        logger.error("无效输入，重新执行")
+        updaat()
     # 获取进程的输出和错误信息
     stdout, stderr = p.communicate()
     stdout = stdout.decode('utf-8', errors='ignore')
