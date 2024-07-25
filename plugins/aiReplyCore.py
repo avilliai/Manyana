@@ -253,9 +253,9 @@ async def modelReply(senderName, senderId, text, modelHere=modelDefault, trustUs
                                 GeminiRevProxy=GeminiRevProxy, imgurls=imgurls),
             # print(r,type(r))
             rep = {"role": "assistant", "content": r[0].replace(r"\n", "\n")}
-        elif modelHere=="sparkAI":
+        elif modelHere=="sparkAI" or modelHere=="讯飞星火":
             rep=await sparkAI(prompt1, bot_in,sparkAppKey,sparkAppSecret,sparkModel)
-        elif modelHere=="wenxinAI":
+        elif modelHere=="wenxinAI" or modelHere=="文心一言":
             rep=await wenxinAI(prompt1,bot_in,wenxinAppKey,wenxinAppSecret,wenxinModel)
         elif type(allcharacters.get(modelHere)) == dict:
             if (str(senderId) not in trustUser and trustglmReply) and trustUser is not None:
