@@ -226,15 +226,12 @@ async def superVG(data, mode, urls="", langmode="<zh>"):
     elif mode == "outVits":
         speaker = data.get("speaker")
         text = data.get("text")
-        # os.system("where python")
-        # p = random_str() + ".mp3"
-        # p = "data/voices/" + p
         p = "data/voices/" + random_str() + '.wav'
         url = f"https://api.lolimi.cn/API/yyhc/y.php?msg={text}&speaker={speaker}"
         async with httpx.AsyncClient(timeout=200) as client:
             r = await client.post(url)
             newUrl = r.json().get("music")
-            print("outvits语音合成路径：" + p)
+            #print("outvits语音合成路径：" + p)
             r1 = requests.get(newUrl)
             with open(p, "wb") as f:
                 f.write(r1.content)
