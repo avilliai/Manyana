@@ -119,6 +119,8 @@ async def modelReply(senderName, senderId, text, modelHere=modelDefault, trustUs
                      checkIfRepFirstTime=False):
     global chatGLMData
     logger.info(modelHere)
+    if senderName==None:
+        senderName="指挥"
     try:
         if type(allcharacters.get(modelHere)) == dict:
             with open('config/settings.yaml', 'r', encoding='utf-8') as f:
