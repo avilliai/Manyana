@@ -68,6 +68,7 @@ async def GeminiDownloadAllImagesAndSetPrompts(imgurls, rev=False):
         async with httpx.AsyncClient(timeout=20) as client:
             res = await client.get(i)
             image = Image.open(io.BytesIO(res.content))
+            image = image.convert("RGB")
             #进行图片压缩
             quality = 85
             while True:
