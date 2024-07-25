@@ -10,7 +10,8 @@ from mirai import logger
 
 from plugins.RandomStr import random_str
 from plugins.ReplyModels import gptOfficial, gptUnofficial, kimi, qingyan, lingyi, stepAI, qwen, gptvvvv, grop, \
-    gpt4hahaha, anotherGPT35, chatGLM, relolimigpt2, xinghuo, Gemma, binggpt4, alcex_GPT3_5, freeGemini, catRep, momoRep
+    gpt4hahaha, anotherGPT35, chatGLM, relolimigpt2, xinghuo, Gemma, binggpt4, alcex_GPT3_5, freeGemini, catRep, \
+    momoRep, sparkAI
 from plugins.googleGemini import geminirep
 from plugins.translater import translate
 from plugins.vitsGenerate import voiceGenerate, superVG
@@ -18,16 +19,23 @@ from plugins.vitsGenerate import voiceGenerate, superVG
 with open('config/api.yaml', 'r', encoding='utf-8') as f:
     resulttr = yaml.load(f.read(), Loader=yaml.FullLoader)
 CoziUrl = resulttr.get("cozi")
-geminiapikey = resulttr.get("gemini")
-proxy = resulttr.get("proxy")
-openai_transit=resulttr.get("openaiSettings").get("openai-transit")
-gptkeys = resulttr.get("openaiSettings").get("openai-keys")
-openai_model=resulttr.get("openaiSettings").get("openai-model")
-GeminiRevProxy = resulttr.get("GeminiRevProxy")
 berturl = resulttr.get("bert_colab")
+
+#gemini
+geminiapikey = resulttr.get("gemini")
+#openai相关配置
+openai_transit = resulttr.get("openaiSettings").get("openai-transit")
+gptkeys = resulttr.get("openaiSettings").get("openai-keys")
+openai_model = resulttr.get("openaiSettings").get("openai-model")
+#代理
+proxy = resulttr.get("proxy")
+GeminiRevProxy = resulttr.get("GeminiRevProxy")
+#讯飞星火模型配置
+sparkAppKey=resulttr.get("sparkAI").get("appKey")
+sparkAppSecret=resulttr.get("sparkAI").get("appSecret")
+sparkModel=resulttr.get("sparkAI").get("spark-model")
 if proxy != "":
     os.environ["http_proxy"] = proxy
-
 
 chatGLM_api_key = resulttr.get("chatGLM")
 with open('config.json', 'r', encoding='utf-8') as f:
@@ -103,7 +111,8 @@ async def loop_run_in_executor(executor, func, *args):
 
 
 # 运行异步函数
-async def modelReply(senderName, senderId, text, modelHere=modelDefault, trustUser=None, imgurls=None,checkIfRepFirstTime=False):
+async def modelReply(senderName, senderId, text, modelHere=modelDefault, trustUser=None, imgurls=None,
+                     checkIfRepFirstTime=False):
     global chatGLMData
     logger.info(modelHere)
     try:
@@ -154,39 +163,38 @@ async def modelReply(senderName, senderId, text, modelHere=modelDefault, trustUs
                     logger.error("初始化anotherGPT3.5失败")
             firstRep = True
         logger.info(f"{modelHere}  bot 接受提问：" + text)
-        
-        
+
         if modelHere == "random":
-            prompt1 = copy.deepcopy(prompt1)#去重人设
+            prompt1 = copy.deepcopy(prompt1)  # 去重人设
             tasks = []
             logger.warning("请求所有模型接口")
             # 将所有模型的执行代码包装成异步任务，并添加到任务列表
-        #    tasks.append(loop_run_in_executor(loop, cozeBotRep, CoziUrl, prompt1, proxy))# 2024-07-17测试无效
-        #    tasks.append(loop_run_in_executor(loop, kimi, prompt1, bot_in))              # 2024-07-17测试无效
-        #    tasks.append(loop_run_in_executor(loop, qingyan, prompt1, bot_in))           # 2024-07-17测试无效
-        #    tasks.append(loop_run_in_executor(loop, grop, prompt1, bot_in))              # 2024-07-17测试无效
-        #    tasks.append(loop_run_in_executor(loop, lingyi, prompt1, bot_in))            # 2024-07-17测试无效
-        #    tasks.append(loop_run_in_executor(loop, relolimigpt2, prompt1, bot_in))      # 2024-07-17测试无法解析API
-        #    tasks.append(loop_run_in_executor(loop, stepAI, prompt1, bot_in))            # 2024-07-17测试无效
-        #    tasks.append(loop_run_in_executor(loop, qwen, prompt1, bot_in))              # 2024-07-17测试无效
-        #    tasks.append(loop_run_in_executor(loop, gptvvvv, prompt1, bot_in))           # 2024-07-17测试无效
-        #    tasks.append(loop_run_in_executor(loop, gpt4hahaha, prompt1, bot_in))        # 2024-07-17测试无效
-        #    tasks.append(loop_run_in_executor(loop, anotherGPT35, prompt1, senderId))    # 2024-07-17测试 初始化失败
-        #    tasks.append(loop_run_in_executor(loop, xinghuo, prompt1, senderId))         # 2024-07-17测试无效
-            tasks.append(loop_run_in_executor(loop,Gemma,prompt1,bot_in))                 # 2024-07-17测试通过
-            tasks.append(loop_run_in_executor(loop,alcex_GPT3_5,prompt1,bot_in))          # 2024-07-17测试通过
-            tasks.append(loop_run_in_executor(loop,catRep,prompt1,bot_in))
-            tasks.append(loop_run_in_executor(loop,momoRep,prompt1,bot_in))
-        #    tasks.append(loop_run_in_executor(loop,freeGemini,prompt1,bot_in))           # 2024-07-17测试无效
-            
+            #    tasks.append(loop_run_in_executor(loop, cozeBotRep, CoziUrl, prompt1, proxy))# 2024-07-17测试无效
+            #    tasks.append(loop_run_in_executor(loop, kimi, prompt1, bot_in))              # 2024-07-17测试无效
+            #    tasks.append(loop_run_in_executor(loop, qingyan, prompt1, bot_in))           # 2024-07-17测试无效
+            #    tasks.append(loop_run_in_executor(loop, grop, prompt1, bot_in))              # 2024-07-17测试无效
+            #    tasks.append(loop_run_in_executor(loop, lingyi, prompt1, bot_in))            # 2024-07-17测试无效
+            #    tasks.append(loop_run_in_executor(loop, relolimigpt2, prompt1, bot_in))      # 2024-07-17测试无法解析API
+            #    tasks.append(loop_run_in_executor(loop, stepAI, prompt1, bot_in))            # 2024-07-17测试无效
+            #    tasks.append(loop_run_in_executor(loop, qwen, prompt1, bot_in))              # 2024-07-17测试无效
+            #    tasks.append(loop_run_in_executor(loop, gptvvvv, prompt1, bot_in))           # 2024-07-17测试无效
+            #    tasks.append(loop_run_in_executor(loop, gpt4hahaha, prompt1, bot_in))        # 2024-07-17测试无效
+            #    tasks.append(loop_run_in_executor(loop, anotherGPT35, prompt1, senderId))    # 2024-07-17测试 初始化失败
+            #    tasks.append(loop_run_in_executor(loop, xinghuo, prompt1, senderId))         # 2024-07-17测试无效
+            tasks.append(loop_run_in_executor(loop, Gemma, prompt1, bot_in))  # 2024-07-17测试通过
+            tasks.append(loop_run_in_executor(loop, alcex_GPT3_5, prompt1, bot_in))  # 2024-07-17测试通过
+            tasks.append(loop_run_in_executor(loop, catRep, prompt1, bot_in))
+            tasks.append(loop_run_in_executor(loop, momoRep, prompt1, bot_in))
+            #    tasks.append(loop_run_in_executor(loop,freeGemini,prompt1,bot_in))           # 2024-07-17测试无效
+
             # tasks.append(loop_run_in_executor(loop,localAurona,prompt1,bot_in))
             # ... 添加其他模型的任务 ...
             aim = {"role": "user", "content": bot_in}
             prompt1 = [i for i in prompt1 if i != aim]
-            #prompt1 = [i for i in prompt1 if not (i.get("role") == aim["role"] and i.get("content") == aim["content"])]
+            # prompt1 = [i for i in prompt1 if not (i.get("role") == aim["role"] and i.get("content") == aim["content"])]
             aim = {"role": "assistant", "content": "好的，已了解您的需求~我会扮演好您设定的角色。"}
             prompt1 = [i for i in prompt1 if i != aim]
-            #prompt1 = [i for i in prompt1 if not (i.get("role") == aim["role"] and i.get("content") == aim["content"])]
+            # prompt1 = [i for i in prompt1 if not (i.get("role") == aim["role"] and i.get("content") == aim["content"])]
 
             done, pending = await asyncio.wait(tasks, return_when=asyncio.ALL_COMPLETED)
             reps = {}
@@ -216,7 +224,8 @@ async def modelReply(senderName, senderId, text, modelHere=modelDefault, trustUs
                 raise Exception
             # print(reps)
             modeltrans = {"gptX": "gptvvvv", "清言": "qingyan", "通义千问": "qwen", "anotherGPT3.5": "anotherGPT35",
-                          "lolimigpt": "relolimigpt2", "step": "stepAI", "讯飞星火": "xinghuo","猫娘米米": "catRep","沫沫":"momoRep"}
+                          "lolimigpt": "relolimigpt2", "step": "stepAI", "讯飞星火": "xinghuo", "猫娘米米": "catRep",
+                          "沫沫": "momoRep"}
             for priority in randomModelPriority:
                 if priority in modeltrans:
                     priority = modeltrans.get(priority)
@@ -225,19 +234,23 @@ async def modelReply(senderName, senderId, text, modelHere=modelDefault, trustUs
                     logger.info(f"random模型选择结果：{priority}: {rep}")
                     break
         elif modelHere == "gpt3.5":
-            if openai_transit=="" or openai_transit==" ":
-                rep = await loop.run_in_executor(None, gptOfficial, prompt1, gptkeys, proxy, bot_in,openai_model)
+            if openai_transit == "" or openai_transit == " ":
+                rep = await loop.run_in_executor(None, gptOfficial, prompt1, gptkeys, proxy, bot_in, openai_model)
             else:
-                rep = await loop.run_in_executor(None, gptUnofficial, prompt1, gptkeys, openai_transit, bot_in,openai_model)
-        elif modelHere=="binggpt4":
-            #print(1)
-            rep=await loop_run_in_executor(None,binggpt4,prompt1,bot_in)
-            if type(rep)==list:
+                rep = await loop.run_in_executor(None, gptUnofficial, prompt1, gptkeys, openai_transit, bot_in,
+                                                 openai_model)
+        elif modelHere == "binggpt4":
+            # print(1)
+            rep = await loop_run_in_executor(None, binggpt4, prompt1, bot_in)
+            if type(rep) == list:
                 return "模型不可用，请更换模型。"
         elif modelHere == "Gemini":
-            r = await geminirep(ak=random.choice(geminiapikey), messages=prompt1, bot_info=bot_in,GeminiRevProxy=GeminiRevProxy,imgurls=imgurls),
-            #print(r,type(r))
+            r = await geminirep(ak=random.choice(geminiapikey), messages=prompt1, bot_info=bot_in,
+                                GeminiRevProxy=GeminiRevProxy, imgurls=imgurls),
+            # print(r,type(r))
             rep = {"role": "assistant", "content": r[0].replace(r"\n", "\n")}
+        elif modelHere=="sparkAI":
+            rep=await sparkAI(prompt1, bot_in,sparkAppKey,sparkAppSecret,sparkModel)
         elif type(allcharacters.get(modelHere)) == dict:
             if (str(senderId) not in trustUser and trustglmReply) and trustUser is not None:
                 if checkIfRepFirstTime:
@@ -257,14 +270,14 @@ async def modelReply(senderName, senderId, text, modelHere=modelDefault, trustUs
         # 写入文件
         with open('data/chatGLMData.yaml', 'w', encoding="utf-8") as file:
             yaml.dump(chatGLMData, file, allow_unicode=True)
-        #print(rep.get('content'),type(rep.get('content')))
-        #print(rep,type(rep))
+        # print(rep.get('content'),type(rep.get('content')))
+        # print(rep,type(rep))
         logger.info(f"{modelHere} bot 回复：" + rep.get('content'))
         if checkIfRepFirstTime:
             return rep.get("content"), firstRep
         else:
             return rep.get("content")
-        #await tstt(rep.get('content'), event)
+        # await tstt(rep.get('content'), event)
     except Exception as e:
         logger.error(e)
         try:
@@ -298,7 +311,7 @@ async def clearAllPrompts():
         # 写入文件
         with open('data/chatGLMData.yaml', 'w', encoding="utf-8") as file:
             yaml.dump(chatGLMData, file, allow_unicode=True)
-        #print(chatGLMData)
+        # print(chatGLMData)
         return "已清除所有用户的prompt"
     except:
         return "清理缓存出错，无本地对话记录"

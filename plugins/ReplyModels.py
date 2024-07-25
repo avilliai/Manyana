@@ -1,4 +1,5 @@
 # -*- coding:utf-8 -*-
+import asyncio
 import copy
 import os
 import random
@@ -304,8 +305,26 @@ def momoRep(prompt,meta):
     url=f"https://api.lolimi.cn/API/AI/mm.php?msg={prompt}"
     r = requests.get(url, timeout=20)
     return {"role": "assistant", "content": r.json().get("data").get("output")}
+async def sparkAI(prompt,bot_info,key,secret,model):
+    prompt_copy = copy.deepcopy(prompt)
+    prompt_copy.insert(0, {"role": "user", "content": bot_info})
+    prompt_copy.insert(1, {"role": "assistant", "content": "好的，已了解您的需求~我会扮演好您设定的角色。"})
+    url = "https://spark-api-open.xf-yun.com/v1/chat/completions"
+    data = {
+            "model": model, # 指定请求的模型
+            "messages": prompt_copy,
+        }
+    header = {
+        "Authorization": f"Bearer {key}:{secret}" # 注意此处替换自己的key和secret
+    }
+    async with httpx.AsyncClient(timeout=20,headers=header) as client:
+        r = await client.post(url,json=data)
+    return r.json()["choices"][0]["message"]
 if __name__ == '__main__':
-    k = momoRep([{"role": "user", "content": "谁赢得了2020年的世界职业棒球大赛?"},
+    asyncio.run(sparkAI([{"role": "user", "content": "谁赢得了2020年的世界职业棒球大赛?"},
+                  {"role": "assistant", "content": "洛杉矶道奇队在2020年赢得了世界职业棒球大赛冠军."},
+                  {"role": "user", "content": "它在哪里举办的?"}],"你是猫娘",))
+    '''k = momoRep([{"role": "user", "content": "谁赢得了2020年的世界职业棒球大赛?"},
                   {"role": "assistant", "content": "洛杉矶道奇队在2020年赢得了世界职业棒球大赛冠军."},
                   {"role": "user", "content": "它在哪里举办的?"}],"你是猫娘")
-    print(k)
+    print(k)'''

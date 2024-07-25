@@ -9,13 +9,17 @@ siZhiAi:                         #思知ai，已不建议使用，建议用ai，
 nasa_api: HSxxxxxxx              #nasa相关天文api 从https://api.nasa.gov/index.html#main-content申请
 
 chatGLM: 69xxxxxxx               #chatGLM的apiKey，从https://open.bigmodel.cn/获取
-gemini:                          #谷歌的gemini api，免费的，有几个填几个，在https://ai.google.dev/tutorials/setup?hl=zh-cn获取，需要配置proxy或GeminiRevProxy，否则无法使用
+gemini:                          #谷歌的gemini api，支持多key，在https://ai.google.dev/tutorials/setup?hl=zh-cn获取，需要配置proxy或GeminiRevProxy，否则无法使用
   - AIxxxxxxxxxx
-openaiSettings:
-  openai-keys:                   #openai官方的apikey
+openaiSettings:                  #openai官方的apikey
+  openai-keys:
     - sk-Mxxxxxxxxxxx
   openai-model: "gpt-3.5-turbo"  #调用openai api对应的模型，前提：在settings.yaml默认模型已经设置为gpt3.5，并配置了apikey
   openai-transit: ""             #你自己的chatGPT中转站，你最好知道这是什么，否则就不要动。
+sparkAI:                         #讯飞星火，在https://console.xfyun.cn/services/cbm申请，并复制对应key和secret，注意，免费的是lite版
+  appKey: ""                     #事实上，我很推荐你使用sparkAi，因为它免费且无需代理
+  appSecret: ""
+  spark-model: "general"         #讯飞星火的模型设置，general是免费无限制的，一般不建议修改
 
 bing-image-creator:              #bing的ai绘画，参考https://github.com/avilliai/Manyana/issues/8
   _U: ""
