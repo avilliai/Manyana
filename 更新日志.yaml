@@ -308,4 +308,6 @@
   - 增加random模式可用模型，注意，新增的两个模型可能无法使用bot_info设定
   - 增加两个指令 开始对话/退出 可以在没有艾特的情况下展开对话，同时，gemini支持了图像识别
 2024/7/25:
-  - 支持对接讯飞星火api，免费无需代理，详见api.yaml和settings.yaml
+  - 支持对接讯飞星火api，免费无需代理
+  - 支持对接文心api，免费无需代理
+  - 模型配置详见https://github.com/avilliai/Manyana/wiki/%E8%AE%BE%E7%BD%AEai%E5%AF%B9%E8%AF%9D%E6%A8%A1%E5%9E%8B

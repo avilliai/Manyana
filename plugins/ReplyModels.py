@@ -1,4 +1,6 @@
 # -*- coding:utf-8 -*-
+import json
+
 import asyncio
 import copy
 import os
@@ -320,8 +322,36 @@ async def sparkAI(prompt,bot_info,key,secret,model):
     async with httpx.AsyncClient(timeout=20,headers=header) as client:
         r = await client.post(url,json=data)
     return r.json()["choices"][0]["message"]
+async def wenxinAI(prompt,bot_info,key,secret,model):
+
+    url = f"https://aip.baidubce.com/oauth/2.0/token?client_id={key}&client_secret={secret}&grant_type=client_credentials"
+
+    payload = json.dumps("")
+    headers = {
+        'Content-Type': 'application/json',
+        'Accept': 'application/json'
+    }
+    async with httpx.AsyncClient(timeout=20, headers=headers) as client:
+        r =await client.post(url, data=payload)
+    url = f"https://aip.baidubce.com/rpc/2.0/ai_custom/v1/wenxinworkshop/chat/{model}?access_token={r.json().get('access_token')}"
+    prompt_copy = copy.deepcopy(prompt)
+    prompt_copy.insert(0, {"role": "user", "content": bot_info})
+    prompt_copy.insert(1, {"role": "assistant", "content": "好的，已了解您的需求~我会扮演好您设定的角色。"})
+    payload = json.dumps({
+        "messages": prompt
+    })
+    headers = {
+        'Content-Type': 'application/json'
+    }
+    async with httpx.AsyncClient(timeout=20, headers=headers) as client:
+        r = await client.post(url, data=payload)
+        #print(r.json())
+        return {"role": "assistant", "content": r.json()["result"]}
+        #print(response.text)
+
+
 if __name__ == '__main__':
-    asyncio.run(sparkAI([{"role": "user", "content": "谁赢得了2020年的世界职业棒球大赛?"},
+    asyncio.run(wenxinAI([{"role": "user", "content": "谁赢得了2020年的世界职业棒球大赛?"},
                   {"role": "assistant", "content": "洛杉矶道奇队在2020年赢得了世界职业棒球大赛冠军."},
                   {"role": "user", "content": "它在哪里举办的?"}],"你是猫娘",))
     '''k = momoRep([{"role": "user", "content": "谁赢得了2020年的世界职业棒球大赛?"},

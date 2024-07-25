@@ -11,7 +11,7 @@ from mirai import logger
 from plugins.RandomStr import random_str
 from plugins.ReplyModels import gptOfficial, gptUnofficial, kimi, qingyan, lingyi, stepAI, qwen, gptvvvv, grop, \
     gpt4hahaha, anotherGPT35, chatGLM, relolimigpt2, xinghuo, Gemma, binggpt4, alcex_GPT3_5, freeGemini, catRep, \
-    momoRep, sparkAI
+    momoRep, sparkAI, wenxinAI
 from plugins.googleGemini import geminirep
 from plugins.translater import translate
 from plugins.vitsGenerate import voiceGenerate, superVG
@@ -31,9 +31,13 @@ openai_model = resulttr.get("openaiSettings").get("openai-model")
 proxy = resulttr.get("proxy")
 GeminiRevProxy = resulttr.get("GeminiRevProxy")
 #讯飞星火模型配置
-sparkAppKey=resulttr.get("sparkAI").get("appKey")
-sparkAppSecret=resulttr.get("sparkAI").get("appSecret")
+sparkAppKey=resulttr.get("sparkAI").get("apiKey")
+sparkAppSecret=resulttr.get("sparkAI").get("apiSecret")
 sparkModel=resulttr.get("sparkAI").get("spark-model")
+#文心一言模型配置
+wenxinAppKey=resulttr.get("wenxinAI").get("apiKey")
+wenxinAppSecret=resulttr.get("wenxinAI").get("secretKey")
+wenxinModel=resulttr.get("wenxinAI").get("wenxin-model")
 if proxy != "":
     os.environ["http_proxy"] = proxy
 
@@ -251,6 +255,8 @@ async def modelReply(senderName, senderId, text, modelHere=modelDefault, trustUs
             rep = {"role": "assistant", "content": r[0].replace(r"\n", "\n")}
         elif modelHere=="sparkAI":
             rep=await sparkAI(prompt1, bot_in,sparkAppKey,sparkAppSecret,sparkModel)
+        elif modelHere=="wenxinAI":
+            rep=await wenxinAI(prompt1,bot_in,wenxinAppKey,wenxinAppSecret,wenxinModel)
         elif type(allcharacters.get(modelHere)) == dict:
             if (str(senderId) not in trustUser and trustglmReply) and trustUser is not None:
                 if checkIfRepFirstTime:
