@@ -65,27 +65,41 @@ safety_settings = [
 async def GeminiDownloadAllImagesAndSetPrompts(imgurls, rev=False):
     imgresults = []
     for i in imgurls:
-        async with httpx.AsyncClient(timeout=20) as client:
-            res = await client.get(i)
-            image = Image.open(io.BytesIO(res.content))
-            image = image.convert("RGB")
-            #进行图片压缩
-            quality = 85
-            while True:
-                img_byte_arr = io.BytesIO()
-                image.convert("RGB").save(img_byte_arr, format='JPEG', quality=quality)
-                size_kb = img_byte_arr.tell() / 1024
-                if size_kb <= 400 or quality <= 10:
-                    break
-                quality -= 5
+        retry_count = 0
+        success = False
+        while retry_count < 3 and not success:
+            try:
+                async with httpx.AsyncClient(timeout=60) as client:
+                    res = await client.get(i)
+                    res.raise_for_status()  # Check for HTTP errors
 
-            if rev:
-                img_base64 = base64.b64encode(img_byte_arr.getvalue()).decode('utf-8')
-                imgresults.append({"inline_data": {"mime_type": "image/jpeg", "data": img_base64}})
-            else:
-                img_byte_arr.seek(0)
-                organ = Image.open(img_byte_arr)
-                imgresults.append(organ)
+                    image = Image.open(io.BytesIO(res.content))
+                    image = image.convert("RGB")
+
+                    quality = 85
+                    while True:
+                        img_byte_arr = io.BytesIO()
+                        image.save(img_byte_arr, format='JPEG', quality=quality)
+                        size_kb = img_byte_arr.tell() / 1024
+                        if size_kb <= 400 or quality <= 10:
+                            break
+                        quality -= 5
+
+                    if rev:
+                        img_base64 = base64.b64encode(img_byte_arr.getvalue()).decode('utf-8')
+                        imgresults.append({"inline_data": {"mime_type": "image/jpeg", "data": img_base64}})
+                    else:
+                        img_byte_arr.seek(0)
+                        organ = Image.open(img_byte_arr)
+                        imgresults.append(organ)
+
+                    success = True  # Mark as successful if no exception occurs
+            except Exception as e:
+                retry_count += 1
+                #print(f"Error processing image from {i} (Attempt {retry_count}/3): {e}")
+                if retry_count == 3:
+                    pass
+                    #print(f"Failed to download and process image from {i} after 3 attempts")
     return imgresults
 async def geminirep(ak, messages, bot_info, GeminiRevProxy="",imgurls=None):
     messages_copy = copy.deepcopy(messages)
