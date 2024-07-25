@@ -36,8 +36,6 @@ async def emojimix_handle(a, b):
         url = 'https://www.gstatic.com/android/keyboard/emojikitchen/'
         a = str(hex(ord(a))).lstrip('0x')
         b = str(hex(ord(b))).lstrip('0x')
-        print(a)
-        print(b)
         if a in emoji_list and b in emoji_list:
             # jsonpath_expression = parse(f"$.data.{b}")
             # result = [match.value for match in jsonpath_expression.find(data)]
@@ -59,8 +57,6 @@ async def emojimix_handle(a, b):
 
                 url = f'https://www.gstatic.com/android/keyboard/emojikitchen/{ready}/u{b}/u{a}_u{b}.png'
 
-                print(url)
-
                 result = requests.get(url=url)
 
                 if result.status_code == 200:
@@ -80,7 +76,6 @@ async def emojimix_handle(a, b):
 
                     ready = max(ready_list)
                     url = f'https://www.gstatic.com/android/keyboard/emojikitchen/{ready}/u{a}/u{a}_u{b}.png'
-                    print(url)
                     result = requests.get(url=url)
                     if result.status_code == 200:
                         with open(os.path.join(local_path, f'u{a}_u{b}.png'), "wb") as file:
@@ -104,8 +99,6 @@ def mix_reverse(a, b):
         if not os.path.exists(local_path):
             os.makedirs(local_path)
         url = 'https://www.gstatic.com/android/keyboard/emojikitchen/'
-        print(a)
-        print(b)
         if a in emoji_list and b in emoji_list:
             # jsonpath_expression = parse(f"$.data.{b}")
             # result = [match.value for match in jsonpath_expression.find(data)]
@@ -126,8 +119,6 @@ def mix_reverse(a, b):
                 ready = max(ready_list)
 
                 url = f'https://www.gstatic.com/android/keyboard/emojikitchen/{ready}/u{b}/u{a}_u{b}.png'
-
-                print(url)
 
                 result = requests.get(url=url)
 
