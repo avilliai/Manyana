@@ -123,15 +123,7 @@ Manyana/config.json的填写示例如下。
 
 <details markdown='1'><summary>ai回复配置方式</summary>
 
-模型相关信息如下，你自己用 设定#模型名 指令的优先级高于你在配置文件填写的模型，所以不要再问“为什么我修改了配置文件模型还是没反应”的问题了。**一旦你用了 设定#模型名 的指令，配置文件设置的模型将不再对你生效。**
-
-| 模型(settings.yaml中的model设置)    | 介绍                                                                                                                                   | 配置项(api.yaml对应)             | 评价                                               |
-|-------------------------------|--------------------------------------------------------------------------------------------------------------------------------------|---------------------------|--------------------------------------------------|
-| characterglm                  | 智谱的超拟人大模型，在这里[申请](https://open.bigmodel.cn/)                                                                                         | chatGLM                  | 付费api，群少/自用可选择                             |
-| Gemini                        | 谷歌Gemini，在这里[申请apikey](https://ai.google.dev/tutorials/setup?hl=zh-cn)，需配置proxy或[GeminiRevProxy](https://github.com/avilliai/Manyana/issues/17)                                                      | gemini<br>proxy或[GeminiRevProxy](https://github.com/avilliai/Manyana/issues/17)              | 免费，稳定,推荐                                     |
-| random | 稳定，免费，无代理首选，包括下面列出的所有无需配置的免费模型。配置random&PriorityModel以调整优先级                                                                                                                 | 【无需配置】                    | 免费，稳定，无需代理，全局代理模式下无法使用，学着用规则代理/pac吧哥                               |
-| gpt3.5                        | 官方gpt3.5，需要填写代理proxy项                                                                                                                | openai-keys<br>proxy      | 不建议使用，官方贵，并且需要配置代理                               |
-| Cozi                          | GPT4，基于[coze-discord](https://github.com/deanxv/coze-discord-proxy)，教程请查看[Here](https://github.com/avilliai/Manyana/issues/4)，最好配置代理 | cozi<br>proxy(建议)         | 不推荐。需要discord小号，每个账号每天都有次数限制(gpt4 100次/天)，可配置多个小号 |
+请查看[Manyana wiki](https://github.com/avilliai/Manyana/wiki/%E8%AE%BE%E7%BD%AEai%E5%AF%B9%E8%AF%9D%E6%A8%A1%E5%9E%8B)
 
 </details>
 
