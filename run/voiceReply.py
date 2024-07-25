@@ -148,7 +148,7 @@ def main(bot, master, logger):
     @bot.on(GroupMessage)
     async def checkCharacters(event: GroupMessage):
         if "角色" in str(event.message_chain) and At(bot.qq) in event.message_chain and "模板" not in str(
-                event.message_chain) and len(str(event.message_chain).replace(str(At(bot.qq))))<6:
+                event.message_chain) and len(str(event.message_chain).replace(str(At(bot.qq)),""))<6:
             #print(len(str(event.message_chain).replace(str(At(bot.qq)))))
             try:
                 str1 = "vits可用角色如下：\n"
