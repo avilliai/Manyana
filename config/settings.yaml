@@ -27,7 +27,7 @@ moderate:
   selfthreshold: 50  #自我审核阈值
 chatGLM:                   #对话模型通用设置
   aiReplyCore: False  #ai回复核心，为大部分功能启用ai回复，可优化回复表现，目前为测试功能
-  model: random  #ai模型，random(自动选取免费可用模型) |binggpt4(免费无需配置，速度较慢)| 后面几个需要自己配置api.yaml对应变量: 讯飞星火(sparkAI),文心一言(wenxinAI),Gemini(同名),gpt3.5(openai-keys),characterglm(对应chatGLM)
+  model: random  #ai模型，random(自动选取免费可用模型) |binggpt4(免费无需配置，速度较慢)| 后面几个需要自己配置api.yaml对应变量(括号内为api.yaml对应配置项): 讯飞星火(sparkAI),文心一言(wenxinAI),Gemini(gemini),gpt3.5(openai-keys),characterglm(chatGLM)
   randomModel&&&Priority:   #random模式下，模型优先使用顺序，确保稳定性,直接进文件里改。
     - Gemma
     - alcex_GPT3_5
