@@ -71,7 +71,7 @@ async def GeminiDownloadAllImagesAndSetPrompts(imgurls, rev=False):
             try:
                 async with httpx.AsyncClient(timeout=60) as client:
                     res = await client.get(i)
-                    res.raise_for_status()  # Check for HTTP errors
+                    #res.raise_for_status()  # Check for HTTP errors
 
                     image = Image.open(io.BytesIO(res.content))
                     image = image.convert("RGB")
