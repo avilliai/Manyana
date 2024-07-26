@@ -3,9 +3,6 @@
 weatherXinZhi: Sxxxxxxx          #心知天气api   从https://www.seniverse.com/注册获取
 sauceno-api: bxxxxxx             #sauceno搜图api，你可以从https://saucenao.com/user.php注册并获取
 moderate: 1xxxxxx                #色图审核api 从https://www.moderatecontent.com/获取
-siZhiAi:                         #思知ai，已不建议使用，建议用ai，如果你还是想用。从https://console.ownthink.com/login
-  - 5298b4b366987f06ab07b9015bb6a5a2    # 第一个apiKey
-  - 806948824e6e559ff64ba689901483be    # 第二个，所有多apikey都可以这样填写
 nasa_api: HSxxxxxxx              #nasa相关天文api 从https://api.nasa.gov/index.html#main-content申请
 
 chatGLM: 69xxxxxxx               #chatGLM的apiKey，从https://open.bigmodel.cn/获取
