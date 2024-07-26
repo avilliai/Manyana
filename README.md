@@ -13,6 +13,7 @@
 - [arona api](https://doc.arona.diyigemt.com/)  提供blueArchive数据支持
 - [star-rail-atlas](https://gitee.com/Nwflower/star-rail-atlas)  数据支持
 - [Yiri-mirai](https://github.com/YiriMiraiProject/YiriMirai)  很好的python sdk
+- [install_llob](https://github.com/super1207/install_llob) llob安装器，帮大忙了
 - 如果遇到使用问题，请在QQ群623265372反馈
 
 
