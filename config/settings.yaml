@@ -15,7 +15,7 @@
   #当前modelscopeTTS可用角色["BT","塔菲","阿梓","otto","丁真","星瞳","东雪莲","嘉然","孙笑川","亚托克斯","文静","鹿鸣","奶绿","七海","恬豆","科比"]，该模式下任选其一填入即可
   speaker: "东雪莲"              #根据你的合成模式设定角色,modelscopeTTS看上面，outVits看https://api.lolimi.cn/doc-api_dxfj.html。FishTTS看https://github.com/avilliai/Manyana/issues/19,FishTTS可填模型id/名称，vits则无需配置
   voiceLangType: "<zh>"         #默认语音合成语言类型，可选： <zh> <jp> <en>   目前仅在modelscopeTTS和firefly模式下生效,firefly模式下需要与speaker的语言类型匹配
-  prefix: "/"                    #语音合成指令前缀，默认为 xx说 ；如果为 "/" 则指令变为 /xx说 ；用以减少误触发
+  prefix: ""                    #语音合成指令前缀，默认为 xx说 ；如果为 "/" 则指令变为 /xx说 ；用以减少误触发
   #下面的两个配置项，除非你自己额外搭了对应的服务，不然就别动。
   bert_speakers:    #自建bert_vits2语音合成配置，不知道是啥就别动
     - rriri         #如果搭建了，根据bert_vits_sever/characters.yaml填写所有可用的speakers，没自己搭bert_vits2就别动
