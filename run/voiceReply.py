@@ -91,7 +91,6 @@ def main(bot, master, logger):
                     return
                 except Exception as e:
                     logger.error(e)
-                    await bot.send(event, "出错了喵，呜呜呜", True)
             try:
                 sp1 = await fetch_FishTTS_ModelId(proxy, FishTTSAuthorization, speaker)
                 if sp1 is None or sp1 == "":
