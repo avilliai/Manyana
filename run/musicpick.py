@@ -3,11 +3,14 @@ import os
 import random
 
 import yaml
+import httpx
+from bs4 import BeautifulSoup
 from fuzzywuzzy import process
 from mirai import GroupMessage, At
 from mirai import Voice
 from mirai.models import MusicShare
 
+from plugins.newsEveryDay import get_headers
 from plugins.cloudMusic import newCloudMusicDown, cccdddm
 
 
@@ -66,9 +69,9 @@ def main(bot, logger):
                     musicTask[event.sender.id] = ffs
                     # print(ffs)
                     t = "请发送序号："
-                    i = 0
+                    i = 1
                     for sf in ffs:
-                        t = t + "\n" + str(i) + " " + sf[0] + " | " + sf[3]
+                        t += f"\n{i} {sf[0]}  |  {sf[2]}"
                         i += 1
                     await bot.send(event, t, True)
 
@@ -93,16 +96,20 @@ def main(bot, logger):
                     await bot.send(event, Voice(path=p))
                     musicTask.pop(event.sender.id)
                 else:
-                    ass = musicTask.get(event.sender.id)[int(str(event.message_chain))]
+                    ass = musicTask.get(event.sender.id)[int(str(event.message_chain))-1]
                     logger.info("获取歌曲：" + ass[0])
-                    await bot.send(event, MusicShare(kind="NeteaseCloudMusic", title=ass[0],
-                                                     summary=ass[3],
-                                                     jump_url="http://music.163.com/song/media/outer/url?id=" + str(
-                                                         ass[1]) + ".mp3",
-                                                     picture_url=ass[2],
-                                                     music_url="http://music.163.com/song/media/outer/url?id=" + str(
-                                                         ass[1]) + ".mp3",
-                                                     brief=ass[3]))
+                    
+                    client = httpx.Client(headers=get_headers())
+                    url = f'https://music.163.com/song?id={ass[1]}'
+                    response = client.get(url)
+                    soup = BeautifulSoup(response.text, 'html.parser')
+                    imgurl=soup.find('img',class_='j-img')['data-src']
+                    await bot.send(event, MusicShare(kind="QQMusic", title=ass[0],
+                                                                      summary=ass[2],
+                                                                      jump_url=f"https://y.music.163.com/m/song?id={ass[1]}&uct2=jkZ3LZNLyka9TmygfSgqeQ%3D%3D&dlt=0846&app_version=9.0.95",
+                                                                      picture_url=imgurl,
+                                                                      music_url=f"http://music.163.com/song/media/outer/url?id={ass[1]}",
+                                                                      brief=ass[2]))
                     musicTask.pop(event.sender.id)
             except Exception as e:
                 logger.error(e)
