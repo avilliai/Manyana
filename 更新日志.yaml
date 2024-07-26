@@ -312,3 +312,5 @@
   - 支持对接文心api，免费无需代理
   - 模型配置详见https://github.com/avilliai/Manyana/wiki/%E8%AE%BE%E7%BD%AEai%E5%AF%B9%E8%AF%9D%E6%A8%A1%E5%9E%8B
   - outVits语音合成模式恢复
+2024/7/26:
+  - 支持接入QQ智能体 https://github.com/avilliai/Manyana/issues/31

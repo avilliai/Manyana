@@ -348,12 +348,45 @@ async def wenxinAI(prompt,bot_info,key,secret,model):
         #print(r.json())
         return {"role": "assistant", "content": r.json()["result"]}
         #print(response.text)
+#腾讯元器平台的开放api
+def transform_content(messages):
+  """
+  将消息列表中每个消息的 content 字段从字符串转换为字典列表。
 
+  Args:
+    messages: 消息列表，格式为 [{"role": "...", "content": "..."}]
 
+  Returns:
+    转换后的消息列表，格式为 [{"role": "...", "content": [{"type": "text", "text": "..."}]}]
+  """
+  transformed_messages = []
+  for message in messages:
+    transformed_messages.append({
+        "role": message["role"],
+        "content": [{"type": "text", "text": message["content"]}]
+    })
+  return transformed_messages
+async def YuanQiTencent(prompt,assistant_id,token,userID=1940094972):
+    url = "https://yuanqi.tencent.com/openapi/v1/agent/chat/completions"
+    headers = {
+        "X-Source": "openapi",
+        "Content-Type": "application/json",
+        "Authorization": f"Bearer {token}"
+    }
+
+    data = {
+        "assistant_id":assistant_id,
+        "user_id":f"{userID}",
+        "stream":False,
+        "messages":transform_content(prompt)
+    }
+
+    async with httpx.AsyncClient() as client:
+        response = await client.post(url, headers=headers, json=data)
+        return {'role': 'assistant', 'content': response.json()["choices"][0]["message"]["content"]}
 if __name__ == '__main__':
-    asyncio.run(wenxinAI([{"role": "user", "content": "谁赢得了2020年的世界职业棒球大赛?"},
-                  {"role": "assistant", "content": "洛杉矶道奇队在2020年赢得了世界职业棒球大赛冠军."},
-                  {"role": "user", "content": "它在哪里举办的?"}],"你是猫娘",))
+
+    print(1)
     '''k = momoRep([{"role": "user", "content": "谁赢得了2020年的世界职业棒球大赛?"},
                   {"role": "assistant", "content": "洛杉矶道奇队在2020年赢得了世界职业棒球大赛冠军."},
                   {"role": "user", "content": "它在哪里举办的?"}],"你是猫娘")

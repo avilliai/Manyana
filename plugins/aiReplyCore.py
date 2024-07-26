@@ -11,7 +11,7 @@ from mirai import logger
 from plugins.RandomStr import random_str
 from plugins.ReplyModels import gptOfficial, gptUnofficial, kimi, qingyan, lingyi, stepAI, qwen, gptvvvv, grop, \
     gpt4hahaha, anotherGPT35, chatGLM, relolimigpt2, xinghuo, Gemma, binggpt4, alcex_GPT3_5, freeGemini, catRep, \
-    momoRep, sparkAI, wenxinAI
+    momoRep, sparkAI, wenxinAI, YuanQiTencent
 from plugins.googleGemini import geminirep
 from plugins.translater import translate
 from plugins.vitsGenerate import voiceGenerate, superVG
@@ -20,7 +20,9 @@ with open('config/api.yaml', 'r', encoding='utf-8') as f:
     resulttr = yaml.load(f.read(), Loader=yaml.FullLoader)
 CoziUrl = resulttr.get("cozi")
 berturl = resulttr.get("bert_colab")
-
+#腾讯元器相关配置
+yuanqiBotId=resulttr.get("腾讯元器").get("智能体ID")
+yuanqiBotToken=resulttr.get("腾讯元器").get("token")
 #gemini
 geminiapikey = resulttr.get("gemini")
 #openai相关配置
@@ -245,6 +247,8 @@ async def modelReply(senderName, senderId, text, modelHere=modelDefault, trustUs
             else:
                 rep = await loop.run_in_executor(None, gptUnofficial, prompt1, gptkeys, openai_transit, bot_in,
                                                  openai_model)
+        elif modelHere=="腾讯元器":
+            rep=await YuanQiTencent(prompt1,yuanqiBotId,yuanqiBotToken,senderId)
         elif modelHere == "binggpt4":
             # print(1)
             rep = await loop_run_in_executor(None, binggpt4, prompt1, bot_in)

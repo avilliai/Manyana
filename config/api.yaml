@@ -21,6 +21,9 @@ wenxinAI:                        #文心大模型https://cloud.baidu.com/doc/WEN
   apiKey: ""
   secretKey: ""
   wenxin-model: "ernie-speed-128k"         #文心的模型设置，需要在https://console.bce.baidu.com/qianfan/ais/console/onlineService开通对应的模型。ernie_speed、ernie-speed-128k、ERNIE-Speed-AppBuilder、ernie-lite-8k、eb-instant
+腾讯元器: #接入QQ智能体
+  智能体ID: ""
+  token: ""
 bing-image-creator:              #bing的ai绘画，参考https://github.com/avilliai/Manyana/issues/8
   _U: ""
   KievRPSSecAuth: ""
