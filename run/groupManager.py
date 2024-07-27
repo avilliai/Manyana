@@ -92,8 +92,6 @@ def main(bot, config, moderateKey, logger):
         if times > trustDays:
             superUser.append(str(i))
 
-    global blackList
-    blackList = result.get("banUser")
     global blGroups
     blGroups = result.get("banGroups")
     global superBlGroups
@@ -166,24 +164,6 @@ def main(bot, config, moderateKey, logger):
     async def botKICKED(event: BotLeaveEventKick):
         await bot.send_friend_message(master, "bot被踢出群聊\n群号:" + str(event.group.id) + "\n群名:" + str(
             event.group.name) + "\n操作者:" + str(event.operator.member_name) + str(event.operator.id))
-        global blackList
-        global blGroups
-        if event.group.id in blGroups:
-            logger.info("已有黑名单群" + str(event.group.id))
-        else:
-            blGroups.append(event.group.id)
-
-        if event.operator.id in blackList:
-            logger.info("已有黑名单用户" + str(event.operator.id))
-        else:
-            blackList.append(event.operator.id)
-
-        with open('config/autoSettings.yaml', 'r', encoding='utf-8') as f:
-            result = yaml.load(f.read(), Loader=yaml.FullLoader)
-        result["banUser"] = blackList
-        result["banGroups"] = blGroups
-        with open('config/autoSettings.yaml', 'w', encoding="utf-8") as file:
-            yaml.dump(result, file, allow_unicode=True)
 
     #处理加群邀请
     @bot.on(BotInvitedJoinGroupRequestEvent)
@@ -321,9 +301,6 @@ def main(bot, config, moderateKey, logger):
                 times = int(str(data.get('sts')))
                 if times > trustDays:
                     superUser.append(str(i))
-
-            global blackList
-            blackList = result.get("banUser")
             global blGroups
             blGroups = result.get("banGroups")
 
@@ -347,11 +324,8 @@ def main(bot, config, moderateKey, logger):
     @bot.on(MemberJoinRequestEvent)
     async def allowStrangerInvite(event: MemberJoinRequestEvent):
         logger.info("有新群员加群申请")
-        if event.from_id in blackList:
-            await bot.send_group_message(event.group_id, "有新的入群请求，存在bot黑名单记录")
-        else:
-            await bot.send_group_message(event.group_id, '有新的入群请求.....管理员快去看看吧\nQQ：' + str(
-                event.from_id) + '\n昵称：' + event.nick + '\n' + event.message)
+        await bot.send_group_message(event.group_id, '有新的入群请求.....管理员快去看看吧\nQQ：' + str(
+            event.from_id) + '\n昵称：' + event.nick + '\n' + event.message)
 
     #群员称号改变
     @bot.on(MemberSpecialTitleChangeEvent)
@@ -374,33 +348,12 @@ def main(bot, config, moderateKey, logger):
     @bot.on(BotMuteEvent)
     async def BanAndBlackList(event: BotMuteEvent):
         logger.info("bot被禁言，操作者" + str(event.operator.id))
-        global blackList
-        global blGroups
-        if event.operator.group.id in blGroups:
-            logger.info("已有黑名单群" + str(event.operator.group.id))
-        else:
-            if event.operator.group.id != mainGroup:
-                blGroups.append(event.operator.group.id)
-            else:
-                return
-        if event.operator.id in blackList:
-            logger.info("已有黑名单用户" + str(event.operator.id))
-        else:
-            blackList.append(event.operator.id)
-
-        with open('config/autoSettings.yaml', 'r', encoding='utf-8') as f:
-            result = yaml.load(f.read(), Loader=yaml.FullLoader)
-        result["banUser"] = blackList
-        result["banGroups"] = blGroups
-        with open('config/autoSettings.yaml', 'w', encoding="utf-8") as file:
-            yaml.dump(result, file, allow_unicode=True)
         await bot.send_friend_message(master, 'bot在群:\n' + str(event.operator.group.name) + str(
             event.operator.group.id) + '\n被禁言' + str(event.duration_seconds) + '秒\n操作者id：' + str(
-            event.operator.id) + '\nname:(' + str(event.operator.member_name) + ')\n已退群并增加不良记录')
+            event.operator.id) + '\nname:(' + str(event.operator.member_name))
         await bot.send_friend_message(master,
-                                      "可使用\n/sbg add 群号\n以永久拉黑此群\n/sbg remove 群号\n则为移除该群黑名单")
-        await bot.quit(event.operator.group.id)
-        logger.info("已退出群 " + str(event.operator.group.id) + " 并拉黑")
+                                      "可使用\n◉/sbg add 群号\n以永久拉黑此群并退出\n◉/bot off 群号\n停止bot在该群的服务\n◉/bl add qq号\n拉黑指定用户")
+        logger.info("已退出群 " + str(event.operator.group.id) )
 
     @bot.on(FriendMessage)
     async def quiteG(event: FriendMessage):
@@ -431,7 +384,6 @@ def main(bot, config, moderateKey, logger):
                     await bot.send(event, f"成功移除永久黑名单群{groupId}")
                 with open('config/autoSettings.yaml', 'r', encoding='utf-8') as f:
                     result = yaml.load(f.read(), Loader=yaml.FullLoader)
-                logger.info("当前黑名单" + str(blackList))
                 result["superBlGroups"] = superBlGroups
                 with open('config/autoSettings.yaml', 'w', encoding="utf-8") as file:
                     yaml.dump(result, file, allow_unicode=True)
@@ -681,30 +633,11 @@ def main(bot, config, moderateKey, logger):
                     await bot.send_friend_message(master,
                                                   "用户：" + str(event.sender.id) + " 发送了含敏感字消息\n群号：" + str(
                                                       event.group.id) + "\n内容：" + str(
-                                                      event.message_chain) + "\n可使用 退群#群号 操作bot退出该群\n或使用\n  /bl add qq号  拉黑指定用户")
-                    global blackList
-                    global blGroups
-                    if event.group.id in blGroups or event.group.id == int(mainGroup):
-                        logger.info("不再添加黑名单群：" + str(event.sender.group))
-                    else:
-                        blGroups.append(event.group.id)
-
-                    if event.sender.id in blackList:
-                        logger.info("已有黑名单用户" + str(event.sender.id))
-                    else:
-                        blackList.append(event.sender.id)
-
-                    with open('config/autoSettings.yaml', 'r', encoding='utf-8') as f:
-                        result = yaml.load(f.read(), Loader=yaml.FullLoader)
-                    result["banUser"] = blackList
-                    result["banGroups"] = blGroups
-                    with open('config/autoSettings.yaml', 'w', encoding="utf-8") as file:
-                        yaml.dump(result, file, allow_unicode=True)
-                    return
+                                                      event.message_chain) + "\n可使用 退群#群号 操作bot退出该群\n/bl add qq号\n拉黑指定用户\n/bot off 群号\n停止在该群的服务")
 
     @bot.on(GroupMessage)
     async def AddRemoveBl(event: GroupMessage):
-        global superUser, blackList, superBlGroups
+        global superUser, superBlGroups
         if event.group.id in superBlGroups:
             await bot.send(event, "本群在黑名单内")
             await bot.quit(event.group.id)
@@ -727,7 +660,6 @@ def main(bot, config, moderateKey, logger):
                     await bot.send(event, f"成功移除永久黑名单群{groupId}")
                 with open('config/autoSettings.yaml', 'r', encoding='utf-8') as f:
                     result = yaml.load(f.read(), Loader=yaml.FullLoader)
-                logger.info("当前黑名单" + str(blackList))
                 result["superBlGroups"] = superBlGroups
                 with open('config/autoSettings.yaml', 'w', encoding="utf-8") as file:
                     yaml.dump(result, file, allow_unicode=True)
@@ -791,48 +723,6 @@ def main(bot, config, moderateKey, logger):
             except Exception as e:
                 logger.error(e)
 
-    @bot.on(GroupMessage)
-    async def removeBl(event: GroupMessage):
-        if event.sender.id == master or event.sender.id in superUser or event.group.id == mainGroup:
-            global blackList
-            global blGroups, superBlGroups
-            if str(event.message_chain).startswith("/blgroup remove ") or str(event.message_chain).startswith(
-                    "移除黑名单群 "):
-                try:
-                    groupId = int(str(event.message_chain).split(" ")[-1])
-                    if groupId in superBlGroups:
-                        await bot.send(event, "无法解除群黑名单，拉黑等级过高")
-                        return
-                    blGroups.remove(groupId)
-                    logger.info("成功移除黑名单群" + str(groupId))
-                    await bot.send(event, "成功移除黑名单群" + str(groupId))
-                    logger.info("当前黑名单群" + str(blGroups))
-
-                    with open('config/autoSettings.yaml', 'r', encoding='utf-8') as f:
-                        result11 = yaml.load(f.read(), Loader=yaml.FullLoader)
-                    result11["banGroups"] = blGroups
-                    with open('config/autoSettings.yaml', 'w', encoding="utf-8") as file:
-                        yaml.dump(result11, file, allow_unicode=True)
-                    return
-                except:
-                    logger.error("移除失败，该群不在黑名单中")
-                    await bot.send(event, "移除失败，该群不在黑名单中")
-            if str(event.message_chain).startswith("/bl remove ") or str(event.message_chain).startswith(
-                    " 移除黑名单用户"):
-                try:
-                    groupId = int(str(event.message_chain).split(" ")[-1])
-                    blackList.remove(groupId)
-                    logger.info("成功移除黑名单用户" + str(groupId))
-                    await bot.send(event, "成功移除黑名单用户" + str(groupId))
-                    with open('config/autoSettings.yaml', 'r', encoding='utf-8') as f:
-                        result = yaml.load(f.read(), Loader=yaml.FullLoader)
-                    result["banUser"] = blackList
-                    with open('config/autoSettings.yaml', 'w', encoding="utf-8") as file:
-                        yaml.dump(result, file, allow_unicode=True)
-                    return
-                except:
-                    logger.error("移除失败，该用户不在黑名单中")
-                    await bot.send(event, "移除失败，该用户不在黑名单中")
 
     async def seeeeeee(bot, men, opn, text, groupid):
         ta = text.split("%")

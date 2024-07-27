@@ -1,4 +1,7 @@
 # -*- coding:utf-8 -*-
+from itertools import repeat
+
+import asyncio
 import datetime
 
 import os
@@ -6,7 +9,7 @@ import random
 import shutil
 import sys
 
-from asyncio import sleep as sleep1
+from asyncio import sleep as sleep1, exceptions
 
 #下面的两行是launcher启动必要设置，勿动。
 os.chdir(os.path.dirname(os.path.abspath(__file__)))
@@ -21,6 +24,38 @@ from plugins.systeminfo import get_system_info
 from run import aiReply, voiceReply, nudgeReply, wikiHelper, imgSearch, extraParts, wReply,groupManager, \
     musicShare, LiveMonitor, aronaapi, groupGames, musicpick, scheduledTasks, appCard, aiDraw, starRail,bangumi
 
+# 为了实现黑名单和群开关功能，我们将继承webSocketAdapter类
+class MyWebSocketAdapter(WebSocketAdapter):
+    def __init__(self, verify_key, host, port, result):
+        super().__init__(verify_key=verify_key, host=host, port=port)
+        self.result = result
+    async def _recv(self, sync_id: str = '-1', timeout: int = 600) -> dict:
+        """接收并解析 websocket 数据。"""
+        timer = range(timeout) if timeout > 0 else repeat(0)
+        for _ in timer:
+            if self._recv_dict[sync_id]:
+                data = self._recv_dict[sync_id].popleft()
+                #print(data)
+                if data.get('code', 0) != 0:
+                    raise exceptions.ApiError(data)
+                try:
+                    if "messageChain" in data:
+                        if data["sender"]["id"] in self.result["banUser"] or data["sender"]["group"]["id"] in self.result["botoff"]:
+                            pass
+                        else:
+                            return data
+                    else:
+                        return data
+                except:
+                    return data
+                # 如果没有对应同步 ID 的数据，则等待 websocket 数据
+                # 目前存在问题：如果 mah 发回的数据不含 sync_id，
+                # 这里就会无限循环……
+                # 所以还是限制次数好了。
+            await asyncio.sleep(0.1)
+        raise TimeoutError(
+            f'[WebSocket] mirai-api-http 响应超时，可能是由于调用出错。同步 ID：{sync_id}。'
+        )
 if __name__ == '__main__':
     with open('config.json', 'r', encoding='utf-8') as f:
         data = yaml.load(f.read(), Loader=yaml.FullLoader)
@@ -29,9 +64,11 @@ if __name__ == '__main__':
     qq = int(config.get('botQQ'))
     key = str(config.get("vertify_key"))
     port = int(config.get("port"))
-
-    bot = Mirai(qq, adapter=WebSocketAdapter(
-        verify_key=key, host='localhost', port=port
+    global autoSettings
+    with open('config/autoSettings.yaml', 'r', encoding='utf-8') as f:
+        autoSettings = yaml.load(f.read(), Loader=yaml.FullLoader)
+    bot = Mirai(qq, adapter=MyWebSocketAdapter(
+        verify_key=key, host='localhost', port=port,result=autoSettings
     ))
     botName = config.get('botName')
     master = int(config.get('master'))
@@ -53,7 +90,98 @@ if __name__ == '__main__':
     pandora = resulta.get("chatGLM").get("model")
     voicegg = resulta.get("语音功能设置").get("voicegenerate")
     logger.info("读取到apiKey列表")
+    #用以实现拉黑和解黑
 
+    @bot.on(GroupMessage)
+    async def blManipulate(event: GroupMessage):
+        if event.sender.id==master:
+            global autoSettings
+            if str(event.message_chain).startswith("/bl remove ") or str(event.message_chain).startswith("解黑 "):
+                try:
+                    userId = int(str(event.message_chain).split(" ")[-1])
+                    autoSettings["banUser"].remove(userId)
+                    logger.info("成功移除黑名单用户" + str(userId))
+                    await bot.send(event, "成功移除黑名单用户" + str(userId))
+                except:
+                    logger.error("移除失败，该用户不在黑名单中")
+                    await bot.send(event, "移除失败，该用户不在黑名单中")
+            elif str(event.message_chain).startswith("/bl add ") or str(event.message_chain).startswith("拉黑 "):
+                try:
+                    userId = int(str(event.message_chain).split(" ")[-1])
+                    if userId in autoSettings["banUser"]:
+                        await bot.send(event,"该用户已被拉黑")
+                        return
+                    autoSettings["banUser"].append(userId)
+                    logger.info("成功添加黑名单用户" + str(userId))
+                    await bot.send(event, "成功添加黑名单用户" + str(userId))
+                except:
+                    logger.error("添加失败，不规范的指令格式")
+                    await bot.send(event, "添加失败，不规范的指令格式")
+            elif str(event.message_chain).startswith("/bot off ") or str(event.message_chain).startswith("关闭群 "):
+                userId = int(str(event.message_chain).split(" ")[-1])
+                if userId in autoSettings["botoff"]:
+                    await bot.send(event,"bot已在该群关闭")
+                    return
+                autoSettings["botoff"].append(userId)
+                logger.info(f"成功关闭了对群{str(userId)}的服务")
+                await bot.send(event, f"成功关闭了对群{str(userId)}的服务")
+            elif str(event.message_chain).startswith("/bot on ") or str(event.message_chain).startswith("开启群 "):
+                try:
+                    userId = int(str(event.message_chain).split(" ")[-1])
+                    autoSettings["botoff"].remove(userId)
+                    logger.info(f"成功开启了对群{str(userId)}的服务")
+                    await bot.send(event, f"成功开启了对群{str(userId)}的服务")
+                except:
+                    logger.error("添加失败，不规范的指令格式")
+                    await bot.send(event, "添加失败，不规范的指令格式")
+            with open('config/autoSettings.yaml', 'w', encoding="utf-8") as file:
+                yaml.dump(autoSettings, file, allow_unicode=True)
+
+
+    @bot.on(FriendMessage)
+    async def blManipulate(event: FriendMessage):
+        if event.sender.id == master:
+            global autoSettings
+            if str(event.message_chain).startswith("/bl remove ") or str(event.message_chain).startswith("解黑 "):
+                try:
+                    userId = int(str(event.message_chain).split(" ")[-1])
+                    autoSettings["banUser"].remove(userId)
+                    logger.info("成功移除黑名单用户" + str(userId))
+                    await bot.send(event, "成功移除黑名单用户" + str(userId))
+                except:
+                    logger.error("移除失败，该用户不在黑名单中")
+                    await bot.send(event, "移除失败，该用户不在黑名单中")
+            elif str(event.message_chain).startswith("/bl add ") or str(event.message_chain).startswith("拉黑 "):
+                try:
+                    userId = int(str(event.message_chain).split(" ")[-1])
+                    if userId in autoSettings["banUser"]:
+                        await bot.send(event, "该用户已被拉黑")
+                        return
+                    autoSettings["banUser"].append(userId)
+                    logger.info("成功添加黑名单用户" + str(userId))
+                    await bot.send(event, "成功添加黑名单用户" + str(userId))
+                except:
+                    logger.error("添加失败，不规范的指令格式")
+                    await bot.send(event, "添加失败，不规范的指令格式")
+            elif str(event.message_chain).startswith("/bot off ") or str(event.message_chain).startswith("关闭群 "):
+                userId = int(str(event.message_chain).split(" ")[-1])
+                if userId in autoSettings["botoff"]:
+                    await bot.send(event, "bot已在该群关闭")
+                    return
+                autoSettings["botoff"].append(userId)
+                logger.info(f"成功关闭了对群{str(userId)}的服务")
+                await bot.send(event, f"成功关闭了对群{str(userId)}的服务")
+            elif str(event.message_chain).startswith("/bot on ") or str(event.message_chain).startswith("开启群 "):
+                try:
+                    userId = int(str(event.message_chain).split(" ")[-1])
+                    autoSettings["botoff"].remove(userId)
+                    logger.info(f"成功开启了对群{str(userId)}的服务")
+                    await bot.send(event, f"成功开启了对群{str(userId)}的服务")
+                except:
+                    logger.error("添加失败，不规范的指令格式")
+                    await bot.send(event, "添加失败，不规范的指令格式")
+            with open('config/autoSettings.yaml', 'w', encoding="utf-8") as file:
+                yaml.dump(autoSettings, file, allow_unicode=True)
 
     @bot.on(GroupMessage)
     async def systemiiiiii(event: GroupMessage):

@@ -1,17 +1,17 @@
-defaultModel:
-  modelSelect:
-  - voiceModel/nene/1374_epochsm.pth
-  - voiceModel/nene/config.json
-  speaker: 2
 banGroups:
 - 2132321
 - 879886836
 banUser:
 - 1
 - 4564949845
-- 1840094972
-superBlGroups:
-  - 967444654
+botoff:
+- 6994557
+- 623265372
+defaultModel:
+  modelSelect:
+  - voiceModel/nene/1374_epochsm.pth
+  - voiceModel/nene/config.json
+  speaker: 2
 moderate:
   apiKeys:
     '699455559': fadfasfasf
@@ -22,5 +22,7 @@ moderate:
   groups:
     '69945555439': 1
   threshold: 40
+superBlGroups:
+- 967444654
 trustGroups:
 - 699455559
