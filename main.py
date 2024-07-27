@@ -212,7 +212,7 @@ if __name__ == '__main__':
     musicShare.main(bot, master, botName, logger)
     LiveMonitor.main(bot, master, botName, logger)
     aronaapi.main(bot, logger)
-    scheduledTasks.main(bot, proxy, nasa_api, logger)
+    scheduledTasks.main(bot, logger)
     groupGames.main(bot, logger)
     musicpick.main(bot, logger)
     appCard.main(bot, logger)

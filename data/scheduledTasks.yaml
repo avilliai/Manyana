@@ -1,31 +1,23 @@
 astronomy:
   groups:
   - 699455559
-  text: 今日nasa天文推送
-  time: 18/30
 constellation:
   groups:
   - 699455559
-  text: 杂鱼怎么还信星座这种东西啊
-  time: 16/30
 danxiangli:
   groups:
   - 699455559
   - 12345
-  text: 今日单向历
-  time: 16/10
 moyu:
   groups:
   - 699455559
-  text: 真没用啊，又在摸鱼了吧，杂鱼❤
-  time: 17/30
 news:
   groups:
   - 699455559
-  text: 早上好杂鱼❤，这里是今天的新闻
-  time: 8/2
 steamadd1:
   groups:
   - 699455559
-  text: 杂鱼❤来白嫖游戏了
-  time: 12/2
+bangumi:
+  groups:
+    - 699455559
+

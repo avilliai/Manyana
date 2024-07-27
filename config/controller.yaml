@@ -26,4 +26,38 @@ ai绘画:
   InternetMeme: False       #是否启用网络Meme（英文meme）
 运势&塔罗:
   lockLuck: false           #是否锁定运势等功能的结果
+scheduledTasks:    #其他定时任务模块的内容会陆续转到这里
+  morning:         #晨间推送
+    enable: False  #向信任用户推送天气信息
+    text: "早上好，这里是今天的天气"  #如启用aiReplyCore，此项将被ai替代
+    time: 8/3      #推送时间
+  bangumi:         #bangumi推送
+    enable: True
+    text: "晚上好，这里是今天的bangumi推送"
+    time: 7/27
+  astronomy:       #nasa天文推送
+    enable: True
+    text: "今日nasa天文推送"
+    time: 18/59
+  constellation:   #星座推送
+    enable: True
+    text: 杂鱼怎么还信星座这种东西啊
+    time: 16/30
+  danxiangli:      #单向历
+    enable: true
+    text: 今日单向历
+    time: 19/2
+  moyu:            #摸鱼人日历
+    enable: true
+    text: 真没用啊，又在摸鱼了吧，杂鱼❤
+    time: 17/30
+  news:            #新闻
+    enable: true
+    text: 早上好杂鱼❤，这里是今天的新闻
+    time: 8/2
+  steamadd1:       #免费游戏提示
+    text: 杂鱼❤来白嫖游戏了
+    time: 12/2
+
+
 
