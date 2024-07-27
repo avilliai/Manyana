@@ -63,6 +63,7 @@ glmReply = result.get("chatGLM").get("glmReply")
 modelDefault = result.get("chatGLM").get("model")
 privateGlmReply = result.get("chatGLM").get("privateGlmReply")
 randomModelPriority = result.get("chatGLM").get("randomModel&&&Priority")
+autoClearWhenError=result.get("chatGLM").get("autoClearWhenError")
 replyModel = result.get("chatGLM").get("model")
 trustglmReply = result.get("chatGLM").get("trustglmReply")
 maxPrompt = result.get("chatGLM").get("maxPrompt")
@@ -292,10 +293,11 @@ async def modelReply(senderName, senderId, text, modelHere=modelDefault, trustUs
         # await tstt(rep.get('content'), event)
     except Exception as e:
         logger.error(e)
-        try:
-            chatGLMData.pop(senderId)
-        except Exception as e:
-            logger.error("清理用户prompt出错")
+        if autoClearWhenError:
+            try:
+                chatGLMData.pop(senderId)
+            except Exception as e:
+                logger.error("清理用户prompt出错")
         if checkIfRepFirstTime:
             return "出错，请重试\n或联系master更换默认模型", False
         else:
@@ -313,13 +315,10 @@ async def clearsinglePrompt(senderid):
     except:
         logger.error("清理缓存出错，无本地对话记录")
         return "无本地对话记录"
-
-
 async def clearAllPrompts():
     global chatGLMData
     try:
         chatGLMData = {"f": "hhh"}
-        # chatGLMData.pop(event.sender.id)
         # 写入文件
         with open('data/chatGLMData.yaml', 'w', encoding="utf-8") as file:
             yaml.dump(chatGLMData, file, allow_unicode=True)
