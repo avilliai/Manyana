@@ -93,7 +93,7 @@ def main(bot, config, moderateKey, logger):
             superUser.append(str(i))
 
     global blGroups
-    blGroups = result.get("banGroups")
+    blGroups = result.get("bangroups")
     global superBlGroups
     superBlGroups = result.get("superBlGroups")
 
@@ -302,7 +302,7 @@ def main(bot, config, moderateKey, logger):
                 if times > trustDays:
                     superUser.append(str(i))
             global blGroups
-            blGroups = result.get("banGroups")
+            blGroups = result.get("bangroups")
 
             global blackListID
             blackListID = []

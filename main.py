@@ -40,7 +40,7 @@ class MyWebSocketAdapter(WebSocketAdapter):
                     raise exceptions.ApiError(data)
                 try:
                     if "messageChain" in data:
-                        if data["sender"]["id"] in self.result["banUser"] or data["sender"]["group"]["id"] in self.result["botoff"]:
+                        if data["sender"]["id"] in self.result["banuser"] or data["sender"]["group"]["id"] in self.result["botoff"]:
                             pass
                         else:
                             return data
@@ -99,7 +99,7 @@ if __name__ == '__main__':
             if str(event.message_chain).startswith("/bl remove ") or str(event.message_chain).startswith("解黑 "):
                 try:
                     userId = int(str(event.message_chain).split(" ")[-1])
-                    autoSettings["banUser"].remove(userId)
+                    autoSettings["banuser"].remove(userId)
                     logger.info("成功移除黑名单用户" + str(userId))
                     await bot.send(event, "成功移除黑名单用户" + str(userId))
                 except:
@@ -108,10 +108,10 @@ if __name__ == '__main__':
             elif str(event.message_chain).startswith("/bl add ") or str(event.message_chain).startswith("拉黑 "):
                 try:
                     userId = int(str(event.message_chain).split(" ")[-1])
-                    if userId in autoSettings["banUser"]:
+                    if userId in autoSettings["banuser"]:
                         await bot.send(event,"该用户已被拉黑")
                         return
-                    autoSettings["banUser"].append(userId)
+                    autoSettings["banuser"].append(userId)
                     logger.info("成功添加黑名单用户" + str(userId))
                     await bot.send(event, "成功添加黑名单用户" + str(userId))
                 except:
@@ -145,7 +145,7 @@ if __name__ == '__main__':
             if str(event.message_chain).startswith("/bl remove ") or str(event.message_chain).startswith("解黑 "):
                 try:
                     userId = int(str(event.message_chain).split(" ")[-1])
-                    autoSettings["banUser"].remove(userId)
+                    autoSettings["banuser"].remove(userId)
                     logger.info("成功移除黑名单用户" + str(userId))
                     await bot.send(event, "成功移除黑名单用户" + str(userId))
                 except:
@@ -154,10 +154,10 @@ if __name__ == '__main__':
             elif str(event.message_chain).startswith("/bl add ") or str(event.message_chain).startswith("拉黑 "):
                 try:
                     userId = int(str(event.message_chain).split(" ")[-1])
-                    if userId in autoSettings["banUser"]:
+                    if userId in autoSettings["banuser"]:
                         await bot.send(event, "该用户已被拉黑")
                         return
-                    autoSettings["banUser"].append(userId)
+                    autoSettings["banuser"].append(userId)
                     logger.info("成功添加黑名单用户" + str(userId))
                     await bot.send(event, "成功添加黑名单用户" + str(userId))
                 except:

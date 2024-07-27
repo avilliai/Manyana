@@ -28,9 +28,9 @@ def main(bot, config, sizhiKey, logger):
     with open('config/autoSettings.yaml', 'r', encoding='utf-8') as f:
         result = yaml.load(f.read(), Loader=yaml.FullLoader)
     global blUser
-    blUser = result.get("banUser")
+    blUser = result.get("banuser")
     global blGroup
-    blGroup = result.get("banGroups")
+    blGroup = result.get("bangroups")
     with open('config/noResponse.yaml', 'r', encoding='utf-8') as f:
         noRes1 = yaml.load(f.read(), Loader=yaml.FullLoader)
         noRes = noRes1.get("noRes1")
@@ -831,9 +831,9 @@ def main(bot, config, sizhiKey, logger):
             with open('config/autoSettings.yaml', 'r', encoding='utf-8') as f:
                 result = yaml.load(f.read(), Loader=yaml.FullLoader)
             global blUser
-            blUser = result.get("banUser")
+            blUser = result.get("banuser")
             global blGroup
-            blUser = result.get("banGroups")
+            blUser = result.get("bangroups")
             with open('config/settings.yaml', 'r', encoding='utf-8') as f:
                 result = yaml.load(f.read(), Loader=yaml.FullLoader)
             global yamlData
