@@ -194,7 +194,7 @@ def main():
         print("结束")
 def updaat(f=False,jump=False,source=None):
     if jump==False:
-        logger.warning("更新python库，按1跳过，如果最近没有更新过，不建议跳过，可能错过某些更新。")
+        logger.warning("更新python库，可以按1跳过，如果更新后启动报错，请回来执行这一步")
         if input("在这里输入:") != "1":
             logger.warning("即将开始更新依赖库，请确保已关闭代理，否则无法安装依赖库")
             input("按任意键继续：")
