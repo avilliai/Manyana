@@ -13,12 +13,12 @@ openaiSettings:                  #openai官方的apikey
     - sk-Mxxxxxxxxxxx
   openai-model: "gpt-3.5-turbo"  #调用openai api对应的模型，前提：在settings.yaml默认模型已经设置为gpt3.5，并配置了apikey
   openai-transit: ""             #你自己的chatGPT中转站，你最好知道这是什么，否则就不要动。
-sparkAI:                         #讯飞星火，在https://console.xfyun.cn/services/cbm申请，并复制对应key和secret，注意，免费的是lite版
-  apiKey: ""                     #事实上，我很推荐你使用sparkAi，因为它免费且无需代理
+sparkAI:                         #讯飞星火
+  apiKey: ""                     #在https://console.xfyun.cn/services/cbm申请，并复制对应key和secret，注意，免费的是lite版
   apiSecret: ""
   spark-model: "general"         #讯飞星火的模型设置，general是免费无限制的，一般不建议修改
-wenxinAI:                        #文心大模型https://cloud.baidu.com/doc/WENXINWORKSHOP/s/Slkkydake#%E8%AF%A6%E6%83%85
-  apiKey: ""
+wenxinAI:                        #文心大模型
+  apiKey: ""                     #https://cloud.baidu.com/doc/WENXINWORKSHOP/s/Slkkydake#%E8%AF%A6%E6%83%85
   secretKey: ""
   wenxin-model: "ernie-speed-128k"         #文心的模型设置，需要在https://console.bce.baidu.com/qianfan/ais/console/onlineService开通对应的模型。ernie_speed、ernie-speed-128k、ERNIE-Speed-AppBuilder、ernie-lite-8k、eb-instant
 腾讯元器: #接入QQ智能体
