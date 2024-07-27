@@ -338,7 +338,7 @@ async def wenxinAI(prompt,bot_info,key,secret,model):
     prompt_copy.insert(0, {"role": "user", "content": bot_info})
     prompt_copy.insert(1, {"role": "assistant", "content": "好的，已了解您的需求~我会扮演好您设定的角色。"})
     payload = json.dumps({
-        "messages": prompt
+        "messages": prompt_ccopy
     })
     headers = {
         'Content-Type': 'application/json'
