@@ -34,7 +34,7 @@ scheduledTasks:    #其他定时任务模块的内容会陆续转到这里
   bangumi:         #bangumi推送
     enable: True
     text: "晚上好，这里是今天的bangumi推送"
-    time: 7/27
+    time: 19/14
   astronomy:       #nasa天文推送
     enable: True
     text: "今日nasa天文推送"
