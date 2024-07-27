@@ -314,3 +314,6 @@
   - outVits语音合成模式恢复
 2024/7/26:
   - 支持接入QQ智能体 https://github.com/avilliai/Manyana/issues/31
+2024/7/27:
+  - 新指令：/推送 bangumi日榜
+  - 定时任务整体优化到controller

@@ -16,6 +16,7 @@ from plugins.aiReplyCore import modelReply
 from plugins.extraParts import steamEpic
 from plugins.newsEveryDay import news, danxianglii, moyu, xingzuo
 from plugins.picGet import picDwn
+from plugins.webScreenShoot import screenshot_to_pdf_and_png
 
 
 def main(bot,logger):
@@ -193,6 +194,20 @@ def main(bot,logger):
                     await bot.send_group_message(int(i), [task_info.get("text"), Image(path=path)])
                 except:
                     logger.error("不存在的群" + str(i))
+        elif task_name=="bangumi":
+            url = "https://www.bangumi.app/calendar/today"
+            path = "data/pictures/cache/today-"
+            today = datetime.datetime.now().strftime("%Y-%m-%d")
+            path = path + today + ".png"
+            await screenshot_to_pdf_and_png(url, path, 1080, 3000)
+            for i in groupdata.get("bangumi").get("groups"):
+                try:
+                    if path is None:
+                        return
+                    await bot.send_group_message(int(i), [task_info.get("text"), Image(path=path)])
+                except:
+                    logger.error("不存在的群" + str(i))
+
     def create_dynamic_jobs():
         for task_name, task_info in scheduledTasks.items():
             if task_info.get('enable'):
@@ -211,7 +226,7 @@ def main(bot,logger):
         if o or head != '/推送' or not cmd:
             return
         cmds = {"摸鱼人日历": "moyu", "每日天文": "astronomy", "每日新闻": "news", "喜加一": "steamadd1",
-                "每日星座": "constellation", "单向历": "danxiangli"}
+                "每日星座": "constellation", "单向历": "danxiangli","bangumi日榜":"bangumi"}
         key = cmds.get(cmd, 'unknown')
         if key == 'unknown':
             return
@@ -250,6 +265,8 @@ def main(bot,logger):
             key = "constellation"
         elif str(event.message_chain) == "/取消 单向历":
             key = "danxiangli"
+        elif str(event.message_chain)=="/取消 bangumi日榜":
+            key="bangumi"
         else:
             if str(event.message_chain) == "/取消 所有订阅":
                 for key in keys:
