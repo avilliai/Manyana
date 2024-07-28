@@ -36,6 +36,7 @@ def queryJM(name,num=4):
             if len(results) > num:
                 return results
         except Exception as e:
+            print(e)
             continue
             fal+=1
 def downloadComic(comic_id,start=1,end=5):
