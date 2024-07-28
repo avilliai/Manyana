@@ -1,0 +1,14 @@
+dir_rule:
+  base_dir: ./data/pictures/benzi
+  rule: Bd
+download:
+  image:
+    suffix: .png # 该配置用于把下载的图片转为png格式
+  threading:
+  # image: 同时下载的图片数，默认是30张图
+  # 数值大，下得快，配置要求高，对禁漫压力大
+  # 数值小，下得慢，配置要求低，对禁漫压力小
+  # PS: 禁漫网页一次最多请求50张图
+    image: 1
+  # photo: 同时下载的章节数，不配置默认是cpu的线程数。例如8核16线程的cpu → 16.
+    photo: 1
