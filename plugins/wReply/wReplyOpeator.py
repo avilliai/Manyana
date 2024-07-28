@@ -3,7 +3,7 @@ import os
 import yaml
 import asyncio
 from typing import Dict, List, Tuple, Optional
-
+import json
 from fuzzywuzzy import fuzz
 
 async def addRep(key,value,id="publicLexicon"):
@@ -38,19 +38,40 @@ async def getRep(MainDict,key,threshold=80):
 async def find_most_similar_key_async(json_data, target_key, threshold):
     async def match_key(key: str) -> Tuple[str, int]:
         """异步计算目标键与给定键的相似度得分。"""
-        key_data = json_data[key]
+        try:
+            #print(key,type(key))
+            #print("===========")
+            #print(target_key,type(target_key))
+            key_data = json.loads(key)
+            target_data = json.loads(target_key)
+        except json.JSONDecodeError as e:
+            pass
+            return key, 0
+
         score = 0
-        if isinstance(key_data, dict) and ('text' in key_data or 'image_id' in key_data):
-            target_data = eval(target_key)
-            if 'text' in target_data and 'text' in key_data:
-                text_score = await asyncio.to_thread(fuzz.ratio, target_data['text'], key_data['text'])
-                score += text_score
-            if 'image_id' in target_data and 'image_id' in key_data:
-                image_score = await asyncio.to_thread(fuzz.ratio, target_data['image_id'], key_data['image_id'])
-                score += image_score
+
+        key_text = next((item.get('text') for item in key_data if 'text' in item), None)
+        target_text = next((item.get('text') for item in target_data if 'text' in item), None)
+        #print(key_text, target_text)
+        addTextScore = False
+        addImageScore=False
+        if key_text and target_text:
+            text_score = await asyncio.to_thread(fuzz.ratio, target_text, key_text)
+            score += text_score
+            addTextScore=True
+        key_image_id = next((item.get('image_id') for item in key_data if 'image_id' in item), None)
+        target_image_id = next((item.get('image_id') for item in target_data if 'image_id' in item), None)
+
+        if key_image_id and target_image_id:
+            image_score = await asyncio.to_thread(fuzz.ratio, target_image_id, key_image_id)
+            score += image_score
+            addImageScore=True
+        if addTextScore and addImageScore:
             score=int(score/2)
-        else:
-            score = await asyncio.to_thread(fuzz.ratio, target_key, key)
+        if not addTextScore and not addImageScore:
+            # 如果 text 和 image_id 都没有匹配，则对整个键值对进行匹配
+            overall_score = await asyncio.to_thread(fuzz.ratio, key, target_key)
+            score = overall_score
         return key, score
 
     # 使用 asyncio.gather 并发计算所有键的相似度得分
