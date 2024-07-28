@@ -22,7 +22,7 @@ from plugins.RandomStr import random_str
 from plugins.newLogger import newLogger
 from plugins.systeminfo import get_system_info
 from run import aiReply, voiceReply, nudgeReply, wikiHelper, imgSearch, extraParts, wReply,groupManager, \
-    musicShare, LiveMonitor, aronaapi, groupGames, musicpick, scheduledTasks, appCard, aiDraw, starRail,bangumi
+    musicShare, LiveMonitor, aronaapi, groupGames, musicpick, scheduledTasks, appCard, aiDraw, starRail,bangumi,getcomic
 
 # 为了实现黑名单和群开关功能，我们将继承webSocketAdapter类
 class MyWebSocketAdapter(WebSocketAdapter):
@@ -331,7 +331,7 @@ if __name__ == '__main__':
 
     aiReply.main(bot, master, logger)  # poe-api
     imgSearch.main(bot, result.get("sauceno-api"), result.get("proxy"), logger)
-
+    getcomic.main(bot,logger)
     nudgeReply.main(bot, master, logger, berturl, proxy)  # 戳一戳
     extraParts.main(bot, logger)  # 额外小功能
     wReply.main(bot,logger)
