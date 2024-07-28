@@ -78,7 +78,6 @@ if __name__ == '__main__':
     # 读取api列表
     with open('config/api.yaml', 'r', encoding='utf-8') as f:
         result = yaml.load(f.read(), Loader=yaml.FullLoader)
-    sizhiKey = ["5298b4b366987f06ab07b9015bb6a5a2","806948824e6e559ff64ba689901483be"]
     proxy = result.get("proxy")
     berturl = result.get("bert_colab")
     moderate = result.get("moderate")
@@ -334,7 +333,7 @@ if __name__ == '__main__':
 
     nudgeReply.main(bot, master, logger, berturl, proxy)  # 戳一戳
     extraParts.main(bot, logger)  # 额外小功能
-    wReply.main(bot, config, sizhiKey, logger)
+    wReply.main(bot,logger)
     wikiHelper.main(bot, logger)
     groupManager.main(bot, config, moderate, logger)
     musicShare.main(bot, master, botName, logger)
