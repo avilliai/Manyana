@@ -24,15 +24,20 @@ def queryJM(name,num=4):
     client = jmcomic.JmOption.default().new_jm_client()
     page: jmcomic.JmSearchPage = client.search_site(search_query=name, page=1)
     results=[]
+    fal=0
     for i in page.content:
+        if fal>10:
+            raise Exception
+            break
         try:
             file = downloadComic(i[0], start=1, end=2)
-            #print([f"车牌号：{i[0]} \n name：{i[1]['name']}\nauthor：{i[1]['author']}",file])
+            print([f"车牌号：{i[0]} \n name：{i[1]['name']}\nauthor：{i[1]['author']}",file])
             results.append([f"车牌号：{i[0]} \n name：{i[1]['name']}\nauthor：{i[1]['author']}",file])
-            if len(results) >= num:
+            if len(results) > num:
                 return results
         except:
             continue
+            fal+=1
 def downloadComic(comic_id,start=1,end=5):
     option = jmcomic.create_option_by_file('config/jmcomic.yml')
     directories = ['data/pictures/benzi']
