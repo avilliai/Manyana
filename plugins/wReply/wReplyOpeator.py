@@ -25,7 +25,7 @@ async def removeRep(key,value,id="publicLexicon"):
 def loadAllDict():
     GroupsDict={}
     for i in os.listdir("data/autoReply/lexicon"):
-        if i.endswith(".yaml") and not i=="publicLexicon.yaml":
+        if i.endswith(".yaml"):
             with open(f"data/autoReply/lexicon/{i}", 'r', encoding='utf-8') as f:
                 result = yaml.load(f.read(), Loader=yaml.FullLoader)
                 GroupsDict[i.replace(".yaml","")]=result
