@@ -41,8 +41,8 @@ def queryJM(name,num=4):
             fal+=1
 def downloadComic(comic_id,start=1,end=5):
     option = jmcomic.create_option_by_file('config/jmcomic.yml')
-    if not os.path.exists(folder_path):
-        os.mkdir(folder_path)
+    if not os.path.exists('data/pictures/benzi'):
+        os.mkdir('data/pictures/benzi')
     directories = ['data/pictures/benzi']
     for directory in directories:
         if os.path.exists(directory):
