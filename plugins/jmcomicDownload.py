@@ -35,7 +35,7 @@ def queryJM(name,num=4):
             results.append([f"车牌号：{i[0]} \n name：{i[1]['name']}\nauthor：{i[1]['author']}",file])
             if len(results) > num:
                 return results
-        except:
+        except Exception as e:
             continue
             fal+=1
 def downloadComic(comic_id,start=1,end=5):
