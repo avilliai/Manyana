@@ -35,13 +35,22 @@ async def getRep(MainDict,key,threshold=80):
         MainDict,key,threshold
     )
     return result
-async def find_most_similar_key_async(json_data: Dict,
-                                     target_key: str,
-                                     threshold: int = 80) -> Optional[Tuple[str, any]]:
+async def find_most_similar_key_async(json_data, target_key, threshold):
     async def match_key(key: str) -> Tuple[str, int]:
         """异步计算目标键与给定键的相似度得分。"""
-        # 使用 asyncio.to_thread 将 CPU 密集型操作放入线程池中
-        score = await asyncio.to_thread(fuzz.ratio, target_key, key)
+        key_data = json_data[key]
+        score = 0
+        if isinstance(key_data, dict) and ('text' in key_data or 'image_id' in key_data):
+            target_data = eval(target_key)
+            if 'text' in target_data and 'text' in key_data:
+                text_score = await asyncio.to_thread(fuzz.ratio, target_data['text'], key_data['text'])
+                score += text_score
+            if 'image_id' in target_data and 'image_id' in key_data:
+                image_score = await asyncio.to_thread(fuzz.ratio, target_data['image_id'], key_data['image_id'])
+                score += image_score
+            score=int(score/2)
+        else:
+            score = await asyncio.to_thread(fuzz.ratio, target_key, key)
         return key, score
 
     # 使用 asyncio.gather 并发计算所有键的相似度得分
