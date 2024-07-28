@@ -3,6 +3,10 @@ import shutil
 
 import jmcomic
 from jmcomic import *
+
+from plugins.RandomStr import random_str
+
+
 class MyDownloader(jmcomic.JmDownloader):
     start = 0
     end = 0
@@ -24,7 +28,7 @@ def queryJM(name,num=4):
         try:
             file = downloadComic(i[0], start=1, end=2)
             #print([f"车牌号：{i[0]} \n name：{i[1]['name']}\nauthor：{i[1]['author']}",file])
-            results.append([f"车牌号：{i[0]} \n name：{i[1]['name']}\nauthor：{i[1]['author']}",file[0]])
+            results.append([f"车牌号：{i[0]} \n name：{i[1]['name']}\nauthor：{i[1]['author']}",file])
             if len(results) >= num:
                 return results
         except:
@@ -51,8 +55,14 @@ def downloadComic(comic_id,start=1,end=5):
     folder_path = 'data/pictures/benzi'
 
     file_names = os.listdir(folder_path)
+    print(file_names)
+    image_raw = Image.open("data/pictures/benzi/"+file_names[0])
+    # convert image to black and white
+    image_black_white = image_raw.convert('1')
+    newPath=f"data/pictures/cache/{random_str()}.pnd"
+    image_black_white.save(newPath)
 
-    png_files = [os.path.join(folder_path, file) for file in file_names if file.lower().endswith('.png')]
-    return png_files
+    #png_files = [os.path.join(folder_path, file) for file in file_names if file.lower().endswith('.png')]
+    return newPath
 
 #queryJM("碧蓝档案")
