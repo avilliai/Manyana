@@ -22,7 +22,7 @@ def main(bot, logger):
             querycomic = str(event.message_chain).replace("JM搜","")
             # 分页查询，search_site就是禁漫网页上的【站内搜索】
             # 原先的执行方式将导致bot进程阻塞，任务添加到线程池，避免阻塞
-            await bot.send(event,"在找了在找了，稍等一会哦")
+            await bot.send(event,"在找了在找了，稍等一会哦(长时间不出就是被吞了)")
             try:
                 loop = asyncio.get_running_loop()
                 # 使用线程池执行器

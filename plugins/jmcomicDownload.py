@@ -55,7 +55,7 @@ def downloadComic(comic_id,start=1,end=5):
     folder_path = 'data/pictures/benzi'
 
     file_names = os.listdir(folder_path)
-    print(file_names)
+    #print(file_names)
     image_raw = Image.open("data/pictures/benzi/"+file_names[0])
     # convert image to black and white
     image_black_white = image_raw.convert('1')
