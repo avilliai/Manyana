@@ -23,7 +23,7 @@ def queryJM(name,num=4):
     for i in page.content:
         try:
             file = downloadComic(i[0], start=1, end=2)
-            print([f"车牌号：{i[0]} \n name：{i[1]['name']}\nauthor：{i[1]['author']}",file])
+            #print([f"车牌号：{i[0]} \n name：{i[1]['name']}\nauthor：{i[1]['author']}",file])
             results.append([f"车牌号：{i[0]} \n name：{i[1]['name']}\nauthor：{i[1]['author']}",file[0]])
             if len(results) >= num:
                 return results
