@@ -64,7 +64,7 @@ def downloadComic(comic_id,start=1,end=5):
     image_raw = Image.open("data/pictures/benzi/"+file_names[0])
     # convert image to black and white
     image_black_white = image_raw.convert('1')
-    newPath=f"data/pictures/cache/{random_str()}.pnd"
+    newPath=f"data/pictures/cache/{random_str()}.png"
     image_black_white.save(newPath)
 
     #png_files = [os.path.join(folder_path, file) for file in file_names if file.lower().endswith('.png')]
