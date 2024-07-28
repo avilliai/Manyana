@@ -297,7 +297,6 @@ def main(bot, master, logger):
     @bot.on(GroupMessage)
     async def upddd(event: GroupMessage):
         if str(event.message_chain).startswith("授权") and event.sender.id == master:
-            logger.info("更新数据")
             await sleep(15)
             with open('config/autoSettings.yaml', 'r', encoding='utf-8') as f:
                 resul = yaml.load(f.read(), Loader=yaml.FullLoader)

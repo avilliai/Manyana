@@ -1,4 +1,5 @@
 # -*- coding: utf-8 -*-
+import os
 from typing import Dict
 
 import asyncio
@@ -21,17 +22,26 @@ def main(bot,logger):
     logger.info("启动自定义词库")
     with open('config/settings.yaml', 'r', encoding='utf-8') as f:
         result = yaml.load(f.read(), Loader=yaml.FullLoader)
+    wReply=result.get("wReply")
     global publicDict
     publicDict=loadAllDict()
     #操作进程监听
     global operateProcess
     operateProcess={}
-    timeout = datetime.timedelta(minutes=3)  # 3分钟没有操作则超时
-
+    global userdict
+    with open('data/userData.yaml', 'r', encoding='utf-8') as file:
+        userdict = yaml.load(file, Loader=yaml.FullLoader)
+    colorfulCharacterList = os.listdir("data/colorfulAnimeCharacter")
     #开始添加
     @bot.on(GroupMessage)
     async def startAddRep(event: GroupMessage):
-        global operateProcess
+        global operateProcess,userdict
+        if wReply.get("editPermission")!=0:   #权限限制，为0则为开放授权
+            if str(event.sender.id) in userdict:
+                if int(userdict.get(str(event.sender.id)).get('sts'))<wReply.get("editPermission"):
+                    return
+            else:
+                return
         if str(event.message_chain)=="开始添加":
             await sleep(0.1)
             operateProcess[event.sender.id]={"status":"startadd","time":datetime.datetime.now(),"operateId":str(event.group.id)}
@@ -50,10 +60,14 @@ def main(bot,logger):
                 await sleep(0.1)
                 operateProcess[event.sender.id]["status"]="adding"
                 operateProcess[event.sender.id]["time"]=datetime.datetime.now()
-                operateProcess[event.sender.id]["key"]=str(event.message_chain)
+                #operateProcess[event.sender.id]["key"] = str(event.message_chain)
+                operateProcess[event.sender.id]["key"]=event.message_chain.json()
                 if operateProcess[event.sender.id]["operateId"] in publicDict:
-                    if str(event.message_chain) in publicDict.get(operateProcess[event.sender.id]["operateId"]):
-                        operateProcess[event.sender.id]["value"]=publicDict.get(operateProcess[event.sender.id]["operateId"]).get(str(event.message_chain))
+                    r = await getRep(publicDict.get(operateProcess[event.sender.id]["operateId"]),event.message_chain.json(),threshold=wReply.get("threshold"))
+                    #if str(event.message_chain) in publicDict.get(operateProcess[event.sender.id]["operateId"]):
+                        #operateProcess[event.sender.id]["value"]=publicDict.get(operateProcess[event.sender.id]["operateId"]).get(str(event.message_chain))
+                    if r!=None:
+                        operateProcess[event.sender.id]["value"] = r[1]
                         logger.info("已存在关键词")
                 await bot.send(event,"请发送回复，发送 over 以退出添加")
     @bot.on(GroupMessage)
@@ -78,7 +92,13 @@ def main(bot,logger):
     # 查询关键词对应回复
     @bot.on(GroupMessage)
     async def queryValue(event: GroupMessage):
-        global operateProcess
+        global operateProcess,userdict
+        if wReply.get("editPermission")!=0:
+            if str(event.sender.id) in userdict:
+                if int(userdict.get(str(event.sender.id)).get('sts'))<wReply.get("editPermission"):
+                    return
+            else:
+                return
         if str(event.message_chain)=="查回复":
             operateProcess[event.sender.id]={"status":"query","operateId":str(event.group.id),"time":datetime.datetime.now()}
         elif str(event.message_chain)=="*查回复":
@@ -92,7 +112,7 @@ def main(bot,logger):
         global operateProcess,publicDict
         if event.sender.id in operateProcess:
             if operateProcess[event.sender.id]["status"]=="query":
-                r = await getRep(publicDict.get(operateProcess[event.sender.id]["operateId"]), str(event.message_chain))
+                r = await getRep(publicDict.get(operateProcess[event.sender.id]["operateId"]), str(event.message_chain.json()),threshold=wReply.get("threshold"))
                 b1=[]
                 if r != None:
                     index=0
@@ -133,11 +153,22 @@ def main(bot,logger):
         global operateProcess, publicDict
         if event.sender.id in operateProcess:
             return
+        if random.randint(0,100)>wReply.get("replyRate"):
+            return
+        if random.randint(0,100)<wReply.get("colorfulCharacter"):
+            c = random.choice(colorfulCharacterList)
+            await bot.send(event, Image(path="data/colorfulAnimeCharacter/" + c))
+            return
         if str(event.group.id) in publicDict:
-            r=await getRep(publicDict.get(str(event.group.id)),str(event.message_chain))
+            r=await getRep(publicDict.get(str(event.group.id)),str(event.message_chain.json()),threshold=wReply.get("threshold"))
             if r!=None:
-                logger.info(f"匹配到关键词|{str(event.message_chain)} {r[0]}")
+                logger.info(f"词库匹配成功")
                 await bot.send(event,json.loads(random.choice(r[1])))
+        else:
+            r = await getRep(publicDict.get("publicLexicon"), str(event.message_chain.json()),threshold=wReply.get("threshold"))
+            if r != None:
+                logger.info(f"词库匹配成功")
+                await bot.send(event, json.loads(random.choice(r[1])))
     @bot.on(Startup)
     async def checkTimeOut(event: Startup):
         global operateProcess
@@ -147,7 +178,7 @@ def main(bot,logger):
     async def check_and_pop_expired_keys(data):
         keys_to_pop = []
         now = datetime.datetime.now()
-        minutes = datetime.timedelta(seconds=60)
+        minutes = datetime.timedelta(seconds=wReply.get("timeout"))
         for key, value in data.items():
             time_diff = now - value.get('time', now)  # 如果 'time' 不存在，则使用 now，避免错误
             if time_diff > minutes:
@@ -157,3 +188,11 @@ def main(bot,logger):
             data.pop(key, None)
             logger.info(f"词库操作超时释出：{key}")
         return data
+
+    @bot.on(Startup)
+    async def upDate(event: Startup):
+        while True:
+            await sleep(60)
+            global userdict
+            with open('data/userData.yaml', 'r', encoding='utf-8') as file:
+                userdict = yaml.load(file, Loader=yaml.FullLoader)
