@@ -37,7 +37,8 @@ class MyWebSocketAdapter(WebSocketAdapter):
                 data = self._recv_dict[sync_id].popleft()
                 #print(data)
                 if data.get('code', 0) != 0:
-                    raise exceptions.ApiError(data)
+                    pass
+                    #raise exceptions.ApiError(data)
                 try:
                     if "messageChain" in data:
                         if data["sender"]["id"] in self.result["banuser"] or data["sender"]["group"]["id"] in self.result["botoff"]:
