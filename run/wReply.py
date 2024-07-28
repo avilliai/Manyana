@@ -155,20 +155,18 @@ def main(bot,logger):
             return
         if random.randint(0,100)>wReply.get("replyRate"):
             return
-        if random.randint(0,100)<wReply.get("colorfulCharacter"):
-            c = random.choice(colorfulCharacterList)
-            await bot.send(event, Image(path="data/colorfulAnimeCharacter/" + c))
-            return
         if str(event.group.id) in publicDict:
             r=await getRep(publicDict.get(str(event.group.id)),str(event.message_chain.json()),threshold=wReply.get("threshold"))
-            if r!=None:
-                logger.info(f"词库匹配成功")
-                await bot.send(event,json.loads(random.choice(r[1])))
         else:
             r = await getRep(publicDict.get("publicLexicon"), str(event.message_chain.json()),threshold=wReply.get("threshold"))
-            if r != None:
-                logger.info(f"词库匹配成功")
-                await bot.send(event, json.loads(random.choice(r[1])))
+        if r != None:
+            logger.info(f"词库匹配成功")
+            if random.randint(0, 100) < wReply.get("colorfulCharacter"):
+                logger.info("本次使用彩色小人替代匹配回复")
+                c = random.choice(colorfulCharacterList)
+                await bot.send(event, Image(path="data/colorfulAnimeCharacter/" + c))
+                return
+            await bot.send(event, json.loads(random.choice(r[1])))
     @bot.on(Startup)
     async def checkTimeOut(event: Startup):
         global operateProcess
