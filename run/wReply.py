@@ -127,15 +127,20 @@ def main(bot,logger):
                     operateProcess[event.sender.id]["status"] = "delete"
                     operateProcess[event.sender.id]["time"] = datetime.datetime.now()  # 不要忘记刷新时间
                     operateProcess[event.sender.id]["queryKey"] = r[0]
+                else:
+                    await bot.send(event,"无查询结果",True)
+                    operateProcess.pop(event.sender.id)
             if operateProcess[event.sender.id]["status"]=="delete":
                 if str(event.message_chain).startswith("删除#"):
-                    index=int(str(event.message_chain).split("#")[1])
-                    value=publicDict.get(operateProcess[event.sender.id]["operateId"]).get(operateProcess[event.sender.id]["queryKey"])
-                    value.pop(index)
-                    publicDict = await addRep(operateProcess[event.sender.id]["queryKey"],value,operateProcess[event.sender.id]["operateId"])
-                    await bot.send(event,"已移除对应回复")
-                    operateProcess[event.sender.id]["time"] = datetime.datetime.now()  # 不要忘记刷新时间
-
+                    try:
+                        index=int(str(event.message_chain).split("#")[1])
+                        value=publicDict.get(operateProcess[event.sender.id]["operateId"]).get(operateProcess[event.sender.id]["queryKey"])
+                        value.pop(index)
+                        publicDict = await addRep(operateProcess[event.sender.id]["queryKey"],value,operateProcess[event.sender.id]["operateId"])
+                        await bot.send(event,"已移除对应回复")
+                        operateProcess[event.sender.id]["time"] = datetime.datetime.now()  # 不要忘记刷新时间
+                    except:
+                        logger.error("非法输入，索引必须是有效的数字")
                 elif str(event.message_chain)=="删除关键字":
                     try:
                         publicDict[operateProcess[event.sender.id]["operateId"]].pop(operateProcess[event.sender.id]["queryKey"])
