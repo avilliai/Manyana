@@ -19,6 +19,11 @@ class MyDownloader(jmcomic.JmDownloader):
             return [album[0]]
         if(detail.is_photo()):
             photo: jmcomic.JmPhotoDetail = detail
+            print(len(photo))
+            if(end>len(photo)):
+                end = len(photo)
+            if(start>len(photo)):
+                start = len(photo)
             return photo[start:end]
         return detail
 
