@@ -21,4 +21,6 @@ openai
 anthropic
 bingart
 emoji
-
+ruamel.yaml
+jmcomic
+img2pdf
