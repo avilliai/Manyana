@@ -59,7 +59,7 @@ def main(bot, logger):
             cmList=[]
             logger.info(png_files)
             cmList.append(ForwardMessageNode(sender_id=bot.qq, sender_name="ninethnine", message_chain=MessageChain(
-                "图片已经过处理，但不保证百分百不被吞。可能显示不出来")))
+                "腾子吞图严重，bot仅供预览。图片已经过处理，但不保证百分百不被吞。可能显示不出来")))
             for path in png_files:
                 cmList.append(ForwardMessageNode(sender_id=bot.qq, sender_name="ninethnine",message_chain=MessageChain(Image(path=path))))
 
