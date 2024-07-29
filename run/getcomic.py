@@ -98,6 +98,7 @@ def main(bot, logger):
                 await bot.send(event,"非法参数，指令示例 JM下载601279")
                 return
             try:
+                await bot.send(event,"已启用线程,请等待下载完成，耗时可能较长。bot将以链接形式返回pdf文件")
                 loop = asyncio.get_running_loop()
                 # 使用线程池执行器
                 with ThreadPoolExecutor() as executor:
