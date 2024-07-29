@@ -29,6 +29,7 @@ ai绘画:
 JMComic:            #禁漫相关功能设置
   onlyTrustUser: False #打开后，仅master授权用户可用
   previewPages: 6  #验车预览页数
+  savePath: "./data/pictures/benzi"  #下载为pdf的默认保存路径
 scheduledTasks:    #其他定时任务模块的内容会陆续转到这里
   morning:         #晨间推送
     enable: False  #向信任用户推送天气信息

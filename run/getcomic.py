@@ -6,7 +6,7 @@ import yaml
 from mirai import GroupMessage, MessageChain, Image, FriendMessage
 from mirai.models import ForwardMessageNode, Forward
 
-from plugins.jmcomicDownload import queryJM, downloadComic
+from plugins.jmcomicDownload import queryJM, downloadComic, downloadALLAndToPdf
 
 
 def main(bot, logger):
@@ -88,6 +88,24 @@ def main(bot, logger):
                 cmList.append(ForwardMessageNode(sender_id=bot.qq, sender_name="ninethnine",
                                                  message_chain=MessageChain(Image(path=path))))
             await bot.send(event, Forward(node_list=cmList))
-
+    @bot.on(GroupMessage)
+    async def downloadAndToPdf(event: GroupMessage):
+        if str(event.message_chain).startswith("JM下载"):
+            logger.info("JM下载启动")
+            try:
+                comic_id = int(str(event.message_chain).replace("JM下载",""))
+            except:
+                await bot.send(event,"非法参数，指令示例 JM下载601279")
+                return
+            try:
+                loop = asyncio.get_running_loop()
+                # 使用线程池执行器
+                with ThreadPoolExecutor() as executor:
+                    # 使用 asyncio.to_thread 调用函数并获取返回结果
+                    r=await loop.run_in_executor(executor, downloadALLAndToPdf, comic_id, jmcomicSettings.get("savePath"))
+                await bot.send(event,f"下载完成，车牌号：{comic_id} \n下载链接：{r}")
+            except Exception as e:
+                logger.error(e)
+                await bot.send(event, "下载失败",True)
 
 
