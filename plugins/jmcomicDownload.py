@@ -72,7 +72,6 @@ def downloadComic(comic_id,start=1,end=5):
     #png_files = [os.path.join(folder_path, file) for file in file_names if file.lower().endswith('.png')]
     return new_files
 def downloadALLAndToPdf(comic_id,savePath,proxy):
-    os.environ["http_proxy"] = proxy
     with open("config/jmcomic.yml", 'r', encoding='utf-8') as f: #不知道他这个options咋传的，我就修改配置文件得了。
         result = yaml.load(f.read(), Loader=yaml.FullLoader)
     tempResult = copy.deepcopy(result)
@@ -90,7 +89,7 @@ def downloadALLAndToPdf(comic_id,savePath,proxy):
         yaml.dump(result, file, allow_unicode=True)
     # 使用option对象来下载本子
     jmcomic.download_album(comic_id, option)
-    r=fileToUrl(f"{savePath}/{comic_id}.pdf")
+    r=fileToUrl(f"{savePath}/{comic_id}.pdf",proxy)
     return r
 
 
