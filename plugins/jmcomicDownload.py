@@ -71,7 +71,8 @@ def downloadComic(comic_id,start=1,end=5):
         image_black_white.save(newPath)
     #png_files = [os.path.join(folder_path, file) for file in file_names if file.lower().endswith('.png')]
     return new_files
-def downloadALLAndToPdf(comic_id,savePath):
+def downloadALLAndToPdf(comic_id,savePath,proxy):
+    os.environ["http_proxy"] = proxy
     with open("config/jmcomic.yml", 'r', encoding='utf-8') as f: #不知道他这个options咋传的，我就修改配置文件得了。
         result = yaml.load(f.read(), Loader=yaml.FullLoader)
     tempResult = copy.deepcopy(result)
