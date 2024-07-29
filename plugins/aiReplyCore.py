@@ -219,7 +219,7 @@ async def modelReply(senderName, senderId, text, modelHere=modelDefault, trustUs
                         "content") or "敏感词汇" in result.get("content") or "request id" in result.get(
                         "content") or "This model's maximum" in result.get(
                         "content") or "solve CAPTCHA to" in result.get("content") or "输出错误请联系站长" in result.get(
-                        "content") or "接口失败" in result.get("content") or "ip请求过多" in result.get(
+                        "content") or "接口失败" in result.get("content") or "psot格式请求" in result.get(
                         "content") or "第三方响应错误" in result.get(
                         "content") or "access the URL on this server" in result.get(
                         "content") or "正常人完全够用" in result.get("content"):
