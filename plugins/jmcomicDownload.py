@@ -10,14 +10,16 @@ from plugins.RandomStr import random_str
 class MyDownloader(jmcomic.JmDownloader):
     start = 0
     end = 0
+    onlyFirstPhoto = False
     def do_filter(self, detail,start=start,end=end):
         start = self.start
         end = self.end
-        if detail.is_photo():
+        if detail.is_album() and self.onlyFirstPhoto:
+            album: jmcomic.JmAlbumDetail = detail
+            return [album[0]]
+        if(detail.is_photo()):
             photo: jmcomic.JmPhotoDetail = detail
-            # 支持[start,end,step]
             return photo[start:end]
-
         return detail
 
 def queryJM(name,num=4):
@@ -55,6 +57,7 @@ def downloadComic(comic_id,start=1,end=5):
 
     MyDownloader.start = start
     MyDownloader.end = end
+    MyDownloader.onlyFirstPhoto = False
     jmcomic.JmModuleConfig.CLASS_DOWNLOADER = MyDownloader
 
 
