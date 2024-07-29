@@ -105,7 +105,7 @@ def main(bot, logger):
                     # 使用 asyncio.to_thread 调用函数并获取返回结果
                     r=await loop.run_in_executor(executor, downloadALLAndToPdf, comic_id, jmcomicSettings.get("savePath"))
                 logger.info(f"下载完成，车牌号：{comic_id} \n下载链接：{r}")
-                await bot.send(event,f"下载完成，车牌号：{comic_id} \n下载链接：{r}")
+                await bot.send(event,f"下载完成，车牌号：{comic_id} \n下载链接：{r}",True)
             except Exception as e:
                 logger.error(e)
                 await bot.send(event, "下载失败",True)
