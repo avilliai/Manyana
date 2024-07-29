@@ -33,7 +33,7 @@ def main(bot, logger):
     async def querycomic(event: GroupMessage):
         global superUser
         if str(event.message_chain).startswith("JM搜"):
-            if jmcomicSettings.get("onlyTrustUser") or (jmcomicSettings.get("onlyTrustUser") and str(event.sender.id) not in superUser):
+            if jmcomicSettings.get("onlyTrustUser") and str(event.sender.id) not in superUser:
                 await bot.send(event,"用户无权限")
                 return
             # 分页查询，search_site就是禁漫网页上的【站内搜索】
@@ -61,7 +61,7 @@ def main(bot, logger):
     @bot.on(GroupMessage)
     async def download(event: GroupMessage):
         if str(event.message_chain).startswith("验车"):
-            if jmcomicSettings.get("onlyTrustUser") or (jmcomicSettings.get("onlyTrustUser") and str(event.sender.id) not in superUser):
+            if jmcomicSettings.get("onlyTrustUser") and str(event.sender.id) not in superUser:
                 await bot.send(event,"用户无权限")
                 return
             try:
@@ -75,7 +75,7 @@ def main(bot, logger):
                 # 使用线程池执行器
                 with ThreadPoolExecutor() as executor:
                     # 使用 asyncio.to_thread 调用函数并获取返回结果
-                    png_files=await loop.run_in_executor(executor, downloadComic, comic_id)
+                    png_files=await loop.run_in_executor(executor, downloadComic, comic_id,1,jmcomicSettings.get("previewPages"))
             except Exception as e:
                 logger.error(e)
                 await bot.send(event,"下载失败")
