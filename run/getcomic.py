@@ -94,6 +94,9 @@ def main(bot, logger):
     @bot.on(GroupMessage)
     async def downloadAndToPdf(event: GroupMessage):
         if str(event.message_chain).startswith("JM下载"):
+            if jmcomicSettings.get("onlyTrustUser") and str(event.sender.id) not in superUser:
+                await bot.send(event, "用户无权限",True)
+                return
             logger.info("JM下载启动")
             try:
                 comic_id = int(str(event.message_chain).replace("JM下载",""))
