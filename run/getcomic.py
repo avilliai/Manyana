@@ -2,6 +2,7 @@
 import asyncio
 from concurrent.futures import ThreadPoolExecutor
 
+import yaml
 from mirai import GroupMessage,MessageChain,Image,FriendMessage
 from mirai.models import ForwardMessageNode, Forward
 
@@ -9,10 +10,32 @@ from plugins.jmcomicDownload import queryJM, downloadComic
 
 
 def main(bot, logger):
+    with open('config/settings.yaml', 'r', encoding='utf-8') as f:
+        result = yaml.load(f.read(), Loader=yaml.FullLoader)
+    friendsAndGroups = result.get("加群和好友")
+    trustDays = friendsAndGroups.get("trustDays")
+    with open('config.json', 'r', encoding='utf-8') as f:
+        configData = yaml.load(f.read(), Loader=yaml.FullLoader)
+    global userdict
+    with open('data/userData.yaml', 'r', encoding='utf-8') as file:
+        userdict = yaml.load(file, Loader=yaml.FullLoader)
+    global superUser
+    superUser = [int(configData.get('master')),]
+    for i in userdict.keys():
+        data = userdict.get(i)
+        times = int(str(data.get('sts')))
+        if times > trustDays:
+            superUser.append(str(i))
+    with open('config/controller.yaml', 'r', encoding='utf-8') as f:
+        controller = yaml.load(f.read(), Loader=yaml.FullLoader)
+    jmcomicSettings=controller.get("JMComic")
     @bot.on(GroupMessage)
     async def querycomic(event: GroupMessage):
+        global superUser
         if str(event.message_chain).startswith("JM搜"):
-            querycomic = str(event.message_chain).replace("JM搜","")
+            if jmcomicSettings.get("onlyTrustUser") or (jmcomicSettings.get("onlyTrustUser") and str(event.sender.id) not in superUser):
+                await bot.send(event,"用户无权限")
+                return
             # 分页查询，search_site就是禁漫网页上的【站内搜索】
             # 原先的执行方式将导致bot进程阻塞，任务添加到线程池，避免阻塞
             await bot.send(event,"在找了在找了，稍等一会哦(长时间不出就是被吞了)")
@@ -38,12 +61,15 @@ def main(bot, logger):
     @bot.on(GroupMessage)
     async def download(event: GroupMessage):
         if str(event.message_chain).startswith("验车"):
+            if jmcomicSettings.get("onlyTrustUser") or (jmcomicSettings.get("onlyTrustUser") and str(event.sender.id) not in superUser):
+                await bot.send(event,"用户无权限")
+                return
             try:
                 comic_id = int(str(event.message_chain).replace("验车",""))
             except:
-                await bot.send(event,"无效输入 int")
+                await bot.send(event,"无效输入 int，指令格式如下\n验车【车牌号】\n如：验车604142")
                 return
-            await bot.send(event, "下载中...")
+            await bot.send(event, "下载中...稍等喵")
             try:
                 loop = asyncio.get_running_loop()
                 # 使用线程池执行器
