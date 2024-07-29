@@ -55,7 +55,8 @@ def downloadComic(comic_id,start=1,end=5):
 
     MyDownloader.start = start
     MyDownloader.end = end
-    MyDownloader.onlyFirstPhoto = False
+    
+    MyDownloader.onlyFirstPhoto = True
     jmcomic.JmModuleConfig.CLASS_DOWNLOADER = MyDownloader
 
 
