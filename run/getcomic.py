@@ -63,14 +63,14 @@ def main(bot, logger):
     async def download(event: GroupMessage):
         if str(event.message_chain).startswith("验车"):
             if jmcomicSettings.get("onlyTrustUser") and str(event.sender.id) not in superUser:
-                await bot.send(event, "用户无权限")
+                await bot.send(event, "用户无权限",True)
                 return
             try:
                 comic_id = int(str(event.message_chain).replace("验车", ""))
             except:
-                await bot.send(event, "无效输入 int，指令格式如下\n验车【车牌号】\n如：验车604142")
+                await bot.send(event, "无效输入 int，指令格式如下\n验车【车牌号】\n如：验车604142",True)
                 return
-            await bot.send(event, "下载中...稍等喵")
+            await bot.send(event, "下载中...稍等喵",True)
             try:
                 loop = asyncio.get_running_loop()
                 # 使用线程池执行器
@@ -80,7 +80,7 @@ def main(bot, logger):
                                                            jmcomicSettings.get("previewPages"))
             except Exception as e:
                 logger.error(e)
-                await bot.send(event, "下载失败")
+                await bot.send(event, "下载失败",True)
             cmList = []
             logger.info(png_files)
             cmList.append(ForwardMessageNode(sender_id=bot.qq, sender_name="ninethnine", message_chain=MessageChain(
