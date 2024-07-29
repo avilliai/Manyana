@@ -1,7 +1,6 @@
 import random
-import shutil
-
 import jmcomic
+import yaml
 from jmcomic import *
 
 from plugins.RandomStr import random_str
@@ -19,15 +18,10 @@ class MyDownloader(jmcomic.JmDownloader):
             return [album[0]]
         if(detail.is_photo()):
             photo: jmcomic.JmPhotoDetail = detail
-            print(len(photo))
-            if(end>len(photo)):
-                end = len(photo)
-            if(start>len(photo)):
-                start = len(photo)
             return photo[start:end]
         return detail
 
-def queryJM(name,num=4):
+def queryJM(name,num=2):
     client = jmcomic.JmOption.default().new_jm_client()
     page: jmcomic.JmSearchPage = client.search_site(search_query=name, page=1)
     results=[]
@@ -40,29 +34,25 @@ def queryJM(name,num=4):
         print(results)
 
 def downloadComic(comic_id,start=1,end=5):
+    with open("config/jmcomic.yml", 'r', encoding='utf-8') as f: #不知道他这个options咋传的，我就修改配置文件得了。
+        result = yaml.load(f.read(), Loader=yaml.FullLoader)
+    result["dir_rule"]["base_dir"]=f"data/pictures/benzi/{comic_id}"
+    with open("config/jmcomic.yml", 'w', encoding="utf-8") as file:
+        yaml.dump(result, file, allow_unicode=True)
     option = jmcomic.create_option_by_file('config/jmcomic.yml')
-    if not os.path.exists('data/pictures/benzi'):
-        os.mkdir('data/pictures/benzi')
-    directories = ['data/pictures/benzi']
-    for directory in directories:
-        if os.path.exists(directory):
-            try:
-                shutil.rmtree(directory)
-            except Exception as e:
-                print(f"Error removing {directory}: {e}")
-        else:
-            print(f"Directory {directory} does not exist. Skipping.")
+    if not os.path.exists(f'data/pictures/benzi/{comic_id}'):
+        os.mkdir(f'data/pictures/benzi/{comic_id}')
+
 
     MyDownloader.start = start
     MyDownloader.end = end
-    
-    MyDownloader.onlyFirstPhoto = True
+    MyDownloader.onlyFirstPhoto = False
     jmcomic.JmModuleConfig.CLASS_DOWNLOADER = MyDownloader
 
 
     jmcomic.download_album(comic_id, option)
 
-    folder_path = 'data/pictures/benzi'
+    folder_path = f'data/pictures/benzi/{comic_id}'
     if not os.path.exists(folder_path):
         os.mkdir(folder_path)
 
@@ -76,6 +66,5 @@ def downloadComic(comic_id,start=1,end=5):
         newPath=f"data/pictures/cache/{random_str()}.png"
         new_files.append(newPath)
         image_black_white.save(newPath)
-
     #png_files = [os.path.join(folder_path, file) for file in file_names if file.lower().endswith('.png')]
     return new_files
