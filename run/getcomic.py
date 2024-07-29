@@ -32,11 +32,15 @@ def main(bot, logger):
             except Exception as e:
                 logger.error(e)
                 logger.exception("详细错误如下：")
-            if results!=None:
+            try:
                 cmList=[]
                 for i in results:
                     cmList.append(ForwardMessageNode(sender_id=bot.qq, sender_name="ninethnine",message_chain=MessageChain([i[0],Image(path=i[1])])))
                 await bot.send(event, Forward(node_list=cmList))
+                await bot.send(event, "好了喵",True)
+            except Exception as e:
+                logger.error(e)
+                await bot.send(event, "寄了喵",True)
 
     @bot.on(GroupMessage)
     async def download(event: GroupMessage):
