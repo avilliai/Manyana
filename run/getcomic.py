@@ -98,12 +98,13 @@ def main(bot, logger):
                 await bot.send(event,"非法参数，指令示例 JM下载601279")
                 return
             try:
-                await bot.send(event,"已启用线程,请等待下载完成，耗时可能较长。bot将以链接形式返回pdf文件")
+                await bot.send(event,"已启用线程,请等待下载完成，耗时可能较长。bot将以链接形式返回pdf文件",True)
                 loop = asyncio.get_running_loop()
                 # 使用线程池执行器
                 with ThreadPoolExecutor() as executor:
                     # 使用 asyncio.to_thread 调用函数并获取返回结果
                     r=await loop.run_in_executor(executor, downloadALLAndToPdf, comic_id, jmcomicSettings.get("savePath"))
+                logger.info(f"下载完成，车牌号：{comic_id} \n下载链接：{r}")
                 await bot.send(event,f"下载完成，车牌号：{comic_id} \n下载链接：{r}")
             except Exception as e:
                 logger.error(e)
