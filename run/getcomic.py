@@ -34,11 +34,11 @@ def main(bot, logger):
         global superUser
         if str(event.message_chain).startswith("JM搜"):
             if jmcomicSettings.get("onlyTrustUser") and str(event.sender.id) not in superUser:
-                await bot.send(event, "用户无权限")
+                await bot.send(event, "用户无权限",True)
                 return
             # 分页查询，search_site就是禁漫网页上的【站内搜索】
             # 原先的执行方式将导致bot进程阻塞，任务添加到线程池，避免阻塞
-            await bot.send(event, "在找了在找了，稍等一会哦(长时间不出就是被吞了)")
+            await bot.send(event, "在找了在找了，稍等一会哦(长时间不出就是被吞了)",True)
             try:
                 loop = asyncio.get_running_loop()
                 # 使用线程池执行器
