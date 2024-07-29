@@ -1,16 +1,9 @@
 # -*- coding:utf-8 -*-
 import asyncio
-import random
 from concurrent.futures import ThreadPoolExecutor
 
-import yaml
 from mirai import GroupMessage,MessageChain,Image,FriendMessage
-import os
-import shutil
-import random
-import jmcomic
 from mirai.models import ForwardMessageNode, Forward
-from functools import partial
 
 from plugins.jmcomicDownload import queryJM, downloadComic
 
@@ -62,12 +55,9 @@ def main(bot, logger):
                 await bot.send(event,"下载失败")
             cmList=[]
             logger.info(png_files)
-            cmList.append(ForwardMessageNode(sender_id=bot.qq, sender_name="ninethnine", message_chain=MessageChain(
-                "腾子吞图严重，bot仅供预览。图片已经过处理，但不保证百分百不被吞。可能显示不出来")))
+            cmList.append(ForwardMessageNode(sender_id=bot.qq, sender_name="ninethnine", message_chain=MessageChain("腾子吞图严重，bot仅提供本子部分页面预览。\n图片已经过处理，但不保证百分百不被吞。可能显示不出来")))
             for path in png_files:
                 cmList.append(ForwardMessageNode(sender_id=bot.qq, sender_name="ninethnine",message_chain=MessageChain(Image(path=path))))
-
-
             await bot.send(event, Forward(node_list=cmList))
 
 
