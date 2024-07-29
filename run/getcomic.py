@@ -83,13 +83,11 @@ def main(bot, logger):
                 await bot.send(event, "下载失败",True)
             cmList = []
             logger.info(png_files)
-            cmList.append(ForwardMessageNode(sender_id=bot.qq, sender_name="ninethnine", message_chain=MessageChain(
-                f"车牌号：{comic_id} \n腾子吞图严重，bot仅提供本子部分页面预览。\n图片已经过处理，但不保证百分百不被吞。可能显示不出来")))
+            cmList.append(ForwardMessageNode(sender_id=bot.qq, sender_name="ninethnine", message_chain=MessageChain(f"车牌号：{comic_id} \n腾子吞图严重，bot仅提供本子部分页面预览。\n图片已经过处理，但不保证百分百不被吞。可能显示不出来")))
             for path in png_files:
                 cmList.append(ForwardMessageNode(sender_id=bot.qq, sender_name="ninethnine",
                                                  message_chain=MessageChain(Image(path=path))))
             await bot.send(event, Forward(node_list=cmList))
-            await bot.send(event,"好了喵",True)
 
 
 
