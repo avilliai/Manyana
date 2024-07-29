@@ -32,24 +32,20 @@ def main(bot, logger):
             except Exception as e:
                 logger.error(e)
                 logger.exception("详细错误如下：")
-            if len(results) == 0:
-                await bot.send(event,"没有找到捏,你的xp很奇怪")
-            else:
+            if results!=None:
                 cmList=[]
-                #cmList.append(ForwardMessageNode(sender_id=bot.qq, sender_name="ninethnine", message_chain=MessageChain(
-                    #"已为主人挑选好这部本子，主人可以输入\n[下载本子#[开始页数-最后页数](最多5张)+ # + id号]查看本子喵~\n例如:下载本子#1-5#114514")))
                 for i in results:
                     cmList.append(ForwardMessageNode(sender_id=bot.qq, sender_name="ninethnine",message_chain=MessageChain([i[0],Image(path=i[1])])))
                 await bot.send(event, Forward(node_list=cmList))
 
     @bot.on(GroupMessage)
     async def download(event: GroupMessage):
-        if str(event.message_chain).startswith("下载本子"):
+        if str(event.message_chain).startswith("验车"):
             try:
-                comic_id = int(str(event.message_chain).replace("下载本子",""))
+                comic_id = int(str(event.message_chain).replace("验车",""))
             except:
                 await bot.send(event,"无效输入 int")
-
+                return
             await bot.send(event, "下载中...")
             try:
                 loop = asyncio.get_running_loop()
@@ -60,13 +56,14 @@ def main(bot, logger):
             except Exception as e:
                 logger.error(e)
                 await bot.send(event,"下载失败")
-            image_array = []
-            logger.info(png_files)
-            for path in png_files:
-                logger.warning(path)
-                image_array.append(ForwardMessageNode(sender_id=bot.qq, sender_name="ninethnine",message_chain=MessageChain(Image(path=path))))
             cmList=[]
-            cmList.append(ForwardMessageNode(sender_id=bot.qq, sender_name="ninethnine",message_chain=MessageChain("可能显示不出来")))
+            logger.info(png_files)
+            cmList.append(ForwardMessageNode(sender_id=bot.qq, sender_name="ninethnine", message_chain=MessageChain(
+                "图片已经过处理，但不保证百分百不被吞。可能显示不出来")))
+            for path in png_files:
+                cmList.append(ForwardMessageNode(sender_id=bot.qq, sender_name="ninethnine",message_chain=MessageChain(Image(path=path))))
+
+
             await bot.send(event, Forward(node_list=cmList))
 
 

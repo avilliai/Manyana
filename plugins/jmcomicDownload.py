@@ -33,8 +33,8 @@ def queryJM(name,num=4):
             break
         try:
             file = downloadComic(i[0], start=1, end=2)
-            print([f"车牌号：{i[0]} \n name：{i[1]['name']}\nauthor：{i[1]['author']}",file])
-            results.append([f"车牌号：{i[0]} \n name：{i[1]['name']}\nauthor：{i[1]['author']}",file])
+            print([f"车牌号：{i[0]} \n name：{i[1]['name']}\nauthor：{i[1]['author']}",file[0]])
+            results.append([f"车牌号：{i[0]} \n name：{i[1]['name']}\nauthor：{i[1]['author']} \n部分预览图：",file[0]])
             if len(results) > num:
                 return results
         except Exception as e:
@@ -68,14 +68,17 @@ def downloadComic(comic_id,start=1,end=5):
         os.mkdir(folder_path)
 
     file_names = os.listdir(folder_path)
-    #print(file_names)
-    image_raw = Image.open("data/pictures/benzi/"+file_names[0])
-    # convert image to black and white
-    image_black_white = image_raw.convert('1')
-    newPath=f"data/pictures/cache/{random_str()}.png"
-    image_black_white.save(newPath)
+    new_files = []
+    for i in file_names:
+        #print(file_names)
+        image_raw = Image.open("data/pictures/benzi/"+i)
+        # convert image to black and white
+        image_black_white = image_raw.convert('1')
+        newPath=f"data/pictures/cache/{random_str()}.png"
+        new_files.append(newPath)
+        image_black_white.save(newPath)
 
     #png_files = [os.path.join(folder_path, file) for file in file_names if file.lower().endswith('.png')]
-    return newPath
+    return new_files
 
 #queryJM("碧蓝档案")

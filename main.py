@@ -1,5 +1,6 @@
 # -*- coding:utf-8 -*-
 from itertools import repeat
+from time import sleep
 
 import asyncio
 import datetime
@@ -336,6 +337,7 @@ if __name__ == '__main__':
         getcomic.main(bot,logger)
     except:
         logger.error("jmcomic功能无法启用，请使用更新脚本安装对应依赖")
+        sleep(3)
     nudgeReply.main(bot, master, logger, berturl, proxy)  # 戳一戳
     extraParts.main(bot, logger)  # 额外小功能
     wReply.main(bot,logger)
