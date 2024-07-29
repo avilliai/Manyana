@@ -92,6 +92,9 @@ def main():
         updaat()
     elif a=="3":
         print("执行清理缓存操作")
+        shutil.rmtree("data/pictures/benzi")
+        if not os.path.exists("data/pictures/benzi"):
+            os.mkdir("data/pictures/benzi")
         aimdir = ["data/pictures/avatars", "data/voices", "data/music/musicCache", "data/pictures/cache",
                   "data/pictures/wallpaper", "data/blueArchive/arona", "data/blueArchive/cache", "data/Elo",
                   "data/arknights", "data/backrooms"]
