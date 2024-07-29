@@ -61,17 +61,16 @@ async def find_most_similar_key_async(json_data, target_key, threshold):
             addTextScore=True
         key_image_id = next((item.get('image_id') for item in key_data if 'image_id' in item), None)
         target_image_id = next((item.get('image_id') for item in target_data if 'image_id' in item), None)
-
         if key_image_id and target_image_id:
             image_score = await asyncio.to_thread(fuzz.ratio, target_image_id, key_image_id)
             score += image_score
             addImageScore=True
         if addTextScore and addImageScore:
             score=int(score/2)
-        if not addTextScore and not addImageScore:
+        '''if not addTextScore and not addImageScore:
             # 如果 text 和 image_id 都没有匹配，则对整个键值对进行匹配
             overall_score = await asyncio.to_thread(fuzz.ratio, key, target_key)
-            score = overall_score
+            score = overall_score'''
         return key, score
 
     # 使用 asyncio.gather 并发计算所有键的相似度得分
@@ -81,7 +80,6 @@ async def find_most_similar_key_async(json_data, target_key, threshold):
     # 找到得分最高的键
     best_match = max(results, key=lambda x: x[1], default=(None, 0))
     best_key, best_score = best_match
-
     if best_score >= threshold:
         return best_key, json_data[best_key]
     else:
