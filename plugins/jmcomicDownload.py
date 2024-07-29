@@ -57,10 +57,11 @@ def downloadComic(comic_id,start=1,end=5):
         os.mkdir(folder_path)
 
     file_names = os.listdir(folder_path)
+    print(file_names)
     new_files = []
     for i in file_names:
         #print(file_names)
-        image_raw = Image.open("data/pictures/benzi/"+i)
+        image_raw = Image.open(f"data/pictures/benzi/{comic_id}/"+i)
         # convert image to black and white
         image_black_white = image_raw.convert('1')
         newPath=f"data/pictures/cache/{random_str()}.png"
