@@ -222,7 +222,7 @@ async def modelReply(senderName, senderId, text, modelHere=modelDefault, trustUs
                         "content") or "接口失败" in result.get("content") or "psot格式请求" in result.get(
                         "content") or "第三方响应错误" in result.get(
                         "content") or "access the URL on this server" in result.get(
-                        "content") or "正常人完全够用" in result.get("content"):
+                        "content") or "正常人完全够用" in result.get("content") or "请到我们的官方群" in result.get("content"):
                         continue
                     reps[task.result()[0]] = task.result()[1]
                     # reps.append(task.result())  # 添加可用结果
