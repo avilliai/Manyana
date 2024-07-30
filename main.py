@@ -248,14 +248,17 @@ if __name__ == '__main__':
 
             s = [Image(path='data/fonts/help1.png'), Image(path='data/fonts/help2.png'),
                  Image(path='data/fonts/help3.png')]
-            for i in s:
+            try:
+                for i in s:
+                    b1 = ForwardMessageNode(sender_id=bot.qq, sender_name="Manyana",
+                                            message_chain=MessageChain(i))
+                    cmList.append(b1)
                 b1 = ForwardMessageNode(sender_id=bot.qq, sender_name="Manyana",
-                                        message_chain=MessageChain(i))
+                                        message_chain=MessageChain('这是' + botName + '的功能列表\nヾ(≧▽≦*)o\n发送 pet 以查看制图功能列表\npetpet功能由https://github.com/Dituon/petpet提供'))
                 cmList.append(b1)
-            b1 = ForwardMessageNode(sender_id=bot.qq, sender_name="Manyana",
-                                    message_chain=MessageChain('这是' + botName + '的功能列表\nヾ(≧▽≦*)o\n发送 pet 以查看制图功能列表\npetpet功能由https://github.com/Dituon/petpet提供'))
-            cmList.append(b1)
-            await bot.send(event, Forward(node_list=cmList))
+                await bot.send(event, Forward(node_list=cmList))
+            except:
+                await bot.send(event,s.append('这是' + botName + '的功能列表\nヾ(≧▽≦*)o\n发送 pet 以查看制图功能列表\npetpet功能由https://github.com/Dituon/petpet提供'))
     @bot.on(Startup)
     async def clearCache(event: Startup):
 
