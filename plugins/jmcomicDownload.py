@@ -39,12 +39,12 @@ def queryJM(name,num=3):
 def downloadComic(comic_id,start=1,end=5):
     with open("config/jmcomic.yml", 'r', encoding='utf-8') as f: #不知道他这个options咋传的，我就修改配置文件得了。
         result = yaml.load(f.read(), Loader=yaml.FullLoader)
-    result["dir_rule"]["base_dir"]=f"data/pictures/benzi/{comic_id}"
+    result["dir_rule"]["base_dir"]=f"data/pictures/benzi/temp{comic_id}"
     with open("config/jmcomic.yml", 'w', encoding="utf-8") as file:
         yaml.dump(result, file, allow_unicode=True)
     option = jmcomic.create_option_by_file('config/jmcomic.yml')
-    if not os.path.exists(f'data/pictures/benzi/{comic_id}'):
-        os.mkdir(f'data/pictures/benzi/{comic_id}')
+    if not os.path.exists(f'data/pictures/benzi/temp{comic_id}'):
+        os.mkdir(f'data/pictures/benzi/temp{comic_id}')
 
 
     MyDownloader.start = start
@@ -55,7 +55,7 @@ def downloadComic(comic_id,start=1,end=5):
 
     jmcomic.download_album(comic_id, option)
 
-    folder_path = f'data/pictures/benzi/{comic_id}'
+    folder_path = f'data/pictures/benzi/temp{comic_id}'
     if not os.path.exists(folder_path):
         os.mkdir(folder_path)
     file_names = os.listdir(folder_path)
@@ -63,13 +63,13 @@ def downloadComic(comic_id,start=1,end=5):
     new_files = []
     for i in file_names:
         #print(file_names)
-        image_raw = Image.open(f"data/pictures/benzi/{comic_id}/"+i)
+        image_raw = Image.open(f"data/pictures/benzi/temp{comic_id}/"+i)
         # convert image to black and white
         image_black_white = image_raw.convert('1')
         newPath=f"data/pictures/cache/{random_str()}.png"
         new_files.append(newPath)
         image_black_white.save(newPath)
-    shutil.rmtree(f"data/pictures/benzi/{comic_id}")
+    shutil.rmtree(f"data/pictures/benzi/temp{comic_id}")
     print("移除文件")
     #png_files = [os.path.join(folder_path, file) for file in file_names if file.lower().endswith('.png')]
     return new_files

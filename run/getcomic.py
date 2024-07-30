@@ -67,7 +67,7 @@ def main(bot, logger):
                 cmList.append(ForwardMessageNode(sender_id=bot.qq, sender_name="ninethnine", message_chain=MessageChain(f" \n腾子吞图严重，bot仅提供本子部分页面预览。\n图片已经过处理，但不保证百分百不被吞。可能显示不出来")))
                 for i in results:
                     cmList.append(ForwardMessageNode(sender_id=bot.qq, sender_name="ninethnine",message_chain=MessageChain(i[0])))
-                    #cmList.append(ForwardMessageNode(sender_id=bot.qq, sender_name="ninethnine",message_chain=MessageChain([Image(path=i[1])])))
+                    cmList.append(ForwardMessageNode(sender_id=bot.qq, sender_name="ninethnine",message_chain=MessageChain(Image(path=i[1]))))
                 await bot.send(event, Forward(node_list=cmList))
                 operating.remove(aim)
                 #await bot.send(event, "好了喵", True)
