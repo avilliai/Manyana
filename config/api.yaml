@@ -35,6 +35,9 @@ GeminiRevProxy: ""               #基于netlify反向代理，搭建后本地环
 FishTTSAuthorization: ""         #FishTTS语音合成必要参数，看https://github.com/avilliai/Manyana/issues/19
 sdUrl: ""                        #你自己搭建的sd，地址，示例http://127.0.0.1:17858（示例≠你能直接填示例用），部署https://www.bilibili.com/video/BV1iM4y1y7oA/
 
+蓝奏云:                           #文件转直链必要配置
+  ylogin: ""                     #参考https://github.com/avilliai/Manyana/issues/36获取
+  phpdisk_info: ""
 #下面的不建议你去折腾哈
 modelscopeCookie: ''            #modescopeTTS增加反爬虫，默认留空用我的，如不能用了自行抓取cookie，查看https://github.com/avilliai/Manyana/issues/7
 bert_colab: https://mess-addressed-openings-exposed.trycloudflare.com/synthesize        #新版本Manyana无需配置此功能，语音合成选modelscopeTTS模式可直接使用。但如果你喜欢折腾：bert_vits_colab部署：https://colab.research.google.com/drive/1n8lI6pOiDtli2zC5fL9PZ9TZqbOafqma?usp=sharing 请注意，使用此功能必须配置上面的proxy项

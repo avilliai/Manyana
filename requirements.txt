@@ -24,3 +24,4 @@ emoji
 ruamel.yaml
 jmcomic
 img2pdf
+lanzou-api

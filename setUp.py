@@ -204,6 +204,7 @@ def updaat(f=False,jump=False,source=None):
             #print(str(custom_pip_path)+"!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!5555555!!!!!!!!!!!!!!!")
             os.system(f"\"{python_path}\" -m pip install jmcomic")
             os.system(f"\"{python_path}\" -m pip install img2pdf")
+            os.system(f"\"{python_path}\" -m pip install lanzou-api")
     if source==None:
         logger.info("拉取bot代码\n--------------------")
         logger.info("选择更新源(git源 镜像源相互兼容)：\n1 git源\n2 git代理源1\n3 git代理源2 \n4 国内源(稳定，但一般有一天延迟)")

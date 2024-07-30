@@ -5,7 +5,7 @@ import yaml
 from jmcomic import *
 
 from plugins.RandomStr import random_str
-from plugins.tookits import fileToUrl
+from plugins.tookits import fileToUrl, lanzouFileToUrl
 
 
 class MyDownloader(jmcomic.JmDownloader):
@@ -89,7 +89,8 @@ def downloadALLAndToPdf(comic_id,savePath,proxy):
         yaml.dump(result, file, allow_unicode=True)
     # 使用option对象来下载本子
     jmcomic.download_album(comic_id, option)
-    r=fileToUrl(f"{savePath}/{comic_id}.pdf",proxy)
+    r=lanzouFileToUrl(f"{savePath}/{comic_id}.pdf")
+    #r=fileToUrl(f"{savePath}/{comic_id}.pdf",proxy)
     return r
 
 
