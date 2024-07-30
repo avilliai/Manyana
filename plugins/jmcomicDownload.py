@@ -99,5 +99,3 @@ def downloadALLAndToPdf(comic_id,savePath):
     os.remove(f"{savePath}/{comic_id}.pdf")
     return r
 
-r=queryJM("碧蓝档案")
-print(r)
