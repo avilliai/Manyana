@@ -59,7 +59,7 @@ def main(bot, logger):
                                                      message_chain=MessageChain(i[0])))
                     cmList.append(ForwardMessageNode(sender_id=bot.qq, sender_name="ninethnine",message_chain=MessageChain([Image(path=i[1])])))
                 await bot.send(event, Forward(node_list=cmList))
-                await bot.send(event, "好了喵", True)
+                #await bot.send(event, "好了喵", True)
                 for i in results:
                     os.remove(i[1])
                 logger.info("已清除预览缓存")
