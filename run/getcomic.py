@@ -23,7 +23,7 @@ def main(bot, logger):
     with open('data/userData.yaml', 'r', encoding='utf-8') as file:
         userdict = yaml.load(file, Loader=yaml.FullLoader)
     global superUser
-    superUser = [int(configData.get('master')), ]
+    superUser = [str(configData.get('master')), ]
     for i in userdict.keys():
         data = userdict.get(i)
         times = int(str(data.get('sts')))
