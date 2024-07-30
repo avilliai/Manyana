@@ -31,6 +31,9 @@ def main(bot, logger):
     with open('config/controller.yaml', 'r', encoding='utf-8') as f:
         controller = yaml.load(f.read(), Loader=yaml.FullLoader)
     jmcomicSettings = controller.get("JMComic")
+    if not jmcomicSettings.get("enable"):
+        logger.warning("jmcomic相关功能已关闭。")
+        return
     global operating
     operating=[]
     @bot.on(GroupMessage)
