@@ -39,6 +39,7 @@ def main(bot, logger):
                 await bot.send(event, "用户无权限",True)
                 return
             aim=str(event.message_chain).replace("JM搜","")
+            logger.info(f"JM搜索: {aim}")
             # 分页查询，search_site就是禁漫网页上的【站内搜索】
             # 原先的执行方式将导致bot进程阻塞，任务添加到线程池，避免阻塞
             await bot.send(event, "在找了在找了，稍等一会哦(长时间不出就是被吞了)",True)
@@ -47,7 +48,7 @@ def main(bot, logger):
                 # 使用线程池执行器
                 with ThreadPoolExecutor() as executor:
                     # 使用 asyncio.to_thread 调用函数并获取返回结果
-                    results = await loop.run_in_executor(executor, queryJM,aim)
+                    results = await loop.run_in_executor(executor, queryJM,aim,5)
             except Exception as e:
                 logger.error(e)
                 logger.exception("详细错误如下：")
@@ -76,6 +77,7 @@ def main(bot, logger):
             except:
                 await bot.send(event, "无效输入 int，指令格式如下\n验车【车牌号】\n如：验车604142",True)
                 return
+            logger.info(f"JM验车 {comic_id}")
             await bot.send(event, "下载中...稍等喵",True)
             try:
                 loop = asyncio.get_running_loop()
@@ -103,9 +105,9 @@ def main(bot, logger):
             if jmcomicSettings.get("onlyTrustUser") and str(event.sender.id) not in superUser:
                 await bot.send(event, "用户无权限",True)
                 return
-            logger.info("JM下载启动")
             try:
                 comic_id = int(str(event.message_chain).replace("JM下载",""))
+                logger.info(f"JM下载启动 aim: {comic_id}")
             except:
                 await bot.send(event,"非法参数，指令示例 JM下载601279")
                 return
