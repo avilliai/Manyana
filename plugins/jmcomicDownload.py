@@ -24,7 +24,7 @@ class MyDownloader(jmcomic.JmDownloader):
             return photo[start:end]
         return detail
 
-def queryJM(name,num=5):
+def queryJM(name,num=3):
     client = jmcomic.JmOption.default().new_jm_client()
     page: jmcomic.JmSearchPage = client.search_site(search_query=name, page=1)
     results=[]
@@ -58,7 +58,6 @@ def downloadComic(comic_id,start=1,end=5):
     folder_path = f'data/pictures/benzi/{comic_id}'
     if not os.path.exists(folder_path):
         os.mkdir(folder_path)
-
     file_names = os.listdir(folder_path)
     print(file_names)
     new_files = []
