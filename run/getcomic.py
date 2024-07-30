@@ -1,4 +1,6 @@
 # -*- coding:utf-8 -*-
+import os
+
 import asyncio
 from concurrent.futures import ThreadPoolExecutor
 
@@ -56,6 +58,9 @@ def main(bot, logger):
                                                      message_chain=MessageChain([i[0], Image(path=i[1])])))
                 await bot.send(event, Forward(node_list=cmList))
                 await bot.send(event, "好了喵", True)
+                for i in results:
+                    os.remove(i[1])
+                logger.info("已清除预览缓存")
             except Exception as e:
                 logger.error(e)
                 await bot.send(event, "寄了喵", True)
@@ -89,6 +94,9 @@ def main(bot, logger):
                 cmList.append(ForwardMessageNode(sender_id=bot.qq, sender_name="ninethnine",
                                                  message_chain=MessageChain(Image(path=path))))
             await bot.send(event, Forward(node_list=cmList))
+            for path in png_files:
+                os.remove(path)
+            logger.info("本子预览缓存已清除.....")
     @bot.on(GroupMessage)
     async def downloadAndToPdf(event: GroupMessage):
         if str(event.message_chain).startswith("JM下载"):

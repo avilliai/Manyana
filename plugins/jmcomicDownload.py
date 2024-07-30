@@ -96,6 +96,8 @@ def downloadALLAndToPdf(comic_id,savePath):
     #r=fileToUrl(f"{savePath}/{comic_id}.pdf",proxy)
     shutil.rmtree(f"{savePath}/{comic_id}")
     print("移除文件夹")
+    os.remove(f"{savePath}/{comic_id}.pdf")
     return r
 
-
+r=queryJM("碧蓝档案")
+print(r)
