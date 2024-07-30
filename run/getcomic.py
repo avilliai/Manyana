@@ -39,6 +39,7 @@ def main(bot, logger):
             if jmcomicSettings.get("onlyTrustUser") and str(event.sender.id) not in superUser:
                 await bot.send(event, "用户无权限",True)
                 return
+            aim=str(event.message_chain).replace("JM搜","")
             # 分页查询，search_site就是禁漫网页上的【站内搜索】
             # 原先的执行方式将导致bot进程阻塞，任务添加到线程池，避免阻塞
             await bot.send(event, "在找了在找了，稍等一会哦(长时间不出就是被吞了)",True)
@@ -47,7 +48,7 @@ def main(bot, logger):
                 # 使用线程池执行器
                 with ThreadPoolExecutor() as executor:
                     # 使用 asyncio.to_thread 调用函数并获取返回结果
-                    results = await loop.run_in_executor(executor, queryJM, querycomic)
+                    results = await loop.run_in_executor(executor, queryJM,aim)
             except Exception as e:
                 logger.error(e)
                 logger.exception("详细错误如下：")

@@ -23,7 +23,7 @@ class MyDownloader(jmcomic.JmDownloader):
             return photo[start:end]
         return detail
 
-def queryJM(name,num=2):
+def queryJM(name,num=5):
     client = jmcomic.JmOption.default().new_jm_client()
     page: jmcomic.JmSearchPage = client.search_site(search_query=name, page=1)
     results=[]
