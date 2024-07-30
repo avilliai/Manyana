@@ -69,8 +69,6 @@ def downloadComic(comic_id,start=1,end=5):
         newPath=f"data/pictures/cache/{random_str()}.png"
         new_files.append(newPath)
         image_black_white.save(newPath)
-    shutil.rmtree(f"data/pictures/benzi/temp{comic_id}")
-    print("移除文件")
     #png_files = [os.path.join(folder_path, file) for file in file_names if file.lower().endswith('.png')]
     return new_files
 def downloadALLAndToPdf(comic_id,savePath):
@@ -93,8 +91,5 @@ def downloadALLAndToPdf(comic_id,savePath):
     jmcomic.download_album(comic_id, option)
     r=lanzouFileToUrl(f"{savePath}/{comic_id}.pdf")
     #r=fileToUrl(f"{savePath}/{comic_id}.pdf",proxy)
-    shutil.rmtree(f"{savePath}/{comic_id}")
-    print("移除文件夹")
-    os.remove(f"{savePath}/{comic_id}.pdf")
     return r
 

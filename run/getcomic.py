@@ -1,5 +1,6 @@
 # -*- coding:utf-8 -*-
 import os
+import shutil
 
 import asyncio
 from concurrent.futures import ThreadPoolExecutor
@@ -112,6 +113,8 @@ def main(bot, logger):
             cmList = []
             logger.info(png_files)
             cmList.append(ForwardMessageNode(sender_id=bot.qq, sender_name="ninethnine", message_chain=MessageChain(f"车牌号：{comic_id} \n腾子吞图严重，bot仅提供本子部分页面预览。\n图片已经过处理，但不保证百分百不被吞。可能显示不出来")))
+            shutil.rmtree(f"data/pictures/benzi/temp{comic_id}")
+            logger.info("移除预览缓存")
             for path in png_files:
                 cmList.append(ForwardMessageNode(sender_id=bot.qq, sender_name="ninethnine",
                                                  message_chain=MessageChain(Image(path=path))))
@@ -145,11 +148,15 @@ def main(bot, logger):
                     # 使用 asyncio.to_thread 调用函数并获取返回结果
                     r=await loop.run_in_executor(executor, downloadALLAndToPdf, comic_id, jmcomicSettings.get("savePath"))
                 logger.info(f"下载完成，车牌号：{comic_id} \n下载链接：{r} ")
-                operating.remove(comic_id)
                 await bot.send(event,f"下载完成，车牌号：{comic_id} \n下载链接：{r}\n请复制到浏览器打开，为避免失效请尽快使用",True)
             except Exception as e:
                 logger.error(e)
                 await bot.send(event, "下载失败",True)
+            finally:
                 operating.remove(comic_id)
+                shutil.rmtree(f"{jmcomicSettings.get('savePath')}/{comic_id}")
+                os.remove(f"{jmcomicSettings.get('savePath')}/{comic_id}.pdf")
+                logger.info("移除预览缓存")
+
 
 
