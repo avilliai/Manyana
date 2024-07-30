@@ -59,6 +59,8 @@ class MyWebSocketAdapter(WebSocketAdapter):
             f'[WebSocket] mirai-api-http 响应超时，可能是由于调用出错。同步 ID：{sync_id}。'
         )
 if __name__ == '__main__':
+    if not os.path.exists("data/pictures/benzi"):
+        os.mkdir("data/pictures/benzi")
     with open('config.json', 'r', encoding='utf-8') as f:
         data = yaml.load(f.read(), Loader=yaml.FullLoader)
 
