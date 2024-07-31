@@ -259,8 +259,10 @@ if __name__ == '__main__':
                                         message_chain=MessageChain('这是' + botName + '的功能列表\nヾ(≧▽≦*)o\n发送 pet 以查看制图功能列表\npetpet功能由https://github.com/Dituon/petpet提供'))
                 cmList.append(b1)
                 await bot.send(event, Forward(node_list=cmList))
-            except:
-                await bot.send(event,s.append('这是' + botName + '的功能列表\nヾ(≧▽≦*)o\n发送 pet 以查看制图功能列表\npetpet功能由https://github.com/Dituon/petpet提供'))
+            except Exception as e:
+                s.append(
+                    '这是' + botName + '的功能列表\nヾ(≧▽≦*)o\n发送 pet 以查看制图功能列表\npetpet功能由https://github.com/Dituon/petpet提供')
+                await bot.send(event,s)
     @bot.on(Startup)
     async def clearCache(event: Startup):
 
