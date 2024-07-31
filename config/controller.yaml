@@ -33,6 +33,8 @@ JMComic:            #禁漫相关功能设置
   savePath: "./data/pictures/benzi"  #下载为pdf的默认保存路径
 碧蓝档案:
   订阅与推送: True   #为强迫症提供的开关，关闭后不会再检查碧蓝档案三服订阅更新
+b站相关功能:
+  直播订阅: True    #同上，b站相关功能现在不多，以后加
 scheduledTasks:    #其他定时任务模块的内容会陆续转到这里
   morning:         #晨间推送
     enable: False  #向信任用户推送天气信息

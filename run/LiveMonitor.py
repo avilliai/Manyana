@@ -10,7 +10,13 @@ from mirai import Startup
 from mirai.models import App
 
 
-def main(bot, master, botName, logger):
+def main(bot,logger):
+    with open('config/controller.yaml', 'r', encoding='utf-8') as f:
+        controller = yaml.load(f.read(), Loader=yaml.FullLoader)
+    liveMonitor=controller.get("b站相关功能").get("直播订阅")
+    if not liveMonitor:
+        logger.warning("直播订阅功能已关闭")
+        return
     global live
     with open('data/biliMonitor.yaml', 'r', encoding='utf-8') as file:
         live = yaml.load(file, Loader=yaml.FullLoader)

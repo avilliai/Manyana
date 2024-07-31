@@ -351,7 +351,7 @@ if __name__ == '__main__':
     wikiHelper.main(bot, logger)
     groupManager.main(bot, config, moderate, logger)
     musicShare.main(bot, master, botName, logger)
-    LiveMonitor.main(bot, master, botName, logger)
+    LiveMonitor.main(bot,  logger)
     aronaapi.main(bot, logger)
     scheduledTasks.main(bot, logger)
     groupGames.main(bot, logger)
