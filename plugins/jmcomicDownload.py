@@ -1,4 +1,5 @@
 import copy
+import os.path
 import shutil
 
 import jmcomic
@@ -76,6 +77,8 @@ def downloadALLAndToPdf(comic_id,savePath):
         result = yaml.load(f.read(), Loader=yaml.FullLoader)
     tempResult = copy.deepcopy(result)
     tempResult["dir_rule"]["base_dir"]=f"{savePath}/{comic_id}"
+    if os.path.exists(f"{savePath}/{comic_id}"):
+        shutil.rmtree(f"{savePath}/{comic_id}")
     if "plugins" not in tempResult:
         tempResult["plugins"]={}
     if "after_photo" not in tempResult["plugins"]:
