@@ -133,96 +133,98 @@ async def superVG(data, mode, urls="", langmode="<zh>"):
     elif mode == "modelscopeTTS":
         speaker = data.get("speaker")
         text = data.get("text")
-
-        headers = {
-            "Content-Type": "application/json",
-            "Origin": "https://www.modelscope.cn",
-            "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.164 Safari/537.36",
-            "Cookie": modelscopeCookie
-        }
         if text == "" or text == " ":
             text = "哼哼"
-        if speaker == "阿梓":
-            url = "https://www.modelscope.cn/api/v1/studio/xzjosh/Azusa-Bert-VITS2-2.3/gradio/run/predict"
-            newurp = "https://www.modelscope.cn/api/v1/studio/xzjosh/Azusa-Bert-VITS2-2.3/gradio/file="
-        elif speaker == "BT":
-            speaker = "Speaker"
-            url = "https://www.modelscope.cn/api/v1/studio/MiDd1Eye/BT7274-Bert-VITS2/gradio/run/predict"
-            newurp = "https://www.modelscope.cn/api/v1/studio/MiDd1Eye/BT7274-Bert-VITS2/gradio/file="
-        elif speaker == "otto":
-            url = "https://www.modelscope.cn/api/v1/studio/xzjosh/otto-Bert-VITS2-2.3/gradio/run/predict"
-            newurp = "https://www.modelscope.cn/api/v1/studio/xzjosh/otto-Bert-VITS2-2.3/gradio/file="
-        elif speaker == "塔菲":
-            speaker = "taffy"
-            url = "https://www.modelscope.cn/api/v1/studio/xzjosh/Taffy-Bert-VITS2/gradio/run/predict"
-            newurp = "https://www.modelscope.cn/api/v1/studio/xzjosh/Taffy-Bert-VITS2/gradio/file="
-        elif speaker == "星瞳":
-            speaker = "XingTong"
-            url = "https://www.modelscope.cn/api/v1/studio/xzjosh/XingTong-Bert-VITS2/gradio/run/predict"
-            newurp = "https://www.modelscope.cn/api/v1/studio/xzjosh/XingTong-Bert-VITS2/gradio/file="
-        elif speaker == "丁真":
-            url = "https://s5k.cn/api/v1/studio/MiDd1Eye/DZ-Bert-VITS2/gradio/run/predict"
-            newurp = "https://s5k.cn/api/v1/studio/MiDd1Eye/DZ-Bert-VITS2/gradio/file="
-            speaker = "Speaker"
-        elif speaker == "东雪莲":
-            speaker = "Azuma"
-            url = "https://s5k.cn/api/v1/studio/Outcast/Azuma-Bert-VITS2/gradio/run/predict"
-            newurp = "https://s5k.cn/api/v1/studio/Outcast/Azuma-Bert-VITS2/gradio/file="
-        elif speaker == "嘉然":
-            url = "https://www.modelscope.cn/api/v1/studio/xzjosh/Diana-Bert-VITS2-2.3/gradio/run/predict"
-            newurp = "https://www.modelscope.cn/api/v1/studio/xzjosh/Diana-Bert-VITS2-2.3/gradio/file="
-        elif speaker == "孙笑川":
-            url = "https://www.modelscope.cn/api/v1/studio/xzjosh/SXC-Bert-VITS2/gradio/run/predict"
-            newurp = "https://www.modelscope.cn/api/v1/studio/xzjosh/SXC-Bert-VITS2/gradio/file="
-        elif speaker == "鹿鸣":
-            speaker = "Lumi"
-            url = "https://www.modelscope.cn/api/v1/studio/xzjosh/Lumi-Bert-VITS2/gradio/run/predict"
-            newurp = "https://www.modelscope.cn/api/v1/studio/xzjosh/Lumi-Bert-VITS2/gradio/file="
-        elif speaker == "文静":
-            speaker = "Wenjing"
-            url = "https://www.modelscope.cn/api/v1/studio/xzjosh/Wenjing-Bert-VITS2/gradio/run/predict"
-            newurp = "https://www.modelscope.cn/api/v1/studio/xzjosh/Wenjing-Bert-VITS2/gradio/file="
-        elif speaker == "亚托克斯":
-            speaker = "Aatrox"
-            url = "https://www.modelscope.cn/api/v1/studio/xzjosh/Aatrox-Bert-VITS2/gradio/run/predict"
-            newurp = "https://www.modelscope.cn/api/v1/studio/xzjosh/Aatrox-Bert-VITS2/gradio/file="
-        elif speaker == "奶绿":
-            speaker = "明前奶绿"
-            url = "https://www.modelscope.cn/api/v1/studio/xzjosh/LAPLACE-Bert-VITS2-2.3/gradio/run/predict"
-            newurp = "https://www.modelscope.cn/api/v1/studio/xzjosh/LAPLACE-Bert-VITS2-2.3/gradio/file="
-        elif speaker == "七海":
-            speaker = "Nana7mi"
-            url = "https://www.modelscope.cn/api/v1/studio/xzjosh/Nana7mi-Bert-VITS2/gradio/run/predict"
-            newurp = "https://www.modelscope.cn/api/v1/studio/xzjosh/Nana7mi-Bert-VITS2/gradio/file="
-        elif speaker == "恬豆":
-            speaker = "Bekki"
-            url = "https://www.modelscope.cn/api/v1/studio/xzjosh/Bekki-Bert-VITS2/gradio/run/predict"
-            newurp = "https://www.modelscope.cn/api/v1/studio/xzjosh/Bekki-Bert-VITS2/gradio/file="
-        elif speaker == "科比":
-            url = "https://www.modelscope.cn/api/v1/studio/xzjosh/Kobe-Bert-VITS2-2.3/gradio/run/predict"
-            newurp = "https://www.modelscope.cn/api/v1/studio/xzjosh/Kobe-Bert-VITS2-2.3/gradio/file="
-        elif speaker == "胡桃":
-            speaker = "hutao"
-            url = "https://www.modelscope.cn/api/v1/studio/Xzkong/AI-hutao/gradio/run/predict"
-            newurp = "https://www.modelscope.cn/api/v1/studio/Xzkong/AI-hutao/gradio/file="
-        data = {
-            "data": [text, speaker, 0.5, 0.5, 0.9, 1, "auto", None, "Happy", "Text prompt", "", 0.7],
-            "event_data": None,
-            "fn_index": 0,
-            "dataType": ["textbox", "dropdown", "slider", "slider", "slider", "slider", "dropdown", "audio", "textbox",
-                         "radio", "textbox", "slider"],
-            "session_hash": "xjwen214wqf"
-        }
-        p = "data/voices/" + random_str() + '.wav'
-        async with httpx.AsyncClient(timeout=200, headers=headers) as client:
-            r = await client.post(url, json=data)
-            newurl = newurp + \
-                     r.json().get("data")[1].get("name")
+        if speaker in ['anzai', '「信使」', '「公子」', '「博士」', '「大肉丸」', '「女士」', '「散兵」', '「白老先生」', '七七', '三月七', '上杉', '丹吉尔', '丹恒', '丹枢', '丽莎', '久利须', '久岐忍', '九条裟罗', '九条镰治', '云堇', '五郎', '伊利亚斯', '伊迪娅', '优菈', '伦纳德', '佐西摩斯', '佩拉', '停云', '元太', '克列门特', '克拉拉', '克罗索', '八重神子', '公输师傅', '凝光', '凯亚', '凯瑟琳', '刃', '刻晴', '北斗', '半夏', '博易', '博来', '卡波特', '卡维', '卡芙卡', '卢卡', '可可利亚', '可莉', '史瓦罗', '吴船长', '哲平', '嘉玛', '嘉良', '回声海螺', '坎蒂丝', '埃勒曼', '埃尔欣根', '埃德', '埃泽', '埃洛伊', '埃舍尔', '塔杰·拉德卡尼', '塞塔蕾', '塞琉斯', '夏洛蒂', '多莉', '夜兰', '大慈树王', '大毫', '天叔', '天目十五', '奥兹', '奥列格', '女士', '妮露', '姬子', '娜塔莎', '娜维娅', '安柏', '安西', '宛烟', '宵宫', '岩明', '巴达维', '布洛妮娅', '希儿', '希露瓦', '帕姆', '帕斯卡', '常九爷', '康纳', '开拓者(女)', '开拓者(男)', '式大将', '彦卿', '影', '德沃沙克', '恕筠', '恶龙', '悦', '慧心', '戴因斯雷布', '托克', '托马', '拉赫曼', '拉齐', '掇星攫辰天君', '提纳里', '斯坦利', '斯科特', '旁白', '早柚', '昆钧', '明曦', '景元', '晴霓', '杜拉夫', '杰帕德', '松浦', '林尼', '枫原万叶', '柊千里', '查尔斯', '柯莱', '桑博', '欧菲妮', '毗伽尔', '沙扎曼', '派蒙', '流浪者', '浣溪', '浮游水蕈兽·元素生命', '海妮耶', '海芭夏', '深渊使徒', '深渊法师', '温迪', '烟绯', '爱德琳', '爱贝尔', '玛乔丽', '玛塞勒', '玛格丽特', '玲可', '珊瑚', '珊瑚宫心海', '珐露珊', '班尼特', '琳妮特', '琴', '瑶瑶', '瓦尔特', '甘雨', '田铁嘴', '申鹤', '留云借风真君', '白术', '白露', '百闻', '知易', '石头', '砂糖', '神里绫人', '神里绫华', '空', '符玄', '笼钓瓶一心', '米卡', '素裳', '纯水精灵？', '纳比尔', '纳西妲', '绮良良', '绿芙蓉', '罗刹', '罗莎莉亚', '羽生田千鹤', '老孟', '胡桃', '舒伯特', '艾丝妲', '艾伯特', '艾尔海森', '艾文', '艾莉丝', '芙宁娜', '芭芭拉', '荒泷一斗', '荧', '莎拉', '莫塞伊思', '莫娜', '莱依拉', '莺儿', '菲米尼', '菲谢尔', '萍姥姥', '萨赫哈蒂', '萨齐因', '蒂玛乌斯', '虎克', '螺丝咕姆', '行秋', '西拉杰', '言笑', '诺艾尔', '费斯曼', '赛诺', '辛焱', '达达利亚', '迈勒斯', '迈蒙', '迪卢克', '迪奥娜', '迪娜泽黛', '迪希雅', '那维莱特', '重云', '金人会长', '钟离', '银狼', '镜流', '长生', '阿佩普', '阿兰', '阿圆', '阿娜耶', '阿守', '阿尔卡米', '阿巴图伊', '阿扎尔', '阿拉夫', '阿晃', '阿洛瓦', '阿祇', '阿贝多', '陆行岩本真蕈·元素生命', '雷泽', '雷电将军', '霄翰', '霍夫曼', '青镞', '青雀', '香菱', '驭空', '魈', '鹿野奈奈', '鹿野院平藏', '黑塔', '龙二']:
+            newurl=await modelscopeV2(speaker, text)
+        else:
+            headers = {
+                "Content-Type": "application/json",
+                "Origin": "https://www.modelscope.cn",
+                "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.164 Safari/537.36",
+                "Cookie": modelscopeCookie
+            }
+            if speaker == "阿梓":
+                url = "https://www.modelscope.cn/api/v1/studio/xzjosh/Azusa-Bert-VITS2-2.3/gradio/run/predict"
+                newurp = "https://www.modelscope.cn/api/v1/studio/xzjosh/Azusa-Bert-VITS2-2.3/gradio/file="
+            elif speaker == "BT":
+                speaker = "Speaker"
+                url = "https://www.modelscope.cn/api/v1/studio/MiDd1Eye/BT7274-Bert-VITS2/gradio/run/predict"
+                newurp = "https://www.modelscope.cn/api/v1/studio/MiDd1Eye/BT7274-Bert-VITS2/gradio/file="
+            elif speaker == "otto":
+                url = "https://www.modelscope.cn/api/v1/studio/xzjosh/otto-Bert-VITS2-2.3/gradio/run/predict"
+                newurp = "https://www.modelscope.cn/api/v1/studio/xzjosh/otto-Bert-VITS2-2.3/gradio/file="
+            elif speaker == "塔菲":
+                speaker = "taffy"
+                url = "https://www.modelscope.cn/api/v1/studio/xzjosh/Taffy-Bert-VITS2/gradio/run/predict"
+                newurp = "https://www.modelscope.cn/api/v1/studio/xzjosh/Taffy-Bert-VITS2/gradio/file="
+            elif speaker == "星瞳":
+                speaker = "XingTong"
+                url = "https://www.modelscope.cn/api/v1/studio/xzjosh/XingTong-Bert-VITS2/gradio/run/predict"
+                newurp = "https://www.modelscope.cn/api/v1/studio/xzjosh/XingTong-Bert-VITS2/gradio/file="
+            elif speaker == "丁真":
+                url = "https://s5k.cn/api/v1/studio/MiDd1Eye/DZ-Bert-VITS2/gradio/run/predict"
+                newurp = "https://s5k.cn/api/v1/studio/MiDd1Eye/DZ-Bert-VITS2/gradio/file="
+                speaker = "Speaker"
+            elif speaker == "东雪莲":
+                speaker = "Azuma"
+                url = "https://s5k.cn/api/v1/studio/Outcast/Azuma-Bert-VITS2/gradio/run/predict"
+                newurp = "https://s5k.cn/api/v1/studio/Outcast/Azuma-Bert-VITS2/gradio/file="
+            elif speaker == "嘉然":
+                url = "https://www.modelscope.cn/api/v1/studio/xzjosh/Diana-Bert-VITS2-2.3/gradio/run/predict"
+                newurp = "https://www.modelscope.cn/api/v1/studio/xzjosh/Diana-Bert-VITS2-2.3/gradio/file="
+            elif speaker == "孙笑川":
+                url = "https://www.modelscope.cn/api/v1/studio/xzjosh/SXC-Bert-VITS2/gradio/run/predict"
+                newurp = "https://www.modelscope.cn/api/v1/studio/xzjosh/SXC-Bert-VITS2/gradio/file="
+            elif speaker == "鹿鸣":
+                speaker = "Lumi"
+                url = "https://www.modelscope.cn/api/v1/studio/xzjosh/Lumi-Bert-VITS2/gradio/run/predict"
+                newurp = "https://www.modelscope.cn/api/v1/studio/xzjosh/Lumi-Bert-VITS2/gradio/file="
+            elif speaker == "文静":
+                speaker = "Wenjing"
+                url = "https://www.modelscope.cn/api/v1/studio/xzjosh/Wenjing-Bert-VITS2/gradio/run/predict"
+                newurp = "https://www.modelscope.cn/api/v1/studio/xzjosh/Wenjing-Bert-VITS2/gradio/file="
+            elif speaker == "亚托克斯":
+                speaker = "Aatrox"
+                url = "https://www.modelscope.cn/api/v1/studio/xzjosh/Aatrox-Bert-VITS2/gradio/run/predict"
+                newurp = "https://www.modelscope.cn/api/v1/studio/xzjosh/Aatrox-Bert-VITS2/gradio/file="
+            elif speaker == "奶绿":
+                speaker = "明前奶绿"
+                url = "https://www.modelscope.cn/api/v1/studio/xzjosh/LAPLACE-Bert-VITS2-2.3/gradio/run/predict"
+                newurp = "https://www.modelscope.cn/api/v1/studio/xzjosh/LAPLACE-Bert-VITS2-2.3/gradio/file="
+            elif speaker == "七海":
+                speaker = "Nana7mi"
+                url = "https://www.modelscope.cn/api/v1/studio/xzjosh/Nana7mi-Bert-VITS2/gradio/run/predict"
+                newurp = "https://www.modelscope.cn/api/v1/studio/xzjosh/Nana7mi-Bert-VITS2/gradio/file="
+            elif speaker == "恬豆":
+                speaker = "Bekki"
+                url = "https://www.modelscope.cn/api/v1/studio/xzjosh/Bekki-Bert-VITS2/gradio/run/predict"
+                newurp = "https://www.modelscope.cn/api/v1/studio/xzjosh/Bekki-Bert-VITS2/gradio/file="
+            elif speaker == "科比":
+                url = "https://www.modelscope.cn/api/v1/studio/xzjosh/Kobe-Bert-VITS2-2.3/gradio/run/predict"
+                newurp = "https://www.modelscope.cn/api/v1/studio/xzjosh/Kobe-Bert-VITS2-2.3/gradio/file="
+            elif speaker == "胡桃":
+                speaker = "hutao"
+                url = "https://www.modelscope.cn/api/v1/studio/Xzkong/AI-hutao/gradio/run/predict"
+                newurp = "https://www.modelscope.cn/api/v1/studio/Xzkong/AI-hutao/gradio/file="
+            data = {
+                "data": [text, speaker, 0.5, 0.5, 0.9, 1, "auto", None, "Happy", "Text prompt", "", 0.7],
+                "event_data": None,
+                "fn_index": 0,
+                "dataType": ["textbox", "dropdown", "slider", "slider", "slider", "slider", "dropdown", "audio", "textbox",
+                             "radio", "textbox", "slider"],
+                "session_hash": "xjwen214wqf"
+            }
+            p = "data/voices/" + random_str() + '.wav'
             async with httpx.AsyncClient(timeout=200, headers=headers) as client:
-                r = await client.get(newurl)
-                with open(p, "wb") as f:
-                    f.write(r.content)
-                return p
+                r = await client.post(url, json=data)
+                newurl = newurp + \
+                         r.json().get("data")[1].get("name")
+        async with httpx.AsyncClient(timeout=200, headers=headers) as client:
+            r = await client.get(newurl)
+            with open(p, "wb") as f:
+                f.write(r.content)
+            return p
     elif mode == "outVits":
         speaker = data.get("speaker")
         text = data.get("text")
@@ -557,8 +559,68 @@ async def superVG(data, mode, urls="", langmode="<zh>"):
                 with open(p, "wb") as f:
                     f.write(r.content)
                 return p
+#modelscopeTTS v2，对接崩铁语音合成器
+async def modelscopeV2(speaker,text):
+    # 第一个请求的URL和参数
+    queue_join_url = "https://s5k.cn/api/v1/studio/gally16/Bert-VITS21.x/gradio/queue/join"
+    queue_join_params = {
+        "backend_url": "/api/v1/studio/gally16/Bert-VITS21.x/gradio/",
+        "sdk_version": "4.8.0",
+        "t": "1722421391963",
+        "studio_token": "f6325151-b86a-44d8-ba1d-aa95c485b173",
+        "fn_index": "3",
+        "session_hash": "wlev3x7dnvb"
+    }
 
+    # 第二个请求的URL和headers
+    queue_data_url = "https://s5k.cn/api/v1/studio/gally16/Bert-VITS21.x/gradio/queue/data"
+    headers = {
+        "accept": "*/*",
+        "accept-encoding": "gzip, deflate, br, zstd",
+        "accept-language": "zh-CN,zh;q=0.9,en;q=0.8,en-GB;q=0.7,en-US;q=0.6",
+        "connection": "keep-alive",
+        "content-type": "application/json",
+        "cookie": "_xsrf=2|6f60a475|a5b476579343255f3f4497ee1f7f3c4e|1722420837; _ga_R1FN4KJKJH=GS1.1.1722421405.7.0.1722421405.0.0.0; _ga=GA1.2.1599116772.1719823591; _gid=GA1.2.696222127.1722421405; _gat_gtag_UA_156449732_1=1",
+        "origin": "https://s5k.cn",
+        "referer": "https://s5k.cn/inner/studio/gradio?backend_url=/api/v1/studio/gally16/Bert-VITS21.x/gradio/&sdk_version=4.8.0&t=1722421391963&studio_token=f6325151-b86a-44d8-ba1d-aa95c485b173",
+        "sec-ch-ua": '"Not)A;Brand";v="99", "Microsoft Edge";v="127", "Chromium";v="127"',
+        "sec-ch-ua-mobile": "?0",
+        "sec-ch-ua-platform": '"Windows"',
+        "sec-fetch-dest": "empty",
+        "sec-fetch-mode": "cors",
+        "sec-fetch-site": "same-origin",
+        "user-agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/127.0.0.0 Safari/537.36 Edg/127.0.0.0",
+        "x-studio-token": "f6325151-b86a-44d8-ba1d-aa95c485b173"
+    }
 
+    # 准备第二个请求的数据
+    data_template = {
+        "data": [text, speaker, 0.2, 0.6, 0.8, 1],
+        "event_data": None,
+        "fn_index": 3,
+        "trigger_id": 37,
+        "dataType": ["textbox", "dropdown", "slider", "slider", "slider", "slider"],
+        "session_hash": "wlev3x7dnvb",
+        "event_id": ""  # 这里将会填入从第一个请求中获取的 event_id
+    }
+
+    # 发起第一个请求
+    with httpx.Client(headers=headers) as client:
+        event_count = 0  # 芝士计数器
+        with client.stream("GET", queue_join_url, params=queue_join_params) as response:
+            for event in response.iter_text():
+                if event:
+                    event_data = json.loads(event.replace("data:","").replace(" ",""))
+                    if event_data.get("msg") == "send_data":
+                        event_id = event_data.get("event_id")
+                        data_template["event_id"] = event_id
+                        response = client.post(queue_data_url, json=data_template, headers=headers)
+                    # 持续监听第一个请求的后续结果
+                    elif event_data.get("msg") == "process_completed":
+                        return f"https://s5k.cn/api/v1/studio/gally16/Bert-VITS21.x/gradio/file={event_data['output']['data'][0]['path']}"
+                    event_count += 1  # 增加计数器
+                    if event_count > 10:  # 检查计数器是否超过阈值
+                        raise Exception("Exceeded 10 events without entering return branch.")
 async def fetch_FishTTS_ModelId(proxy, Authorization, speaker):
     proxies = {
         "http://": proxy,
