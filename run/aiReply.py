@@ -359,7 +359,8 @@ def main(bot, master, logger):
                 await bot.send(event, Voice(path=voiceP))
                 if withText:
                     await bot.send(event, r, True)
-            except:
+            except Exception as e:
+                logger.error(e)
                 logger.error("语音合成失败")
                 await bot.send(event, r, True)
         else:

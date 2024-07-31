@@ -180,7 +180,7 @@ def main(bot, master, logger):
             b1.append(ForwardMessageNode(sender_id=bot.qq, sender_name="Manyana",
                                     message_chain=MessageChain(str1)))
             b1.append(ForwardMessageNode(sender_id=bot.qq, sender_name="Manyana",
-                                         message_chain=MessageChain("bert_vits2可用角色如下：\n" + str(["BT", "塔菲", "阿梓", "otto", "丁真", "星瞳", "东雪莲", "嘉然", "孙笑川", "亚托克斯", "文静", "鹿鸣","奶绿", "七海", "恬豆", "科比"]))))
+                                         message_chain=MessageChain("bert_vits2可用角色如下：\n" + str(modelScope))))
             b1.append(ForwardMessageNode(sender_id=bot.qq, sender_name="Manyana",
                                          message_chain=MessageChain("\n\nFishTTS可用角色请查看https://fish.audio/zh-CN/，均可通过 xx说调用。\n")))
             b1.append(ForwardMessageNode(sender_id=bot.qq, sender_name="Manyana",
