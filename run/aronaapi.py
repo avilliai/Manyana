@@ -12,7 +12,9 @@ from plugins.aronaBa import stageStrategy
 
 def main(bot, logger):
     logger.info("arona loaded")
-
+    with open('config/controller.yaml', 'r', encoding='utf-8') as f:
+        controller = yaml.load(f.read(), Loader=yaml.FullLoader)
+    baMonitor=controller.get("碧蓝档案").get("订阅与推送")
     @bot.on(GroupMessage)
     async def selectMission(event: GroupMessage):
         if str(event.message_chain).startswith("/攻略 "):
@@ -31,7 +33,7 @@ def main(bot, logger):
 
     @bot.on(Startup)
     async def pushAronaData(event: Startup):
-        while True:
+        while baMonitor:
             logger.info("检查arona订阅更新")
             with open("data/aronaSub.yaml", 'r', encoding='utf-8') as f:
                 result9 = yaml.load(f.read(), Loader=yaml.FullLoader)
