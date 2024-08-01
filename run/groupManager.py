@@ -865,13 +865,9 @@ def main(bot, config, moderateKey, logger):
             al = '同意'
             await bot.allow(event)
             await sleep(5)
-            await bot.send_friend_message(event.from_id,
-                                          "你好ヾ(≧▽≦*)o，bot项目地址：https://github.com/avilliai/Manyana\n觉得还不错的话可以点个star哦")
-            await bot.send_friend_message(event.from_id, "群内发送 @" + str(botName) + " 帮助 获取功能列表")
-            await bot.send_friend_message(event.from_id, "本bot用户群" + str(mainGroup))
-            '''if not privateGlmReply and trustglmReply:
-                await bot.send_friend_message(event.from_id,
-                                              "在任意群内累计发送 签到 " + str(trustDays) + "天后将为您开放私聊ai权限")'''
+            await bot.send_friend_message(event.from_id,"你好ヾ(≧▽≦*)o，bot项目地址：https://github.com/avilliai/Manyana\n觉得还不错的话可以点个star哦")
+            await bot.send_friend_message(event.from_id, f"群内发送 @{botName} 帮助 获取功能列表")
+            await bot.send_friend_message(event.from_id, f"本bot用户群{mainGroup}")
         else:
             logger.info("无用户记录，拒绝")
             al = '拒绝'
