@@ -160,12 +160,12 @@ def main(bot, master, logger):
                     voiceP = await tstt(r)
                     await bot.send_group_message(event.subject.id, Voice(path=voiceP))
                     if withText:
-                        await bot.send_group_message(event.subject.id, r, True)
+                        await bot.send_group_message(event.subject.id, r)
                 except:
                     logger.error("语音合成调用失败")
-                    await bot.send_group_message(event.subject.id, r, True)
+                    await bot.send_group_message(event.subject.id, r)
             else:
-                await bot.send_group_message(event.subject.id, r, True)
+                await bot.send_group_message(event.subject.id, r)
 
     # 私聊使用chatGLM,对信任用户或配置了apiKey的用户开启
     @bot.on(FriendMessage)
