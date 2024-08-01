@@ -154,18 +154,18 @@ def main(bot, master, logger):
                 r = await modelReply("指挥", event.from_id, text,chatGLMCharacters.get(event.from_id))
             # 判断模型类型
             else:
-                r = await modelReply("指挥", event.from_id, text)
+                r= await modelReply("指挥", event.from_id, text)
             if len(r) < maxTextLen and random.randint(0, 100) < voiceRate:
                 try:
                     voiceP = await tstt(r)
-                    await bot.send(event, Voice(path=voiceP))
+                    await bot.send_group_message(event.subject.id, Voice(path=voiceP))
                     if withText:
-                        await bot.send(event, r, True)
+                        await bot.send_group_message(event.subject.id, r, True)
                 except:
                     logger.error("语音合成调用失败")
-                    await bot.send(event, r, True)
+                    await bot.send_group_message(event.subject.id, r, True)
             else:
-                await bot.send(event, r, True)
+                await bot.send_group_message(event.subject.id, r, True)
 
     # 私聊使用chatGLM,对信任用户或配置了apiKey的用户开启
     @bot.on(FriendMessage)
