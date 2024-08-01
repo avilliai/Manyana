@@ -155,6 +155,17 @@ def main(bot, master, logger):
             # 判断模型类型
             else:
                 r, t = await modelReply("指挥", event.from_id, text, replyModel, trustUser)
+            if len(r) < maxTextLen and random.randint(0, 100) < voiceRate:
+                try:
+                    voiceP = await tstt(r)
+                    await bot.send(event, Voice(path=voiceP))
+                    if withText:
+                        await bot.send(event, r, True)
+                except:
+                    logger.error("语音合成调用失败")
+                    await bot.send(event, r, True)
+            else:
+                await bot.send(event, r, True)
 
     # 私聊使用chatGLM,对信任用户或配置了apiKey的用户开启
     @bot.on(FriendMessage)
