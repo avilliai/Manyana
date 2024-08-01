@@ -9,6 +9,7 @@ from apscheduler.schedulers.asyncio import AsyncIOScheduler
 from apscheduler.triggers.cron import CronTrigger
 from mirai import GroupMessage
 from mirai import Image
+from mirai.models import MusicShare
 from mirai import Startup, Shutdown
 
 from plugins import weatherQuery
@@ -17,12 +18,17 @@ from plugins.extraParts import steamEpic
 from plugins.newsEveryDay import news, danxianglii, moyu, xingzuo
 from plugins.picGet import picDwn
 from plugins.webScreenShoot import screenshot_to_pdf_and_png
+# from plugins.youtube0 import ASMR_today,get_audio,get_img
 
 
 def main(bot,logger):
     with open('config/api.yaml', 'r', encoding='utf-8') as f:
         result = yaml.load(f.read(), Loader=yaml.FullLoader)
     api_KEY = result.get("weatherXinZhi")
+    proxies = {
+            "http://": proxy,
+            "https://": proxy
+        }
     nasa_api=result.get("nasa_api")
     proxy=result.get("proxy")
     global scheduler
@@ -135,10 +141,6 @@ def main(bot,logger):
                     logger.error("不存在的群" + str(i))
         elif task_name=="astronomy":
             logger.info("获取今日nasa天文信息推送")
-            proxies = {
-                "http://": proxy,
-                "https://": proxy
-            }
             # Replace the key with your own
             dataa = {"api_key": nasa_api}
             logger.info("发起nasa请求")
@@ -207,7 +209,34 @@ def main(bot,logger):
                     await bot.send_group_message(int(i), [task_info.get("text"), Image(path=path)])
                 except:
                     logger.error("不存在的群" + str(i))
-
+        elif task_name=="nightASMR":
+            try:
+                from plugins.youtube0 import ASMR_today,get_audio,get_img
+            except:
+                logger.error("导入失败，请检查youtube0依赖")
+                return
+            logger.info("获取晚安ASMR")
+            athor,title,video_id,length = await ASMR_today(proxies)
+            imgpath = await get_img(video_id, proxies)
+            audiourl = await get_audio(video_id, proxies)
+            logger.info("推送晚安ASMR")
+            st1 = "今日ASMR:"+title+"\n"
+            st1 += "频道："+athor+"\n"
+            st1 += f"时长：{length//60}分{length%60}秒\n"
+            st2 = "======================\n"
+            st2 += task_info.get("text")     
+            for i in groupdata.get("bangumi").get("groups"):
+                try:
+                    await bot.send_group_message(int(i), [st1,Image(path=imgpath),st2])
+                    await bot.send_group_message(int(i), MusicShare(kind="QQMusic", 
+                                                                    title=title, 
+                                                                    summary=athor,
+                                                                    jump_url=f"https://www.amoyshare.com/player/?v={video_id}",
+                                                                    picture_url=f"https://i.ytimg.com/vi/{video_id}/hqdefault.jpg",
+                                                                    music_url=audiourl,
+                                                                    brief='ASMR'))
+                except:
+                    logger.error("不存在的群"+str(i))
     def create_dynamic_jobs():
         for task_name, task_info in scheduledTasks.items():
             if task_info.get('enable'):
@@ -226,7 +255,7 @@ def main(bot,logger):
         if o or head != '/推送' or not cmd:
             return
         cmds = {"摸鱼人日历": "moyu", "每日天文": "astronomy", "每日新闻": "news", "喜加一": "steamadd1",
-                "每日星座": "constellation", "单向历": "danxiangli","bangumi日榜":"bangumi"}
+                "每日星座": "constellation", "单向历": "danxiangli","bangumi日榜":"bangumi","晚安ASMR":"nightASMR"}
         key = cmds.get(cmd, 'unknown')
         if key == 'unknown':
             return
