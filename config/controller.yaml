@@ -67,6 +67,8 @@ scheduledTasks:    #其他定时任务模块的内容会陆续转到这里
   steamadd1:       #免费游戏提示
     text: 杂鱼❤来白嫖游戏了
     time: 12/2
-
-
+  nightASMR:
+    enable: true
+    text: 听完就赶紧睡觉吧~祝你好梦！(≧▽≦*)
+    time: 22/35
 
