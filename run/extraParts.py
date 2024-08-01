@@ -14,6 +14,7 @@ from PIL import Image as Image1
 from mirai import GroupMessage, At, Plain
 from mirai import Image, Voice, Startup, MessageChain
 from mirai.models import ForwardMessageNode, Forward
+from mirai.models import MusicShare
 
 from plugins import weatherQuery
 from plugins.RandomStr import random_str
@@ -27,7 +28,7 @@ from plugins.newsEveryDay import news, moyu, xingzuo, sd, chaijun, danxianglii, 
 from plugins.picGet import pic, setuGet, picDwn
 from plugins.setuModerate import setuModerate
 from plugins.tarot import tarotChoice,genshinDraw, qianCao
-
+# from plugins.youtube0 import ASMR_today,get_audio,get_img
 
 def main(bot, logger):
     # 读取api列表
@@ -38,6 +39,10 @@ def main(bot, logger):
     moderateK = result.get("moderate")
     nasa_api = result.get("nasa_api")
     proxy = result.get("proxy")
+    proxies = {
+        "http": proxy,
+        "https": proxy,
+    }
 
     logger.info("额外的功能 启动完成")
     with open("data/odes.json", encoding="utf-8") as fp:
@@ -707,3 +712,30 @@ def main(bot, logger):
                         str(tod): {"运势": {123: "", 456: ""}, "塔罗": {123: {"text": "hahaha", "path": ",,,"}}}}
                     with open('data/lockLuck.yaml', 'w', encoding="utf-8") as file:
                         yaml.dump(luckList, file, allow_unicode=True)
+    @bot.on(GroupMessage)
+    async def randomASMR(event: GroupMessage):
+        if ("随机奥术" in str(event.message_chain) and At(bot.qq) in event.message_chain) or str(
+                event.message_chain) == "随机奥术":
+            try:
+                from plugins.youtube0 import ASMR_today,get_audio,get_img
+            except:
+                logger.error("导入失败，请检查youtube0依赖")
+                return
+            logger.info("奥术魔刃，启动！")
+            logger.info("获取晚安ASMR")
+            athor,title,video_id,length = await ASMR_today(proxies)
+            imgpath = await get_img(video_id, proxies)
+            audiourl = await get_audio(video_id, proxies)
+
+            logger.info("推送晚安ASMR")
+            st1="今日ASMR:"+title+"\n"
+            st1+="频道："+athor+"\n"
+            st1+=f"时长：{length//60}分{length%60}秒\n"
+            await bot.send(event, [st1,Image(path=imgpath)])
+            await bot.send(event, MusicShare(kind="QQMusic", 
+                                             title=title, 
+                                             summary=athor,
+                                             jump_url=f"https://www.amoyshare.com/player/?v={video_id}",
+                                             picture_url=f"https://i.ytimg.com/vi/{video_id}/hqdefault.jpg",
+                                             music_url=audiourl,
+                                             brief='ASMR'))
