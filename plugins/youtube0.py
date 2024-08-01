@@ -14,20 +14,32 @@ async def ASMR_today(proxies):
     c = Channel(url=f'https://www.youtube.com/{channel}',proxies=proxies)
     athor = c.channel_name
     video_idlist=[]
-    for url in c.video_urls[:10]:
+    for url in c.video_urls:
         video_id=str(url).split('=')[1].replace('>', '')
         video_idlist.append(video_id)
     # video_idlist=list(set(video_idlist)-set(pushed_videos))    #该方法可以去除重复ASMR,但是会导致ASMR顺序不确定
     for pushed_video in pushed_videos:      #去除已推送ASMR
         if pushed_video in video_idlist:
             video_idlist.remove(pushed_video)
-    print(c.video_urls[:10])
-    print(video_idlist)
+
     try:
         video_id=video_idlist[0]    #获取一个最新的未推送ASMR 
     except:
         print(f"{athor}频道没有未推送的ASMR,从投稿中随机选择")    #如果没有未推送的ASMR,从该频道投稿中随机选择
         video_id=random.choice(c.video_urls).split('=')[1].replace('>', '')
+    url='https://www.youtube.com/watch?v='+video_id
+    yt = YouTube(url)
+    title = yt.title
+    length = yt.length
+    pushed_videos.append(url)
+    return athor,title,video_id,length
+
+async def ASMR_random(proxies):
+    global ASMR_channels     #ASMR频道列表
+    channel = random.choice(ASMR_channels)
+    c = Channel(url=f'https://www.youtube.com/{channel}',proxies=proxies)
+    athor = c.channel_name
+    video_id=random.choice(c.video_urls).split('=')[1].replace('>', '') #从该频道投稿中随机选择
     url='https://www.youtube.com/watch?v='+video_id
     yt = YouTube(url)
     title = yt.title
