@@ -151,10 +151,10 @@ def main(bot, master, logger):
             text = random.choice(["戳你一下", "摸摸头", "戳戳你的头", "摸摸~"])
             if event.from_id in chatGLMCharacters:
                 #print(chatGLMCharacters.get(event.target), type(chatGLMCharacters.get(event.target)))
-                r, t = await modelReply("指挥", event.from_id, text,chatGLMCharacters.get(event.from_id))
+                r = await modelReply("指挥", event.from_id, text,chatGLMCharacters.get(event.from_id))
             # 判断模型类型
             else:
-                r, t = await modelReply("指挥", event.from_id, text)
+                r = await modelReply("指挥", event.from_id, text)
             if len(r) < maxTextLen and random.randint(0, 100) < voiceRate:
                 try:
                     voiceP = await tstt(r)
