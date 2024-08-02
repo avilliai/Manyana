@@ -225,7 +225,7 @@ def main(bot,logger):
             st1 += f"时长：{length//60}分{length%60}秒\n"
             st2 = "======================\n"
             st2 += task_info.get("text")     
-            for i in groupdata.get("bangumi").get("groups"):
+            for i in groupdata.get("nightASMR").get("groups"):
                 try:
                     await bot.send_group_message(int(i), [st1,Image(path=imgpath),st2])
                     await bot.send_group_message(int(i), MusicShare(kind="QQMusic", 
