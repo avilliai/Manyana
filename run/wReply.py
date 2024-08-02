@@ -101,8 +101,10 @@ def main(bot,logger):
                 return
         if str(event.message_chain)=="查回复":
             operateProcess[event.sender.id]={"status":"query","operateId":str(event.group.id),"time":datetime.datetime.now()}
+            await sleep(0.1)
         elif str(event.message_chain)=="*查回复":
             operateProcess[event.sender.id]={"status":"query","operateId":"publicLexicon","time":datetime.datetime.now()}
+            await sleep(0.1)
         else:
             return
         logger.info("查询回复目标")
