@@ -250,6 +250,11 @@ def updaat(f=False,jump=False,source=None):
                     if os.path.exists("./temp/conflict " + i):
                         os.remove("./temp/conflict " + i)
                     os.rename("./temp/" + i, "./temp/conflict " + i)
+                elif os.path.exists("data/"+i):
+                    conflict_file_dealter("./temp/"+i,"data/"+i)
+                    if os.path.exists("./temp/conflict " + i):
+                        os.remove("./temp/conflict " + i)
+                    os.rename("./temp/" + i, "./temp/conflict " + i)
                 else:
                     continue
             #shutil.rmtree("./temp")
@@ -296,7 +301,7 @@ def updaat(f=False,jump=False,source=None):
                     continue
             else:
                 os.mkdir("./temp")
-                shutil.copyfile(file, file.replace("config", "temp"))
+                shutil.copyfile(file, file.replace("config", "temp").replace("data","temp"))
                 os.remove(file)
         else:
             os.remove(file)
