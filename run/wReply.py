@@ -100,8 +100,10 @@ def main(bot,logger):
             else:
                 return
         if str(event.message_chain)=="查回复":
+            await sleep(1)
             operateProcess[event.sender.id]={"status":"query","operateId":str(event.group.id),"time":datetime.datetime.now()}
         elif str(event.message_chain)=="*查回复":
+            await sleep(1)
             operateProcess[event.sender.id]={"status":"query","operateId":"publicLexicon","time":datetime.datetime.now()}
         else:
             return
