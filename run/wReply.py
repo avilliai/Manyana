@@ -114,6 +114,7 @@ def main(bot,logger):
         global operateProcess,publicDict
         if event.sender.id in operateProcess:
             if operateProcess[event.sender.id]["status"]=="query":
+                await sleep(1)
                 r = await getRep(publicDict.get(operateProcess[event.sender.id]["operateId"]), str(event.message_chain.json()),threshold=wReply.get("threshold"))
                 b1=[]
                 if r != None:
@@ -127,6 +128,7 @@ def main(bot,logger):
                     await bot.send(event, Forward(node_list=b1))
                     await bot.send(event,f"发送 删除#编号 以删除指定回复\n发送 删除关键字 以删除全部回复")
                     operateProcess[event.sender.id]["status"] = "delete"
+                    await sleep(0.1)
                     operateProcess[event.sender.id]["time"] = datetime.datetime.now()  # 不要忘记刷新时间
                     operateProcess[event.sender.id]["queryKey"] = r[0]
                 else:
