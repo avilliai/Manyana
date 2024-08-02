@@ -111,7 +111,7 @@ def main(bot,logger):
     async def sendQueryResults(event: GroupMessage):
         global operateProcess,publicDict
         if event.sender.id in operateProcess:
-            if str(event.message_chian).endswith("查回复"):
+            if str(event.message_chain).endswith("查回复"):
                 return
             if operateProcess[event.sender.id]["status"]=="query":
                 r = await getRep(publicDict.get(operateProcess[event.sender.id]["operateId"]), str(event.message_chain.json()),threshold=wReply.get("threshold"))
