@@ -18,6 +18,9 @@ from plugins.solveSearch import solve
 
 def main(bot,logger):
     logger.info("steam查询插件启动")
+    with open('config/api.yaml', 'r', encoding='utf-8') as f:
+        result = yaml.load(f.read(), Loader=yaml.FullLoader)
+    proxy = result.get("proxy")
     @bot.on(GroupMessage)
     async def searchGame(event:GroupMessage):
         if(str(event.message_chain).startswith("steam查询")):
@@ -25,6 +28,7 @@ def main(bot,logger):
             try:
                 logger.info(f"查询游戏{keyword}")
                 result_dict = await solve(keyword)
+
                 logger.info(result_dict)
                 text = "游戏："
                 text = text + result_dict['name'] + f"({result_dict['name_cn']})" + "\n游戏id：" + str(result_dict['app_id']) + "\n游戏描述：" + f"{result_dict['description']}\nSteamUrl：" + f"{result_dict['steam_url']}"
