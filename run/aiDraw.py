@@ -58,7 +58,6 @@ def main(bot, logger):
                 # logger.info("success")
             except Exception as e:
                 logger.error(e)
-                logger.error("绘画失败，可能是绘画接口寄了，请检查plugins\aiDrawer.py中url有效")
 
     @bot.on(GroupMessage)
     async def aidrawf1(event: GroupMessage):
