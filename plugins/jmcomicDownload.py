@@ -13,15 +13,28 @@ from plugins.tookits import fileToUrl, lanzouFileToUrl
 class MyDownloader(jmcomic.JmDownloader):
     start = 0
     end = 0
+    album_index = 1
     onlyFirstPhoto = False
     def do_filter(self, detail,start=start,end=end):
         start = self.start
         end = self.end
         if detail.is_album() and self.onlyFirstPhoto:
             album: jmcomic.JmAlbumDetail = detail
-            return [album[0]]
+            if(len(album)<self.album_index):
+                self.album_index = len(album)-1
+            if(self.album_index<1):
+                self.album_index = 1
+            return [album[self.album_index-1]]
         if(detail.is_photo()):
             photo: jmcomic.JmPhotoDetail = detail
+            print(len(photo))
+            if(end>len(photo)):
+                end = len(photo)
+            if(start>len(photo)):
+                start = len(photo)
+            if(start == end):
+                start = 0
+                end = len(photo)
             return photo[start:end]
         return detail
 
@@ -50,7 +63,7 @@ def downloadComic(comic_id,start=1,end=5):
 
     MyDownloader.start = start
     MyDownloader.end = end
-    MyDownloader.onlyFirstPhoto = False
+    MyDownloader.onlyFirstPhoto = True
     jmcomic.JmModuleConfig.CLASS_DOWNLOADER = MyDownloader
 
 
@@ -90,6 +103,11 @@ def downloadALLAndToPdf(comic_id,savePath):
     option = jmcomic.create_option_by_file('config/jmcomic.yml')
     with open("config/jmcomic.yml", 'w', encoding="utf-8") as file:
         yaml.dump(result, file, allow_unicode=True)
+    #这里需要再设置一下类变量，不然本子下载不全
+    MyDownloader.start = 0
+    MyDownloader.end =0
+    MyDownloader.onlyFirstPhoto = True
+    jmcomic.JmModuleConfig.CLASS_DOWNLOADER = MyDownloader
     # 使用option对象来下载本子
     jmcomic.download_album(comic_id, option)
     r=lanzouFileToUrl(f"{savePath}/{comic_id}.pdf")

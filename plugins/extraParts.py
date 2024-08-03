@@ -1,10 +1,10 @@
 # -*- coding: utf-8 -*-
 import json
 import random
-
+from bs4 import BeautifulSoup as bs
 import httpx
 from emoji import is_emoji
-
+import asyncio
 from plugins.RandomStr import random_str
 
 ark = {
