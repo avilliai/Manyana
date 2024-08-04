@@ -100,8 +100,10 @@ def main(bot,logger):
             else:
                 return
         if str(event.message_chain)=="查回复":
+            await sleep(1)
             operateProcess[event.sender.id]={"status":"query","operateId":str(event.group.id),"time":datetime.datetime.now()}
         elif str(event.message_chain)=="*查回复":
+            await sleep(1)
             operateProcess[event.sender.id]={"status":"query","operateId":"publicLexicon","time":datetime.datetime.now()}
         else:
             return
@@ -111,6 +113,8 @@ def main(bot,logger):
     async def sendQueryResults(event: GroupMessage):
         global operateProcess,publicDict
         if event.sender.id in operateProcess:
+            if str(event.message_chain).endswith("查回复"):
+                return
             if operateProcess[event.sender.id]["status"]=="query":
                 r = await getRep(publicDict.get(operateProcess[event.sender.id]["operateId"]), str(event.message_chain.json()),threshold=wReply.get("threshold"))
                 b1=[]
@@ -125,11 +129,13 @@ def main(bot,logger):
                     await bot.send(event, Forward(node_list=b1))
                     await bot.send(event,f"发送 删除#编号 以删除指定回复\n发送 删除关键字 以删除全部回复")
                     operateProcess[event.sender.id]["status"] = "delete"
+                    await sleep(0.1)
                     operateProcess[event.sender.id]["time"] = datetime.datetime.now()  # 不要忘记刷新时间
                     operateProcess[event.sender.id]["queryKey"] = r[0]
                 else:
                     await bot.send(event,"无查询结果",True)
                     operateProcess.pop(event.sender.id)
+                return
             if operateProcess[event.sender.id]["status"]=="delete":
                 if str(event.message_chain).startswith("删除#"):
                     try:
