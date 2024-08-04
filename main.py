@@ -203,7 +203,9 @@ if __name__ == '__main__':
     global notice
     notice = 0
 
-
+    with open('config/settings.yaml', 'r', encoding='utf-8') as f:
+        controller= yaml.load(f.read(), Loader=yaml.FullLoader)
+    FordMesmenu=controller.get("bot自身设置").get("FordMesMenu")
     @bot.on(GroupMessage)
     async def unlockNotice(event: GroupMessage):
         global notice
@@ -250,7 +252,10 @@ if __name__ == '__main__':
 
             s = [Image(path='data/fonts/help1.png'), Image(path='data/fonts/help2.png'),
                  Image(path='data/fonts/help3.png')]
+
             try:
+                if FordMesmenu:
+                    raise Exception #你说得对，我实在懒得加判断了
                 for i in s:
                     b1 = ForwardMessageNode(sender_id=bot.qq, sender_name="Manyana",
                                             message_chain=MessageChain(i))
