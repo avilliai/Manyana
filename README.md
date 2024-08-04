@@ -61,8 +61,7 @@ git clone --depth 1 https://www.gitlink.org.cn/lux-QAQ/Manyana
 ```
 - 双击Manyana/一键部署脚本.bat即可
 - 填写config.json(必做，填写方式见下方)
-- 启动bot
-  - 自行搭建：启动你自己的mirai/overflow，以及Manyana/启动脚本.bat
+
 ```
 Manyana/config.json的填写示例如下。
 {"botName": "机器人名字", "botQQ": "机器人QQ", "master": "你的QQ", "mainGroup": "你自己群的群号","vertify_key": "这里写你http-api的key,尖括号不用带", "port": "httpapi的ws运行端口"}
@@ -70,6 +69,8 @@ Manyana/config.json的填写示例如下。
 {"botName": "Manyana", "botQQ": "1283992481", "master": "1840094972","mainGroup": "623265372", "vertify_key": "1234567890", "port": "23456"}
 ```
 `对于verify_key和port，如果你用了我上面给出的【正确配置】，那就不用动这两项。`
+- 启动bot
+  - 自行搭建：启动你自己的mirai或overflow，以及Manyana/启动脚本.bat
 
 ---
 # 🍩功能
