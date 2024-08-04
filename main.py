@@ -316,6 +316,7 @@ if __name__ == '__main__':
             await bot.send_friend_message(master, time1 + '\n已读取服务群聊:' + str(len(asf.data)) + '个')
             await bot.send_friend_message(master, time1 + '\n已读取有记录用户:' + str(len(userCount)) + '个')
             await bot.send_friend_message(master, time1 + '\n功能已加载完毕，欢迎使用')
+            await sleep1(10)
             await bot.send_friend_message(master, Image(path="data/fonts/master.png"))
         except Exception as e:
             logger.error(e)
