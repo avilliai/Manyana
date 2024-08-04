@@ -288,7 +288,7 @@ async def steamEpic():
             tr = tbody.find_all('tr')
             
             i = 1
-            text = ""
+            text = "\n"
             for tr in tr:
                 td = tr.find_all('td')
                 name = td[1].string.strip().replace('\n', '').replace('\r', '')

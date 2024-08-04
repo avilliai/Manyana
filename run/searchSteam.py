@@ -28,7 +28,9 @@ def main(bot,logger):
             try:
                 logger.info(f"查询游戏{keyword}")
                 result_dict = await solve(keyword)
-
+                if(result_dict is None):
+                    await bot.send(event, "没有找到哦，试试其他名字~")
+                    return
                 logger.info(result_dict)
                 text = "游戏："
                 text = text + result_dict['name'] + f"({result_dict['name_cn']})" + "\n游戏id：" + str(result_dict['app_id']) + "\n游戏描述：" + f"{result_dict['description']}\nSteamUrl：" + f"{result_dict['steam_url']}"

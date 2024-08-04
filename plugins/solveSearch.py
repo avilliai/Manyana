@@ -20,8 +20,8 @@ async def fetch_description(keyword):
             response = await client.get(f'https://baike.baidu.com{redirect_url}', headers=headers)
         html_content = response.text
         
-    logger.info("xxxxxxxxxxx##########")
-    logger.info(response.text)
+    # logger.info("xxxxxxxxxxx##########")
+    # logger.info(response.text)
     match = re.search(r'<meta\s+name="description"\s+content="([^"]*)"', html_content)
     
     return match.group(1) if match else "没找到游戏描述喵~"
@@ -37,7 +37,7 @@ async def get_steam_game_description(game_id,proxy=None):
         "user-agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_14_6) AppleWebKit/537.36 (KHTML, like Gecko) "
                       "Chrome/85.0.4183.121 Safari/537.36",
     }
-    async with httpx.AsyncClient(timeout=100,proxies={"http://": proxy, "https://": proxy} if proxy else None) as client:
+    async with httpx.AsyncClient(timeout=200,proxies={"http://": proxy, "https://": proxy} if proxy else None) as client:
         response = await client.get(url,headers=headers)
         html = response.text
     
@@ -57,7 +57,7 @@ async def get_steam_game_search(keyword,proxy=None):
                       "Chrome/85.0.4183.121 Safari/537.36",
     }
 
-    async with httpx.AsyncClient(timeout=100,proxies={"http://": proxy, "https://": proxy} if proxy else None) as client:
+    async with httpx.AsyncClient(timeout=200,proxies={"http://": proxy, "https://": proxy} if proxy else None) as client:
         response = await client.get(url, headers=headers)
         result = response.json()
 
@@ -72,7 +72,7 @@ async def solve(keyword,proxy=None):
     search_result = await get_steam_game_search(keyword,proxy)
     if search_result:
         img_url = search_result["avatar"]
-        async with httpx.AsyncClient(timeout=100,proxies={"http://": proxy, "https://": proxy} if proxy else None) as client:
+        async with httpx.AsyncClient(timeout=200,proxies={"http://": proxy, "https://": proxy} if proxy else None) as client:
             response = await client.get(img_url)
             img_content = response.content
         image = Image.open(io.BytesIO(img_content))
