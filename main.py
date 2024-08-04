@@ -312,10 +312,13 @@ if __name__ == '__main__':
         # 修改为你bot的名字
         logger.info('botName:' + botName + '     |     master:' + str(master))
         time1 = datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')
-        await bot.send_friend_message(master, time1 + '\n已读取服务群聊:' + str(len(asf.data)) + '个')
-        await bot.send_friend_message(master, time1 + '\n已读取有记录用户:' + str(len(userCount)) + '个')
-        await bot.send_friend_message(master, time1 + '\n功能已加载完毕，欢迎使用')
-        await bot.send_friend_message(master, Image(path="data/fonts/master.png"))
+        try:
+            await bot.send_friend_message(master, time1 + '\n已读取服务群聊:' + str(len(asf.data)) + '个')
+            await bot.send_friend_message(master, time1 + '\n已读取有记录用户:' + str(len(userCount)) + '个')
+            await bot.send_friend_message(master, time1 + '\n功能已加载完毕，欢迎使用')
+            await bot.send_friend_message(master, Image(path="data/fonts/master.png"))
+        except Exception as e:
+            logger.error(e)
 
     logger.info("当前语音合成模式：" + voicegg)
 
