@@ -203,7 +203,7 @@ if __name__ == '__main__':
     global notice
     notice = 0
 
-    with open('config/settings.yaml', 'r', encoding='utf-8') as f:
+    with open('config/controller.yaml', 'r', encoding='utf-8') as f:
         controller= yaml.load(f.read(), Loader=yaml.FullLoader)
     FordMesmenu=controller.get("bot自身设置").get("FordMesMenu")
     @bot.on(GroupMessage)
