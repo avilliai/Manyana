@@ -186,7 +186,7 @@ def main(bot, master, logger):
             b1.append(ForwardMessageNode(sender_id=bot.qq, sender_name="Manyana",
                                          message_chain=MessageChain(f"outVits可用角色如下：\n{outVitsSpeakers}")))
             b1.append(ForwardMessageNode(sender_id=bot.qq, sender_name="Manyana",
-                                         message_chain=MessageChain("可发送 xx说.......  以进行语音合成")))
+                                         message_chain=MessageChain(f"可发送 {prefix}xx说.......  以进行语音合成")))
             await bot.send(event, Forward(node_list=b1))
 
     @bot.on(GroupMessage)
@@ -200,15 +200,6 @@ def main(bot, master, logger):
             r = await sovits({"text": bsf, "speaker": speaker1})
             logger.info("tts 完成")
             await bot.send(event, Voice(path=r))
-
-    '''@bot.on(GroupMessage)
-    async def edgettsHelper(event: GroupMessage):
-        if str(event.message_chain).startswith("/edgetts"):
-            bsf = str(event.message_chain).replace("/edgetts", "")
-            logger.info("edgetts文本推理任务：" + bsf)
-            r = await edgetts({"text": bsf, "speaker": speaker})
-            logger.info("edgetts 完成")
-            await bot.send(event, Voice(path=r))'''
 
     #外部bert_vits2以及Modelscopetts
     @bot.on(GroupMessage)
