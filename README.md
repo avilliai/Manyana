@@ -46,8 +46,8 @@
 ## 方法2：不使用release(不推荐，除非你有丰富bot搭建经验)
 - 请确保py版本为3.9
 - 请确保已安装[mirai-api-http](https://github.com/project-mirai/mirai-api-http) 并[正确配置](https://github.com/avilliai/wReply/blob/master/setting.yml)
-- 强烈推荐使用[release](https://github.com/avilliai/Manyana/releases))的LAUNCHER.rar进行部署，如果你决定使用LAUNCHER.rar，请参考 搭建工具部署 部分，这将省去大量折腾的时间。
-### 如果你仍坚持不使用LAUNCHER
+- 强烈推荐使用[release](https://github.com/avilliai/Manyana/releases))的LAUNCHER_ALL_Requirements.rar进行部署，请参考 搭建工具部署 部分，这将省去大量折腾的时间。
+### 如果你仍坚持不使用一键包
 - 从[release](https://github.com/avilliai/wReply/releases/tag/yirimirai-Bot)下载python39_amd.exe并安装，(**安装python39的第一步一定要先勾选add to path**)
 - 克隆本仓库。找一个你喜欢的目录(**不要带中文**)打开cmd或git bash执行
 ```
@@ -60,7 +60,7 @@ git clone --depth 1 https://github.moeyy.xyz/https://github.com/avilliai/Manyana
 git clone --depth 1 https://www.gitlink.org.cn/lux-QAQ/Manyana
 ```
 - 双击Manyana/一键部署脚本.bat即可
-- 填写config.json(必做)
+- 填写config.json(必做，填写方式见下方)
 - 启动bot
   - 自行搭建：启动你自己的mirai/overflow，以及Manyana/启动脚本.bat
 ```
@@ -69,6 +69,7 @@ Manyana/config.json的填写示例如下。
 下面是一个config.json填写实例，如使用整合包，不要修改后两项
 {"botName": "Manyana", "botQQ": "1283992481", "master": "1840094972","mainGroup": "623265372", "vertify_key": "1234567890", "port": "23456"}
 ```
+`对于verify_key和port，如果你用了我上面给出的【正确配置】，那就不用动这两项。`
 ---
 # 🍩功能
 #### 功能列表
