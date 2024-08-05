@@ -65,8 +65,11 @@ chatGLM:                   #对话模型通用设置
 wReply:
   editPermission: 0        #编辑词库权限所需签到天数，为0则对所有人开放
   replyRate: 80            #词库回复几率
-  threshold: 80            #匹配相似度(0-100)
+  threshold: 80            #匹配相似度(0-100),超过才会发送
   colorfulCharacter: 30    #彩色小人回复的机率，彩色小人替代原有回复
   timeout: 60              #词库操作超时时间（秒）
+  mode: in                 #可选similar(根据句子整体相似度匹配),in(根据关键词＋句子相似度 匹配)
+  inMaxLength: 6           #in模式下，句子最多是关键字的几倍，高于则不匹配,注意是倍数。
+  inWeighting: 50          #in模式下如果包含关键字，则额外加权，该数值最好不要超过threshold
 
 

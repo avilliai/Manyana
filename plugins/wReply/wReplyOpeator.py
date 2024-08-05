@@ -30,12 +30,12 @@ def loadAllDict():
                 result = yaml.load(f.read(), Loader=yaml.FullLoader)
                 GroupsDict[i.replace(".yaml","")]=result
     return GroupsDict
-async def getRep(MainDict,key,threshold=80):
+async def getRep(MainDict,key,threshold=80,mode="similar",inMaxLength=60,inWeighting=50):
     result = await find_most_similar_key_async(
-        MainDict,key,threshold
+        MainDict,key,threshold,mode,inMaxLength,inWeighting
     )
     return result
-async def find_most_similar_key_async(json_data, target_key, threshold):
+async def find_most_similar_key_async(json_data, target_key, threshold,mode,inMaxLength,inWeighting):
     async def match_key(key: str) -> Tuple[str, int]:
         """异步计算目标键与给定键的相似度得分。"""
         try:
@@ -51,7 +51,10 @@ async def find_most_similar_key_async(json_data, target_key, threshold):
         score = 0
 
         key_text = next((item.get('text') for item in key_data if 'text' in item), None)
-        target_text = next((item.get('text') for item in target_data if 'text' in item), None)
+        target_text = next((item.get('text') for item in target_data if 'text' in item), None) #这个是我们传入的关键字
+        if mode=="in" and target_text!=None and key_text!=None:
+            if len(target_text)*inMaxLength<len(key_text):
+                return key, 0
         #print(key_text, target_text)
         addTextScore = False
         addImageScore=False
@@ -71,6 +74,10 @@ async def find_most_similar_key_async(json_data, target_key, threshold):
             # 如果 text 和 image_id 都没有匹配，则对整个键值对进行匹配
             overall_score = await asyncio.to_thread(fuzz.ratio, key, target_key)
             score = overall_score'''
+        if mode == "in" and target_text!=None and key_text!=None:
+            if target_key in key_text and score < threshold:
+                score+=inWeighting
+            print(f"判断包含，加权成功 当前关键字 {target_text} 匹配对象 {key_text} {score} ")
         return key, score
 
     # 使用 asyncio.gather 并发计算所有键的相似度得分

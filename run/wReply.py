@@ -63,7 +63,7 @@ def main(bot,logger):
                 #operateProcess[event.sender.id]["key"] = str(event.message_chain)
                 operateProcess[event.sender.id]["key"]=event.message_chain.json()
                 if operateProcess[event.sender.id]["operateId"] in publicDict:
-                    r = await getRep(publicDict.get(operateProcess[event.sender.id]["operateId"]),event.message_chain.json(),threshold=wReply.get("threshold"))
+                    r = await getRep(publicDict.get(operateProcess[event.sender.id]["operateId"]),event.message_chain.json(),wReply.get("threshold"),wReply.get("mode"),wReply.get("inMaxLength"),wReply.get("inWeighting"))
                     #if str(event.message_chain) in publicDict.get(operateProcess[event.sender.id]["operateId"]):
                         #operateProcess[event.sender.id]["value"]=publicDict.get(operateProcess[event.sender.id]["operateId"]).get(str(event.message_chain))
                     if r!=None:
@@ -116,7 +116,7 @@ def main(bot,logger):
             if str(event.message_chain).endswith("查回复"):
                 return
             if operateProcess[event.sender.id]["status"]=="query":
-                r = await getRep(publicDict.get(operateProcess[event.sender.id]["operateId"]), str(event.message_chain.json()),threshold=wReply.get("threshold"))
+                r = await getRep(publicDict.get(operateProcess[event.sender.id]["operateId"]), str(event.message_chain.json()),wReply.get("threshold"),wReply.get("mode"),wReply.get("inMaxLength"),wReply.get("inWeighting"))
                 b1=[]
                 if r != None:
                     index=0
@@ -167,9 +167,9 @@ def main(bot,logger):
         if random.randint(0,100)>wReply.get("replyRate"):
             return
         if str(event.group.id) in publicDict:
-            r=await getRep(publicDict.get(str(event.group.id)),str(event.message_chain.json()),threshold=wReply.get("threshold"))
+            r=await getRep(publicDict.get(str(event.group.id)),str(event.message_chain.json()),wReply.get("threshold"),wReply.get("mode"),wReply.get("inMaxLength"),wReply.get("inWeighting"))
         else:
-            r = await getRep(publicDict.get("publicLexicon"), str(event.message_chain.json()),threshold=wReply.get("threshold"))
+            r = await getRep(publicDict.get("publicLexicon"), str(event.message_chain.json()),wReply.get("threshold"),wReply.get("mode"),wReply.get("inMaxLength"),wReply.get("inWeighting"))
         if r != None:
             logger.info(f"词库匹配成功")
             if random.randint(0, 100) < wReply.get("colorfulCharacter"):
