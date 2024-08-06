@@ -1,10 +1,10 @@
 # -*- coding: utf-8 -*-
 import json
 import random
-
+from bs4 import BeautifulSoup as bs
 import httpx
 from emoji import is_emoji
-
+import asyncio
 from plugins.RandomStr import random_str
 
 ark = {
@@ -274,20 +274,44 @@ async def hisToday():
 
 
 async def steamEpic():
+    url = 'https://steamstats.cn/en/xi'
+    headers = {'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/90.0.4430.72 Safari/537.36 Edg/90.0.818.41'}
+    
     async with httpx.AsyncClient(timeout=100) as client:
-        data = {"type": "json"}
-        r = await client.get(url2, params=data)
-        #print(str(r.json().get("data")).replace(",","\n"))
-        st = ""
-        for i in r.json().get("data"):
-            st += "名称：" + i.get("name") + "\n"
-            st += "开始时间：" + i.get('starttime') + "\n"
-            st += "结束时间:" + i.get('endtime') + "\n"
-            st += "平台:" + i.get('source') + "\n"
-            st += "链接:" + i.get('url') + "\n"
-            st += "======================\n"
-        #print(st)
-        return st
+        try:
+            response = await client.get(url, headers=headers)
+            
+            response.raise_for_status()
+            
+            soup = bs(response.text, "html.parser")
+            tbody = soup.find('tbody')
+            tr = tbody.find_all('tr')
+            
+            i = 1
+            text = "\n"
+            for tr in tr:
+                td = tr.find_all('td')
+                name = td[1].string.strip().replace('\n', '').replace('\r', '')
+                gametype = td[2].string.replace(" ", "").replace('\n', '').replace('\r', '')
+                start = td[3].string.replace(" ", "").replace('\n', '').replace('\r', '')
+                end = td[4].string.replace(" ", "").replace('\n', '').replace('\r', '')
+                time = td[5].string.replace(" ", "").replace('\n', '').replace('\r', '')
+                oringin = td[6].find('span').string.replace(" ", "").replace('\n', '').replace('\r', '')
+                text += f"序号：{i}\n" \
+                        f"游戏名称：{name}\n" \
+                        f"DLC/game：{gametype}\n" \
+                        f"开始时间：{start}\n" \
+                        f"结束时间：{end}\n" \
+                        f"是否永久：{time}\n" \
+                        f"平台：{oringin}\n"
+                i += 1
+
+        except httpx.HTTPStatusError as e:
+            text = f"HTTP错误: {e}"
+        except Exception as e:
+            text = f"发生错误: {e}"
+
+    return text
 async def arkSign(url):
     url = f"https://api.lolimi.cn/API/ark/a2.php?img={url}"
     async with httpx.AsyncClient(timeout=20) as client:
