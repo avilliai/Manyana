@@ -78,7 +78,7 @@ async def find_most_similar_key_async(json_data, target_key, threshold,mode,inMa
             overall_score = await asyncio.to_thread(fuzz.ratio, key, target_key)
             score = overall_score'''
         if mode == "in" and target_text!=None and key_text!=None:
-            if target_key in key_text and score < threshold:
+            if key_text in target_text and score < threshold:
                 logger.info(f"当前加权值{inWeighting}")
                 score+=inWeighting
             logger.info(f"判断包含，加权成功 当前关键字 {target_text} 匹配对象 {key_text} {score} ")
