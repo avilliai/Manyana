@@ -81,7 +81,7 @@ async def find_most_similar_key_async(json_data, target_key, threshold,mode,inMa
             if key_text in target_text and score < threshold:
                 logger.info(f"当前加权值{inWeighting}")
                 score+=inWeighting
-            logger.info(f"判断包含，加权成功 当前关键字 {target_text} 匹配对象 {key_text} {score} ")
+                logger.info(f"判断包含，加权成功 当前关键字 {target_text} 匹配对象 {key_text} {score} ")
         return key, score
 
     # 使用 asyncio.gather 并发计算所有键的相似度得分
