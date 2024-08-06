@@ -6,6 +6,9 @@ from typing import Dict, List, Tuple, Optional
 import json
 from fuzzywuzzy import fuzz
 
+from plugins.newLogger import newLogger
+
+logger=newLogger()
 async def addRep(key,value,id="publicLexicon"):
     id=f"data/autoReply/lexicon/{id}.yaml"
     if os.path.exists(id):
@@ -30,7 +33,7 @@ def loadAllDict():
                 result = yaml.load(f.read(), Loader=yaml.FullLoader)
                 GroupsDict[i.replace(".yaml","")]=result
     return GroupsDict
-async def getRep(MainDict,key,threshold=80,mode="similar",inMaxLength=60,inWeighting=50):
+async def getRep(MainDict,key,threshold,mode,inMaxLength,inWeighting):
     result = await find_most_similar_key_async(
         MainDict,key,threshold,mode,inMaxLength,inWeighting
     )
@@ -76,8 +79,9 @@ async def find_most_similar_key_async(json_data, target_key, threshold,mode,inMa
             score = overall_score'''
         if mode == "in" and target_text!=None and key_text!=None:
             if target_key in key_text and score < threshold:
+                logger.info(f"当前加权值{inWeighting}")
                 score+=inWeighting
-            print(f"判断包含，加权成功 当前关键字 {target_text} 匹配对象 {key_text} {score} ")
+            logger.info(f"判断包含，加权成功 当前关键字 {target_text} 匹配对象 {key_text} {score} ")
         return key, score
 
     # 使用 asyncio.gather 并发计算所有键的相似度得分
