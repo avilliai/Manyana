@@ -7,6 +7,9 @@ from PIL import Image
 import io
 from mirai import logger
 
+'''
+steam查询相关功能
+'''
 async def fetch_description(keyword):
     url = f'https://baike.baidu.com/item/{keyword}'
     headers = {
@@ -37,7 +40,7 @@ async def get_steam_game_description(game_id,proxy=None):
         "user-agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_14_6) AppleWebKit/537.36 (KHTML, like Gecko) "
                       "Chrome/85.0.4183.121 Safari/537.36",
     }
-    async with httpx.AsyncClient(timeout=200,proxies={"http://": proxy, "https://": proxy} if proxy else None) as client:
+    async with httpx.AsyncClient(timeout=200,verify=False,proxies={"http://": proxy, "https://": proxy} if proxy else None) as client:
         response = await client.get(url,headers=headers)
         html = response.text
     
@@ -72,7 +75,7 @@ async def solve(keyword,proxy=None):
     search_result = await get_steam_game_search(keyword,proxy)
     if search_result:
         img_url = search_result["avatar"]
-        async with httpx.AsyncClient(timeout=200,proxies={"http://": proxy, "https://": proxy} if proxy else None) as client:
+        async with httpx.AsyncClient(timeout=200,proxies={"http://": proxy, "https://": proxy} if proxy else None,verify=False) as client:
             response = await client.get(img_url)
             img_content = response.content
         image = Image.open(io.BytesIO(img_content))

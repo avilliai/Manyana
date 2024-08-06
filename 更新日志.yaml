@@ -342,3 +342,11 @@
   - modelscopeTTS语音合成，通过抓包模拟请求的方式，拓展了更多的可用角色，查看config/modelscopeTTS可用角色.txt，即填即用无需额外配置。
 2024/8/5:
   - 为词库回复增加了 in 模式，即通过关键词加权匹配。在settings.yaml调整相关设置
+2024/8/6:
+  - in模式bug修复，目前基本满足需要。
+  - newLogger函数调整，开发者现在可以在任何需要logger的地方调用它。
+2024/8/7:
+  - 由@Ninethnine pr
+  - steam查询xxx      #如steam查询outer wilds
+  - jm 相关功能修复
+  - 喜加一 指令修复
