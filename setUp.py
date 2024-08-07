@@ -197,7 +197,7 @@ def main():
         print("结束")
 def updaat(f=False,jump=False,source=None):
     if jump==False:
-        logger.warning("更新python库，可以按1跳过，如果更新后启动报错，请回来执行这一步")
+        logger.warning("是否补全依赖？(更新的新功能可能需要执行此步骤)。可以按1跳过，如果更新后启动报错/提示功能无法启用，请回来执行这一步")
         if input("在这里输入:") != "1":
             logger.warning("即将开始更新依赖库，请确保已关闭代理，否则无法安装依赖库")
             input("按任意键继续：")
@@ -261,7 +261,7 @@ def updaat(f=False,jump=False,source=None):
         logger.info("处理冲突文件完成")
         logger.info("旧的冲突文件被保存到了temp文件夹，以防万一你需要它们。")
         logger.info("你可以关闭此窗口了")
-        logger.warning("如果出现启动闪退，重新执行更新脚本，不要跳过 更新python库 环节，执行结束后即可正常启动")
+        logger.warning("如果出现启动闪退，重新执行更新脚本，不要跳过 补全依赖 环节，执行结束后即可正常启动")
         input()
     # 逐行检查错误信息
     for line in stderr.split('\n'):
