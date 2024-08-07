@@ -369,6 +369,12 @@ if __name__ == '__main__':
     aiDraw.main(bot, logger)
     starRail.main(bot, logger)
     bangumi.main(bot,logger)
+    try:
+        from run import youtube
+        youtube.main(bot,logger,proxy)
+    except:
+        logger.error("youtube功能无法启用，请使用更新脚本安装对应依赖")
+        sleep(3)
     #gemini_ai.main(bot,logger,master)
     startVer()
     bot.run(asgi_server=None)
