@@ -203,7 +203,9 @@ if __name__ == '__main__':
     global notice
     notice = 0
 
-
+    with open('config/controller.yaml', 'r', encoding='utf-8') as f:
+        controller= yaml.load(f.read(), Loader=yaml.FullLoader)
+    FordMesmenu=controller.get("bot自身设置").get("FordMesMenu")
     @bot.on(GroupMessage)
     async def unlockNotice(event: GroupMessage):
         global notice
@@ -250,7 +252,10 @@ if __name__ == '__main__':
 
             s = [Image(path='data/fonts/help1.png'), Image(path='data/fonts/help2.png'),
                  Image(path='data/fonts/help3.png')]
+
             try:
+                if FordMesmenu:
+                    raise Exception #你说得对，我实在懒得加判断了
                 for i in s:
                     b1 = ForwardMessageNode(sender_id=bot.qq, sender_name="Manyana",
                                             message_chain=MessageChain(i))
@@ -312,10 +317,14 @@ if __name__ == '__main__':
         # 修改为你bot的名字
         logger.info('botName:' + botName + '     |     master:' + str(master))
         time1 = datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')
-        await bot.send_friend_message(master, time1 + '\n已读取服务群聊:' + str(len(asf.data)) + '个')
-        await bot.send_friend_message(master, time1 + '\n已读取有记录用户:' + str(len(userCount)) + '个')
-        await bot.send_friend_message(master, time1 + '\n功能已加载完毕，欢迎使用')
-        await bot.send_friend_message(master, Image(path="data/fonts/master.png"))
+        try:
+            await bot.send_friend_message(master, time1 + '\n已读取服务群聊:' + str(len(asf.data)) + '个')
+            await bot.send_friend_message(master, time1 + '\n已读取有记录用户:' + str(len(userCount)) + '个')
+            await bot.send_friend_message(master, time1 + '\n功能已加载完毕，欢迎使用')
+            await sleep1(10)
+            await bot.send_friend_message(master, Image(path="data/fonts/master.png"))
+        except Exception as e:
+            logger.error(e)
 
     logger.info("当前语音合成模式：" + voicegg)
 

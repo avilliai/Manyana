@@ -1,5 +1,5 @@
 <div align="center">
-   <img src="https://socialify.git.ci/avilliai/Manyana/image?description=1&descriptionEditable=Based%20on%20Mirai%EF%BC%8CVersatile%EF%BC%8Ceasy%20to%20use&font=Rokkitt&forks=1&issues=1&language=1&logo=https%3A%2F%2Fa1.boltp.com%2F2024%2F07%2F14%2F6693f469ebf5a.webp&name=1&owner=1&pattern=Circuit%20Board&stargazers=1&theme=Light" alt="logo"></br>
+  <img src="https://socialify.git.ci/avilliai/Manyana/image?description=1&descriptionEditable=based%20on%20mirai&font=Inter&forks=1&issues=1&language=1&logo=https%3A%2F%2Fraw.githubusercontent.com%2Favilliai%2FimgBed%2Fmaster%2Fimages%2FwWFSwF6A.png&name=1&owner=1&pattern=Circuit%20Board&stargazers=1&theme=Light" alt="Manyana" /></br>
 </div>
 
 ----
@@ -46,8 +46,8 @@
 ## 方法2：不使用release(不推荐，除非你有丰富bot搭建经验)
 - 请确保py版本为3.9
 - 请确保已安装[mirai-api-http](https://github.com/project-mirai/mirai-api-http) 并[正确配置](https://github.com/avilliai/wReply/blob/master/setting.yml)
-- 强烈推荐使用[release](https://github.com/avilliai/Manyana/releases))的LAUNCHER.rar进行部署，如果你决定使用LAUNCHER.rar，请参考 搭建工具部署 部分，这将省去大量折腾的时间。
-### 如果你仍坚持不使用LAUNCHER
+- 强烈推荐使用[release](https://github.com/avilliai/Manyana/releases))的LAUNCHER_ALL_Requirements.rar进行部署，请参考 搭建工具部署 部分，这将省去大量折腾的时间。
+### 如果你仍坚持不使用一键包
 - 从[release](https://github.com/avilliai/wReply/releases/tag/yirimirai-Bot)下载python39_amd.exe并安装，(**安装python39的第一步一定要先勾选add to path**)
 - 克隆本仓库。找一个你喜欢的目录(**不要带中文**)打开cmd或git bash执行
 ```
@@ -60,15 +60,18 @@ git clone --depth 1 https://github.moeyy.xyz/https://github.com/avilliai/Manyana
 git clone --depth 1 https://www.gitlink.org.cn/lux-QAQ/Manyana
 ```
 - 双击Manyana/一键部署脚本.bat即可
-- 填写config.json(必做)
-- 启动bot
-  - 自行搭建：启动你自己的mirai/overflow，以及Manyana/启动脚本.bat
+- 填写config.json(必做，填写方式见下方)
+
 ```
 Manyana/config.json的填写示例如下。
 {"botName": "机器人名字", "botQQ": "机器人QQ", "master": "你的QQ", "mainGroup": "你自己群的群号","vertify_key": "这里写你http-api的key,尖括号不用带", "port": "httpapi的ws运行端口"}
 下面是一个config.json填写实例，如使用整合包，不要修改后两项
 {"botName": "Manyana", "botQQ": "1283992481", "master": "1840094972","mainGroup": "623265372", "vertify_key": "1234567890", "port": "23456"}
 ```
+`对于verify_key和port，如果你用了我上面给出的【正确配置】，那就不用动这两项。`
+- 启动bot
+  - 自行搭建：启动你自己的mirai或overflow，以及Manyana/启动脚本.bat
+
 ---
 # 🍩功能
 #### 功能列表
@@ -123,6 +126,7 @@ Manyana/config.json的填写示例如下。
 - [Enkianthus_tts](https://github.com/avilliai/Enkianthus_tts) 简单易用的语音合成工具
 - [Petunia](https://github.com/avilliai/Petunia/releases) 轻量版Manyana，无需搭建环境，已打包
 - [Amaranth](https://github.com/avilliai/Amaranth) 欢迎关注我们的新版启动器
+- [Eridanus](https://github.com/avilliai/Eridanus) Manyana直接对接onebot实现的版本，欢迎参与开发
 
 感谢JetBrains提供的开源项目license<br>
 <img src="https://resources.jetbrains.com/storage/products/company/brand/logos/PyCharm_icon.png" alt="PyCharm logo." width="50">

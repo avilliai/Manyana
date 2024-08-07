@@ -63,7 +63,7 @@ def main(bot,logger):
                 #operateProcess[event.sender.id]["key"] = str(event.message_chain)
                 operateProcess[event.sender.id]["key"]=event.message_chain.json()
                 if operateProcess[event.sender.id]["operateId"] in publicDict:
-                    r = await getRep(publicDict.get(operateProcess[event.sender.id]["operateId"]),event.message_chain.json(),threshold=wReply.get("threshold"))
+                    r = await getRep(publicDict.get(operateProcess[event.sender.id]["operateId"]),event.message_chain.json(),wReply.get("threshold"),wReply.get("mode"),wReply.get("inMaxLength"),wReply.get("inWeighting"))
                     #if str(event.message_chain) in publicDict.get(operateProcess[event.sender.id]["operateId"]):
                         #operateProcess[event.sender.id]["value"]=publicDict.get(operateProcess[event.sender.id]["operateId"]).get(str(event.message_chain))
                     if r!=None:
@@ -100,8 +100,10 @@ def main(bot,logger):
             else:
                 return
         if str(event.message_chain)=="查回复":
+            await sleep(1)
             operateProcess[event.sender.id]={"status":"query","operateId":str(event.group.id),"time":datetime.datetime.now()}
         elif str(event.message_chain)=="*查回复":
+            await sleep(1)
             operateProcess[event.sender.id]={"status":"query","operateId":"publicLexicon","time":datetime.datetime.now()}
         else:
             return
@@ -111,8 +113,10 @@ def main(bot,logger):
     async def sendQueryResults(event: GroupMessage):
         global operateProcess,publicDict
         if event.sender.id in operateProcess:
+            if str(event.message_chain).endswith("查回复"):
+                return
             if operateProcess[event.sender.id]["status"]=="query":
-                r = await getRep(publicDict.get(operateProcess[event.sender.id]["operateId"]), str(event.message_chain.json()),threshold=wReply.get("threshold"))
+                r = await getRep(publicDict.get(operateProcess[event.sender.id]["operateId"]), str(event.message_chain.json()),wReply.get("threshold"),wReply.get("mode"),wReply.get("inMaxLength"),wReply.get("inWeighting"))
                 b1=[]
                 if r != None:
                     index=0
@@ -125,11 +129,13 @@ def main(bot,logger):
                     await bot.send(event, Forward(node_list=b1))
                     await bot.send(event,f"发送 删除#编号 以删除指定回复\n发送 删除关键字 以删除全部回复")
                     operateProcess[event.sender.id]["status"] = "delete"
+                    await sleep(0.1)
                     operateProcess[event.sender.id]["time"] = datetime.datetime.now()  # 不要忘记刷新时间
                     operateProcess[event.sender.id]["queryKey"] = r[0]
                 else:
                     await bot.send(event,"无查询结果",True)
                     operateProcess.pop(event.sender.id)
+                return
             if operateProcess[event.sender.id]["status"]=="delete":
                 if str(event.message_chain).startswith("删除#"):
                     try:
@@ -161,9 +167,9 @@ def main(bot,logger):
         if random.randint(0,100)>wReply.get("replyRate"):
             return
         if str(event.group.id) in publicDict:
-            r=await getRep(publicDict.get(str(event.group.id)),str(event.message_chain.json()),threshold=wReply.get("threshold"))
+            r=await getRep(publicDict.get(str(event.group.id)),str(event.message_chain.json()),wReply.get("threshold"),wReply.get("mode"),wReply.get("inMaxLength"),wReply.get("inWeighting"))
         else:
-            r = await getRep(publicDict.get("publicLexicon"), str(event.message_chain.json()),threshold=wReply.get("threshold"))
+            r = await getRep(publicDict.get("publicLexicon"), str(event.message_chain.json()),wReply.get("threshold"),wReply.get("mode"),wReply.get("inMaxLength"),wReply.get("inWeighting"))
         if r != None:
             logger.info(f"词库匹配成功")
             if random.randint(0, 100) < wReply.get("colorfulCharacter"):

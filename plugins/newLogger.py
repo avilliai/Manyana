@@ -3,7 +3,7 @@ import logging
 import colorlog
 
 
-def newLogger():
+def createLogger():
     # 创建一个logger对象
     logger = logging.getLogger("Manayana")
     # 设置日志级别为DEBUG，这样可以输出所有级别的日志
@@ -30,4 +30,7 @@ def newLogger():
     logger.warning('This is a warning message')
     logger.error('This is an error message')
     logger.critical('This is a critical message')'''
+    return logger
+logger=createLogger()
+def newLogger():
     return logger

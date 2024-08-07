@@ -14,7 +14,7 @@
   voicegenerate: modelscopeTTS  #语音合成模式 modelscopeTTS/FishTTS/vits,
   speaker: "东雪莲"              #根据你的合成模式设定角色,modelscopeTTS角色查看config/modelscopeTTS可用角色.txt，FishTTS看https://github.com/avilliai/Manyana/issues/19,FishTTS可填模型id/名称，outVits看https://api.lolimi.cn/doc-api_dxfj.html，vits则无需配置
   voiceLangType: "<zh>"         #默认语音合成语言类型，可选： <zh> <jp> <en>   目前仅在modelscopeTTS和firefly模式下生效,firefly模式下需要与speaker的语言类型匹配
-  prefix: ""                    #语音合成指令前缀，默认为 xx说 ；如果为 "/" 则指令变为 /xx说 ；用以减少误触发
+  prefix: ""                    #语音合成指令前缀，默认为 xx说 ；如果为 "/" 则指令变为 /xx说 ；用以减少误触发。
   #下面的两个配置项，除非你自己额外搭了对应的服务，不然就别动。
   bert_speakers:    #自建bert_vits2语音合成配置，不知道是啥就别动
     - rriri         #如果搭建了，根据bert_vits_sever/characters.yaml填写所有可用的speakers，没自己搭bert_vits2就别动
@@ -26,7 +26,7 @@ moderate:
   selfthreshold: 50  #自我审核阈值
 chatGLM:                   #对话模型通用设置
   aiReplyCore: False  #ai回复核心，为大部分功能启用ai回复，可优化回复表现，目前为测试功能
-  model: random  #ai模型，random(自动选取免费可用模型) |binggpt4(免费无需配置，速度较慢)| 后面几个需要自己配置api.yaml对应变量(括号内为api.yaml对应配置项): 讯飞星火(sparkAI),文心一言(wenxinAI),Gemini(gemini),腾讯元器(腾讯元器),gpt3.5(openai-keys),characterglm(chatGLM)
+  model: random  #ai模型，random(自动选取免费可用模型) |binggpt4(免费无需配置，速度较慢)| 后面几个需要配置api.yaml对应变量(括号内为api.yaml对应配置项，括号前为这里填写的模型名): 讯飞星火(api.yaml的sparkAI),文心一言(api.yaml的wenxinAI),Gemini(api.yaml的gemini),腾讯元器(api.yaml的腾讯元器),gpt3.5(api.yaml的openai-keys),characterglm(chatGLM)
   randomModel&&&Priority:   #random模式下，模型优先使用顺序，确保稳定性,直接进文件里改。
     - Gemma
     - alcex_GPT3_5
@@ -65,8 +65,11 @@ chatGLM:                   #对话模型通用设置
 wReply:
   editPermission: 0        #编辑词库权限所需签到天数，为0则对所有人开放
   replyRate: 80            #词库回复几率
-  threshold: 80            #匹配相似度(0-100)
+  threshold: 80            #匹配相似度(0-100),超过才会发送
   colorfulCharacter: 30    #彩色小人回复的机率，彩色小人替代原有回复
   timeout: 60              #词库操作超时时间（秒）
+  mode: in                 #可选similar(根据句子整体相似度匹配),in(根据关键词＋句子相似度 匹配)
+  inMaxLength: 6           #in模式下，句子最多是关键字的几倍，高于则不匹配,注意是倍数。
+  inWeighting: 50          #in模式下如果包含关键字，则额外加权，该数值最好不要超过threshold
 
 

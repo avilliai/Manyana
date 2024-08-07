@@ -6,16 +6,17 @@ import re
 import copy
 # 注释
 import yaml
-from mirai import logger
+
 
 from plugins.RandomStr import random_str
 from plugins.ReplyModels import gptOfficial, gptUnofficial, kimi, qingyan, lingyi, stepAI, qwen, gptvvvv, grop, \
     gpt4hahaha, anotherGPT35, chatGLM, relolimigpt2, xinghuo, Gemma, binggpt4, alcex_GPT3_5, freeGemini, catRep, \
     momoRep, sparkAI, wenxinAI, YuanQiTencent
 from plugins.googleGemini import geminirep
+from plugins.newLogger import newLogger
 from plugins.translater import translate
 from plugins.vitsGenerate import voiceGenerate, superVG
-
+logger=newLogger()
 with open('config/api.yaml', 'r', encoding='utf-8') as f:
     resulttr = yaml.load(f.read(), Loader=yaml.FullLoader)
 CoziUrl = resulttr.get("cozi")

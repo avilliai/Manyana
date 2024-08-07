@@ -27,6 +27,7 @@ from plugins.jokeMaker import get_joke
 from plugins.newsEveryDay import news, moyu, xingzuo, sd, chaijun, danxianglii, beCrazy
 from plugins.picGet import pic, setuGet, picDwn
 from plugins.setuModerate import setuModerate
+from plugins.solveSearch import solve
 from plugins.tarot import tarotChoice,genshinDraw, qianCao
 # from plugins.youtube0 import ASMR_random,get_audio,get_img
 
@@ -712,6 +713,27 @@ def main(bot, logger):
                         str(tod): {"运势": {123: "", 456: ""}, "塔罗": {123: {"text": "hahaha", "path": ",,,"}}}}
                     with open('data/lockLuck.yaml', 'w', encoding="utf-8") as file:
                         yaml.dump(luckList, file, allow_unicode=True)
+
+    @bot.on(GroupMessage)
+    async def searchGame(event: GroupMessage):
+        if (str(event.message_chain).startswith("steam查询")):
+            keyword = str(event.message_chain).replace("steam查询", "")
+            try:
+                logger.info(f"查询游戏{keyword}")
+                result_dict = await solve(keyword)
+                if (result_dict is None):
+                    await bot.send(event, "没有找到哦，试试其他名字~")
+                    return
+                logger.info(result_dict)
+                text = "游戏："
+                text = text + result_dict['name'] + f"({result_dict['name_cn']})" + "\n游戏id：" + str(result_dict[
+                                                                                                          'app_id']) + "\n游戏描述：" + f"{result_dict['description']}\nSteamUrl：" + f"{result_dict['steam_url']}"
+                await bot.send(event, (Image(path=result_dict['path']), text))
+            except Exception as e:
+                logger.error(e)
+                logger.exception("详细错误如下：")
+                await bot.send(event, "查询失败")
+
     @bot.on(GroupMessage)
     async def randomASMR(event: GroupMessage):
         if ("随机奥术" in str(event.message_chain) and At(bot.qq) in event.message_chain) or str(
