@@ -358,7 +358,7 @@ if __name__ == '__main__':
         from run import youtube
         youtube.main(bot,logger,proxy)
     except:
-        logger.error("youtube功能无法启用，请使用更新脚本/更新bot代码 补全依")
+        logger.error("youtube功能无法启用，请使用更新脚本/更新bot代码 补全依赖")
         sleep(3)
     nudgeReply.main(bot, master, logger, berturl, proxy)  # 戳一戳
     extraParts.main(bot, logger)  # 额外小功能

@@ -41,8 +41,8 @@ def main(bot, logger):
     nasa_api = result.get("nasa_api")
     proxy = result.get("proxy")
     proxies = {
-        "http": proxy,
-        "https": proxy,
+        "http://": proxy,
+        "https://": proxy
     }
 
     logger.info("额外的功能 启动完成")
@@ -736,8 +736,7 @@ def main(bot, logger):
 
     @bot.on(GroupMessage)
     async def randomASMR(event: GroupMessage):
-        if ("随机奥术" in str(event.message_chain) and At(bot.qq) in event.message_chain) or str(
-                event.message_chain) == "随机奥术":
+        if ("随机奥术" in str(event.message_chain) and At(bot.qq) in event.message_chain) or str(event.message_chain) == "随机奥术":
             try:
                 from plugins.youtube0 import ASMR_random,get_audio,get_img
             except:
@@ -745,6 +744,7 @@ def main(bot, logger):
                 return
             logger.info("奥术魔刃，启动！")
             logger.info("获取晚安ASMR")
+            logger.info(proxies)
             athor,title,video_id,length = await ASMR_random(proxies)
             imgpath = await get_img(video_id, proxies)
             audiourl = await get_audio(video_id, proxies)

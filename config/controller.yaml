@@ -39,7 +39,7 @@ b站相关功能:
   直播订阅: True    #同上，b站相关功能现在不多，以后加
 scheduledTasks:    #其他定时任务模块的内容会陆续转到这里
   morning:         #晨间推送
-    enable: False  #向信任用户推送天气信息
+    enable: false  #向信任用户推送天气信息
     text: "早上好，这里是今天的天气"  #如启用aiReplyCore，此项将被ai替代
     time: 8/3      #推送时间
   bangumi:         #bangumi推送
@@ -67,6 +67,7 @@ scheduledTasks:    #其他定时任务模块的内容会陆续转到这里
     text: 早上好杂鱼❤，这里是今天的新闻
     time: 8/2
   steamadd1:       #免费游戏提示
+    enable: true
     text: 杂鱼❤来白嫖游戏了
     time: 12/2
   nightASMR:
