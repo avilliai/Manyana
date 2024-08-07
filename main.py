@@ -352,7 +352,7 @@ if __name__ == '__main__':
         from run import getcomic
         getcomic.main(bot,logger)
     except:
-        logger.error("jmcomic功能无法启用，请使用更新脚本安装对应依赖")
+        logger.error("jmcomic功能无法启用，请使用更新脚本/更新bot代码 补全依赖")
         sleep(3)
     nudgeReply.main(bot, master, logger, berturl, proxy)  # 戳一戳
     extraParts.main(bot, logger)  # 额外小功能
@@ -373,7 +373,7 @@ if __name__ == '__main__':
         from run import youtube
         youtube.main(bot,logger,proxy)
     except:
-        logger.error("youtube功能无法启用，请使用更新脚本安装对应依赖")
+        logger.error("youtube功能无法启用，请使用更新脚本/更新bot代码 补全依")
         sleep(3)
     #gemini_ai.main(bot,logger,master)
     startVer()

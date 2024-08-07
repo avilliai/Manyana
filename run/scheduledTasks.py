@@ -25,12 +25,13 @@ def main(bot,logger):
     with open('config/api.yaml', 'r', encoding='utf-8') as f:
         result = yaml.load(f.read(), Loader=yaml.FullLoader)
     api_KEY = result.get("weatherXinZhi")
+    proxy = result.get("proxy")
     proxies = {
             "http://": proxy,
             "https://": proxy
         }
     nasa_api=result.get("nasa_api")
-    proxy=result.get("proxy")
+
     global scheduler
     scheduler = AsyncIOScheduler()
 
