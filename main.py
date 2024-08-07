@@ -254,7 +254,7 @@ if __name__ == '__main__':
                  Image(path='data/fonts/help3.png')]
 
             try:
-                if FordMesmenu:
+                if not FordMesmenu:
                     raise Exception #你说得对，我实在懒得加判断了
                 for i in s:
                     b1 = ForwardMessageNode(sender_id=bot.qq, sender_name="Manyana",
