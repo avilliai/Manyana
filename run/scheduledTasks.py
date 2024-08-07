@@ -297,6 +297,8 @@ def main(bot,logger):
             key = "danxiangli"
         elif str(event.message_chain)=="/取消 bangumi日榜":
             key="bangumi"
+        elif str(event.message_chain)=="/取消 晚安ASMR":
+            key="nightASMR"
         else:
             if str(event.message_chain) == "/取消 所有订阅":
                 for key in keys:

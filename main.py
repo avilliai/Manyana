@@ -354,6 +354,12 @@ if __name__ == '__main__':
     except:
         logger.error("jmcomic功能无法启用，请使用更新脚本/更新bot代码 补全依赖")
         sleep(3)
+    try:
+        from run import youtube
+        youtube.main(bot,logger,proxy)
+    except:
+        logger.error("youtube功能无法启用，请使用更新脚本/更新bot代码 补全依")
+        sleep(3)
     nudgeReply.main(bot, master, logger, berturl, proxy)  # 戳一戳
     extraParts.main(bot, logger)  # 额外小功能
     wReply.main(bot,logger)
@@ -369,12 +375,7 @@ if __name__ == '__main__':
     aiDraw.main(bot, logger)
     starRail.main(bot, logger)
     bangumi.main(bot,logger)
-    try:
-        from run import youtube
-        youtube.main(bot,logger,proxy)
-    except:
-        logger.error("youtube功能无法启用，请使用更新脚本/更新bot代码 补全依")
-        sleep(3)
+
     #gemini_ai.main(bot,logger,master)
     startVer()
     bot.run(asgi_server=None)
