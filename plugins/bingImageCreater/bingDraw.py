@@ -2,7 +2,7 @@ import os
 
 import httpx
 
-from plugins.RandomStr import random_str
+from plugins.toolkits import random_str
 from plugins.bingImageCreater.bingImg import BingArt
 
 

@@ -9,7 +9,7 @@ import yaml
 from mirai import Mirai, WebSocketAdapter, GroupMessage, Image
 
 from plugins.bingImageCreater.bingDraw import bingCreate
-from plugins.newLogger import newLogger
+from plugins.toolkits import newLogger
 
 
 def main(bot, logger):
