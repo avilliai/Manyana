@@ -8,8 +8,7 @@ import requests
 import websockets
 import yaml
 
-from plugins.RandomStr import random_str
-from plugins.translater import translate
+from plugins.toolkits import translate,random_str
 
 try:
     from plugins.modelsLoader import modelLoader

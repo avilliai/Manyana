@@ -14,8 +14,8 @@ from mirai.models.events import BotInvitedJoinGroupRequestEvent, NewFriendReques
     MemberJoinEvent, MemberMuteEvent, MemberUnmuteEvent, BotUnmuteEvent, BotLeaveEventKick, MemberLeaveEventKick, \
     MemberLeaveEventQuit
 
-from plugins.RandomStr import random_str
-from plugins.imgDownload import get_user_image_url, signPicMaker
+from plugins.toolkits import random_str
+from plugins.SignPicMaker import get_user_image_url, signPicMaker
 from plugins.setuModerate import setuModerate
 from plugins.weatherQuery import querys
 from run.aiReply import CListen

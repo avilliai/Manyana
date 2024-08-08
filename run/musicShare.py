@@ -10,7 +10,7 @@ from mirai import FriendMessage, GroupMessage
 from mirai import Startup, Shutdown
 from mirai.models import MusicShare
 
-from plugins.RandomStr import random_str
+from plugins.toolkits import random_str
 
 
 def main(bot, master, botName, logger):

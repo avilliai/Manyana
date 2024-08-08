@@ -19,9 +19,7 @@ from mirai.models import ForwardMessageNode, Forward
 import yaml
 from mirai import Mirai, WebSocketAdapter, GroupMessage, Image, At, Startup, FriendMessage, Shutdown,MessageChain
 
-from plugins.RandomStr import random_str
-from plugins.newLogger import newLogger
-from plugins.systeminfo import get_system_info
+from plugins.toolkits import newLogger,random_str,get_system_info
 from run import aiReply, voiceReply, nudgeReply, wikiHelper, imgSearch, extraParts, wReply,groupManager, \
     musicShare, LiveMonitor, aronaapi, groupGames, musicpick, scheduledTasks, appCard, aiDraw, starRail,bangumi
 

@@ -5,7 +5,7 @@ import requests
 from PIL import Image
 from PIL import ImageDraw
 from PIL import ImageFont, ImageFilter
-from plugins.RandomStr import random_str
+from plugins.toolkits import random_str
 lucky = [
     "——中吉——\n天上有云飘过的日子，天气令人十分舒畅。\n工作非常顺利，连午睡时也会想到好点子。\n突然发现，与老朋友还有其他的共同话题…\n——每一天，每一天都要积极开朗地度过——",
     "——中吉——\n十年磨一剑，今朝示霜刃。\n恶运已销，身临否极泰来之时。\n苦练多年未能一显身手的才能，\n现今有了大展身手的极好机会。\n若是遇到阻碍之事，亦不必迷惘，\n大胆地拔剑，痛快地战斗一番吧。",

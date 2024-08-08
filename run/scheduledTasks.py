@@ -16,8 +16,7 @@ from plugins import weatherQuery
 from plugins.aiReplyCore import modelReply
 from plugins.extraParts import steamEpic
 from plugins.newsEveryDay import news, danxianglii, moyu, xingzuo
-from plugins.picGet import picDwn
-from plugins.webScreenShoot import screenshot_to_pdf_and_png
+from plugins.toolkits import screenshot_to_pdf_and_png,picDwn
 # from plugins.youtube0 import ASMR_today,get_audio,get_img
 
 

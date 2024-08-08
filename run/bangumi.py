@@ -5,7 +5,7 @@ from asyncio import sleep
 from mirai.models import ForwardMessageNode, Forward
 from mirai import Image, Voice, Startup, MessageChain
 from mirai import GroupMessage
-from plugins.webScreenShoot import screenshot_to_pdf_and_png
+from plugins.toolkits import screenshot_to_pdf_and_png
 from plugins.bangumisearch import bangumisearch, banguimiList
 
 

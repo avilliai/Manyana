@@ -7,14 +7,11 @@ import copy
 # 注释
 import yaml
 
-
-from plugins.RandomStr import random_str
 from plugins.ReplyModels import gptOfficial, gptUnofficial, kimi, qingyan, lingyi, stepAI, qwen, gptvvvv, grop, \
     gpt4hahaha, anotherGPT35, chatGLM, relolimigpt2, xinghuo, Gemma, binggpt4, alcex_GPT3_5, freeGemini, catRep, \
     momoRep, sparkAI, wenxinAI, YuanQiTencent
 from plugins.googleGemini import geminirep
-from plugins.newLogger import newLogger
-from plugins.translater import translate
+from plugins.toolkits import newLogger,random_str,translate
 from plugins.vitsGenerate import voiceGenerate, superVG
 logger=newLogger()
 with open('config/api.yaml', 'r', encoding='utf-8') as f:

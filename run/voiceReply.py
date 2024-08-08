@@ -5,8 +5,7 @@ import yaml
 from mirai import GroupMessage, At, Plain,MessageChain
 from mirai import Voice
 from mirai.models import ForwardMessageNode, Forward
-from plugins.RandomStr import random_str
-from plugins.translater import translate
+from plugins.toolkits import translate,random_str
 from plugins.vitsGenerate import voiceGenerate, superVG, fetch_FishTTS_ModelId, sovits, taffySayTest
 
 

@@ -8,7 +8,7 @@ import io
 import httpx
 from PIL import Image
 
-from plugins.RandomStr import random_str
+from plugins.toolkits import random_str
 
 
 async def SdDraw(prompt, negative_prompt, path, sdurl="http://166.0.199.118:17858"):

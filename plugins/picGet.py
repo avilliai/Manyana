@@ -2,7 +2,7 @@
 
 import requests
 
-from plugins.RandomStr import random_str
+from plugins.toolkits import random_str
 
 '''async def pic():
 
@@ -67,12 +67,7 @@ async def setuGet(data, withPic, grayPic):
         return url, path
 
 
-async def picDwn(url, path):
-    async with httpx.AsyncClient(timeout=20) as client:
-        r = await client.get(url)
-        img = Image.open(BytesIO(r.content))  # 从二进制数据创建图片对象
-        img.save(path)  # 使用PIL库保存图片
-        return path
+
 
 
 if __name__ == '__main__':

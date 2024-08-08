@@ -6,7 +6,7 @@ from typing import Dict, List, Tuple, Optional
 import json
 from fuzzywuzzy import fuzz
 
-from plugins.newLogger import newLogger
+from plugins.toolkits import newLogger
 
 logger=newLogger()
 async def addRep(key,value,id="publicLexicon"):

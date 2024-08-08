@@ -6,10 +6,9 @@ import yaml
 from mirai import GroupMessage
 from mirai import Image, Voice
 
-from plugins.RandomStr import random_str
+from plugins.toolkits import random_str,screenshot_to_pdf_and_png
 from plugins.newsEveryDay import nong
 from plugins.vitsGenerate import voiceGenerate
-from plugins.webScreenShoot import screenshot_to_pdf_and_png
 
 
 def main(bot, logger):

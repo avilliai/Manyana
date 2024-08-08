@@ -5,7 +5,7 @@ from bs4 import BeautifulSoup as bs
 import httpx
 from emoji import is_emoji
 import asyncio
-from plugins.RandomStr import random_str
+from plugins.toolkits import random_str
 
 ark = {
     "方舟种族": [

@@ -9,10 +9,6 @@ import copy
 import google.generativeai as genai
 import httpx
 
-from plugins.RandomStr import random_str
-from plugins.gacha import get_headers
-
-
 #官方sdk的prompt和使用post请求的prompt结构不同，需要进行转换
 def promptConvert(input_list):
     for item in input_list:

@@ -17,7 +17,7 @@ from mirai.models import ForwardMessageNode, Forward
 from mirai.models import MusicShare
 
 from plugins import weatherQuery
-from plugins.RandomStr import random_str
+from plugins.toolkits import random_str,picDwn
 from plugins.aiReplyCore import modelReply
 from plugins.emojimixhandle import emojimix_handle
 from plugins.extraParts import get_cp_mesg, arkOperator
@@ -25,7 +25,7 @@ from plugins.gacha import arkGacha, starRailGacha, bbbgacha
 from plugins.extraParts import hisToday, steamEpic
 from plugins.jokeMaker import get_joke
 from plugins.newsEveryDay import news, moyu, xingzuo, sd, chaijun, danxianglii, beCrazy
-from plugins.picGet import pic, setuGet, picDwn
+from plugins.picGet import pic, setuGet
 from plugins.setuModerate import setuModerate
 from plugins.solveSearch import solve
 from plugins.tarot import tarotChoice,genshinDraw, qianCao

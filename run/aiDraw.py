@@ -6,7 +6,7 @@ import yaml
 from mirai import GroupMessage
 from mirai import Image
 
-from plugins.RandomStr import random_str
+from plugins.toolkits import random_str
 
 from plugins.setuModerate import fileImgModerate
 from plugins.aiDrawer import SdDraw, draw2, airedraw, draw1, draw3, tiktokredraw, draw5, draw4, draw6, modelScopeDrawer
