@@ -6,8 +6,7 @@ import jmcomic
 import yaml
 from jmcomic import *
 
-from plugins.RandomStr import random_str
-from plugins.toolkits import fileToUrl, lanzouFileToUrl
+from plugins.toolkits import fileToUrl, lanzouFileToUrl,random_str
 
 
 class MyDownloader(jmcomic.JmDownloader):
