@@ -20,8 +20,10 @@ import yaml
 from mirai import Mirai, WebSocketAdapter, GroupMessage, Image, At, Startup, FriendMessage, Shutdown,MessageChain
 
 from plugins.toolkits import newLogger,random_str,get_system_info
-from run import aiReply, voiceReply, nudgeReply, wikiHelper, imgSearch, extraParts, wReply,groupManager, \
-    musicShare, LiveMonitor, aronaapi, groupGames, musicpick, scheduledTasks, appCard, aiDraw, starRail,bangumi
+from run import aiReply, voiceReply, nudgeReply, wikiHelper, imgSearch, extraParts, wReply, groupManager, \
+    musicShare, LiveMonitor, aronaapi, groupGames, musicpick, scheduledTasks, appCard, aiDraw, starRail, bangumi, \
+    draftBottle
+
 
 # 为了实现黑名单和群开关功能，我们将继承webSocketAdapter类
 class MyWebSocketAdapter(WebSocketAdapter):
@@ -356,7 +358,7 @@ if __name__ == '__main__':
         from run import youtube
         youtube.main(bot,logger,proxy)
     except:
-        logger.error("youtube功能无法启用，请使用更新脚本/更新bot代码 补全依赖")
+        logger.warning("youtube功能无法启用(测试功能，无需在意)")
         sleep(3)
     nudgeReply.main(bot, master, logger, berturl, proxy)  # 戳一戳
     extraParts.main(bot, logger)  # 额外小功能
@@ -373,6 +375,7 @@ if __name__ == '__main__':
     aiDraw.main(bot, logger)
     starRail.main(bot, logger)
     bangumi.main(bot,logger)
+    draftBottle.main(bot,logger) #芝士漂流瓶
 
     #gemini_ai.main(bot,logger,master)
     startVer()
