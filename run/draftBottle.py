@@ -149,7 +149,7 @@ def main(bot,logger):
                 b1.append(ForwardMessageNode(sender_id=bot.qq, sender_name="Manyana",
                                              message_chain=MessageChain(
                                                  "如有需要，请在3min内\n发送 评论 然后再发送你的评论。恶意评论将被拉黑。\n发送 举报瓶子 以举报当前漂流瓶 报假案会被拉黑")))
-                await bot.send_friend_message(master, Forward(node_list=b1))
+                await bot.send(event, Forward(node_list=b1))
                 if event.sender.id not in operateProcess:
                     operateProcess[event.sender.id]={}
                 operateProcess[event.sender.id]["status"] = "otherOperate"
