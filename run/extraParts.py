@@ -22,7 +22,7 @@ from plugins.aiReplyCore import modelReply
 from plugins.emojimixhandle import emojimix_handle
 from plugins.extraParts import get_cp_mesg, arkOperator
 from plugins.gacha import arkGacha, starRailGacha, bbbgacha
-from plugins.extraParts import hisToday, steamEpic
+from plugins.extraParts import hisToday, steamEpic,search_and_download_image
 from plugins.jokeMaker import get_joke
 from plugins.newsEveryDay import news, moyu, xingzuo, sd, chaijun, danxianglii, beCrazy
 from plugins.picGet import pic, setuGet
@@ -336,6 +336,26 @@ def main(bot, logger):
             path = await news()
             logger.info("成功获取到今日新闻")
             await bot.send(event, Image(path=path))
+    @bot.on(GroupMessage)
+    async def searchpic(event: GroupMessage):
+        text = str(event.message_chain)
+        if "看看" in text:
+            text = text.replace("看看", "")
+        if "搜索" in text:
+            text = text.replace("搜索", "")
+        if "处理" in text:
+            text = text.replace("处理", "")      
+        try:
+            baidupath = await search_and_download_image(text)
+            logger.info("搜索图片开始"+text)
+            await bot.send(event, Image(path=baidupath))
+            os.remove(baidupath)
+            logger.info("--------------------")
+        except:
+            logger.error("搜索图片错误")
+            logger.info("--------------------")
+            #await bot.send_group_message(event.group_id, [Text("获取失败，请检查网络连接"),
+            
 
     @bot.on(GroupMessage)
     async def onedimensionli(event: GroupMessage):
