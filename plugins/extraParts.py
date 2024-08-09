@@ -3,8 +3,14 @@ import json
 import random
 from bs4 import BeautifulSoup as bs
 import httpx
+import os
+from io import BytesIO
+import urllib
+import re
+from PIL import Image
 from emoji import is_emoji
 import asyncio
+from bs4 import BeautifulSoup  # 用于解析 HTML
 from plugins.toolkits import random_str
 
 ark = {
@@ -319,3 +325,125 @@ async def arkSign(url):
     #print(r.text)
     #print(r.text,type(r.json()))
     return str(r.text)
+# 百度图片搜索并下载图片
+async def baidusearch_and_download_image(keyword):
+    headers = {
+        "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/111.0.0.0 Safari/537.36",
+        "Accept": "application/json",
+        "Accept-Language": "zh-CN,zh;q=0.8,zh-TW;q=0.7,zh-HK;q=0.5,en-US;q=0.3,en;q=0.2",
+        "Accept-Encoding": "gzip, deflate",
+        "Connection": "close",
+        "Priority": "u=4",
+        "TE": "Trailers"
+    }
+    search_url = f"https://image.baidu.com/search/acjson?tn=resultjson_com&ipn=rj&word={keyword}"
+    
+    async with httpx.AsyncClient(timeout=20, headers=headers) as client:
+        try:
+            response = await client.get(search_url)
+            response.raise_for_status()
+            data = response.json()
+
+            # 找到第一次出现的thumbURL
+            thumb_url = next((item['thumbURL'] for item in data.get('data', []) if 'thumbURL' in item), None)
+            
+            if not thumb_url:
+                raise ValueError("未找到thumbURL")
+
+            print(f"找到的thumbURL: {thumb_url}")
+
+            # 下载图片
+            image_response = await client.get(thumb_url)
+            image_response.raise_for_status()
+
+            # 保存图片为JPEG格式
+            ranpath = random_str()
+            path = f"data/pictures/cache/{ranpath}.jpg"
+            os.makedirs(os.path.dirname(path), exist_ok=True)
+            
+            img = Image.open(BytesIO(image_response.content))
+            img.save(path, format='JPEG')
+            print(f"图片保存路径: {path}")
+            return path
+        
+        except httpx.HTTPStatusError as e:
+            print(f"HTTP error occurred: {e.response.status_code} {e.response.text}")
+        except Exception as e:
+            print(f"搜索和下载图片失败: {e}")
+        return None
+
+# Bing 图片搜索并下载图片
+async def bingsearch_and_download_image(keyword):
+    headers = {
+        'User-Agent':
+        'Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/50.0.2661.102 UBrowser/6.1.2107.204 Safari/537.36'
+    }
+    url = "https://cn.bing.com/images/async?q={0}&first={1}&count={2}&scenario=ImageBasicHover&datsrc=N_I&layout=ColumnBased&mmasync=1&dgState=c*9_y*2226s2180s2072s2043s2292s2295s2079s2203s2094_i*71_w*198&IG=0D6AD6CBAF43430EA716510A4754C951&SFX={3}&iid=images.5599"
+    
+    async with httpx.AsyncClient(timeout=20, headers=headers) as client:
+        try:
+            search_url = url.format(urllib.parse.quote(keyword), 1, 35, 1)
+            response = await client.get(search_url)
+            response.raise_for_status()
+            html = response.text
+            
+            # 从缩略图列表页中找到原图的url
+            soup = BeautifulSoup(html, "lxml")
+            link_list = soup.find_all("a", class_="iusc")
+            image_url = None
+            rule = re.compile(r"\"murl\"\:\"http\S[^\"]+")
+            for link in link_list:
+                result = re.search(rule, str(link))
+                if result:
+                    image_url = result.group(0).replace('amp;', '')[8:]
+                    break
+            
+            if not image_url:
+                raise ValueError("未找到图片URL")
+            
+            print(f"找到的imageURL: {image_url}")
+
+            # 下载图片
+            image_response = await client.get(image_url)
+            image_response.raise_for_status()
+
+            # 保存图片为JPEG格式
+            ranpath = random_str()
+            path = f"data/pictures/cache/{ranpath}.jpg"
+            os.makedirs(os.path.dirname(path), exist_ok=True)
+            
+            img = Image.open(BytesIO(image_response.content))
+            img.save(path, format='JPEG')
+            print(f"图片保存路径: {path}")
+            return path
+        
+        except httpx.HTTPStatusError as e:
+            print(f"HTTP error occurred: {e.response.status_code} {e.response.text}")
+        except Exception as e:
+            print(f"搜索和下载图片失败: {e}")
+        return None
+
+# 并发请求百度和Bing图片搜索，返回最先成功的图片路径
+async def search_and_download_image(keyword):
+    tasks = [
+        asyncio.create_task(baidusearch_and_download_image(keyword)),
+        asyncio.create_task(bingsearch_and_download_image(keyword))
+    ]
+    done, pending = await asyncio.wait(tasks, return_when=asyncio.FIRST_COMPLETED)
+
+    for task in done:
+        path = task.result()
+        if path:
+            # 取消未完成的任务
+            for task in pending:
+                task.cancel()
+            return path
+
+    # 如果第一个完成的任务返回None，继续等待其他任务完成
+    done, pending = await asyncio.wait(pending, return_when=asyncio.FIRST_COMPLETED)
+    for task in done:
+        path = task.result()
+        if path:
+            return path
+
+    return None
