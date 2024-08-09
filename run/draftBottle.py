@@ -14,6 +14,7 @@ def main(bot,logger):
     with open('config/controller.yaml', 'r', encoding='utf-8') as f:
         controller = yaml.load(f.read(), Loader=yaml.FullLoader)
     draftBottle=controller.get("漂流瓶").get("enable")
+    pushcomments=controller.get("漂流瓶").get("pushcomments")
     if not draftBottle:
         logger.warning("未开启漂流瓶功能")
         return
@@ -111,8 +112,9 @@ def main(bot,logger):
                 bottle["comments"][event.sender.id] = event.message_chain.json()
             sea[operateProcess[event.sender.id]["bottleid"]] = bottle
             try:
-                await bot.send_friend_message(bottle["sender"]["发送者"],"您的漂流瓶获得了一条评论")
-                await bot.send_friend_message(bottle["sender"]["发送者"],json.loads(event.message_chain.json()))
+                if pushcomments:
+                    await bot.send_friend_message(bottle["sender"]["发送者"],"您的漂流瓶获得了一条评论")
+                    await bot.send_friend_message(bottle["sender"]["发送者"],json.loads(event.message_chain.json()))
             except:
                 logger.warning(f"无法向 瓶子所有者{bottle['sender']['发送者']} 推送评论")
             with open("data/text/draftBottleData.yaml", 'w', encoding="utf-8") as file:

@@ -39,6 +39,7 @@ b站相关功能:
   直播订阅: True    #同上，b站相关功能现在不多，以后加
 漂流瓶:
   enable: True    #是否启用漂流瓶功能
+  pushcomments: True #用户的有评论时是否向用户推送通知
   sensor: False   #是否启用审核功能(暂时不可用)
 scheduledTasks:    #其他定时任务模块的内容会陆续转到这里
   morning:         #晨间推送
