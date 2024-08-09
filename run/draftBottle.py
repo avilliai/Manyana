@@ -113,8 +113,23 @@ def main(bot,logger):
             sea[operateProcess[event.sender.id]["bottleid"]] = bottle
             try:
                 if pushcomments:
-                    await bot.send_friend_message(bottle["sender"]["发送者"],"您的漂流瓶获得了一条评论")
+                    await bot.send_friend_message(bottle["sender"]["发送者"],f"您的漂流瓶{operateProcess[event.sender.id]['bottleid']}获得了一条评论")
                     await bot.send_friend_message(bottle["sender"]["发送者"],json.loads(event.message_chain.json()))
+                    bottle = sea[operateProcess[event.sender.id]["bottleid"]]
+                    b1 = []
+                    b1.append(ForwardMessageNode(sender_id=bot.qq, sender_name="Manyana",
+                                                 message_chain=MessageChain([f"编号:{operateProcess[event.sender.id]['bottleid']}\n发送者:{bottle['sender']['昵称']} ({bottle['sender']['发送者']}) \n瓶子内容如下："])))
+                    b1.append(ForwardMessageNode(sender_id=bot.qq, sender_name="Manyana",
+                                                 message_chain=MessageChain(json.loads(bottle["bottle"]))))
+
+                    if "comments" in bottle:
+                        for comment in bottle["comments"]:
+                            b1.append(ForwardMessageNode(sender_id=bot.qq, sender_name="Manyana",
+                                                         message_chain=MessageChain(f"评论者：{comment}")))
+                            b1.append(ForwardMessageNode(sender_id=bot.qq, sender_name="Manyana",
+                                                         message_chain=MessageChain(
+                                                             json.loads(bottle["comments"][comment]))))
+                    await bot.send_friend_message(bottle["sender"]["发送者"], Forward(node_list=b1))
             except:
                 logger.warning(f"无法向 瓶子所有者{bottle['sender']['发送者']} 推送评论")
             with open("data/text/draftBottleData.yaml", 'w', encoding="utf-8") as file:
