@@ -46,12 +46,12 @@ def main(bot, logger):
     }
 
     logger.info("额外的功能 启动完成")
-    with open("data/odes.json", encoding="utf-8") as fp:
+    with open("data/text/odes.json", encoding="utf-8") as fp:
         odes = json.loads(fp.read())
-    with open("data/IChing.json", encoding="utf-8") as fp:
+    with open("data/text/IChing.json", encoding="utf-8") as fp:
         IChing = json.loads(fp.read())
     global data
-    with open('data/nasaTasks.yaml', 'r', encoding='utf-8') as file:
+    with open('data/text/nasaTasks.yaml', 'r', encoding='utf-8') as file:
         data = yaml.load(file, Loader=yaml.FullLoader)
     with open('data/userData.yaml', 'r', encoding='utf-8') as file:
         data1 = yaml.load(file, Loader=yaml.FullLoader)
@@ -426,7 +426,7 @@ def main(bot, logger):
 
                     data[datetime.datetime.now().strftime('%Y-%m-%d')] = temp
 
-                    with open('data/nasaTasks.yaml', 'w', encoding="utf-8") as file:
+                    with open('data/text/nasaTasks.yaml', 'w', encoding="utf-8") as file:
                         yaml.dump(data, file, allow_unicode=True)
 
                     await bot.send(event, (Image(path=filename), txt))

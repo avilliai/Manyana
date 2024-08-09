@@ -14,7 +14,7 @@ from plugins.vitsGenerate import voiceGenerate
 def main(bot, logger):
     logger.info("blueArchive")
     global punishing
-    with open('data/Punishing.yaml', 'r', encoding='utf-8') as f:
+    with open('data/text/Punishing.yaml', 'r', encoding='utf-8') as f:
         punishing = yaml.load(f.read(), Loader=yaml.FullLoader)
     global newResult
     with open('data/blueArchive/character.yaml', 'r', encoding='utf-8') as f:
@@ -67,7 +67,7 @@ def main(bot, logger):
                         punishing[i] = data1
                         logger.info("写入文件")
                         # logger.info(newResult)
-                        with open('data/Punishing.yaml', 'w', encoding="utf-8") as file:
+                        with open('data/text/Punishing.yaml', 'w', encoding="utf-8") as file:
                             yaml.dump(punishing, file, allow_unicode=True)
 
                         logger.info("发送成功")

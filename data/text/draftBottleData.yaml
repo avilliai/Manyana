@@ -1,0 +1,17 @@
+2187248:
+  bottle: '[{"type": "Source", "id": -2147301010, "time": "1970-01-20T22:39:55+00:00"},
+    {"type": "Image", "image_id": "https://multimedia.nt.qq.com.cn/download?appid=1407&fileid=CgoxODQwMDk0OTcyEhSmBS1jVUFRYZWbCzSEajsbFPqBcBj8ogsg_woovNfmncznhwNQgL2jAQ&spec=0&rkey=CAESKBkcro_MGujobyvUw4fgz165DAvX3VyQtzVRBcfWoC_juRmr50oxyAc",
+    "url": "https://multimedia.nt.qq.com.cn/download?appid=1407&fileid=CgoxODQwMDk0OTcyEhSmBS1jVUFRYZWbCzSEajsbFPqBcBj8ogsg_woovNfmncznhwNQgL2jAQ&spec=0&rkey=CAESKBkcro_MGujobyvUw4fgz165DAvX3VyQtzVRBcfWoC_juRmr50oxyAc",
+    "path": null, "base64": null, "height": 0, "imageType": "UNKNOWN", "size": 0,
+    "width": 0, "isEmoji": false}]'
+  comments:
+    1840094972: '[{"type": "Source", "id": -2147300822, "time": "1970-01-20T22:39:56+00:00"},
+      {"type": "Image", "image_id": "https://multimedia.nt.qq.com.cn/download?appid=1407&fileid=CgoxODQwMDk0OTcyEhT5bfqgB_xYld_UseCW86duit2LDRjE9xYg_woo06iQ8M7nhwNQgL2jAQ&spec=0&rkey=CAESKBkcro_MGujobyvUw4fgz165DAvX3VyQtzVRBcfWoC_juRmr50oxyAc",
+      "url": "https://multimedia.nt.qq.com.cn/download?appid=1407&fileid=CgoxODQwMDk0OTcyEhT5bfqgB_xYld_UseCW86duit2LDRjE9xYg_woo06iQ8M7nhwNQgL2jAQ&spec=0&rkey=CAESKBkcro_MGujobyvUw4fgz165DAvX3VyQtzVRBcfWoC_juRmr50oxyAc",
+      "path": null, "base64": null, "size": 0, "height": 0, "isEmoji": false, "imageType":
+      "UNKNOWN", "width": 0}]'
+  sender:
+    发送者: 1840094972
+    昵称: s
+  status: throw
+  time: 2024-08-09 17:28:18.309827
