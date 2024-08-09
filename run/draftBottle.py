@@ -117,8 +117,6 @@ def main(bot,logger):
     @bot.on(GroupMessage)
     async def query(event: GroupMessage):
         global sea,operateProcess
-        if event.sender.id in operateProcess:
-            return
         if str(event.message_chain).startswith("查瓶子"):
             try:
                 btid=int(str(event.message_chain).replace("查瓶子",""))
