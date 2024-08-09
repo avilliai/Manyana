@@ -339,22 +339,19 @@ def main(bot, logger):
     @bot.on(GroupMessage)
     async def searchpic(event: GroupMessage):
         text = str(event.message_chain)
-        if "看看" in text:
-            text = text.replace("看看", "")
-        if "搜索" in text:
-            text = text.replace("搜索", "")
-        if "处理" in text:
-            text = text.replace("处理", "")      
-        try:
-            baidupath = await search_and_download_image(text)
-            logger.info("搜索图片开始"+text)
-            await bot.send(event, Image(path=baidupath))
-            os.remove(baidupath)
-            logger.info("--------------------")
-        except:
-            logger.error("搜索图片错误")
-            logger.info("--------------------")
-            #await bot.send_group_message(event.group_id, [Text("获取失败，请检查网络连接"),
+        if str(event.message_chain).startswith("看看") or str(event.message_chain).startswith("搜索"):
+            text = text.replace("看看", "").replace("搜索", "")
+
+            try:
+                baidupath = await search_and_download_image(text)
+                logger.info("搜索图片开始"+text)
+                await bot.send(event, Image(path=baidupath))
+                os.remove(baidupath)
+                logger.info("--------------------")
+            except:
+                logger.error("搜索图片错误")
+                logger.info("--------------------")
+                #await bot.send_group_message(event.group_id, [Text("获取失败，请检查网络连接"),
             
 
     @bot.on(GroupMessage)
