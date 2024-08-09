@@ -26,9 +26,6 @@ def main(bot,logger):
     async def startThrowBottle(event: GroupMessage):
         global sea, operateProcess
         if str(event.message_chain)=="扔瓶子" or (At(bot.qq) in event.message_chain and str(event.message_chain).replace(f"@{bot.qq}","")=="扔瓶子"):
-            if event.sender.id in operateProcess:
-                await bot.send(event,"当前扔瓶子任务进行中，请发送要扔出的内容")
-                return
             logger.info("扔瓶子 任务已加入队列")
             await bot.send(event,"请发送要扔出的内容。\n如发送违禁内容将被bot永久拉黑")
             operateProcess[event.sender.id]={"time":datetime.datetime.now(),"status":"throw"}
