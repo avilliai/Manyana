@@ -84,6 +84,7 @@ Manyana/config.json的填写示例如下。
    <img width="70%" height="70%" src="data/fonts/help1.png" alt="logo"></br>
    <img width="70%" height="70%" src="data/fonts/help2.png" alt="logo"></br>
    <img width="70%" height="70%" src="data/fonts/help3.png" alt="logo"></br>
+   <img width="70%" height="70%" src="data/fonts/help4.png" alt="logo"></br>
    <img width="70%" height="70%" src="data/fonts/master.png" alt="logo"></br>
 </div>
 

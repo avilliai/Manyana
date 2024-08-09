@@ -251,7 +251,7 @@ if __name__ == '__main__':
             cmList=[]
 
             s = [Image(path='data/fonts/help1.png'), Image(path='data/fonts/help2.png'),
-                 Image(path='data/fonts/help3.png')]
+                 Image(path='data/fonts/help3.png'),Image(path="data/fonts/help4.png")]
 
             try:
                 if not FordMesmenu:
