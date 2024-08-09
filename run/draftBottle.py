@@ -49,22 +49,7 @@ def main(bot,logger):
         if str(event.message_chain)=="捡瓶子" or (At(bot.qq) in event.message_chain and str(event.message_chain).replace(f"@{bot.qq}","")=="捡瓶子"):
             btid=random.choice(list(sea.keys()))
             logger.info(f"捡瓶子 {btid}")
-            bottle=sea[btid]
-            b1 = []
-            b1.append(ForwardMessageNode(sender_id=bot.qq, sender_name="Manyana",
-                                         message_chain=MessageChain([f"编号:{btid}\n发送者:{bottle['sender']['昵称']} ({bottle['sender']['发送者']})\n瓶子内容如下："])))
-            b1.append(ForwardMessageNode(sender_id=bot.qq, sender_name="Manyana",
-                                         message_chain=MessageChain(json.loads(bottle["bottle"]))))
-
-            if "comments" in bottle:
-                for comment in bottle["comments"]:
-                    b1.append(ForwardMessageNode(sender_id=bot.qq, sender_name="Manyana",
-                                                 message_chain=MessageChain(f"评论者：{comment}")))
-                    b1.append(ForwardMessageNode(sender_id=bot.qq, sender_name="Manyana",
-                                                 message_chain=MessageChain(json.loads(bottle["comments"][comment]))))
-            b1.append(ForwardMessageNode(sender_id=bot.qq, sender_name="Manyana",
-                                         message_chain=MessageChain(
-                                             "如有需要，请在3min内\n发送 评论 然后再发送你的评论。恶意评论将被拉黑。\n发送 举报瓶子 以举报当前漂流瓶 报假案会被拉黑")))
+            b1=await constructFordMes(btid)
             await bot.send(event, Forward(node_list=b1))
             if event.sender.id not in operateProcess:
                 operateProcess[event.sender.id]={}
@@ -83,20 +68,7 @@ def main(bot,logger):
             elif str(event.message_chain)=="举报瓶子":
                 logger.info("漂流瓶举报....向master发送请求中")
                 await bot.send(event,"已向管理员转达")
-                bottle = sea[operateProcess[event.sender.id]["bottleid"]]
-                b1 = []
-                b1.append(ForwardMessageNode(sender_id=bot.qq, sender_name="Manyana",
-                                             message_chain=MessageChain([f"编号:{operateProcess[event.sender.id]['bottleid']}\n发送者:{bottle['sender']['昵称']} ({bottle['sender']['发送者']}) \n瓶子内容如下："])))
-                b1.append(ForwardMessageNode(sender_id=bot.qq, sender_name="Manyana",
-                                             message_chain=MessageChain(json.loads(bottle["bottle"]))))
-
-                if "comments" in bottle:
-                    for comment in bottle["comments"]:
-                        b1.append(ForwardMessageNode(sender_id=bot.qq, sender_name="Manyana",
-                                                     message_chain=MessageChain(f"评论者：{comment}")))
-                        b1.append(ForwardMessageNode(sender_id=bot.qq, sender_name="Manyana",
-                                                     message_chain=MessageChain(
-                                                         json.loads(bottle["comments"][comment]))))
+                b1=await constructFordMes(operateProcess[event.sender.id]["bottleid"])
                 await bot.send_friend_message(master,Forward(node_list=b1))
                 await bot.send_friend_message(master,f"来自 {event.sender.member_name}({event.sender.id})的举报，请检查上述漂流瓶是否存在违规内容")
 
@@ -113,22 +85,9 @@ def main(bot,logger):
             sea[operateProcess[event.sender.id]["bottleid"]] = bottle
             try:
                 if pushcomments:
-                    await bot.send_friend_message(bottle["sender"]["发送者"],f"您的漂流瓶{operateProcess[event.sender.id]['bottleid']}获得了一条评论")
+                    await bot.send_friend_message(bottle["sender"]["发送者"],f"您的漂流瓶{operateProcess[event.sender.id]['bottleid']}获得了一条评论\n来源:{event.sender.member_name}({event.sender.id}) ")
                     await bot.send_friend_message(bottle["sender"]["发送者"],json.loads(event.message_chain.json()))
-                    bottle = sea[operateProcess[event.sender.id]["bottleid"]]
-                    b1 = []
-                    b1.append(ForwardMessageNode(sender_id=bot.qq, sender_name="Manyana",
-                                                 message_chain=MessageChain([f"编号:{operateProcess[event.sender.id]['bottleid']}\n发送者:{bottle['sender']['昵称']} ({bottle['sender']['发送者']}) \n瓶子内容如下："])))
-                    b1.append(ForwardMessageNode(sender_id=bot.qq, sender_name="Manyana",
-                                                 message_chain=MessageChain(json.loads(bottle["bottle"]))))
-
-                    if "comments" in bottle:
-                        for comment in bottle["comments"]:
-                            b1.append(ForwardMessageNode(sender_id=bot.qq, sender_name="Manyana",
-                                                         message_chain=MessageChain(f"评论者：{comment}")))
-                            b1.append(ForwardMessageNode(sender_id=bot.qq, sender_name="Manyana",
-                                                         message_chain=MessageChain(
-                                                             json.loads(bottle["comments"][comment]))))
+                    b1=await constructFordMes(operateProcess[event.sender.id]["bottleid"])
                     await bot.send_friend_message(bottle["sender"]["发送者"], Forward(node_list=b1))
             except:
                 logger.warning(f"无法向 瓶子所有者{bottle['sender']['发送者']} 推送评论")
@@ -147,24 +106,8 @@ def main(bot,logger):
                 return
             if btid in sea:
                 logger.info(f"查询漂流瓶 {btid}")
-                bottle=sea[btid]
-                b1 = []
-                b1.append(ForwardMessageNode(sender_id=bot.qq, sender_name="Manyana",
-                                             message_chain=MessageChain([f"编号:{btid}\n发送者:{bottle['sender']['昵称']} ({bottle['sender']['发送者']}) \n瓶子内容如下："])))
-                b1.append(ForwardMessageNode(sender_id=bot.qq, sender_name="Manyana",
-                                             message_chain=MessageChain(json.loads(bottle["bottle"]))))
-
-                if "comments" in bottle:
-                    for comment in bottle["comments"]:
-                        b1.append(ForwardMessageNode(sender_id=bot.qq, sender_name="Manyana",
-                                                     message_chain=MessageChain(f"评论者：{comment}")))
-                        b1.append(ForwardMessageNode(sender_id=bot.qq, sender_name="Manyana",
-                                                     message_chain=MessageChain(
-                                                         json.loads(bottle["comments"][comment]))))
-                b1.append(ForwardMessageNode(sender_id=bot.qq, sender_name="Manyana",
-                                             message_chain=MessageChain(
-                                                 "如有需要，请在3min内\n发送 评论 然后再发送你的评论。恶意评论将被拉黑。\n发送 举报瓶子 以举报当前漂流瓶 报假案会被拉黑")))
-                await bot.send(event, Forward(node_list=b1))
+                fomes=await constructFordMes(btid)
+                await bot.send(event, Forward(node_list=fomes))
                 if event.sender.id not in operateProcess:
                     operateProcess[event.sender.id]={}
                 operateProcess[event.sender.id]["status"] = "otherOperate"
@@ -208,3 +151,23 @@ def main(bot,logger):
             data.pop(key, None)
             logger.info(f"漂流瓶操作超时释出：{key}")
         return data
+    async def constructFordMes(bid):
+        global operateProcess,sea
+        bottle = sea[bid]
+        b1 = []
+        b1.append(ForwardMessageNode(sender_id=bot.qq, sender_name="Manyana",
+                                     message_chain=MessageChain([f"编号:{bid}\n发送者:{bottle['sender']['昵称']} ({bottle['sender']['发送者']}) \n瓶子内容如下："])))
+        b1.append(ForwardMessageNode(sender_id=bot.qq, sender_name="Manyana",
+                                     message_chain=MessageChain(json.loads(bottle["bottle"]))))
+
+        if "comments" in bottle:
+            for comment in bottle["comments"]:
+                b1.append(ForwardMessageNode(sender_id=bot.qq, sender_name="Manyana",
+                                             message_chain=MessageChain(f"评论者：{comment}")))
+                b1.append(ForwardMessageNode(sender_id=bot.qq, sender_name="Manyana",
+                                             message_chain=MessageChain(
+                                                 json.loads(bottle["comments"][comment]))))
+        b1.append(ForwardMessageNode(sender_id=bot.qq, sender_name="Manyana",
+                                     message_chain=MessageChain(
+                                         "如有需要，请在3min内\n发送 评论 然后再发送你的评论。恶意评论将被拉黑。\n发送 举报瓶子 以举报当前漂流瓶 报假案会被拉黑")))
+        return b1
