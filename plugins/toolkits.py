@@ -10,10 +10,11 @@ import httpx
 import colorlog
 from io import BytesIO
 from PIL import Image
-from lanzou.api import LanZouCloud
+
 with open('config/api.yaml', 'r', encoding='utf-8') as f:
     apiYaml = yaml.load(f.read(), Loader=yaml.FullLoader)
 try:
+    from lanzou.api import LanZouCloud
     lzy = LanZouCloud()
     cookie = {'ylogin': str(apiYaml.get("蓝奏云").get("ylogin")), 'phpdisk_info': apiYaml.get("蓝奏云").get("phpdisk_info")}
     code=lzy.login_by_cookie(cookie)
