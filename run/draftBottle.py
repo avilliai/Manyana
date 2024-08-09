@@ -17,6 +17,7 @@ def main(bot,logger):
     if not draftBottle:
         logger.warning("未开启漂流瓶功能")
         return
+    logger.info("漂流瓶 enabled")
     global sea, operateProcess
     operateProcess={}
     with open('data/text/draftBottleData.yaml', 'r', encoding='utf-8') as f:
