@@ -347,10 +347,8 @@ def main(bot, logger):
                 logger.info("搜索图片开始"+text)
                 await bot.send(event, Image(path=baidupath))
                 os.remove(baidupath)
-                logger.info("--------------------")
             except:
                 logger.error("搜索图片错误")
-                logger.info("--------------------")
                 #await bot.send_group_message(event.group_id, [Text("获取失败，请检查网络连接"),
             
 
