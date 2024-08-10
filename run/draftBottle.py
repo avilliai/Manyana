@@ -118,7 +118,7 @@ def main(bot,logger):
         elif str(event.message_chain).startswith("删瓶子"):
 
             try:
-                btid=int(str(event.message_chain).replace("查瓶子",""))
+                btid=int(str(event.message_chain).replace("删瓶子",""))
                 logger.info(f"删除漂流瓶 {btid}")
             except:
                 logger.error("漂流瓶：不合法的删除值")
