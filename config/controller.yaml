@@ -26,6 +26,7 @@ ai绘画:
   grayPic: True             #图片转灰度图，降低被吞几率
   withPic: True            #是否展示图片预览，不建议开，容易被吞
   InternetMeme: False       #是否启用网络Meme（英文meme）
+  watchPrefix: "/"          #“看看”指令的前缀
 运势&塔罗:
   lockLuck: false           #是否锁定运势等功能的结果
 JMComic:            #禁漫相关功能设置

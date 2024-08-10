@@ -70,6 +70,7 @@ def main(bot, logger):
     r18 = controllerResult.get("图片相关").get("r18Pic")
     onlyTrustUserR18 = controllerResult.get("图片相关").get("onlyTrustUserR18")
     withPic = controllerResult.get("图片相关").get("withPic")
+    watchPrefix=controllerResult.get("图片相关").get("watchPrefix")
     grayPic = controllerResult.get("图片相关").get("grayPic")
     allowPic = controllerResult.get("图片相关").get("allowPic")
     selfsensor = result1.get("moderate").get("selfsensor")
@@ -338,9 +339,9 @@ def main(bot, logger):
             await bot.send(event, Image(path=path))
     @bot.on(GroupMessage)
     async def searchpic(event: GroupMessage):
-        text = str(event.message_chain)
-        if str(event.message_chain).startswith("看看") or str(event.message_chain).startswith("搜索"):
-            text = text.replace("看看", "").replace("搜索", "")
+        if str(event.message_chain).startswith(f"{watchPrefix}看看") or str(event.message_chain).startswith(f"{watchPrefix}搜索"):
+            text = str(event.message_chain)
+            text = text.replace(f"{watchPrefix}看看", "").replace(f"{watchPrefix}搜索", "")
 
             try:
                 baidupath = await search_and_download_image(text)
