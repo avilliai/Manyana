@@ -381,7 +381,7 @@ async def minecraftSeverQuery(ip):
         description = soup.find('meta', attrs={'name': 'description'}).get('content')
         og_title = soup.find('meta', property='og:title').get('content')
         favicon = soup.find('meta', property='og:image').get('content')
-        return "http:"+str(favicon),og_title,description
+        return "https:"+str(favicon),og_title,description
 # Bing 图片搜索并下载图片
 async def bingsearch_and_download_image(keyword):
     headers = {

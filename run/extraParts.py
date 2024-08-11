@@ -717,9 +717,10 @@ def main(bot, logger):
     async def tarotToday(event: GroupMessage):
         if str(event.message_chain).startswith("查在线"):
             try:
-                ip=str(event.message_chain).replace("查在线")
+                ip=str(event.message_chain).replace("查在线","")
                 logger.info(f"查mc服务器{ip}")
                 a,b,c=await minecraftSeverQuery(ip)
+                print(a,b,c)
                 await bot.send(event, [Image(url=a),b,c],True)
             except Exception as e:
                 logger.error(e)
