@@ -30,6 +30,7 @@ openai_model = resulttr.get("openaiSettings").get("openai-model")
 #代理
 proxy = resulttr.get("proxy")
 GeminiRevProxy = resulttr.get("GeminiRevProxy")
+geminimodel=resulttr.get("geminimodel")
 #讯飞星火模型配置
 sparkAppKey=resulttr.get("sparkAI").get("apiKey")
 sparkAppSecret=resulttr.get("sparkAI").get("apiSecret")
@@ -255,7 +256,7 @@ async def modelReply(senderName, senderId, text, modelHere=modelDefault, trustUs
                 return "模型不可用，请更换模型。"
         elif modelHere == "Gemini":
             r = await geminirep(ak=random.choice(geminiapikey), messages=prompt1, bot_info=bot_in,
-                                GeminiRevProxy=GeminiRevProxy, imgurls=imgurls),
+                                GeminiRevProxy=GeminiRevProxy, model=geminimodel,imgurls=imgurls),
             # print(r,type(r))
             rep = {"role": "assistant", "content": r[0].replace(r"\n", "\n")}
         elif modelHere=="sparkAI" or modelHere=="讯飞星火":

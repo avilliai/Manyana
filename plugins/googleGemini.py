@@ -97,7 +97,7 @@ async def GeminiDownloadAllImagesAndSetPrompts(imgurls, rev=False):
                     pass
                     #print(f"Failed to download and process image from {i} after 3 attempts")
     return imgresults
-async def geminirep(ak, messages, bot_info, GeminiRevProxy="",imgurls=None):
+async def geminirep(ak, messages, bot_info, GeminiRevProxy="",model="gemini-1.5-flash",imgurls=None):
     messages_copy = copy.deepcopy(messages)
 
     # 在副本上进行操作
@@ -113,7 +113,7 @@ async def geminirep(ak, messages, bot_info, GeminiRevProxy="",imgurls=None):
         imgPromptResults=await GeminiDownloadAllImagesAndSetPrompts(imgurls,rev)
     if GeminiRevProxy == "" or GeminiRevProxy == " ":
         # Or use `os.getenv('GOOGLE_API_KEY')` to fetch an environment variable.
-        model1 = "gemini-1.5-flash"
+        model1 = model
 
         GOOGLE_API_KEY = ak
 
@@ -148,13 +148,13 @@ async def geminirep(ak, messages, bot_info, GeminiRevProxy="",imgurls=None):
         if imgurls != None:
             for vb in imgPromptResults:
                 messages_copy[-1]['parts'].append(vb)
-        r = await geminiCFProxy(ak, messages_copy, GeminiRevProxy)
+        r = await geminiCFProxy(ak, messages_copy, GeminiRevProxy,model)
         r = r.rstrip()
     return r
 
 
-async def geminiCFProxy(ak, messages, proxyUrl):
-    url = f"{proxyUrl}/v1beta/models/gemini-1.5-flash:generateContent?key={ak}"
+async def geminiCFProxy(ak, messages, proxyUrl,model):
+    url = f"{proxyUrl}/v1beta/models/{model}:generateContent?key={ak}"
     #print(requests.get(url,verify=False))
     async with httpx.AsyncClient(timeout=100) as client:
         r = await client.post(url, json={"contents": messages, "safetySettings": [
