@@ -20,7 +20,7 @@ from plugins import weatherQuery
 from plugins.toolkits import random_str,picDwn
 from plugins.aiReplyCore import modelReply
 from plugins.emojimixhandle import emojimix_handle
-from plugins.extraParts import get_cp_mesg, arkOperator
+from plugins.extraParts import get_cp_mesg, arkOperator, minecraftSeverQuery
 from plugins.gacha import arkGacha, starRailGacha, bbbgacha
 from plugins.extraParts import hisToday, steamEpic,search_and_download_image
 from plugins.jokeMaker import get_joke
@@ -712,6 +712,18 @@ def main(bot, logger):
             logger.info("彩色小人，启动！")
             c = random.choice(colorfulCharacterList)
             await bot.send(event, Image(path="data/colorfulAnimeCharacter/" + c))
+
+    @bot.on(GroupMessage)
+    async def tarotToday(event: GroupMessage):
+        if str(event.message_chain).startswith("查在线"):
+            try:
+                ip=str(event.message_chain).replace("查在线")
+                logger.info(f"查mc服务器{ip}")
+                a,b,c=await minecraftSeverQuery(ip)
+                await bot.send(event, [Image(url=a),b,c],True)
+            except:
+                logger.error("mc服务器查询失败")
+                await bot.send(event, "查询失败，请检查网络连接",True)
 
     @bot.on(Startup)
     async def updateData(event: Startup):

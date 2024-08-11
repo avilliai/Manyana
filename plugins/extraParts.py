@@ -11,7 +11,7 @@ from PIL import Image
 from emoji import is_emoji
 import asyncio
 from bs4 import BeautifulSoup  # 用于解析 HTML
-from plugins.toolkits import random_str
+from plugins.toolkits import random_str, get_headers
 
 ark = {
     "方舟种族": [
@@ -371,7 +371,17 @@ async def baidusearch_and_download_image(keyword):
         except Exception as e:
             print(f"搜索和下载图片失败: {e}")
         return None
+#mc服务器查询
+async def minecraftSeverQuery(ip):
+    async with httpx.AsyncClient(headers=get_headers(),timeout=20) as client:
+        r=await client.get(f"https://list.mczfw.cn/?ip={ip}")
 
+        soup = BeautifulSoup(r.text, 'html.parser')
+        # 找到 class 为 "form" 的第一个 <tr> 标签
+        description = soup.find('meta', attrs={'name': 'description'}).get('content')
+        og_title = soup.find('meta', property='og:title').get('content')
+        favicon = soup.find('meta', property='og:image').get('content')
+        return "http:"+str(favicon),og_title,description
 # Bing 图片搜索并下载图片
 async def bingsearch_and_download_image(keyword):
     headers = {
