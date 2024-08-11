@@ -368,7 +368,11 @@ if __name__ == '__main__':
     musicShare.main(bot, master, botName, logger)
     LiveMonitor.main(bot,  logger)
     aronaapi.main(bot, logger)
-    scheduledTasks.main(bot, logger)
+    try:
+        scheduledTasks.main(bot, logger)
+    except Exception as e:
+        logger.error(e)
+        logger.error("致命错误！定时功能无法启用，请检查设备时区")
     groupGames.main(bot, logger)
     musicpick.main(bot, logger)
     appCard.main(bot, logger)
