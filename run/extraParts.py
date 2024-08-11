@@ -721,7 +721,8 @@ def main(bot, logger):
                 logger.info(f"查mc服务器{ip}")
                 a,b,c=await minecraftSeverQuery(ip)
                 await bot.send(event, [Image(url=a),b,c],True)
-            except:
+            except Exception as e:
+                logger.error(e)
                 logger.error("mc服务器查询失败")
                 await bot.send(event, "查询失败，请检查网络连接",True)
 
