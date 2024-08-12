@@ -1,6 +1,6 @@
 #单独功能开关
 bot自身设置:
-  FordMesMenu: True #是否以聊天记录形式发送菜单
+  FordMesMenu: false #是否以聊天记录形式发送菜单
 ai绘画:
   接口1: false    #大概是跑路了
   接口2: false    #日常寄
