@@ -63,6 +63,7 @@ chatGLM:                   #对话模型通用设置
     腾讯元器: "Eridanus"    #在腾讯元器平台创建，这里的值随意,对bot设定是无效的
 #词库设置
 wReply:
+  golbalLexiconRequire: 0  #编辑全局词库所需签到天数，为0则对所有人开放。
   editPermission: 0        #编辑词库权限所需签到天数，为0则对所有人开放
   replyRate: 80            #词库回复几率
   threshold: 80            #匹配相似度(0-100),超过才会发送
