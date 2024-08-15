@@ -1,3 +1,5 @@
+import asyncio
+
 import httpx
 import requests
 
@@ -17,11 +19,11 @@ async def newCloudMusic(musicname):
 async def newCloudMusicDown(musicid, downloadMusicUrl=False):
     path = 'data/music/musicCache/' + str(musicid) + '.mp3'
 
-    newR = f"https://dataiqs.com/api/netease/music/?type=songid&id={musicid}"
+    newR = f"https://api.bducds.com/api/music.163/?id={musicid}"
     async with httpx.AsyncClient(timeout=None, headers=get_headers()) as client:
         r2 = await client.get(newR)
         # print(r.json()["song_url"])
-    waf = requests.get(r2.json()["song_url"], timeout=20).content
+    waf = requests.get(r2.json()["data"][0]["url"], timeout=20).content
     with open(path, "wb") as f:
         f.write(waf)
     if downloadMusicUrl:
@@ -30,24 +32,6 @@ async def newCloudMusicDown(musicid, downloadMusicUrl=False):
         return path
 
 
-'''import os, pilk
-from pydub import AudioSegment
-
-async def convert_to_silk(media_path: str) -> str:
-    """将输入的媒体文件转出为 silk, 并返回silk路径"""
-    media = AudioSegment.from_file(media_path)
-    pcm_path = os.path.basename(media_path)
-    rrr=media_path.replace(pcm_path,"")
-    #print(rrr)
-    pcm_path = os.path.splitext(pcm_path)[0]
-    silk_path = rrr+pcm_path + '.silk'
-    pcm_path += '.pcm'
-    pcm_path=rrr+pcm_path
-    print(silk_path,pcm_path)
-    media.export(pcm_path, 's16le', parameters=['-ar', str(media.frame_rate), '-ac', '1']).close()
-    pilk.encode(pcm_path, silk_path, pcm_rate=media.frame_rate, tencent=True)
-
-    return silk_path'''
 
 
 async def cccdddm(musicname):
@@ -85,6 +69,4 @@ async def musicDown(id, name):
         f.write(waf)
     return path
 
-#r=asyncio.run(cccdddm("しゃろう superstar"))
-#print(r)
 # musicDown("http://music.163.com/song/media/outer/url?id=1940303073.mp3")
