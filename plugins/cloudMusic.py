@@ -27,7 +27,7 @@ async def newCloudMusicDown(musicid, downloadMusicUrl=False):
     with open(path, "wb") as f:
         f.write(waf)
     if downloadMusicUrl:
-        return path, r2.json()["song_url"]
+        return path, r2.json()["data"][0]["url"]
     else:
         return path
 
