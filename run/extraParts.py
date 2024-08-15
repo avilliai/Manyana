@@ -296,7 +296,7 @@ def main(bot, logger):
 
     @bot.on(GroupMessage)
     async def historyToday(event: GroupMessage):
-        pattern = r".*史.*今.*|.*今.*史.*"
+        pattern = r".*历史.*今天.*|.*今天.*历史.*"
         string = str(event.message_chain)
         match = re.search(pattern, string)
         if match:

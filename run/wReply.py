@@ -46,6 +46,12 @@ def main(bot,logger):
             await sleep(0.1)
             operateProcess[event.sender.id]={"status":"startadd","time":datetime.datetime.now(),"operateId":str(event.group.id)}
         elif str(event.message_chain)=="*开始添加":
+            if wReply.get("golbalLexiconRequire")!=0:   #权限限制，为0则为开放授权
+                if str(event.sender.id) in userdict:
+                    if int(userdict.get(str(event.sender.id)).get('sts'))<wReply.get("golbalLexiconRequire"):
+                        return
+                else:
+                    return
             await bot.send(event,"此操作将为所有群添加回复")
             await sleep(0.1)
             operateProcess[event.sender.id] = {"status": "startadd", "time": datetime.datetime.now(),"operateId":"publicLexicon"}
