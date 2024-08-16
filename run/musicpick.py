@@ -85,6 +85,7 @@ def main(bot, logger):
                         order = int(str(event.message_chain))
                     except:
                         await bot.send(event, "点歌失败！不规范的操作\n请输入数字。")
+                        musicTask.pop(event.sender.id)
                         return
                     if order < 1:
                         order = 1
