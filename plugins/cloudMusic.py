@@ -60,10 +60,9 @@ async def newCloudMusicDown(musicid, downloadMusicUrl=False):
             r2 = await client.get(url)
             # print(r2.json()[0]["url"])
             waf = await client.get(r2.json()[0]["url"])
-            waf = await client.get(waf.headers.get("location"))
-            print(waf)
+            wbf = await client.get(waf.headers.get("location"))
             with open(path, "wb") as f:
-                f.write(waf.content)
+                f.write(wbf.content)
             if downloadMusicUrl:
                 return path, waf.headers.get("location")
             else:
