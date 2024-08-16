@@ -20,6 +20,9 @@ from plugins.wReply.wReplyOpeator import addRep, loadAllDict, getRep
 
 def main(bot,logger):
     logger.info("启动自定义词库")
+    with open('config.json', 'r', encoding='utf-8') as f:
+        configYaml = yaml.load(f.read(), Loader=yaml.FullLoader)
+        master=configYaml.get("master")
     with open('config/settings.yaml', 'r', encoding='utf-8') as f:
         result = yaml.load(f.read(), Loader=yaml.FullLoader)
     wReply=result.get("wReply")
@@ -45,6 +48,9 @@ def main(bot,logger):
         if str(event.message_chain)=="开始添加":
             await sleep(0.1)
             operateProcess[event.sender.id]={"status":"startadd","time":datetime.datetime.now(),"operateId":str(event.group.id)}
+        elif str(event.message_chain).startswith("群词库添加") and event.sender.id==int(master):
+            await sleep(0.1)
+            operateProcess[event.sender.id]={"status":"startadd","time":datetime.datetime.now(),"operateId":str(event.message_chain).replace("群词库添加","")}
         elif str(event.message_chain)=="*开始添加":
             if wReply.get("golbalLexiconRequire")!=0:   #权限限制，为0则为开放授权
                 if str(event.sender.id) in userdict:
