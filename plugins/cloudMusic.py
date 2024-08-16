@@ -17,20 +17,27 @@ async def newCloudMusic(musicname):
 
 
 async def newCloudMusicDown(musicid, downloadMusicUrl=False):
-    path = 'data/music/musicCache/' + str(musicid) + '.mp3'
+    path = f'data/music/musicCache/{musicid}.mp3'
 
-    newR = f"https://api.bducds.com/api/music.163/?id={musicid}"
-    async with httpx.AsyncClient(timeout=None, headers=get_headers()) as client:
-        r2 = await client.get(newR)
-        # print(r.json()["song_url"])
-    waf = requests.get(r2.json()["data"][0]["url"], timeout=20).content
+    url = "https://api.toubiec.cn/api/music_v1.php"
+    headers = {
+        "referer": "https://api.toubiec.cn/wyapi.html",
+        "Origin": "https://api.toubiec.cn",
+        "Token": "49985bad586de8a12e00cb964674a319",
+        'User-Agent': "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/127.0.0.0 Safari/537.36 Edg/127.0.0.0"
+    }
+    data = {"url": f"https://music.163.com/#/song?id={musicid}", "level": "exhigh", "type": "song",
+            "token": "49985bad586de8a12e00cb964674a319"}
+
+    async with httpx.AsyncClient() as client:
+        r2 = await client.post(url, headers=headers, json=data)
+    waf = requests.get(r2.json()["url_info"]["url"], timeout=20).content
     with open(path, "wb") as f:
         f.write(waf)
     if downloadMusicUrl:
-        return path, r2.json()["data"][0]["url"]
+        return path, r2.json()["url_info"]["url"]
     else:
         return path
-
 
 
 
@@ -68,5 +75,5 @@ async def musicDown(id, name):
     with open(path, "wb") as f:
         f.write(waf)
     return path
-
+#asyncio.run(1940303073)
 # musicDown("http://music.163.com/song/media/outer/url?id=1940303073.mp3")
