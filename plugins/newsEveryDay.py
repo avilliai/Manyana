@@ -11,7 +11,7 @@ from plugins.toolkits import random_str, get_headers
 
 
 async def news():
-    url = "https://api.52vmy.cn/api/wl/60s"
+    url = "https://api.jun.la/60s.php?format=image"
     time = datetime.datetime.now().strftime('%Y_%m_%d')
     #path="./news.png"
     path = "data/pictures/cache/" + time + "news.png"
@@ -71,7 +71,7 @@ async def danxianglii():
 
 async def moyu():
     headers = get_headers()
-    url = "https://api.52vmy.cn/api/wl/moyu"
+    url = "https://api.vvhan.com/api/moyu"
     time = datetime.datetime.now().strftime('%Y_%m_%d')
     path = "data/pictures/cache/" + time + "moyu.png"
     #path="moyu.png"
