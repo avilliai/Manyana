@@ -733,7 +733,7 @@ def main(bot, logger):
                 text = str(event.message_chain).replace("语法分析", "")
                 logger.info(f"语法分析{text}")
                 p = await eganylist(text,proxy)
-                await bot.send(event, Image(url=p), True)
+                await bot.send(event, Image(path=p), True)
             except Exception as e:
                 logger.error(e)
                 logger.error("语法分析结果查询失败")
