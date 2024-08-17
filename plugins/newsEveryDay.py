@@ -14,24 +14,13 @@ async def news():
     url = "https://api.jun.la/60s.php?format=image"
     time = datetime.datetime.now().strftime('%Y_%m_%d')
     #path="./news.png"
-    path = "data/pictures/cache/" + time + "news.png"
+    p = "data/pictures/cache/" + time + "news.png"
 
-    #r=requests.get(url).content
-    #with open("./news.png","wb") as fp:
-    #fp.write(r)
-    #return
-    #async with httpx.AsyncClient(timeout=20) as client:
-    #r = await client.get(url)
-    #url=r.json().get("tp1")
-    #print(url)
-    #return url
-    #print(r.json().get("data").get("image")) # 从二进制数据创建图片对象
     async with httpx.AsyncClient(timeout=200, headers=get_headers()) as client:
         r = await client.get(url)
-        img = Image.open(BytesIO(r.content))  # 从二进制数据创建图片对象
-        img.save(path)  # 使用PIL库保存图片
-        #print(path)
-        return path
+        with open(p, "wb") as f:
+            f.write(r.content)
+        return p
 
 
 async def chaijun():
@@ -73,15 +62,14 @@ async def moyu():
     headers = get_headers()
     url = "https://api.vvhan.com/api/moyu"
     time = datetime.datetime.now().strftime('%Y_%m_%d')
-    path = "data/pictures/cache/" + time + "moyu.png"
+    p = "data/pictures/cache/" + time + "moyu.png"
     #path="moyu.png"
 
     async with httpx.AsyncClient(timeout=30, headers=headers) as client:
         r = await client.get(url)
-        img = Image.open(BytesIO(r.content))  # 从二进制数据创建图片对象
-        img.save(path)  # 使用PIL库保存图片
-        #print(path)
-        return path
+        with open(p, "wb") as f:
+            f.write(r.content)
+        return p
 
 
 async def xingzuo():

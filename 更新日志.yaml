@@ -366,3 +366,6 @@
   - 修复 点歌 功能异常
 2024/8/16:
   - 修复 点歌 功能异常。一直在反馈的点歌“bug”实际上只是先前的解析接口拿不到30s试听，为了30s试听增加两个解析源，确实挺不错的。
+2024/8/17:
+  - 新指令
+  - 语法分析{英文句子} #如语法分析this and other similar cases raise the question of whether there is still a line between the court and politics.

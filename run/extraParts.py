@@ -20,7 +20,7 @@ from plugins import weatherQuery
 from plugins.toolkits import random_str,picDwn
 from plugins.aiReplyCore import modelReply
 from plugins.emojimixhandle import emojimix_handle
-from plugins.extraParts import get_cp_mesg, arkOperator, minecraftSeverQuery
+from plugins.extraParts import get_cp_mesg, arkOperator, minecraftSeverQuery, eganylist
 from plugins.gacha import arkGacha, starRailGacha, bbbgacha
 from plugins.extraParts import hisToday, steamEpic,search_and_download_image
 from plugins.jokeMaker import get_joke
@@ -725,6 +725,19 @@ def main(bot, logger):
                 logger.error(e)
                 logger.error("mc服务器查询失败")
                 await bot.send(event, "查询失败，请检查网络连接",True)
+
+    @bot.on(GroupMessage)
+    async def tarotToday(event: GroupMessage):
+        if str(event.message_chain).startswith("语法分析"):
+            try:
+                text = str(event.message_chain).replace("语法分析", "")
+                logger.info(f"语法分析{text}")
+                p = await eganylist(text,proxy)
+                await bot.send(event, Image(url=p), True)
+            except Exception as e:
+                logger.error(e)
+                logger.error("语法分析结果查询失败")
+                await bot.send(event, "查询失败，请检查网络连接", True)
 
     @bot.on(Startup)
     async def updateData(event: Startup):

@@ -457,3 +457,18 @@ async def search_and_download_image(keyword):
             return path
 
     return None
+#英语语法分析
+async def eganylist(text,proxy):
+    proxies=None
+    if proxy!="" or proxy!=" ":
+        proxies = {
+            "http://": proxy,
+            "https://": proxy
+        }
+    URL = f"https://api.aipie.cool/api/ega/analysis/img?text={text}"
+    async with httpx.AsyncClient(timeout=20,proxies=proxies) as client:
+        r = await client.get(URL)
+        p = "data/pictures/cache/" + random_str() + '.png'
+        with open(p, "wb") as f:
+            f.write(r.content)
+        return p
