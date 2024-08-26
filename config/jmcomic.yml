@@ -12,3 +12,9 @@ download:
     image: 3
   # photo: 同时下载的章节数，不配置默认是cpu的线程数。例如8核16线程的cpu → 16.
     photo: 1
+client:
+  domain:
+    api:
+      - www.jmapiproxyxxx.one
+      - www.jmeadpoolcdn.one
+      - www.jmeadpoolcdn.life
