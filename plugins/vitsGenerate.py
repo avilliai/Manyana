@@ -562,9 +562,9 @@ async def superVG(data, mode, urls="", langmode="<zh>"):
 #modelscopeTTS v2，对接崩铁语音合成器
 async def modelscopeV2(speaker,text):
     # 第一个请求的URL和参数
-    queue_join_url = "https://s5k.cn/api/v1/studio/gally16/Bert-VITS21.x/gradio/queue/join"
+    queue_join_url = "https://s5k.cn/api/v1/studio/MuGeminorum/hoyoTTS/gradio/queue/join"
     queue_join_params = {
-        "backend_url": "/api/v1/studio/gally16/Bert-VITS21.x/gradio/",
+        "backend_url": "/api/v1/studio/MuGeminorum/hoyoTTS/gradio/",
         "sdk_version": "4.8.0",
         "t": "1722421391963",
         "studio_token": "f6325151-b86a-44d8-ba1d-aa95c485b173",
@@ -573,7 +573,7 @@ async def modelscopeV2(speaker,text):
     }
 
     # 第二个请求的URL和headers
-    queue_data_url = "https://s5k.cn/api/v1/studio/gally16/Bert-VITS21.x/gradio/queue/data"
+    queue_data_url = "https://s5k.cn/api/v1/studio/MuGeminorum/hoyoTTS/gradio/queue/data"
     headers = {
         "accept": "*/*",
         "accept-encoding": "gzip, deflate, br, zstd",
@@ -582,7 +582,7 @@ async def modelscopeV2(speaker,text):
         "content-type": "application/json",
         "cookie": "_xsrf=2|6f60a475|a5b476579343255f3f4497ee1f7f3c4e|1722420837; _ga_R1FN4KJKJH=GS1.1.1722421405.7.0.1722421405.0.0.0; _ga=GA1.2.1599116772.1719823591; _gid=GA1.2.696222127.1722421405; _gat_gtag_UA_156449732_1=1",
         "origin": "https://s5k.cn",
-        "referer": "https://s5k.cn/inner/studio/gradio?backend_url=/api/v1/studio/gally16/Bert-VITS21.x/gradio/&sdk_version=4.8.0&t=1722421391963&studio_token=f6325151-b86a-44d8-ba1d-aa95c485b173",
+        "referer": "https://s5k.cn/inner/studio/gradio?backend_url=/api/v1/studio/MuGeminorum/hoyoTTS/gradio/&sdk_version=4.8.0&t=1722421391963&studio_token=f6325151-b86a-44d8-ba1d-aa95c485b173",
         "sec-ch-ua": '"Not)A;Brand";v="99", "Microsoft Edge";v="127", "Chromium";v="127"',
         "sec-ch-ua-mobile": "?0",
         "sec-ch-ua-platform": '"Windows"',
@@ -618,7 +618,7 @@ async def modelscopeV2(speaker,text):
                     # 持续监听第一个请求的后续结果
                     elif event_data.get("msg") == "process_completed":
                         p="./test.wav"
-                        newurl=f"https://s5k.cn/api/v1/studio/gally16/Bert-VITS21.x/gradio/file={event_data['output']['data'][0]['path']}"
+                        newurl=f"https://s5k.cn/api/v1/studio/MuGeminorum/hoyoTTS/gradio/file={event_data['output']['data'][0]['path']}"
                         async with httpx.AsyncClient(timeout=200, headers=headers) as client:
                             r = await client.get(newurl)
                             with open(p, "wb") as f:
