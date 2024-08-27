@@ -134,8 +134,8 @@ async def superVG(data, mode, urls="", langmode="<zh>"):
         text = data.get("text")
         if text == "" or text == " ":
             text = "哼哼"
-        if speaker in ['anzai', '「信使」', '「公子」', '「博士」', '「大肉丸」', '「女士」', '「散兵」', '「白老先生」', '七七', '三月七', '上杉', '丹吉尔', '丹恒', '丹枢', '丽莎', '久利须', '久岐忍', '九条裟罗', '九条镰治', '云堇', '五郎', '伊利亚斯', '伊迪娅', '优菈', '伦纳德', '佐西摩斯', '佩拉', '停云', '元太', '克列门特', '克拉拉', '克罗索', '八重神子', '公输师傅', '凝光', '凯亚', '凯瑟琳', '刃', '刻晴', '北斗', '半夏', '博易', '博来', '卡波特', '卡维', '卡芙卡', '卢卡', '可可利亚', '可莉', '史瓦罗', '吴船长', '哲平', '嘉玛', '嘉良', '回声海螺', '坎蒂丝', '埃勒曼', '埃尔欣根', '埃德', '埃泽', '埃洛伊', '埃舍尔', '塔杰·拉德卡尼', '塞塔蕾', '塞琉斯', '夏洛蒂', '多莉', '夜兰', '大慈树王', '大毫', '天叔', '天目十五', '奥兹', '奥列格', '女士', '妮露', '姬子', '娜塔莎', '娜维娅', '安柏', '安西', '宛烟', '宵宫', '岩明', '巴达维', '布洛妮娅', '希儿', '希露瓦', '帕姆', '帕斯卡', '常九爷', '康纳', '开拓者(女)', '开拓者(男)', '式大将', '彦卿', '影', '德沃沙克', '恕筠', '恶龙', '悦', '慧心', '戴因斯雷布', '托克', '托马', '拉赫曼', '拉齐', '掇星攫辰天君', '提纳里', '斯坦利', '斯科特', '旁白', '早柚', '昆钧', '明曦', '景元', '晴霓', '杜拉夫', '杰帕德', '松浦', '林尼', '枫原万叶', '柊千里', '查尔斯', '柯莱', '桑博', '欧菲妮', '毗伽尔', '沙扎曼', '派蒙', '流浪者', '浣溪', '浮游水蕈兽·元素生命', '海妮耶', '海芭夏', '深渊使徒', '深渊法师', '温迪', '烟绯', '爱德琳', '爱贝尔', '玛乔丽', '玛塞勒', '玛格丽特', '玲可', '珊瑚', '珊瑚宫心海', '珐露珊', '班尼特', '琳妮特', '琴', '瑶瑶', '瓦尔特', '甘雨', '田铁嘴', '申鹤', '留云借风真君', '白术', '白露', '百闻', '知易', '石头', '砂糖', '神里绫人', '神里绫华', '空', '符玄', '笼钓瓶一心', '米卡', '素裳', '纯水精灵？', '纳比尔', '纳西妲', '绮良良', '绿芙蓉', '罗刹', '罗莎莉亚', '羽生田千鹤', '老孟', '胡桃', '舒伯特', '艾丝妲', '艾伯特', '艾尔海森', '艾文', '艾莉丝', '芙宁娜', '芭芭拉', '荒泷一斗', '荧', '莎拉', '莫塞伊思', '莫娜', '莱依拉', '莺儿', '菲米尼', '菲谢尔', '萍姥姥', '萨赫哈蒂', '萨齐因', '蒂玛乌斯', '虎克', '螺丝咕姆', '行秋', '西拉杰', '言笑', '诺艾尔', '费斯曼', '赛诺', '辛焱', '达达利亚', '迈勒斯', '迈蒙', '迪卢克', '迪奥娜', '迪娜泽黛', '迪希雅', '那维莱特', '重云', '金人会长', '钟离', '银狼', '镜流', '长生', '阿佩普', '阿兰', '阿圆', '阿娜耶', '阿守', '阿尔卡米', '阿巴图伊', '阿扎尔', '阿拉夫', '阿晃', '阿洛瓦', '阿祇', '阿贝多', '陆行岩本真蕈·元素生命', '雷泽', '雷电将军', '霄翰', '霍夫曼', '青镞', '青雀', '香菱', '驭空', '魈', '鹿野奈奈', '鹿野院平藏', '黑塔', '龙二']:
-            p=await modelscopeV2(speaker, text)
+        if speaker in ['辛焱', '鹿野奈奈', '云堇', '瑶瑶', '珐露珊', '蒂玛乌斯', '那维莱特', '砂糖', '康纳', '刻晴', '嘉玛', '知易', '魈', '阿拉夫', '塞塔蕾', '大毫', '伊利亚斯', '欧菲妮', '玛塞勒', '「白老先生」', '式大将', '埃洛伊', '卡芙卡', '公输师傅', '舒伯特', '艾莉丝', '八重神子', '海妮耶', '克罗索', '明曦', '阿佩普', '掇星攫辰天君', '奥兹', '菲米尼', '甘雨', '奥列格', '巴达维', '老孟', '阿圆', '坎蒂丝', '鹿野院平藏', '佐西摩斯', '青镞', '凝光', '「博士」', '斯科特', '阿尔卡米', '沙扎曼', '白术', '派蒙', '纳比尔', '回声海螺', '荧', '帕斯卡', '埃德', '五郎', '萨齐因', '帕姆', '西拉杰', '流浪者', '松浦', '驭空', '「大肉丸」', '莫娜', '多莉', '大慈树王', '留云借风真君', '优菈', '希露瓦', '桑博', '宵宫', '元太', '温迪', '芙宁娜', '九条镰治', '开拓者(男)', '可可利亚', '阿巴图伊', '埃尔欣根', '布洛妮娅', '琳妮特', '岩明', '安柏', '玛乔丽', '费斯曼', '娜维娅', '停云', '天目十五', '莫塞伊思', '史瓦罗', '玛格丽特', '埃泽', '慧心', '绿芙蓉', '浮游水蕈兽·元素生命', '申鹤', '伊迪娅', '托马', '班尼特', '卢卡', '罗刹', 'anzai', '姬子', '菲谢尔', '悦', '莺儿', '莎拉', '金人会长', '迪希雅', '柊千里', '博来', '三月七', '烟绯', '拉齐', '丹吉尔', '赛诺', '虎克', '埃勒曼', '阿扎尔', '深渊法师', '刃', '戴因斯雷布', '神里绫华', '青雀', '萍姥姥', '笼钓瓶一心', '石头', '海芭夏', '九条裟罗', '安西', '阿贝多', '行秋', '可莉', '上杉', '钟离', '提纳里', '绮良良', '迪奥娜', '「公子」', '阿守', '言笑', '阿兰', '龙二', '阿洛瓦', '重云', '丹恒', '开拓者(女)', '常九爷', '瓦尔特', '凯瑟琳', '恕筠', '百闻', '阿娜耶', '米卡', '塔杰·拉德卡尼', '莱依拉', '旁白', '吴船长', '田铁嘴', '托克', '艾文', '香菱', '空', '迪卢克', '迪娜泽黛', '霄翰', '陆行岩本真蕈·元素生命', '七七', '神里绫人', '克列门特', '久利须', '早柚', '「女士」', '半夏', '荒泷一斗', '佩拉', '斯坦利', '柯莱', '艾尔海森', '晴霓', '艾丝妲', '娜塔莎', '白露', '珊瑚', '霍夫曼', '迈勒斯', '毗伽尔', '螺丝咕姆', '博易', '符玄', '嘉良', '胡桃', '彦卿', '卡波特', '丹枢', '阿祇', '林尼', '久岐忍', '深渊使徒', '琴', '芭芭拉', '妮露', '天叔', '凯亚', '「信使」', '夏洛蒂', '纯水精灵？', '羽生田千鹤', '影', '伦纳德', '罗莎莉亚', '哲平', '珊瑚宫心海', '素裳', '希儿', '查尔斯', '宛烟', '镜流', '克拉拉', '迈蒙', '玲可', '长生', '女士', '爱德琳', '丽莎', '「散兵」', '杰帕德', '艾伯特', '塞琉斯', '萨赫哈蒂', '爱贝尔', '枫原万叶', '雷电将军', '杜拉夫', '埃舍尔', '夜兰', '拉赫曼', '达达利亚', '阿晃', '纳西妲', '卡维', '诺艾尔', '德沃沙克', '浣溪', '北斗', '银狼', '景元', '黑塔', '恶龙', '雷泽', '昆钧']:
+            p = await modelscopeV3(speaker, text)
             return p
         else:
             headers = {
@@ -626,6 +626,75 @@ async def modelscopeV2(speaker,text):
                             return p
                     count+=1
                     if count>10:
+                        raise Exception("Exceeded 10 events without entering return branch.")
+#modelscopeTTS V3，对接原神崩铁语音合成器。API用法相较之前发生了变化，参考V2修改而成。
+async def modelscopeV3(speaker,text):
+    # 第一个请求的URL
+    queue_join_url = "https://s5k.cn/api/v1/studio/MuGeminorum/hoyoTTS/gradio/queue/join"
+    # 第二个请求的URL
+    queue_data_url = "https://s5k.cn/api/v1/studio/MuGeminorum/hoyoTTS/gradio/queue/data"
+    # 标头
+    headers = {
+        "Host": "s5k.cn",
+        "Connection": "keep-alive",
+        "sec-ch-ua": '"Not/A)Brand";v="8", "Chromium";v="126", "Microsoft Edge";v="126"',
+        "Cache-Control": "no-cache",
+        "sec-ch-ua-mobile": "?0",
+        "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/126.0.0.0 Safari/537.36 Edg/126.0.0.0",
+        "sec-ch-ua-platform": '"Windows"',
+        "Sec-Fetch-Site": "same-origin",
+        "Sec-Fetch-Mode": "cors",
+        "Sec-Fetch-Dest": "empty",
+        "Referer": "https://s5k.cn/api/v1/studio/MuGeminorum/hoyoTTS/gradio/?",
+        "Accept-Encoding": "gzip, deflate, br, zstd",
+        "Accept-Language": "zh-CN,zh;q=0.9,en;q=0.8,en-GB;q=0.7,en-US;q=0.6",
+    }
+    # cookies
+    cookies = {
+        "csrf_token": "2kgLec2ZlH_FM5ICpxvb0nQrIro%3D",
+        }
+    # 准备第一个链接请求的数据
+    join_template = {
+        "data": [text, speaker, 0.2, 0.6, 0.8, 1],
+        "event_data": None,
+        "fn_index": 3,
+        "trigger_id": 37,
+        "dataType": ["textbox", "dropdown", "slider", "slider", "slider", "slider"],
+        "session_hash": "zkv5z476rdp",
+    }
+    # 准备第二个链接请求的数据
+    data_params = {
+        "session_hash": "zkv5z476rdp",
+        "studio_token": None
+    }
+    # 发起第一个请求
+    with httpx.Client(timeout=10) as client:
+        join_response = httpx.post(queue_join_url, json=join_template,headers=headers)
+        csrf_token = join_response.cookies["csrf_token"]
+        cookies["csrf_token"] = csrf_token
+    # 发起第二个请求
+    async with httpx.AsyncClient(timeout=20) as client:
+        count = 0
+        async with client.stream("GET", queue_data_url, params=data_params, headers=headers, cookies=cookies) as response:
+            async for event in response.aiter_text():
+                # json老是报错，发现是estimation和process_starts有时候发送会挨得太近，导致俩json存到同一个字符串里，无法解析。由于格式固定，这里先字符串里判断是否有estimation，没有才继续。
+                event = event.replace("data:", "").strip()
+                # print("line: "+event)
+                if event and "estimation" not in event:
+                    event_data = json.loads(event)
+                    if event_data.get("msg") == "process_completed":
+                        p = "data/voices/" + random_str() + '.wav'
+                        newurl = event_data['output']['data'][0]['url']
+                        async with httpx.AsyncClient(timeout=200) as download_client:
+                            r = await download_client.get(newurl, headers=headers, cookies=cookies)
+                            with open(p, "wb") as f:
+                                f.write(r.content)
+                            return p
+                    # 已知问题：如果api短时间内请求过于频繁，api会返回错误。
+                    elif event_data.get("msg") == "unexpected_error":
+                        raise Exception("Returned unexpected error")
+                    count += 1
+                    if count > 10:
                         raise Exception("Exceeded 10 events without entering return branch.")
 async def fetch_FishTTS_ModelId(proxy, Authorization, speaker):
     proxies = {
