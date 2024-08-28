@@ -371,3 +371,5 @@
   - 语法分析{英文句子} #如语法分析this and other similar cases raise the question of whether there is still a line between the court and politics.
 2024/8/28:
   - jm相关功能修复，更新即可，如更新后仍不可用，请在【更新后使用】 更新脚本-更新bot代码-补全依赖
+2024/8/29:
+  - 语音合成米游相关修复，由@Creeper666 完成并提交
