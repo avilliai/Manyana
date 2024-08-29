@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 import json
 import re
+from http.cookies import SimpleCookie
 
 import asyncio
 import base64
@@ -139,7 +140,7 @@ async def fluxDrawer(prompt):
         "studio_token": "e43dec10-c460-4f6e-ad89-726dc518325a",
         "__theme":"light",
     }
-
+    session_hash="me9nmffgnj"
     # 第二个请求的URL和headers
 
     headers = {
@@ -160,7 +161,7 @@ async def fluxDrawer(prompt):
         "user-agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/127.0.0.0 Safari/537.36 Edg/127.0.0.0",
         "x-studio-token": "e43dec10-c460-4f6e-ad89-726dc518325a"
     }
-    data1={"data":[1024,1024,8,3.5,"an anime girlish",3413],"event_data":None,"fn_index":0,"trigger_id":18,"dataType":["slider","slider","slider","slider","textbox","number"],"session_hash":"me9nm30egnj"}
+    data1={"data":[1024,1024,8,3.5,prompt,3413],"event_data":None,"fn_index":0,"trigger_id":18,"dataType":["slider","slider","slider","slider","textbox","number"],"session_hash":session_hash}
 
     cookies = {
         "_ga": "GA1.2.1599116772.1719823591",
@@ -173,22 +174,28 @@ async def fluxDrawer(prompt):
     async with httpx.AsyncClient(headers=headers) as client:
         response = await client.post(queue_join_url, params=queue_join_params,json=data1)
         # print(f"POST request status code: {response.status_code}")
+        for header in response.headers:
+            if header[0].lower() == 'set-cookie':
+                cookie = SimpleCookie(header[1])
+                for key, morsel in cookie.items():
+                    cookies[key] = morsel.value
         response_data = response.json()
         event_id = response_data['event_id']
-        print(event_id)
+        #print(event_id)
 
-        queue_data_url="https://s5k.cn/api/v1/studio/ByteDance/Hyper-FLUX-8Steps-LoRA/gradio/queue/data?session_hash=me9nm30egnj&studio_token=54f0b89d-beb9-4d7c-9dc2-5ca64e960ce9"
+        queue_data_url=f"https://s5k.cn/api/v1/studio/ByteDance/Hyper-FLUX-8Steps-LoRA/gradio/queue/data?session_hash={session_hash}&studio_token=54f0b89d-beb9-4d7c-9dc2-5ca64e960ce9"
 
         async with client.stream("GET", queue_data_url, headers=headers,cookies=cookies,timeout=60) as event_stream_response:
             async for line in event_stream_response.aiter_text():
                 event = line.replace("data:", "").strip()
                 if event:
                     event_data = json.loads(event)
+                    print(event_data)
                     if "output" in event_data:
                         imgurl=event_data["output"]["data"][0]["url"]
                         print(imgurl)
                         return imgurl
 # 运行 Flask 应用
 if __name__ == "__main__":
-    asyncio.run(modelScopeDrawer("a 2D girlish","nsfw"))
+    asyncio.run(fluxDrawer("prompt:[[[artist:onineko]]], [[[artist:namie]]],cute, symbol-shaped pupils,school uniform, serafuku, clover print, sailor shirt, pleated skirt, sailor collar,shy, holding skirt,, 1girl, 1girl solo, loli, cat girl, animal ear fluff, cat ears,mid shot, x hair ornament, ahoge,traditional media, faux traditional media, lineart, {loli}"))
 
