@@ -1,4 +1,5 @@
 # -*- coding: utf-8 -*-
+import json
 import re
 
 import asyncio
@@ -128,76 +129,65 @@ async def draw6(prompt, path="./test.png"):
         f.write(r1.content)
     return path
 
-async def modelScopeDrawer(prompt, negative_prompt):
-    url = "https://s5k.cn/api/v1/studio/AI-ModelScope/stable-diffusion-3-medium/gradio/queue/join"
-    params = {
-        "backend_url": "/api/v1/studio/AI-ModelScope/stable-diffusion-3-medium/gradio/",
-        "sdk_version": "4.31.3",
-        "t": "1720966413219",
-        "studio_token": "2aebd9a6-3f8e-4907-ba0e-1ac759249c24"
+async def fluxDrawer(prompt):
+    # 第一个请求的URL和参数
+    queue_join_url = "https://s5k.cn/api/v1/studio/ByteDance/Hyper-FLUX-8Steps-LoRA/gradio/queue/join"
+    queue_join_params = {
+        "backend_url": "/api/v1/studio/ByteDance/Hyper-FLUX-8Steps-LoRA/gradio/",
+        "sdk_version": "4.38.1",
+        "t": "1724901517779",
+        "studio_token": "e43dec10-c460-4f6e-ad89-726dc518325a",
+        "__theme":"light",
     }
+
+    # 第二个请求的URL和headers
 
     headers = {
-        "Accept": "*/*",
-        "Accept-Encoding": "gzip, deflate, br, zstd",
-        "Accept-Language": "zh-CN,zh;q=0.9,en;q=0.8,en-GB;q=0.7,en-US;q=0.6",
-        "Connection": "keep-alive",
-        "Content-Type": "application/json",
-        "Cookie": "_gid=GA1.2.685814012.1720887454; _ga=GA1.2.1599116772.1719823591; _ga_R1FN4KJKJH=GS1.1.1720887453.2.1.1720888543.0.0.0",
-        "Host": "s5k.cn",
-        "Origin": "https://s5k.cn",
-        "Referer": "https://s5k.cn/inner/studio/gradio?backend_url=/api/v1/studio/AI-ModelScope/stable-diffusion-3-medium/gradio/&sdk_version=4.31.3&t=1720966413219&studio_token=2aebd9a6-3f8e-4907-ba0e-1ac759249c24",
-        "Sec-Ch-Ua": "\"Microsoft Edge\";v=\"125\", \"Chromium\";v=\"125\", \"Not.A/Brand\";v=\"24\"",
-        "Sec-Ch-Ua-Mobile": "?0",
-        "Sec-Ch-Ua-Platform": "\"Windows\"",
-        "Sec-Fetch-Dest": "empty",
-        "Sec-Fetch-Mode": "cors",
-        "Sec-Fetch-Site": "same-origin",
-        "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/125.0.0.0 Safari/537.36 Edg/125.0.0.0",
-        "X-Studio-Token": "2aebd9a6-3f8e-4907-ba0e-1ac759249c24"
+        "accept": "*/*",
+        "accept-encoding": "gzip, deflate, br, zstd",
+        "accept-language": "zh-CN,zh;q=0.9,en;q=0.8,en-GB;q=0.7,en-US;q=0.6",
+        "connection": "keep-alive",
+        "content-type": "application/json",
+        "cookie": "_ga=GA1.2.1599116772.1719823591; _ga_R1FN4KJKJH=GS1.1.1722428989.8.0.1722428989.0.0.0",
+        "host": "s5k.cn",
+        "referer": "https://s5k.cn/inner/studio/gradio?backend_url=/api/v1/studio/ByteDance/Hyper-FLUX-8Steps-LoRA/gradio/&sdk_version=4.38.1&t=1724901517779&__theme=light&studio_token=e43dec10-c460-4f6e-ad89-726dc518325a",
+        "sec-ch-ua": '"Not)A;Brand";v="99", "Microsoft Edge";v="127", "Chromium";v="127"',
+        "sec-ch-ua-mobile": "?0",
+        "sec-ch-ua-platform": '"Windows"',
+        "sec-fetch-dest": "empty",
+        "sec-fetch-mode": "cors",
+        "sec-fetch-site": "same-origin",
+        "user-agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/127.0.0.0 Safari/537.36 Edg/127.0.0.0",
+        "x-studio-token": "e43dec10-c460-4f6e-ad89-726dc518325a"
     }
+    data1={"data":[1024,1024,8,3.5,"an anime girlish",3413],"event_data":None,"fn_index":0,"trigger_id":18,"dataType":["slider","slider","slider","slider","textbox","number"],"session_hash":"me9nm30egnj"}
 
-    data = {
-        "data": [
-            prompt,
-            negative_prompt,
-            1587008566,
-            True,
-            1024,
-            1024,
-            5,
-            28
-        ],
-        "event_data": None,
-        "fn_index": 1,
-        "trigger_id": 5,
-        "dataType": ["textbox", "textbox", "slider", "checkbox", "slider", "slider", "slider", "slider"],
-        "session_hash": "oxm1sjlvnr"
+    cookies = {
+        "_ga": "GA1.2.1599116772.1719823591",
+        "_ga_R1FN4KJKJH": "GS1.1.1722428989.8.0.1722428989.0.0.0",
+        "acw_tc": "276aedee17249273963305410e2ec4f647cc15bb887a0dcca6edb04ebdb533",
+        "csrf_session": "MTcyNDkwMTY2NnxEdi1CQkFFQ180SUFBUkFCRUFBQU12LUNBQUVHYzNSeWFXNW5EQW9BQ0dOemNtWlRZV3gwQm5OMGNtbHVad3dTQUJCTWNGbHRVMWswT0hNM1pEZEViM1J0fM2kZW1v-5i7-uelxRFfnp1qw9uePrN8uPHFQRmeEhFq",
+        "csrf_token": "ggzwEmJJ8rlf_2-hph7hoXQtecE%3D"
     }
-
+    # 发起第一个请求
     async with httpx.AsyncClient(headers=headers) as client:
-        response = await client.post(url, json=data, params=params)
-        #print(f"POST request status code: {response.status_code}")
-        response_data =response.json()
+        response = await client.post(queue_join_url, params=queue_join_params,json=data1)
+        # print(f"POST request status code: {response.status_code}")
+        response_data = response.json()
         event_id = response_data['event_id']
-        #print(f"Received event_id: {event_id}")
+        print(event_id)
 
-        # Now start listening to event stream
-        event_stream_url = f"https://s5k.cn/api/v1/studio/AI-ModelScope/stable-diffusion-3-medium/gradio/queue/data?session_hash=oxm1sjlvnr&studio_token=2aebd9a6-3f8e-4907-ba0e-1ac759249c24"
-        async with client.stream("GET", event_stream_url, headers=headers) as event_stream_response:
+        queue_data_url="https://s5k.cn/api/v1/studio/ByteDance/Hyper-FLUX-8Steps-LoRA/gradio/queue/data?session_hash=me9nm30egnj&studio_token=54f0b89d-beb9-4d7c-9dc2-5ca64e960ce9"
+
+        async with client.stream("GET", queue_data_url, headers=headers,cookies=cookies,timeout=60) as event_stream_response:
             async for line in event_stream_response.aiter_text():
-                # Check if line contains "url"
-                url_match = re.search(r'"url":"([^"]+)"', line)
-                if url_match:
-                    url = url_match.group(1)
-                    async with httpx.AsyncClient(timeout=40) as client:
-                        r1 = await client.get(url)
-                    path = "data/pictures/cache/" + random_str() + ".png"
-                    with open(path, "wb") as f:
-                        f.write(r1.content)
-                    #print(f"Received URL: {url}")
-                    return path
-                #print(line.strip())
+                event = line.replace("data:", "").strip()
+                if event:
+                    event_data = json.loads(event)
+                    if "output" in event_data:
+                        imgurl=event_data["output"]["data"][0]["url"]
+                        print(imgurl)
+                        return imgurl
 # 运行 Flask 应用
 if __name__ == "__main__":
     asyncio.run(modelScopeDrawer("a 2D girlish","nsfw"))

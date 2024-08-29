@@ -9,7 +9,7 @@ from mirai import Image
 from plugins.toolkits import random_str
 
 from plugins.setuModerate import fileImgModerate
-from plugins.aiDrawer import SdDraw, draw2, airedraw, draw1, draw3, tiktokredraw, draw5, draw4, draw6, modelScopeDrawer
+from plugins.aiDrawer import SdDraw, draw2, airedraw, draw1, draw3, tiktokredraw, draw5, draw4, draw6, fluxDrawer
 
 
 def main(bot, logger):
@@ -37,11 +37,12 @@ def main(bot, logger):
             tag = str(event.message_chain).replace("画 ", "")
             logger.info("发起modelscope SDai绘画请求，prompt:" + tag)
             try:
-                p = await modelScopeDrawer(tag, negative_prompt)
-                await bot.send(event, Image(path=p), True)
+                p = await fluxDrawer(tag)
+                await bot.send(event, Image(url=p), True)
             except Exception as e:
                 logger.error(e)
-                logger.error("modelscope Draw出错")
+                logger.error("modelscope Drawer出错")
+                await bot.send(event,"寄了喵",True)
 
     @bot.on(GroupMessage)
     async def AiSdDraw(event: GroupMessage):
