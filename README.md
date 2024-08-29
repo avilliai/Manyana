@@ -22,7 +22,7 @@
 </div>
 
 ---
-
+> 因本人学业繁忙，未来几个月本仓库将以维护为主要工作。如果您有意愿参与开发和维护，欢迎pr。
 # 🚀linux部署
 [linux部署脚本](https://github.com/lux-QAQ/Manyana_deploy)
 
