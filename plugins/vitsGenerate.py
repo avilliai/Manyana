@@ -8,7 +8,7 @@ import requests
 import websockets
 import yaml
 
-from plugins.toolkits import translate,random_str
+from plugins.toolkits import translate,random_str,random_session_hash
 
 try:
     from plugins.modelsLoader import modelLoader
@@ -213,7 +213,7 @@ async def superVG(data, mode, urls="", langmode="<zh>"):
                 "fn_index": 0,
                 "dataType": ["textbox", "dropdown", "slider", "slider", "slider", "slider", "dropdown", "audio", "textbox",
                              "radio", "textbox", "slider"],
-                "session_hash": "xjwen214wqf"
+                "session_hash": random_session_hash(11)
             }
             p = "data/voices/" + random_str() + '.wav'
             async with httpx.AsyncClient(timeout=200, headers=headers) as client:
@@ -497,13 +497,14 @@ async def superVG(data, mode, urls="", langmode="<zh>"):
     elif mode == "firefly":
         datap = data
         uri = "wss://fs.firefly.matce.cn/queue/join"
-        session_hash = "1fki0r8hg8mj"
+        # 随机session hash
+        session_hash = random_session_hash(12)
 
         async with websockets.connect(uri) as ws:
             # 连接后发送的第一次请求
             await ws.send(json.dumps({"fn_index": 4, "session_hash": session_hash}))
             await ws.send(json.dumps(
-                {"data": [datap.get("speaker")], "event_data": None, "fn_index": 1, session_hash: "1fki0r8hg8mj"}))
+                {"data": [datap.get("speaker")], "event_data": None, "fn_index": 1, "session_hash": session_hash}))
             while True:
                 message = await ws.recv()
                 print("Received '%s'" % message)
@@ -516,7 +517,7 @@ async def superVG(data, mode, urls="", langmode="<zh>"):
         async with websockets.connect(uri) as ws:
             await ws.send(json.dumps({"fn_index": 4, "session_hash": session_hash}))
             await ws.send(
-                json.dumps({"data": [ibn], "event_data": None, "fn_index": 2, "session_hash": "1fki0r8hg8mj"}))
+                json.dumps({"data": [ibn], "event_data": None, "fn_index": 2, "session_hash": session_hash}))
             while True:
                 message = await ws.recv()
                 data = json.loads(message)
@@ -536,7 +537,7 @@ async def superVG(data, mode, urls="", langmode="<zh>"):
                                                                          "data": f"https://fs.firefly.matce.cn/file={example}",
                                                                          "is_file": True, "orig_name": "audio.wav"},
                                                exampletext, 0, 90, 0.7, 1.5, 0.7, datap.get("speaker")],
-                                      "event_data": None, "fn_index": 4, "session_hash": "1fki0r8hg8mj"}))
+                                      "event_data": None, "fn_index": 4, "session_hash": session_hash}))
 
             # 等待并处理服务器的消息
             while True:
@@ -559,9 +560,80 @@ async def superVG(data, mode, urls="", langmode="<zh>"):
                 with open(p, "wb") as f:
                     f.write(r.content)
                 return p
+#modelscopeTTS v2，对接崩铁语音合成器
+async def modelscopeV2(speaker,text):
+    # 随机session hash
+    session_hash = random_session_hash(11)
+    # 第一个请求的URL和参数
+    queue_join_url = "https://s5k.cn/api/v1/studio/MuGeminorum/hoyoTTS/gradio/queue/join"
+    queue_join_params = {
+        "backend_url": "/api/v1/studio/MuGeminorum/hoyoTTS/gradio/",
+        "sdk_version": "4.8.0",
+        "t": "1722421391963",
+        "studio_token": "f6325151-b86a-44d8-ba1d-aa95c485b173",
+        "fn_index": "3",
+        "session_hash": session_hash
+    }
 
+    # 第二个请求的URL和headers
+    queue_data_url = "https://s5k.cn/api/v1/studio/MuGeminorum/hoyoTTS/gradio/queue/data"
+    headers = {
+        "accept": "*/*",
+        "accept-encoding": "gzip, deflate, br, zstd",
+        "accept-language": "zh-CN,zh;q=0.9,en;q=0.8,en-GB;q=0.7,en-US;q=0.6",
+        "connection": "keep-alive",
+        "content-type": "application/json",
+        "cookie": "cna=aNFEHWoNPxACAWXJdvB5vhuH; h_uid=2217546937298; _ga=GA1.2.1479461018.1711329620; _ga_R1FN4KJKJH=GS1.1.1711329620.1.0.1711329909.0.0.0; acw_tc=0b62601a17247566492307356e94fd74c05ac88d05766a5357756f4f8de95a; xlly_s=1; csrf_session=MTcyNDc1NjY2OXxEdi1CQkFFQ180SUFBUkFCRUFBQU12LUNBQUVHYzNSeWFXNW5EQW9BQ0dOemNtWlRZV3gwQm5OMGNtbHVad3dTQUJCWVVVSmFVMmRMTVhkQlZYZDZjMFU1fFoxF4DNFt-V6J76f-R6WB1bHyqdHZyUuGTzp79-APSJ; csrf_token=sEXqAcXfsDfWzhlPYbk3gSnOZBk%3D; _samesite_flag_=true; cookie2=12fbdbeaef3f987ecf18206d05c831f2; t=dd1668320516779177b5858e257bfa79; _tb_token_=f5b7aae384eeb; csg=a149f097; m_session_id=cb3508e4-45af-481f-892a-9f99d43642c9; tfstk=fxWqK_X5N-e29m5MzU9w4YWrW3pvOpUBmOT6jGjMcEYccKtZQaIOhE9_D_8NzUHjCnaTQNSMyIhfHoBaQa7JfjsXnc7NcaHtBEBNwASdXtZvCopADdpgRywQOiIvBFLkvsU5qlxTf7aoPJsAD04uLxSTdfWLvEZwSNADZLxMrmDGSIYoZUK9jqxinuSkyhvMmCDmZLxwfqcmiv_cxg4eYIqEkrNoiW3DiejDoisfEI0B-iYrIAY20IPCmUkiIT5-tWMkoWnWWKTAQn7TpxpD__6v9tao3N7RrtAOEzNRWKtpt1j7vbTAUt6kgtzE9K5lyTRAnqqvmsQOQK6suASPQERhnQyTXKSkjL5hVkhWkTWfEIW48XLVHGf6a_34PF1CVtAP-zMPWC55HBBbrx7h4v09q6cNBsui_IxJ4eZzq61VAQ8lJqCm6fdkH38QDfht6IxJ4eZz4fh9ZhKyRohO.; isg=BMHBK_peQ917OK8kXDHwxTpu0A3b7jXg2hS31iMWnkgqCuHcaz2ws_IA7H5MAs0Y",
+        "origin": "https://s5k.cn",
+        "referer": "https://s5k.cn/inner/studio/gradio?backend_url=/api/v1/studio/MuGeminorum/hoyoTTS/gradio/&sdk_version=4.8.0&t=1722421391963&studio_token=f6325151-b86a-44d8-ba1d-aa95c485b173",
+        "sec-ch-ua": '"Not)A;Brand";v="99", "Microsoft Edge";v="127", "Chromium";v="127"',
+        "sec-ch-ua-mobile": "?0",
+        "sec-ch-ua-platform": '"Windows"',
+        "sec-fetch-dest": "empty",
+        "sec-fetch-mode": "cors",
+        "sec-fetch-site": "same-origin",
+        "user-agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/127.0.0.0 Safari/537.36 Edg/127.0.0.0",
+        "x-studio-token": "f6325151-b86a-44d8-ba1d-aa95c485b173"
+    }
+
+    # 准备第二个请求的数据
+    data_template = {
+        "data": [text, speaker, 0.2, 0.6, 0.8, 1],
+        "event_data": None,
+        "fn_index": 3,
+        "trigger_id": 37,
+        "dataType": ["textbox", "dropdown", "slider", "slider", "slider", "slider"],
+        "session_hash": session_hash,
+        "event_id": ""  # 这里将会填入从第一个请求中获取的 event_id
+    }
+
+    # 发起第一个请求
+    with httpx.Client(headers=headers,timeout=20) as client:
+        count=0
+        with client.stream("GET", queue_join_url, params=queue_join_params) as response:
+            for event in response.iter_text():
+                if event:
+                    event_data = json.loads(event.replace("data:","").replace(" ",""))
+                    if event_data.get("msg") == "send_data":
+                        event_id = event_data.get("event_id")
+                        data_template["event_id"] = event_id
+                        response = client.post(queue_data_url, json=data_template, headers=headers)
+                    # 持续监听第一个请求的后续结果
+                    elif event_data.get("msg") == "process_completed":
+                        p="./test.wav"
+                        newurl=f"https://s5k.cn/api/v1/studio/MuGeminorum/hoyoTTS/gradio/file={event_data['output']['data'][0]['path']}"
+                        async with httpx.AsyncClient(timeout=200, headers=headers) as client:
+                            r = await client.get(newurl)
+                            with open(p, "wb") as f:
+                                f.write(r.content)
+                            return p
+                    count+=1
+                    if count>10:
+                        raise Exception("Exceeded 10 events without entering return branch.")
 #modelscopeTTS V3，对接原神崩铁语音合成器。API用法相较之前发生了变化，参考V2修改而成。
 async def modelscopeV3(speaker,text):
+    # 随机session hash
+    session_hash = random_session_hash(11)
     # 第一个请求的URL
     queue_join_url = "https://s5k.cn/api/v1/studio/MuGeminorum/hoyoTTS/gradio/queue/join"
     # 第二个请求的URL
@@ -593,15 +665,15 @@ async def modelscopeV3(speaker,text):
         "fn_index": 3,
         "trigger_id": 37,
         "dataType": ["textbox", "dropdown", "slider", "slider", "slider", "slider"],
-        "session_hash": "zkv5z476rdp",
+        "session_hash": session_hash,
     }
     # 准备第二个链接请求的数据
     data_params = {
-        "session_hash": "zkv5z476rdp",
+        "session_hash": session_hash,
         "studio_token": None
     }
     # 发起第一个请求
-    with httpx.Client(timeout=10) as client:
+    async with httpx.AsyncClient(timeout=10) as client:
         join_response = httpx.post(queue_join_url, json=join_template,headers=headers)
         csrf_token = join_response.cookies["csrf_token"]
         cookies["csrf_token"] = csrf_token
@@ -609,26 +681,27 @@ async def modelscopeV3(speaker,text):
     async with httpx.AsyncClient(timeout=20) as client:
         count = 0
         async with client.stream("GET", queue_data_url, params=data_params, headers=headers, cookies=cookies) as response:
-            async for event in response.aiter_text():
-                # json老是报错，发现是estimation和process_starts有时候发送会挨得太近，导致俩json存到同一个字符串里，无法解析。由于格式固定，这里先字符串里判断是否有estimation，没有才继续。
-                event = event.replace("data:", "").strip()
-                # print("line: "+event)
-                if event and "estimation" not in event:
-                    event_data = json.loads(event)
-                    if event_data.get("msg") == "process_completed":
-                        p = "data/voices/" + random_str() + '.wav'
-                        newurl = event_data['output']['data'][0]['url']
-                        async with httpx.AsyncClient(timeout=200) as download_client:
-                            r = await download_client.get(newurl, headers=headers, cookies=cookies)
-                            with open(p, "wb") as f:
-                                f.write(r.content)
-                            return p
-                    # 已知问题：如果api短时间内请求过于频繁，api会返回错误。
-                    elif event_data.get("msg") == "unexpected_error":
-                        raise Exception("Returned unexpected error")
-                    count += 1
-                    if count > 10:
-                        raise Exception("Exceeded 10 events without entering return branch.")
+            async for chunk in response.aiter_text():
+                events = chunk.replace("data:", "").strip().split('\n')
+                for event in events:
+                    event = event.strip()
+                    if not event:
+                        continue
+                    try:
+                        event_data = json.loads(event)
+                        if event_data.get("msg") == "process_completed":
+                            p = "data/voices/" + random_str() + '.wav'
+                            newurl = event_data['output']['data'][0]['url']
+                            async with httpx.AsyncClient(timeout=200) as download_client:
+                                r = await download_client.get(newurl, headers=headers, cookies=cookies)
+                                with open(p, "wb") as f:
+                                    f.write(r.content)
+                                return p
+                        count += 1
+                        if count > 10:
+                            raise Exception("Exceeded 10 events without entering return branch.")
+                    except json.JSONDecodeError:
+                        raise Exception(f"JSON decode error{event}")
 async def fetch_FishTTS_ModelId(proxy, Authorization, speaker):
     proxies = {
         "http://": proxy,
@@ -783,7 +856,7 @@ async def modelscopeTTS(data):
         "fn_index": 0,
         "dataType": ["textbox", "dropdown", "slider", "slider", "slider", "slider", "dropdown", "audio", "textbox",
                      "radio", "textbox", "slider"],
-        "session_hash": "xjwen214wqf"
+        "session_hash": random_session_hash(11)
     }
     p = "data/voices/" + random_str() + '.wav'
     async with httpx.AsyncClient(timeout=200) as client:
