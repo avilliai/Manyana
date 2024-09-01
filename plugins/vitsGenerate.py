@@ -229,7 +229,7 @@ async def superVG(data, mode, urls="", langmode="<zh>"):
         speaker = data.get("speaker")
         text = data.get("text")
         p = "data/voices/" + random_str() + '.wav'
-        url = f"https://api.lolimi.cn/API/yyhc/y.php?msg={text}&speaker={speaker}"
+        url = f"https://api.lolimi.cn/API/yyhc/y.php?msg={text}&sp={speaker}"
         async with httpx.AsyncClient(timeout=200) as client:
             r = await client.post(url)
             newUrl = r.json().get("music")
@@ -740,7 +740,7 @@ async def outVits(data):
     #p = random_str() + ".mp3"
     #p = "data/voices/" + p
     p = "data/voices/" + random_str() + '.wav'
-    url = f"https://api.lolimi.cn/API/yyhc/y.php?msg={text}&speaker={speaker}"
+    url = f"https://api.lolimi.cn/API/yyhc/y.php?msg={text}&sp={speaker}"
     async with httpx.AsyncClient(timeout=200) as client:
         r = await client.post(url)
         newUrl = r.json().get("music")

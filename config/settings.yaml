@@ -11,8 +11,8 @@
   fuckingnumber: 13         #低于13人退群
 语音功能设置:
   #建议使用modelscopeTTS或outVits，FishTTS(目前不可用)，其他模式需要额外部署。
-  voicegenerate: modelscopeTTS  #语音合成模式 modelscopeTTS/FishTTS/vits,
-  speaker: "东雪莲"              #根据你的合成模式设定角色,modelscopeTTS角色查看config/modelscopeTTS可用角色.txt，FishTTS看https://github.com/avilliai/Manyana/issues/19,FishTTS可填模型id/名称，outVits看https://api.lolimi.cn/doc-api_dxfj.html，vits则无需配置
+  voicegenerate: modelscopeTTS  #语音合成模式 modelscopeTTS/outVits/FishTTS(目前已不可用)/vits(需额外部署)/bert_vits2(需额外部署)/so-vits(需额外部署)
+  speaker: "东雪莲"              #根据你的合成模式设定角色,请查看 Manyana/config/语音合成可用角色.txt，vits则无需配置
   voiceLangType: "<zh>"         #默认语音合成语言类型，可选： <zh> <jp> <en>   目前仅在modelscopeTTS和firefly模式下生效,firefly模式下需要与speaker的语言类型匹配
   prefix: ""                    #语音合成指令前缀，默认为 xx说 ；如果为 "/" 则指令变为 /xx说 ；用以减少误触发。
   #下面的两个配置项，除非你自己额外搭了对应的服务，不然就别动。
