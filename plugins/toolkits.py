@@ -95,7 +95,7 @@ async def translate(text, mode="ZH_CN2JA"):
     except:
         print("翻译接口3调用失败")
     return text
-def random_str(random_length=6, chars='AaBbCcDdEeFfGgHhIiJjKkLlMmNnOoPpQqRrSsTtUuVvWwXxYyZz0123456789@$#_%'):
+def random_str(random_length=7, chars='AaBbCcDdEeFfGgHhIiJjKkLlMmNnOoPpQqRrSsTtUuVvWwXxYyZz0123456789@$#_%'):
     """
     生成随机字符串作为验证码
     :param random_length: 字符串长度,默认为6
@@ -106,11 +106,12 @@ def random_str(random_length=6, chars='AaBbCcDdEeFfGgHhIiJjKkLlMmNnOoPpQqRrSsTtU
     length = len(chars) - 1
     # random = Random()
     # 设置循环每次取一个字符用来生成随机数
-    for i in range(7):
+    for i in range(random_length):
         string += (chars[random.randint(0, length)])
     return string
-
-
+def random_session_hash(random_length):
+    # 给gradio一类的api用，生成随机session_hash,避免多任务撞车导致推理出错。这里偷懒套个娃（bushi
+    return random_str(random_length, "abcdefghijklmnopqrstuvwxyz1234567890")
 def createLogger():
     # 创建一个logger对象
     logger = logging.getLogger("Manayana")

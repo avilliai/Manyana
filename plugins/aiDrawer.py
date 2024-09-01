@@ -8,9 +8,16 @@ import base64
 import io
 
 import httpx
+import yaml
 from PIL import Image
 
-from plugins.toolkits import random_str
+from plugins.toolkits import random_str,random_session_hash
+
+with open('config/api.yaml', 'r', encoding='utf-8') as f:
+    resulttr = yaml.load(f.read(), Loader=yaml.FullLoader)
+modelscopeCookie = resulttr.get("modelscopeCookie")
+if modelscopeCookie == "":
+    modelscopeCookie = "cna=j117HdPDmkoCAXjC3hh/4rjk; ajs_anonymous_id=5aa505b4-8510-47b5-a1e3-6ead158f3375; t=27c49d517b916cf11d961fa3769794dd; uuid_tt_dd=11_99759509594-1710000225471-034528; log_Id_click=16; log_Id_pv=12; log_Id_view=277; xlly_s=1; csrf_session=MTcxMzgzODI5OHxEdi1CQkFFQ180SUFBUkFCRUFBQU12LUNBQUVHYzNSeWFXNW5EQW9BQ0dOemNtWlRZV3gwQm5OMGNtbHVad3dTQUJCNFkwRTFkbXAwV0VVME0wOUliakZwfHNEIp5sKWkjeJWKw1IphSS3e4R_7GyEFoKKuDQuivUs; csrf_token=TkLyvVj3to4G5Mn_chtw3OI8rRA%3D; _samesite_flag_=true; cookie2=11ccab40999fa9943d4003d08b6167a0; _tb_token_=555ee71fdee17; _gid=GA1.2.1037864555.1713838369; h_uid=2215351576043; _xsrf=2|f9186bd2|74ae7c9a48110f4a37f600b090d68deb|1713840596; csg=242c1dff; m_session_id=769d7c25-d715-4e3f-80de-02b9dbfef325; _gat_gtag_UA_156449732_1=1; _ga_R1FN4KJKJH=GS1.1.1713838368.22.1.1713841094.0.0.0; _ga=GA1.1.884310199.1697973032; tfstk=fE4KxBD09OXHPxSuRWsgUB8pSH5GXivUTzyBrU0oKGwtCSJHK7N3ebe0Ce4n-4Y8X8wideDotbQ8C7kBE3queYwEQ6OotW08WzexZUVIaNlgVbmIN7MQBYNmR0rnEvD-y7yAstbcoWPEz26cnZfu0a_qzY_oPpRUGhg5ntbgh_D3W4ZudTQmX5MZwX9IN8ts1AlkAYwSdc9sMjuSF8g56fGrgX9SFbgs5bGWtBHkOYL8Srdy07KF-tW4Wf6rhWQBrfUt9DHbOyLWPBhKvxNIBtEfyXi_a0UyaUn8OoyrGJ9CeYzT1yZbhOxndoh8iuFCRFg38WZjVr6yVWunpVaQDQT762H3ezewpOHb85aq5cbfM5aaKWzTZQ_Ss-D_TygRlsuKRvgt_zXwRYE_VymEzp6-UPF_RuIrsr4vHFpmHbxC61Ky4DGguGhnEBxD7Zhtn1xM43oi_fHc61Ky4DGZ6xfGo3-rjf5..; isg=BKKjOsZlMNqsZy8UH4-lXjE_8ygE86YNIkwdKew665XKv0I51IGvHCUz7_tDrx6l"
 
 
 async def SdDraw(prompt, negative_prompt, path, sdurl="http://166.0.199.118:17858"):
@@ -131,18 +138,25 @@ async def draw6(prompt, path="./test.png"):
     return path
 
 async def fluxDrawer(prompt):
+    # 随机session hash
+    session_hash = random_session_hash(11)
+    # 请求studio_token
+    async with httpx.AsyncClient() as client:
+        response = await client.get("https://www.modelscope.cn/api/v1/studios/token", headers={"cookie": modelscopeCookie})
+        response_data = response.json()
+        studio_token = response_data["Data"]["Token"]
+    print("generated studio_token: "+studio_token)
+
     # 第一个请求的URL和参数
     queue_join_url = "https://s5k.cn/api/v1/studio/ByteDance/Hyper-FLUX-8Steps-LoRA/gradio/queue/join"
     queue_join_params = {
         "backend_url": "/api/v1/studio/ByteDance/Hyper-FLUX-8Steps-LoRA/gradio/",
         "sdk_version": "4.38.1",
         "t": "1724901517779",
-        "studio_token": "e43dec10-c460-4f6e-ad89-726dc518325a",
+        "studio_token": studio_token,
         "__theme":"light",
     }
-    session_hash="me9nmffgnj"
     # 第二个请求的URL和headers
-
     headers = {
         "accept": "*/*",
         "accept-encoding": "gzip, deflate, br, zstd",
@@ -151,7 +165,7 @@ async def fluxDrawer(prompt):
         "content-type": "application/json",
         "cookie": "_ga=GA1.2.1599116772.1719823591; _ga_R1FN4KJKJH=GS1.1.1722428989.8.0.1722428989.0.0.0",
         "host": "s5k.cn",
-        "referer": "https://s5k.cn/inner/studio/gradio?backend_url=/api/v1/studio/ByteDance/Hyper-FLUX-8Steps-LoRA/gradio/&sdk_version=4.38.1&t=1724901517779&__theme=light&studio_token=e43dec10-c460-4f6e-ad89-726dc518325a",
+        "referer": f"https://s5k.cn/inner/studio/gradio?backend_url=/api/v1/studio/ByteDance/Hyper-FLUX-8Steps-LoRA/gradio/&sdk_version=4.38.1&t=1724901517779&__theme=light&studio_token={studio_token}",
         "sec-ch-ua": '"Not)A;Brand";v="99", "Microsoft Edge";v="127", "Chromium";v="127"',
         "sec-ch-ua-mobile": "?0",
         "sec-ch-ua-platform": '"Windows"',
@@ -159,33 +173,27 @@ async def fluxDrawer(prompt):
         "sec-fetch-mode": "cors",
         "sec-fetch-site": "same-origin",
         "user-agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/127.0.0.0 Safari/537.36 Edg/127.0.0.0",
-        "x-studio-token": "e43dec10-c460-4f6e-ad89-726dc518325a"
+        "x-studio-token": studio_token
     }
     data1={"data":[1024,1024,8,3.5,prompt,3413],"event_data":None,"fn_index":0,"trigger_id":18,"dataType":["slider","slider","slider","slider","textbox","number"],"session_hash":session_hash}
 
-    cookies = {
-        "_ga": "GA1.2.1599116772.1719823591",
-        "_ga_R1FN4KJKJH": "GS1.1.1722428989.8.0.1722428989.0.0.0",
-        "acw_tc": "276aedee17249273963305410e2ec4f647cc15bb887a0dcca6edb04ebdb533",
-        "csrf_session": "MTcyNDkwMTY2NnxEdi1CQkFFQ180SUFBUkFCRUFBQU12LUNBQUVHYzNSeWFXNW5EQW9BQ0dOemNtWlRZV3gwQm5OMGNtbHVad3dTQUJCTWNGbHRVMWswT0hNM1pEZEViM1J0fM2kZW1v-5i7-uelxRFfnp1qw9uePrN8uPHFQRmeEhFq",
-        "csrf_token": "ggzwEmJJ8rlf_2-hph7hoXQtecE%3D"
-    }
+
     # 发起第一个请求
     async with httpx.AsyncClient(headers=headers) as client:
         response = await client.post(queue_join_url, params=queue_join_params,json=data1)
         # print(f"POST request status code: {response.status_code}")
-        for header in response.headers:
-            if header[0].lower() == 'set-cookie':
-                cookie = SimpleCookie(header[1])
-                for key, morsel in cookie.items():
-                    cookies[key] = morsel.value
-        response_data = response.json()
-        event_id = response_data['event_id']
+        # for header in response.headers:
+        #     if header[0].lower() == 'set-cookie':
+        #         cookie = SimpleCookie(header[1])
+        #         for key, morsel in cookie.items():
+        #             cookies[key] = morsel.value
+        # response_data = response.json()
+        # event_id = response_data['event_id']
         #print(event_id)
 
-        queue_data_url=f"https://s5k.cn/api/v1/studio/ByteDance/Hyper-FLUX-8Steps-LoRA/gradio/queue/data?session_hash={session_hash}&studio_token=54f0b89d-beb9-4d7c-9dc2-5ca64e960ce9"
+        queue_data_url=f"https://s5k.cn/api/v1/studio/ByteDance/Hyper-FLUX-8Steps-LoRA/gradio/queue/data?session_hash={session_hash}&studio_token={studio_token}"
 
-        async with client.stream("GET", queue_data_url, headers=headers,cookies=cookies,timeout=60) as event_stream_response:
+        async with client.stream("GET", queue_data_url, headers=headers,timeout=60) as event_stream_response:
             async for line in event_stream_response.aiter_text():
                 event = line.replace("data:", "").strip()
                 if event:
