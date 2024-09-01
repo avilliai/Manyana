@@ -8,7 +8,7 @@ import requests
 import websockets
 import yaml
 
-from plugins.toolkits import translate,random_str
+from plugins.toolkits import translate,random_str,random_session_hash
 
 try:
     from plugins.modelsLoader import modelLoader
@@ -213,7 +213,7 @@ async def superVG(data, mode, urls="", langmode="<zh>"):
                 "fn_index": 0,
                 "dataType": ["textbox", "dropdown", "slider", "slider", "slider", "slider", "dropdown", "audio", "textbox",
                              "radio", "textbox", "slider"],
-                "session_hash": "xjwen214wqf"
+                "session_hash": random_session_hash(11)
             }
             p = "data/voices/" + random_str() + '.wav'
             async with httpx.AsyncClient(timeout=200, headers=headers) as client:
@@ -497,13 +497,14 @@ async def superVG(data, mode, urls="", langmode="<zh>"):
     elif mode == "firefly":
         datap = data
         uri = "wss://fs.firefly.matce.cn/queue/join"
-        session_hash = "1fki0r8hg8mj"
+        # 随机session hash
+        session_hash = random_session_hash(12)
 
         async with websockets.connect(uri) as ws:
             # 连接后发送的第一次请求
             await ws.send(json.dumps({"fn_index": 4, "session_hash": session_hash}))
             await ws.send(json.dumps(
-                {"data": [datap.get("speaker")], "event_data": None, "fn_index": 1, session_hash: "1fki0r8hg8mj"}))
+                {"data": [datap.get("speaker")], "event_data": None, "fn_index": 1, "session_hash": session_hash}))
             while True:
                 message = await ws.recv()
                 print("Received '%s'" % message)
@@ -516,7 +517,7 @@ async def superVG(data, mode, urls="", langmode="<zh>"):
         async with websockets.connect(uri) as ws:
             await ws.send(json.dumps({"fn_index": 4, "session_hash": session_hash}))
             await ws.send(
-                json.dumps({"data": [ibn], "event_data": None, "fn_index": 2, "session_hash": "1fki0r8hg8mj"}))
+                json.dumps({"data": [ibn], "event_data": None, "fn_index": 2, "session_hash": session_hash}))
             while True:
                 message = await ws.recv()
                 data = json.loads(message)
@@ -536,7 +537,7 @@ async def superVG(data, mode, urls="", langmode="<zh>"):
                                                                          "data": f"https://fs.firefly.matce.cn/file={example}",
                                                                          "is_file": True, "orig_name": "audio.wav"},
                                                exampletext, 0, 90, 0.7, 1.5, 0.7, datap.get("speaker")],
-                                      "event_data": None, "fn_index": 4, "session_hash": "1fki0r8hg8mj"}))
+                                      "event_data": None, "fn_index": 4, "session_hash": session_hash}))
 
             # 等待并处理服务器的消息
             while True:
@@ -562,6 +563,8 @@ async def superVG(data, mode, urls="", langmode="<zh>"):
 
 #modelscopeTTS V3，对接原神崩铁语音合成器。API用法相较之前发生了变化，参考V2修改而成。
 async def modelscopeV3(speaker,text):
+    # 随机session hash
+    session_hash = random_session_hash(11)
     # 第一个请求的URL
     queue_join_url = "https://s5k.cn/api/v1/studio/MuGeminorum/hoyoTTS/gradio/queue/join"
     # 第二个请求的URL
@@ -593,15 +596,15 @@ async def modelscopeV3(speaker,text):
         "fn_index": 3,
         "trigger_id": 37,
         "dataType": ["textbox", "dropdown", "slider", "slider", "slider", "slider"],
-        "session_hash": "zkv5z476rdp",
+        "session_hash": session_hash,
     }
     # 准备第二个链接请求的数据
     data_params = {
-        "session_hash": "zkv5z476rdp",
+        "session_hash": session_hash,
         "studio_token": None
     }
     # 发起第一个请求
-    with httpx.Client(timeout=10) as client:
+    async with httpx.AsyncClient(timeout=10) as client:
         join_response = httpx.post(queue_join_url, json=join_template,headers=headers)
         csrf_token = join_response.cookies["csrf_token"]
         cookies["csrf_token"] = csrf_token
@@ -609,26 +612,27 @@ async def modelscopeV3(speaker,text):
     async with httpx.AsyncClient(timeout=20) as client:
         count = 0
         async with client.stream("GET", queue_data_url, params=data_params, headers=headers, cookies=cookies) as response:
-            async for event in response.aiter_text():
-                # json老是报错，发现是estimation和process_starts有时候发送会挨得太近，导致俩json存到同一个字符串里，无法解析。由于格式固定，这里先字符串里判断是否有estimation，没有才继续。
-                event = event.replace("data:", "").strip()
-                # print("line: "+event)
-                if event and "estimation" not in event:
-                    event_data = json.loads(event)
-                    if event_data.get("msg") == "process_completed":
-                        p = "data/voices/" + random_str() + '.wav'
-                        newurl = event_data['output']['data'][0]['url']
-                        async with httpx.AsyncClient(timeout=200) as download_client:
-                            r = await download_client.get(newurl, headers=headers, cookies=cookies)
-                            with open(p, "wb") as f:
-                                f.write(r.content)
-                            return p
-                    # 已知问题：如果api短时间内请求过于频繁，api会返回错误。
-                    elif event_data.get("msg") == "unexpected_error":
-                        raise Exception("Returned unexpected error")
-                    count += 1
-                    if count > 10:
-                        raise Exception("Exceeded 10 events without entering return branch.")
+            async for chunk in response.aiter_text():
+                events = chunk.replace("data:", "").strip().split('\n')
+                for event in events:
+                    event = event.strip()
+                    if not event:
+                        continue
+                    try:
+                        event_data = json.loads(event)
+                        if event_data.get("msg") == "process_completed":
+                            p = "data/voices/" + random_str() + '.wav'
+                            newurl = event_data['output']['data'][0]['url']
+                            async with httpx.AsyncClient(timeout=200) as download_client:
+                                r = await download_client.get(newurl, headers=headers, cookies=cookies)
+                                with open(p, "wb") as f:
+                                    f.write(r.content)
+                                return p
+                        count += 1
+                        if count > 10:
+                            raise Exception("Exceeded 10 events without entering return branch.")
+                    except json.JSONDecodeError:
+                        raise Exception(f"JSON decode error{event}")
 async def fetch_FishTTS_ModelId(proxy, Authorization, speaker):
     proxies = {
         "http://": proxy,
@@ -783,7 +787,7 @@ async def modelscopeTTS(data):
         "fn_index": 0,
         "dataType": ["textbox", "dropdown", "slider", "slider", "slider", "slider", "dropdown", "audio", "textbox",
                      "radio", "textbox", "slider"],
-        "session_hash": "xjwen214wqf"
+        "session_hash": random_session_hash(11)
     }
     p = "data/voices/" + random_str() + '.wav'
     async with httpx.AsyncClient(timeout=200) as client:
