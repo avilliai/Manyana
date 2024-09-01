@@ -231,8 +231,8 @@ async def superVG(data, mode, urls="", langmode="<zh>"):
         p = "data/voices/" + random_str() + '.wav'
         url = f"https://api.lolimi.cn/API/yyhc/y.php?msg={text}&sp={speaker}"
         async with httpx.AsyncClient(timeout=200) as client:
-            r = await client.post(url)
-            newUrl = r.json().get("music")
+            r = await client.get(url)
+            newUrl = r.json().get("mp3")
             #print("outvits语音合成路径：" + p)
             r1 = requests.get(newUrl)
             with open(p, "wb") as f:
@@ -742,8 +742,8 @@ async def outVits(data):
     p = "data/voices/" + random_str() + '.wav'
     url = f"https://api.lolimi.cn/API/yyhc/y.php?msg={text}&sp={speaker}"
     async with httpx.AsyncClient(timeout=200) as client:
-        r = await client.post(url)
-        newUrl = r.json().get("music")
+        r = await client.get(url)
+        newUrl = r.json().get("mp3")
         print("outvits语音合成路径：" + p)
         r1 = requests.get(newUrl)
         with open(p, "wb") as f:
