@@ -226,18 +226,8 @@ async def superVG(data, mode, urls="", langmode="<zh>"):
                     f.write(r.content)
                 return p
     elif mode == "outVits":
-        speaker = data.get("speaker")
-        text = data.get("text")
-        p = "data/voices/" + random_str() + '.wav'
-        url = f"https://api.lolimi.cn/API/yyhc/y.php?msg={text}&sp={speaker}"
-        async with httpx.AsyncClient(timeout=200) as client:
-            r = await client.get(url)
-            newUrl = r.json().get("mp3")
-            #print("outvits语音合成路径：" + p)
-            r1 = requests.get(newUrl)
-            with open(p, "wb") as f:
-                f.write(r1.content)
-            return p
+        p=await outVits(text = data['text'],speaker=data["speaker"])
+        return p
     elif mode == "FishTTS":
         modelid = data.get("speaker")
 
@@ -733,16 +723,15 @@ async def taffySayTest(data, url, proxy=None):
             return p
 
 
-async def outVits(data):
-    speaker = data.get("speaker")
-    text = data.get("text")
+async def outVits(text,speaker):
     # os.system("where python")
     #p = random_str() + ".mp3"
     #p = "data/voices/" + p
     p = "data/voices/" + random_str() + '.wav'
-    url = f"https://api.lolimi.cn/API/yyhc/y.php?msg={text}&sp={speaker}"
+    url = f"https://api.lolimi.cn/API/yyhc/api.php?msg={text}&sp={speaker}"
     async with httpx.AsyncClient(timeout=200) as client:
         r = await client.get(url)
+        print(r)
         newUrl = r.json().get("mp3")
         print("outvits语音合成路径：" + p)
         r1 = requests.get(newUrl)
