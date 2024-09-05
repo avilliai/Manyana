@@ -22,7 +22,7 @@ from mirai import Mirai, WebSocketAdapter, GroupMessage, Image, At, Startup, Fri
 from plugins.toolkits import newLogger,random_str,get_system_info
 from run import aiReply, voiceReply, nudgeReply, wikiHelper, imgSearch, extraParts, wReply, groupManager, \
     musicShare, LiveMonitor, aronaapi, groupGames, musicpick, scheduledTasks, appCard, aiDraw, starRail, bangumi, \
-    draftBottle
+    draftBottle, Reread_yaml
 
 
 # 为了实现黑名单和群开关功能，我们将继承webSocketAdapter类
@@ -380,6 +380,7 @@ if __name__ == '__main__':
     starRail.main(bot, logger)
     bangumi.main(bot,logger)
     draftBottle.main(bot,logger) #芝士漂流瓶
+    Reread_yaml.main(bot, logger)
 
     #gemini_ai.main(bot,logger,master)
     startVer()
