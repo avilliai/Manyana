@@ -103,7 +103,6 @@ def main(bot, master, logger):
     max_text_len = config.get("chatGLM").get("maxLen")
     voice_rate = config.get("chatGLM").get("voiceRate")
     with_text = config.get("chatGLM").get("withText")
-    reply_model = result.get("chatGLM").get("model")
 
     with open('config/autoSettings.yaml', 'r', encoding='utf-8') as f:
         resul = yaml.load(f.read(), Loader=yaml.FullLoader)
@@ -509,7 +508,7 @@ def main(bot, master, logger):
         group_id = event.group.id
 
         # Check if the request is for generating a summary
-        if str(event.message_chain) == "生成总结":
+        if str(event.message_chain) == "生成总结" and event.group.id in trustG or event.group.id == int(mainGroup):
             logger.info("收到总结请求")
             try:
                 # Fetch recent messages from the database
@@ -536,3 +535,5 @@ def main(bot, master, logger):
                 await bot.send(event, "生成总结失败，请稍后再试", True)
                 logger.warning(f"Failed to generate summary for group {group_id}: {e}")
 
+        else:
+            return
