@@ -139,12 +139,11 @@ def main(bot, logger):
             
         #测试用，不用管,获取群号和对应变量
         if '测试' in str(event.message_chain) :
-            name_id_number=int(event.sender.id)
             attack_name_id=str(manager.get_variable('attack_name_id_'+str(group_id)))
             attack_state=str(manager.get_variable('attack_state_'+str(group_id)))
             attack_member=str(manager.get_variable('attack_member_'+str(group_id)))
             times=str(manager.get_variable('times_'+str(group_id)))
-            white_list_state=str(manager.get_variable("white_list_"+str(name_id_number)))
+            white_list_state=str(manager.get_variable("white_list_"+str(attack_name_id)))
             await bot.send(event, "group_id："+str(group_id)+"\n"+"group_id_judge："+str(group_id_judge)+"\n"+'attack_name_id_'+str(group_id)+"："+str(attack_name_id)+"\n"+'attack_state_'+str(group_id)+"："+str(attack_state)+"\n"+'attack_member_'+str(group_id)+"："+str(attack_member)+"\n"+"white_list_state："+str(white_list_state)+"\nmaingroup:"+str(mainGroup))
         
         if str(event.message_chain) == "初始化":
@@ -287,24 +286,19 @@ def main(bot, logger):
         
         #这里的是只会攻击一次的
         if str(event.message_chain).startswith("攻击") :
-            msg = "".join(map(str, event.message_chain[Plain]))
-        # 匹配指令
-            m = re.match(r'^攻击\s*(\w+)\s*$', msg.strip())
-            if m:
-            # 取出指令中的地名
-                #await bot.send(event, '成功匹配')
-                name_user = m.group(1)
-                if str(name_user) != "无效化":
-                    file_path = 'config/attack_elements.yaml'
-                    attack_context = random_yaml_get(file_path)
-                
-                    name_id = int(str(event.sender.id))
-                    name_nickname = str(event.sender.member_name)
-                    await bot.send(event,  "@"+str(name_user)+" "+str(attack_context))
             context=str(event.message_chain)
             name_id_number=re.search(r'\d+', context)
             if name_id_number:
                 number = int(name_id_number.group())
-                file_path = 'config/attack_elements.yaml'
-                attack_context = random_yaml_get(file_path)
-                await bot.send_group_message(event.sender.group.id, [At(number), " "+str(attack_context)])
+                white_list_state=int(manager.get_variable("white_list_"+str(number)))
+                
+                if number == master :
+                    await bot.send(event, "不可以攻击master哦~~")
+                                    
+                elif white_list_state == 1 :
+                    manager.modify_variable('attack_state_'+str(group_id), "0")
+                    await bot.send(event, str(botName)+'不会攻击好孩子的喵~')
+                else:
+                    file_path = 'config/attack_elements.yaml'
+                    attack_context = random_yaml_get(file_path)
+                    await bot.send_group_message(event.sender.group.id, [At(number), " "+str(attack_context)])
