@@ -268,7 +268,7 @@ def main(bot, master, logger):
         friend_name = event.sender.nickname
         if str(event.message_chain) == "生成总结":
             await bot.send(event, "TIP: 请发送  生成总结#群号  以生成对应群的总结", True)
-        elif str(event.message_chain) == "生成总结#":
+        elif str(event.message_chain).startswith("生成总结#"):
             group_id = str(event.message_chain).split("#")[1]
             if not group_id.isdigit() or len(group_id) < 5:
                 await bot.send(event, "TIP: 请发送  生成总结#群号  以生成对应群的总结", True)
