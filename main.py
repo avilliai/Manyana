@@ -20,7 +20,7 @@ import yaml
 from mirai import Mirai, WebSocketAdapter, GroupMessage, Image, At, Startup, FriendMessage, Shutdown,MessageChain
 
 from plugins.toolkits import newLogger,random_str,get_system_info
-from run import ai_reply, voiceReply, nudgeReply, wikiHelper, imgSearch, extraParts, wReply, groupManager, \
+from run import aiReply, ai_summarize, voiceReply, nudgeReply, wikiHelper, imgSearch, extraParts, wReply, groupManager, \
     musicShare, LiveMonitor, aronaapi, groupGames, musicpick, scheduledTasks, appCard, aiDraw, starRail, bangumi, \
     draftBottle
 
@@ -58,6 +58,9 @@ class MyWebSocketAdapter(WebSocketAdapter):
         raise TimeoutError(
             f'[WebSocket] mirai-api-http 响应超时，可能是由于调用出错。同步 ID：{sync_id}。'
         )
+
+
+
 if __name__ == '__main__':
     if not os.path.exists("data/pictures/benzi"):
         os.mkdir("data/pictures/benzi")
@@ -346,7 +349,9 @@ if __name__ == '__main__':
     # current_dir = os.path.dirname(os.path.abspath(__file__))
     voiceReply.main(bot, master, logger)  # 语音生成
 
-    ai_reply.main(bot, master, logger)  # poe-api
+    aiReply.main(bot, master, logger)  # poe-api
+    ai_summarize.main(bot, master, logger)  # 文本摘要模块
+
     imgSearch.main(bot, result.get("sauceno-api"), result.get("proxy"), logger)
     try:
         from run import getcomic
