@@ -325,3 +325,189 @@ async def clearAllPrompts():
         return "已清除所有用户的prompt"
     except:
         return "清理缓存出错，无本地对话记录"
+
+
+
+
+
+
+
+
+##################################################################
+##### Refactored codes, better readability and extendability #####
+#####  解耦合后的代码，具有更好的可阅读性和拓展性                     #####
+##################################################################
+
+
+async def direct_sending_to_model(sender_name, sender_id, text, model_here=None, trust_user=None, img_urls=None,
+                                  check_if_rep_first_time=False):
+    """
+    Main function to handle sending text to various models and return their responses.
+    """
+    model_here = model_here or modelDefault  # Use default model if none provided
+    logger.info(f"Model: {model_here}, Request by: {sender_id}")
+
+    try:
+        # Handle empty text
+        if not text.strip():
+            logger.warning("LLM core received empty text")
+            return "奇怪，语言模型没有收到任何文本，联系管理员检查一下后台？"
+
+        # Select the appropriate model handler
+        if model_here == "random":
+            rep = await handle_random_model(sender_name, text)
+        else:
+            rep = await handle_specific_model(sender_name, sender_id, text, model_here, img_urls, img_urls, trust_user)
+
+        # If no response was generated, log an error
+        if not rep:
+            logger.error(f"No valid response from {model_here}.")
+            return "奇怪，语言模型似乎没有正确回应，联系管理员检查一下后台？"
+
+        # Log and return the response
+        logger.info(f"{model_here} bot 回复: {rep.get('content', 'No content')}")
+        return rep.get("content", "No content available")
+
+    except Exception as e:
+        logger.error(f"Error in {model_here}: {e}")
+        # Clear prompts if auto-clear is enabled
+        if autoClearWhenError:
+            chatGLMData.pop(sender_id, None)
+        return "出错啦，请重试！\n如果频繁出错的话，请联系master更换默认模型~"
+
+
+async def handle_random_model(sender_name, text):
+    """
+    Handle sending the request to multiple models and selecting one at random.
+    """
+
+    loop = asyncio.get_event_loop()
+
+    tasks = [
+        loop_run_in_executor(loop, Gemma, [{"content": text, "role": "user"}], sender_name),
+        loop_run_in_executor(loop, alcex_GPT3_5, [{"content": text, "role": "user"}], sender_name),
+        loop_run_in_executor(loop, catRep, [{"content": text, "role": "user"}], sender_name),
+        loop_run_in_executor(loop, momoRep, [{"content": text, "role": "user"}], sender_name)
+    ]
+
+    # Wait for all tasks to complete
+    done, _ = await asyncio.wait(tasks, return_when=asyncio.ALL_COMPLETED)
+
+    # Process the responses and select one based on priority
+    responses = {task.result()[0]: task.result()[1] for task in done if task.result()[1]}
+    if not responses:
+        logger.warning("No valid responses from any model.")
+        return None
+
+    # Select the response based on the model priority
+    return select_response_by_priority(responses)
+
+
+def select_response_by_priority(responses):
+    """
+    Select a response based on predefined priority.
+    """
+    model_priority_map = {
+        "gptX": "gptvvvv", "清言": "qingyan", "通义千问": "qwen", "anotherGPT3.5": "anotherGPT35",
+        "lolimigpt": "relolimigpt2", "step": "stepAI", "讯飞星火": "xinghuo", "猫娘米米": "catRep",
+        "沫沫": "momoRep"
+    }
+
+    for priority in randomModelPriority:
+        model = model_priority_map.get(priority, priority)
+        if model in responses:
+            logger.info(f"Selected model: {model} response.")
+            return responses[model]
+
+    logger.warning("No models matched the priority list.")
+    return None
+
+
+async def handle_specific_model(loop, sender_name, sender_id, text, model_here, img_urls, trustUser):
+    """
+    Handle sending the request to a specific model.
+    """
+    model_mapping = {
+        "gpt3.5": handle_gpt35,
+        "腾讯元器": handle_yuanqi,
+        "binggpt4": handle_binggpt4,
+        "Gemini": handle_gemini,
+        "sparkAI": handle_sparkAI,
+        "wenxinAI": handle_wenxinAI,
+    }
+
+    # If modelHere matches a key in model_mapping, call the corresponding function
+    handler = model_mapping.get(model_here)
+    if handler:
+        return await handler(sender_name, sender_id, text, img_urls)
+
+    # Default behavior for custom models
+    return await handle_custom_model(sender_name, sender_id, text, model_here, trustUser)
+
+
+async def handle_gpt35(sender_name, sender_id, text, imgurls):
+    """
+    Handle requests for GPT-3.5.
+    """
+    loop = asyncio.get_event_loop()
+
+    if openai_transit.strip():
+        rep = await loop.run_in_executor(None, gptUnofficial, [{"content": text, "role": "user"}], gptkeys,
+                                         openai_transit, sender_name, openai_model)
+    else:
+        rep = await loop.run_in_executor(None, gptOfficial, [{"content": text, "role": "user"}], gptkeys, proxy,
+                                         sender_name, openai_model)
+
+
+async def handle_yuanqi(sender_name, sender_id, text, imgurls):
+    """
+    Handle requests for 腾讯元器.
+    """
+    return await YuanQiTencent([{"content": text, "role": "user"}], yuanqiBotId, yuanqiBotToken, sender_id)
+
+
+async def handle_binggpt4(sender_name, sender_id, text, imgurls):
+    """
+    Handle requests for BingGPT4.
+    """
+    response = await loop_run_in_executor(binggpt4, [{"content": text, "role": "user"}], sender_name)
+    if isinstance(response, list):
+        logger.error("BingGPT4 model is unavailable.")
+        return None
+    return response
+
+
+async def handle_gemini(sender_name, sender_id, text, imgurls):
+    """
+    Handle requests for Gemini model.
+    """
+    response = await geminirep(ak=random.choice(geminiapikey), messages=[{"content": text, "role": "user"}],
+                               bot_info=sender_name, GeminiRevProxy=GeminiRevProxy, model=geminimodel, imgurls=imgurls)
+    return {"role": "assistant", "content": response[0].replace(r"\n", "\n")}
+
+
+async def handle_sparkAI(sender_name, sender_id, text, imgurls):
+    """
+    Handle requests for sparkAI (讯飞星火).
+    """
+    return await sparkAI([{"content": text, "role": "user"}], sender_name, sparkAppKey, sparkAppSecret, sparkModel)
+
+
+async def handle_wenxinAI(sender_name, sender_id, text, imgurls):
+    """
+    Handle requests for 文心一言 (wenxinAI).
+    """
+    return await wenxinAI([{"content": text, "role": "user"}], sender_name, wenxinAppKey, wenxinAppSecret, wenxinModel)
+
+
+async def handle_custom_model(senderName, senderId, text, modelHere, trustUser):
+    """
+    Handle requests for custom chatGLM-based models.
+    """
+    if isinstance(allcharacters.get(modelHere), dict):
+        if str(senderId) not in trustUser and trustglmReply:
+            logger.warning(f"User {senderId} does not have permission to use model {modelHere}.")
+            return None
+        return await loop_run_in_executor(chatGLM, chatGLM_api_key, senderName, [{"content": text, "role": "user"}])
+
+    return None
