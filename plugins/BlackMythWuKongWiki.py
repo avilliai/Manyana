@@ -36,10 +36,21 @@ async def wukongwiki(aim):
         mesChain.append([Plain(p.text.strip())])
         div_boxes = soup.find_all('div', class_='div-box')
         for div_box in div_boxes:
-            fashu_names = [name.text.strip() for name in div_box.find_all('div', class_='fashu-name')][0]
-            fashu_blocks = [block.find('p').text.strip() for block in
-                                    div_box.find_all('div', class_='fashu-blocks') if block.find('p')][0]
-            gif500px_href = div_box.find('div', class_='gif500px').find('img')['src']
-            p=await picDwn(gif500px_href, f"data/pictures/cache/{random_str()}.gif")
-            mesChain.append([Plain(fashu_names+"\n"+fashu_blocks),Image(path=p)])
+            fashu_names = div_box.find('div', class_='fashu-name').text.strip()
+            fashu_block = div_box.find('div', class_='fashu-blocks').find('p')
+            try:
+                gif500px_href = div_box.find('div', class_='gif500px').find('img')['src']
+                p = await picDwn(gif500px_href, f"data/pictures/cache/{random_str()}.gif")
+            except:
+                p="data/colorfulAnimeCharacter/2ab85edd7c1e98b1906ce9e11723cd80_aio.png"
+
+            if fashu_names:
+                pass
+            else:
+                fashu_names=""
+            if fashu_block:
+                fashu_block=fashu_block.text.strip()
+            else:
+                fashu_block=""
+        mesChain.append([Plain(fashu_names+"\n"+fashu_block),Image(path=p)])
         return mesChain
