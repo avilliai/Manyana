@@ -6,7 +6,7 @@ import httpx
 from plugins.toolkits import get_headers, random_str, picDwn
 from bs4 import BeautifulSoup
 from mirai import FriendMessage, GroupMessage, At, Plain,MessageChain,Startup,Image
-async def wukongwiki(aim):
+async def wukongwiki(aim,action=False):
     mesChain=[]
     async with httpx.AsyncClient(headers=get_headers(),timeout=20,verify=False) as client:
         r = await client.get(f"https://wiki.biligame.com/wukong/{aim}")
@@ -31,29 +31,30 @@ async def wukongwiki(aim):
         target_div = target_div.find_next_sibling("div")
         target_text = target_div.text.strip()
         mesChain.append([Plain(p.text.strip()+"\n"+target_text)])
-        #技能招式
-        p = target_div.find_next_sibling("p").find_next_sibling("p")
-        mesChain.append([Plain(p.text.strip())])
-        div_boxes = soup.find_all('div', class_='div-box')
-        for div_box in div_boxes:
-            try:
-                fashu_names = div_box.find('div', class_='fashu-name').text.strip()
-                fashu_block = div_box.find('div', class_='fashu-blocks').find('p')
+        if action:
+            #技能招式
+            p = target_div.find_next_sibling("p").find_next_sibling("p")
+            mesChain.append([Plain(p.text.strip())])
+            div_boxes = soup.find_all('div', class_='div-box')
+            for div_box in div_boxes:
                 try:
-                    gif500px_href = div_box.find('div', class_='gif500px').find('img')['src']
-                    p = await picDwn(gif500px_href, f"data/pictures/cache/{random_str()}.gif")
-                except:
-                    p="data/colorfulAnimeCharacter/2ab85edd7c1e98b1906ce9e11723cd80_aio.png"
+                    fashu_names = div_box.find('div', class_='fashu-name').text.strip()
+                    fashu_block = div_box.find('div', class_='fashu-blocks').find('p')
+                    try:
+                        gif500px_href = div_box.find('div', class_='gif500px').find('img')['src']
+                        p = await picDwn(gif500px_href, f"data/pictures/cache/{random_str()}.gif")
+                    except:
+                        p="data/colorfulAnimeCharacter/2ab85edd7c1e98b1906ce9e11723cd80_aio.png"
 
-                if fashu_names:
-                    pass
-                else:
-                    fashu_names=""
-                if fashu_block:
-                    fashu_block=fashu_block.text.strip()
-                else:
-                    fashu_block=""
-                mesChain.append([Plain(fashu_names+"\n"+fashu_block),Image(path=p)])
-            except:
-                continue
+                    if fashu_names:
+                        pass
+                    else:
+                        fashu_names=""
+                    if fashu_block:
+                        fashu_block=fashu_block.text.strip()
+                    else:
+                        fashu_block=""
+                    mesChain.append([Plain(fashu_names+"\n"+fashu_block),Image(path=p)])
+                except:
+                    continue
         return mesChain
