@@ -27,10 +27,13 @@ async def wukongwiki(aim,action=False):
         target_text = target_div.text.strip()
         mesChain.append([Image(path=p), Plain(all_text+"\n"+target_text)])
         #原著出处
-        p=target_div.find_next_sibling("p")
-        target_div = target_div.find_next_sibling("div")
-        target_text = target_div.text.strip()
-        mesChain.append([Plain(p.text.strip()+"\n"+target_text)])
+        try:
+            p=target_div.find_next_sibling("p")
+            target_div = target_div.find_next_sibling("div")
+            target_text = target_div.text.strip()
+            mesChain.append([Plain(p.text.strip()+"\n"+target_text)])
+        except:
+            pass #马夸的
         if action:
             #技能招式
             p = target_div.find_next_sibling("p").find_next_sibling("p")
