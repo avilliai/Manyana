@@ -15,7 +15,21 @@ from mirai import FriendMessage, GroupMessage, At, Plain,MessageChain,Startup
 from mirai import Image, Voice
 from mirai.models import ForwardMessageNode, Forward
 
+from plugins.wReply.MessageConvert import EventMessageConvert
 from plugins.wReply.wReplyOpeator import addRep, loadAllDict, getRep
+
+
+async def mesChainConstructer(source):
+    bottleConstruct = []
+    if "text" in str(source) or "image" in str(source):
+        for i in source:
+            if "text" in i:
+                bottleConstruct.append(Plain(i["text"]))
+            elif "image" in i:
+                bottleConstruct.append(Image(path=i["image"]))
+        return bottleConstruct
+    else:
+        return json.loads(source)  # 对旧数据实现兼容
 
 
 def main(bot,logger):
@@ -94,10 +108,11 @@ def main(bot,logger):
                     operateProcess.pop(event.sender.id)
                     return
                 await sleep(0.1)
+                newMes = await EventMessageConvert(event.message_chain)
                 if "value" in operateProcess[event.sender.id]:
-                    operateProcess[event.sender.id]["value"].append(event.message_chain.json())
+                    operateProcess[event.sender.id]["value"].append(newMes)
                 else:
-                    operateProcess[event.sender.id]["value"]=[event.message_chain.json()]
+                    operateProcess[event.sender.id]["value"]=[newMes]
                 await bot.send(event,"已记录回复")
                 operateProcess[event.sender.id]["time"] = datetime.datetime.now()  #不要忘记刷新时间
 
@@ -133,10 +148,11 @@ def main(bot,logger):
                 if r != None:
                     index=0
                     for i in r[1]:
+                        mesc = await mesChainConstructer(random.choice(r[1]))
                         b1.append(ForwardMessageNode(sender_id=bot.qq, sender_name="Manyana",
                                                 message_chain=MessageChain([f"编号{index}👇"])))
                         b1.append(ForwardMessageNode(sender_id=bot.qq, sender_name="Manyana",
-                                                message_chain=MessageChain(json.loads(i))))
+                                                message_chain=MessageChain(mesc)))
                         index+=1
                     await bot.send(event, Forward(node_list=b1))
                     await bot.send(event,f"发送 删除#编号 以删除指定回复\n发送 删除关键字 以删除全部回复")
@@ -189,7 +205,8 @@ def main(bot,logger):
                 c = random.choice(colorfulCharacterList)
                 await bot.send(event, Image(path="data/colorfulAnimeCharacter/" + c))
                 return
-            await bot.send(event, json.loads(random.choice(r[1])))
+            mesc=await mesChainConstructer(random.choice(r[1]))
+            await bot.send(event, MessageChain(mesc))
     @bot.on(Startup)
     async def checkTimeOut(event: Startup):
         global operateProcess
