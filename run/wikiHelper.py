@@ -3,9 +3,10 @@ import os
 
 import requests
 import yaml
-from mirai import GroupMessage
+from mirai import GroupMessage,MessageChain
 from mirai import Image, Voice
-
+from mirai.models import ForwardMessageNode, Forward
+from plugins.BlackMythWuKongWiki import wukongwiki
 from plugins.toolkits import random_str,screenshot_to_pdf_and_png
 from plugins.newsEveryDay import nong
 from plugins.vitsGenerate import voiceGenerate
@@ -195,3 +196,17 @@ def main(bot, logger):
                 await bot.send(event, Image(path=path), True)
                 logger.info("发送成功")
                 return
+    @bot.on(GroupMessage)
+    async def wukongwikiQ(event: GroupMessage):
+        if str(event.message_chain).startswith("黑神话查询"):
+            try:
+                aim=str(event.message_chain).replace("黑神话查询","")
+                logger.info(f"黑神话查询{aim}")
+                mesChain=await wukongwiki(aim)
+                b1=[]
+                for i in mesChain:
+                    b1.append(ForwardMessageNode(sender_id=bot.qq, sender_name="Manyana",message_chain=MessageChain(i)))
+                await bot.send(event, Forward(node_list=b1))
+            except Exception as e:
+                logger.error(e)
+                await bot.send(event,f"查询{aim}失败，请重试或检查bot网络连接")
