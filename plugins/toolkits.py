@@ -258,6 +258,6 @@ async def webScreenShot(url, path):
 async def picDwn(url, path):
     async with httpx.AsyncClient(timeout=20) as client:
         r = await client.get(url)
-        img = Image.open(BytesIO(r.content))  # 从二进制数据创建图片对象
-        img.save(path)  # 使用PIL库保存图片
+        with open(path, "wb") as f:
+            f.write(r.content)
         return path
