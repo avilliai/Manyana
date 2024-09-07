@@ -52,5 +52,5 @@ async def wukongwiki(aim):
                 fashu_block=fashu_block.text.strip()
             else:
                 fashu_block=""
-        mesChain.append([Plain(fashu_names+"\n"+fashu_block),Image(path=p)])
+            mesChain.append([Plain(fashu_names+"\n"+fashu_block),Image(path=p)])
         return mesChain
