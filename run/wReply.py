@@ -153,7 +153,7 @@ def main(bot,logger):
                 if r != None:
                     index=0
                     for i in r[1]:
-                        mesc = await mesChainConstructer(random.choice(r[1]))
+                        mesc = await mesChainConstructer(i)
                         b1.append(ForwardMessageNode(sender_id=bot.qq, sender_name="Manyana",
                                                 message_chain=MessageChain([f"编号{index}👇"])))
                         b1.append(ForwardMessageNode(sender_id=bot.qq, sender_name="Manyana",
@@ -247,9 +247,10 @@ def main(bot,logger):
             if str(event.message_chain)==repeatData[event.group.id]["simplemes"]: #最新的消息链同记录的最后一个消息链相同
                 score=await compare2messagechain(event.message_chain.json(),repeatData[event.group.id]["mes"])
                 print(score)
-                if score>96:
+                if score>90:
                     if repeatData[event.group.id]["times"]==3: #3次，进入复读
-                        await bot.send(event,event.message_chain) #复读一次
+                        d=await mesChainConstructer(repeatData[event.group.id]["sefmeschain"])
+                        await bot.send(event,MessageChain(d)) #复读一次
                         logger.info(f"复读一次{str(event.message_chain)}")
                         repeatData.pop(event.group.id)  # 终止此次复读任务
                         repeatLock[event.group.id]=datetime.datetime.now() #进入cd时间
@@ -265,7 +266,7 @@ def main(bot,logger):
                 logger.info("终止复读任务")
                 repeatData.pop(event.group.id) #终止此次复读任务
         else:
-            if event.group.id in repeatLock and datetime.datetime.now()-repeatLock[event.group.id]<datetime.timedelta(6): #时间锁
+            if event.group.id in repeatLock and datetime.datetime.now()-repeatLock[event.group.id]<datetime.timedelta(60): #时间锁
                 return
-            repeatData[event.group.id]={"times":1,"mes":event.message_chain.json(),"simplemes":str(event.message_chain)}
+            repeatData[event.group.id]={"times":1,"mes":event.message_chain.json(),"simplemes":str(event.message_chain),"sefmeschain":await EventMessageConvert(event.message_chain)}
 
