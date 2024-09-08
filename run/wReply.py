@@ -256,9 +256,7 @@ def main(bot,logger):
                         repeatLock[event.group.id]=datetime.datetime.now() #进入cd时间
                         logger.info(f"{event.group.id} 进入cd冷却60s")
                     else:
-                        logger.info("复读任务已激活")
                         repeatData[event.group.id]["times"]=repeatData[event.group.id]["times"]+1 #加一次
-                    return
                 else:
                     logger.info("终止复读任务")
                     repeatData.pop(event.group.id)  # 终止此次复读任务
