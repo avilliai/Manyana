@@ -106,7 +106,19 @@ def delete_and_remain(file_path, specific_keys):
     with open(file_path, 'w', encoding='utf-8') as file:
         yaml.dump(filtered_data, file, allow_unicode=True)
 
+def save_to_yaml(file_path, element):
+    data = []
+    # 检查文件是否存在，如果存在则加载已有数据
+    if os.path.exists(file_path):
+        with open(file_path, 'r', encoding='utf-8') as file:
+            data = yaml.safe_load(file) or []
 
+    # 添加新元素到数据列表中
+    data.append(element)
+    
+    # 写入文件
+    with open(file_path, 'w', encoding='utf-8') as file:
+        yaml.dump(data, file, allow_unicode=True)
 
 def main(bot, logger):
     @bot.on(GroupMessage)
@@ -160,6 +172,17 @@ def main(bot, logger):
             specific_keys = ['attack_group_switch', 'limit_of_times']  # 保留特定元素的键
             delete_and_remain(file_path, specific_keys)
             await bot.send(event, '已经解除你的攻击状态啦')
+
+        if str(event.message_chain).startswith("添加攻击文本") :
+        # 匹配指令
+            msg = event.message_chain[Plain][0].text.strip()
+            new_text = msg[len("添加攻击文本："):].strip()
+            if new_text:
+                file_path = 'config/attack_elements.yaml'
+                save_to_yaml(file_path, new_text)
+                await bot.send(event, f"已添加攻击文本: {new_text}")
+            else:
+                await bot.send(event, "无法添加空文本")
             
             
         # 被攻击者白名单，以防有人滥用
