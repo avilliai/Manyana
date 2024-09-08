@@ -246,9 +246,8 @@ def main(bot,logger):
         if event.group.id in repeatData:
             if str(event.message_chain)==repeatData[event.group.id]["simplemes"]: #最新的消息链同记录的最后一个消息链相同
                 score=await compare2messagechain(event.message_chain.json(),repeatData[event.group.id]["mes"])
-                print(score)
                 if score>90:
-                    if repeatData[event.group.id]["times"]==3: #3次，进入复读
+                    if repeatData[event.group.id]["times"]==2: #3次，进入复读
                         d=await mesChainConstructer(repeatData[event.group.id]["sefmeschain"])
                         await bot.send(event,MessageChain(d)) #复读一次
                         logger.info(f"复读一次{str(event.message_chain)}")
