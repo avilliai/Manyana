@@ -14,9 +14,10 @@ from fuzzywuzzy import process
 from mirai import FriendMessage, GroupMessage, At, Plain,MessageChain,Startup
 from mirai import Image, Voice
 from mirai.models import ForwardMessageNode, Forward
+from plugins.wReply.wReplyOpeator import addRep, loadAllDict, getRep, compare2messagechain
 
 from plugins.wReply.MessageConvert import EventMessageConvert
-from plugins.wReply.wReplyOpeator import addRep, loadAllDict, getRep
+
 
 
 async def mesChainConstructer(source):
@@ -49,6 +50,10 @@ def main(bot,logger):
     with open('data/userData.yaml', 'r', encoding='utf-8') as file:
         userdict = yaml.load(file, Loader=yaml.FullLoader)
     colorfulCharacterList = os.listdir("data/colorfulAnimeCharacter")
+    global repeatData
+    repeatData={333:{"times":0,"mes":"你好","simplemes":"你好"}}
+    global repeatLock
+    repeatLock={1111: datetime.datetime.now()} #复读冷却锁
     #开始添加
     @bot.on(GroupMessage)
     async def startAddRep(event: GroupMessage):
@@ -234,3 +239,33 @@ def main(bot,logger):
             global userdict
             with open('data/userData.yaml', 'r', encoding='utf-8') as file:
                 userdict = yaml.load(file, Loader=yaml.FullLoader)
+    #用以实现复读
+    @bot.on(GroupMessage)
+    async def repeatFunc(event: GroupMessage):
+        global repeatData,repeatLock
+        if event.group.id in repeatData:
+            if str(event.message_chain)==repeatData[event.group.id]["simplemes"]: #最新的消息链同记录的最后一个消息链相同
+                score=await compare2messagechain(event.message_chain.json(),repeatData[event.group.id]["mes"])
+                print(score)
+                if score>96:
+                    if repeatData[event.group.id]["times"]==3: #3次，进入复读
+                        await bot.send(event,event.message_chain) #复读一次
+                        logger.info(f"复读一次{str(event.message_chain)}")
+                        repeatData.pop(event.group.id)  # 终止此次复读任务
+                        repeatLock[event.group.id]=datetime.datetime.now() #进入cd时间
+                        logger.info(f"{event.group.id} 进入cd冷却60s")
+                    else:
+                        logger.info("复读任务已激活")
+                        repeatData[event.group.id]["times"]=repeatData[event.group.id]["times"]+1 #加一次
+                    return
+                else:
+                    logger.info("终止复读任务")
+                    repeatData.pop(event.group.id)  # 终止此次复读任务
+            else:
+                logger.info("终止复读任务")
+                repeatData.pop(event.group.id) #终止此次复读任务
+        else:
+            if event.group.id in repeatLock and datetime.datetime.now()-repeatLock[event.group.id]<datetime.timedelta(6): #时间锁
+                return
+            repeatData[event.group.id]={"times":1,"mes":event.message_chain.json(),"simplemes":str(event.message_chain)}
+
