@@ -3,34 +3,8 @@ import os
 import random
 
 import yaml
-import httpx
-from bs4 import BeautifulSoup
-from fuzzywuzzy import process
-from mirai import GroupMessage, At
-from mirai import Voice
-from mirai.models import MusicShare
-
-from itertools import repeat
-
-from plugins import weatherQuery
-
-import datetime
-import json
-
 import re
-from asyncio import sleep
-from io import BytesIO
-import requests
-from PIL import Image as Image1
-from mirai import GroupMessage, At, Plain
-from mirai import Image, Voice, Startup, MessageChain
-from mirai.models import ForwardMessageNode, Forward
-
-from plugins.toolkits import random_str,picDwn
 from mirai import Mirai, WebSocketAdapter, GroupMessage, Image, At, Startup, FriendMessage, Shutdown,MessageChain
-
-
-
 
 
 class YamlManager:
@@ -105,9 +79,6 @@ def delete_and_remain(file_path, specific_keys):
                      if key.startswith("white_list") or key in specific_keys}
     with open(file_path, 'w', encoding='utf-8') as file:
         yaml.dump(filtered_data, file, allow_unicode=True)
-
-
-
 def main(bot, logger):
     @bot.on(GroupMessage)
     async def Reread_yaml(event: GroupMessage):
@@ -125,8 +96,6 @@ def main(bot, logger):
         #初始化文件
         initial_data = {'attack_group_switch': 1, 'limit_of_times': 3, "white_list_"+str(master): 1}
         manager = YamlManager('config/attack_sb_list.yaml', initial_data)
-        
-        
         # 读取群聊变量
         group_id=str(event.group.id)
         group_id_judge=int(manager.get_variable(str(group_id)))
