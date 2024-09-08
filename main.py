@@ -250,8 +250,8 @@ if __name__ == '__main__':
             logger.info("获取菜单")
             cmList=[]
 
-            s = [Image(path='data/fonts/help1.png'), Image(path='data/fonts/help2.png'),
-                 Image(path='data/fonts/help3.png'),Image(path="data/fonts/help4.png")]
+            s = [Image(path='data/fonts/help1.jpg'), Image(path='data/fonts/help2.jpg'),
+                 Image(path='data/fonts/help3.jpg'),Image(path="data/fonts/help4.jpg")]
 
             try:
                 if not FordMesmenu:
@@ -322,7 +322,7 @@ if __name__ == '__main__':
             await bot.send_friend_message(master, time1 + '\n已读取有记录用户:' + str(len(userCount)) + '个')
             await bot.send_friend_message(master, time1 + '\n功能已加载完毕，欢迎使用')
             await sleep1(10)
-            await bot.send_friend_message(master, Image(path="data/fonts/master.png"))
+            await bot.send_friend_message(master, Image(path="data/fonts/master.jpg"))
         except Exception as e:
             logger.error(e)
 
