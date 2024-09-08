@@ -11,7 +11,6 @@ import colorlog
 from io import BytesIO
 from PIL import Image
 
-
 try:
     with open('config/api.yaml', 'r', encoding='utf-8') as f:
         apiYaml = yaml.load(f.read(), Loader=yaml.FullLoader)
