@@ -263,7 +263,6 @@ def main(bot,logger):
                     logger.info("终止复读任务")
                     repeatData.pop(event.group.id)  # 终止此次复读任务
             else:
-                logger.info("终止复读任务")
                 repeatData.pop(event.group.id) #终止此次复读任务
         else:
             if event.group.id in repeatLock and datetime.datetime.now()-repeatLock[event.group.id]<datetime.timedelta(60): #时间锁
