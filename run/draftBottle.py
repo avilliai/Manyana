@@ -7,6 +7,9 @@ import yaml
 from mirai import FriendMessage, GroupMessage, At, Plain,MessageChain,Startup
 from mirai import Image, Voice,At
 from plugins.toolkits import random_str
+from plugins.wReply.MessageConvert import EventMessageConvert
+
+
 def main(bot,logger):
     with open('config.json', 'r', encoding='utf-8') as f:
         configdata = yaml.load(f.read(), Loader=yaml.FullLoader)
@@ -38,7 +41,8 @@ def main(bot,logger):
             while bootleid in sea:
                 bootleid=int(random_str(6,'123456789'))
                 logger.warning("漂流瓶随机id重复，重新获取")
-            sea[bootleid]={"bottle":event.message_chain.json(),"sender":{"发送者":event.sender.id,"昵称":event.sender.member_name}}
+            newMes = await EventMessageConvert(event.message_chain)
+            sea[bootleid]={"bottle":newMes,"sender":{"发送者":event.sender.id,"昵称":event.sender.member_name}}
             operateProcess.pop(event.sender.id)
             with open("data/text/draftBottleData.yaml", 'w', encoding="utf-8") as file:
                 yaml.dump(sea, file, allow_unicode=True)
@@ -78,10 +82,11 @@ def main(bot,logger):
         if event.sender.id in operateProcess and operateProcess[event.sender.id]["status"] == "comment":
             logger.info(f"{operateProcess[event.sender.id]['bottleid']} 增加 comment")
             bottle = sea[operateProcess[event.sender.id]["bottleid"]]
+            newMes = await EventMessageConvert(event.message_chain)
             if "comments" not in bottle:
-                bottle["comments"]={event.sender.id:event.message_chain.json()}
+                bottle["comments"]={event.sender.id:newMes}
             else:
-                bottle["comments"][event.sender.id] = event.message_chain.json()
+                bottle["comments"][event.sender.id] = newMes
             sea[operateProcess[event.sender.id]["bottleid"]] = bottle
             try:
                 if pushcomments:
@@ -138,6 +143,7 @@ def main(bot,logger):
             operateProcess = await check_and_pop_expired_keys(operateProcess)
             await asyncio.sleep(30)
 
+
     async def check_and_pop_expired_keys(data):
         keys_to_pop = []
         now = datetime.datetime.now()
@@ -157,16 +163,27 @@ def main(bot,logger):
         b1 = []
         b1.append(ForwardMessageNode(sender_id=bot.qq, sender_name="Manyana",
                                      message_chain=MessageChain([f"编号:{bid}\n发送者:{bottle['sender']['昵称']} ({bottle['sender']['发送者']}) \n瓶子内容如下："])))
+
+        def selfConstrucuer(source):
+            bottleConstruct=[]
+            if "text" in str(source) or "image" in str(source):
+                for i in source:
+                    if "text" in i:
+                        bottleConstruct.append(Plain(i["text"]))
+                    elif "image" in i:
+                        bottleConstruct.append(Image(path=i["image"]))
+                return bottleConstruct
+            else:
+                return json.loads(source) #对旧数据实现兼容
         b1.append(ForwardMessageNode(sender_id=bot.qq, sender_name="Manyana",
-                                     message_chain=MessageChain(json.loads(bottle["bottle"]))))
+                                     message_chain=MessageChain(selfConstrucuer(bottle["bottle"]))))
 
         if "comments" in bottle:
             for comment in bottle["comments"]:
                 b1.append(ForwardMessageNode(sender_id=bot.qq, sender_name="Manyana",
                                              message_chain=MessageChain(f"评论者：{comment}")))
                 b1.append(ForwardMessageNode(sender_id=bot.qq, sender_name="Manyana",
-                                             message_chain=MessageChain(
-                                                 json.loads(bottle["comments"][comment]))))
+                                             message_chain=MessageChain(selfConstrucuer(bottle["comments"][comment]))))
         b1.append(ForwardMessageNode(sender_id=bot.qq, sender_name="Manyana",
                                      message_chain=MessageChain(
                                          "如有需要，请在3min内\n发送 评论 然后再发送你的评论。恶意评论将被拉黑。\n发送 举报瓶子 以举报当前漂流瓶 报假案会被拉黑")))
