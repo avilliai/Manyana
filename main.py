@@ -22,7 +22,8 @@ from mirai import Mirai, WebSocketAdapter, GroupMessage, Image, At, Startup, Fri
 from plugins.toolkits import newLogger,random_str,get_system_info
 from run import aiReply, voiceReply, nudgeReply, wikiHelper, imgSearch, extraParts, wReply, groupManager, \
     musicShare, LiveMonitor, aronaapi, groupGames, musicpick, scheduledTasks, appCard, aiDraw, starRail, bangumi, \
-    draftBottle, autoreply, galgame, attack_sb_yaml, Reread_yaml, aite_yaml
+    draftBottle
+
 
 # 为了实现黑名单和群开关功能，我们将继承webSocketAdapter类
 class MyWebSocketAdapter(WebSocketAdapter):
@@ -244,20 +245,29 @@ if __name__ == '__main__':
     # 菜单
     @bot.on(GroupMessage)
     async def help(event: GroupMessage):
-        rnum00=2;
-        if ('帮助' in str(event.message_chain) or '菜单' in str(event.message_chain) or 'help' in str(event.message_chain) or "功能" in str(event.message_chain)  or '谁问你了' in str(event.message_chain)) and At(bot.qq) in event.message_chain:
+        if ('帮助' in str(event.message_chain) or '菜单' in str(event.message_chain) or "功能" in str(
+                event.message_chain)) and At(bot.qq) in event.message_chain:
             logger.info("获取菜单")
-            #s=[Image(path='data/fonts/help1.png'),Image(path='data/fonts/help2.png'),Image(path='data/fonts/help3.png')]
-            #for i in s:
-            #    await bot.send(event, i)
-            await bot.send(event, 'http://www.manshuo.ink/index.php/archives/169/')
-            await bot.send(event, '访问此网站以查看' + botName + '的功能列表\nヾ(≧▽≦*)o\n发送 pet 以查看制图功能列表')
-        if '制图' in str(event.message_chain) and At(bot.qq) in event.message_chain :
-            logger.info("制图菜单")
-            await bot.send(event, '发送 pet 以查看制图功能列表')
-        
-        
-            
+            cmList=[]
+
+            s = [Image(path='data/fonts/help1.png'), Image(path='data/fonts/help2.png'),
+                 Image(path='data/fonts/help3.png'),Image(path="data/fonts/help4.png")]
+
+            try:
+                if not FordMesmenu:
+                    raise Exception #你说得对，我实在懒得加判断了
+                for i in s:
+                    b1 = ForwardMessageNode(sender_id=bot.qq, sender_name="Manyana",
+                                            message_chain=MessageChain(i))
+                    cmList.append(b1)
+                b1 = ForwardMessageNode(sender_id=bot.qq, sender_name="Manyana",
+                                        message_chain=MessageChain('这是' + botName + '的功能列表\nヾ(≧▽≦*)o\n发送 pet 以查看制图功能列表\npetpet功能由https://github.com/Dituon/petpet提供'))
+                cmList.append(b1)
+                await bot.send(event, Forward(node_list=cmList))
+            except Exception as e:
+                for i in s:
+                    await bot.send(event,i)
+                await bot.send(event,'这是' + botName + '的功能列表\nヾ(≧▽≦*)o\n发送 pet 以查看制图功能列表\npetpet功能由https://github.com/Dituon/petpet提供')
     @bot.on(Startup)
     async def clearCache(event: Startup):
 
@@ -308,18 +318,13 @@ if __name__ == '__main__':
         logger.info('botName:' + botName + '     |     master:' + str(master))
         time1 = datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')
         try:
-            #await bot.send_friend_message(master, time1 + '\n已读取服务群聊:' + str(len(asf.data)) + '个')
-            #await bot.send_friend_message(master, time1 + '\n已读取有记录用户:' + str(len(userCount)) + '个')
+            await bot.send_friend_message(master, time1 + '\n已读取服务群聊:' + str(len(asf.data)) + '个')
+            await bot.send_friend_message(master, time1 + '\n已读取有记录用户:' + str(len(userCount)) + '个')
             await bot.send_friend_message(master, time1 + '\n功能已加载完毕，欢迎使用')
-            #await sleep1(1)
-            #await bot.send_friend_message(master, Image(path="data/fonts/master.png"))
-            await bot.send_group_message(674822468, time1 + '\n功能已加载完毕，欢迎使用')
-            #await bot.send_group_message(674822468, time1 + '\n已读取服务群聊:' + str(len(asf.data)) + '个')
-            #await bot.send_group_message(674822468, time1 + '\n已读取有记录用户:' + str(len(userCount)) + '个')
-            #await bot.send_group_message(674822468, Image(path="data/fonts/master.png")
+            await sleep1(10)
+            await bot.send_friend_message(master, Image(path="data/fonts/master.png"))
         except Exception as e:
             logger.error(e)
-            
 
     logger.info("当前语音合成模式：" + voicegg)
 
@@ -370,17 +375,12 @@ if __name__ == '__main__':
         logger.error("致命错误！定时功能无法启用，请检查设备时区")
     groupGames.main(bot, logger)
     musicpick.main(bot, logger)
-    autoreply.main(bot, logger)
     appCard.main(bot, logger)
     aiDraw.main(bot, logger)
     starRail.main(bot, logger)
     bangumi.main(bot,logger)
     draftBottle.main(bot,logger) #芝士漂流瓶
-    galgame.main(bot, logger)
-    #Reread.main(bot, logger)
-    Reread_yaml.main(bot, logger)
-    attack_sb_yaml.main(bot, logger)
-    aite_yaml.main(bot, logger)
+
     #gemini_ai.main(bot,logger,master)
     startVer()
     bot.run(asgi_server=None)

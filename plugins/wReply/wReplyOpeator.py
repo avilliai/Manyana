@@ -95,3 +95,28 @@ async def find_most_similar_key_async(json_data, target_key, threshold,mode,inMa
         return best_key, json_data[best_key]
     else:
         return None
+async def compare2messagechain(old,new):
+    print(old)
+    print(new)
+    key_data=json.loads(old)
+    target_data=json.loads(new)
+    score = 0
+
+    key_text = next((item.get('text') for item in key_data if 'text' in item), None)
+    target_text = next((item.get('text') for item in target_data if 'text' in item), None)  # 这个是我们传入的关键字
+    # print(key_text, target_text)
+    addTextScore = False
+    addImageScore = False
+    if key_text and target_text:
+        text_score = await asyncio.to_thread(fuzz.ratio, target_text, key_text)
+        score += text_score
+        addTextScore = True
+    key_image_id = next((item.get('image_id') for item in key_data if 'image_id' in item), None)
+    target_image_id = next((item.get('image_id') for item in target_data if 'image_id' in item), None)
+    if key_image_id and target_image_id:
+        image_score = await asyncio.to_thread(fuzz.ratio, target_image_id, key_image_id)
+        score += image_score
+        addImageScore = True
+    if addTextScore and addImageScore:
+        score = int(score / 2)
+    return score
