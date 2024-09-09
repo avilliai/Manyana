@@ -20,8 +20,16 @@ def main(bot,logger):
             await sleep(300)
             logger.info("更新词云数据记录")
             prompt1 = copy.deepcopy(tempData)
-            for i in prompt1:
-                await appendData(str(prompt1[i]),i.spilt("/")[0],i.spilt("/")[1])
+            await appendData(prompt1)
+            tempData={}
+    @bot.on(GroupMessage)
+    async def addData(event: GroupMessage):
+        if str(event.message_chain)=="updateData" and event.sender.id==1840094972:
+            global tempData
+            logger.info("更新词云数据记录")
+            prompt1 = copy.deepcopy(tempData)
+            await appendData(prompt1)
+            tempData={}
     @bot.on(GroupMessage)
     async def addData(event: GroupMessage):
         global tempData
