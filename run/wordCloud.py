@@ -50,7 +50,7 @@ def main(bot,logger):
             if os.path.exists(f"data/text/wordcloudData/{event.group.id}/{datetime.date.today().strftime('%Y-%m-%d')}/{event.sender.id}.txt"):
                 with open(f"data/text/wordcloudData/{event.group.id}/{datetime.date.today().strftime('%Y-%m-%d')}/{event.sender.id}.txt","r",encoding="utf-8") as f:
                     save_path=f"data/pictures/cache/{random_str()}.png"
-                    print(save_path)
+                    logger.info(f"获取用户{event.sender.id} 今日词云")
                     await create_chinese_wordcloud_async(f.read(),save_path)
                     await bot.send(event,Image(path=save_path),True)
             else:
