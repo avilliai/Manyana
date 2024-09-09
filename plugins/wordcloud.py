@@ -72,12 +72,14 @@ async def appendData(tempData):
             record_user_input,
             tempData
         )
-
+logger=newLogger()
 def record_user_input(tempData):
     for i in tempData:
         text=str(prompt1[i])
         groupid=i.spilt("/")[0]
         userid=i.spilt("/")[1]
+        logger.info(f"向data/text/wordcloudData/{groupid}/{datetime.date.today().strftime('%Y-%m-%d')}/{userid}.txt写入")
+        logger.info(f"写入内容 {text}")
         if not os.path.exists(f"data/text/wordcloudData/{groupid}/{datetime.date.today().strftime('%Y-%m-%d')}"):
             os.makedirs(f"data/text/wordcloudData/{groupid}/{datetime.date.today().strftime('%Y-%m-%d')}", exist_ok=True) #创建目录
     
@@ -87,8 +89,8 @@ def record_user_input(tempData):
         with open(file_path, 'a', encoding='utf-8') as f:
             try:
                 f.write(text + '\n')
-            except UnicodeDecodeError:
-                pass
+            except Exception as e:
+                logger.error(e)
 async def getMyAllText(group_path, user_id):
     loop = asyncio.get_running_loop()
     with ProcessPoolExecutor() as pool:
@@ -99,7 +101,7 @@ async def getMyAllText(group_path, user_id):
             user_id
         )
     return result
-logger=newLogger()
+
 async def getgroupText(group_id, type):
     loop = asyncio.get_running_loop()
     with ProcessPoolExecutor() as pool:
