@@ -77,7 +77,7 @@ def record_user_input(tempData):
     logger.info("写入数据")
     logger.info(tempData)
     for i in tempData:
-        text=str(prompt1[i])
+        text=str(tempData[i])
         groupid=i.spilt("/")[0]
         userid=i.spilt("/")[1]
         logger.info(f"向data/text/wordcloudData/{groupid}/{datetime.date.today().strftime('%Y-%m-%d')}/{userid}.txt写入")
