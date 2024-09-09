@@ -20,7 +20,6 @@ def main(bot,logger):
             await sleep(300)
             logger.info("更新词云数据记录")
             prompt1 = copy.deepcopy(tempData)
-            logger.info(prompt1)
             await appendData(prompt1)
             tempData={}
     @bot.on(GroupMessage)
@@ -30,6 +29,7 @@ def main(bot,logger):
             logger.info("更新词云数据记录")
             prompt1 = copy.deepcopy(tempData)
             await appendData(prompt1)
+            logger.info(prompt1)
             tempData={}
     @bot.on(GroupMessage)
     async def addData(event: GroupMessage):
@@ -40,6 +40,8 @@ def main(bot,logger):
             userid=event.sender.id
             if str(groupid)+"/"+str(userid) in tempData:
                 tempData[str(groupid)+"/"+str(userid)]=tempData[str(groupid)+"/"+str(userid)]+text[0]
+            else:
+                tempData[str(groupid)+"/"+str(userid)]=text[0]
         except Exception as e:
             pass
     @bot.on(GroupMessage)
