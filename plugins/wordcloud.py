@@ -74,6 +74,8 @@ async def appendData(tempData):
         )
 logger=newLogger()
 def record_user_input(tempData):
+    logger.info("写入数据")
+    logger.info(tempData)
     for i in tempData:
         text=str(prompt1[i])
         groupid=i.spilt("/")[0]
@@ -82,7 +84,6 @@ def record_user_input(tempData):
         logger.info(f"写入内容 {text}")
         if not os.path.exists(f"data/text/wordcloudData/{groupid}/{datetime.date.today().strftime('%Y-%m-%d')}"):
             os.makedirs(f"data/text/wordcloudData/{groupid}/{datetime.date.today().strftime('%Y-%m-%d')}", exist_ok=True) #创建目录
-    
         file_path =f"data/text/wordcloudData/{groupid}/{datetime.date.today().strftime('%Y-%m-%d')}/{userid}.txt"
         if not os.path.exists(file_path):
             open(file_path, 'w').close()
