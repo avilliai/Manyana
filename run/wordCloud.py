@@ -39,9 +39,9 @@ def main(bot,logger):
             groupid=event.group.id
             userid=event.sender.id
             if str(groupid)+"/"+str(userid) in tempData:
-                tempData[str(groupid)+"/"+str(userid)]=tempData[str(groupid)+"/"+str(userid)]+text[0]
+                tempData[str(groupid)+"/"+str(userid)]=tempData[str(groupid)+"/"+str(userid)]+str(event.message_chain)
             else:
-                tempData[str(groupid)+"/"+str(userid)]=text[0]
+                tempData[str(groupid)+"/"+str(userid)]=str(event.message_chain)
         except Exception as e:
             pass
     @bot.on(GroupMessage)
