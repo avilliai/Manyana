@@ -20,6 +20,7 @@ def main(bot,logger):
             await sleep(300)
             logger.info("更新词云数据记录")
             prompt1 = copy.deepcopy(tempData)
+            logger.info(prompt1)
             await appendData(prompt1)
             tempData={}
     @bot.on(GroupMessage)
