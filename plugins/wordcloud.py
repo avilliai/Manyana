@@ -78,8 +78,6 @@ def record_user_input(tempData):
         text=str(tempData[i])
         groupid=i.split("/")[0]
         userid=i.split("/")[1]
-        logger.info(f"向data/text/wordcloudData/{groupid}/{datetime.date.today().strftime('%Y-%m-%d')}/{userid}.txt写入")
-        logger.info(f"写入内容 {text}")
         if not os.path.exists(f"data/text/wordcloudData/{groupid}/{datetime.date.today().strftime('%Y-%m-%d')}"):
             os.makedirs(f"data/text/wordcloudData/{groupid}/{datetime.date.today().strftime('%Y-%m-%d')}", exist_ok=True) #创建目录
         file_path =f"data/text/wordcloudData/{groupid}/{datetime.date.today().strftime('%Y-%m-%d')}/{userid}.txt"
