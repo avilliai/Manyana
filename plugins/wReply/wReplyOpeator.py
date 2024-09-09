@@ -96,8 +96,6 @@ async def find_most_similar_key_async(json_data, target_key, threshold,mode,inMa
     else:
         return None
 async def compare2messagechain(old,new):
-    print(old)
-    print(new)
     key_data=json.loads(old)
     target_data=json.loads(new)
     score = 0
