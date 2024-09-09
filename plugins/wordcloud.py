@@ -74,8 +74,6 @@ async def appendData(tempData):
         )
 logger=newLogger()
 def record_user_input(tempData):
-    logger.info("写入数据")
-    logger.info(tempData)
     for i in tempData:
         text=str(tempData[i])
         groupid=i.spilt("/")[0]
