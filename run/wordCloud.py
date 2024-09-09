@@ -1,9 +1,9 @@
 # -*- coding:utf-8 -*-
 import datetime
 import os.path
-
+import copy
 from mirai import GroupMessage, Plain
-from mirai import Image
+from mirai import Image, Voice, Startup, MessageChain
 
 from plugins.toolkits import random_str
 from plugins.wordcloud import appendData, create_chinese_wordcloud_async, getMyAllText, getgroupText
@@ -11,14 +11,26 @@ from plugins.wordcloud import appendData, create_chinese_wordcloud_async, getMyA
 
 def main(bot,logger):
     logger.info("词云功能启动")
-
+    global tempData
+    tempData={}
+    @bot.on(Startup)
+    async def update(event: Startup):
+        while True:
+            global tempData
+            await sleep(300)
+            logger.info("更新词云数据记录")
+            prompt1 = copy.deepcopy(tempData)
+            for i in prompt1:
+                await appendData(str(prompt1[i]),i.spilt("/")[0],i.spilt("/")[1])
     @bot.on(GroupMessage)
     async def addData(event: GroupMessage):
+        global tempData
         try:
             text=event.message_chain.get(Plain)
             groupid=event.group.id
             userid=event.sender.id
-            await appendData(str(text[0]),groupid,userid)
+            if str(groupid)+"/"+str(userid) in tempData:
+                tempData[str(groupid)+"/"+str(userid)]=tempData[str(groupid)+"/"+str(userid)]+text[0]
         except Exception as e:
             pass
     @bot.on(GroupMessage)
