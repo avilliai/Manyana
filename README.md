@@ -22,7 +22,7 @@
 </div>
 
 ---
-[阅读文档](doc.luxmix.top)
+[阅读文档](https://doc.luxmix.top/)
 
 > 因本人学业繁忙，未来几个月本仓库将以维护为主要工作。如果您有意愿参与开发和维护，欢迎pr。
 > 未来恢复更新后，开发的重心将转向[Eridanus](https://github.com/avilliai/Eridanus)
