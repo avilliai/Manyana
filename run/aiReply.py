@@ -176,7 +176,7 @@ def main(bot, master, logger):
         if text == "/clear":
             return
         if event.sender.id == master:
-            noresm = ["群列表", "/bl", "退群#", "/quit"]
+            noresm = ["群列表", "/bl", "退群#", "/quit", "生成总结"]
             for saa in noresm:
                 if text == saa or text.startswith(saa):
                     logger.warning("与屏蔽词匹配，不回复")
@@ -197,11 +197,12 @@ def main(bot, master, logger):
         if event.sender.id in chatGLMCharacters:
             print(type(chatGLMCharacters.get(event.sender.id)), chatGLMCharacters.get(event.sender.id))
             r, firstRep = await modelReply(event.sender.nickname, event.sender.id, text,
-                                           chatGLMCharacters.get(event.sender.id), trustUser, imgurl,checkIfRepFirstTime=True)
+                                           chatGLMCharacters.get(event.sender.id), trustUser, imgurl,
+                                           check_if_rep_first_time=True)
         # 判断模型
         else:
-            r, firstRep = await modelReply(event.sender.nickname, event.sender.id, text, replyModel, trustUser,imgurl,
-                                           checkIfRepFirstTime=True)
+            r, firstRep = await modelReply(event.sender.nickname, event.sender.id, text, replyModel, trustUser, imgurl,
+                                           check_if_rep_first_time=True)
         if firstRep:
             await bot.send(event, "如对话异常请发送 /clear 以清理对话", True)
         if len(r) < maxTextLen and random.randint(0, 100) < voiceRate and "出错，请重试" not in r:
