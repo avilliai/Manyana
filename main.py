@@ -253,8 +253,8 @@ if __name__ == '__main__':
             logger.info("获取菜单")
             cmList=[]
 
-            s = [Image(path='data/fonts/help1.png'), Image(path='data/fonts/help2.png'),
-                 Image(path='data/fonts/help3.png'),Image(path="data/fonts/help4.png")]
+            s = [Image(path='data/fonts/help1.jpg'), Image(path='data/fonts/help2.jpg'),
+                 Image(path='data/fonts/help3.jpg'),Image(path="data/fonts/help4.jpg")]
 
             try:
                 if not FordMesmenu:
@@ -325,7 +325,7 @@ if __name__ == '__main__':
             await bot.send_friend_message(master, time1 + '\n已读取有记录用户:' + str(len(userCount)) + '个')
             await bot.send_friend_message(master, time1 + '\n功能已加载完毕，欢迎使用')
             await sleep1(10)
-            await bot.send_friend_message(master, Image(path="data/fonts/master.png"))
+            await bot.send_friend_message(master, Image(path="data/fonts/master.jpg"))
         except Exception as e:
             logger.error(e)
 
@@ -378,6 +378,12 @@ if __name__ == '__main__':
     except Exception as e:
         logger.error(e)
         logger.error("致命错误！定时功能无法启用，请检查设备时区")
+    try:
+        from run import wordCloud
+        wordCloud.main(bot, logger)
+    except Exception as e:
+        logger.error(e)
+        logger.error("词云功能无法启用，请使用更新代码-补全依赖")
     groupGames.main(bot, logger)
     musicpick.main(bot, logger)
     appCard.main(bot, logger)

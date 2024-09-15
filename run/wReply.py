@@ -14,8 +14,23 @@ from fuzzywuzzy import process
 from mirai import FriendMessage, GroupMessage, At, Plain,MessageChain,Startup
 from mirai import Image, Voice
 from mirai.models import ForwardMessageNode, Forward
+from plugins.wReply.wReplyOpeator import addRep, loadAllDict, getRep, compare2messagechain
 
-from plugins.wReply.wReplyOpeator import addRep, loadAllDict, getRep
+from plugins.wReply.MessageConvert import EventMessageConvert
+
+
+
+async def mesChainConstructer(source):
+    bottleConstruct = []
+    if "text" in str(source) or "image" in str(source):
+        for i in source:
+            if "text" in i:
+                bottleConstruct.append(Plain(i["text"]))
+            elif "image" in i:
+                bottleConstruct.append(Image(path=i["image"]))
+        return bottleConstruct
+    else:
+        return json.loads(source)  # 对旧数据实现兼容
 
 
 def main(bot,logger):
@@ -35,6 +50,10 @@ def main(bot,logger):
     with open('data/userData.yaml', 'r', encoding='utf-8') as file:
         userdict = yaml.load(file, Loader=yaml.FullLoader)
     colorfulCharacterList = os.listdir("data/colorfulAnimeCharacter")
+    global repeatData
+    repeatData={333:{"times":0,"mes":"你好","simplemes":"你好"}}
+    global repeatLock
+    repeatLock={1111: datetime.datetime.now()} #复读冷却锁
     #开始添加
     @bot.on(GroupMessage)
     async def startAddRep(event: GroupMessage):
@@ -94,10 +113,11 @@ def main(bot,logger):
                     operateProcess.pop(event.sender.id)
                     return
                 await sleep(0.1)
+                newMes = await EventMessageConvert(event.message_chain)
                 if "value" in operateProcess[event.sender.id]:
-                    operateProcess[event.sender.id]["value"].append(event.message_chain.json())
+                    operateProcess[event.sender.id]["value"].append(newMes)
                 else:
-                    operateProcess[event.sender.id]["value"]=[event.message_chain.json()]
+                    operateProcess[event.sender.id]["value"]=[newMes]
                 await bot.send(event,"已记录回复")
                 operateProcess[event.sender.id]["time"] = datetime.datetime.now()  #不要忘记刷新时间
 
@@ -133,10 +153,11 @@ def main(bot,logger):
                 if r != None:
                     index=0
                     for i in r[1]:
+                        mesc = await mesChainConstructer(i)
                         b1.append(ForwardMessageNode(sender_id=bot.qq, sender_name="Manyana",
                                                 message_chain=MessageChain([f"编号{index}👇"])))
                         b1.append(ForwardMessageNode(sender_id=bot.qq, sender_name="Manyana",
-                                                message_chain=MessageChain(json.loads(i))))
+                                                message_chain=MessageChain(mesc)))
                         index+=1
                     await bot.send(event, Forward(node_list=b1))
                     await bot.send(event,f"发送 删除#编号 以删除指定回复\n发送 删除关键字 以删除全部回复")
@@ -189,7 +210,8 @@ def main(bot,logger):
                 c = random.choice(colorfulCharacterList)
                 await bot.send(event, Image(path="data/colorfulAnimeCharacter/" + c))
                 return
-            await bot.send(event, json.loads(random.choice(r[1])))
+            mesc=await mesChainConstructer(random.choice(r[1]))
+            await bot.send(event, MessageChain(mesc))
     @bot.on(Startup)
     async def checkTimeOut(event: Startup):
         global operateProcess
@@ -217,3 +239,29 @@ def main(bot,logger):
             global userdict
             with open('data/userData.yaml', 'r', encoding='utf-8') as file:
                 userdict = yaml.load(file, Loader=yaml.FullLoader)
+    #用以实现复读
+    @bot.on(GroupMessage)
+    async def repeatFunc(event: GroupMessage):
+        global repeatData,repeatLock
+        if event.group.id in repeatData:
+            if str(event.message_chain)==repeatData[event.group.id]["simplemes"]: #最新的消息链同记录的最后一个消息链相同
+                score=await compare2messagechain(event.message_chain.json(),repeatData[event.group.id]["mes"])
+                if score>90:
+                    if repeatData[event.group.id]["times"]==2: #3次，进入复读
+                        d=await mesChainConstructer(repeatData[event.group.id]["sefmeschain"])
+                        await bot.send(event,MessageChain(d)) #复读一次
+                        logger.info(f"复读一次{str(event.message_chain)}")
+                        repeatData.pop(event.group.id)  # 终止此次复读任务
+                        repeatLock[event.group.id]=datetime.datetime.now() #进入cd时间
+                        logger.info(f"{event.group.id} 进入cd冷却60s")
+                    else:
+                        repeatData[event.group.id]["times"]=repeatData[event.group.id]["times"]+1 #加一次
+                else:
+                    repeatData.pop(event.group.id)  # 终止此次复读任务
+            else:
+                repeatData.pop(event.group.id) #终止此次复读任务
+        else:
+            if event.group.id in repeatLock and datetime.datetime.now()-repeatLock[event.group.id]<datetime.timedelta(60): #时间锁
+                return
+            repeatData[event.group.id]={"times":1,"mes":event.message_chain.json(),"simplemes":str(event.message_chain),"sefmeschain":await EventMessageConvert(event.message_chain)}
+

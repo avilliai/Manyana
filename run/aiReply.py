@@ -155,7 +155,7 @@ def main(bot, master, logger):
             # 判断模型类型
             else:
                 r= await modelReply("指挥", event.from_id, text)
-            if len(r) < maxTextLen and random.randint(0, 100) < voiceRate:
+            if len(r) < maxTextLen and random.randint(0, 100) < voiceRate and "出错，请重试" not in r:
                 try:
                     voiceP = await tstt(r)
                     await bot.send_group_message(event.subject.id, Voice(path=voiceP))
@@ -204,7 +204,7 @@ def main(bot, master, logger):
                                            checkIfRepFirstTime=True)
         if firstRep:
             await bot.send(event, "如对话异常请发送 /clear 以清理对话", True)
-        if len(r) < maxTextLen and random.randint(0, 100) < voiceRate:
+        if len(r) < maxTextLen and random.randint(0, 100) < voiceRate and "出错，请重试" not in r:
             try:
                 voiceP = await tstt(r)
                 await bot.send(event, Voice(path=voiceP))
@@ -364,7 +364,7 @@ def main(bot, master, logger):
         user = str(event.sender.id)
         if user in chattingUser:
             chattingUser[user] = datetime.datetime.now()
-        if len(r) < maxTextLen and random.randint(0, 100) < voiceRate:
+        if len(r) < maxTextLen and random.randint(0, 100) < voiceRate and "出错，请重试" not in r:
             try:
                 voiceP = await tstt(r)
                 await bot.send(event, Voice(path=voiceP))

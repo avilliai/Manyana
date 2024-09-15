@@ -11,9 +11,9 @@ import colorlog
 from io import BytesIO
 from PIL import Image
 
-with open('config/api.yaml', 'r', encoding='utf-8') as f:
-    apiYaml = yaml.load(f.read(), Loader=yaml.FullLoader)
 try:
+    with open('config/api.yaml', 'r', encoding='utf-8') as f:
+        apiYaml = yaml.load(f.read(), Loader=yaml.FullLoader)
     from lanzou.api import LanZouCloud
     lzy = LanZouCloud()
     cookie = {'ylogin': str(apiYaml.get("蓝奏云").get("ylogin")), 'phpdisk_info': apiYaml.get("蓝奏云").get("phpdisk_info")}
@@ -258,6 +258,6 @@ async def webScreenShot(url, path):
 async def picDwn(url, path):
     async with httpx.AsyncClient(timeout=20) as client:
         r = await client.get(url)
-        img = Image.open(BytesIO(r.content))  # 从二进制数据创建图片对象
-        img.save(path)  # 使用PIL库保存图片
+        with open(path, "wb") as f:
+            f.write(r.content)
         return path
