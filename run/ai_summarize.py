@@ -11,6 +11,8 @@ Plugin Dependencies:
 
 version: 1.0.0
 author: Bol_C
+date: 2024-09-07
+
 """
 
 import asyncio
@@ -21,7 +23,7 @@ import threading
 import sqlite3
 import time
 import yaml
-from mirai import FriendMessage, GroupMessage, At, Image
+from mirai import FriendMessage, GroupMessage, At, Image, TempMessage
 
 from plugins.aiReplyCore import modelReply, clearAllPrompts, tstt, clearsinglePrompt, direct_sending_to_model, logger
 from plugins.wReply.wontRep import wontrep
@@ -346,7 +348,7 @@ def main(bot, master, logger):
             group_id = str(event.message_chain).split("#")[1]
             if not group_id.isdigit() or len(group_id) < 5:
                 await bot.send(event, "TIP: 请发送  生成总结#群号  以生成对应群的总结", True)
-            elif group_id in trustG or group_id == str(mainGroup):
+            elif True:
 
                 cooldown_active, remaining_time = is_cooldown_active(sender_id)
                 if cooldown_active:
@@ -359,6 +361,37 @@ def main(bot, master, logger):
                 update_cooldown(sender_id)
             else:
                 await bot.send(event, "ERROR: 该群聊尚未被添加 / 群聊号码错误", True)
+
+
+    #
+    # @bot.on(TempMessage)
+    # async def summarizing_request_temp_msg(event: TempMessage):
+    #     """
+    #     Handle friend summary request.
+    #
+    #     :param event: The friend message event.
+    #     """
+    #     sender_id = event.sender.id
+    #     sender_name = event.sender.member_name
+    #     if str(event.message_chain) == "生成总结":
+    #         await bot.send(event, "TIP: 请发送  生成总结#群号  以生成对应群的总结", True)
+    #     elif str(event.message_chain).startswith("生成总结#"):
+    #         group_id = str(event.message_chain).split("#")[1]
+    #         if not group_id.isdigit() or len(group_id) < 5:
+    #             await bot.send(event, "TIP: 请发送  生成总结#群号  以生成对应群的总结", True)
+    #         elif group_id in trustG or group_id == str(mainGroup):
+    #
+    #             cooldown_active, remaining_time = is_cooldown_active(sender_id)
+    #             if cooldown_active:
+    #                 await bot.send(event, f"请稍后再试，冷却时间还剩 {int(remaining_time)} 秒。", True)
+    #                 return
+    #
+    #             summary = await handle_summarizing_request(sender_id=sender_id, sender_name=sender_name,
+    #                                                        group_id=group_id)
+    #             await bot.send(event, summary, True)
+    #             update_cooldown(sender_id)
+    #         else:
+    #             await bot.send(event, "ERROR: 该群聊尚未被添加 / 群聊号码错误", True)
 
     async def handle_summarizing_request(sender_id, sender_name, group_id):
         """
