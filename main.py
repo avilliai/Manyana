@@ -318,7 +318,7 @@ if __name__ == '__main__':
         logger.info('botName:' + botName + '     |     master:' + str(master))
         time1 = datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')
         try:
-            await bot.send_friend_message(master, "本项目完全免费，如果你是通过付费渠道获得的，那么恭喜你，你被骗了")
+            await bot.send_friend_message(master, "本项目源码及启动器整合包完全免费，如果你是通过付费渠道获得的，那么恭喜你，你被骗了")
             await bot.send_friend_message(master, time1 + '\n已读取服务群聊:' + str(len(asf.data)) + '个')
             await bot.send_friend_message(master, time1 + '\n已读取有记录用户:' + str(len(userCount)) + '个')
             await bot.send_friend_message(master, time1 + '\n功能已加载完毕，欢迎使用')
