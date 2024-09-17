@@ -21,7 +21,12 @@
    <img width="70%" height="70%" src="https://moe-counter.glitch.me/get/@:manyana" alt="logo"></br>
 </div>
 
+<div align="center">
+   <p>声明：本项目根据AGPL V3协议开源，任何组织和个人在引用本项目的源码时，不得歪曲、隐藏项目的开源事实，并需依照协议公开项目的源代码。任何由二次分发行为产生的责任均由行为者自行承担，本项目不承担任何连带责任。</p>
+</div>
+
 ---
+
 [阅读文档](https://doc.luxmix.top/)
 
 > 因本人学业繁忙，未来几个月本仓库将以维护为主要工作。如果您有意愿参与开发和维护，欢迎pr。
@@ -121,6 +126,9 @@ Manyana/config.json的填写示例如下。
 
 </details>
 
+# 开源协议
+由于 mirai 及 yirimirai 均采用了 AGPL-3.0 开源协议，本项目同样采用 AGPL-3.0 协议。<br>
+请注意，AGPL-3.0 是传染性协议。如果你的项目引用了 Manyana，请在发布时公开源代码，并同样采用 AGPL-3.0 协议。不得歪曲、隐藏项目开源事实。<br>
 
 # 🎄最后
 如果觉得项目还不错的话给个star喵，给个star谢谢喵
