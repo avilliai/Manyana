@@ -5,15 +5,14 @@
 ----
 # 🎆鸣谢
 
-- [Mirai框架](https://github.com/mamoe/mirai)
+- [Mirai](https://github.com/mamoe/mirai)
 - [petpet](https://github.com/Dituon/petpet) 
-- [CjangCjengh-MoeGoe](https://github.com/CjangCjengh/MoeGoe) vits语音合成功能来源
-- [coze-discord-proxy](https://github.com/deanxv/coze-discord-proxy) 通过discord白嫖gpt4(用户多不建议用这个。)
-- [overflow](https://mirai.mamoe.net/topic/2565/overflow-%E5%B0%86-mirai-%E5%AE%9E%E7%8E%B0%E6%8D%A2%E6%88%90-onebot-%E6%9C%BA%E5%99%A8%E4%BA%BA%E7%9A%84%E5%8F%88%E4%B8%80%E4%B8%AA%E8%A7%A3%E5%86%B3%E6%96%B9%E6%A1%88?_=1712421277845)     你懂的
-- [arona api](https://doc.arona.diyigemt.com/)  提供blueArchive数据支持
-- [star-rail-atlas](https://gitee.com/Nwflower/star-rail-atlas)  数据支持
-- [Yiri-mirai](https://github.com/YiriMiraiProject/YiriMirai)  很好的python sdk
-- [install_llob](https://github.com/super1207/install_llob) llob安装器，帮大忙了
+- [CjangCjengh-MoeGoe](https://github.com/CjangCjengh/MoeGoe)
+- [overflow](https://mirai.mamoe.net/topic/2565/overflow-%E5%B0%86-mirai-%E5%AE%9E%E7%8E%B0%E6%8D%A2%E6%88%90-onebot-%E6%9C%BA%E5%99%A8%E4%BA%BA%E7%9A%84%E5%8F%88%E4%B8%80%E4%B8%AA%E8%A7%A3%E5%86%B3%E6%96%B9%E6%A1%88?_=1712421277845) 
+- [arona api](https://doc.arona.diyigemt.com/) 
+- [star-rail-atlas](https://gitee.com/Nwflower/star-rail-atlas) 
+- [Yiri-mirai](https://github.com/YiriMiraiProject/YiriMirai)
+- [install_llob](https://github.com/super1207/install_llob)
 - 如果遇到使用问题，请在QQ群623265372反馈
 
 <div align="center">
