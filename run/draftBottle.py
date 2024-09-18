@@ -166,15 +166,17 @@ def main(bot,logger):
 
         def selfConstrucuer(source):
             bottleConstruct=[]
-            if "text" in str(source) or "image" in str(source):
+            if "time" in str(source):
+                return json.loads(source)#对旧数据实现兼容
+            else:
                 for i in source:
                     if "text" in i:
                         bottleConstruct.append(Plain(i["text"]))
                     elif "image" in i:
                         bottleConstruct.append(Image(path=i["image"]))
                 return bottleConstruct
-            else:
-                return json.loads(source) #对旧数据实现兼容
+                 
+        
         b1.append(ForwardMessageNode(sender_id=bot.qq, sender_name="Manyana",
                                      message_chain=MessageChain(selfConstrucuer(bottle["bottle"]))))
 
