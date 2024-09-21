@@ -38,6 +38,9 @@ def main(bot, logger):
         return
     global operating
     operating=[]
+    with open('config/api.yaml', 'r', encoding='utf-8') as f:
+        resulttr = yaml.load(f.read(), Loader=yaml.FullLoader)
+    proxy = resulttr.get("proxy")
     @bot.on(GroupMessage)
     async def querycomic(event: GroupMessage):
         global superUser,operating
@@ -147,7 +150,7 @@ def main(bot, logger):
                 # 使用线程池执行器
                 with ThreadPoolExecutor() as executor:
                     # 使用 asyncio.to_thread 调用函数并获取返回结果
-                    r=await loop.run_in_executor(executor, downloadALLAndToPdf, comic_id, jmcomicSettings.get("savePath"),URLSource)
+                    r=await loop.run_in_executor(executor, downloadALLAndToPdf, comic_id, jmcomicSettings.get("savePath"),URLSource,proxy)
                 logger.info(f"下载完成，车牌号：{comic_id} \n下载链接：{r} ")
                 await bot.send(event,f"下载完成，车牌号：{comic_id} \n下载链接：{r}\n请复制到浏览器打开，为避免失效请尽快使用",True)
             except Exception as e:
