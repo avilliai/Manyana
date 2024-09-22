@@ -45,13 +45,16 @@ def get_headers():
     headers = {'User-Agent': userAgent}
     return headers
 def fileToUrl(file_path,proxy):
-    proxies = {
-        "http://": proxy,
-        "https://": proxy
-    }
     url = "https://file.io"
     files = {"file": open(file_path, "rb")}
-    response = requests.post(url, files=files,proxies=proxies,headers=get_headers())
+    if proxy=="" or proxy==" " or proxy==None:
+        response = requests.post(url, files=files,headers=get_headers())
+    else:
+        proxies = {
+            "http://": proxy,
+            "https://": proxy
+        }
+        response = requests.post(url, files=files,proxies=proxies,headers=get_headers())
     data = response.json()
     return data.get("link")
 def lanzouFileToUrl(path):
