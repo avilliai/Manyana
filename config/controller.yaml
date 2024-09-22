@@ -35,7 +35,7 @@ ai绘画:
 JMComic:            #禁漫相关功能设置
   enable: True     #全局开关
   onlyTrustUser: False #打开后，仅master授权用户可用
-  URLSource: 0 #使用的网盘，0为蓝奏云，1为file.io。蓝奏云需配置cookie，file.io可能需要配置proxy
+  URLSource: 1 #使用的网盘，0为蓝奏云，1为file.io。蓝奏云需配置cookie，file.io可能需要配置proxy
   previewPages: 6  #验车预览页数
   savePath: "./data/pictures/benzi"  #下载为pdf的默认保存路径
 碧蓝档案:
