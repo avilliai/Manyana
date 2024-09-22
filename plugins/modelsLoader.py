@@ -4,7 +4,6 @@ import yaml
 
 
 def modelLoader():
-
     a = os.listdir('vits/voiceModel')
     models={}
     for i in a:
@@ -14,6 +13,7 @@ def modelLoader():
                 data = yaml.load(file, Loader=yaml.FullLoader)
                 speakers = data['speakers']
                 text_cleaners = data["data"]['text_cleaners']
+            modelPath = ''
             for ass in os.listdir('vits/voiceModel/' + i):
                 if ass.endswith('.pth'):
                     modelPath = 'vits/voiceModel/' + i + '/' + ass
