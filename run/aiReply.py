@@ -159,21 +159,20 @@ def main(bot, master, logger):
             # 判断模型类型
             else:
                 r= await modelReply("指挥", event.from_id, text)
+            if withText:
+                await bot.send_group_message(event.subject.id, r)
             if len(r) < maxTextLen and random.randint(0, 100) < voiceRate and "出错，请重试" not in r:
                 try:
                     path = 'data/voices/' + random_str() + '.wav'
-                    logger.info("语音生成_文本" + text)
+                    logger.info("语音生成_文本" + r)
                     logger.info("语音生成_模型:" + speaker)
-                    data = {"text": text, "out": path, 'speaker': speaker}
+                    data = {"text": r, "out": path, 'speaker': speaker}
                     voiceP = await superVG(data,mode=voicegenerateMode,urls="",langmode=voiceLangType )
                     await bot.send_group_message(event.subject.id, Voice(path=voiceP))
-                    if withText:
-                        await bot.send_group_message(event.subject.id, r)
+
                 except:
                     logger.error("语音合成调用失败")
-                    await bot.send_group_message(event.subject.id, r)
-            else:
-                await bot.send_group_message(event.subject.id, r)
+
 
     # 私聊使用chatGLM,对信任用户或配置了apiKey的用户开启
     @bot.on(FriendMessage)
@@ -212,21 +211,20 @@ def main(bot, master, logger):
                                            checkIfRepFirstTime=True)
         if firstRep:
             await bot.send(event, "如对话异常请发送 /clear 以清理对话", True)
+        if withText:
+            await bot.send(event, r, True)
         if len(r) < maxTextLen and random.randint(0, 100) < voiceRate and "出错，请重试" not in r:
             try:
                 path = 'data/voices/' + random_str() + '.wav'
-                logger.info("语音生成_文本" + text)
+                logger.info("语音生成_文本" + r)
                 logger.info("语音生成_模型:" + speaker)
-                data = {"text": text, "out": path, 'speaker': speaker}
+                data = {"text": r, "out": path, 'speaker': speaker}
                 voiceP = await superVG(data, mode=voicegenerateMode, urls="", langmode=voiceLangType)
                 await bot.send(event, Voice(path=voiceP))
-                if withText:
-                    await bot.send(event, r, True)
+
             except:
                 logger.error("语音合成调用失败")
-                await bot.send(event, r, True)
-        else:
-            await bot.send(event, r, True)
+
 
     # 私聊中chatGLM清除本地缓存
     @bot.on(FriendMessage)
@@ -376,22 +374,20 @@ def main(bot, master, logger):
         user = str(event.sender.id)
         if user in chattingUser:
             chattingUser[user] = datetime.datetime.now()
+        if withText:
+            await bot.send(event, r, True)
         if len(r) < maxTextLen and random.randint(0, 100) < voiceRate and "出错，请重试" not in r:
             try:
                 path = 'data/voices/' + random_str() + '.wav'
-                logger.info("语音生成_文本" + text)
+                logger.info("语音生成_文本" + r)
                 logger.info("语音生成_模型:" + speaker)
-                data = {"text": text, "out": path, 'speaker': speaker}
+                data = {"text": r, "out": path, 'speaker': speaker}
                 voiceP = await superVG(data, mode=voicegenerateMode, urls="", langmode=voiceLangType)
                 await bot.send(event, Voice(path=voiceP))
-                if withText:
-                    await bot.send(event, r, True)
+
             except Exception as e:
                 logger.error(e)
                 logger.error("语音合成失败")
-                await bot.send(event, r, True)
-        else:
-            await bot.send(event, r, True)
 
     # 用于chatGLM清除本地缓存
     @bot.on(GroupMessage)
