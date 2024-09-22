@@ -1,7 +1,11 @@
 # -*- coding: utf-8 -*-
+# -*- coding: utf-8 -*-
 import json
 import os
 import re
+
+import asyncio
+from concurrent.futures import ThreadPoolExecutor
 
 import httpx
 import requests
@@ -13,7 +17,7 @@ from plugins.toolkits import translate,random_str,random_session_hash
 try:
     from plugins.modelsLoader import modelLoader
 
-    models, default, characters = modelLoader()  # 读取模型
+    models = modelLoader()  # 读取模型
     from vits import vG
 except:
     pass
@@ -81,22 +85,26 @@ async def superVG(data, mode, urls="", langmode="<zh>"):
 
         text = data['text']
         out = data["out"]
-        try:
-            speaker = data['speaker']
-            modelSelect = data['modelSelect']
-        except Exception as e:
-            speaker = 2
-            modelSelect = ['vits/voiceModel/nene/1374_epochsm.pth', 'vits/voiceModel/nene/config.json']
-            print(e)
-            # with open('config/settings.yaml', 'r', encoding='utf-8') as f:
-            # result = yaml.load(f.read(), Loader=yaml.FullLoader)
-            # speaker = result.get("vits").get("speaker")
-            # modelSelect = result.get("vits").get("modelSelect")
-        # 调用 voiceG() 函数
-        if modelSelect[0].endswith("I.pth"):
-            text = text.replace("[JA]", "").replace("[ZH]", "")
-        # print("get")
-        await vG(tex=text, out=out, speakerID=speaker, modelSelect=modelSelect)
+
+        speaker = data['speaker']
+        modelSelect = ['vits/voiceModel/nene/1374_epochsm.pth', 'vits/voiceModel/nene/config.json']
+        speakerId="0"
+        for i in models:
+            if speaker in i:
+                modelSelect = [models[i]["modelPath"], models[i]["configPath"]]
+                speakerId=models[i]['speakers'].index(speaker)
+                if "mixture" in models[i]['text_cleaners'][0]:
+                    if langmode == "<zh>":
+                        text =f"[ZH]{text}[ZH]"
+                    elif langmode == "<en>":
+                        text = f"[EN]{text}[EN]"
+                    elif langmode == "<jp>":
+                        text = await translate(text)
+                        text=f"[JA]{text}[JA]"
+                break
+        loop = asyncio.get_event_loop()
+        # 使用线程池在子线程中运行 sync_function
+        await loop.run_in_executor(ThreadPoolExecutor(), vG, text, out, speakerId, modelSelect)
         print("语音生成完成")
         return out
     elif mode == "bert_vits2":
@@ -788,3 +796,5 @@ async def modelscopeTTS(data):
             with open(p, "wb") as f:
                 f.write(r.content)
             return p
+
+#asyncio.run(superVG({"text": "你好，欢迎使用语音合成服务。", "out": "output.wav", "speaker": "綾地寧々"},"vits", urls="", langmode="<zh>"))

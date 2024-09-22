@@ -80,32 +80,6 @@ with open('data/chatGLMData.yaml', 'r', encoding='utf-8') as f:
 chatGLMData = cha
 
 
-async def tstt(r):
-    data1 = {'speaker': speaker}
-    st8 = re.sub(r"（[^）]*）", "", r)  # 使用r前缀表示原始字符串，避免转义字符的问题
-    data1["text"] = st8
-    if voicegg == "vits":
-        logger.info("调用vits语音回复")
-
-        path = 'data/voices/' + random_str() + '.wav'
-        if voiceLangType == "<jp>":
-            texts = await translate(str(st8))
-            tex = '[JA]' + texts + '[JA]'
-        else:
-            tex = "[ZH]" + st8 + "[ZH]"
-        logger.info("启动文本转语音：text: " + tex + " path: " + path)
-        # spe = rte.get("defaultModel").get("speaker")
-        with open('config/autoSettings.yaml', 'r', encoding='utf-8') as f:
-            resulte = yaml.load(f.read(), Loader=yaml.FullLoader)
-        spe = resulte.get("defaultModel").get("speaker")
-        modelSelect = resulte.get("defaultModel").get("modelSelect")
-        await voiceGenerate({"text": tex, "out": path, "speaker": spe, "modelSelect": modelSelect})
-    else:
-        logger.info(f"调用{voicegg}语音合成")
-        path = await superVG(data1, voicegg, berturl, voiceLangType)
-    return path
-
-
 async def loop_run_in_executor(executor, func, *args):
     try:
         r = await executor.run_in_executor(None, func, *args)

@@ -12,7 +12,9 @@ from mirai import FriendMessage, GroupMessage, At,Image
 from mirai import Voice, Startup
 from mirai.models import NudgeEvent
 
-from plugins.aiReplyCore import modelReply, clearAllPrompts, tstt, clearsinglePrompt
+from plugins.aiReplyCore import modelReply, clearAllPrompts,clearsinglePrompt
+from plugins.toolkits import random_str
+from plugins.vitsGenerate import superVG
 from plugins.wReply.wontRep import wontrep
 
 
@@ -67,7 +69,9 @@ def main(bot, master, logger):
     maxTextLen = result.get("chatGLM").get("maxLen")
     voiceRate = result.get("chatGLM").get("voiceRate")
     withText = result.get("chatGLM").get("withText")
-
+    speaker = result.get("语音功能设置").get("speaker")
+    voicegenerateMode = result.get("语音功能设置").get("voicegenerate")
+    voiceLangType = result.get("语音功能设置").get("voiceLangType")
     with open('config.json', 'r', encoding='utf-8') as f:
         data = yaml.load(f.read(), Loader=yaml.FullLoader)
     config = data
@@ -157,7 +161,11 @@ def main(bot, master, logger):
                 r= await modelReply("指挥", event.from_id, text)
             if len(r) < maxTextLen and random.randint(0, 100) < voiceRate and "出错，请重试" not in r:
                 try:
-                    voiceP = await tstt(r)
+                    path = 'data/voices/' + random_str() + '.wav'
+                    logger.info("语音生成_文本" + text)
+                    logger.info("语音生成_模型:" + speaker)
+                    data = {"text": text, "out": path, 'speaker': speaker}
+                    voiceP = await superVG(data,mode=voicegenerateMode,urls="",langmode=voiceLangType )
                     await bot.send_group_message(event.subject.id, Voice(path=voiceP))
                     if withText:
                         await bot.send_group_message(event.subject.id, r)
@@ -206,7 +214,11 @@ def main(bot, master, logger):
             await bot.send(event, "如对话异常请发送 /clear 以清理对话", True)
         if len(r) < maxTextLen and random.randint(0, 100) < voiceRate and "出错，请重试" not in r:
             try:
-                voiceP = await tstt(r)
+                path = 'data/voices/' + random_str() + '.wav'
+                logger.info("语音生成_文本" + text)
+                logger.info("语音生成_模型:" + speaker)
+                data = {"text": text, "out": path, 'speaker': speaker}
+                voiceP = await superVG(data, mode=voicegenerateMode, urls="", langmode=voiceLangType)
                 await bot.send(event, Voice(path=voiceP))
                 if withText:
                     await bot.send(event, r, True)
@@ -366,7 +378,11 @@ def main(bot, master, logger):
             chattingUser[user] = datetime.datetime.now()
         if len(r) < maxTextLen and random.randint(0, 100) < voiceRate and "出错，请重试" not in r:
             try:
-                voiceP = await tstt(r)
+                path = 'data/voices/' + random_str() + '.wav'
+                logger.info("语音生成_文本" + text)
+                logger.info("语音生成_模型:" + speaker)
+                data = {"text": text, "out": path, 'speaker': speaker}
+                voiceP = await superVG(data, mode=voicegenerateMode, urls="", langmode=voiceLangType)
                 await bot.send(event, Voice(path=voiceP))
                 if withText:
                     await bot.send(event, r, True)

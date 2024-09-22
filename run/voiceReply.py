@@ -5,6 +5,8 @@ import yaml
 from mirai import GroupMessage, At, Plain,MessageChain
 from mirai import Voice
 from mirai.models import ForwardMessageNode, Forward
+
+from plugins.modelsLoader import modelLoader
 from plugins.toolkits import translate,random_str
 from plugins.vitsGenerate import voiceGenerate, superVG, fetch_FishTTS_ModelId, sovits, taffySayTest
 
@@ -76,36 +78,8 @@ def main(bot, master, logger):
         "满穗",
         "桑帛"
     ]
-    with open('config/autoSettings.yaml', 'r', encoding='utf-8') as f:
-        result2 = yaml.load(f.read(), Loader=yaml.FullLoader)
-    global modelSelect
-    global speaker
-    speaker = result2.get("defaultModel").get("speaker")
-    modelSelect = result2.get("defaultModel").get("modelSelect")
 
-    global models
-    global characters
-    try:
-        from plugins.modelsLoader import modelLoader
-        models, default, characters = modelLoader()  # 读取模型
-    except Exception as e:
-        characters = {"None": "无可用模型"}
-
-    @bot.on(GroupMessage)
-    async def setDefaultModel(event: GroupMessage):
-        if event.sender.id == master and str(event.message_chain).startswith("设定角色#"):
-            global speaker
-            global modelSelect
-            if str(event.message_chain).split("#")[1] in characters:
-                speaker1 = str(event.message_chain).split("#")[1]
-                logger.info("尝试设定角色：" + speaker1)
-                speaker = int(characters.get(speaker1)[0])
-                modelSelect = characters.get(speaker1)[1]
-                logger.info("设置了语音生成_speaker" + str(speaker))
-                logger.info("设置了语音生成_模型:" + str(modelSelect))
-
-    # modelSelect=['voiceModel/selina/selina.pth','voiceModel/selina/config.json']
-    # print('------\n'+str(CHOISE))
+    models = modelLoader()
 
     @bot.on(GroupMessage)
     async def characterSpeake(event: GroupMessage):
@@ -113,14 +87,13 @@ def main(bot, master, logger):
 
             text = str(event.message_chain)[len(str(event.message_chain).split("说")[0]) + 1:]
             speaker = str(event.message_chain).split("说")[0].replace(prefix,"")
-            if speaker in characters:
-                    text = await translate(text)
+            for i in models:
+                if speaker in i:
                     path = 'data/voices/' + random_str() + '.wav'
                     logger.info("语音生成_文本" + text)
-                    logger.info("语音生成_模型:" + speaker + str(characters.get(speaker)[1]))
-                    data = {"text": "[JA]" + text + "[JA]", "out": path, 'speaker': characters.get(speaker)[0],
-                            'modelSelect': characters.get(speaker)[1]}
-                    await voiceGenerate(data)
+                    logger.info("语音生成_模型:" + speaker)
+                    data = {"text": text, "out": path, 'speaker': speaker}
+                    await superVG(data,"vits")
                     await bot.send(event, Voice(path=path))
                     return
             if speaker in modelScope:
@@ -156,19 +129,6 @@ def main(bot, master, logger):
             except Exception as e:
                 logger.error(e)
 
-    @bot.on(GroupMessage)
-    async def characterSpeake(event: GroupMessage):
-        if "中文" in str(event.message_chain) and str(event.message_chain).split("中文")[0].replace(prefix,"") in characters and str(event.message_chain).startswith(prefix):
-            speaker = str(event.message_chain).split("中文")[0].replace(prefix,"")
-            text = str(event.message_chain).split("中文")[1]
-
-            path = f'data/voices/{random_str()}.wav'
-            logger.info("语音生成_文本" + text)
-            logger.info("语音生成_模型:" + speaker + str(characters.get(speaker)[1]))
-            data = {"text": "[ZH]" + text + "[ZH]", "out": path, 'speaker': characters.get(speaker)[0],
-                    'modelSelect': characters.get(speaker)[1]}
-            await voiceGenerate(data)
-            await bot.send(event, Voice(path=path))
 
     @bot.on(GroupMessage)
     async def characterSpeake(event: GroupMessage):
@@ -177,14 +137,15 @@ def main(bot, master, logger):
             text = str(event.message_chain)[len(str(event.message_chain).split("日文")[0]) + 1:]
 
             logger.info("语音生成_文本" + text)
-            if speaker in characters:
-                path = f'data/voices/{random_str()}.wav'
-                logger.info("语音生成_模型:" + speaker + str(characters.get(speaker)[1]))
-                data = {"text": f"[JA]{text}[JA]", "out": path, 'speaker': speaker,
-                        'modelSelect': characters.get(speaker)[1]}
-                await voiceGenerate(data)
-                await bot.send(event, Voice(path=path))
-
+            for i in models:
+                if speaker in i:
+                    path = 'data/voices/' + random_str() + '.wav'
+                    logger.info("语音生成_文本" + text)
+                    logger.info("语音生成_模型:" + speaker)
+                    data = {"text": text, "out": path, 'speaker': speaker}
+                    await superVG(data, "vits",urls="",langmode="<jp>")
+                    await bot.send(event, Voice(path=path))
+                    return
             try:
                 sp1 = await fetch_FishTTS_ModelId(proxy, FishTTSAuthorization,speaker)
                 if sp1 is None or sp1 == "":
@@ -204,8 +165,8 @@ def main(bot, master, logger):
             #print(len(str(event.message_chain).replace(str(At(bot.qq)))))
             try:
                 str1 = "vits可用角色如下：\n"
-                for i in characters:
-                    str1 += i + " |"
+                for i in models:
+                    str1+=i+" |"
             except:
                 str1 = ""
             b1=[]

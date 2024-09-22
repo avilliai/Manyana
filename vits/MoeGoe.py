@@ -90,7 +90,7 @@ def get_label(text, label):
     else:
         return False, text
 
-async def vG(tex,out,speakerID=2,modelSelect=['vits/voiceModel/nene/1374_epochsm.pth','vits/voiceModel/nene/config.json'] ):
+def vG(tex,out,speakerID=2,modelSelect=['vits/voiceModel/nene/1374_epochsm.pth','vits/voiceModel/nene/config.json'] ):
     if len(tex)>150:
 
         tex='[JA]長すぎるああ、こんなに長い声..... んもう~[JA]'
@@ -166,22 +166,19 @@ async def vG(tex,out,speakerID=2,modelSelect=['vits/voiceModel/nene/1374_epochsm
 
 
     write(out_path, hps_ms.data.sampling_rate, audio)#将生成的语音文件写入本地
-    await change_sample_rate(out_path)
-async def change_sample_rate(path,new_sample_rate=44100):
-    #wavfile = path  # 提取音频文件名，如“1.wav"
-    # new_file_name = wavfile.split('.')[0] + '_8k.wav'      #此行代码可用于对转换后的文件进行重命名（如有需要）
-
-    signal, sr = librosa.load(path, sr=None)  # 调用librosa载入音频
-
-    new_signal = librosa.resample(signal, orig_sr=sr, target_sr=new_sample_rate)  # 调用librosa进行音频采样率转换
-
-    new_path = path # 指定输出音频的路径，音频文件与原音频同名
-    # new_path = os.path.join(new_dir_path, new_file_name)      #若需要改名则启用此行代码
-    #print("?")
-    #print(new_path)
-
-    # librosa.output.write_wav(new_path, new_signal , new_sample_rate)      #因版本问题，此方法可能用不了
-    soundfile.write(new_path, new_signal, new_sample_rate)
+    change_sample_rate(out_path)
+def change_sample_rate(path,new_sample_rate=44100):
+    try:
+        signal, sr = librosa.load(path, sr=None)
+        if sr == new_sample_rate:
+            print("原始采样率与目标采样率相同，无需转换。")
+            return
+        new_signal = librosa.resample(signal, orig_sr=sr, target_sr=new_sample_rate)
+        new_path = path
+        soundfile.write(new_path, new_signal, new_sample_rate)
+        print(f"音频文件已保存为: {new_path}，采样率为: {new_sample_rate}")
+    except Exception as e:
+        print(f"处理音频文件时发生错误: {e}")
 
 
 def voice_conversion(sourcepath,speaker=0):
