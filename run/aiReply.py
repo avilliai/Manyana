@@ -169,11 +169,11 @@ def main(bot, master, logger):
                     data = {"text": r, "out": path, 'speaker': speaker}
                     voiceP = await superVG(data,mode=voicegenerateMode,urls="",langmode=voiceLangType )
                     await bot.send_group_message(event.subject.id, Voice(path=voiceP))
-
+                    return
                 except:
                     logger.error("语音合成调用失败")
-                    if not withText:
-                        await bot.send_group_message(event.subject.id, r)
+            if not withText:
+                await bot.send_group_message(event.subject.id, r)
 
 
     # 私聊使用chatGLM,对信任用户或配置了apiKey的用户开启
@@ -223,11 +223,11 @@ def main(bot, master, logger):
                 data = {"text": r, "out": path, 'speaker': speaker}
                 voiceP = await superVG(data, mode=voicegenerateMode, urls="", langmode=voiceLangType)
                 await bot.send(event, Voice(path=voiceP))
-
+                return
             except:
                 logger.error("语音合成调用失败")
-                if not withText:
-                    await bot.send(event, r, True)
+        if not withText:
+            await bot.send(event, r, True)
 
 
     # 私聊中chatGLM清除本地缓存
@@ -388,12 +388,12 @@ def main(bot, master, logger):
                 data = {"text": r, "out": path, 'speaker': speaker}
                 voiceP = await superVG(data, mode=voicegenerateMode, urls="", langmode=voiceLangType)
                 await bot.send(event, Voice(path=voiceP))
-
+                return
             except Exception as e:
                 logger.error(e)
                 logger.error("语音合成失败")
-                if not withText:
-                    await bot.send(event, r, True)
+        if not withText:
+            await bot.send(event, r, True)
 
     # 用于chatGLM清除本地缓存
     @bot.on(GroupMessage)
