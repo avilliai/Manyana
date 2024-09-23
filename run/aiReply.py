@@ -172,6 +172,8 @@ def main(bot, master, logger):
 
                 except:
                     logger.error("语音合成调用失败")
+                    if not withText:
+                        await bot.send_group_message(event.subject.id, r)
 
 
     # 私聊使用chatGLM,对信任用户或配置了apiKey的用户开启
@@ -224,6 +226,8 @@ def main(bot, master, logger):
 
             except:
                 logger.error("语音合成调用失败")
+                if not withText:
+                    await bot.send(event, r, True)
 
 
     # 私聊中chatGLM清除本地缓存
@@ -388,6 +392,8 @@ def main(bot, master, logger):
             except Exception as e:
                 logger.error(e)
                 logger.error("语音合成失败")
+                if not withText:
+                    await bot.send(event, r, True)
 
     # 用于chatGLM清除本地缓存
     @bot.on(GroupMessage)
