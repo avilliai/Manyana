@@ -88,7 +88,7 @@ def main(bot, master, logger):
             text = str(event.message_chain)[len(str(event.message_chain).split("说")[0]) + 1:]
             speaker = str(event.message_chain).split("说")[0].replace(prefix,"")
             for i in models:
-                if speaker in i:
+                if speaker in i and speaker != "":
                     path = 'data/voices/' + random_str() + '.wav'
                     logger.info("语音生成_文本" + text)
                     logger.info("语音生成_模型:" + speaker)
@@ -138,7 +138,7 @@ def main(bot, master, logger):
 
             logger.info("语音生成_文本" + text)
             for i in models:
-                if speaker in i:
+                if speaker in i and speaker != "":
                     path = 'data/voices/' + random_str() + '.wav'
                     logger.info("语音生成_文本" + text)
                     logger.info("语音生成_模型:" + speaker)
