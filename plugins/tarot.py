@@ -90,12 +90,14 @@ tarot = [['愚者 (The Fool)',
           'The World.jpg']]
 
 
-def tarotChoice():
+def tarotChoice(isAbstract):
     ints = random.randint(0, 1)
     if ints == 0:
         tarots = random.choice(tarot)
         txt = tarots[0] + '\n' + '正位' + '\n' + tarots[1]
         img = 'data/pictures/tarot/TarotImages/' + tarots[3]
+        img_folder = 'AbstractImages' if isAbstract else 'TarotImages'
+        img = f'data/pictures/tarot/{img_folder}/{tarots[3]}'
         return txt, img
     if ints == 1:
         tarots = random.choice(tarot)
@@ -105,8 +107,11 @@ def tarotChoice():
             return txt, img1
         else:
             # 打开图像
-            img = Image.open('data/pictures/tarot/TarotImages/' + tarots[3])
+            img_folder = 'AbstractImages' if isAbstract else 'TarotImages'
+            img = Image.open(f'data/pictures/tarot/{img_folder}/{tarots[3]}')
 
+            if img.mode == 'RGBA':
+                img = img.convert('RGB')
             # 旋转180度
             rotated_img = img.rotate(180)
 
