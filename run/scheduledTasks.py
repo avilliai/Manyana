@@ -132,10 +132,13 @@ def main(bot,logger):
             logger.info("获取steam喜加一")
             path = await steamEpic()
             logger.info("推送今日喜加一列表")
+            if path is None or path == "":
+                return
+            elif "错误" in path:
+                logger.error(f"喜加一出错,{path}")
+                return
             for i in groupdata.get("steamadd1").get("groups"):
                 try:
-                    if path is None or path == "":
-                        return
                     await bot.send_group_message(int(i), [task_info.get("text"), path])
                 except:
                     logger.error("不存在的群" + str(i))
