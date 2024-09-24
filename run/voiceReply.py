@@ -89,6 +89,13 @@ def main(bot, master, logger):
 
             text = str(event.message_chain)[len(str(event.message_chain).split("说")[0]) + 1:]
             speaker = str(event.message_chain).split("说")[0].replace(prefix,"")
+            original_speaker=speaker
+            if f"{speaker}【原神】" in list(GPTSOVITS_SPEAKERS.keys()):
+                speaker = f"{speaker}【原神】"
+            elif f"{speaker}【崩坏3】" in list(GPTSOVITS_SPEAKERS.keys()):
+                speaker = f"{speaker}【崩坏3】"
+            elif f"{speaker}【星穹铁道】" in list(GPTSOVITS_SPEAKERS.keys()):
+                speaker = f"{speaker}【星穹铁道】"
             if speaker in list(GPTSOVITS_SPEAKERS.keys()):
                 try:
                     data = {"speaker": speaker,
@@ -99,6 +106,7 @@ def main(bot, master, logger):
                     return
                 except Exception as e:
                     logger.error(e)
+                    speaker = original_speaker
             for i in models:
                 if speaker in i and speaker != "":
                     path = 'data/voices/' + random_str() + '.wav'
