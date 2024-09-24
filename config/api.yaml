@@ -33,6 +33,7 @@ proxy: ''                        #代理 http://127.0.0.1:端口 如http://127.0
 sock5-proxy: ""                  #sock5代理，如使用bing-imagecreator必须配置，取决于你自己代理的端口。
 GeminiRevProxy: ""               #基于netlify反向代理，搭建后本地环境无需开启代理即可访问Gemini，参考https://github.com/avilliai/Manyana/issues/17
 
+GptSovitsToken: ""     #GptSovits的token,带有情感向量的语音合成，从https://getkey.acgnai.top/获取
 FishTTSAuthorization: ""         #FishTTS语音合成必要参数，看https://github.com/avilliai/Manyana/issues/19
 sdUrl: ""                        #你自己搭建的sd，地址，示例http://127.0.0.1:17858（示例≠你能直接填示例用），部署https://www.bilibili.com/video/BV1iM4y1y7oA/
 

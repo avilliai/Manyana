@@ -8,7 +8,7 @@ from mirai.models import ForwardMessageNode, Forward
 
 from plugins.modelsLoader import modelLoader
 from plugins.toolkits import translate,random_str
-from plugins.vitsGenerate import voiceGenerate, superVG, fetch_FishTTS_ModelId, sovits, taffySayTest
+from plugins.vitsGenerate import voiceGenerate, superVG, sovits, taffySayTest
 
 
 def main(bot, master, logger):
@@ -117,17 +117,7 @@ def main(bot, master, logger):
                     return
                 except Exception as e:
                     logger.error(e)
-            try:
-                sp1 = await fetch_FishTTS_ModelId(proxy, FishTTSAuthorization, speaker)
-                if sp1 is None or sp1 == "":
-                    logger.warning("未能在FishTTS中找到对应角色")
-                    return
-                else:
-                    logger.info(f"获取到FishTTS模型id {speaker} {sp1}")
-                    p = await superVG({"text": text, "speaker": sp1}, "FishTTS")
-                    await bot.send(event, Voice(path=p))
-            except Exception as e:
-                logger.error(e)
+
 
 
     @bot.on(GroupMessage)
@@ -146,17 +136,7 @@ def main(bot, master, logger):
                     await superVG(data, "vits",urls="",langmode="<jp>")
                     await bot.send(event, Voice(path=path))
                     return
-            try:
-                sp1 = await fetch_FishTTS_ModelId(proxy, FishTTSAuthorization,speaker)
-                if sp1 is None or sp1 == "":
-                    logger.warning("未能在FishTTS中找到对应角色")
-                    return
-                else:
-                    logger.info(f"获取到FishTTS模型id {speaker} {sp1}")
-                    p = await superVG(data={"text": text, "speaker": sp1}, mode="FishTTS", langmode="<jp>")
-                    await bot.send(event, Voice(path=p))
-            except Exception as e:
-                logger.error(e)
+
 
     @bot.on(GroupMessage)
     async def checkCharacters(event: GroupMessage):
