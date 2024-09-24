@@ -78,6 +78,7 @@ def main(bot, logger):
     aiReplyCore = result1.get("chatGLM").get("aiReplyCore")
     colorfulCharacterList = os.listdir("data/colorfulAnimeCharacter")
     lockResult = controllerResult.get("运势&塔罗").get("lockLuck")
+    isAbstract = controllerResult.get("运势&塔罗").get("isAbstract")
     InternetMeme = controllerResult.get("图片相关").get("InternetMeme")
 
     global picData
@@ -677,7 +678,7 @@ def main(bot, logger):
                 event.message_chain) == "今日塔罗":
             logger.info("获取今日塔罗")
             if not lockResult:
-                txt, img = tarotChoice()
+                txt, img = tarotChoice(isAbstract)
                 logger.info("成功获取到今日塔罗")
                 await bot.send(event, [txt, Image(path=img)])
                 if aiReplyCore:
@@ -687,7 +688,7 @@ def main(bot, logger):
 
             else:
                 if event.sender.id not in luckList.get(tod).get("塔罗"):
-                    txt, img = tarotChoice()
+                    txt, img = tarotChoice(isAbstract)
                     logger.info("成功获取到今日塔罗")
                     await bot.send(event, txt)
                     await bot.send(event, Image(path=img))
