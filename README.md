@@ -134,7 +134,7 @@ Manyana/config.json的填写示例如下。
 - [Amaranth](https://github.com/avilliai/Amaranth) 欢迎关注我们的新版启动器
 - [Eridanus](https://github.com/avilliai/Eridanus) Manyana直接对接onebot实现的版本，欢迎参与开发
 
-感谢JetBrains提供的开源项目license<br>
+感谢JetBrains为开源项目提供的license<br>
 <img src="https://resources.jetbrains.com/storage/products/company/brand/logos/PyCharm_icon.png" alt="PyCharm logo." width="50">
 <div align="center">
    <img width="70%" height="70%" src="https://moe-counter.glitch.me/get/@:manyana" alt="logo"></br>
