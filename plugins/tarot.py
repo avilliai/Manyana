@@ -102,12 +102,13 @@ def tarotChoice(isAbstract):
     if ints == 1:
         tarots = random.choice(tarot)
         txt = tarots[0] + '\n' + '逆位' + '\n' + tarots[2]
-        img1 = 'data/pictures/tarot/TarotSide/' + tarots[3]
+        img_folder = 'AbstractImages' if isAbstract else 'TarotImages'
+        img1 = f'data/pictures/tarot/side{img_folder}/' + tarots[3]
         if os.path.exists(img1):
             return txt, img1
         else:
             # 打开图像
-            img_folder = 'AbstractImages' if isAbstract else 'TarotImages'
+
             img = Image.open(f'data/pictures/tarot/{img_folder}/{tarots[3]}')
 
             if img.mode == 'RGBA':
@@ -116,7 +117,7 @@ def tarotChoice(isAbstract):
             rotated_img = img.rotate(180)
 
             # 保存旋转后的图像
-            rotated_img.save('data/pictures/tarot/TarotSide/' + tarots[3])
+            rotated_img.save(f'data/pictures/tarot/side{img_folder}/' + tarots[3])
             return txt, img1
 
 lucky = [
