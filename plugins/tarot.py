@@ -104,6 +104,8 @@ def tarotChoice(isAbstract):
         txt = tarots[0] + '\n' + 'ÄæÎ»' + '\n' + tarots[2]
         img_folder = 'AbstractImages' if isAbstract else 'TarotImages'
         img1 = f'data/pictures/tarot/side{img_folder}/' + tarots[3]
+        if not os.path.exists(f'data/pictures/tarot/side{img_folder}'):
+            os.mkdir(f'data/pictures/tarot/side{img_folder}')
         if os.path.exists(img1):
             return txt, img1
         else:
