@@ -93,8 +93,8 @@ def main(bot, master, logger):
                 try:
                     data = {"speaker": speaker,
                             "text": text}
-                    logger.info("outVits语音合成:" + data["text"])
-                    path = await superVG(data, "outVits")
+                    logger.info("gptSovits语音合成:" + data["text"])
+                    path = await superVG(data, "gptSovits")
                     await bot.send(event, Voice(path=path))
                     return
                 except Exception as e:
