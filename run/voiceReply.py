@@ -89,7 +89,7 @@ def main(bot, master, logger):
 
             text = str(event.message_chain)[len(str(event.message_chain).split("说")[0]) + 1:]
             speaker = str(event.message_chain).split("说")[0].replace(prefix,"")
-            if speaker in GPTSOVITS_SPEAKERS.keys():
+            if speaker in list(GPTSOVITS_SPEAKERS.keys()):
                 try:
                     data = {"speaker": speaker,
                             "text": text}
@@ -172,7 +172,7 @@ def main(bot, master, logger):
             b1.append(ForwardMessageNode(sender_id=bot.qq, sender_name="Manyana",
                                          message_chain=MessageChain(f"outVits可用角色如下：\n{outVitsSpeakers}")))
             b1.append(ForwardMessageNode(sender_id=bot.qq, sender_name="Manyana",
-                                         message_chain=MessageChain(f"gptsoVits可用角色如下：\n{str(GPTSOVITS_SPEAKERS.keys())}")))
+                                         message_chain=MessageChain(f"gptsoVits可用角色如下：\n{str(list(GPTSOVITS_SPEAKERS.keys()))}")))
             b1.append(ForwardMessageNode(sender_id=bot.qq, sender_name="Manyana",
                                          message_chain=MessageChain(f"可发送 {prefix}xx说.......  以进行语音合成")))
             await bot.send(event, Forward(node_list=b1))
