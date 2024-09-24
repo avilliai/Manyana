@@ -99,8 +99,11 @@ async def superVG(data, mode, urls="", langmode="<zh>"):
                     elif langmode == "<en>":
                         text = f"[EN]{text}[EN]"
                     elif langmode == "<jp>":
-                        text = await translate(text)
-                        text=f"[JA]{text}[JA]"
+                        if re.search(r"[\u3040-\u309F]", text.replace(botName, "")):    # 检测是否含有日语字符
+                            tex = f"[JA]{text}[JA]"
+                        else:
+                            text = await translate(text)
+                            text = f"[JA]{text}[JA]"
                 break
         loop = asyncio.get_event_loop()
         # 使用线程池在子线程中运行 sync_function
