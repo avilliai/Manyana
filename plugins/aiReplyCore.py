@@ -12,7 +12,6 @@ from plugins.ReplyModels import gptOfficial, gptUnofficial, kimi, qingyan, lingy
     momoRep, sparkAI, wenxinAI, YuanQiTencent
 from plugins.googleGemini import geminirep
 from plugins.toolkits import newLogger,random_str,translate
-from plugins.vitsGenerate import voiceGenerate, superVG
 logger=newLogger()
 with open('config/api.yaml', 'r', encoding='utf-8') as f:
     resulttr = yaml.load(f.read(), Loader=yaml.FullLoader)
@@ -92,27 +91,31 @@ async def loop_run_in_executor(executor, func, *args):
 
 # 运行异步函数
 async def modelReply(senderName, senderId, text, modelHere=modelDefault, trustUser=None, imgurls=None,
-                     checkIfRepFirstTime=False):
+                     checkIfRepFirstTime=False,noRolePrompt=False):
     global chatGLMData
     logger.info(modelHere)
+
     if senderName==None:
         senderName="指挥"
     try:
-        if type(allcharacters.get(modelHere)) == dict:
-            with open('config/settings.yaml', 'r', encoding='utf-8') as f:
-                resy = yaml.load(f.read(), Loader=yaml.FullLoader)
-            meta1 = resy.get("chatGLM").get("bot_info").get(modelHere)
-            meta1["user_name"] = senderName
-            meta1["user_info"] = meta1.get("user_info").replace("【用户】", senderName).replace("【bot】",
-                                                                                              botName)
-            meta1["bot_info"] = meta1.get("bot_info").replace("【用户】", senderName).replace("【bot】",
-                                                                                            botName)
-            meta1["bot_name"] = botName
-            bot_in = meta1
+        if not noRolePrompt:
+            if type(allcharacters.get(modelHere)) == dict:
+                with open('config/settings.yaml', 'r', encoding='utf-8') as f:
+                    resy = yaml.load(f.read(), Loader=yaml.FullLoader)
+                meta1 = resy.get("chatGLM").get("bot_info").get(modelHere)
+                meta1["user_name"] = senderName
+                meta1["user_info"] = meta1.get("user_info").replace("【用户】", senderName).replace("【bot】",
+                                                                                                  botName)
+                meta1["bot_info"] = meta1.get("bot_info").replace("【用户】", senderName).replace("【bot】",
+                                                                                                botName)
+                meta1["bot_name"] = botName
+                bot_in = meta1
+            else:
+                bot_in = str("你是" + botName + ",我是" + senderName + "," + allcharacters.get(
+                    modelHere)).replace("【bot】",
+                                        botName).replace("【用户】", senderName)
         else:
-            bot_in = str("你是" + botName + ",我是" + senderName + "," + allcharacters.get(
-                modelHere)).replace("【bot】",
-                                    botName).replace("【用户】", senderName)
+            bot_in = "请你按照我的要求进行接下来的工作，我的要求将在稍后提出。"
     except Exception as e:
         logger.error(e)
         logger.info(f"无法获取到该用户昵称 id：{senderId}")

@@ -37,7 +37,7 @@
 **如果你觉得自己从零开始搭建bot比较困难，请使用此方案**<br>
 对于windows用户，存在两款启动器，分别是[Manyana1.x](https://github.com/avilliai/Manyana/releases) 和[Manyana_deploy](https://github.com/lux-QAQ/Manyana_deploy/releases) 你可以根据自己的喜好选择<br>
 [Manyana1.x](https://github.com/avilliai/Manyana/releases)使用方式如下。
-- 从[release](https://github.com/avilliai/Manyana/releases)下载LAUNCHER-all-requirements.rar并解压
+- 从[release](https://github.com/avilliai/Manyana/releases)下载最大的rar文件并解压
   - 如果下载过慢，你也可以从Q群623265372获得这个压缩包
 - 运行launcher.exe<br>
 - 点击主界面 克隆仓库(没有自己的onebot实现的，需要额外安装onebot文件夹下的两个文件，先qq后llob_install)
@@ -134,7 +134,7 @@ Manyana/config.json的填写示例如下。
 - [Amaranth](https://github.com/avilliai/Amaranth) 欢迎关注我们的新版启动器
 - [Eridanus](https://github.com/avilliai/Eridanus) Manyana直接对接onebot实现的版本，欢迎参与开发
 
-感谢JetBrains提供的开源项目license<br>
+感谢JetBrains为开源项目提供的license<br>
 <img src="https://resources.jetbrains.com/storage/products/company/brand/logos/PyCharm_icon.png" alt="PyCharm logo." width="50">
 <div align="center">
    <img width="70%" height="70%" src="https://moe-counter.glitch.me/get/@:manyana" alt="logo"></br>

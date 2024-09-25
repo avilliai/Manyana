@@ -12,8 +12,9 @@ import requests
 import websockets
 import yaml
 
-from plugins.toolkits import translate,random_str,random_session_hash
+from plugins.toolkits import translate, random_str, random_session_hash, newLogger
 
+logger=newLogger()
 try:
     from plugins.modelsLoader import modelLoader
 
@@ -24,6 +25,7 @@ except:
 
 with open('config/api.yaml', 'r', encoding='utf-8') as f:
     resulttr = yaml.load(f.read(), Loader=yaml.FullLoader)
+gptSovitsToken= resulttr.get("GptSovitsToken")
 modelscopeCookie = resulttr.get("modelscopeCookie")
 if modelscopeCookie == "":
     modelscopeCookie = "cna=j117HdPDmkoCAXjC3hh/4rjk; ajs_anonymous_id=5aa505b4-8510-47b5-a1e3-6ead158f3375; t=27c49d517b916cf11d961fa3769794dd; uuid_tt_dd=11_99759509594-1710000225471-034528; log_Id_click=16; log_Id_pv=12; log_Id_view=277; xlly_s=1; csrf_session=MTcxMzgzODI5OHxEdi1CQkFFQ180SUFBUkFCRUFBQU12LUNBQUVHYzNSeWFXNW5EQW9BQ0dOemNtWlRZV3gwQm5OMGNtbHVad3dTQUJCNFkwRTFkbXAwV0VVME0wOUliakZwfHNEIp5sKWkjeJWKw1IphSS3e4R_7GyEFoKKuDQuivUs; csrf_token=TkLyvVj3to4G5Mn_chtw3OI8rRA%3D; _samesite_flag_=true; cookie2=11ccab40999fa9943d4003d08b6167a0; _tb_token_=555ee71fdee17; _gid=GA1.2.1037864555.1713838369; h_uid=2215351576043; _xsrf=2|f9186bd2|74ae7c9a48110f4a37f600b090d68deb|1713840596; csg=242c1dff; m_session_id=769d7c25-d715-4e3f-80de-02b9dbfef325; _gat_gtag_UA_156449732_1=1; _ga_R1FN4KJKJH=GS1.1.1713838368.22.1.1713841094.0.0.0; _ga=GA1.1.884310199.1697973032; tfstk=fE4KxBD09OXHPxSuRWsgUB8pSH5GXivUTzyBrU0oKGwtCSJHK7N3ebe0Ce4n-4Y8X8wideDotbQ8C7kBE3queYwEQ6OotW08WzexZUVIaNlgVbmIN7MQBYNmR0rnEvD-y7yAstbcoWPEz26cnZfu0a_qzY_oPpRUGhg5ntbgh_D3W4ZudTQmX5MZwX9IN8ts1AlkAYwSdc9sMjuSF8g56fGrgX9SFbgs5bGWtBHkOYL8Srdy07KF-tW4Wf6rhWQBrfUt9DHbOyLWPBhKvxNIBtEfyXi_a0UyaUn8OoyrGJ9CeYzT1yZbhOxndoh8iuFCRFg38WZjVr6yVWunpVaQDQT762H3ezewpOHb85aq5cbfM5aaKWzTZQ_Ss-D_TygRlsuKRvgt_zXwRYE_VymEzp6-UPF_RuIrsr4vHFpmHbxC61Ky4DGguGhnEBxD7Zhtn1xM43oi_fHc61Ky4DGZ6xfGo3-rjf5..; isg=BKKjOsZlMNqsZy8UH4-lXjE_8ygE86YNIkwdKew665XKv0I51IGvHCUz7_tDrx6l"
@@ -239,329 +241,9 @@ async def superVG(data, mode, urls="", langmode="<zh>"):
     elif mode == "outVits":
         p=await outVits(text = data['text'],speaker=data["speaker"])
         return p
-    elif mode == "FishTTS":
-        modelid = data.get("speaker")
-
-        text = data.get("text")
-        if os.path.exists("./config/api.yaml"):
-            with open('config/api.yaml', 'r', encoding='utf-8') as f:
-                res = yaml.load(f.read(), Loader=yaml.FullLoader)
-                proxy = res.get("proxy")
-                Authorization = res.get("FishTTSAuthorization")
-        if len(modelid) < 15:
-            modelid = await fetch_FishTTS_ModelId(proxy, Authorization, modelid)
-        if proxy == "" or proxy == " ":
-            async with httpx.AsyncClient(timeout=20, verify=False) as client:
-                async def send_options_request(client):
-                    url = "https://api.fish.audio/task"
-                    headers = {
-                        "Accept": "*/*",
-                        "Accept-Encoding": "gzip, deflate, br, zstd",
-                        "Accept-Language": "zh-CN,zh;q=0.9,en;q=0.8,en-GB;q=0.7,en-US;q=0.6",
-                        "Access-Control-Request-Headers": "authorization,content-type",
-                        "Access-Control-Request-Method": "POST",
-                        "Origin": "https://fish.audio",
-                        "Referer": "https://fish.audio/",
-                        "Sec-Fetch-Dest": "empty",
-                        "Sec-Fetch-Mode": "cors",
-                        "Sec-Fetch-Site": "same-site",
-                        "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/125.0.0.0 Safari/537.36 Edg/125.0.0.0"
-                    }
-
-                    try:
-                        response = await client.options(url, headers=headers)
-                        #print("POST Response Status:", response.status_code)
-                        # print("POST Response Headers:", response.headers)
-                        # print("POST Response Text:", response.text)
-                    except httpx.HTTPStatusError as e:
-                        print(f"HTTP error occurred: {e}")
-                    except httpx.ReadTimeout:
-                        print("The request timed out while reading from the server.")
-                    except Exception as e:
-                        print(f"An error occurred: {e}")
-                    # print("OPTIONS Response Status:", response.status_code)
-                    # print("OPTIONS Response Headers:", response.headers)
-                    # print("OPTIONS Response Text:", response.text)
-
-                async def send_post_request(client, modelid, text, Authorization):
-                    url = "https://api.fish.audio/task"
-                    headers = {
-                        "Accept": "*/*",
-                        "Accept-Encoding": "gzip, deflate, br, zstd",
-                        "Accept-Language": "zh-CN,zh;q=0.9,en;q=0.8,en-GB;q=0.7,en-US;q=0.6",
-                        "Authorization": Authorization,
-                        "Content-Type": "application/json",
-                        "Origin": "https://fish.audio",
-                        "Referer": "https://fish.audio/",
-                        "Sec-Ch-Ua": '"Microsoft Edge";v="125", "Chromium";v="125", "Not.A/Brand";v="24"',
-                        "Sec-Ch-Ua-Mobile": "?0",
-                        "Sec-Ch-Ua-Platform": '"Windows"',
-                        "Sec-Fetch-Dest": "empty",
-                        "Sec-Fetch-Mode": "cors",
-                        "Sec-Fetch-Site": "same-site",
-                        "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/125.0.0.0 Safari/537.36 Edg/125.0.0.0"
-                    }
-                    data = {
-                        "type": "tts",
-                        "channel": "free",
-                        "stream": True,
-                        "model": str(modelid),
-                        "parameters": {
-                            "text": text
-                        }
-                    }
-
-                    try:
-                        response = await client.post(url, headers=headers, json=data, timeout=60.0)
-                        # print("POST Response Status:", response.status_code)
-                        # print("POST Response Headers:", response.headers)
-                        # print("POST Response Text:", response.text)
-
-                        # 提取 task-id
-                        task_id = response.headers.get('task-id')
-                        # print("Task-ID:", task_id)
-                        return task_id
-                    except httpx.HTTPStatusError as e:
-                        print(f"HTTP error occurred: {e}")
-                    except httpx.ReadTimeout:
-                        print("The request timed out while reading from the server.")
-                    except Exception as e:
-                        print(f"An error occurred: {e}")
-
-                async def send_get_request(client, task_id, Authorization):
-                    url = f"https://api.fish.audio/task/{task_id}"
-                    headers = {
-                        "Accept": "application/json",
-                        "Accept-Encoding": "gzip, deflate, br, zstd",
-                        "Accept-Language": "zh-CN,zh;q=0.9,en;q=0.8,en-GB;q=0.7,en-US;q=0.6",
-                        "Authorization": Authorization,
-                        "Origin": "https://fish.audio",
-                        "Referer": "https://fish.audio/",
-                        "Sec-Ch-Ua": '"Microsoft Edge";v="125", "Chromium";v="125", "Not.A/Brand";v="24"',
-                        "Sec-Ch-Ua-Mobile": "?0",
-                        "Sec-Ch-Ua-Platform": '"Windows"',
-                        "Sec-Fetch-Dest": "empty",
-                        "Sec-Fetch-Mode": "cors",
-                        "Sec-Fetch-Site": "same-site",
-                        "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/125.0.0.0 Safari/537.36 Edg/125.0.0.0"
-                    }
-
-                    try:
-                        response = await client.get(url, headers=headers, timeout=60.0)
-                        # print("GET Response Status:", response.status_code)
-                        # print("GET Response Headers:", response.headers)
-                        # print("GET Response Text:", response.text)
-                        return response.json()
-                    except httpx.HTTPStatusError as e:
-                        print(f"HTTP error occurred: {e}")
-                    except httpx.ReadTimeout:
-                        print("The request timed out while reading from the server.")
-                    except Exception as e:
-                        print(f"An error occurred: {e}")
-
-                await send_options_request(client)
-                task_id = await send_post_request(client, modelid, text, Authorization)
-                if task_id:
-                    result = await send_get_request(client, task_id, Authorization)
-                    # print("GET Request Result:", result)
-                    audio_url = result['result']
-                    rb = await client.get(audio_url)
-                    path = "data/voices/" + random_str() + '.wav'
-                    with open(path, "wb") as f:
-                        f.write(rb.content)
-                    return path
-        else:
-            proxies = {
-                "http://": proxy,
-                "https://": proxy
-            }
-            async with httpx.AsyncClient(proxies=proxies, timeout=20, verify=False) as client:
-                async def send_options_request(client):
-                    url = "https://api.fish.audio/task"
-                    headers = {
-                        "Accept": "*/*",
-                        "Accept-Encoding": "gzip, deflate, br, zstd",
-                        "Accept-Language": "zh-CN,zh;q=0.9,en;q=0.8,en-GB;q=0.7,en-US;q=0.6",
-                        "Access-Control-Request-Headers": "authorization,content-type",
-                        "Access-Control-Request-Method": "POST",
-                        "Origin": "https://fish.audio",
-                        "Referer": "https://fish.audio/",
-                        "Sec-Fetch-Dest": "empty",
-                        "Sec-Fetch-Mode": "cors",
-                        "Sec-Fetch-Site": "same-site",
-                        "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/125.0.0.0 Safari/537.36 Edg/125.0.0.0"
-                    }
-
-                    try:
-                        response = await client.options(url, headers=headers)
-                        #print("POST Response Status:", response.status_code)
-                        #print("POST Response Headers:", response.headers)
-                        # print("POST Response Text:", response.text)
-                    except httpx.HTTPStatusError as e:
-                        print(f"HTTP error occurred: {e}")
-                    except httpx.ReadTimeout:
-                        print("The request timed out while reading from the server.")
-                    except Exception as e:
-                        print(f"An error occurred: {e}")
-                    # print("OPTIONS Response Status:", response.status_code)
-                    # print("OPTIONS Response Headers:", response.headers)
-                    # print("OPTIONS Response Text:", response.text)
-
-                async def send_post_request(client, modelid, text, Authorization):
-                    url = "https://api.fish.audio/task"
-                    headers = {
-                        "Accept": "*/*",
-                        "Accept-Encoding": "gzip, deflate, br, zstd",
-                        "Accept-Language": "zh-CN,zh;q=0.9,en;q=0.8,en-GB;q=0.7,en-US;q=0.6",
-                        "Authorization": Authorization,
-                        "Content-Type": "application/json",
-                        "Origin": "https://fish.audio",
-                        "Referer": "https://fish.audio/",
-                        "Sec-Ch-Ua": '"Microsoft Edge";v="125", "Chromium";v="125", "Not.A/Brand";v="24"',
-                        "Sec-Ch-Ua-Mobile": "?0",
-                        "Sec-Ch-Ua-Platform": '"Windows"',
-                        "Sec-Fetch-Dest": "empty",
-                        "Sec-Fetch-Mode": "cors",
-                        "Sec-Fetch-Site": "same-site",
-                        "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/125.0.0.0 Safari/537.36 Edg/125.0.0.0"
-                    }
-                    data = {
-                        "type": "tts",
-                        "channel": "free",
-                        "stream": True,
-                        "model": str(modelid),
-                        "parameters": {
-                            "text": text
-                        }
-                    }
-
-                    try:
-                        response = await client.post(url, headers=headers, json=data, timeout=60.0)
-                        # print("POST Response Status:", response.status_code)
-                        #print("POST Response Headers:", response.headers)
-                        # print("POST Response Text:", response.text)
-
-                        # 提取 task-id
-                        task_id = response.headers.get('task-id')
-                        #print("Task-ID:", task_id)
-                        return task_id
-                    except httpx.HTTPStatusError as e:
-                        print(f"HTTP error occurred: {e}")
-                    except httpx.ReadTimeout:
-                        print("The request timed out while reading from the server.")
-                    except Exception as e:
-                        print(f"An error occurred: {e}")
-
-                async def send_get_request(client, task_id, Authorization):
-                    url = f"https://api.fish.audio/task/{task_id}"
-                    headers = {
-                        "Accept": "application/json",
-                        "Accept-Encoding": "gzip, deflate, br, zstd",
-                        "Accept-Language": "zh-CN,zh;q=0.9,en;q=0.8,en-GB;q=0.7,en-US;q=0.6",
-                        "Authorization": Authorization,
-                        "Origin": "https://fish.audio",
-                        "Referer": "https://fish.audio/",
-                        "Sec-Ch-Ua": '"Microsoft Edge";v="125", "Chromium";v="125", "Not.A/Brand";v="24"',
-                        "Sec-Ch-Ua-Mobile": "?0",
-                        "Sec-Ch-Ua-Platform": '"Windows"',
-                        "Sec-Fetch-Dest": "empty",
-                        "Sec-Fetch-Mode": "cors",
-                        "Sec-Fetch-Site": "same-site",
-                        "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/125.0.0.0 Safari/537.36 Edg/125.0.0.0"
-                    }
-
-                    try:
-                        response = await client.get(url, headers=headers, timeout=60.0)
-                        #print("GET Response Status:", response.status_code)
-                        # print("GET Response Headers:", response.headers)
-                        #print("GET Response Text:", response.text)
-                        return response.json()
-                    except httpx.HTTPStatusError as e:
-                        print(f"HTTP error occurred: {e}")
-                    except httpx.ReadTimeout:
-                        print("The request timed out while reading from the server.")
-                    except Exception as e:
-                        print(f"An error occurred: {e}")
-
-                await send_options_request(client)
-                task_id = await send_post_request(client, modelid, text, Authorization)
-                if task_id:
-                    result = await send_get_request(client, task_id, Authorization)
-                    #print("GET Request Result:", result)
-                    audio_url = result['result']
-                    rb = await client.get(audio_url)
-                    path = "data/voices/" + random_str() + '.wav'
-                    with open(path, "wb") as f:
-                        f.write(rb.content)
-                    return path
-    #firefly模式不再可用，仅作为以后的代码参考。
-    elif mode == "firefly":
-        datap = data
-        uri = "wss://fs.firefly.matce.cn/queue/join"
-        # 随机session hash
-        session_hash = random_session_hash(12)
-
-        async with websockets.connect(uri) as ws:
-            # 连接后发送的第一次请求
-            await ws.send(json.dumps({"fn_index": 4, "session_hash": session_hash}))
-            await ws.send(json.dumps(
-                {"data": [datap.get("speaker")], "event_data": None, "fn_index": 1, "session_hash": session_hash}))
-            while True:
-                message = await ws.recv()
-                print("Received '%s'" % message)
-                data = json.loads(message)
-                # 当消息中包含 'name' 并且是所需文件路径时
-                if "output" in data and "data" in data["output"]:
-                    ibn = data["output"]["data"][0]
-                    exampletext = data["output"]["data"][1]
-                    break
-        async with websockets.connect(uri) as ws:
-            await ws.send(json.dumps({"fn_index": 4, "session_hash": session_hash}))
-            await ws.send(
-                json.dumps({"data": [ibn], "event_data": None, "fn_index": 2, "session_hash": session_hash}))
-            while True:
-                message = await ws.recv()
-                data = json.loads(message)
-                # 当消息中包含 'name' 并且是所需文件路径时
-                if "output" in data and "data" in data["output"]:
-                    for item in data["output"]["data"]:
-                        if item and "name" in item and "/tmp/gradio/" in item["name"]:
-                            # 提取文件的路径
-                            example = item["name"]
-                            # print(f"这里是请求结果：{example}")
-                            break
-                    break
-        async with websockets.connect(uri) as ws:
-            await ws.send(json.dumps({"fn_index": 4, "session_hash": session_hash}))
-            # 连接后发送的第二次请求
-            await ws.send(json.dumps({"data": [datap.get("text"), True, {"name": f"{example}",
-                                                                         "data": f"https://fs.firefly.matce.cn/file={example}",
-                                                                         "is_file": True, "orig_name": "audio.wav"},
-                                               exampletext, 0, 90, 0.7, 1.5, 0.7, datap.get("speaker")],
-                                      "event_data": None, "fn_index": 4, "session_hash": session_hash}))
-
-            # 等待并处理服务器的消息
-            while True:
-                message = await ws.recv()
-                print("Received '%s'" % message)
-                data = json.loads(message)
-                # 当消息中包含 'name' 并且是所需文件路径时
-                if "output" in data and "data" in data["output"]:
-                    for item in data["output"]["data"]:
-                        if item and "name" in item and "/tmp/gradio/" in item["name"]:
-                            # 提取文件的路径
-                            file_path = item["name"]
-                            # 拼接 URL
-                            full_url = f"https://fs.firefly.matce.cn/file={file_path}"
-                            break
-                    break
-            p = "data/voices/" + random_str() + '.wav'
-            async with httpx.AsyncClient(timeout=200) as client:
-                r = await client.get(full_url)
-                with open(p, "wb") as f:
-                    f.write(r.content)
-                return p
-
+    elif mode=="gptSovits":
+        p=await gptSoVitsGenerator(gptSovitsToken,text=data['text'],speaker=data["speaker"])
+        return p
 #modelscopeTTS V3，对接原神崩铁语音合成器。API用法相较之前发生了变化，参考V2修改而成。
 async def modelscopeV3(speaker,text):
     # 随机session hash
@@ -634,50 +316,6 @@ async def modelscopeV3(speaker,text):
                             raise Exception("Exceeded 10 events without entering return branch.")
                     except json.JSONDecodeError:
                         raise Exception(f"JSON decode error{event}")
-async def fetch_FishTTS_ModelId(proxy, Authorization, speaker):
-    proxies = {
-        "http://": proxy,
-        "https://": proxy
-    }
-
-    url = "https://api.fish.audio/model"
-    headers = {
-        "Accept": "application/json",
-        "Accept-Encoding": "gzip, deflate, br, zstd",
-        "Accept-Language": "zh-CN,zh;q=0.9,en;q=0.8,en-GB;q=0.7,en-US;q=0.6",
-        "Authorization": Authorization,
-        "Origin": "https://fish.audio",
-        "Referer": "https://fish.audio/",
-        "Sec-Ch-Ua": '"Microsoft Edge";v="125", "Chromium";v="125", "Not.A/Brand";v="24"',
-        "Sec-Ch-Ua-Mobile": "?0",
-        "Sec-Ch-Ua-Platform": '"Windows"',
-        "Sec-Fetch-Dest": "empty",
-        "Sec-Fetch-Mode": "cors",
-        "Sec-Fetch-Site": "same-site",
-        "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/125.0.0.0 Safari/537.36 Edg/125.0.0.0"
-    }
-
-    params = {
-        "page_size": 10,
-        "page_number": 1,
-        "self": "false",
-        "title": speaker
-    }
-    if proxy == "" or proxy == " ":
-        async with httpx.AsyncClient(timeout=20) as client:
-            response = await client.get(url, headers=headers, params=params)
-            if response.status_code == 200:
-                data = response.json()
-                # print(data)
-                return data["items"][0]["_id"]
-    else:
-        async with httpx.AsyncClient(proxies=proxies, timeout=20) as client:
-            response = await client.get(url, headers=headers, params=params)
-            if response.status_code == 200:
-                data = response.json()
-                #print(data)
-                return data["items"][0]["_id"]
-
 
 async def edgetts(data):
     speaker = data.get("speaker")
@@ -799,5 +437,73 @@ async def modelscopeTTS(data):
             with open(p, "wb") as f:
                 f.write(r.content)
             return p
+
+
+from plugins.aiReplyCore import modelReply, clearsinglePrompt
+
+
+async def gptVitsSpeakers():
+    url = "https://infer.acgnai.top/infer/spks"
+    async with httpx.AsyncClient(timeout=100) as client:
+        r = await client.post(url, json={
+            "type": "tts",
+            "brand": "gpt-sovits",
+            "name": "anime"
+        })
+    return r.json()["spklist"]
+
+try:
+    GPTSOVITS_SPEAKERS = asyncio.run(gptVitsSpeakers())
+except:
+    print("GPTSOVITS_SPEAKERS获取失败")
+
+async def gptSoVitsGenerator(token, text, speaker):
+    try:
+        if len(GPTSOVITS_SPEAKERS[speaker]) > 1:
+            r = await modelReply("emotionInclinationTester", 00000,
+                                 f"对下面的文本进行情感倾向分析，结果只能从下面的列表：{GPTSOVITS_SPEAKERS[speaker]} 中选取，直接输出结果，不要回复任何其他内容，下面是需要分析的文本:{text}",
+                                 noRolePrompt=True)
+            await clearsinglePrompt(00000)
+            for i in GPTSOVITS_SPEAKERS[speaker]:
+                if i in r:
+                    inclination = i
+                    break
+                inclination = "中立"
+        else:
+            inclination = "中立"
+    except:
+        inclination = "中立"
+
+    url = "https://infer.acgnai.top/infer/gen"
+    async with httpx.AsyncClient(timeout=100) as client:
+        r = await client.post(url, json={
+            "access_token": token,
+            "type": "tts",
+            "brand": "gpt-sovits",
+            "name": "anime",
+            "method": "api",
+            "prarm": {
+                "speaker": speaker,
+                "emotion": inclination,
+                "text": text,
+                "text_language": "多语种混合",
+                "text_split_method": "按标点符号切",
+                "fragment_interval": 0.3,
+                "batch_size": 1,
+                "batch_threshold": 0.75,
+                "parallel_infer": True,
+                "split_bucket": True,
+                "top_k": 10,
+                "top_p": 1.0,
+                "temperature": 1.0,
+                "speed_factor": 1.0
+            }
+        })
+    print(r.json())
+    r=requests.get(r.json()['audio'])
+    p = "data/voices/" + random_str() + '.wav'
+    with open(p, "wb") as f:
+        f.write(r.content)
+    return p
 
 #asyncio.run(superVG({"text": "你好，欢迎使用语音合成服务。", "out": "output.wav", "speaker": "綾地寧々"},"vits", urls="", langmode="<zh>"))

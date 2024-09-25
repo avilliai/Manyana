@@ -109,12 +109,13 @@ def main(bot,logger):
                 try:
                     city = userdict.get(i).get("city")
                     logger.info(f"查询 {city} 天气")
-                    wSult = await weatherQuery.querys(city, api_KEY)
                     if aiReplyCore:
+                        wSult=await weatherQuery.fullQuery(city)
                         r = await modelReply(userdict.get(i).get("userName"), int(i),
                                              f"请你为我进行天气播报，下面是天气查询的结果：{wSult}")
                         await bot.send_friend_message(int(i), r)
                     else:
+                        wSult = await weatherQuery.querys(city, api_KEY)
                         await bot.send_friend_message(int(i), morningText + wSult)
                 except Exception as e:
                     logger.error(e)

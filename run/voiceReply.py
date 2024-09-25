@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 import re
 
+import asyncio
 import yaml
 from mirai import GroupMessage, At, Plain,MessageChain
 from mirai import Voice
@@ -8,13 +9,14 @@ from mirai.models import ForwardMessageNode, Forward
 
 from plugins.modelsLoader import modelLoader
 from plugins.toolkits import translate,random_str
-from plugins.vitsGenerate import voiceGenerate, superVG, fetch_FishTTS_ModelId, sovits, taffySayTest
+from plugins.vitsGenerate import voiceGenerate, superVG, sovits, taffySayTest, gptVitsSpeakers
 
 
 def main(bot, master, logger):
     with open('config/api.yaml', 'r', encoding='utf-8') as f:
         result0 = yaml.load(f.read(), Loader=yaml.FullLoader)
     FishTTSAuthorization = result0.get("FishTTSAuthorization")
+    GPTSOVITS_SPEAKERS = asyncio.run(gptVitsSpeakers())
     berturl = result0.get("bert_colab")
     proxy = result0.get("proxy")
     with open('config/settings.yaml', 'r', encoding='utf-8') as f:
@@ -87,6 +89,25 @@ def main(bot, master, logger):
 
             text = str(event.message_chain)[len(str(event.message_chain).split("说")[0]) + 1:]
             speaker = str(event.message_chain).split("说")[0].replace(prefix,"")
+            if GPTSOVITS_SPEAKERS!=None:
+                original_speaker=speaker
+                if f"{speaker}【原神】" in list(GPTSOVITS_SPEAKERS.keys()):
+                    speaker = f"{speaker}【原神】"
+                elif f"{speaker}【崩坏3】" in list(GPTSOVITS_SPEAKERS.keys()):
+                    speaker = f"{speaker}【崩坏3】"
+                elif f"{speaker}【星穹铁道】" in list(GPTSOVITS_SPEAKERS.keys()):
+                    speaker = f"{speaker}【星穹铁道】"
+                if speaker in list(GPTSOVITS_SPEAKERS.keys()):
+                    try:
+                        data = {"speaker": speaker,
+                                "text": text}
+                        logger.info("gptSovits语音合成:" + data["text"])
+                        path = await superVG(data, "gptSovits")
+                        await bot.send(event, Voice(path=path))
+                        return
+                    except Exception as e:
+                        logger.error(e)
+                        speaker = original_speaker
             for i in models:
                 if speaker in i and speaker != "":
                     path = 'data/voices/' + random_str() + '.wav'
@@ -117,17 +138,8 @@ def main(bot, master, logger):
                     return
                 except Exception as e:
                     logger.error(e)
-            try:
-                sp1 = await fetch_FishTTS_ModelId(proxy, FishTTSAuthorization, speaker)
-                if sp1 is None or sp1 == "":
-                    logger.warning("未能在FishTTS中找到对应角色")
-                    return
-                else:
-                    logger.info(f"获取到FishTTS模型id {speaker} {sp1}")
-                    p = await superVG({"text": text, "speaker": sp1}, "FishTTS")
-                    await bot.send(event, Voice(path=p))
-            except Exception as e:
-                logger.error(e)
+
+
 
 
     @bot.on(GroupMessage)
@@ -146,17 +158,7 @@ def main(bot, master, logger):
                     await superVG(data, "vits",urls="",langmode="<jp>")
                     await bot.send(event, Voice(path=path))
                     return
-            try:
-                sp1 = await fetch_FishTTS_ModelId(proxy, FishTTSAuthorization,speaker)
-                if sp1 is None or sp1 == "":
-                    logger.warning("未能在FishTTS中找到对应角色")
-                    return
-                else:
-                    logger.info(f"获取到FishTTS模型id {speaker} {sp1}")
-                    p = await superVG(data={"text": text, "speaker": sp1}, mode="FishTTS", langmode="<jp>")
-                    await bot.send(event, Voice(path=p))
-            except Exception as e:
-                logger.error(e)
+
 
     @bot.on(GroupMessage)
     async def checkCharacters(event: GroupMessage):
@@ -178,6 +180,9 @@ def main(bot, master, logger):
                                          message_chain=MessageChain("\n\nFishTTS可用角色请查看https://fish.audio/zh-CN/，均可通过 xx说调用。\n")))
             b1.append(ForwardMessageNode(sender_id=bot.qq, sender_name="Manyana",
                                          message_chain=MessageChain(f"outVits可用角色如下：\n{outVitsSpeakers}")))
+            if GPTSOVITS_SPEAKERS!=None:
+                b1.append(ForwardMessageNode(sender_id=bot.qq, sender_name="Manyana",
+                                             message_chain=MessageChain(f"gptsoVits可用角色如下：\n{str(list(GPTSOVITS_SPEAKERS.keys()))}")))
             b1.append(ForwardMessageNode(sender_id=bot.qq, sender_name="Manyana",
                                          message_chain=MessageChain(f"可发送 {prefix}xx说.......  以进行语音合成")))
             await bot.send(event, Forward(node_list=b1))
