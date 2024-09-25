@@ -391,3 +391,6 @@
   - 新的语音合成模式 gptSovits
   - 支持情感向量自动判断，更生动的语音合成(前提是speaker支持)，查看https://github.com/avilliai/Manyana/wiki/%E8%AF%AD%E9%9F%B3%E5%90%88%E6%88%90%E8%AE%BE%E7%BD%AE%E9%97%AE%E9%A2%98 以进行配置
   - 抽象的塔罗牌，由@LittlebearHat 完成并提交，请在controller开启此功能
+2024/9/25:
+  - 昨天新增的语音合成服务疑似跑路了
+  - 功能更新：晚安推送，请在controller开启

@@ -102,8 +102,26 @@ def main(bot,logger):
 
     async def task_executor(task_name, task_info):
         logger.info(f"执行任务：{task_name}")
-        if task_name == "morning":
-            global trustUser, userdict
+        global trustUser, userdict
+        if task_name=="goodnight":
+            morningText = task_info.get("text")
+            if not task_info.get("onlyTrustUser"):
+                friendList = await bot.friend_list()
+                userli = [i.id for i in friendList.data]
+            else:
+                userli = trustUser
+            for i in userli:
+                try:
+                    if aiReplyCore:
+                        r = await modelReply(userdict.get(i).get("userName"), int(i),
+                                             f"请你对我进行晚安道别，直接发送晚安语的结果给我，不要发送任何其他内容")
+                        await bot.send_friend_message(int(i), r)
+                    else:
+                        await bot.send_friend_message(int(i), morningText)
+                except Exception as e:
+                    logger.error(e)
+                    continue
+        elif task_name == "morning":
             morningText = task_info.get("text")
             if not task_info.get("onlyTrustUser"):
                 friendList = await bot.friend_list()

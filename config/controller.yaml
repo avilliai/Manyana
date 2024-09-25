@@ -81,6 +81,11 @@ scheduledTasks:    #其他定时任务模块的内容会陆续转到这里
     enable: true
     text: 杂鱼❤来白嫖游戏了
     time: 12/2
+  goodnight:       #晚安提示
+    enable: true
+    text: 晚安杂鱼❤，祝你有美好的一天！ #开启aiReplyCore后，此项将被ai替代
+    time: 22/21
+    onlyTrustUser: True  #仅向信任用户推送
   nightASMR:
     enable: true
     text: 听完就赶紧睡觉吧~祝你好梦！(≧▽≦*)
