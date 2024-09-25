@@ -114,7 +114,7 @@ def main(bot,logger):
                 try:
                     if aiReplyCore:
                         r = await modelReply(userdict.get(str(i)).get("userName"), int(i),
-                                             f"请你对我进行晚安道别，直接发送晚安语的结果给我，不要发送任何其他内容")
+                                             f"请你对我进行晚安道别，直接发送结果即可，不要发送其他内容")
                         await bot.send_friend_message(int(i), r)
                     else:
                         await bot.send_friend_message(int(i), morningText)
