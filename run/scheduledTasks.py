@@ -113,7 +113,7 @@ def main(bot,logger):
             for i in userli:
                 try:
                     if aiReplyCore:
-                        r = await modelReply(userdict.get(i).get("userName"), int(i),
+                        r = await modelReply(userdict.get(str(i)).get("userName"), int(i),
                                              f"请你对我进行晚安道别，直接发送晚安语的结果给我，不要发送任何其他内容")
                         await bot.send_friend_message(int(i), r)
                     else:
@@ -134,7 +134,7 @@ def main(bot,logger):
                     logger.info(f"查询 {city} 天气")
                     if aiReplyCore:
                         wSult=await weatherQuery.fullQuery(city)
-                        r = await modelReply(userdict.get(i).get("userName"), int(i),
+                        r = await modelReply(userdict.get(str(i)).get("userName"), int(i),
                                              f"请你为我进行天气播报，下面是天气查询的结果：{wSult}")
                         await bot.send_friend_message(int(i), r)
                     else:
