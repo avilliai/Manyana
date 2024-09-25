@@ -321,13 +321,14 @@ def main(bot, logger):
             city = m.group(1)
             logger.info("查询 " + city + " 天气")
             await bot.send(event, '查询中……')
-            wSult = await weatherQuery.querys(city, api_KEY)
             # 发送天气消息
             if aiReplyCore:
+                wSult=await weatherQuery.fullQuery(city)
                 r = await modelReply(event.sender.member_name, event.sender.id,
                                      f"请你为我进行天气播报，下面是天气查询的结果：{wSult}")
                 await bot.send(event, r, True)
             else:
+                wSult = await weatherQuery.querys(city, api_KEY)
                 await bot.send(event, wSult, True)
 
     @bot.on(GroupMessage)
