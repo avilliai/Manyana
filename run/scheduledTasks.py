@@ -51,7 +51,6 @@ def main(bot,logger):
     aiReplyCore = result.get("chatGLM").get("aiReplyCore")
     trustDays = friendsAndGroups.get("trustDays")
 
-
     with open('data/userData.yaml', 'r', encoding='utf-8') as file:
         Userdata = yaml.load(file, Loader=yaml.FullLoader)
     global trustUser
@@ -59,14 +58,10 @@ def main(bot,logger):
     userdict = Userdata
     trustUser = []
     for i in userdict.keys():
-        Userdata = userdict.get(i)
-        try:
-            times = int(str(Userdata.get('sts')))
-            if times > trustDays:
-                trustUser.append(str(i))
-
-        except Exception as e:
-            logger.error(f"用户{i}的sts数值出错，请打开data/userData.yaml检查，将其修改为正常数值")
+        singleUserData = userdict.get(i)
+        times = int(str(singleUserData.get('sts')))
+        if times > trustDays:
+            trustUser.append(str(i))
 
     @bot.on(Startup)
     async def upDate(event: Startup):
@@ -79,8 +74,8 @@ def main(bot,logger):
             userdict = Userdata
             trustUser = []
             for i in userdict.keys():
-                Userdata = userdict.get(i)
-                times = int(str(Userdata.get('sts')))
+                singleUserData = userdict.get(i)
+                times = int(str(singleUserData .get('sts')))
                 if times > trustDays:
                     trustUser.append(str(i))
 
@@ -109,7 +104,12 @@ def main(bot,logger):
                 friendList = await bot.friend_list()
                 userli = [i.id for i in friendList.data]
             else:
-                userli = trustUser
+                userli=[]
+                for i in userdict:
+                    singleUserData = userdict.get(i)
+                    times = int(str(singleUserData.get('sts')))
+                    if times > task_info.get("trustThreshold"):
+                        userli.append(str(i))
             for i in userli:
                 try:
                     if aiReplyCore:
@@ -127,7 +127,12 @@ def main(bot,logger):
                 friendList = await bot.friend_list()
                 userli=[i.id for i in friendList.data]
             else:
-                userli = trustUser
+                userli = []
+                for i in userdict:
+                    singleUserData = userdict.get(i)
+                    times = int(str(singleUserData.get('sts')))
+                    if times > task_info.get("trustThreshold"):
+                        userli.append(str(i))
             for i in userli:
                 try:
                     city = userdict.get(i).get("city")
