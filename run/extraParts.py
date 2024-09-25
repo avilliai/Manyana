@@ -28,7 +28,7 @@ from plugins.newsEveryDay import news, moyu, xingzuo, sd, chaijun, danxianglii, 
 from plugins.picGet import pic, setuGet
 from plugins.setuModerate import setuModerate
 from plugins.solveSearch import solve
-from plugins.tarot import tarotChoice,genshinDraw, qianCao
+from plugins.tarot import tarotChoice,genshinDraw, qianCao,manage_group_status
 # from plugins.youtube0 import ASMR_random,get_audio,get_img
 
 def main(bot, logger):
@@ -78,7 +78,6 @@ def main(bot, logger):
     aiReplyCore = result1.get("chatGLM").get("aiReplyCore")
     colorfulCharacterList = os.listdir("data/colorfulAnimeCharacter")
     lockResult = controllerResult.get("运势&塔罗").get("lockLuck")
-    isAbstract = controllerResult.get("运势&塔罗").get("isAbstract")
     InternetMeme = controllerResult.get("图片相关").get("InternetMeme")
 
     global picData
@@ -679,7 +678,7 @@ def main(bot, logger):
                 event.message_chain) == "今日塔罗":
             logger.info("获取今日塔罗")
             if not lockResult:
-                txt, img = tarotChoice(isAbstract)
+                txt, img = tarotChoice(manage_group_status(int(event.group.id)))
                 logger.info("成功获取到今日塔罗")
                 await bot.send(event, [txt, Image(path=img)])
                 if aiReplyCore:
@@ -689,7 +688,7 @@ def main(bot, logger):
 
             else:
                 if event.sender.id not in luckList.get(tod).get("塔罗"):
-                    txt, img = tarotChoice(isAbstract)
+                    txt, img = tarotChoice(manage_group_status(int(event.group.id)))
                     logger.info("成功获取到今日塔罗")
                     await bot.send(event, txt)
                     await bot.send(event, Image(path=img))
@@ -706,6 +705,12 @@ def main(bot, logger):
                     await bot.send(event, r, True)
                 with open('data/lockLuck.yaml', 'w', encoding="utf-8") as file:
                     yaml.dump(luckList, file, allow_unicode=True)
+        if "开启抽象塔罗牌" in str(event.message_chain):
+            manage_group_status(int(event.group.id), True)
+            await bot.send(event, "已为本群开启抽象塔罗牌，请发送“今日塔罗”以开始！")
+        if "关闭抽象塔罗牌" in str(event.message_chain):
+            manage_group_status(int(event.group.id), False)
+            await bot.send(event, "已为本群关闭抽象塔罗牌")
 
     @bot.on(GroupMessage)
     async def tarotToday(event: GroupMessage):

@@ -32,7 +32,6 @@ ai绘画:
   watchPrefix: "/"          #“看看”指令的前缀
 运势&塔罗:
   lockLuck: false           #是否锁定运势等功能的结果
-  isAbstract: false          #是否启用抽象卡组
 JMComic:            #禁漫相关功能设置
   enable: True     #全局开关
   onlyTrustUser: False #打开后，仅master授权用户可用

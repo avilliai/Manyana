@@ -1,7 +1,8 @@
 # -*- coding: gbk -*-
 import os.path
 import random
-
+import yaml
+import os
 from PIL import Image
 
 tarot = [['愚者 (The Fool)',
@@ -88,6 +89,29 @@ tarot = [['愚者 (The Fool)',
           '完成; 成功; 拥有毕生的志业; 达成目标; 永续不断; 最盛期; 完美无缺; 接触异国，将获得幸运; 到达标准; 精神亢奋; 快乐的结束; 模范情侣',
           '未完成; 无法达到计划中的成就; 因准备不足而失败; 中途无法在进行; 不完全燃烧; 一时不顺利; 饱和状态; 烦恼延续; 精神松弛; 个人惯用的表现方式; 因不成熟而 使情感受挫; 合谋; 态度不够圆融',
           'The World.jpg']]
+
+
+
+
+def manage_group_status(user_id, status=None, file_path="data/gruop_abstracttarot_switch.yaml"):
+    if not os.path.exists(file_path):
+        with open(file_path, 'w') as file:
+            yaml.dump({}, file)
+    with open(file_path, 'r') as file:
+        try:
+            users_data = yaml.safe_load(file) or {}
+        except yaml.YAMLError:
+            users_data = {}
+    if status is not None:
+        users_data[user_id] = status
+        with open(file_path, 'w') as file:
+            yaml.safe_dump(users_data, file)
+        return status
+    return users_data.get(user_id, False)
+
+
+
+
 
 
 def tarotChoice(isAbstract):
