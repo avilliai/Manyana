@@ -100,16 +100,16 @@ def main(bot,logger):
         global trustUser, userdict
         if task_name=="goodnight":
             morningText = task_info.get("text")
-            if not task_info.get("onlyTrustUser"):
-                friendList = await bot.friend_list()
-                userli = [i.id for i in friendList.data]
-            else:
-                userli=[]
+            friendList = await bot.friend_list()
+            userli = [i.id for i in friendList.data]
+            if task_info.get("onlyTrustUser"):
+                userli2=[]
                 for i in userdict:
                     singleUserData = userdict.get(i)
                     times = int(str(singleUserData.get('sts')))
-                    if times > task_info.get("trustThreshold"):
-                        userli.append(str(i))
+                    if times > task_info.get("trustThreshold") and int(i) in userli:
+                        userli2.append(str(i))
+                userli = userli2
             for i in userli:
                 try:
                     if aiReplyCore:
@@ -123,16 +123,16 @@ def main(bot,logger):
                     continue
         elif task_name == "morning":
             morningText = task_info.get("text")
-            if not task_info.get("onlyTrustUser"):
-                friendList = await bot.friend_list()
-                userli=[i.id for i in friendList.data]
-            else:
-                userli = []
+            friendList = await bot.friend_list()
+            userli = [i.id for i in friendList.data]
+            if task_info.get("onlyTrustUser"):
+                userli2 = []
                 for i in userdict:
                     singleUserData = userdict.get(i)
                     times = int(str(singleUserData.get('sts')))
-                    if times > task_info.get("trustThreshold"):
-                        userli.append(str(i))
+                    if times > task_info.get("trustThreshold") and int(i) in userli:
+                        userli2.append(str(i))
+                userli = userli2
             for i in userli:
                 try:
                     city = userdict.get(i).get("city")
