@@ -34,6 +34,11 @@ async def querys(city, API_KEY) -> str:
                    f'气温{data["results"][0]["now"]["temperature"]}℃。'
         except (httpx.NetworkError, httpx.HTTPStatusError, KeyError):
             return f'抱歉，没有找到{city}的天气数据。'
+async def fullQuery(city):
+    async with httpx.AsyncClient() as client:
+        r=await client.get(f"https://api.lolimi.cn/API/weather/?city={city}")
+        data=r.json()
+        return data["data"]
 
 
 if __name__ == '__main__':
