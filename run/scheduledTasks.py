@@ -105,7 +105,12 @@ def main(bot,logger):
         if task_name == "morning":
             global trustUser, userdict
             morningText = task_info.get("text")
-            for i in trustUser:
+            if not task_info.get("onlyTrustUser"):
+                friendList = await bot.friend_list()
+                userli=[i.id for i in friendList.data]
+            else:
+                userli = trustUser
+            for i in userli:
                 try:
                     city = userdict.get(i).get("city")
                     logger.info(f"查询 {city} 天气")
