@@ -52,6 +52,8 @@ scheduledTasks:    #其他定时任务模块的内容会陆续转到这里
     enable: false  #向信任用户推送天气信息
     text: "早上好，这里是今天的天气"  #如启用aiReplyCore，此项将被ai替代
     time: 8/3      #推送时间
+    trustThreshold: 3 #信任用户的订阅数阈值(签到天数)，低于此值的用户将不会被推送
+    onlyTrustUser: True  #仅向信任用户推送
   bangumi:         #bangumi推送
     enable: True
     text: "晚上好，这里是今天的bangumi推送"
@@ -80,6 +82,12 @@ scheduledTasks:    #其他定时任务模块的内容会陆续转到这里
     enable: true
     text: 杂鱼❤来白嫖游戏了
     time: 12/2
+  goodnight:       #晚安提示
+    enable: true
+    text: 晚安杂鱼❤，祝你有美好的一天！ #开启aiReplyCore后，此项将被ai替代
+    time: 22/21
+    trustThreshold: 3 #信任用户的订阅数阈值，低于此值的用户将不会被推送
+    onlyTrustUser: True  #仅向信任用户推送
   nightASMR:
     enable: true
     text: 听完就赶紧睡觉吧~祝你好梦！(≧▽≦*)

@@ -51,7 +51,6 @@ def main(bot,logger):
     aiReplyCore = result.get("chatGLM").get("aiReplyCore")
     trustDays = friendsAndGroups.get("trustDays")
 
-
     with open('data/userData.yaml', 'r', encoding='utf-8') as file:
         Userdata = yaml.load(file, Loader=yaml.FullLoader)
     global trustUser
@@ -59,14 +58,10 @@ def main(bot,logger):
     userdict = Userdata
     trustUser = []
     for i in userdict.keys():
-        Userdata = userdict.get(i)
-        try:
-            times = int(str(Userdata.get('sts')))
-            if times > trustDays:
-                trustUser.append(str(i))
-
-        except Exception as e:
-            logger.error(f"用户{i}的sts数值出错，请打开data/userData.yaml检查，将其修改为正常数值")
+        singleUserData = userdict.get(i)
+        times = int(str(singleUserData.get('sts')))
+        if times > trustDays:
+            trustUser.append(str(i))
 
     @bot.on(Startup)
     async def upDate(event: Startup):
@@ -79,8 +74,8 @@ def main(bot,logger):
             userdict = Userdata
             trustUser = []
             for i in userdict.keys():
-                Userdata = userdict.get(i)
-                times = int(str(Userdata.get('sts')))
+                singleUserData = userdict.get(i)
+                times = int(str(singleUserData .get('sts')))
                 if times > trustDays:
                     trustUser.append(str(i))
 
@@ -102,16 +97,57 @@ def main(bot,logger):
 
     async def task_executor(task_name, task_info):
         logger.info(f"执行任务：{task_name}")
-        if task_name == "morning":
-            global trustUser, userdict
+        global trustUser, userdict
+        if task_name=="goodnight":
             morningText = task_info.get("text")
-            for i in trustUser:
+            friendList = await bot.friend_list()
+            userli = [i.id for i in friendList.data]
+            if task_info.get("onlyTrustUser"):
+                userli2=[]
+                for i in userdict:
+                    try:
+                        s=int(i)
+                    except:
+                        continue
+                    singleUserData = userdict.get(i)
+                    times = int(str(singleUserData.get('sts')))
+                    if times > task_info.get("trustThreshold") and int(i) in userli:
+                        userli2.append(str(i))
+                userli = userli2
+            for i in userli:
+                try:
+                    if aiReplyCore:
+                        r = await modelReply(userdict.get(str(i)).get("userName"), int(i),
+                                             f"请你对我进行晚安道别，直接发送结果即可，不要发送其他内容")
+                        await bot.send_friend_message(int(i), r)
+                    else:
+                        await bot.send_friend_message(int(i), morningText)
+                except Exception as e:
+                    logger.error(e)
+                    continue
+        elif task_name == "morning":
+            morningText = task_info.get("text")
+            friendList = await bot.friend_list()
+            userli = [i.id for i in friendList.data]
+            if task_info.get("onlyTrustUser"):
+                userli2 = []
+                for i in userdict:
+                    try:
+                        s=int(i)
+                    except:
+                        continue
+                    singleUserData = userdict.get(i)
+                    times = int(str(singleUserData.get('sts')))
+                    if times > task_info.get("trustThreshold") and int(i) in userli:
+                        userli2.append(str(i))
+                userli = userli2
+            for i in userli:
                 try:
                     city = userdict.get(i).get("city")
                     logger.info(f"查询 {city} 天气")
                     if aiReplyCore:
                         wSult=await weatherQuery.fullQuery(city)
-                        r = await modelReply(userdict.get(i).get("userName"), int(i),
+                        r = await modelReply(userdict.get(str(i)).get("userName"), int(i),
                                              f"请你为我进行天气播报，下面是天气查询的结果：{wSult}")
                         await bot.send_friend_message(int(i), r)
                     else:

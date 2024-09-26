@@ -16,7 +16,11 @@ def main(bot, master, logger):
     with open('config/api.yaml', 'r', encoding='utf-8') as f:
         result0 = yaml.load(f.read(), Loader=yaml.FullLoader)
     FishTTSAuthorization = result0.get("FishTTSAuthorization")
-    GPTSOVITS_SPEAKERS = asyncio.run(gptVitsSpeakers())
+    try:
+        GPTSOVITS_SPEAKERS = asyncio.run(gptVitsSpeakers())
+    except Exception as e:
+        logger.error(f"Error in loading GPT-3 Vits Speakers: {e}")
+        GPTSOVITS_SPEAKERS = None
     berturl = result0.get("bert_colab")
     proxy = result0.get("proxy")
     with open('config/settings.yaml', 'r', encoding='utf-8') as f:
