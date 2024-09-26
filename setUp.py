@@ -203,6 +203,7 @@ def updaat(f=False,jump=False,source=None):
             input("按任意键继续：")
             os.system(f"\"{python_path}\" -m pip config set global.index-url https://mirrors.aliyun.com/pypi/simple/")
             #print(str(custom_pip_path)+"!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!5555555!!!!!!!!!!!!!!!")
+            os.system(f"\"{python_path}\" -m pip install --upgrade picimagesearch")
             os.system(f"\"{python_path}\" -m pip install --upgrade jmcomic")
             os.system(f"\"{python_path}\" -m pip install img2pdf")
             os.system(f"\"{python_path}\" -m pip install --upgrade lanzou-api")
