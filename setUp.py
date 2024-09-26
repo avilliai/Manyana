@@ -197,13 +197,12 @@ def main():
         print("结束")
 def updaat(f=False,jump=False,source=None):
     if jump==False:
-        logger.warning("是否补全依赖？(更新的新功能可能需要执行此步骤)。可以按1跳过，如果更新后启动报错/提示功能无法启用，请回来执行这一步")
+        logger.warning("是否补全依赖？如已使用最新整合包请输入1以跳过。(更新的新功能可能需要执行此步骤)。可以按1跳过，如果更新后启动报错/提示功能无法启用，请回来执行这一步")
         if input("在这里输入:") != "1":
             logger.warning("即将开始更新依赖库，请确保已关闭代理，否则无法安装依赖库")
             input("按任意键继续：")
             os.system(f"\"{python_path}\" -m pip config set global.index-url https://mirrors.aliyun.com/pypi/simple/")
             #print(str(custom_pip_path)+"!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!5555555!!!!!!!!!!!!!!!")
-            os.system(f"\"{python_path}\" -m pip install --upgrade picimagesearch")
             os.system(f"\"{python_path}\" -m pip install --upgrade jmcomic")
             os.system(f"\"{python_path}\" -m pip install img2pdf")
             os.system(f"\"{python_path}\" -m pip install --upgrade lanzou-api")
