@@ -105,6 +105,10 @@ def main(bot,logger):
             if task_info.get("onlyTrustUser"):
                 userli2=[]
                 for i in userdict:
+                    try:
+                        s=int(i)
+                    except:
+                        continue
                     singleUserData = userdict.get(i)
                     times = int(str(singleUserData.get('sts')))
                     if times > task_info.get("trustThreshold") and int(i) in userli:
@@ -128,6 +132,10 @@ def main(bot,logger):
             if task_info.get("onlyTrustUser"):
                 userli2 = []
                 for i in userdict:
+                    try:
+                        s=int(i)
+                    except:
+                        continue
                     singleUserData = userdict.get(i)
                     times = int(str(singleUserData.get('sts')))
                     if times > task_info.get("trustThreshold") and int(i) in userli:
