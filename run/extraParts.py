@@ -28,7 +28,7 @@ from plugins.newsEveryDay import news, moyu, xingzuo, sd, chaijun, danxianglii, 
 from plugins.picGet import pic, setuGet
 from plugins.setuModerate import setuModerate
 from plugins.solveSearch import solve
-from plugins.tarot import tarotChoice,genshinDraw, qianCao
+from plugins.tarot import tarotChoice,genshinDraw, qianCao,tarotMusic
 # from plugins.youtube0 import ASMR_random,get_audio,get_img
 
 def main(bot, logger):
@@ -681,6 +681,10 @@ def main(bot, logger):
             if not lockResult:
                 txt, img = tarotChoice(isAbstract)
                 logger.info("成功获取到今日塔罗")
+                if isAbstract:
+                        p=await tarotMusic(txt)
+                        if p:
+                            await bot.send(event,Voice(path=p))
                 await bot.send(event, [txt, Image(path=img)])
                 if aiReplyCore:
                     r = await modelReply(event.sender.member_name, event.sender.id,
