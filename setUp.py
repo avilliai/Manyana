@@ -197,7 +197,7 @@ def main():
         print("结束")
 def updaat(f=False,jump=False,source=None):
     if jump==False:
-        logger.warning("是否补全依赖？(更新的新功能可能需要执行此步骤)。可以按1跳过，如果更新后启动报错/提示功能无法启用，请回来执行这一步")
+        logger.warning("是否补全依赖？如已使用最新整合包请输入1以跳过。(更新的新功能可能需要执行此步骤)。可以按1跳过，如果更新后启动报错/提示功能无法启用，请回来执行这一步")
         if input("在这里输入:") != "1":
             logger.warning("即将开始更新依赖库，请确保已关闭代理，否则无法安装依赖库")
             input("按任意键继续：")
@@ -207,9 +207,6 @@ def updaat(f=False,jump=False,source=None):
             os.system(f"\"{python_path}\" -m pip install img2pdf")
             os.system(f"\"{python_path}\" -m pip install --upgrade lanzou-api")
             os.system(f"\"{python_path}\" -m pip install --upgrade pytubefix")
-            os.system(f"\"{python_path}\" -m pip install --upgrade wordcloud")
-            os.system(f"\"{python_path}\" -m pip install --upgrade jieba")
-            os.system(f"\"{python_path}\" -m pip install --upgrade numpy==1.26.4")
     if source==None:
         logger.info("拉取bot代码\n--------------------")
         logger.info("选择更新源(git源 镜像源相互兼容)：\n1 git源\n2 git代理源1\n3 git代理源2 \n4 国内源(稳定，但一般有一天延迟)")

@@ -125,6 +125,7 @@ def main(bot,logger):
                 except Exception as e:
                     logger.error(e)
                     continue
+                await sleep(6)
         elif task_name == "morning":
             morningText = task_info.get("text")
             friendList = await bot.friend_list()
@@ -156,6 +157,7 @@ def main(bot,logger):
                 except Exception as e:
                     logger.error(e)
                     continue
+                await sleep(6)
         elif task_name == "news":
             logger.info("获取新闻")
             path = await news()

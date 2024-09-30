@@ -387,7 +387,10 @@ if __name__ == '__main__':
     musicpick.main(bot, logger)
     appCard.main(bot, logger)
     aiDraw.main(bot, logger)
-    starRail.main(bot, logger)
+    try:
+        starRail.main(bot, logger)
+    except Exception as e:
+        logger.error(e)
     bangumi.main(bot,logger)
     draftBottle.main(bot,logger) #芝士漂流瓶
 
