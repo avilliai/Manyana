@@ -12,7 +12,7 @@
 语音功能设置:
   #建议使用modelscopeTTS或outVits，gptSovits，其他模式需要额外部署。
   voicegenerate: modelscopeTTS  #语音合成模式 modelscopeTTS/outVits/vits(本地合成)/gptSovits(https://getkey.acgnai.top/注册获取token填写api.yaml)/bert_vits2(需额外部署)/so-vits(需额外部署)
-  speaker: "东雪莲"              #根据你的合成模式设定角色,最好启动后@bot 角色 以进行查看。整合包自带vits角色为 薄绿 ，其他模式角色请查看 Manyana/config/语音合成可用角色.txt，vits则无需配置
+  speaker: "东雪莲"              #根据你的合成模式设定角色,最好启动后@bot 角色 以进行查看。整合包自带vits角色为 薄绿 ，其他模式角色请查看 Manyana/config/语音合成可用角色.txt
   voiceLangType: "<zh>"         #默认语音合成语言类型，可选： <zh> <jp> <en>   目前仅在modelscopeTTS和firefly模式下生效,firefly模式下需要与speaker的语言类型匹配
   prefix: ""                    #语音合成指令前缀，默认为 xx说 ；如果为 "/" 则指令变为 /xx说 ；用以减少误触发。
   #下面的两个配置项，除非你自己额外搭了对应的服务，不然就别动。
