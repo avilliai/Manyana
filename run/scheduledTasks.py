@@ -252,11 +252,6 @@ def main(bot,logger):
                 except:
                     logger.error("不存在的群" + str(i))
         elif task_name=="nightASMR":
-            try:
-                from plugins.youtube0 import ASMR_today,get_audio,get_img
-            except:
-                logger.error("导入失败，请检查youtube0依赖")
-                return
             logger.info("获取晚安ASMR")
             athor,title,video_id,length = await ASMR_today()
             imgpath = await get_img(video_id)
@@ -279,6 +274,7 @@ def main(bot,logger):
                                                                     brief='ASMR'))
                 except:
                     logger.error("不存在的群"+str(i))
+        
     def create_dynamic_jobs():
         for task_name, task_info in scheduledTasks.items():
             if task_info.get('enable'):
@@ -296,8 +292,14 @@ def main(bot,logger):
             return
         if o or head != '/推送' or not cmd:
             return
-        cmds = {"摸鱼人日历": "moyu", "每日天文": "astronomy", "每日新闻": "news", "喜加一": "steamadd1",
-                "每日星座": "constellation", "单向历": "danxiangli","bangumi日榜":"bangumi","晚安ASMR":"nightASMR"}
+        cmds = {"摸鱼人日历": "moyu",
+                "每日天文": "astronomy",
+                "每日新闻": "news",
+                "喜加一": "steamadd1",
+                "每日星座": "constellation",
+                "单向历": "danxiangli",
+                "bangumi日榜":"bangumi",
+                "晚安ASMR":"nightASMR"}
         key = cmds.get(cmd, 'unknown')
         if key == 'unknown':
             return
