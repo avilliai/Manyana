@@ -17,7 +17,7 @@ from plugins.aiReplyCore import modelReply
 from plugins.extraParts import steamEpic
 from plugins.newsEveryDay import news, danxianglii, moyu, xingzuo
 from plugins.toolkits import screenshot_to_pdf_and_png,picDwn
-# from plugins.youtube0 import ASMR_today,get_audio,get_img
+from plugins.youtube0 import ASMR_today,get_audio,get_img
 
 
 def main(bot,logger):
@@ -258,15 +258,15 @@ def main(bot,logger):
                 logger.error("导入失败，请检查youtube0依赖")
                 return
             logger.info("获取晚安ASMR")
-            athor,title,video_id,length = await ASMR_today(proxies)
-            imgpath = await get_img(video_id, proxies)
-            audiourl = await get_audio(video_id, proxies)
+            athor,title,video_id,length = await ASMR_today()
+            imgpath = await get_img(video_id)
+            audiourl = await get_audio(video_id)
             logger.info("推送晚安ASMR")
             st1 = "今日ASMR:"+title+"\n"
             st1 += "频道："+athor+"\n"
             st1 += f"时长：{length//60}分{length%60}秒\n"
             st2 = "======================\n"
-            st2 += task_info.get("text")     
+            st2 += task_info.get("text")
             for i in groupdata.get("nightASMR").get("groups"):
                 try:
                     await bot.send_group_message(int(i), [st1,Image(path=imgpath),st2])
