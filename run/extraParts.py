@@ -789,7 +789,6 @@ def main(bot, logger):
         if ("随机奥术" in str(event.message_chain) and At(bot.qq) in event.message_chain) or str(event.message_chain) == "随机奥术":
             logger.info("奥术魔刃，启动！")
             logger.info("获取随机ASMR")
-            logger.info()
             athor,title,video_id,length = await ASMR_random()
             imgurl = await get_img(video_id)
             audiourl = await get_audio(video_id)
