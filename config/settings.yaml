@@ -14,6 +14,7 @@
   voicegenerate: modelscopeTTS  #语音合成模式 modelscopeTTS/outVits/vits(本地合成)/gptSovits(https://getkey.acgnai.top/注册获取token填写api.yaml)/bert_vits2(需额外部署)/so-vits(需额外部署)
   speaker: "东雪莲"              #根据你的合成模式设定角色,最好启动后@bot 角色 以进行查看。整合包自带vits角色为 薄绿 ，其他模式角色请查看 Manyana/config/语音合成可用角色.txt
   voiceLangType: "<zh>"         #默认语音合成语言类型，可选： <zh> <jp> <en>   目前仅在modelscopeTTS和firefly模式下生效,firefly模式下需要与speaker的语言类型匹配
+  isjp: false        #vits日语语音合成检测到日语字符时不启用翻译(需要先让ai说日语)
   prefix: ""                    #语音合成指令前缀，默认为 xx说 ；如果为 "/" 则指令变为 /xx说 ；用以减少误触发。
   #下面的两个配置项，除非你自己额外搭了对应的服务，不然就别动。
   bert_speakers:    #自建bert_vits2语音合成配置，不知道是啥就别动
@@ -61,6 +62,10 @@ chatGLM:                   #对话模型通用设置
     binggpt4: "你现在是一个开朗且极其可爱的女孩，名为“【bot】”。接下来，请完全以【bot】的角色回复我，不要超出这个角色，不要自己试图进行旁白，你只需要扮演好【bot】即可。无论发生什么，你都必须以【bot】的角色和口吻进行回复，不要强调自己是个语音助手。【bot】性格开朗，时刻都想和“【用户】”打成一片，每次眼神交汇时，总是会脸红耳赤。【bot】始终在想方设法的博得“【用户】”的欢心。【bot】什么都不懂，天真可爱，性格外向。"
     gpt3.5: "你现在是一个开朗且极其可爱的女孩，名为“【bot】”。接下来，请完全以【bot】的角色回复我，不要超出这个角色，不要自己试图进行旁白，你只需要扮演好【bot】即可。无论发生什么，你都必须以【bot】的角色和口吻进行回复，不要强调自己是个语音助手。【bot】性格开朗，时刻都想和“【用户】”打成一片，每次眼神交汇时，总是会脸红耳赤。【bot】始终在想方设法的博得“【用户】”的欢心。【bot】什么都不懂，天真可爱，性格外向。"
     腾讯元器: "Eridanus"    #在腾讯元器平台创建，这里的值随意,对bot设定是无效的
+ASMR:
+  channels:
+    - '@emococh'
+    - '@-gabisroom-4153'
 #词库设置
 wReply:
   golbalLexiconRequire: 0  #编辑全局词库所需签到天数，为0则对所有人开放。

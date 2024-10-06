@@ -30,6 +30,9 @@ modelscopeCookie = resulttr.get("modelscopeCookie")
 if modelscopeCookie == "":
     modelscopeCookie = "cna=j117HdPDmkoCAXjC3hh/4rjk; ajs_anonymous_id=5aa505b4-8510-47b5-a1e3-6ead158f3375; t=27c49d517b916cf11d961fa3769794dd; uuid_tt_dd=11_99759509594-1710000225471-034528; log_Id_click=16; log_Id_pv=12; log_Id_view=277; xlly_s=1; csrf_session=MTcxMzgzODI5OHxEdi1CQkFFQ180SUFBUkFCRUFBQU12LUNBQUVHYzNSeWFXNW5EQW9BQ0dOemNtWlRZV3gwQm5OMGNtbHVad3dTQUJCNFkwRTFkbXAwV0VVME0wOUliakZwfHNEIp5sKWkjeJWKw1IphSS3e4R_7GyEFoKKuDQuivUs; csrf_token=TkLyvVj3to4G5Mn_chtw3OI8rRA%3D; _samesite_flag_=true; cookie2=11ccab40999fa9943d4003d08b6167a0; _tb_token_=555ee71fdee17; _gid=GA1.2.1037864555.1713838369; h_uid=2215351576043; _xsrf=2|f9186bd2|74ae7c9a48110f4a37f600b090d68deb|1713840596; csg=242c1dff; m_session_id=769d7c25-d715-4e3f-80de-02b9dbfef325; _gat_gtag_UA_156449732_1=1; _ga_R1FN4KJKJH=GS1.1.1713838368.22.1.1713841094.0.0.0; _ga=GA1.1.884310199.1697973032; tfstk=fE4KxBD09OXHPxSuRWsgUB8pSH5GXivUTzyBrU0oKGwtCSJHK7N3ebe0Ce4n-4Y8X8wideDotbQ8C7kBE3queYwEQ6OotW08WzexZUVIaNlgVbmIN7MQBYNmR0rnEvD-y7yAstbcoWPEz26cnZfu0a_qzY_oPpRUGhg5ntbgh_D3W4ZudTQmX5MZwX9IN8ts1AlkAYwSdc9sMjuSF8g56fGrgX9SFbgs5bGWtBHkOYL8Srdy07KF-tW4Wf6rhWQBrfUt9DHbOyLWPBhKvxNIBtEfyXi_a0UyaUn8OoyrGJ9CeYzT1yZbhOxndoh8iuFCRFg38WZjVr6yVWunpVaQDQT762H3ezewpOHb85aq5cbfM5aaKWzTZQ_Ss-D_TygRlsuKRvgt_zXwRYE_VymEzp6-UPF_RuIrsr4vHFpmHbxC61Ky4DGguGhnEBxD7Zhtn1xM43oi_fHc61Ky4DGZ6xfGo3-rjf5..; isg=BKKjOsZlMNqsZy8UH4-lXjE_8ygE86YNIkwdKew665XKv0I51IGvHCUz7_tDrx6l"
 
+with open('config/settings.yaml', 'r', encoding='utf-8') as f:
+    result = yaml.load(f.read(), Loader=yaml.FullLoader)
+isjp= result.get("语音功能设置").get("isjp")
 
 async def superVG(data, mode, urls="", langmode="<zh>"):
     pattern = re.compile(r'[\(\（][^\(\)（）（）]*?[\)\）]')
@@ -101,8 +104,12 @@ async def superVG(data, mode, urls="", langmode="<zh>"):
                     elif langmode == "<en>":
                         text = f"[EN]{text}[EN]"
                     elif langmode == "<jp>":
-                        text = await translate(text)
-                        text=f"[JA]{text}[JA]"
+                        if isjp and re.search(r"[\u3040-\u309F]", text.replace(botName, "")):    # 检测是否含有日语字符
+                            text = f"[JA]{text}[JA]"
+                            logger.info("文本含有日语字符，不做翻译")
+                        else:
+                            text = await translate(text)
+                            text = f"[JA]{text}[JA]"
                 break
         loop = asyncio.get_event_loop()
         # 使用线程池在子线程中运行 sync_function

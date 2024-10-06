@@ -109,7 +109,7 @@ def main(bot, logger):
                     musicTask.pop(event.sender.id)
                     soup = BeautifulSoup(response.text, 'html.parser')
                     imgurl=soup.find('img',class_='j-img')['data-src']
-                    await bot.send(event, MusicShare(kind="QQMusic", title=ass[0],
+                    await bot.send(event, MusicShare(kind="NeteaseCloudMusic", title=ass[0],
                                                                       summary=ass[2],
                                                                       jump_url=f"https://y.music.163.com/m/song?id={ass[1]}&uct2=jkZ3LZNLyka9TmygfSgqeQ%3D%3D&dlt=0846&app_version=9.0.95",
                                                                       picture_url=imgurl,
