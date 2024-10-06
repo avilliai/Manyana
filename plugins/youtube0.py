@@ -18,8 +18,13 @@ with open('config/api.yaml', 'r', encoding='utf-8') as f:
         "https": proxy
     }
 
-ASMR_channels = ['@emococh','@-gabisroom-4153']
-pushed_videos = ['HG-U_0nazgc']
+with open('config/settings.yaml', 'r', encoding='utf-8') as f:
+    result = yaml.load(f.read(), Loader=yaml.FullLoader)
+ASMR_channels = result.get("ASMR").get("channels")
+ 
+with open('data/ASMR.yaml', 'r', encoding='utf-8') as f:
+    ASMRpush = yaml.load(f.read(), Loader=yaml.FullLoader)
+pushed_videos = ASMRpush.get("已推送ASMR")
 
 client = httpx.AsyncClient(headers=get_headers(),timeout=100)
 
@@ -39,7 +44,11 @@ async def ASMR_today():
             video_idlist.remove(pushed_video)
 
     try:
-        video_id=video_idlist[0]    #获取一个最新的未推送ASMR 
+        video_id = video_idlist[0]    #获取一个最新的未推送ASMR
+        pushed_videos.append(video_id)
+        ASMRpush["已推送ASMR"] = pushed_videos
+        with open('data/ASMR.yaml', 'w', encoding="utf-8") as file:
+            yaml.dump(ASMRpush, file, allow_unicode=True)
     except:
         print(f"{athor}频道没有未推送的ASMR,从投稿中随机选择")    #如果没有未推送的ASMR,从该频道投稿中随机选择
         video_id=str(random.choice(c.video_urls)).split('=')[1].replace('>', '')
