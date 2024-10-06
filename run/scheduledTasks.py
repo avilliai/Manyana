@@ -254,7 +254,7 @@ def main(bot,logger):
         elif task_name=="nightASMR":
             logger.info("获取晚安ASMR")
             athor,title,video_id,length = await ASMR_today()
-            imgpath = await get_img(video_id)
+            imgurl = await get_img(video_id)
             audiourl = await get_audio(video_id)
             logger.info("推送晚安ASMR")
             st1 = "今日ASMR:"+title+"\n"
@@ -264,12 +264,12 @@ def main(bot,logger):
             st2 += task_info.get("text")
             for i in groupdata.get("nightASMR").get("groups"):
                 try:
-                    await bot.send_group_message(int(i), [st1,Image(path=imgpath),st2])
+                    await bot.send_group_message(int(i), [st1,Image(url=imgurl),st2])
                     await bot.send_group_message(int(i), MusicShare(kind="QQMusic", 
                                                                     title=title, 
                                                                     summary=athor,
                                                                     jump_url=f"https://www.amoyshare.com/player/?v={video_id}",
-                                                                    picture_url=f"https://i.ytimg.com/vi/{video_id}/hqdefault.jpg",
+                                                                    picture_url=imgurl,
                                                                     music_url=audiourl,
                                                                     brief='ASMR'))
                 except:

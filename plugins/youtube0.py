@@ -1,4 +1,5 @@
 import httpx
+import json
 import random
 
 from pytubefix import Channel, YouTube, Playlist, Stream
@@ -8,6 +9,10 @@ from plugins.newsEveryDay import get_headers
 with open('config/api.yaml', 'r', encoding='utf-8') as f:
     result = yaml.load(f.read(), Loader=yaml.FullLoader)
     proxy = result.get("proxy")
+    proxies = {
+        "http": proxy,
+        "https": proxy
+    }
     pyproxies = {       #pytubefix代理
         "http": proxy,
         "https": proxy
@@ -58,7 +63,7 @@ async def ASMR_random():
     pushed_videos.append(url)
     return athor,title,video_id,length
 
-async def get_audio(video_id,proxies):
+async def get_audio(video_id):
     url=f"https://www.youtube.com/watch?v={video_id}"
     yt = YouTube(url=url,proxies=pyproxies)
     title = yt.title
@@ -74,8 +79,13 @@ async def get_audio(video_id,proxies):
         'format': ''
     }
 
-    responese = await client.post(url=url,data=data)
-    audiourl = responese.json()['downloadUrlX']
+    response = await client.post(url=url,data=data)
+    audiourl = response.json()['downloadUrlX']
+    response = await client.get(audiourl)
+    path = "data\Youtube\ASMR.mp3"
+    with open(path, 'wb') as f:
+        f.write(response.content)
+    audiourl = file_chain(path)
     return audiourl
 
 async def get_video(video_id):
@@ -94,15 +104,32 @@ async def get_video(video_id):
         'format': 137
     }
 
-    responese = await client.post(url=url,data=data)
-    videourl = responese.json()['downloadUrlX']
+    response = await client.post(url=url,data=data)
+    videourl = response.json()['downloadUrlX']
     return videourl
 
 async def get_img(video_id):
     path =f"data/Youtube/{video_id}.jpg"
     url=f"https://i.ytimg.com/vi/{video_id}/hq720.jpg"    #下载视频封面
-
+    client = httpx.AsyncClient(headers=get_headers(),proxies=proxies,timeout=100)
     response = await client.get(url)
     with open(path, 'wb') as f:
         f.write(response.content)
-    return path
+    imgurl = file_chain(path)
+    return imgurl
+
+async def file_chain(path):     ##上传文件到ffsup.com并取得直链
+    headers = {
+    'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/58.0.3029.110 Safari/537.36',
+    'Sec-Ch-Ua' : '"Microsoft Edge";v="119", "Chromium";v="119", "Not?A_Brand";v="24"',
+    'Sec-Ch-Ua-Mobile' : '?0',
+    'Sec-Ch-Ua-Platform' : '"Windows"',
+    'Sec-Fetch-Dest' : 'empty',
+    'Sec-Fetch-Mode' : 'cors',
+    'Sec-Fetch-Site' : 'same-site',
+    }
+
+    url = 'https://upload.ffsup.com/'
+    file = {'file': open(path, 'rb')}
+    response = await client.post(url, files=file, headers=headers)
+    return response.json()['data']['url']

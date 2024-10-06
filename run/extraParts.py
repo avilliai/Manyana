@@ -791,18 +791,18 @@ def main(bot, logger):
             logger.info("获取随机ASMR")
             logger.info()
             athor,title,video_id,length = await ASMR_random()
-            imgpath = await get_img(video_id)
+            imgurl = await get_img(video_id)
             audiourl = await get_audio(video_id)
 
             logger.info("推送随机ASMR")
             st1="标题:"+title+"\n"
             st1+="频道："+athor+"\n"
             st1+=f"时长：{length//60}分{length%60}秒\n"
-            await bot.send(event, [st1,Image(path=imgpath)])
-            await bot.send(event, MusicShare(kind="QQMusic",
-                                             title=title,
-                                             summary=athor,
-                                             jump_url=f"https://www.amoyshare.com/player/?v={video_id}",
-                                             picture_url=f"https://i.ytimg.com/vi/{video_id}/hqdefault.jpg",
-                                             music_url=audiourl,
-                                             brief='ASMR'))
+            await bot.send(event, [st1,Image(url=imgurl)])
+            await bot.send(event, MusicShare(kind = "QQMusic",
+                                             title = title,
+                                             summary = athor,
+                                             jump_url = f"https://www.amoyshare.com/player/?v={video_id}",
+                                             picture_url = imgurl,
+                                             music_url = audiourl,
+                                             brief = 'ASMR'))
