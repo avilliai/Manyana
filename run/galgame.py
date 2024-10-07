@@ -14,7 +14,7 @@ def Get_Access_Token(): #获取指定Access_Token
             data = response.json()
         access_token = data["access_token"]
         return access_token
-def Get_Access_Token_json(access_token,url,params): #异步函数
+def Get_Access_Token_json(access_token,url,params): #在获得公共Access_Token后，访问对应的api获取对应数据
     #with httpx.AsyncClient() as client:
         headers = {
             'Accept': 'application/json;charset=utf-8',
@@ -25,7 +25,7 @@ def Get_Access_Token_json(access_token,url,params): #异步函数
         if response.status_code:
             data = response.json()
         return data
-def flag_check(flag):
+def flag_check(flag):#划定需要使用的方式
     if flag ==1:
         url='https://www.ymgal.games/open/archive/search-game'
         #print('精确游戏查询，flag=1')
@@ -58,7 +58,7 @@ def flag_check(flag):
         url='https://www.ymgal.games/open/archive/random-game'
         #print('随机游戏，flag=8')
         return url
-def params_check(flag,keyword=None,releaseStartDate=None,releaseEndDate=None):
+def params_check(flag,keyword=None,releaseStartDate=None,releaseEndDate=None):#确定不同方式下的请求头以及内容
     if flag ==1:
         params = {
             "mode": "accurate",
@@ -105,7 +105,7 @@ def params_check(flag,keyword=None,releaseStartDate=None,releaseEndDate=None):
             "num": "1"
         }
         return params
-def get_game_image(url,filepath):
+def get_game_image(url,filepath):#将图片下载到本地
     if not os.path.exists(filepath):
         os.makedirs(filepath)
     response = requests.get(url,)
@@ -114,23 +114,22 @@ def get_game_image(url,filepath):
         #print(filename)
         img_path = os.path.join(filepath, filename)
         #print(img_path)
-        # 打开一个文件以二进制写入模式保存图片
         with open(img_path, 'wb') as f:
             f.write(response.content)
         print("图片已下载并保存为 {}".format(img_path))
         return img_path
     else:
-        print(f"下载失败，状态码: {response.status_code}")
+        print(f"下载失败")
         return None
-def remove_game_image(file_path):
+def remove_game_image(file_path):#图片删除函数
     if os.path.exists(file_path):
         os.remove(file_path)
         print(f"文件 '{file_path}' 已删除。")
     else:
         print(f"文件 '{file_path}' 不存在。")
-def context_assemble(json_check):
+def context_assemble(json_check):#简单来说就是解析json，然后造文本
     context=''
-    if 'gid' in json_check:
+    if 'gid' in json_check:#这里是为了当遇到本月新作这类多个gal时减少负担，在非多个中用不到
         if 'name' in json_check:
             name = json_check['name']
             context += f"{name}|"
@@ -159,7 +158,7 @@ def context_assemble(json_check):
         return context
         pass
     else:
-        if 'org' in json_check['data']:
+        if 'org' in json_check['data']:#由data内容确定json中对应字块所在位置
             state_check='org'
         elif 'game' in json_check['data']:
             state_check='game'
@@ -268,7 +267,7 @@ def context_assemble(json_check):
 
 
     return context
-def developers_check(keyword):
+def developers_check(keyword):#在它的gal查询api返回中没有对应开发商以及角色，所以另写一个函数用以替换原本的数字
     name=None
     flag = 4
     keyword = str(keyword)
@@ -282,7 +281,7 @@ def developers_check(keyword):
         name=json_check['data']['org']['chineseName']
     #print(name)
     return name
-def character_check(keyword):
+def character_check(keyword):#此函数同上
     name = None
     flag = 5
     keyword = str(keyword)
@@ -308,13 +307,13 @@ def main(bot, logger):
         # flag：6，orgId 查询机构下的游戏
         # flag：7，查询日期区间内发行的游戏
         # flag：8，随机游戏
-        flag =0
-        flag_check_test=0
-        keyword='10270'
+        flag =0#状态标志
+        flag_check_test=0#用以判断最后消息发送状态的标志位
+        keyword='10270'#不用管，会被正常覆盖的
         keyword=str(keyword)
-        filepath='manshuo_data'
+        filepath='manshuo_data'#图片存储位置，可以修改成任意需要的位置
         cmList = []
-        if "gal" in str(event.message_chain) or "Gal" in str(event.message_chain):
+        if "gal" in str(event.message_chain) or "Gal" in str(event.message_chain):#确定flag状态
 
             access_token = Get_Access_Token()
             if "查询" in str(event.message_chain):
@@ -336,7 +335,7 @@ def main(bot, logger):
                 if "角色" in str(event.message_chain):
                     flag = 5
                 logger.info(f'access_token：{access_token}，flag:{flag}，gal查询目标：{keyword}')
-        if "新作" in str(event.message_chain) and At(bot.qq) in event.message_chain:
+        if "新作" in str(event.message_chain) and At(bot.qq) in event.message_chain:#确定flag状态
 
             flag=7
             month = datetime.datetime.now().date().month
@@ -350,12 +349,12 @@ def main(bot, logger):
                 date = datetime.date(year, month - 1, day)
                 flag_check_test = 3
                 logger.info(f'本月新作查询')
-        if "galgame推荐" == str(event.message_chain) or "Galgame推荐" == str(event.message_chain) or ("随机" in str(event.message_chain) and ("gal" in str(event.message_chain) or "Gal" in str(event.message_chain))):
+        if "galgame推荐" == str(event.message_chain) or "Galgame推荐" == str(event.message_chain) or ("随机" in str(event.message_chain) and ("gal" in str(event.message_chain) or "Gal" in str(event.message_chain))):#确定flag状态
             flag = 8
             flag_check_test = 3
             logger.info(f'有玩gal的下头男，galgame推荐开启，张数：1')
 
-        if flag ==2:
+        if flag ==2:#以flag状态执行对应的功能
             print('进行gal列表查询')
             url = flag_check(flag)
             params = params_check(flag, keyword)
@@ -410,7 +409,7 @@ def main(bot, logger):
             else:
                 pass
 
-        if flag ==3:
+        if flag ==3:#以flag状态执行对应的功能
             url = flag_check(flag)
             params = params_check(flag, keyword)
             access_token = Get_Access_Token()
@@ -424,7 +423,7 @@ def main(bot, logger):
                 mainImg_state = json_check["data"]["game"]["mainImg"]
                 img_path = get_game_image(mainImg_state, filepath)
 
-        if flag ==4:
+        if flag ==4:#以flag状态执行对应的功能
             url = flag_check(flag)
             params = params_check(flag, keyword)
             access_token = Get_Access_Token()
@@ -441,7 +440,7 @@ def main(bot, logger):
                 else:
                     state = False
 
-        if flag ==5:
+        if flag ==5:#以flag状态执行对应的功能
             url = flag_check(flag)
             params = params_check(flag, keyword)
             access_token = Get_Access_Token()
@@ -455,7 +454,7 @@ def main(bot, logger):
                 mainImg_state = json_check["data"]["character"]["mainImg"]
                 img_path = get_game_image(mainImg_state, filepath)
 
-        if flag ==6:
+        if flag ==6:#以flag状态执行对应的功能
             url = flag_check(flag)
             params = params_check(flag, keyword)
             access_token = Get_Access_Token()
@@ -482,7 +481,7 @@ def main(bot, logger):
                     cmList.append(b1)
                 #print(context)
 
-        if flag ==7:
+        if flag ==7:#以flag状态执行对应的功能
             url = flag_check(flag)
             keyword=True
             #now = datetime.datetime.now()
@@ -515,7 +514,7 @@ def main(bot, logger):
                     cmList.append(b1)
                 #print(context)
 
-        if flag ==8:
+        if flag ==8:#以flag状态执行对应的功能
             url = flag_check(flag)
             params = params_check(flag, keyword)
             access_token = Get_Access_Token()
@@ -545,8 +544,8 @@ def main(bot, logger):
                 #print(context)
 
 
-        if flag != 0:
-            if state == True:
+        if flag != 0:#之前的代码中并没有发送消息的函数，将发送消息集中在此处理（
+            if state == True:#成功获取后才会发送消息记录
                 if flag_check_test == 0:
                     logger.info(f'进入文件发送ing')
                     s = [Image(path=img_path)]
@@ -566,9 +565,9 @@ def main(bot, logger):
                     cmList.append(b1)
                     await bot.send(event, Forward(node_list=cmList))
                     pass
-                elif flag_check_test == 1:
+                elif flag_check_test == 1:#详情见flag=1时的context，此处是多个匹配项存在
                     await bot.send(event, f'{context}')
-                elif flag_check_test == 3:
+                elif flag_check_test == 3:#此处是多个gal项目存在，进行一并发送
                     b1 = ForwardMessageNode(sender_id=bot.qq, sender_name="Manyana",
                                             message_chain=MessageChain(
                                                 '当前菜单：\n1，gal查询\n2，gid_gal单个游戏详情查询\n3，orgId_gal机构详情查询\n4，cid_gal游戏角色详情查询\n5，orgId_gal机构下的游戏查询\n6，本月新作，本日新作（单此一项请艾特bot食用\n7，galgame推荐'))
