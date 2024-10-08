@@ -29,7 +29,6 @@ from plugins.picGet import pic, setuGet
 from plugins.setuModerate import setuModerate
 from plugins.solveSearch import solve
 from plugins.tarot import tarotChoice,genshinDraw, qianCao
-from plugins.youtube0 import ASMR_random,get_audio,get_img
 
 def main(bot, logger):
     # 读取api列表
@@ -787,6 +786,7 @@ def main(bot, logger):
     @bot.on(GroupMessage)
     async def randomASMR(event: GroupMessage):
         if ("随机奥术" in str(event.message_chain) and At(bot.qq) in event.message_chain) or str(event.message_chain) == "随机奥术":
+            from plugins.youtube0 import ASMR_random,get_audio,get_img
             logger.info("奥术魔刃，启动！")
             logger.info("获取随机ASMR")
             athor,title,video_id,length = await ASMR_random()
