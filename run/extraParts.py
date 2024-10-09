@@ -811,7 +811,7 @@ def main(bot, logger):
     @bot.on(GroupMessage)
     async def wife_you_want(event: GroupMessage):
 
-        if (f'wifePrefix' in str(event.message_chain)):#前置触发词
+        if (f'{wifePrefix}' in str(event.message_chain)):#前置触发词
             flag_persona = 0
             flag_aim = 0
             if ('透群主' in str(event.message_chain)):
