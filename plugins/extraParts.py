@@ -10,6 +10,8 @@ import re
 from PIL import Image
 from emoji import is_emoji
 import asyncio
+import requests
+import yaml
 from bs4 import BeautifulSoup  # 用于解析 HTML
 from plugins.toolkits import random_str, get_headers
 
@@ -472,7 +474,7 @@ async def eganylist(text,proxy):
         with open(p, "wb") as f:
             f.write(r.content)
         return p
-async def manage_group_status(user_id, status=None, file_path="manshuo_data/wife_you_want_img/wife_you_want.yaml"):
+async def manage_group_status(user_id, status=None, file_path="data/pictures/wife_you_want_img/wife_you_want.yaml"):
     if not os.path.exists(file_path):
         with open(file_path, 'w') as file:
             yaml.dump({}, file)
