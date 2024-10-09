@@ -29,7 +29,49 @@ from plugins.picGet import pic, setuGet
 from plugins.setuModerate import setuModerate
 from plugins.solveSearch import solve
 from plugins.tarot import tarotChoice,genshinDraw, qianCao
-
+def manage_group_status(user_id, status=None, file_path="manshuo_data/wife_you_want_img/wife_you_want.yaml"):
+    if not os.path.exists(file_path):
+        with open(file_path, 'w') as file:
+            yaml.dump({}, file)
+    with open(file_path, 'r') as file:
+        try:
+            users_data = yaml.safe_load(file) or {}
+        except yaml.YAMLError:
+            users_data = {}
+    if status is not None:
+        users_data[user_id] = status
+        with open(file_path, 'w') as file:
+            yaml.safe_dump(users_data, file)
+        return status
+    return users_data.get(user_id, False)
+def get_game_image(url,filepath,id):
+    if not os.path.exists(filepath):
+        os.makedirs(filepath)
+    id = str(id) + '.jpg'
+    #print(str(id))
+    # 获取指定文件夹下的所有文件
+    files = os.listdir(filepath)
+    if id in files:
+        img_path = os.path.join(filepath, id)
+        print('图片已存在，返回图片名称')
+        return img_path
+    # 过滤出文件名（不包含文件夹）
+    headers = {
+        'User-Agent': 'Mozilla/5.0 (Windows NT 6.1; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/79.0.3945.88 Safari/537.36'}
+    response = requests.get(url,headers=headers)
+    if response.status_code == 200:
+        #filename = url.split('/')[-1]
+        id = str(id)
+        img_path = os.path.join(filepath, id)
+        #print(img_path)
+        # 打开一个文件以二进制写入模式保存图片
+        with open(img_path, 'wb') as f:
+            f.write(response.content)
+        print("图片已下载并保存为 {}".format(img_path))
+        return img_path
+    else:
+        print(f"下载失败，状态码: {response.status_code}")
+        return None
 def main(bot, logger):
     # 读取api列表
     with open('config/api.yaml', 'r', encoding='utf-8') as f:
@@ -807,6 +849,197 @@ def main(bot, logger):
                                              picture_url = imgurl,
                                              music_url = audiourl,
                                              brief = 'ASMR'))
+
+    @bot.on(GroupMessage)
+    async def help(event: GroupMessage):
+
+        if ('/' in str(event.message_chain)):#前置触发词
+            flag_persona = 0
+            flag_aim = 0
+            if ('透群主' in str(event.message_chain)):
+                flag_persona=1
+                check='OWNER'
+                pass
+            elif ('透管理' in str(event.message_chain)):
+                flag_persona = 2
+                check = 'ADMINISTRATOR'
+                pass
+            elif ('透群友' in str(event.message_chain)):
+                flag_persona = 3
+                pass
+            elif ('娶群友' in str(event.message_chain)):
+                flag_persona = 4
+                from_id = int(event.sender.id)
+                if manage_group_status(from_id) :
+                    target_group = int(event.group.id)
+                    target_id_aim=manage_group_status(from_id)
+
+                    flag_aim = 1
+                else:
+                    flag_aim = 0
+                pass
+            elif ('离婚' in str(event.message_chain)):
+                from_id = int(event.sender.id)
+                manage_group_status(from_id,False)
+                manage_group_status(f'{from_id}_name', False)
+                await bot.send(event, '离婚啦，您现在是单身贵族咯~')
+            else:
+                flag_persona=0
+
+            if flag_persona == 3 or flag_persona == 4:
+
+                context=str(event.message_chain)
+                name_id_number=re.search(r'\d+', context)
+                if name_id_number:
+                    if flag_aim == 1:
+                        await bot.send(event, '渣男！吃着碗里的想着锅里的！', True)
+                        flag_persona = 0
+                        flag_aim = 0
+                    else:
+                        number = int(name_id_number.group())
+                        target_id_aim=number
+                        #print(target_id_aim)
+                        rnum1 = random.randint(1, 10)
+                        if rnum1 > 3:
+                            #await bot.send(event, '不许瑟瑟！！！！', True)
+                            target_group = int(event.group.id)
+                            group_member_check = await bot.get_group_member(target_group, target_id_aim)
+                            #print(group_member_check)
+                            if group_member_check:
+                                flag_aim=1
+                    #print(rnum1)
+                    #print(flag_aim)
+
+
+
+                rnum0 = random.randint(1, 10)
+                if rnum0 == 1:
+                    await bot.send(event, '不许瑟瑟！！！！')
+                    flag_persona = 0
+
+            if flag_persona != 0:
+                logger.info("透群友任务开启")
+                filepath = 'manshuo_data/wife_you_want_img'
+                friendlist = []
+                target_name = None
+                target_id = None
+                target_img = None
+                # target_nikenamne=None
+                from_name = str(event.sender.member_name)
+                from_id = int(event.sender.id)
+                #flag_aim = 0
+                target_group = int(event.group.id)
+                friendlist_get = await bot.member_list(target_group)
+                data = friendlist_get.json()
+                data = json.loads(data)
+                data_count = len(data["data"])
+                for i in range(data_count):
+                    data_test=None
+                    data_check = data['data'][i]['permission']
+                    if flag_persona == 1 or flag_persona == 2:
+                        if data_check == check:
+                            data_test = data['data'][i]['id']
+                    elif flag_persona == 3 or flag_persona == 4:
+                        data_test = data['data'][i]['id']
+                    if data_test != None:
+                        friendlist.append(data_test)
+                    #print(data_test)
+                #print(friendlist)
+                number_target = len(friendlist)
+                target_number = random.randint(1, number_target)
+                target_id = friendlist[target_number - 1]
+
+                if flag_aim == 1 :
+                    target_id=target_id_aim
+
+                #print(target_id)
+                logger.info(f'透群友目标：{target_id}')
+                group_member_check = await bot.get_group_member(target_group, target_id)
+                # target_id = extract_between_symbols(str(group_member_check), 'id=', ' member')
+                if manage_group_status(f'{from_id}_name') and flag_persona == 4:
+                    target_name=manage_group_status(f'{from_id}_name')
+                else:
+                    target_name = extract_between_symbols(str(group_member_check), 'member_name=', ' permission')
+
+
+                if flag_persona == 4:
+                    if manage_group_status(from_id):
+                        flag_aim = 0
+                    manage_group_status(from_id, target_id)
+                    manage_group_status(f'{from_id}_name', target_name)
+
+                # 下面是获取对应人员头像的代码
+                target_img_url = f"https://q1.qlogo.cn/g?b=qq&nk={target_id}&s=640"  # QQ头像 URL 格式
+
+                target_img_path = get_game_image(target_img_url, filepath, target_id)
+
+                if flag_persona == 1:
+                    if manage_group_status(f'{target_id}_ower_time'):
+                        times = int(manage_group_status(f'{target_id}_ower_time'))
+                        times += 1
+                        manage_group_status(f'{target_id}_ower_time', times)
+                    else:
+                        times = 1
+                        manage_group_status(f'{target_id}_ower_time', 1)
+                    await bot.send_group_message(event.sender.group.id,
+                                                 [f'@{from_name} 恭喜你涩到群主！！！！',
+                                                  Image(path=target_img_path),
+                                                  f'群主【{target_name}】今天这是第{times}次被透了呢'])
+                if flag_persona == 2:
+                    await bot.send_group_message(event.sender.group.id,
+                                                 [f'@{from_name} 恭喜你涩到管理！！！！',
+                                                  Image(path=target_img_path),
+                                                  f'【{target_name}】 ({target_id})哒！'])
+                if flag_persona == 3:
+                    if flag_aim == 1:
+                        await bot.send_group_message(event.sender.group.id,
+                                                     [f'@{from_name} 恭喜你涩到了群友！！！！',
+                                                      Image(path=target_img_path),
+                                                      f'【{target_name}】 ({target_id})哒！'])
+                    else:
+                        await bot.send_group_message(event.sender.group.id,
+                                                     [f'@{from_name} 今天你的色色对象是',
+                                                      Image(path=target_img_path),
+                                                      f'【{target_name}】 ({target_id})哒！'])
+                if flag_persona == 4:
+                    if flag_aim == 1:
+                        await bot.send_group_message(event.sender.group.id,
+                                                     [f'@{from_name} 恭喜你娶到了群友！！！！',
+                                                      Image(path=target_img_path),
+                                                      f'【{target_name}】 ({target_id})哒！'])
+                    else:
+                        await bot.send_group_message(event.sender.group.id,
+                                                     [f'@{from_name} 今天你的结婚对象是',
+                                                      Image(path=target_img_path),
+                                                      f'【{target_name}】 ({target_id})哒！'])
+
+
+
+
+    @bot.on(Startup)
+    async def start_scheduler(_):
+        async def timer():
+            today_finished = False  # 设置变量标识今天是会否完成任务，防止重复发送
+            while True:
+                await asyncio.sleep(1)
+                now = datetime.datetime.now()
+                if now.hour == 00 and now.minute == 00 and not today_finished:  # 每天早上 7:30 发送早安
+                    file_path="manshuo_data/wife_you_want_img/wife_you_want.yaml"
+                    if os.path.exists(file_path):
+                        os.remove(file_path)
+                        print('娶群友事件已重置')
+                    today_finished = True
+                if now.hour == 00 and now.minute == 1:
+                    today_finished = False  # 早上 7:31，重置今天是否完成任务的标识
+
+        global _task
+        _task = asyncio.create_task(timer())
+
+    @bot.on(Shutdown)
+    async def stop_scheduler(_):
+        # 退出时停止定时任务
+        if _task and not task.done():
+            _task.cancel()
 
     @bot.on(GroupMessage)
     async def wife_you_want(event: GroupMessage):
