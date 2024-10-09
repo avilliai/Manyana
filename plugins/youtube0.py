@@ -10,8 +10,8 @@ with open('config/api.yaml', 'r', encoding='utf-8') as f:
     result = yaml.load(f.read(), Loader=yaml.FullLoader)
     proxy = result.get("proxy")
     proxies = {
-        "http:\\": proxy,
-        "https:\\": proxy
+        "http://": proxy,
+        "https://": proxy
     }
     pyproxies = {       #pytubefix代理
         "http": proxy,
