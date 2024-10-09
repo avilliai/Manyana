@@ -70,6 +70,7 @@ def main(bot, logger):
     onlyTrustUserR18 = controllerResult.get("图片相关").get("onlyTrustUserR18")
     withPic = controllerResult.get("图片相关").get("withPic")
     watchPrefix=controllerResult.get("图片相关").get("watchPrefix")
+    wifePrefix=controllerResult.get("图片相关").get("wifePrefix")
     grayPic = controllerResult.get("图片相关").get("grayPic")
     allowPic = controllerResult.get("图片相关").get("allowPic")
     selfsensor = result1.get("moderate").get("selfsensor")
@@ -79,6 +80,7 @@ def main(bot, logger):
     lockResult = controllerResult.get("运势&塔罗").get("lockLuck")
     isAbstract = controllerResult.get("运势&塔罗").get("isAbstract")
     InternetMeme = controllerResult.get("图片相关").get("InternetMeme")
+    
 
     global picData
     picData = {}
@@ -805,3 +807,146 @@ def main(bot, logger):
                                              picture_url = imgurl,
                                              music_url = audiourl,
                                              brief = 'ASMR'))
+
+    @bot.on(GroupMessage)
+    async def wife_you_want(event: GroupMessage):
+
+        if (f'{wifePrefix}' in str(event.message_chain)):#前置触发词
+            flag_persona = 0
+            flag_aim = 0
+            if ('透群主' in str(event.message_chain)):
+                flag_persona=1
+                check='OWNER'
+                pass
+            elif ('透管理' in str(event.message_chain)):
+                flag_persona = 2
+                check = 'ADMINISTRATOR'
+                pass
+            elif ('透群友' in str(event.message_chain)):
+                flag_persona = 3
+                pass
+            elif ('娶群友' in str(event.message_chain)):
+                flag_persona = 4
+                pass
+            else:
+                flag_persona=0
+
+            if flag_persona == 3 or flag_persona == 4:
+                context=str(event.message_chain)
+                name_id_number=re.search(r'\d+', context)
+                if name_id_number:
+                    number = int(name_id_number.group())
+                    target_id_aim=number
+                    #print(target_id_aim)
+                    rnum1 = random.randint(1, 10)
+                    if rnum1 > 3:
+                        #await bot.send(event, '不许瑟瑟！！！！', True)
+                        target_group = int(event.group.id)
+                        group_member_check = await bot.get_group_member(target_group, target_id_aim)
+                        #print(group_member_check)
+                        if group_member_check:
+                            flag_aim=1
+                    #print(rnum1)
+                    #print(flag_aim)
+
+
+
+                rnum0 = random.randint(1, 10)
+                if rnum0 == 1:
+                    await bot.send(event, '不许瑟瑟！！！！',True)
+                    flag_persona = 0
+
+            if flag_persona != 0:
+                logger.info("透群友任务开启")
+                filepath = 'data/pictures/wife_you_want'
+                friendlist = []
+                target_name = None
+                target_id = None
+                target_img = None
+                # target_nikenamne=None
+                from_name = str(event.sender.member_name)
+                from_id = int(event.sender.id)
+                #flag_aim = 0
+                target_group = int(event.group.id)
+                friendlist_get = await bot.member_list(target_group)
+                data = friendlist_get.json()
+                data = json.loads(data)
+                data_count = len(data["data"])
+                for i in range(data_count):
+                    data_test=None
+                    data_check = data['data'][i]['permission']
+                    if flag_persona == 1 or flag_persona == 2:
+                        if data_check == check:
+                            data_test = data['data'][i]['id']
+                    elif flag_persona == 3 or flag_persona == 4:
+                        data_test = data['data'][i]['id']
+                    if data_test != None:
+                        friendlist.append(data_test)
+                    #print(data_test)
+                #print(friendlist)
+                number_target = len(friendlist)
+                target_number = random.randint(1, number_target)
+                target_id = friendlist[target_number - 1]
+
+                if flag_aim == 1 :
+                    target_id=target_id_aim
+                #print(target_id)
+                logger.info(f'透群友目标：{target_id}')
+                group_member_check = await bot.get_group_member(target_group, target_id)
+                # target_id = extract_between_symbols(str(group_member_check), 'id=', ' member')
+                target_name = extract_between_symbols(str(group_member_check), 'member_name=', ' permission')
+                # 下面是获取对应人员头像的代码
+                target_img_url = f"https://q1.qlogo.cn/g?b=qq&nk={target_id}&s=640"  # QQ头像 URL 格式
+
+                if not os.path.exists(filepath):#获取qq头像
+                    os.makedirs(filepath)
+                id = str(target_id) + '.jpg'
+                files = os.listdir(filepath)
+                if id in files:
+                    img_path = os.path.join(filepath, id)
+                    print('图片已存在，返回图片名称')
+                    target_img_path=img_path
+                else:
+                    response = requests.get(target_img_url)
+                    if response.status_code == 200:
+                        img_path = os.path.join(filepath, id)
+                        with open(img_path, 'wb') as f:
+                        f.write(response.content)
+                        print("图片已下载并保存为 {}".format(img_path))
+                        target_img_path=img_path
+                    else:
+                        print(f"下载失败，状态码: {response.status_code}")
+                        
+
+                if flag_persona == 1:
+                    await bot.send_group_message(event.sender.group.id,
+                                                 [f'@{from_name} 恭喜你涩到群主！！！！',
+                                                  Image(path=target_img_path),
+                                                  f'群主今天也是星怒的一天呢'])
+                if flag_persona == 2:
+                    await bot.send_group_message(event.sender.group.id,
+                                                 [f'@{from_name} 恭喜你涩到管理！！！！',
+                                                  Image(path=target_img_path),
+                                                  f'【{target_name}】 ({target_id})哒！'])
+                if flag_persona == 3:
+                    if flag_aim == 1:
+                        await bot.send_group_message(event.sender.group.id,
+                                                     [f'@{from_name} 恭喜你涩到了群友！！！！',
+                                                      Image(path=target_img_path),
+                                                      f'【{target_name}】 ({target_id})哒！'])
+                    else:
+                        await bot.send_group_message(event.sender.group.id,
+                                                 ['@' + str(from_name) + ' 今天你的色色对象是 ',
+                                                  Image(path=target_img_path),
+                                                  str(target_name) + '(' + str(target_id) + ')' + " 哒！"])
+                if flag_persona == 4:
+                    if flag_aim == 1:
+                        await bot.send_group_message(event.sender.group.id,
+                                                     [f'@{from_name} 恭喜你娶到了群友！！！！',
+                                                      Image(path=target_img_path),
+                                                      f'【{target_name}】 ({target_id})哒！'])
+                    else:
+                        await bot.send_group_message(event.sender.group.id,
+                                                 ['@' + str(from_name) + ' 今天你的结婚对象是',
+                                                  Image(path=target_img_path),
+                                                  str(target_name) + ' (' + str(target_id) + ')' + " 哒！"])
