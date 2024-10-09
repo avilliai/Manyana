@@ -10,8 +10,8 @@ with open('config/api.yaml', 'r', encoding='utf-8') as f:
     result = yaml.load(f.read(), Loader=yaml.FullLoader)
     proxy = result.get("proxy")
     proxies = {
-        "http": proxy,
-        "https": proxy
+        "http://": proxy,
+        "https://": proxy
     }
     pyproxies = {       #pytubefix代理
         "http": proxy,
@@ -56,7 +56,6 @@ async def ASMR_today():
     yt = YouTube(url)
     title = yt.title
     length = yt.length
-    pushed_videos.append(url)
     return athor,title,video_id,length
 
 async def ASMR_random():
@@ -69,7 +68,6 @@ async def ASMR_random():
     yt = YouTube(url)
     title = yt.title
     length = yt.length
-    pushed_videos.append(url)
     return athor,title,video_id,length
 
 async def get_audio(video_id):
