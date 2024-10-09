@@ -858,7 +858,7 @@ def main(bot, logger):
 
             if flag_persona != 0:
                 logger.info("透群友任务开启")
-                filepath = 'manshuo_data/wife_you_want_img'
+                filepath = 'data/pictures/wife_you_want'
                 friendlist = []
                 target_name = None
                 target_id = None
