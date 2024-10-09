@@ -17,7 +17,6 @@ from plugins.aiReplyCore import modelReply
 from plugins.extraParts import steamEpic
 from plugins.newsEveryDay import news, danxianglii, moyu, xingzuo
 from plugins.toolkits import screenshot_to_pdf_and_png,picDwn
-from plugins.youtube0 import ASMR_today,get_audio,get_img
 
 
 def main(bot,logger):
@@ -253,6 +252,7 @@ def main(bot,logger):
                     logger.error("不存在的群" + str(i))
         elif task_name=="nightASMR":
             logger.info("获取晚安ASMR")
+            from plugins.youtube0 import ASMR_today,get_audio,get_img
             athor,title,video_id,length = await ASMR_today()
             imgurl = await get_img(video_id)
             audiourl = await get_audio(video_id)
