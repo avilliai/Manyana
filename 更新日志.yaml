@@ -400,7 +400,7 @@
   - 更多outVits speaker
   - gptSovits已恢复
 2024/10/7:
-  - @man-shuo 的pr #由月幕galgame api强力驱动的gal功能整合！
+  - @man-shuo pr #由月幕galgame api强力驱动的gal功能整合！
   - 新功能：
   - 1，gal查询
   - 2，gid_gal单个游戏详情查询
@@ -409,3 +409,10 @@
   - 5，orgId_gal机构下的游戏查询
   - 6，本月新作，本日新作（单此一项请艾特bot食用
   - 7，galgame推荐
+2024/10/9:
+  - @man-shuo pr
+  - 新指令
+  - 1、透群友
+  - 2、娶群友
+  - 3、透群主
+  - 4、透管理
