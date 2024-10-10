@@ -116,7 +116,7 @@ async def get_video(video_id):
     return videourl
 
 async def get_img(video_id):
-    path =f"data/Youtube/{video_id}.jpg"
+    path =f"data/pictures/cache/{video_id}.jpg"
     url=f"https://i.ytimg.com/vi/{video_id}/hq720.jpg"    #下载视频封面
     client = httpx.AsyncClient(headers=get_headers(),proxies=proxies,timeout=100)
     response = await client.get(url)
