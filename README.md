@@ -96,14 +96,12 @@ Manyana/config.json的填写示例如下。
 
 #### 未来更新计划
 由于学业繁忙，下面这些可能要到明年才能开始了，如果您有意向参与开发，欢迎pr🏵
-- [x] 降低耦合度，进一步优化承载收发功能的run文件夹下各文件
-- [ ] 适配tg、discord、微信等平台(完成上一目标后)
 - [ ] 各大手游/端游数据查询
-- [ ] 更换sdk
 - [x] 词库优化
 - [x] UI重制
 - [x] 优化搭建引导
-- [ ] jmcomic对接
+- [x] jmcomic对接
+- [ ] [Eridanus](https://github.com/avilliai/Eridanus)
 
 
 # 🎲可选配置
