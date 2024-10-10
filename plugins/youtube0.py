@@ -122,7 +122,7 @@ async def get_img(video_id):
     response = await client.get(url)
     with open(path, 'wb') as f:
         f.write(response.content)
-    imgurl = file_chain(path)
+    imgurl =await file_chain(path)
     return imgurl
 
 async def file_chain(path):     ##上传文件到ffsup.com并取得直链
