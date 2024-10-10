@@ -416,3 +416,12 @@
   - 2、娶群友
   - 3、透群主
   - 4、透管理
+2024/10/10:
+#条件1：完整执行 更新脚本 补全依赖
+#条件2：配置proxy
+#条件3：在llob中，填写卡片签名地址https://ss.xingzhige.com/music_card/card
+#满足以上三个条件后，重启bot。
+  - @reiyutsuki pr
+  - asmr功能
+  - /推送 晚安ASMR
+  - @bot 随机奥术
