@@ -76,6 +76,7 @@ Manyana/config.json的填写示例如下。
 
 ---
 # 🍩功能
+一些功能不会很快同步到菜单(懒得开ps)，请以更新日志为准。
 #### 功能列表
 
 搭建后在群内发送@bot 帮助 以查看功能列表。其他相关问题请查看[Manyana wiki](https://github.com/avilliai/Manyana/wiki)
