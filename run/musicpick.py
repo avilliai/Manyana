@@ -99,12 +99,12 @@ def main(bot, logger):
                 else:
                     MusicUrlDownLoad=await newCloudMusicDown(musiclist[order - 1][1], True,True)
                     await bot.send(event, MusicShare(kind = "QQMusic",
-                                     title = f'{musiclist[order - 1]}',
-                                     summary = f'{musiclist[order - 1]}',
+                                     title = f'{musiclist[order - 1][0]}',
+                                     summary = f'{musiclist[order - 1][0]}',
                                      jump_url = MusicUrlDownLoad,
                                      picture_url = "https://raw.githubusercontent.com/avilliai/imgBed/master/images/24202439348A04800FE5D98F76125113.png",
                                      music_url = MusicUrlDownLoad,
-                                     brief = f'{musiclist[order - 1]}'))
+                                     brief = f'{musiclist[order - 1][0]}'))
                 if downloadMusicUrl:
                     await bot.send(event, f"下载链接(mp3)：{MusicUrlDownLoad}")
 
