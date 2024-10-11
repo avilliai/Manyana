@@ -94,6 +94,8 @@ def main(bot, logger):
                 
                 if musicToVoice:
                     p, MusicUrlDownLoad = await newCloudMusicDown(musiclist[order - 1][1], True)
+                    logger.info(f"已下载目标单曲：{p}")
+                    await bot.send(event, Voice(path=p))
                 else:
                     MusicUrlDownLoad=await newCloudMusicDown(musiclist[order - 1][1], True,True)
                     await bot.send(event, MusicShare(kind = "QQMusic",
@@ -106,8 +108,7 @@ def main(bot, logger):
                 if downloadMusicUrl:
                     await bot.send(event, f"下载链接(mp3)：{MusicUrlDownLoad}")
 
-                logger.info(f"已下载目标单曲：{p}")
-                await bot.send(event, Voice(path=p))
+                
 
             except Exception as e:
                 logger.error(e)
