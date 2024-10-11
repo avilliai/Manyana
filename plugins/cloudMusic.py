@@ -16,12 +16,14 @@ async def newCloudMusic(musicname):
         return r.json().get("content")
 
 
-async def newCloudMusicDown(musicid, downloadMusicUrl=False):
+async def newCloudMusicDown(musicid, downloadMusicUrl=False,onlyUrl=False):
     path = 'data/music/musicCache/' + str(musicid) + '.mp3'
     try:
         newR = f"https://api.bducds.com/api/music.163/?id={musicid}"
         async with httpx.AsyncClient(timeout=None, headers=get_headers()) as client:
             r2 = await client.get(newR)
+            if onlyUrl:
+                return r2.json()["data"][0]["url"]
             # print(r.json()["song_url"])
             waf = await client.get(r2.json()["data"][0]["url"])
             with open(path, "wb") as f:
