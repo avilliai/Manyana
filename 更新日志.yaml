@@ -425,3 +425,4 @@
   - asmr功能
   - /推送 晚安ASMR
   - @bot 随机奥术
+#即使你不用asmr功能，也可以配置完卡片签名地址后，关闭controller的musicToVoice选项，这样点歌时bot就会发送音乐卡片，不再会损失音质。
