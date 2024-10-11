@@ -80,41 +80,34 @@ def main(bot, logger):
         global musicTask
         if event.sender.id in musicTask:
             try:
+                try:
+                    order = int(str(event.message_chain))
+                except:
+                    await bot.send(event, "点歌失败！不规范的操作\n请输入数字。")
+                    musicTask.pop(event.sender.id)
+                    return
+                if order < 1:
+                    order = 1
+                musiclist = musicTask.get(event.sender.id)
+                logger.info(f"获取歌曲：{musiclist[order - 1]}")
+                musicTask.pop(event.sender.id)
+                
                 if musicToVoice:
-                    try:
-                        order = int(str(event.message_chain))
-                    except:
-                        await bot.send(event, "点歌失败！不规范的操作\n请输入数字。")
-                        musicTask.pop(event.sender.id)
-                        return
-                    if order < 1:
-                        order = 1
-                    musiclist = musicTask.get(event.sender.id)
-                    logger.info(f"获取歌曲：{musiclist[order - 1]}")
-                    musicTask.pop(event.sender.id)
-                    if downloadMusicUrl:
-                        p, MusicUrlDownLoad = await newCloudMusicDown(musiclist[order - 1][1], True)
-                        await bot.send(event, f"下载链接(mp3)：{MusicUrlDownLoad}")
-                    else:
-                        p = await newCloudMusicDown(musiclist[order - 1][1])
-                    logger.info(f"已下载目标单曲：{p}")
-                    await bot.send(event, Voice(path=p))
+                    p, MusicUrlDownLoad = await newCloudMusicDown(musiclist[order - 1][1], True)
                 else:
-                    ass = musicTask.get(event.sender.id)[int(str(event.message_chain))-1]
-                    logger.info("获取歌曲：" + ass[0])
-                    
-                    client = httpx.Client(headers=get_headers())
-                    url = f'https://music.163.com/song?id={ass[1]}'
-                    response = client.get(url)
-                    musicTask.pop(event.sender.id)
-                    soup = BeautifulSoup(response.text, 'html.parser')
-                    imgurl=soup.find('img',class_='j-img')['data-src']
-                    await bot.send(event, MusicShare(kind="NeteaseCloudMusic", title=ass[0],
-                                                                      summary=ass[2],
-                                                                      jump_url=f"https://y.music.163.com/m/song?id={ass[1]}&uct2=jkZ3LZNLyka9TmygfSgqeQ%3D%3D&dlt=0846&app_version=9.0.95",
-                                                                      picture_url=imgurl,
-                                                                      music_url=f"http://music.163.com/song/media/outer/url?id={ass[1]}",
-                                                                      brief=ass[2]))
+                    MusicUrlDownLoad=await newCloudMusicDown(musiclist[order - 1][1], True,True)
+                    await bot.send(event, MusicShare(kind = "QQMusic",
+                                     title = title,
+                                     summary = athor,
+                                     jump_url = MusicUrlDownLoad,
+                                     picture_url = imgurl,
+                                     music_url = MusicUrlDownLoad,
+                                     brief = f'{musiclist[order - 1]}'))
+                if downloadMusicUrl:
+                    await bot.send(event, f"下载链接(mp3)：{MusicUrlDownLoad}")
+
+                logger.info(f"已下载目标单曲：{p}")
+                await bot.send(event, Voice(path=p))
 
             except Exception as e:
                 logger.error(e)
