@@ -22,7 +22,7 @@ from mirai import Mirai, WebSocketAdapter, GroupMessage, Image, At, Startup, Fri
 from plugins.toolkits import newLogger,random_str,get_system_info
 from run import aiReply, voiceReply, nudgeReply, wikiHelper, imgSearch, extraParts, wReply, groupManager, \
     musicShare, LiveMonitor, aronaapi, groupGames, musicpick, scheduledTasks, appCard, aiDraw, starRail, bangumi, \
-    draftBottle, galgame
+    draftBottle, galgame,character_identify
 
 
 # 为了实现黑名单和群开关功能，我们将继承webSocketAdapter类
@@ -388,6 +388,7 @@ if __name__ == '__main__':
     appCard.main(bot, logger)
     aiDraw.main(bot, logger)
     galgame.main(bot, logger)
+    character_identify.main(bot,logger)
     try:
         starRail.main(bot, logger)
     except Exception as e:
