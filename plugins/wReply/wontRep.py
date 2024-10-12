@@ -2,7 +2,7 @@ import re
 
 
 def wontrep(noeRes1, text, logger):
-    p1 = noeRes1.get("noResMatch")
+    p1 = noeRes1.get("noResMatch1")
     text = text.replace("壁纸", "").replace("涩图", "").replace("色图", "").replace("图",
                                                                                     "").replace(
         "r18", "")
