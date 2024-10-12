@@ -10,6 +10,7 @@ from PIL import Image as Image1
 from mirai.models import ForwardMessageNode, Forward
 from mirai import GroupMessage
 from mirai import Image,MessageChain
+from plugins.toolkits import random_str
 
 def main(bot,logger):
     logger.info("角色识别功能启动完毕")
@@ -41,7 +42,7 @@ def main(bot,logger):
                 res = await client.get(img_urls[0].url)
             files = {"image": None}
             base_img = Image1.open(BytesIO(res.content)).convert("RGB")
-            img_path = os.path.join(os.path.dirname(__file__), "tmp_img.png")         # 保存图片到本地
+            img_path ="data/pictures/cache/" + random_str() + ".png"       # 保存图片到本地
             base_img.save(img_path)
             files["image"] = open(img_path, "rb")
 
@@ -98,5 +99,4 @@ def main(bot,logger):
                 logger.error(f"角色识别出错：{e}")
                 await bot.send(event,f"出错啦,请稍后再试~",True)
             files['image'].close    # 关闭图片
-            os.remove(img_path)   #删除图片
             dataGet.pop(event.sender.id)
