@@ -263,5 +263,5 @@ def main(bot,logger):
         else:
             if event.group.id in repeatLock and datetime.datetime.now()-repeatLock[event.group.id]<datetime.timedelta(60): #时间锁
                 return
-            repeatData[event.group.id]={"times":1,"mes":event.message_chain.json(),"simplemes":str(event.message_chain),"sefmeschain":await EventMessageConvert(event.message_chain)}
+            repeatData[event.group.id]={"times":1,"mes":event.message_chain.json(),"simplemes":str(event.message_chain),"sefmeschain":await EventMessageConvert(event.message_chain,True)}
 
