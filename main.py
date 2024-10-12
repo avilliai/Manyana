@@ -268,6 +268,7 @@ if __name__ == '__main__':
                 for i in s:
                     await bot.send(event,i)
                 await bot.send(event,'这是' + botName + '的功能列表\nヾ(≧▽≦*)o\n发送 pet 以查看制图功能列表\npetpet功能由https://github.com/Dituon/petpet提供')
+            await bot.send(event, "提示：如指令未明确指出需要@，就不要带@",True)
     @bot.on(Startup)
     async def clearCache(event: Startup):
 
