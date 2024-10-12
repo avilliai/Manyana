@@ -474,10 +474,12 @@ async def eganylist(text,proxy):
         with open(p, "wb") as f:
             f.write(r.content)
         return p
-async def manage_group_status(user_id, status=None, file_path="data/pictures/wife_you_want_img/wife_you_want.yaml"):
-    if not os.path.exists(file_path):
-        with open(file_path, 'w') as file:
-            yaml.dump({}, file)
+def manage_group_status(user_id, status=None, file_path="data/pictures/wife_you_want_img/wife_you_want.yaml"):
+    if not os.path.exists("data/pictures/wife_you_want_img"):
+        os.makedirs("data/pictures/wife_you_want_img")
+        if not os.path.exists(file_path):
+            with open(file_path, 'w') as file:
+                yaml.dump({}, file)
     with open(file_path, 'r') as file:
         try:
             users_data = yaml.safe_load(file) or {}
@@ -489,7 +491,7 @@ async def manage_group_status(user_id, status=None, file_path="data/pictures/wif
             yaml.safe_dump(users_data, file)
         return status
     return users_data.get(user_id, False)
-async def get_game_image(url,filepath,id):
+def get_game_image(url,filepath,id):
     if not os.path.exists(filepath):
         os.makedirs(filepath)
     id = str(id) + '.jpg'
@@ -518,7 +520,7 @@ async def get_game_image(url,filepath,id):
         print(f"下载失败，状态码: {response.status_code}")
         return None
 
-async def extract_between_symbols(text, symbol1, symbol2):
+def extract_between_symbols(text, symbol1, symbol2):
 
     try:
         # 找到第一个符号的位置
