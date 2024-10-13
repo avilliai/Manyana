@@ -1,6 +1,8 @@
+import base64
 import os
 import random
 import platform
+import re
 
 import psutil
 import requests
@@ -259,6 +261,8 @@ async def webScreenShot(url, path):
         with open(path, "wb") as f:
             f.write(r.content)
 async def picDwn(url, path,proxies=None):
+    if url.startswith("data:image"):
+        return save_data_image(url, path)
     if proxies!=None:
         proxies = {
             "http://": proxies,
@@ -269,3 +273,17 @@ async def picDwn(url, path,proxies=None):
         with open(path, "wb") as f:
             f.write(r.content)
         return path
+def save_data_image(data_url, path):
+    # 提取 Base64 数据部分
+    match = re.match(r"data:image/(.*?);base64,(.+)", data_url)
+    if not match:
+        raise ValueError("Invalid Data URI format")
+
+    img_type, base64_data = match.groups()
+    img_data = base64.b64decode(base64_data)  # 解码 Base64 数据
+
+    # 保存图片文件
+    with open(path, "wb") as f:
+        f.write(img_data)
+
+    return path
