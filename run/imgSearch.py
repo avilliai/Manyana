@@ -10,7 +10,7 @@ from mirai.models import ForwardMessageNode, Forward
 
 from plugins.imgSearch import fetch_results
 from plugins.setuModerate import setuModerate
-from plugins.toolkits import picDwn
+from plugins.toolkits import picDwn, random_str
 
 
 def main(bot, api_key, proxy, logger):
@@ -51,7 +51,8 @@ def main(bot, api_key, proxy, logger):
             for name, result in results.items():
                 if result:
                     logger.info(f"{name} 成功返回: {result}")
-                    imgpath=await picDwn(result[0],proxy)
+                    path="data/pictures/cache/" + random_str() + ".png"
+                    imgpath=await picDwn(result[0],path,proxy)
                     b1 = ForwardMessageNode(sender_id=bot.qq, sender_name="Manyana",
                                             message_chain=MessageChain([ Image(path=imgpath),result[1] ]))
                     forMeslist.append(b1)
