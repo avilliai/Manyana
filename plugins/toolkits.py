@@ -258,8 +258,11 @@ async def webScreenShot(url, path):
         r = await client.get(url)
         with open(path, "wb") as f:
             f.write(r.content)
-async def picDwn(url, path):
-    async with httpx.AsyncClient(timeout=20) as client:
+async def picDwn(url, path,proxies=None):
+    if proxies!=None:
+        proxies = {"http": f"http://{proxies}", "https": f"https://{proxies}"}
+
+    async with httpx.AsyncClient(proxies=proxies, timeout=20) as client:
         r = await client.get(url)
         with open(path, "wb") as f:
             f.write(r.content)

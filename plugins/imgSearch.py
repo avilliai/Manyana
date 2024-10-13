@@ -1,66 +1,123 @@
 import asyncio
+from typing import Optional, Tuple, List, Dict, Any
 
-from PicImageSearch import Network, TraceMoe, Ascii2D, Iqdb, EHentai
+from loguru import logger
 
-proxies = "http://127.0.0.1:1080"
-#proxies = None
-url = 'https://i.pixiv.re/img-master/img/2023/06/22/18/18/45/109241038_p0_master1200.jpg'
-
-
-async def test(url, proxies):
-    async with Network(proxies=proxies) as client:
-        tracemoe = TraceMoe(client=client, mute=False, size=None)
-        resp = await tracemoe.search(url=url)
-        #resp = await tracemoe.search(file=file)
-        sf = "相似度：" + str(resp.raw[0].similarity) + "\n名称：" + str(resp.raw[0].title_romaji) + "/" + str(
-            resp.raw[0].title_english) + "/" + str(resp.raw[0].title_chinese) + "\n源文件：" + str(
-            resp.raw[0].filename) + "\n链接1：" + str(resp.raw[0].image) + "\n链接2:" + str(resp.raw[0].video)
-        #返回数据与封面
-        return sf, str(resp.raw[0].cover_image)
+from PicImageSearch import Ascii2D, Network, BaiDu, Copyseeker, Google, Iqdb, SauceNAO, Yandex
+from PicImageSearch.model import Ascii2DResponse, BaiDuResponse, CopyseekerResponse, GoogleResponse, IqdbResponse, \
+    SauceNAOResponse, YandexResponse
+from PicImageSearch.sync import Ascii2D as Ascii2DSync
+from PicImageSearch.sync import BaiDu as BaiDuSync
 
 
-async def test1(url, proxies):
-    bovw = False  # 是否使用特征检索
-    verify_ssl = True  # 是否校验 SSL 证书
+# proxies =
+#proxies = "http://127.0.0.1:10809"
+
+#url = "https://multimedia.nt.qq.com.cn/download?appid=1407&fileid=CgoxODQwMDk0OTcyEhRIG9o5t_uwgsEQUyL4lGRnEDZCVhjlig4g_woo24jQxMuKiQMyBHByb2RQgL2jAQ&spec=0&rkey=CAESKBkcro_MGujoBSDPSkH77WdNctk4U08YL50QmBMLw88CPMwNfXTXTmw"
+bovw = False  # Use feature search or not
+verify_ssl = True  # Whether to verify SSL certificates or not
+async def ascii2d_async(proxies,url):
+    base_url = "https://ascii2d.net"
     async with Network(proxies=proxies, verify_ssl=verify_ssl) as client:
-        ascii2d = Ascii2D(client=client, bovw=bovw)
+        ascii2d = Ascii2D(base_url=base_url, client=client, bovw=bovw)
         resp = await ascii2d.search(url=url)
-        #resp = await ascii2d.search(file=file)
-        #show_result(resp)
         selected = next((i for i in resp.raw if i.title or i.url_list), resp.raw[0])
-        # logger.info(selected.origin)
-        #print("================")
-        fs = "标题：" + str(selected.title) + "\n作者:" + str(selected.author) + "\n作者链接:" + str(
-            selected.author_url) + "\n作品页:" + str(selected.url)
-        #print(fs)
-        return fs, selected.thumbnail
+        return [resp.url, f"标题：{selected.title}\n作者：{selected.author}\n{selected.author_url}\n链接：{selected.url}"]
 
+async def baidu_async(proxies,url):
+    async with Network(proxies=proxies) as client:
+        baidu = BaiDu(client=client)
+        resp = await baidu.search(url=url)
+        #resp = await baidu.search(file=file)
+        return [resp.raw[0].thumbnail, f"相关链接：{resp.raw[0].title}\n 百度识图：{resp.url}"]
 
-async def superSearch(url, proxies):
+async def Copyseeker_async(proxies,url):
+    async with Network(proxies=proxies) as client:
+        copyseeker = Copyseeker(client=client)
+        resp = await copyseeker.search(url=url)
+        #resp = await copyseeker.search(file=file)
+        if resp.raw:
+            return [resp.raw[0].thumbnail, f"相关链接：{resp.raw[0].url}\n 来源：{resp.raw[0].title}"]
+    # logger.info(resp.visuallySimilarImages)
+async def google_async(proxies,url):
+    base_url = "https://www.google.co.jp"
+    async with Network(proxies=proxies) as client:
+        google = Google(client=client, base_url=base_url)
+        resp = await google.search(url=url)
+        #resp = await google.search(file=file)
+        if resp:
+            selected = next((i for i in resp.raw if i.thumbnail), resp.raw[0])
+            return [selected.thumbnail, f"标题：{selected.title}\n 来源：{selected.url}"]
+
+async def iqdb_async(proxies,url):
     async with Network(proxies=proxies) as client:
         iqdb = Iqdb(client=client)
         resp = await iqdb.search(url=url)
         #resp = await iqdb.search(file=file)
-        fs = f"模式: {resp.raw[0].content}" + "\n" + f"来源地址: {resp.raw[0].url}" + "\n" + f"相似度: {resp.raw[0].similarity}" + "\n" + f"图片大小: {resp.raw[0].size}" + "\n" + f"图片来源: {resp.raw[0].source}" + "\n" + f"其他图片来源: {resp.raw[0].other_source}" + "\n" + f"SauceNAO搜图链接: {resp.saucenao_url}" + "\n" + f"Ascii2d搜图链接: {resp.ascii2d_url}" + "\n" + f"TinEye搜图链接: {resp.tineye_url}" + "\n" + f"Google搜图链接: {resp.google_url}"
-        #print(fs)
-        return fs, str(resp.raw[0].thumbnail)
+        return [resp.raw[0].thumbnail,f"相似度：{resp.raw[0].similarity}\niqdb\n 图片来源：{resp.raw[0].url}\n 其他图片来源：{resp.raw[0].other_source}\nSauceNAO Search Link: {resp.saucenao_url}\nAscii2d Search Link: {resp.ascii2d_url}\nTinEye Search Link: {resp.tineye_url}\nGoogle Search Link: {resp.google_url}\nNumber of Results with Lower Similarity: {len(resp.more)}"]
+
+async def iqdb3D_async(proxies,url):
+    async with Network(proxies=proxies) as client:
+        iqdb = Iqdb(client=client, is_3d=True)
+        resp = await iqdb.search(url=url)
+        #resp = await iqdb.search(file=file)
+        return [resp.raw[0].thumbnail,f"相似度{resp.raw[0].similarity},\n源网站搜索：{resp.raw[0].content}\n图片来源：{resp.raw[0].url}"]
 
 
-async def test2(url, proxies, cookies):
-    #cookies = 'ipb_session_id=bc4e5da825b5ad5325688bd5d6d5c21d; ipb_member_id=7584785; ipb_pass_hash=8e9aa8e90a14b059ba8ee70075120c17; sk=mua8zab26lmwo63gkcydsht8kslv'  # 注意：如果要使用 EXHentai 搜索，需要提供 cookies
-    #cookies='ipb_member_id=7584785; ipb_pass_hash=8e9aa8e90a14b059ba8ee70075120c17; ipb_coppa=0; sk=mua8zab26lmwo63gkcydsht8kslv; ipb_session_id=538204ee280a418b7caa0a089a673f56'
-    ex = True  # 是否使用 EXHentai 搜索，推荐用 bool(cookies) ，即配置了 cookies 就使用 EXHentai 搜索
-    timeout = 60  # 尽可能避免超时返回空的 document
-    async with Network(proxies=proxies, cookies=cookies, timeout=timeout) as client:
-        ehentai = EHentai(client=client)
-        resp = await ehentai.search(url=url, ex=ex)
-        #resp = await ehentai.search(file=file, ex=ex)
-
-    fs = "标题：" + str(resp.raw[0].title) + "\n" + "链接：" + str(resp.raw[0].url) + "分类：" + str(
-        resp.raw[0].type) + "\n日期：" + str(resp.raw[0].date)
-    print(fs)
-    return fs, resp.raw[0].thumbnail
+async def saucenao_async(proxies,url,api_key):
+    async with Network(proxies=proxies) as client:
+        saucenao = SauceNAO(client=client, api_key=api_key, hide=3)
+        resp = await saucenao.search(url=url)
+        #resp = await saucenao.search(file=file)
+        return [resp.raw[0].thumbnail,f"相似度{resp.raw[0].similarity}\n标题{resp.raw[0].title}\n作者：{resp.raw[0].author}\n{resp.raw[0].author_url}\n图片来源：{resp.raw[0].url}\n{resp.raw[0].source}"]
+async def yandex_async(proxies,url):
+    async with Network(proxies=proxies) as client:
+        yandex = Yandex(client=client)
+        resp = await yandex.search(url=url)
+        #resp = await yandex.search(file=file)
+        return [resp.raw[0].thumbnail,f"\n标题{resp.raw[0].title}\n图片来源：{resp.raw[0].url}\n{resp.raw[0].source}"]
 
 
+
+
+
+
+async def fetch_results(proxies: str, url: str) -> Dict[str, Optional[List[Any]]]:
+    async def _safe_call(func, *args, **kwargs) -> Tuple[str, Optional[List[Any]]]:
+        try:
+            result = await asyncio.wait_for(func(*args, **kwargs), timeout=60)
+            return func.__name__, result
+        except asyncio.TimeoutError:
+            logger.warning(f"{func.__name__} 超时")
+            return func.__name__, None
+        except Exception as e:
+            logger.error(f"{func.__name__} 出现错误: {e}")
+            return func.__name__, None
+
+    # 定义所有要并发执行的任务
+    tasks = [
+        _safe_call(ascii2d_async, proxies, url),
+        _safe_call(baidu_async, proxies, url),
+        _safe_call(Copyseeker_async, proxies, url),
+        _safe_call(google_async, proxies, url),
+        _safe_call(iqdb_async, proxies, url),
+        _safe_call(iqdb3D_async, proxies, url),
+        _safe_call(saucenao_async, proxies, url, "your_saucenao_api_key"),  # 替换为你的 API key
+        _safe_call(yandex_async, proxies, url),
+    ]
+
+    # 并发执行所有任务并获取结果
+    results = await asyncio.gather(*tasks)
+
+    # 转换为字典形式，方便查看各任务结果
+    return {name: result for name, result in results}
+
+# 主入口
 if __name__ == "__main__":
-    asyncio.run(test2())
+    #asyncio.run(Copyseeker_async(proxies, url))
+    '''results = asyncio.run(fetch_results(proxies, url))
+    for name, result in results.items():
+        if result:
+            print(f"{name} 成功返回: {result}")
+        else:
+            print(f"{name} 返回失败或无结果")'''
