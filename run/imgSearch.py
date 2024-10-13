@@ -66,4 +66,4 @@ def main(bot, api_key, proxy, logger):
                     b1 = ForwardMessageNode(sender_id=bot.qq, sender_name="Manyana",
                                             message_chain=MessageChain([f"{name} 返回失败或无结果"]))
                     forMeslist.append(b1)
-            await bot.send(event, Forward(nodes=forMeslist))
+            await bot.send(event, Forward(node_list=forMeslist))
