@@ -49,7 +49,7 @@ def main(bot, api_key, proxy, logger):
             dataGet.pop(event.sender.id)
             forMeslist=[]
             for name, result in results.items():
-                if result:
+                if result and result[0]!="":
 
                     logger.info(f"{name} 成功返回: {result}")
                     try:
