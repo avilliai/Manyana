@@ -61,7 +61,7 @@ async def iqdb3D_async(proxies,url):
         iqdb = Iqdb(client=client, is_3d=True)
         resp = await iqdb.search(url=url)
         #resp = await iqdb.search(file=file)
-        return [resp.raw[0].thumbnail,f"相似度{resp.raw[0].similarity},\n源网站搜索：{resp.raw[0].content}\n图片来源：{resp.raw[0].url}"]
+        return [resp.raw[0].thumbnail,f"相似度：{resp.raw[0].similarity},\n源网站搜索：{resp.raw[0].content}\n图片来源：{resp.raw[0].url}"]
 
 
 async def saucenao_async(proxies,url,api_key):
@@ -69,13 +69,13 @@ async def saucenao_async(proxies,url,api_key):
         saucenao = SauceNAO(client=client, api_key=api_key, hide=3)
         resp = await saucenao.search(url=url)
         #resp = await saucenao.search(file=file)
-        return [resp.raw[0].thumbnail,f"相似度{resp.raw[0].similarity}\n标题{resp.raw[0].title}\n作者：{resp.raw[0].author}\n{resp.raw[0].author_url}\n图片来源：{resp.raw[0].url}\n{resp.raw[0].source}"]
+        return [resp.raw[0].thumbnail,f"相似度{resp.raw[0].similarity}\n标题：{resp.raw[0].title}\n作者：{resp.raw[0].author}\n{resp.raw[0].author_url}\n图片来源：{resp.raw[0].url}\n{resp.raw[0].source}"]
 async def yandex_async(proxies,url):
     async with Network(proxies=proxies) as client:
         yandex = Yandex(client=client)
         resp = await yandex.search(url=url)
         #resp = await yandex.search(file=file)
-        return [resp.raw[0].thumbnail,f"\n标题{resp.raw[0].title}\n图片来源：{resp.raw[0].url}\n{resp.raw[0].source}"]
+        return [resp.raw[0].thumbnail,f"\n标题：{resp.raw[0].title}\n图片来源：{resp.raw[0].url}\n{resp.raw[0].source}"]
 
 
 
