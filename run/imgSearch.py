@@ -50,11 +50,16 @@ def main(bot, api_key, proxy, logger):
             forMeslist=[]
             for name, result in results.items():
                 if result:
+
                     logger.info(f"{name} 成功返回: {result}")
-                    path="data/pictures/cache/" + random_str() + ".png"
-                    imgpath=await picDwn(result[0],path,proxy)
-                    b1 = ForwardMessageNode(sender_id=bot.qq, sender_name="Manyana",
-                                            message_chain=MessageChain([ Image(path=imgpath),result[1] ]))
+                    try:
+                        path="data/pictures/cache/" + random_str() + ".png"
+                        imgpath=await picDwn(result[0],path,proxy)
+                        b1 = ForwardMessageNode(sender_id=bot.qq, sender_name="Manyana",
+                                                message_chain=MessageChain([ Image(path=imgpath),result[1] ]))
+                    except Exception as e:
+                        logger.error(f"预览图{name} 下载失败: {e}")
+                        b1 = ForwardMessageNode(sender_id=bot.qq, sender_name="Manyana",message_chain=MessageChain([ Image(url=result[0]),result[1] ]))
                     forMeslist.append(b1)
                 else:
                     logger.error(f"{name} 返回失败或无结果")
