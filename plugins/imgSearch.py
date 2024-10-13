@@ -82,7 +82,7 @@ async def yandex_async(proxies,url):
 
 
 
-async def fetch_results(proxies: str, url: str) -> Dict[str, Optional[List[Any]]]:
+async def fetch_results(proxies: str, url: str,sauceno_api:str) -> Dict[str, Optional[List[Any]]]:
     async def _safe_call(func, *args, **kwargs) -> Tuple[str, Optional[List[Any]]]:
         try:
             result = await asyncio.wait_for(func(*args, **kwargs), timeout=60)
@@ -102,7 +102,7 @@ async def fetch_results(proxies: str, url: str) -> Dict[str, Optional[List[Any]]
         _safe_call(google_async, proxies, url),
         _safe_call(iqdb_async, proxies, url),
         _safe_call(iqdb3D_async, proxies, url),
-        _safe_call(saucenao_async, proxies, url, "your_saucenao_api_key"),  # 替换为你的 API key
+        _safe_call(saucenao_async, proxies, url, sauceno_api),  # 替换为你的 API key
         _safe_call(yandex_async, proxies, url),
     ]
 
@@ -112,12 +112,3 @@ async def fetch_results(proxies: str, url: str) -> Dict[str, Optional[List[Any]]
     # 转换为字典形式，方便查看各任务结果
     return {name: result for name, result in results}
 
-# 主入口
-if __name__ == "__main__":
-    #asyncio.run(Copyseeker_async(proxies, url))
-    '''results = asyncio.run(fetch_results(proxies, url))
-    for name, result in results.items():
-        if result:
-            print(f"{name} 成功返回: {result}")
-        else:
-            print(f"{name} 返回失败或无结果")'''

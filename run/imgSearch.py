@@ -19,6 +19,7 @@ def main(bot, api_key, proxy, logger):
         result = yaml.load(f.read(), Loader=yaml.FullLoader)
     cookies = result.get("e-hentai")
     proxy=result.get("proxy")
+    sauceno_api=result.get("sauceno-api")
     if proxy=="" or proxy==" ":
         proxy=None
     with open('config/settings.yaml', 'r', encoding='utf-8') as f:
@@ -44,7 +45,7 @@ def main(bot, api_key, proxy, logger):
             dataGet[event.sender.id] = []
             lst_img = event.message_chain.get(Image)
             img_url = lst_img[0].url
-            results = await fetch_results(proxy, img_url)
+            results = await fetch_results(proxy, img_url,sauceno_api)
             dataGet.pop(event.sender.id)
             forMeslist=[]
             for name, result in results.items():
