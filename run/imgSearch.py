@@ -60,6 +60,9 @@ def main(bot, api_key, proxy, logger):
                     except Exception as e:
                         logger.error(f"预览图{name} 下载失败: {e}")
                         b1 = ForwardMessageNode(sender_id=bot.qq, sender_name="Manyana",message_chain=MessageChain([ Image(url=result[0]),result[1] ]))
+                    if name=="ascii2d_async":
+                        b1 = ForwardMessageNode(sender_id=bot.qq, sender_name="Manyana",
+                                                message_chain=MessageChain([Image(url=img_url), result[1]]))
                     forMeslist.append(b1)
                 else:
                     logger.error(f"{name} 返回失败或无结果")
