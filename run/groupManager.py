@@ -31,6 +31,8 @@ def main(bot, config, moderateKey, logger):
         signstoday = yaml.load(f.read(), Loader=yaml.FullLoader)
     global haveSign, tod
     tod = str(datetime.date.today())
+    if signstoday is None:
+        signstoday = {}
     if tod in signstoday:
         haveSign = signstoday.get(tod)
     else:
