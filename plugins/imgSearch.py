@@ -1,7 +1,6 @@
 import asyncio
 from typing import Optional, Tuple, List, Dict, Any
 
-from loguru import logger
 
 from PicImageSearch import Ascii2D, Network, BaiDu, Copyseeker, Google, Iqdb, SauceNAO, Yandex
 from PicImageSearch.model import Ascii2DResponse, BaiDuResponse, CopyseekerResponse, GoogleResponse, IqdbResponse, \
@@ -9,6 +8,7 @@ from PicImageSearch.model import Ascii2DResponse, BaiDuResponse, CopyseekerRespo
 from PicImageSearch.sync import Ascii2D as Ascii2DSync
 from PicImageSearch.sync import BaiDu as BaiDuSync
 
+from plugins.toolkits import newLogger
 
 # proxies =
 #proxies = "http://127.0.0.1:10809"
@@ -81,7 +81,7 @@ async def yandex_async(proxies,url):
 
 
 
-
+logger=newLogger()
 async def fetch_results(proxies: str, url: str,sauceno_api:str) -> Dict[str, Optional[List[Any]]]:
     async def _safe_call(func, *args, **kwargs) -> Tuple[str, Optional[List[Any]]]:
         try:
