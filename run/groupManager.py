@@ -691,8 +691,8 @@ def main(bot, config, moderateKey, logger):
                     logger.error(e)
                     continue
                 try:
-                    if sf < setg and gid not in youquan1:
-                        await bot.send_group_message(gid, "无授权小群，自动退出。")
+                    if sf < setg and gid not in youquan1 and sf!=0:
+                        await bot.send_group_message(gid, "无授权群，自动退出。")
                         logger.warning("已清退" + str(gid))
                         await bot.quit(gid)
                         totalquit += 1
