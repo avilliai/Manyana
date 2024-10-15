@@ -22,7 +22,7 @@ async def ascii2d_async(proxies,url):
         ascii2d = Ascii2D(base_url=base_url, client=client, bovw=bovw)
         resp = await ascii2d.search(url=url)
         selected = next((i for i in resp.raw if i.title or i.url_list), resp.raw[0])
-        return [resp.raw[0].thumbnail, f"标题：{selected.title}\n作者：{selected.author}\n{selected.author_url}\n链接：{selected.url}"]
+        return [resp.raw[0].thumbnail, f"【此处预览图仅供参考，并非搜索结果预览图】\n标题：{selected.title}\n作者：{selected.author}\n{selected.author_url}\n链接：{selected.url}"]
 
 async def baidu_async(proxies,url):
     async with Network(proxies=proxies) as client:
