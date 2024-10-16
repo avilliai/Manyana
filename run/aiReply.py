@@ -243,9 +243,9 @@ def main(bot, master, logger):
                 await bot.send(event, r, True)
 
             if current_attempt == 1:
-                text = "继续说下去"
+                text = "继续说下去，不要重复之前的内容。"
             else:
-                continue_probability = 0.75 if current_attempt == 2 else 0.5 if current_attempt == 3 else 0.25
+                continue_probability = 0.65 if current_attempt == 2 else 0.3 if current_attempt == 3 else 0.15
                 if random.random() >= continue_probability:  # 如果随机数大于不终止的概率，则终止循环
                     break
             current_attempt += 1 
@@ -423,9 +423,9 @@ def main(bot, master, logger):
             if not withText:
                 await bot.send(event, r, True)
             if current_attempt == 1:
-                text = "继续说下去"
+                text = "继续说下去，不要重复之前的内容。"
             else:
-                continue_probability = 0.75 if current_attempt == 2 else 0.5 if current_attempt == 3 else 0.25
+                continue_probability = 0.65 if current_attempt == 2 else 0.3 if current_attempt == 3 else 0.15
                 if random.random() >= continue_probability:  # 如果随机数大于不终止的概率，则终止循环
                     break
             current_attempt += 1 
