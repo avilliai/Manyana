@@ -33,6 +33,7 @@ chatGLM:                   #对话模型通用设置
     - alcex_GPT3_5
     - 猫娘米米
     - 沫沫
+  multiplyReply: false #是否开启单次提问多条回复，可优化回复表现
   nudgeReply: false        #戳一戳，是否使用模型回复
   glmReply: True           #开放群聊内ai回复(建议)
   privateGlmReply: True    #开放私聊ai回复
