@@ -245,9 +245,9 @@ def main(bot, master, logger):
             if current_attempt == 1:
                 text = "继续说下去"
             else:
-                stop_probability = 0.5 if current_attempt == 2 else 0.25 if current_attempt == 3 else 0.1
-                if random.random() < stop_probability:
-                    break 
+                continue_probability = 0.75 if current_attempt == 2 else 0.5 if current_attempt == 3 else 0.25
+                if random.random() >= continue_probability:  # 如果随机数大于不终止的概率，则终止循环
+                    break
             current_attempt += 1 
 
 
@@ -378,6 +378,11 @@ def main(bot, master, logger):
             logger.info("ai聊天启动")
         else:
             return
+        if multiplyReply:
+            max_attempts = 4
+        else:
+            max_attempts = 1
+        current_attempt = 1
         text = str(event.message_chain).replace("@" + str(bot.qq) + "", '')
         imgurl = None
         if event.message_chain.count(Image):
@@ -387,35 +392,43 @@ def main(bot, master, logger):
                 url = i.url
                 imgurl.append(url)
                 #print(url)
-        if event.sender.id in chatGLMCharacters:
-            print(type(chatGLMCharacters.get(event.sender.id)), chatGLMCharacters.get(event.sender.id))
-            r, firstRep = await modelReply(event.sender.member_name, event.sender.id, text,
-                                           chatGLMCharacters.get(event.sender.id), trustUser, imgurl,True)
-        # 判断模型
-        else:
-            r, firstRep = await modelReply(event.sender.member_name, event.sender.id, text, replyModel, trustUser, imgurl,True)
-        if firstRep:
-            await bot.send(event, "如对话异常请发送 /clear", True)
-        #刷新时间
-        user = str(event.sender.id)
-        if user in chattingUser:
-            chattingUser[user] = datetime.datetime.now()
-        if withText:
-            await bot.send(event, r, True)
-        if len(r) < maxTextLen and random.randint(0, 100) < voiceRate and "出错，请重试" not in r:
-            try:
-                path = 'data/voices/' + random_str() + '.wav'
-                logger.info("语音生成_文本" + r)
-                logger.info("语音生成_模型:" + speaker)
-                data = {"text": r, "out": path, 'speaker': speaker}
-                voiceP = await superVG(data, mode=voicegenerateMode, urls="", langmode=voiceLangType)
-                await bot.send(event, Voice(path=voiceP))
-                return
-            except Exception as e:
-                logger.error(e)
-                logger.error("语音合成失败")
-        if not withText:
-            await bot.send(event, r, True)
+        while current_attempt <= max_attempts:
+            if event.sender.id in chatGLMCharacters:
+                print(type(chatGLMCharacters.get(event.sender.id)), chatGLMCharacters.get(event.sender.id))
+                r, firstRep = await modelReply(event.sender.member_name, event.sender.id, text,
+                                               chatGLMCharacters.get(event.sender.id), trustUser, imgurl,True)
+            # 判断模型
+            else:
+                r, firstRep = await modelReply(event.sender.member_name, event.sender.id, text, replyModel, trustUser, imgurl,True)
+            if firstRep:
+                await bot.send(event, "如对话异常请发送 /clear", True)
+            #刷新时间
+            user = str(event.sender.id)
+            if user in chattingUser:
+                chattingUser[user] = datetime.datetime.now()
+            if withText:
+                await bot.send(event, r, True)
+            if len(r) < maxTextLen and random.randint(0, 100) < voiceRate and "出错，请重试" not in r:
+                try:
+                    path = 'data/voices/' + random_str() + '.wav'
+                    logger.info("语音生成_文本" + r)
+                    logger.info("语音生成_模型:" + speaker)
+                    data = {"text": r, "out": path, 'speaker': speaker}
+                    voiceP = await superVG(data, mode=voicegenerateMode, urls="", langmode=voiceLangType)
+                    await bot.send(event, Voice(path=voiceP))
+                    return
+                except Exception as e:
+                    logger.error(e)
+                    logger.error("语音合成失败")
+            if not withText:
+                await bot.send(event, r, True)
+            if current_attempt == 1:
+                text = "继续说下去"
+            else:
+                continue_probability = 0.75 if current_attempt == 2 else 0.5 if current_attempt == 3 else 0.25
+                if random.random() >= continue_probability:  # 如果随机数大于不终止的概率，则终止循环
+                    break
+            current_attempt += 1 
 
     # 用于chatGLM清除本地缓存
     @bot.on(GroupMessage)
