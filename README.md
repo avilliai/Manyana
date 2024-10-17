@@ -25,6 +25,9 @@
 
 > 因本人学业繁忙，未来几个月本仓库将以维护为主要工作。如果您有意愿参与开发和维护，欢迎pr。
 > 未来恢复更新后，开发的重心将转向[Eridanus](https://github.com/avilliai/Eridanus)
+> 
+> ❗️源码矢山警告⚠，本仓库一开始是我为了学习py创建的，加上并没有很好地管理来自其他开发者的pr，源码杂乱无章，未来有时间会进行整体重构，现在……先凑合着吧
+
 # 🚀linux部署
 [linux部署脚本](https://github.com/lux-QAQ/Manyana_deploy)
 
