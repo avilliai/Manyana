@@ -23,7 +23,7 @@ from plugins import weatherQuery
 from plugins.toolkits import random_str,picDwn
 from plugins.aiReplyCore import modelReply
 from plugins.emojimixhandle import emojimix_handle
-from plugins.extraParts import get_cp_mesg, arkOperator, minecraftSeverQuery, eganylist,manage_group_status,get_game_image,extract_between_symbols
+from plugins.extraParts import get_cp_mesg, arkOperator, minecraftSeverQuery, eganylist,manage_group_status,get_game_image,sort_yaml
 from plugins.gacha import arkGacha, starRailGacha, bbbgacha
 from plugins.extraParts import hisToday, steamEpic,search_and_download_image
 from plugins.jokeMaker import get_joke
@@ -815,12 +815,15 @@ def main(bot, logger):
     @bot.on(GroupMessage)
     async def help(event: GroupMessage):
 
-        if (f'{wifePrefix}' in str(event.message_chain)):  # 前置触发词
+
+
+
+        if (f'{wifePrefix}' in str(event.message_chain)):#前置触发词
             flag_persona = 0
             flag_aim = 0
             if ('透群主' in str(event.message_chain)):
-                flag_persona = 1
-                check = 'OWNER'
+                flag_persona=1
+                check='OWNER'
                 pass
             elif ('透管理' in str(event.message_chain)):
                 flag_persona = 2
@@ -832,26 +835,25 @@ def main(bot, logger):
             elif ('娶群友' in str(event.message_chain)):
                 flag_persona = 4
                 from_id = int(event.sender.id)
-                if manage_group_status(from_id):
+                if manage_group_status(from_id) :
                     target_group = int(event.group.id)
-                    target_id_aim = manage_group_status(from_id)
-
+                    target_id_aim=manage_group_status(from_id)
                     flag_aim = 1
                 else:
                     flag_aim = 0
                 pass
             elif ('离婚' in str(event.message_chain)):
                 from_id = int(event.sender.id)
-                manage_group_status(from_id, False)
+                manage_group_status(from_id,False)
                 manage_group_status(f'{from_id}_name', False)
                 await bot.send(event, '离婚啦，您现在是单身贵族咯~')
             else:
-                flag_persona = 0
+                flag_persona=0
 
             if flag_persona == 3 or flag_persona == 4:
 
-                context = str(event.message_chain)
-                name_id_number = re.search(r'\d+', context)
+                context=str(event.message_chain)
+                name_id_number=re.search(r'\d+', context)
                 if name_id_number:
                     if flag_aim == 1:
                         await bot.send(event, '渣男！吃着碗里的想着锅里的！', True)
@@ -859,18 +861,20 @@ def main(bot, logger):
                         flag_aim = 0
                     else:
                         number = int(name_id_number.group())
-                        target_id_aim = number
-                        # print(target_id_aim)
+                        target_id_aim=number
+                        #print(target_id_aim)
                         rnum1 = random.randint(1, 10)
                         if rnum1 > 3:
-                            # await bot.send(event, '不许瑟瑟！！！！', True)
+                            #await bot.send(event, '不许瑟瑟！！！！', True)
                             target_group = int(event.group.id)
                             group_member_check = await bot.get_group_member(target_group, target_id_aim)
-                            # print(group_member_check)
+                            #print(group_member_check)
                             if group_member_check:
-                                flag_aim = 1
-                    # print(rnum1)
-                    # print(flag_aim)
+                                flag_aim=1
+                    #print(rnum1)
+                    #print(flag_aim)
+
+
 
                 rnum0 = random.randint(1, 10)
                 if rnum0 == 1:
@@ -879,7 +883,7 @@ def main(bot, logger):
 
             if flag_persona != 0:
                 logger.info("透群友任务开启")
-                filepath = 'data/pictures/wife_you_want_img'
+                filepath = 'manshuo_data/wife_you_want_img'
                 friendlist = []
                 target_name = None
                 target_id = None
@@ -887,14 +891,14 @@ def main(bot, logger):
                 # target_nikenamne=None
                 from_name = str(event.sender.member_name)
                 from_id = int(event.sender.id)
-                # flag_aim = 0
+                #flag_aim = 0
                 target_group = int(event.group.id)
                 friendlist_get = await bot.member_list(target_group)
                 data = friendlist_get.json()
                 data = json.loads(data)
                 data_count = len(data["data"])
                 for i in range(data_count):
-                    data_test = None
+                    data_test=None
                     data_check = data['data'][i]['permission']
                     if flag_persona == 1 or flag_persona == 2:
                         if data_check == check:
@@ -903,23 +907,27 @@ def main(bot, logger):
                         data_test = data['data'][i]['id']
                     if data_test != None:
                         friendlist.append(data_test)
-                    # print(data_test)
-                # print(friendlist)
+                    #print(data_test)
+                #print(friendlist)
                 number_target = len(friendlist)
                 target_number = random.randint(1, number_target)
                 target_id = friendlist[target_number - 1]
 
-                if flag_aim == 1:
-                    target_id = target_id_aim
+                if flag_aim == 1 :
+                    target_id=target_id_aim
 
-                # print(target_id)
-                logger.info(f'透群友目标：{target_id}')
+                #print(target_id)
+                logger.info(f'群：{target_group}，透群友目标：{target_id}')
                 group_member_check = await bot.get_group_member(target_group, target_id)
                 # target_id = extract_between_symbols(str(group_member_check), 'id=', ' member')
                 if manage_group_status(f'{from_id}_name') and flag_persona == 4:
-                    target_name = manage_group_status(f'{from_id}_name')
+                    target_name=manage_group_status(f'{from_id}_name')
                 else:
-                    target_name = extract_between_symbols(str(group_member_check), 'member_name=', ' permission')
+                    group_member_check = group_member_check.json()
+                    group_member_check = json.loads(group_member_check)
+                    target_name=group_member_check['member_name']
+                    #target_name = extract_between_symbols(str(group_member_check), 'member_name=', ' permission')
+
 
                 if flag_persona == 4:
                     if manage_group_status(from_id):
@@ -929,8 +937,13 @@ def main(bot, logger):
 
                 # 下面是获取对应人员头像的代码
                 target_img_url = f"https://q1.qlogo.cn/g?b=qq&nk={target_id}&s=640"  # QQ头像 URL 格式
-
                 target_img_path = get_game_image(target_img_url, filepath, target_id)
+
+                from_name=str(from_name)
+                target_name = str(target_name)
+                target_times=manage_group_status(f'{target_name} ({target_id})',True,target_group=target_group,file_name='wife_you_want_week_check_target.yaml')
+                from_times=manage_group_status(f'{from_name} ({from_id})',True,target_group=target_group,file_name='wife_you_want_week_check_from.yaml')
+                #print(f'target_times: {target_times} , from_times: {from_times}')
 
                 if flag_persona == 1:
                     if manage_group_status(f'{target_id}_ower_time'):
@@ -972,6 +985,63 @@ def main(bot, logger):
                                                       Image(path=target_img_path),
                                                       f'【{target_name}】 ({target_id})哒！'])
 
+            if '记录' in str(event.message_chain) and (
+                    '色色' in str(event.message_chain) or '瑟瑟' in str(event.message_chain) or '涩涩' in str(
+                    event.message_chain)):
+                target_group = int(event.group.id)
+                cmList = []
+                if '本周' in str(event.message_chain) or '每周' in str(event.message_chain) or '星期' in str(event.message_chain):
+                    logger.info(f'本周色色记录启动！')
+                    type_context='以下是本周色色记录：'
+                    target_context,target_king = sort_yaml('wife_you_want_week_check_target.yaml',target_group,'week')
+                    from_context,from_king = sort_yaml('wife_you_want_week_check_from.yaml',target_group,'week')
+                elif '本月' in str(event.message_chain) or '月份' in str(event.message_chain) or '月' in str(event.message_chain):
+                    logger.info(f'本周色色记录启动！')
+                    type_context = '以下是本月色色记录：'
+                    target_context,target_king = sort_yaml('wife_you_want_week_check_target.yaml',target_group,'moon')
+                    from_context,from_king = sort_yaml('wife_you_want_week_check_from.yaml',target_group,'moon')
+                else:
+                    logger.info(f'本日色色记录启动！')
+                    type_context = '以下是本日色色记录：'
+                    target_context,target_king = sort_yaml('wife_you_want_week_check_target.yaml',target_group)
+                    from_context,from_king = sort_yaml('wife_you_want_week_check_from.yaml',target_group)
+                if '没有任何一位' in target_context or '没有任何一位' in from_context:
+                    await bot.send(event, f'{target_context}')
+                else:
+                    filepath = 'manshuo_data/wife_you_want_img'
+                    target_king_name, inside_with_parens = target_king.split(" (")
+                    target_king_id = inside_with_parens.rstrip(")")  # 去除右括号
+                    from_king_name, inside_with_parens = from_king.split(" (")
+                    from_king_id = inside_with_parens.rstrip(")")  # 去除右括号
+                    target_img_url = f"https://q1.qlogo.cn/g?b=qq&nk={target_king_id}&s=640"  # QQ头像 URL 格式
+                    from_img_url = f"https://q1.qlogo.cn/g?b=qq&nk={from_king_id}&s=640"
+                    target_img_path = get_game_image(target_img_url, filepath, target_king_id)
+                    from_img_path = get_game_image(from_img_url, filepath, from_king_id)
+                    b1 = ForwardMessageNode(sender_id=bot.qq, sender_name="Manyana",
+                                            message_chain=MessageChain(str(type_context)))
+                    cmList.append(b1)
+                    b1 = ForwardMessageNode(sender_id=bot.qq, sender_name="Manyana",
+                                            message_chain=MessageChain([f'被群友透最多的人诞生了！！',
+                                                          Image(path=target_img_path),
+                                                          f'是【{target_king_name}】 ({target_king_id})哦~']))
+                    cmList.append(b1)
+                    b1 = ForwardMessageNode(sender_id=bot.qq, sender_name="Manyana",
+                                            message_chain=MessageChain(f'群友被透的次数如下哦：\n{target_context}'))
+                    cmList.append(b1)
+                    b1 = ForwardMessageNode(sender_id=bot.qq, sender_name="Manyana",
+                                            message_chain=MessageChain([f'群最涩色魔，透群友大王出现了！',
+                                                          Image(path=from_img_path),
+                                                          f'【{from_king_name}】 ({from_king_id})的说~~']))
+                    cmList.append(b1)
+                    b1 = ForwardMessageNode(sender_id=bot.qq, sender_name="Manyana",
+                                            message_chain=MessageChain(f'群友透别人的次数如下哦：\n{from_context}'))
+                    cmList.append(b1)
+                    await bot.send(event, Forward(node_list=cmList))
+
+
+
+
+
     @bot.on(Startup)
     async def start_scheduler(_):
         async def timer():
@@ -979,11 +1049,46 @@ def main(bot, logger):
             while True:
                 await asyncio.sleep(1)
                 now = datetime.datetime.now()
+                today = datetime.datetime.today()
+                weekday = today.weekday()
+                month = datetime.datetime.now().month
+                day = datetime.datetime.now().day
                 if now.hour == 00 and now.minute == 00 and not today_finished:  # 每天早上 7:30 发送早安
-                    file_path = "manshuo_data/wife_you_want_img/wife_you_want.yaml"
+                    file_path_check="data/pictures/wife_you_want_img/wife_you_want.yaml"
+                    if os.path.exists(file_path_check):
+                        os.remove(file_path_check)
+
+                    file_path="data/pictures/wife_you_want_img/wife_you_want_week_check_target.yaml"
                     if os.path.exists(file_path):
-                        os.remove(file_path)
-                        print('娶群友事件已重置')
+                        with open(file_path, 'r') as file:
+                            users_data = yaml.safe_load(file) or {}
+                            type='day'
+                            users_data[type] = {}
+                        if int(weekday) == 0:
+                            type = 'week'
+                            users_data[type] = {}
+                        if int(day) == 1:
+                            type = 'moon'
+                            users_data[type] = {}
+                        with open(file_path, 'w') as file:
+                            yaml.safe_dump(users_data, file)
+
+                    file_path="data/pictures/wife_you_want_img/wife_you_want_week_check_from.yaml"
+                    if os.path.exists(file_path):
+                        with open(file_path, 'r') as file:
+                            users_data = yaml.safe_load(file) or {}
+                            type='day'
+                            users_data[type] = {}
+                        if int(weekday) == 0:
+                            type = 'week'
+                            users_data[type] = {}
+                        if int(day) == 1:
+                            type = 'moon'
+                            users_data[type] = {}
+                        with open(file_path, 'w') as file:
+                            yaml.safe_dump(users_data, file)
+
+                    print('娶群友事件已重置')
                     today_finished = True
                 if now.hour == 00 and now.minute == 1:
                     today_finished = False  # 早上 7:31，重置今天是否完成任务的标识
