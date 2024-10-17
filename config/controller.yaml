@@ -30,7 +30,7 @@ ai绘画:
   withPic: True            #是否展示图片预览，不建议开，容易被吞
   InternetMeme: False       #是否启用网络Meme（英文meme）
   watchPrefix: "/"          #“看看”指令的前缀
-  wifePrefix: ""          #“透群友”指令的前缀
+  wifePrefix: "/"          #“透群友”指令的前缀
 运势&塔罗:
   lockLuck: false           #是否锁定运势等功能的结果
   isAbstract: false          #是否启用抽象卡组
