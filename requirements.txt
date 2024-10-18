@@ -26,3 +26,5 @@ jmcomic
 img2pdf
 lanzou-api
 pytubefix
+wordcloud
+jieba
