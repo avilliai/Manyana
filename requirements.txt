@@ -7,7 +7,7 @@ psutil
 fuzzywuzzy==0.18.0
 httpx
 openpyxl==3.1.2
-picimagesearch
+PicImageSearch
 Pillow==10.0.0
 PyYAML
 regex
