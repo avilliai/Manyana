@@ -257,7 +257,10 @@ def main(bot,logger):
                     else:
                         repeatData[event.group.id]["times"]=repeatData[event.group.id]["times"]+1 #加一次
                 else:
-                    repeatData.pop(event.group.id)  # 终止此次复读任务
+                    try:
+                        repeatData.pop(event.group.id)  # 终止此次复读任务
+                    except:
+                        pass #不知道为啥报错，先catch，等有空分析。
             else:
                 repeatData.pop(event.group.id) #终止此次复读任务
         else:
