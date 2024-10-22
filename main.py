@@ -245,30 +245,30 @@ if __name__ == '__main__':
     # 菜单
     @bot.on(GroupMessage)
     async def help(event: GroupMessage):
-        if ('帮助' in str(event.message_chain) or '菜单' in str(event.message_chain) or "功能" in str(
-                event.message_chain)) and At(bot.qq) in event.message_chain:
-            logger.info("获取菜单")
-            cmList=[]
-
-            s = [Image(path='data/fonts/help1.jpg'), Image(path='data/fonts/help2.jpg'),
-                 Image(path='data/fonts/help3.jpg'),Image(path="data/fonts/help4.jpg")]
-
-            try:
-                if not FordMesmenu:
-                    raise Exception #你说得对，我实在懒得加判断了
-                for i in s:
+        if At(bot.qq) in event.message_chain:
+            if str(event.message_chain).replace(f"@{bot.qq}","").replace(" ","") in ["帮助","菜单","功能"]:
+                logger.info("获取菜单")
+                cmList=[]
+    
+                s = [Image(path='data/fonts/help1.jpg'), Image(path='data/fonts/help2.jpg'),
+                     Image(path='data/fonts/help3.jpg'),Image(path="data/fonts/help4.jpg")]
+    
+                try:
+                    if not FordMesmenu:
+                        raise Exception #你说得对，我实在懒得加判断了
+                    for i in s:
+                        b1 = ForwardMessageNode(sender_id=bot.qq, sender_name="Manyana",
+                                                message_chain=MessageChain(i))
+                        cmList.append(b1)
                     b1 = ForwardMessageNode(sender_id=bot.qq, sender_name="Manyana",
-                                            message_chain=MessageChain(i))
+                                            message_chain=MessageChain('这是' + botName + '的功能列表\nヾ(≧▽≦*)o\n发送 pet 以查看制图功能列表\npetpet功能由https://github.com/Dituon/petpet提供'))
                     cmList.append(b1)
-                b1 = ForwardMessageNode(sender_id=bot.qq, sender_name="Manyana",
-                                        message_chain=MessageChain('这是' + botName + '的功能列表\nヾ(≧▽≦*)o\n发送 pet 以查看制图功能列表\npetpet功能由https://github.com/Dituon/petpet提供'))
-                cmList.append(b1)
-                await bot.send(event, Forward(node_list=cmList))
-            except Exception as e:
-                for i in s:
-                    await bot.send(event,i)
-                await bot.send(event,'这是' + botName + '的功能列表\nヾ(≧▽≦*)o\n发送 pet 以查看制图功能列表\npetpet功能由https://github.com/Dituon/petpet提供')
-            await bot.send(event, "提示：如指令未明确指出需要@，就不要带@",True)
+                    await bot.send(event, Forward(node_list=cmList))
+                except Exception as e:
+                    for i in s:
+                        await bot.send(event,i)
+                    await bot.send(event,'这是' + botName + '的功能列表\nヾ(≧▽≦*)o\n发送 pet 以查看制图功能列表\npetpet功能由https://github.com/Dituon/petpet提供')
+                await bot.send(event, "提示：如指令未明确指出需要@，就不要带@",True)
     @bot.on(Startup)
     async def clearCache(event: Startup):
 
