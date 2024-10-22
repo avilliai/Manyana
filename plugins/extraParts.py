@@ -248,6 +248,7 @@ def arkOperator():
         calc(), ceshi(), zhiye())
     return s
 
+
 def get_cp_mesg(gong, shou):
     with open('data/autoReply/cp.json', "r", encoding="utf-8") as f:
         cp_data = json.loads(f.read())
@@ -261,15 +262,17 @@ async def emojimix(emoji1, emoji2):
         print("not emoji")
         return None
     url = f"http://promptpan.com/mix/{emoji1}/{emoji2}"
-    #url=f"https://emoji6.com/emojimix/?emoji={emoji1}+{emoji2}"
+    # url=f"https://emoji6.com/emojimix/?emoji={emoji1}+{emoji2}"
     path = "data/pictures/cache/" + random_str() + ".png"
     async with httpx.AsyncClient(timeout=20) as client:
         r = await client.get(url)
-        #print(r.content)
+        # print(r.content)
         with open(path, "wb") as f:
             f.write(r.content)  # 从二进制数据创建图片对象
         # print(path)
         return path
+
+
 url = "https://www.ipip5.com/today/api.php"
 url2 = "https://api.pearktrue.cn/api/steamplusone/"
 
@@ -283,18 +286,19 @@ async def hisToday():
 
 async def steamEpic():
     url = 'https://steamstats.cn/en/xi'
-    headers = {'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/90.0.4430.72 Safari/537.36 Edg/90.0.818.41'}
-    
+    headers = {
+        'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/90.0.4430.72 Safari/537.36 Edg/90.0.818.41'}
+
     async with httpx.AsyncClient(timeout=100) as client:
         try:
             response = await client.get(url, headers=headers)
-            
+
             response.raise_for_status()
-            
+
             soup = bs(response.text, "html.parser")
             tbody = soup.find('tbody')
             tr = tbody.find_all('tr')
-            
+
             i = 1
             text = "\n"
             for tr in tr:
@@ -320,13 +324,17 @@ async def steamEpic():
             text = f"发生错误: {e}"
 
     return text
+
+
 async def arkSign(url):
     url = f"https://api.lolimi.cn/API/ark/a2.php?img={url}"
     async with httpx.AsyncClient(timeout=20) as client:
         r = await client.get(url)
-    #print(r.text)
-    #print(r.text,type(r.json()))
+    # print(r.text)
+    # print(r.text,type(r.json()))
     return str(r.text)
+
+
 # 百度图片搜索并下载图片
 async def baidusearch_and_download_image(keyword):
     headers = {
@@ -339,7 +347,7 @@ async def baidusearch_and_download_image(keyword):
         "TE": "Trailers"
     }
     search_url = f"https://image.baidu.com/search/acjson?tn=resultjson_com&ipn=rj&word={keyword}"
-    
+
     async with httpx.AsyncClient(timeout=20, headers=headers) as client:
         try:
             response = await client.get(search_url)
@@ -348,7 +356,7 @@ async def baidusearch_and_download_image(keyword):
 
             # 找到第一次出现的thumbURL
             thumb_url = next((item['thumbURL'] for item in data.get('data', []) if 'thumbURL' in item), None)
-            
+
             if not thumb_url:
                 raise ValueError("未找到thumbURL")
 
@@ -362,43 +370,47 @@ async def baidusearch_and_download_image(keyword):
             ranpath = random_str()
             path = f"data/pictures/cache/{ranpath}.jpg"
             os.makedirs(os.path.dirname(path), exist_ok=True)
-            
+
             img = Image.open(BytesIO(image_response.content))
             img.save(path, format='JPEG')
             print(f"图片保存路径: {path}")
             return path
-        
+
         except httpx.HTTPStatusError as e:
             print(f"HTTP error occurred: {e.response.status_code} {e.response.text}")
         except Exception as e:
             print(f"搜索和下载图片失败: {e}")
         return None
-#mc服务器查询
+
+
+# mc服务器查询
 async def minecraftSeverQuery(ip):
-    async with httpx.AsyncClient(headers=get_headers(),timeout=20) as client:
-        r=await client.get(f"https://list.mczfw.cn/?ip={ip}")
+    async with httpx.AsyncClient(headers=get_headers(), timeout=20) as client:
+        r = await client.get(f"https://list.mczfw.cn/?ip={ip}")
 
         soup = BeautifulSoup(r.text, 'html.parser')
         # 找到 class 为 "form" 的第一个 <tr> 标签
         description = soup.find('meta', attrs={'name': 'description'}).get('content')
         og_title = soup.find('meta', property='og:title').get('content')
         favicon = soup.find('meta', property='og:image').get('content')
-        return "https:"+str(favicon),og_title,description
+        return "https:" + str(favicon), og_title, description
+
+
 # Bing 图片搜索并下载图片
 async def bingsearch_and_download_image(keyword):
     headers = {
         'User-Agent':
-        'Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/50.0.2661.102 UBrowser/6.1.2107.204 Safari/537.36'
+            'Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/50.0.2661.102 UBrowser/6.1.2107.204 Safari/537.36'
     }
     url = "https://cn.bing.com/images/async?q={0}&first={1}&count={2}&scenario=ImageBasicHover&datsrc=N_I&layout=ColumnBased&mmasync=1&dgState=c*9_y*2226s2180s2072s2043s2292s2295s2079s2203s2094_i*71_w*198&IG=0D6AD6CBAF43430EA716510A4754C951&SFX={3}&iid=images.5599"
-    
+
     async with httpx.AsyncClient(timeout=20, headers=headers) as client:
         try:
             search_url = url.format(urllib.parse.quote(keyword), 1, 35, 1)
             response = await client.get(search_url)
             response.raise_for_status()
             html = response.text
-            
+
             # 从缩略图列表页中找到原图的url
             soup = BeautifulSoup(html, "lxml")
             link_list = soup.find_all("a", class_="iusc")
@@ -409,10 +421,10 @@ async def bingsearch_and_download_image(keyword):
                 if result:
                     image_url = result.group(0).replace('amp;', '')[8:]
                     break
-            
+
             if not image_url:
                 raise ValueError("未找到图片URL")
-            
+
             print(f"找到的imageURL: {image_url}")
 
             # 下载图片
@@ -423,17 +435,18 @@ async def bingsearch_and_download_image(keyword):
             ranpath = random_str()
             path = f"data/pictures/cache/{ranpath}.jpg"
             os.makedirs(os.path.dirname(path), exist_ok=True)
-            
+
             img = Image.open(BytesIO(image_response.content))
             img.save(path, format='JPEG')
             print(f"图片保存路径: {path}")
             return path
-        
+
         except httpx.HTTPStatusError as e:
             print(f"HTTP error occurred: {e.response.status_code} {e.response.text}")
         except Exception as e:
             print(f"搜索和下载图片失败: {e}")
         return None
+
 
 # 并发请求百度和Bing图片搜索，返回最先成功的图片路径
 async def search_and_download_image(keyword):
@@ -459,117 +472,49 @@ async def search_and_download_image(keyword):
             return path
 
     return None
-#英语语法分析
-async def eganylist(text,proxy):
-    proxies=None
-    if proxy!="" or proxy!=" ":
+
+
+# 英语语法分析
+async def eganylist(text, proxy):
+    proxies = None
+    if proxy != "" or proxy != " ":
         proxies = {
             "http://": proxy,
             "https://": proxy
         }
     URL = f"https://api.aipie.cool/api/ega/analysis/img?text={text}"
-    async with httpx.AsyncClient(timeout=20,proxies=proxies,verify=False) as client:
+    async with httpx.AsyncClient(timeout=20, proxies=proxies, verify=False) as client:
         r = await client.get(URL)
         p = "data/pictures/cache/" + random_str() + '.png'
         with open(p, "wb") as f:
             f.write(r.content)
         return p
 
-def manage_group_status(user_id, status=None,file_name=None,target_group=None,type=None):
-    file_path_check = 'data/pictures/wife_you_want_img'
-    if not os.path.exists(file_path_check):
-        os.makedirs(file_path_check)
-    if file_name:
-        file_path = 'data/pictures/wife_you_want_img'
-        file_path=os.path.join(file_path,file_name)
-    else:
-        file_path = "data/pictures/wife_you_want_img/wife_you_want.yaml"
-    if not os.path.exists(file_path):
-        with open(file_path, 'w') as file:
-            yaml.dump({}, file)
+
+def manage_group_status(user_id, status=None, file_path="data/pictures/wife_you_want_img/wife_you_want.yaml"):
+    if not os.path.exists("data/pictures/wife_you_want_img"):
+        os.makedirs("data/pictures/wife_you_want_img")
+        if not os.path.exists(file_path):
+            with open(file_path, 'w') as file:
+                yaml.dump({}, file)
     with open(file_path, 'r') as file:
         try:
             users_data = yaml.safe_load(file) or {}
         except yaml.YAMLError:
             users_data = {}
-    #print(users_data)
-    if type is None:
-        type='day'#0代表天数，1代表周，2代表月
     if status is not None:
-        if target_group is not None:
-            if type=='day':
-                if type not in users_data:
-                    users_data[type] = {}
-                if target_group not in users_data[type]:
-                    users_data[type][target_group] = {}
-                if user_id not in users_data[type][target_group]:
-                    users_data[type][target_group][user_id] = 0
-                number = int(users_data[type][target_group][user_id])
-                users_data[type][target_group][user_id] = number + 1
-                type = 'week'
-            if type == 'week':
-                if type not in users_data:
-                    users_data[type] = {}
-                if target_group not in users_data[type]:
-                    users_data[type][target_group] = {}
-                if user_id not in users_data[type][target_group]:
-                    users_data[type][target_group][user_id] = 0
-                number = int(users_data[type][target_group][user_id])
-                users_data[type][target_group][user_id] = number + 1
-                type = 'moon'
-            if type == 'moon':
-                if type not in users_data:
-                    users_data[type] = {}
-                if target_group not in users_data[type]:
-                    users_data[type][target_group] = {}
-                if user_id not in users_data[type][target_group]:
-                    users_data[type][target_group][user_id] = 0
-                number=int(users_data[type][target_group][user_id])
-                #print(number)
-                users_data[type][target_group][user_id] = number + 1
-        else:
-            users_data[user_id] = status
+        users_data[user_id] = status
         with open(file_path, 'w') as file:
             yaml.safe_dump(users_data, file)
         return status
+    return users_data.get(user_id, False)
 
-    if target_group:
-        return users_data.get(type, {}).get(target_group, {}).get(user_id, False)
-    else:
-        return users_data.get(user_id, False)
 
-def sort_yaml(file_name,target_group,type=None):
-    file_path = 'data/pictures/wife_you_want_img'
-    file_path = os.path.join(file_path, file_name)
-    if not os.path.exists(file_path):
-        return '还没有任何一位群友开过趴哦',None
-    if type is None:
-        type='day'#0代表天数，1代表周，2代表月
-    with open(file_path, 'r') as file:
-        data = yaml.safe_load(file)
-    if type not in data:
-        return '还没有任何一位群友开过趴哦',None
-    if target_group not in data[type]:
-        return '本群还没有任何一位群友开过趴哦',None
-    data=data.get(type, {}).get(target_group, {})
-        #print(data)
-    sorted_data = sorted(data.items(), key=lambda item: item[1], reverse=True)
-    context=''
-    king=None
-    time=0
-    for key, value in sorted_data:
-        context +=f'【{key}】: {value}次~\n'
-        if time != 0:
-            continue
-        time += 1
-        king = key
-    return context,king
-
-def get_game_image(url,filepath,id):
+def get_game_image(url, filepath, id):
     if not os.path.exists(filepath):
         os.makedirs(filepath)
     id = str(id) + '.jpg'
-    #print(str(id))
+    # print(str(id))
     # 获取指定文件夹下的所有文件
     files = os.listdir(filepath)
     if id in files:
@@ -579,12 +524,12 @@ def get_game_image(url,filepath,id):
     # 过滤出文件名（不包含文件夹）
     headers = {
         'User-Agent': 'Mozilla/5.0 (Windows NT 6.1; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/79.0.3945.88 Safari/537.36'}
-    response = requests.get(url,headers=headers)
+    response = requests.get(url, headers=headers)
     if response.status_code == 200:
-        #filename = url.split('/')[-1]
+        # filename = url.split('/')[-1]
         id = str(id)
         img_path = os.path.join(filepath, id)
-        #print(img_path)
+        # print(img_path)
         # 打开一个文件以二进制写入模式保存图片
         with open(img_path, 'wb') as f:
             f.write(response.content)
@@ -593,3 +538,15 @@ def get_game_image(url,filepath,id):
     else:
         print(f"下载失败，状态码: {response.status_code}")
         return None
+
+
+def extract_between_symbols(text, symbol1, symbol2):
+    try:
+        # 找到第一个符号的位置
+        start_index = text.index(symbol1) + len(symbol1)
+        # 找到第二个符号的位置
+        end_index = text.index(symbol2, start_index)
+        # 提取符号之间的内容
+        return text[start_index:end_index]
+    except ValueError:
+        return "符号未找到或顺序不正确"
