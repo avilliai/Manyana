@@ -93,10 +93,6 @@ def main(bot, logger):
         if (f'{wifePrefix}' in str(event.message_chain)):#前置触发词
             target_id_aim = None
         #if '/' in str(event.message_chain):#前置触发词
-            if group_manage_controller(f'{event.group.id}_wife_you_want'):
-                pass
-            else:
-                return
             flag_persona = 0
             flag_aim = 0
             if ('透群主' in str(event.message_chain)):
