@@ -32,6 +32,7 @@ from plugins.picGet import pic, setuGet
 from plugins.setuModerate import setuModerate
 from plugins.solveSearch import solve
 from plugins.tarot import tarotChoice,genshinDraw, qianCao
+from plugins.tarot import tarotChoice,genshinDraw, qianCao,manage_group_status
 _task = None
 
 def main(bot, logger):
@@ -74,7 +75,6 @@ def main(bot, logger):
     onlyTrustUserR18 = controllerResult.get("图片相关").get("onlyTrustUserR18")
     withPic = controllerResult.get("图片相关").get("withPic")
     watchPrefix=controllerResult.get("图片相关").get("watchPrefix")
-    wifePrefix=controllerResult.get("图片相关").get("wifePrefix")
     grayPic = controllerResult.get("图片相关").get("grayPic")
     allowPic = controllerResult.get("图片相关").get("allowPic")
     selfsensor = result1.get("moderate").get("selfsensor")
@@ -804,30 +804,16 @@ def main(bot, logger):
             st1+="频道："+athor+"\n"
             st1+=f"时长：{length//60}分{length%60}秒\n"
             await bot.send(event, [st1,Image(url=imgurl)])
-            await bot.send(event, MusicShare(kind = "QQMusic",
-                                             title = title,
-                                             summary = athor,
-                                             jump_url = f"https://www.amoyshare.com/player/?v={video_id}",
-                                             picture_url = imgurl,
-                                             music_url = audiourl,
-                                             brief = 'ASMR'))
-
-    @bot.on(GroupMessage)
-    async def help(event: GroupMessage):
-
-
-
-
-        if (f'{wifePrefix}' in str(event.message_chain)):#前置触发词
-            flag_persona = 0
-            flag_aim = 0
-            if ('透群主' in str(event.message_chain)):
-                flag_persona=1
-                check='OWNER'
-                pass
-            elif ('透管理' in str(event.message_chain)):
-                flag_persona = 2
-                check = 'ADMINISTRATOR'
+            try:
+                audiourl = await get_audio(video_id)
+                await bot.send(event, MusicShare(kind = "QQMusic",
+                                                 title = title,
+                                                 summary = athor,
+                                                 jump_url = f"https://www.amoyshare.com/player/?v={video_id}",
+                                                 picture_url = imgurl,
+                                                 music_url = audiourl,
+                                                 brief = 'ASMR'))
+            except Exception:
                 pass
             elif ('透群友' in str(event.message_chain)):
                 flag_persona = 3
