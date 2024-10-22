@@ -474,11 +474,13 @@ async def eganylist(text,proxy):
         with open(p, "wb") as f:
             f.write(r.content)
         return p
+
 def manage_group_status(user_id, status=None,file_name=None,target_group=None,type=None):
-    file_path = 'data/pictures/wife_you_want_img'
-    if not os.path.exists(file_path):
-        os.makedirs(file_path)
+    file_path_check = 'data/pictures/wife_you_want_img'
+    if not os.path.exists(file_path_check):
+        os.makedirs(file_path_check)
     if file_name:
+        file_path = 'data/pictures/wife_you_want_img'
         file_path=os.path.join(file_path,file_name)
     else:
         file_path = "data/pictures/wife_you_want_img/wife_you_want.yaml"
@@ -562,6 +564,7 @@ def sort_yaml(file_name,target_group,type=None):
         time += 1
         king = key
     return context,king
+
 def get_game_image(url,filepath,id):
     if not os.path.exists(filepath):
         os.makedirs(filepath)
@@ -590,4 +593,3 @@ def get_game_image(url,filepath,id):
     else:
         print(f"下载失败，状态码: {response.status_code}")
         return None
-
