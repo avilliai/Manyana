@@ -54,7 +54,6 @@ def downloadComic(comic_id,start=1,end=5):
         result = yaml.load(f.read(), Loader=yaml.FullLoader)
     result["dir_rule"]["base_dir"]=f"data/pictures/benzi/temp{comic_id}"
     #临时修改
-    tempResult["client"]["domain"]["html"]=["18-comicblade. vip","18comic-erdtree. cc","18comic-erdtree. org","www. 18comic. org"]
     with open("config/jmcomic.yml", 'w', encoding="utf-8") as file:
         yaml.dump(result, file, allow_unicode=True)
     option = jmcomic.create_option_by_file('config/jmcomic.yml')
@@ -91,8 +90,7 @@ def downloadALLAndToPdf(comic_id,savePath,URLSource=0,proxy=""):
         result = yaml.load(f.read(), Loader=yaml.FullLoader)
     tempResult = copy.deepcopy(result)
     tempResult["dir_rule"]["base_dir"]=f"{savePath}/{comic_id}"
-    #这里对yaml的修改都是临时的。
-    tempResult["client"]["domain"]["html"]=["18-comicblade. vip","18comic-erdtree. cc","18comic-erdtree. org","www. 18comic. org"]
+    
     if os.path.exists(f"{savePath}/{comic_id}"):
         shutil.rmtree(f"{savePath}/{comic_id}")
     if "plugins" not in tempResult:
