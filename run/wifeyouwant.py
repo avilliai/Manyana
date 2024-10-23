@@ -23,7 +23,7 @@ def main(bot, logger):
     with open('config/controller.yaml', 'r', encoding='utf-8') as f:
         controllerResult = yaml.load(f.read(), Loader=yaml.FullLoader)
     wifePrefix = controllerResult.get("图片相关").get("wifePrefix")
-
+    filepath = 'data/pictures/wife_you_want_img'
     directory_img_check = 'data/pictures/wife_you_want_img/today_wife'
     try:
         files_img_check = os.listdir(directory_img_check)
@@ -38,6 +38,9 @@ def main(bot, logger):
         if str(event.message_chain).startswith("今"):
             if ('今日' in str(event.message_chain) or '今天' in str(event.message_chain) or '今日' in str(event.message_chain)) and '老婆' in str(event.message_chain):
                 logger.info("今日老婆开启！")
+                file_path_check = 'data/pictures/wife_you_want_img'
+                if not os.path.exists(file_path_check):
+                    os.makedirs(file_path_check)
                 if '张' in str(event.message_chain) or '个' in str(event.message_chain) or '位' in str(
                         event.message_chain):
                     cmList = []
@@ -165,7 +168,7 @@ def main(bot, logger):
 
             if flag_persona != 0:
                 logger.info("透群友任务开启")
-                filepath = 'data/pictures/wife_you_want_img'
+
                 friendlist = []
                 target_name = None
                 target_id = None
@@ -242,46 +245,46 @@ def main(bot, logger):
                 target_times=manage_group_status(f'{target_name} ({target_id})',True,target_group=target_group,file_name='wife_you_want_week_check_target.yaml')
                 from_times=manage_group_status(f'{from_name} ({from_id})',True,target_group=target_group,file_name='wife_you_want_week_check_from.yaml')
 
-                if group_manage_controller(f'{event.group.id}_wife_you_want'):
-                    if flag_persona == 1:
-                        if manage_group_status(f'{target_id}_ower_time'):
-                            times = int(manage_group_status(f'{target_id}_ower_time'))
-                            times += 1
-                            manage_group_status(f'{target_id}_ower_time', times)
-                        else:
-                            times = 1
-                            manage_group_status(f'{target_id}_ower_time', 1)
-                        await bot.send_group_message(event.sender.group.id,
-                                                     [f'@{from_name} 恭喜你涩到群主！！！！',
-                                                      Image(path=target_img_path),
-                                                      f'群主【{target_name}】今天这是第{times}次被透了呢'])
-                    if flag_persona == 2:
-                        await bot.send_group_message(event.sender.group.id,
-                                                     [f'@{from_name} 恭喜你涩到管理！！！！',
-                                                      Image(path=target_img_path),
-                                                      f'【{target_name}】 ({target_id})哒！'])
-                    if flag_persona == 3:
-                        if flag_aim == 1:
-                            await bot.send_group_message(event.sender.group.id,
-                                                         [f'@{from_name} 恭喜你涩到了群友！！！！',
-                                                          Image(path=target_img_path),
-                                                          f'【{target_name}】 ({target_id})哒！'])
-                        else:
-                            await bot.send_group_message(event.sender.group.id,
-                                                         [f'@{from_name} 今天你的色色对象是',
-                                                          Image(path=target_img_path),
-                                                          f'【{target_name}】 ({target_id})哒！'])
-                    if flag_persona == 4:
-                        if flag_aim == 1:
-                            await bot.send_group_message(event.sender.group.id,
-                                                         [f'@{from_name} 恭喜你娶到了群友！！！！',
-                                                          Image(path=target_img_path),
-                                                          f'【{target_name}】 ({target_id})哒！'])
-                        else:
-                            await bot.send_group_message(event.sender.group.id,
-                                                         [f'@{from_name} 今天你的结婚对象是',
-                                                          Image(path=target_img_path),
-                                                          f'【{target_name}】 ({target_id})哒！'])
+            if flag_persona == 1:
+                if manage_group_status(f'{target_id}_ower_time'):
+                    times = int(manage_group_status(f'{target_id}_ower_time'))
+                    times += 1
+                    manage_group_status(f'{target_id}_ower_time', times)
+                else:
+                    times = 1
+                    manage_group_status(f'{target_id}_ower_time', 1)
+                await bot.send_group_message(event.sender.group.id,
+                                             [f'@{from_name} 恭喜你涩到群主！！！！',
+                                              Image(path=target_img_path),
+                                              f'群主【{target_name}】今天这是第{times}次被透了呢'])
+            if flag_persona == 2:
+                await bot.send_group_message(event.sender.group.id,
+                                             [f'@{from_name} 恭喜你涩到管理！！！！',
+                                              Image(path=target_img_path),
+                                              f'【{target_name}】 ({target_id})哒！'])
+            if flag_persona == 3:
+                if flag_aim == 1:
+                    await bot.send_group_message(event.sender.group.id,
+                                                 [f'@{from_name} 恭喜你涩到了群友！！！！',
+                                                  Image(path=target_img_path),
+                                                  f'【{target_name}】 ({target_id})哒！'])
+                else:
+                    await bot.send_group_message(event.sender.group.id,
+                                                 [f'@{from_name} 今天你的色色对象是',
+                                                  Image(path=target_img_path),
+                                                  f'【{target_name}】 ({target_id})哒！'])
+            if flag_persona == 4:
+                if flag_aim == 1:
+                    await bot.send_group_message(event.sender.group.id,
+                                                 [f'@{from_name} 恭喜你娶到了群友！！！！',
+                                                  Image(path=target_img_path),
+                                                  f'【{target_name}】 ({target_id})哒！'])
+                else:
+                    await bot.send_group_message(event.sender.group.id,
+                                                 [f'@{from_name} 今天你的结婚对象是',
+                                                  Image(path=target_img_path),
+                                                  f'【{target_name}】 ({target_id})哒！'])
+
             if '记录' in str(event.message_chain) and (
                     '色色' in str(event.message_chain) or '瑟瑟' in str(event.message_chain) or '涩涩' in str(
                     event.message_chain)):
@@ -348,7 +351,6 @@ def main(bot, logger):
                 month = datetime.datetime.now().month
                 day = datetime.datetime.now().day
                 if now.hour == 00 and now.minute == 00 and not today_finished:  # 每天早上 7:30 发送早安
-                    await bot.send_group_message(892088020, [f'chieri早'])
                     file_path_check="data/pictures/wife_you_want_img/wife_you_want.yaml"
                     if os.path.exists(file_path_check):
                         os.remove(file_path_check)

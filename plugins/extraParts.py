@@ -491,30 +491,101 @@ async def eganylist(text, proxy):
         return p
 
 
-def manage_group_status(user_id, status=None, file_path="data/pictures/wife_you_want_img/wife_you_want.yaml"):
-    if not os.path.exists("data/pictures/wife_you_want_img"):
-        os.makedirs("data/pictures/wife_you_want_img")
-        if not os.path.exists(file_path):
-            with open(file_path, 'w') as file:
-                yaml.dump({}, file)
+def manage_group_status(user_id, status=None,file_name=None,target_group=None,type=None):
+    file_path_check = 'data/pictures/wife_you_want_img'
+    if not os.path.exists(file_path_check):
+        os.makedirs(file_path_check)
+    if file_name:
+        file_path = 'data/pictures/wife_you_want_img'
+        file_path=os.path.join(file_path,file_name)
+    else:
+        file_path = "data/pictures/wife_you_want_img/wife_you_want.yaml"
+    if not os.path.exists(file_path):
+        with open(file_path, 'w') as file:
+            yaml.dump({}, file)
     with open(file_path, 'r') as file:
         try:
             users_data = yaml.safe_load(file) or {}
         except yaml.YAMLError:
             users_data = {}
+    #print(users_data)
+    if type is None:
+        type='day'#0代表天数，1代表周，2代表月
     if status is not None:
-        users_data[user_id] = status
+        if target_group is not None:
+            if type=='day':
+                if type not in users_data:
+                    users_data[type] = {}
+                if target_group not in users_data[type]:
+                    users_data[type][target_group] = {}
+                if user_id not in users_data[type][target_group]:
+                    users_data[type][target_group][user_id] = 0
+                number = int(users_data[type][target_group][user_id])
+                users_data[type][target_group][user_id] = number + 1
+                type = 'week'
+            if type == 'week':
+                if type not in users_data:
+                    users_data[type] = {}
+                if target_group not in users_data[type]:
+                    users_data[type][target_group] = {}
+                if user_id not in users_data[type][target_group]:
+                    users_data[type][target_group][user_id] = 0
+                number = int(users_data[type][target_group][user_id])
+                users_data[type][target_group][user_id] = number + 1
+                type = 'moon'
+            if type == 'moon':
+                if type not in users_data:
+                    users_data[type] = {}
+                if target_group not in users_data[type]:
+                    users_data[type][target_group] = {}
+                if user_id not in users_data[type][target_group]:
+                    users_data[type][target_group][user_id] = 0
+                number=int(users_data[type][target_group][user_id])
+                #print(number)
+                users_data[type][target_group][user_id] = number + 1
+        else:
+            users_data[user_id] = status
         with open(file_path, 'w') as file:
             yaml.safe_dump(users_data, file)
         return status
-    return users_data.get(user_id, False)
 
+    if target_group:
+        return users_data.get(type, {}).get(target_group, {}).get(user_id, False)
+    else:
+        return users_data.get(user_id, False)
 
-def get_game_image(url, filepath, id):
+def sort_yaml(file_name,target_group,type=None):
+    file_path = 'data/pictures/wife_you_want_img'
+    file_path = os.path.join(file_path, file_name)
+    if not os.path.exists(file_path):
+        return '还没有任何一位群友开过趴哦',None
+    if type is None:
+        type='day'#0代表天数，1代表周，2代表月
+    with open(file_path, 'r') as file:
+        data = yaml.safe_load(file)
+    if type not in data:
+        return '还没有任何一位群友开过趴哦',None
+    if target_group not in data[type]:
+        return '本群还没有任何一位群友开过趴哦',None
+    data=data.get(type, {}).get(target_group, {})
+        #print(data)
+    sorted_data = sorted(data.items(), key=lambda item: item[1], reverse=True)
+    context=''
+    king=None
+    time=0
+    for key, value in sorted_data:
+        context +=f'【{key}】: {value}次~\n'
+        if time != 0:
+            continue
+        time += 1
+        king = key
+    return context,king
+
+def get_game_image(url,filepath,id):
     if not os.path.exists(filepath):
         os.makedirs(filepath)
     id = str(id) + '.jpg'
-    # print(str(id))
+    #print(str(id))
     # 获取指定文件夹下的所有文件
     files = os.listdir(filepath)
     if id in files:
@@ -524,12 +595,12 @@ def get_game_image(url, filepath, id):
     # 过滤出文件名（不包含文件夹）
     headers = {
         'User-Agent': 'Mozilla/5.0 (Windows NT 6.1; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/79.0.3945.88 Safari/537.36'}
-    response = requests.get(url, headers=headers)
+    response = requests.get(url,headers=headers)
     if response.status_code == 200:
-        # filename = url.split('/')[-1]
+        #filename = url.split('/')[-1]
         id = str(id)
         img_path = os.path.join(filepath, id)
-        # print(img_path)
+        #print(img_path)
         # 打开一个文件以二进制写入模式保存图片
         with open(img_path, 'wb') as f:
             f.write(response.content)
@@ -538,15 +609,3 @@ def get_game_image(url, filepath, id):
     else:
         print(f"下载失败，状态码: {response.status_code}")
         return None
-
-
-def extract_between_symbols(text, symbol1, symbol2):
-    try:
-        # 找到第一个符号的位置
-        start_index = text.index(symbol1) + len(symbol1)
-        # 找到第二个符号的位置
-        end_index = text.index(symbol2, start_index)
-        # 提取符号之间的内容
-        return text[start_index:end_index]
-    except ValueError:
-        return "符号未找到或顺序不正确"
