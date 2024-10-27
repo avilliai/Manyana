@@ -137,8 +137,7 @@ def main(bot, logger):
 
     @bot.on(GroupMessage)
     async def fabing(event: GroupMessage):
-        if str(event.message_chain).startswith("发病 ") or (
-                At(bot.qq) in event.message_chain and "发病 " in str(event.message_chain)):
+        if (str(event.message_chain).startswith("发病 ") or (At(bot.qq) in event.message_chain and "发病 " in str(event.message_chain))) and controllerResult.get("小功能").get("发病"):
             try:
                 logger.info("开始发病")
                 aim = str(event.message_chain).replace(str(At(bot.qq)), "").replace("发病 ", "")
