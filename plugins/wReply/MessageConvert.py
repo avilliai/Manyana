@@ -4,7 +4,7 @@ from mirai import FriendMessage, GroupMessage, At, Plain,MessageChain,Startup,Im
 from plugins.toolkits import picDwn, random_str
 
 
-async def EventMessageConvert(messagechain,temp=True):
+async def EventMessageConvert(messagechain,temp=False):
     if "Plain" in messagechain.json() or "Image" in messagechain.json():
         mesChain=[]
         for i in json.loads(messagechain.json()):
