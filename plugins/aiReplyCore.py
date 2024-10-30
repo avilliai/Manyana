@@ -7,7 +7,7 @@ import copy
 # 注释
 import yaml
 
-from plugins.ReplyModels import gptOfficial, gptUnofficial, kimi, qingyan, lingyi, stepAI, qwen, gptvvvv, grop, \
+from plugins.ReplyModels import gptOfficial, gptUnofficial, kimi, qingyan,alcexGpt4o,lingyi, stepAI, qwen, gptvvvv, grop, \
     gpt4hahaha, anotherGPT35, chatGLM, relolimigpt2, xinghuo, Gemma, binggpt4, alcex_GPT3_5, freeGemini, catRep, \
     momoRep, sparkAI, wenxinAI, YuanQiTencent
 from plugins.googleGemini import geminirep
@@ -170,6 +170,7 @@ async def modelReply(senderName, senderId, text, modelHere=modelDefault, trustUs
             tasks.append(loop_run_in_executor(loop, alcex_GPT3_5, prompt1, bot_in))  # 2024-07-17测试通过
             tasks.append(loop_run_in_executor(loop, catRep, prompt1, bot_in))
             tasks.append(loop_run_in_executor(loop, momoRep, prompt1, bot_in))
+            tasks.append(loop_run_in_executor(loop,alcexGpt4o,prompt1,bot_in))
             #    tasks.append(loop_run_in_executor(loop,freeGemini,prompt1,bot_in))           # 2024-07-17测试无效
 
             # tasks.append(loop_run_in_executor(loop,localAurona,prompt1,bot_in))
