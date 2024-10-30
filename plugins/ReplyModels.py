@@ -182,13 +182,12 @@ def freeGemini(prompt, bot_info):
 
 # 以上是api.alcex.cn的各种AI接口
 
-def localAurona(prompt, meta):
-    url = "http://127.0.0.1:3040/v1/chat/completions"
-    headers = {"Content-Type": "application/json", "Authorization": "Bearer fff"}
+def alcexGpt4o(prompt, meta):
+    url = "https://apiserver.alcex.cn/v1/chat/completions"
     prompt.insert(0, {"role": "user", "content": meta})
     prompt.insert(1, {"role": "assistant", "content": "好的，已了解您的需求~我会扮演好您设定的角色。"})
     data = {
-        "model": "gpt-3.5-turbo",
+        "model": "gpt-4o-mini",
         "messages": prompt,
         "stream": False
     }
@@ -200,7 +199,6 @@ def anotherGPT35(prompt, id):
     url = f"https://api.shenke.love/api/ChatGPT.php?msg={prompt}&id={id}"
     r = requests.get(url, timeout=20).json()["data"]["message"]
     return {"role": "assistant", "content": r}
-
 
 def chatGLM(api_key, bot_info, prompt):
     zhipuai.api_key = api_key
