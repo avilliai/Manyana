@@ -191,7 +191,7 @@ def alcexGpt4o(prompt, meta):
         "messages": prompt,
         "stream": False
     }
-    r = requests.post(url, headers=headers, json=data, timeout=20)
+    r = requests.post(url,json=data, timeout=20)
 
 
 def anotherGPT35(prompt, id):
