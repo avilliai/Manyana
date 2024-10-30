@@ -162,6 +162,7 @@ def main(bot, master, logger):
                 r= await modelReply("指挥", event.from_id, text)
             if withText:
                 await bot.send_group_message(event.subject.id, r)
+            await clearsinglePrompt(event.subject.id)
             if len(r) < maxTextLen and random.randint(0, 100) < voiceRate and "出错，请重试" not in r:
                 try:
                     path = 'data/voices/' + random_str() + '.wav'
