@@ -191,8 +191,10 @@ def alcexGpt4o(prompt, meta):
         "messages": prompt,
         "stream": False
     }
-    r = requests.post(url,json=data, timeout=20)
-
+    try:
+        r = requests.post(url,data=data, timeout=20)
+    except Exception as e:
+        print(e)
 
 def anotherGPT35(prompt, id):
     prompt = prompt[-1]["content"]
