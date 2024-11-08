@@ -191,10 +191,10 @@ def alcexGpt4o(prompt, meta):
         "messages": prompt,
         "stream": False
     }
-    try:
-        r = requests.post(url,data=data, timeout=20)
-    except Exception as e:
-        print(e)
+    
+    r = requests.post(url,data=data, timeout=20)
+    return {"role": "assistant", "content": r["choices"][0]["message"]["content"]}
+
 
 def anotherGPT35(prompt, id):
     prompt = prompt[-1]["content"]
