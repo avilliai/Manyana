@@ -192,7 +192,7 @@ def alcexGpt4o(prompt, meta):
         "stream": False
     }
     
-    r = requests.post(url,data=data, timeout=20)
+    r = requests.post(url,json=data, timeout=20)
     return {"role": "assistant", "content": r["choices"][0]["message"]["content"]}
 
 
