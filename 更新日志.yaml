@@ -439,3 +439,6 @@
 2024/10/22:
   - 新闻和摸鱼人日历修复
   - 等接口跑路还得再找
+2024/11/10:
+  - @spawner pr #sdapi,kaggle部署
+  - 参考https://github.com/avilliai/Manyana/wiki/sdapi%E9%83%A8%E7%BD%B2
