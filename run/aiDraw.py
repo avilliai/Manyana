@@ -1,6 +1,8 @@
 # -*- coding: utf-8 -*-
 import os
 import random
+import httpx
+import json
 
 import yaml
 from mirai import GroupMessage
@@ -8,12 +10,15 @@ from mirai import Image
 
 from plugins.toolkits import random_str
 
-from plugins.setuModerate import fileImgModerate
-from plugins.aiDrawer import SdDraw, draw2, airedraw, draw1, draw3, tiktokredraw, draw5, draw4, draw6, fluxDrawer
+from plugins.setuModerate import fileImgModerate, pic_audit_standalone
+from plugins.aiDrawer import getloras, SdDraw, draw2, airedraw, draw1, draw3, tiktokredraw, draw5, draw4, draw6, fluxDrawer, SdDraw1, SdDraw2, getcheckpoints, ckpt2
 
+i = 0
+turn = 0
 
 def main(bot, logger):
     logger.info("ai绘画 启用")
+    i = 0
     with open('config/api.yaml', 'r', encoding='utf-8') as f:
         result = yaml.load(f.read(), Loader=yaml.FullLoader)
     moderateK = result.get("moderate")
@@ -39,26 +44,139 @@ def main(bot, logger):
             try:
                 p = await fluxDrawer(tag)
                 await bot.send(event, Image(url=p), True)
+                await bot.send(event,"这不是sd，要sd图的再等等喵~") 
             except Exception as e:
                 logger.error(e)
                 logger.error("modelscope Drawer出错")
-                await bot.send(event,"寄了喵",True)
+                await bot.send(event,"只因了喵~别急，不是sd喵~")
+        if str(event.message_chain).startswith("画横图 ") and aiDrawController.get("modelscopeSD"):
+            tag = str(event.message_chain).replace("画横图 ", "")
+            logger.info("发起modelscope SDai绘画请求，prompt:" + tag)
+            try:
+                p = await fluxDrawer(tag)
+                await bot.send(event, Image(url=p), True)
+                await bot.send(event,"这不是sd，要sd图的再等等喵~") 
+            except Exception as e:
+                logger.error(e)
+                logger.error("modelscope Drawer出错")
+                await bot.send(event,"只因了喵~别急，不是sd喵~")
+        if str(event.message_chain).startswith("画方图 ") and aiDrawController.get("modelscopeSD"):
+            tag = str(event.message_chain).replace("画方图 ", "")
+            logger.info("发起modelscope SDai绘画请求，prompt:" + tag)
+            try:
+                p = await fluxDrawer(tag)
+                await bot.send(event, Image(url=p), True)
+                await bot.send(event,"这不是sd，要sd图的再等等喵~") 
+            except Exception as e:
+                logger.error(e)
+                logger.error("modelscope Drawer出错")
+                await bot.send(event,"只因了喵~别急，不是sd喵~")         
 
     @bot.on(GroupMessage)
     async def AiSdDraw(event: GroupMessage):
+        global turn
         if str(event.message_chain).startswith("画 ") and aiDrawController.get("sd接口"):
             tag = str(event.message_chain).replace("画 ", "")
             path = f"data/pictures/cache/{random_str()}.png"
             logger.info(f"发起SDai绘画请求，path:{path}|prompt:{tag}")
             try:
+                await bot.send(event, f'sd前面排队{turn}人，请耐心等待喵~', True)
+                turn += 1
                 # 没啥好审的，controller直接自个写了。
-                p = await SdDraw(tag + positive_prompt, negative_prompt, path, sdUrl)
+                p = await SdDraw(tag + positive_prompt, negative_prompt, path, sdUrl, event.group.id)
                 # logger.error(str(p))
-
-                await bot.send(event, [Image(path=path)], True)
+                if p == False:
+                    turn -= 1
+                    logger.info("色图已屏蔽")
+                    await bot.send(event, "杂鱼，色图不给你喵~", True)
+                else:
+                    await bot.send(event, [Image(path=path)], True)
+                    turn -= 1
+                    # logger.info("success")
+                    #await bot.send(event, "防出色图加上rating_safe，如果色图请自行撤回喵~")
+            except Exception as e:
+                logger.error(e)
+                turn -= 1
+                await bot.send(event,"sd只因了，联系master喵~")
+                
+        if str(event.message_chain) == "lora" and aiDrawController.get("sd接口"):   #获取lora列表
+            logger.info('查询loras中...')
+            try:
+                p = await getloras(sdUrl)
+                logger.info(str(p))
+                await bot.send(event, p, True)
                 # logger.info("success")
             except Exception as e:
                 logger.error(e)
+                
+        if str(event.message_chain) == "ckpt" and aiDrawController.get("sd接口"):   #获取lora列表
+            logger.info('查询checkpoints中...')
+            try:
+                p = await getcheckpoints(sdUrl)
+                logger.info(str(p))
+                await bot.send(event, p, True)
+                # logger.info("success")
+            except Exception as e:
+                logger.error(e)
+        
+        if str(event.message_chain).startswith("画横图 ") and aiDrawController.get("sd接口"):
+            tag = str(event.message_chain).replace("画横图 ", "")
+            path = f"data/pictures/cache/{random_str()}.png"
+            logger.info(f"发起SDai绘画请求，path:{path}|prompt:{tag}")
+            try:
+                await bot.send(event, f"开始画横图啦~sd前面排队{turn}人，请耐心等待喵~", True)
+                turn += 1
+                # 没啥好审的，controller直接自个写了。
+                p = await SdDraw1(tag + positive_prompt, negative_prompt, path, sdUrl, event.group.id)
+                # logger.error(str(p))
+                if p == False:
+                    turn -= 1
+                    logger.info("色图已屏蔽")
+                    await bot.send(event, "杂鱼，色图不给你喵~", True)
+                else:
+                    await bot.send(event, [Image(path=path)], True)
+                    turn -= 1
+                    # logger.info("success")
+                    #await bot.send(event, "防出色图加上rating_safe，如果色图请自行撤回喵~")
+            except Exception as e:
+                logger.error(e)
+                turn -= 1
+                await bot.send(event,"sd只因了，联系master喵~")
+                
+        if str(event.message_chain).startswith("画方图 ") and aiDrawController.get("sd接口"):
+            tag = str(event.message_chain).replace("画方图 ", "")
+            path = f"data/pictures/cache/{random_str()}.png"
+            logger.info(f"发起SDai绘画请求，path:{path}|prompt:{tag}")
+            try:
+                await bot.send(event, f"开始画方图啦~sd前面排队{turn}人，请耐心等待喵~", True)
+                turn += 1
+                # 没啥好审的，controller直接自个写了。
+                p = await SdDraw2(tag + positive_prompt, negative_prompt, path, sdUrl, event.group.id)
+                # logger.error(str(p))
+                if p == False:
+                    turn -= 1
+                    logger.info("色图已屏蔽")
+                    await bot.send(event, "杂鱼，色图不给你喵~", True)
+                else:
+                    await bot.send(event, [Image(path=path)], True)
+                    turn -= 1
+                    # logger.info("success")
+                    #await bot.send(event, "防出色图加上rating_safe，如果色图请自行撤回喵~")
+            except Exception as e:
+                logger.error(e)
+                turn -= 1
+                await bot.send(event,"sd只因了，联系master喵~")
+                
+        if str(event.message_chain).startswith("ckpt2 ") and aiDrawController.get("sd接口"):
+            tag = str(event.message_chain).replace("ckpt2 ", "")
+            logger.info('切换ckpt中')
+            try:
+                await ckpt2(tag)
+                await bot.send(event, "切换成功喵~第一次会慢一点~", True)
+                # logger.info("success")
+            except Exception as e:
+                logger.error(e)
+                await bot.send(event, "ckpt切换失败", True)
 
     @bot.on(GroupMessage)
     async def aidrawf1(event: GroupMessage):
@@ -72,8 +190,7 @@ def main(bot, logger):
                     logger.info(f"接口1绘画中......第{i}次请求....")
                     p = await draw1(tag, path)
                     logger.error(str(p))
-                    await bot.send(event, [Image(path=p[0]), Image(path=p[1]), Image(path=p[2]), Image(path=p[3])],
-                                   True)
+                    await bot.send(event, [Image(path=p[0]), Image(path=p[1]), Image(path=p[2]), Image(path=p[3])],True)                   
                 except Exception as e:
                     logger.error(e)
                     logger.error("接口1绘画失败.......")
@@ -256,3 +373,4 @@ def main(bot, logger):
                 logger.error("ai绘画出错")
                 await bot.send(event, "接口2绘画出错")
             redraw.pop(event.sender.id)
+

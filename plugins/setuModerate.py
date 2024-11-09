@@ -1,7 +1,8 @@
 import asyncio
 import base64
 import httpx
-
+import logging
+logger = logging.getLogger(__name__)
 
 async def setuModerate(img_url, moderateKey):
     url = "https://api.moderatecontent.com/moderate/?url=" + str(img_url) + "&key=" + str(moderateKey)
@@ -35,14 +36,15 @@ async def pic_audit_standalone(
         img_base64,
         is_return_tags=False,
         audit=False,
-        return_none=False
+        return_none=False,
+        url = "http://server.20020026.xyz:7865"
 ):
 
     async def get_caption(payload):
         async with httpx.AsyncClient(timeout=1000) as client:
             try:
                 response = await client.post(
-                    url=f"http://server.20020026.xyz:7865/tagger/v1/interrogate",
+                    url=f"{url}/tagger/v1/interrogate",# http://server.20020026.xyz:7865
                     json=payload
                 )
                 response.raise_for_status()  # 抛出异常，如果请求失败
@@ -76,12 +78,12 @@ async def pic_audit_standalone(
     reverse_dict = {v: k for k, v in to_user_dict.items()}
     message += (f"最终结果为:{reverse_dict[value[0]].rjust(5)}")
 
-    if return_none:    # 审核并判断是否输出图片用这个就够了
+    if return_none:
         value = list(possibilities.values())
         value.sort(reverse=True)
         reverse_dict = {v: k for k, v in possibilities.items()}
         #logger.info(message)
-        return True if reverse_dict[value[0]] == "explicit" or reverse_dict[value[0]] == "questionable" else False
+        return True if reverse_dict[value[0]] == "questionable" or reverse_dict[value[0]] == "explicit" else False
 
     if is_return_tags:
         return message, tags
