@@ -75,7 +75,7 @@ def main(bot, logger):
     @bot.on(GroupMessage)
     async def AiSdDraw(event: GroupMessage):
         global turn
-        if str(event.message_chain).startswith("画 ") and aiDrawController.get("sd接口"):
+        if str(event.message_chain).startswith("画 ") and sdUrl!="" and sdUrl!=" ":
             tag = str(event.message_chain).replace("画 ", "")
             path = f"data/pictures/cache/{random_str()}.png"
             logger.info(f"发起SDai绘画请求，path:{path}|prompt:{tag}")
