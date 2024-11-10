@@ -193,7 +193,7 @@ def alcexGpt4o(prompt, meta):
     }
     
     r = requests.post(url,json=data, timeout=20)
-    return {"role": "assistant", "content": r["choices"][0]["message"]["content"]}
+    #return {"role": "assistant", "content": r["choices"][0]["message"]["content"]}
 
 
 def anotherGPT35(prompt, id):
