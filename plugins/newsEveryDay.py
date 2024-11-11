@@ -83,8 +83,8 @@ async def xingzuo():
         r = await client.get(url)
         img = Image.open(BytesIO(r.content))  # 从二进制数据创建图片对象
         img.save(path)  # 使用PIL库保存图片
-        #rint(path)
-        return path
+        return None
+        #return path
 
 
 async def nong(url, name):
