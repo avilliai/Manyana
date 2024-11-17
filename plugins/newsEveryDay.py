@@ -11,8 +11,8 @@ from plugins.toolkits import random_str, get_headers
 
 
 async def news():
-    url = "https://dayu.qqsuu.cn/weiyujianbao/apis.php"
-    time = datetime.datetime.now().strftime('%Y_%m_%d')
+    time = datetime.datetime.now().strftime('%Y-%m-%d')
+    url = f"https://cdn.xxhzm.cn/v2api/cache/60s/{time}.jpg"
     #path="./news.png"
     p = "data/pictures/cache/" + time + "news.png"
 
