@@ -13,8 +13,9 @@ from plugins.toolkits import random_str, get_headers
 async def news():
     time = datetime.datetime.now().strftime('%Y-%m-%d')
     url = f"https://cdn.xxhzm.cn/v2api/cache/60s/{time}.jpg"
+    print(url)
     #path="./news.png"
-    p = "data/pictures/cache/" + time + "news.png"
+    p = "data/pictures/cache/" + time + "news.jpg"
 
     async with httpx.AsyncClient(timeout=200, headers=get_headers()) as client:
         r = await client.get(url)
