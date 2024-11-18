@@ -39,7 +39,7 @@
 ## 方法1：搭建工具部署(推荐)
 **如果你觉得自己从零开始搭建bot比较困难，请使用此方案**<br>
 对于windows用户，存在两款启动器，分别是[Manyana1.x](https://github.com/avilliai/Manyana/releases) 和[Manyana_deploy](https://github.com/lux-QAQ/Manyana_deploy/releases) 你可以根据自己的喜好选择<br>
-[Manyana1.x](https://github.com/avilliai/Manyana/releases)使用方式如下。
+[Manyana1.x](https://github.com/avilliai/Manyana/releases) (啥都不懂你就用这个吧，别给自己上难度了)使用方式如下。
 - 从[release](https://github.com/avilliai/Manyana/releases)下载最大的rar文件并解压
   - 如果下载过慢，你也可以从Q群623265372获得这个压缩包
 - 运行launcher.exe<br>
