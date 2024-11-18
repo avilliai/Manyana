@@ -427,7 +427,6 @@ def main(bot, logger):
                     turn -= 1
             except Exception as e:
                 logger.error(f"重绘失败: {e}")
-                turn -= 1
                 await bot.send(event, "重绘失败了喵~", True)
 
     async def url_to_base64(url):
