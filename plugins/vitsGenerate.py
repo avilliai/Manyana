@@ -504,7 +504,8 @@ async def gptSoVitsGenerator(token, text, speaker):
             }
         })
     print(r.json())
-    r=requests.get(r.json()['audio'])
+    async with httpx.AsyncClient(timeout=100) as client:
+        r = await client.get(r.json()['audio'])
     p = "data/voices/" + random_str() + '.wav'
     with open(p, "wb") as f:
         f.write(r.content)
