@@ -394,8 +394,9 @@ def main(bot, logger):
 
         # 处理图片和重绘命令
         if (str(event.message_chain).startswith("重绘") or event.sender.id in UserGet) and event.message_chain.count(Image):
-            prompt = str(event.message_chain).replace("重绘", "").strip()
-            UserGet[event.sender.id] = [prompt]
+            if (str(event.message_chain).startswith("重绘")) and event.message_chain.count(Image):
+                prompt = str(event.message_chain).replace("重绘", "").strip()
+                UserGet[event.sender.id] = [prompt]
 
             # 日志记录
             prompts = ', '.join(UserGet[event.sender.id])
