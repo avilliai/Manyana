@@ -3,6 +3,10 @@ import os
 import random
 import httpx
 import json
+import base64
+from io import BytesIO
+from PIL import Image as PILImage
+import asyncio
 
 import yaml
 from mirai import GroupMessage
@@ -11,10 +15,11 @@ from mirai import Image
 from plugins.toolkits import random_str
 
 from plugins.setuModerate import fileImgModerate, pic_audit_standalone
-from plugins.aiDrawer import getloras, SdDraw, draw2, airedraw, draw1, draw3, tiktokredraw, draw5, draw4, draw6, fluxDrawer, SdDraw1, SdDraw2, getcheckpoints, ckpt2
+from plugins.aiDrawer import getloras, SdDraw, draw2, airedraw, draw1, draw3, tiktokredraw, draw5, draw4, draw6, fluxDrawer, SdDraw1, SdDraw2, getcheckpoints, ckpt2, SdreDraw
 
 i = 0
 turn = 0
+UserGet = {}
 
 def main(bot, logger):
     logger.info("ai绘画 启用")
@@ -35,6 +40,8 @@ def main(bot, logger):
     positive_prompt = aiDrawController.get("positive_prompt")
     global redraw
     redraw = {}
+    global UserGet
+    UserGet = {}
 
     @bot.on(GroupMessage)
     async def msDrawer(event: GroupMessage):
@@ -373,4 +380,62 @@ def main(bot, logger):
                 logger.error("ai绘画出错")
                 await bot.send(event, "接口2绘画出错")
             redraw.pop(event.sender.id)
+            
 
+    @bot.on(GroupMessage)
+    async def sdreDrawRun(event: GroupMessage):
+        global UserGet
+        global turn
+
+        if event.message_chain.has(Image) == False and (str(event.message_chain) == ("重绘") or str(event.message_chain).startswith("重绘 ")):
+            prompt = str(event.message_chain).replace("重绘", "").strip()
+            UserGet[event.sender.id] = [prompt]
+            await bot.send(event, "请发送要重绘的图片")
+
+        # 处理图片和重绘命令
+        if (str(event.message_chain).startswith("重绘") or event.sender.id in UserGet) and event.message_chain.count(Image):
+            prompt = str(event.message_chain).replace("重绘", "").strip()
+            UserGet[event.sender.id] = [prompt]
+
+            # 日志记录
+            prompts = ', '.join(UserGet[event.sender.id])
+            logger.info(f"接收来自群：{event.group.id} 用户：{event.sender.id} 的重绘指令 prompt: {prompts}")
+
+            # 获取图片路径
+            path = f"data/pictures/cache/{random_str()}.png"
+            lst_img = event.message_chain.get(Image)
+            img_url = lst_img[0].url
+            logger.info(f"发起SDai重绘请求，path:{path}|prompt:{prompts}")
+            prompts_str = ' '.join(UserGet[event.sender.id]) + ' ' + positive_prompt
+            UserGet.pop(event.sender.id)
+            
+
+            try:
+                b64_in = await url_to_base64(img_url)
+                
+                await bot.send(event, f"开始重绘啦~sd前面排队{turn}人，请耐心等待喵~", True)
+                turn += 1
+                # 将 UserGet[event.sender.id] 列表中的内容和 positive_prompt 合并成一个字符串
+                p = await SdreDraw(prompts_str, negative_prompt, path, sdUrl, event.group.id, b64_in)
+                if p == False:
+                    turn -= 1
+                    logger.info("色图已屏蔽")
+                    await bot.send(event, "杂鱼，色图不给你喵~", True)
+                else:
+                    await bot.send(event, [Image(path=path)], True)
+                    turn -= 1
+            except Exception as e:
+                logger.error(f"重绘失败: {e}")
+                turn -= 1
+                await bot.send(event, "重绘失败了喵~", True)
+
+    async def url_to_base64(url):
+        async with httpx.AsyncClient(timeout=9000) as client:
+            response = await client.get(url)
+            if response.status_code == 200:
+                image_bytes = response.content
+                encoded_string = base64.b64encode(image_bytes).decode('utf-8')
+                return encoded_string
+            else:
+                raise Exception(f"Failed to retrieve image: {response.status_code}")
+            
