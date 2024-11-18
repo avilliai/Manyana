@@ -58,7 +58,7 @@ def main(bot, logger):
 
     @bot.on(GroupMessage)
     async def AiSdDraw(event: GroupMessage):
-        global turn
+        global turn #画 中空格的意义在于防止误触发，但fluxDrawer无所谓了，其他倒是可以做一做限制。
         if str(event.message_chain).startswith("画 ") and sdUrl!="" and sdUrl!=" ":
             tag = str(event.message_chain).replace("画 ", "")
             path = f"data/pictures/cache/{random_str()}.png"
