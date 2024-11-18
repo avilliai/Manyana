@@ -45,39 +45,16 @@ def main(bot, logger):
 
     @bot.on(GroupMessage)
     async def msDrawer(event: GroupMessage):
-        if str(event.message_chain).startswith("画 ") and aiDrawController.get("modelscopeSD"):
-            tag = str(event.message_chain).replace("画 ", "")
+        if str(event.message_chain).startswith("画") and aiDrawController.get("modelscopeSD"):
+            tag = str(event.message_chain).split("画")[1]
             logger.info("发起modelscope SDai绘画请求，prompt:" + tag)
             try:
                 p = await fluxDrawer(tag)
-                await bot.send(event, Image(url=p), True)
-                await bot.send(event,"这不是sd，要sd图的再等等喵~") 
+                await bot.send(event, ["modelscope flux api result:",Image(url=p)], True)
             except Exception as e:
                 logger.error(e)
                 logger.error("modelscope Drawer出错")
-                await bot.send(event,"只因了喵~别急，不是sd喵~")
-        if str(event.message_chain).startswith("画横图 ") and aiDrawController.get("modelscopeSD"):
-            tag = str(event.message_chain).replace("画横图 ", "")
-            logger.info("发起modelscope SDai绘画请求，prompt:" + tag)
-            try:
-                p = await fluxDrawer(tag)
-                await bot.send(event, Image(url=p), True)
-                await bot.send(event,"这不是sd，要sd图的再等等喵~") 
-            except Exception as e:
-                logger.error(e)
-                logger.error("modelscope Drawer出错")
-                await bot.send(event,"只因了喵~别急，不是sd喵~")
-        if str(event.message_chain).startswith("画方图 ") and aiDrawController.get("modelscopeSD"):
-            tag = str(event.message_chain).replace("画方图 ", "")
-            logger.info("发起modelscope SDai绘画请求，prompt:" + tag)
-            try:
-                p = await fluxDrawer(tag)
-                await bot.send(event, Image(url=p), True)
-                await bot.send(event,"这不是sd，要sd图的再等等喵~") 
-            except Exception as e:
-                logger.error(e)
-                logger.error("modelscope Drawer出错")
-                await bot.send(event,"只因了喵~别急，不是sd喵~")         
+                #await bot.send(event,"只因了喵~别急，不是sd喵~")       
 
     @bot.on(GroupMessage)
     async def AiSdDraw(event: GroupMessage):
