@@ -227,7 +227,7 @@ def main(bot, master, logger):
                         await bot.send(event,sentence)
                         check_num+=1
                         if check_num==3:break
-                        waitTime=random.randomint(1,6)
+                        waitTime=random.randint(1,6)
                         await sleep(waitTime)
             else:
                 await bot.send(event, r, True)
@@ -407,7 +407,7 @@ def main(bot, master, logger):
                         await bot.send(event,sentence)
                         check_num+=1
                         if check_num==3:break
-                        waitTime=random.randomint(1,6)
+                        waitTime=random.randint(1,6)
                         await sleep(waitTime)
             else:
                 await bot.send(event, r, True)
