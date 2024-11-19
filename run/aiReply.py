@@ -226,9 +226,9 @@ def main(bot, master, logger):
                     if sentence:
                         check_num+=1
                         if check_num==3:
-                            await bot.send(event,"".join(sentences[2:]))
+                            await bot.send(event,"".join(sentences[2:]).strip())
                             break
-                        await bot.send(event,sentence)
+                        await bot.send(event,sentence.strip())
                         waitTime=random.randint(1,6)
                         await sleep(waitTime)
             else:
@@ -408,9 +408,9 @@ def main(bot, master, logger):
                     if sentence:
                         check_num+=1
                         if check_num==3:
-                            await bot.send(event,"".join(sentences[2:]))
+                            await bot.send(event,"".join(sentences[2:]).strip())
                             break
-                        await bot.send(event,sentence)
+                        await bot.send(event,sentence.strip())
                         waitTime=random.randint(1,6)
                         await sleep(waitTime)
             else:
