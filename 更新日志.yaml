@@ -442,3 +442,6 @@
 2024/11/10:
   - @spawner pr #sdapi,kaggle部署
   - 参考https://github.com/avilliai/Manyana/wiki/sdapi%E9%83%A8%E7%BD%B2
+2024/11/19: 
+  - 小更新，回复分段
+  - 自行打开multiplyReply开关，同时修改bot对话模型设定要求其回复尽可能简短且分段即可。
