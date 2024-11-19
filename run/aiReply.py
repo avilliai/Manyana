@@ -64,6 +64,7 @@ def main(bot, master, logger):
     nudgeornot = result.get("chatGLM").get("nudgeReply")
     replyModel = result.get("chatGLM").get("model")
     multiplyReply=result.get("chatGLM").get("multiplyReply")
+    multiplyReplyReExpression=result.get("chatGLM").get("multiplyReplyReExpression")
     trustglmReply = result.get("chatGLM").get("trustglmReply")
     allcharacters = result.get("chatGLM").get("bot_info")
     allowUserSetModel = result.get("chatGLM").get("allowUserSetModel")
@@ -197,14 +198,7 @@ def main(bot, master, logger):
             return
         text = str(event.message_chain)
         imgurl = None
-        import random
 
-        # 最大执行次数设定为4次，最少执行1次
-        if multiplyReply:
-            max_attempts = 4
-        else:
-            max_attempts = 1
-        current_attempt = 1
         text = str(event.message_chain)  # 初始text
         imgurl = None
         if event.message_chain.count(Image):
@@ -214,41 +208,42 @@ def main(bot, master, logger):
                 url = i.url
                 imgurl.append(url)
         
-        while current_attempt <= max_attempts:
-            if event.sender.id in chatGLMCharacters:
-                print(type(chatGLMCharacters.get(event.sender.id)), chatGLMCharacters.get(event.sender.id))
-                r, firstRep = await modelReply(event.sender.nickname, event.sender.id, text, chatGLMCharacters.get(event.sender.id), trustUser, imgurl, checkIfRepFirstTime=True)
+        if event.sender.id in chatGLMCharacters:
+            print(type(chatGLMCharacters.get(event.sender.id)), chatGLMCharacters.get(event.sender.id))
+            r, firstRep = await modelReply(event.sender.nickname, event.sender.id, text, chatGLMCharacters.get(event.sender.id), trustUser, imgurl, checkIfRepFirstTime=True)
+        else:
+            r, firstRep = await modelReply(event.sender.nickname, event.sender.id, text, replyModel, trustUser, imgurl, checkIfRepFirstTime=True)
+    
+        if firstRep:
+            await bot.send(event, "如对话异常请发送 /clear 以清理对话", True)
+    
+        if withText:
+            if multiplyReply:
+                sentences=re.split(r'{multiplyReplyReExpression}',r)
+                check_num=0
+                for sentence in sentences:
+                    if sentence:
+                        await bot.send(event,sentence)
+                        check_num+=1
+                        if check_num==3:break
+                        waitTime=random.randomint(1,6)
+                        await sleep(waitTime)
             else:
-                r, firstRep = await modelReply(event.sender.nickname, event.sender.id, text, replyModel, trustUser, imgurl, checkIfRepFirstTime=True)
-        
-            if firstRep:
-                await bot.send(event, "如对话异常请发送 /clear 以清理对话", True)
-        
-            if withText:
                 await bot.send(event, r, True)
-        
-            if len(r) < maxTextLen and random.randint(0, 100) < voiceRate and "出错，请重试" not in r:
-                try:
-                    path = 'data/voices/' + random_str() + '.wav'
-                    logger.info("语音生成_文本" + r)
-                    logger.info("语音生成_模型:" + speaker)
-                    data = {"text": r, "out": path, 'speaker': speaker}
-                    voiceP = await superVG(data, mode=voicegenerateMode, urls="", langmode=voiceLangType)
-                    await bot.send(event, Voice(path=voiceP))
-                    return
-                except:
-                    logger.error("语音合成调用失败")
-        
-            if not withText:
+    
+        if (len(r) < maxTextLen and random.randint(0, 100) < voiceRate and "出错，请重试" not in r) or not withText:
+            try:
+                path = 'data/voices/' + random_str() + '.wav'
+                logger.info("语音生成_文本" + r)
+                logger.info("语音生成_模型:" + speaker)
+                data = {"text": r, "out": path, 'speaker': speaker}
+                voiceP = await superVG(data, mode=voicegenerateMode, urls="", langmode=voiceLangType)
+                await bot.send(event, Voice(path=voiceP))
+                return
+            except:
+                logger.error("语音合成调用失败")
                 await bot.send(event, r, True)
 
-            if current_attempt == 1:
-                text = "继续说下去，不要重复之前的内容。"
-            else:
-                continue_probability = 0.65 if current_attempt == 2 else 0.3 if current_attempt == 3 else 0.15
-                if random.random() >= continue_probability:  # 如果随机数大于不终止的概率，则终止循环
-                    break
-            current_attempt += 1 
 
 
 
@@ -378,11 +373,7 @@ def main(bot, master, logger):
             logger.info("ai聊天启动")
         else:
             return
-        if multiplyReply:
-            max_attempts = 4
-        else:
-            max_attempts = 1
-        current_attempt = 1
+
         text = str(event.message_chain).replace("@" + str(bot.qq) + "", '')
         imgurl = None
         if event.message_chain.count(Image):
@@ -392,43 +383,48 @@ def main(bot, master, logger):
                 url = i.url
                 imgurl.append(url)
                 #print(url)
-        while current_attempt <= max_attempts:
-            if event.sender.id in chatGLMCharacters:
-                print(type(chatGLMCharacters.get(event.sender.id)), chatGLMCharacters.get(event.sender.id))
-                r, firstRep = await modelReply(event.sender.member_name, event.sender.id, text,
-                                               chatGLMCharacters.get(event.sender.id), trustUser, imgurl,True)
-            # 判断模型
+
+        if event.sender.id in chatGLMCharacters:
+            print(type(chatGLMCharacters.get(event.sender.id)), chatGLMCharacters.get(event.sender.id))
+            r, firstRep = await modelReply(event.sender.member_name, event.sender.id, text,
+                                           chatGLMCharacters.get(event.sender.id), trustUser, imgurl,True)
+        # 判断模型
+        else:
+            r, firstRep = await modelReply(event.sender.member_name, event.sender.id, text, replyModel, trustUser, imgurl,True)
+        if firstRep:
+            await bot.send(event, "如对话异常请发送 /clear", True)
+        #刷新时间
+        user = str(event.sender.id)
+        if user in chattingUser:
+            chattingUser[user] = datetime.datetime.now()
+        if withText:
+            if multiplyReply:
+                sentences=re.split(r'{multiplyReplyReExpression}',r)
+                check_num=0
+                for sentence in sentences:
+                    if sentence:
+                        await bot.send(event,sentence)
+                        check_num+=1
+                        if check_num==3:break
+                        waitTime=random.randomint(1,6)
+                        await sleep(waitTime)
             else:
-                r, firstRep = await modelReply(event.sender.member_name, event.sender.id, text, replyModel, trustUser, imgurl,True)
-            if firstRep:
-                await bot.send(event, "如对话异常请发送 /clear", True)
-            #刷新时间
-            user = str(event.sender.id)
-            if user in chattingUser:
-                chattingUser[user] = datetime.datetime.now()
-            if withText:
                 await bot.send(event, r, True)
-            if len(r) < maxTextLen and random.randint(0, 100) < voiceRate and "出错，请重试" not in r:
-                try:
-                    path = 'data/voices/' + random_str() + '.wav'
-                    logger.info("语音生成_文本" + r)
-                    logger.info("语音生成_模型:" + speaker)
-                    data = {"text": r, "out": path, 'speaker': speaker}
-                    voiceP = await superVG(data, mode=voicegenerateMode, urls="", langmode=voiceLangType)
-                    await bot.send(event, Voice(path=voiceP))
-                    return
-                except Exception as e:
-                    logger.error(e)
-                    logger.error("语音合成失败")
-            if not withText:
+        if (len(r) < maxTextLen and random.randint(0, 100) < voiceRate and "出错，请重试" not in r) or not withText:
+            try:
+                path = 'data/voices/' + random_str() + '.wav'
+                logger.info("语音生成_文本" + r)
+                logger.info("语音生成_模型:" + speaker)
+                data = {"text": r, "out": path, 'speaker': speaker}
+                voiceP = await superVG(data, mode=voicegenerateMode, urls="", langmode=voiceLangType)
+                await bot.send(event, Voice(path=voiceP))
+                return
+            except Exception as e:
+                logger.error(e)
+                logger.error("语音合成失败")
+
                 await bot.send(event, r, True)
-            if current_attempt == 1:
-                text = "继续说下去，不要重复之前的内容。"
-            else:
-                continue_probability = 0.65 if current_attempt == 2 else 0.3 if current_attempt == 3 else 0.15
-                if random.random() >= continue_probability:  # 如果随机数大于不终止的概率，则终止循环
-                    break
-            current_attempt += 1 
+
 
     # 用于chatGLM清除本地缓存
     @bot.on(GroupMessage)
