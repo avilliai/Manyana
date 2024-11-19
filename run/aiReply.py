@@ -220,7 +220,7 @@ def main(bot, master, logger):
     
         if withText:
             if multiplyReply:
-                sentences=re.split(r'{multiplyReplyReExpression}',r)
+                sentences=re.split(multiplyReplyReExpression,r)
                 check_num=0
                 for sentence in sentences:
                     if sentence:
@@ -400,7 +400,7 @@ def main(bot, master, logger):
             chattingUser[user] = datetime.datetime.now()
         if withText:
             if multiplyReply:
-                sentences=re.split(r'{multiplyReplyReExpression}',r)
+                sentences=re.split(multiplyReplyReExpression,r)
                 check_num=0
                 for sentence in sentences:
                     if sentence:
