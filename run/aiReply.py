@@ -171,7 +171,7 @@ def main(bot, master, logger):
                 logger.warning("模型出错了，看来只有使用递归了凸(艹皿艹 )")
                 if event.sender.id in RecurionDepthCount:
                     RecurionDepthCount[event.sender.id]+=1
-                    if RecurionDepthCount[event.sender.id]>MaxRecursionTimes：
+                    if RecurionDepthCount[event.sender.id]>MaxRecursionTimes:
                         logger.warning("递归深度超过设置限度，自动退出。")
                         return
                 else:
@@ -238,7 +238,7 @@ def main(bot, master, logger):
             logger.warning("模型出错了，看来只有使用递归了凸(艹皿艹 )")
             if event.sender.id in RecurionDepthCount:
                 RecurionDepthCount[event.sender.id]+=1
-                if RecurionDepthCount[event.sender.id]>MaxRecursionTimes：
+                if RecurionDepthCount[event.sender.id]>MaxRecursionTimes:
                     logger.warning("递归深度超过设置限度，自动退出。")
                     return
             else:
@@ -428,7 +428,7 @@ def main(bot, master, logger):
             logger.warning("模型出错了，看来只有使用递归了凸(艹皿艹 )")
             if event.sender.id in RecurionDepthCount:
                 RecurionDepthCount[event.sender.id]+=1
-                if RecurionDepthCount[event.sender.id]>MaxRecursionTimes：
+                if RecurionDepthCount[event.sender.id]>MaxRecursionTimes:
                     logger.warning("递归深度超过设置限度，自动退出。")
                     return
             else:
