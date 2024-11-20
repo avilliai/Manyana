@@ -215,9 +215,13 @@ def main(bot, master, logger):
         else:
             r, firstRep = await modelReply(event.sender.nickname, event.sender.id, text, replyModel, trustUser, imgurl, checkIfRepFirstTime=True)
     
-        if firstRep:
-            await bot.send(event, "如对话异常请发送 /clear 以清理对话", True)
-    
+        #if firstRep:
+            #await bot.send(event, "如对话异常请发送 /clear 以清理对话", True)
+        if r=="出错，请重试\n或联系master更换默认模型":
+            logger.warning("模型出错了，看来只有使用递归了凸(艹皿艹 )")
+            await clearsinglePrompt(event.sender.id)
+            await GLMFriendChat(event) #真是递递又归归
+            return
         if withText:
             if multiplyReply:
                 sentences=re.split(multiplyReplyReExpression,r)
@@ -394,8 +398,13 @@ def main(bot, master, logger):
         # 判断模型
         else:
             r, firstRep = await modelReply(event.sender.member_name, event.sender.id, text, replyModel, trustUser, imgurl,True)
-        if firstRep:
-            await bot.send(event, "如对话异常请发送 /clear", True)
+        #if firstRep:
+            #await bot.send(event, "如对话异常请发送 /clear", True)
+        if r=="出错，请重试\n或联系master更换默认模型":
+            logger.warning("模型出错了，看来只有使用递归了凸(艹皿艹 )")
+            await clearsinglePrompt(event.sender.id)
+            await atReply(event) #真是递递又归归
+            return
         #刷新时间
         user = str(event.sender.id)
         if user in chattingUser:
