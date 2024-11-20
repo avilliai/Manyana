@@ -64,6 +64,7 @@ def main(bot, master, logger):
     privateGlmReply = result.get("chatGLM").get("privateGlmReply")
     nudgeornot = result.get("chatGLM").get("nudgeReply")
     replyModel = result.get("chatGLM").get("model")
+    MaxRecursionTimes=result.get("chatGLM").get("MaxRecursionTimes")
     multiplyReply=result.get("chatGLM").get("multiplyReply")
     multiplyReplyReExpression=result.get("chatGLM").get("multiplyReplyReExpression")
     trustglmReply = result.get("chatGLM").get("trustglmReply")
@@ -132,6 +133,10 @@ def main(bot, master, logger):
     global chattingUser
     chattingUser={} #无需艾特即可对话的用户列表
     timeout = datetime.timedelta(minutes=5) #5分钟没有对话则超时
+
+    #递归计数
+    global RecurionDepthCount
+    RecurionDepthCount={}
     @bot.on(GroupMessage)
     async def AddChatWithoutAt(event: GroupMessage):
         if str(event.message_chain)=="开始对话" or str(event.message_chain)=="开始聊天":
@@ -162,6 +167,18 @@ def main(bot, master, logger):
             # 判断模型类型
             else:
                 r= await modelReply("指挥", event.from_id, text)
+            if r=="出错，请重试\n或联系master更换默认模型":
+                logger.warning("模型出错了，看来只有使用递归了凸(艹皿艹 )")
+                if event.sender.id in RecurionDepthCount:
+                    RecurionDepthCount[event.sender.id]+=1
+                    if RecurionDepthCount[event.sender.id]>MaxRecursionTimes：
+                        logger.warning("递归深度超过设置限度，自动退出。")
+                        return
+                else:
+                    RecurionDepthCount[event.sender.id]=0
+                await clearsinglePrompt(event.sender.id)
+                await NudgeReply(event) #真是递递又归归
+                return
             if withText:
                 await bot.send_group_message(event.subject.id, r)
             if len(r) < maxTextLen and random.randint(0, 100) < voiceRate and "出错，请重试" not in r:
@@ -183,7 +200,7 @@ def main(bot, master, logger):
     @bot.on(FriendMessage)
     async def GLMFriendChat(event: FriendMessage):
         # 用非常丑陋的复制粘贴临时解决bug，这下成石山代码了
-        global chatGLMData, chatGLMCharacters, trustUser, userdict
+        global chatGLMData, chatGLMCharacters, trustUser, userdict,RecurionDepthCount
         text = str(event.message_chain)
         if text == "/clear":
             return
@@ -219,6 +236,13 @@ def main(bot, master, logger):
             #await bot.send(event, "如对话异常请发送 /clear 以清理对话", True)
         if r=="出错，请重试\n或联系master更换默认模型":
             logger.warning("模型出错了，看来只有使用递归了凸(艹皿艹 )")
+            if event.sender.id in RecurionDepthCount:
+                RecurionDepthCount[event.sender.id]+=1
+                if RecurionDepthCount[event.sender.id]>MaxRecursionTimes：
+                    logger.warning("递归深度超过设置限度，自动退出。")
+                    return
+            else:
+                RecurionDepthCount[event.sender.id]=0
             await clearsinglePrompt(event.sender.id)
             await GLMFriendChat(event) #真是递递又归归
             return
@@ -367,7 +391,7 @@ def main(bot, master, logger):
     # 群内chatGLM回复
     @bot.on(GroupMessage)
     async def atReply(event: GroupMessage):
-        global trustUser, chatGLMData, chatGLMCharacters, userdict, coziData, trustG,chattingUser
+        global trustUser, chatGLMData, chatGLMCharacters, userdict, coziData, trustG,chattingUser,RecurionDepthCount
         if At(bot.qq) in event.message_chain or str(event.sender.id) in chattingUser:
             try:
                 if not wontrep(noRes1, str(event.message_chain).replace(str(At(bot.qq)), "").replace(" ", ""),
@@ -402,6 +426,13 @@ def main(bot, master, logger):
             #await bot.send(event, "如对话异常请发送 /clear", True)
         if r=="出错，请重试\n或联系master更换默认模型":
             logger.warning("模型出错了，看来只有使用递归了凸(艹皿艹 )")
+            if event.sender.id in RecurionDepthCount:
+                RecurionDepthCount[event.sender.id]+=1
+                if RecurionDepthCount[event.sender.id]>MaxRecursionTimes：
+                    logger.warning("递归深度超过设置限度，自动退出。")
+                    return
+            else:
+                RecurionDepthCount[event.sender.id]=0
             await clearsinglePrompt(event.sender.id)
             await atReply(event) #真是递递又归归
             return
