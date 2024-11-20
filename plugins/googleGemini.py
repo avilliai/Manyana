@@ -171,16 +171,16 @@ async def geminiCFofficial(ak, messages, proxy, model):
         "https://": proxy
     }
     async with httpx.AsyncClient(proxies=proxies) as client:
-
         response = await client.post(
             f"https://generativelanguage.googleapis.com/v1beta/openai/chat/completions",
             headers={"Authorization": f"Bearer {ak}"},
             json={
-                "model": model,  # 使用您选择的模型
+                "model": "gemini-1.5-flash",  # 使用您选择的模型
                 "messages": messages,
             }
         )
         response_data = response.json()
+        print(response_data)
 
         return response_data['choices'][0]['message']['content']
 
