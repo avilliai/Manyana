@@ -97,7 +97,7 @@ async def GeminiDownloadAllImagesAndSetPrompts(imgurls, rev=False):
                     pass
                     #print(f"Failed to download and process image from {i} after 3 attempts")
     return imgresults
-async def geminirep(ak, messages, bot_info, GeminiRevProxy="",model="gemini-1.5-flash",imgurls=None):
+async def geminirep(ak, messages, bot_info, GeminiRevProxy="",model="gemini-1.5-flash",imgurls=None,proxy=None):
     messages_copy = copy.deepcopy(messages)
 
     # 在副本上进行操作
@@ -111,13 +111,15 @@ async def geminirep(ak, messages, bot_info, GeminiRevProxy="",model="gemini-1.5-
         else:
             rev=True
         imgPromptResults=await GeminiDownloadAllImagesAndSetPrompts(imgurls,rev)
+    messages_copy = promptConvert(messages_copy)
+    if imgurls != None:
+        for vb in imgPromptResults:
+            messages_copy[-1]['parts'].append(vb)
     if GeminiRevProxy == "" or GeminiRevProxy == " ":
         # Or use `os.getenv('GOOGLE_API_KEY')` to fetch an environment variable.
-        model1 = model
-
-        GOOGLE_API_KEY = ak
-
-        genai.configure(api_key=GOOGLE_API_KEY)
+        r=await geminiCFofficial(ak, messages_copy, proxy, model)
+        r=r.rstrip()
+        '''genai.configure(api_key=GOOGLE_API_KEY)
 
         #model = genai.GenerativeModel('gemini-pro')
         generation_config = {
@@ -141,13 +143,9 @@ async def geminirep(ak, messages, bot_info, GeminiRevProxy="",model="gemini-1.5-
         response = model.generate_content(messages_copy)
 
         r = str(response.text.rstrip())
-        #print(response.text)
-
+        #print(response.text)'''
     else:
-        messages_copy = promptConvert(messages_copy)
-        if imgurls != None:
-            for vb in imgPromptResults:
-                messages_copy[-1]['parts'].append(vb)
+
         r = await geminiCFProxy(ak, messages_copy, GeminiRevProxy,model)
         r = r.rstrip()
     return r
@@ -157,6 +155,22 @@ async def geminiCFProxy(ak, messages, proxyUrl,model):
     url = f"{proxyUrl}/v1beta/models/{model}:generateContent?key={ak}"
     #print(requests.get(url,verify=False))
     async with httpx.AsyncClient(timeout=100) as client:
+        r = await client.post(url, json={"contents": messages, "safetySettings": [
+            {'category': 'HARM_CATEGORY_SEXUALLY_EXPLICIT', "threshold": "BLOCK_None"},
+            {'category': 'HARM_CATEGORY_HATE_SPEECH', "threshold": "BLOCK_None"},
+            {'category': 'HARM_CATEGORY_HARASSMENT', "threshold": "BLOCK_None"},
+            {'category': 'HARM_CATEGORY_DANGEROUS_CONTENT', "threshold": "BLOCK_None"}]})
+        print(r)
+        return r.json()['candidates'][0]["content"]["parts"][0]["text"]
+
+async def geminiCFofficial(ak, messages, proxy, model):
+    url = f"https://generativelanguage.googleapis.com/v1beta/models/{model}:generateContent?key={ak}"
+    # print(requests.get(url,verify=False))
+    proxies = {
+        "http://": proxy,
+        "https://": proxy
+    }
+    async with httpx.AsyncClient(timeout=100,proxies=proxies) as client:
         r = await client.post(url, json={"contents": messages, "safetySettings": [
             {'category': 'HARM_CATEGORY_SEXUALLY_EXPLICIT', "threshold": "BLOCK_None"},
             {'category': 'HARM_CATEGORY_HATE_SPEECH', "threshold": "BLOCK_None"},
