@@ -32,6 +32,9 @@ class CListen(threading.Thread):
 
 
 def main(bot, master, logger):
+    with open('config/welcome.yaml', 'r', encoding='utf-8') as f:
+        wecYaml = yaml.load(f.read(), Loader=yaml.FullLoader)
+    chattingError=wecYaml.get("chattingError")
     with open('config/autoSettings.yaml', 'r', encoding='utf-8') as f:
         resul = yaml.load(f.read(), Loader=yaml.FullLoader)
     global trustG
@@ -173,6 +176,7 @@ def main(bot, master, logger):
                     RecurionDepthCount[event.sender.id]+=1
                     if RecurionDepthCount[event.sender.id]>MaxRecursionTimes:
                         logger.warning("递归深度超过设置限度，自动退出。")
+                        await bot.send(event,random.choice(chattingError))
                         return
                 else:
                     RecurionDepthCount[event.sender.id]=0
@@ -240,6 +244,7 @@ def main(bot, master, logger):
                 RecurionDepthCount[event.sender.id]+=1
                 if RecurionDepthCount[event.sender.id]>MaxRecursionTimes:
                     logger.warning("递归深度超过设置限度，自动退出。")
+                    await bot.send(event,random.choice(chattingError))
                     return
             else:
                 RecurionDepthCount[event.sender.id]=0
@@ -430,6 +435,7 @@ def main(bot, master, logger):
                 RecurionDepthCount[event.sender.id]+=1
                 if RecurionDepthCount[event.sender.id]>MaxRecursionTimes:
                     logger.warning("递归深度超过设置限度，自动退出。")
+                    await bot.send(event,random.choice(chattingError))
                     return
             else:
                 RecurionDepthCount[event.sender.id]=0
