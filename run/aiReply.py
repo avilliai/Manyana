@@ -172,15 +172,16 @@ def main(bot, master, logger):
                 r= await modelReply("指挥", event.from_id, text)
             if r=="出错，请重试\n或联系master更换默认模型":
                 logger.warning("模型出错了，看来只有使用递归了凸(艹皿艹 )")
-                if event.sender.id in RecurionDepthCount:
-                    RecurionDepthCount[event.sender.id]+=1
-                    if RecurionDepthCount[event.sender.id]>MaxRecursionTimes:
+                if event.from_id in RecurionDepthCount:
+                    RecurionDepthCount[event.from_id]+=1
+                    if RecurionDepthCount[event.from_id]>MaxRecursionTimes:
                         logger.warning("递归深度超过设置限度，自动退出。")
                         await bot.send(event,random.choice(chattingError))
+                        RecurionDepthCount.pop(event.from_id)
                         return
                 else:
-                    RecurionDepthCount[event.sender.id]=0
-                await clearsinglePrompt(event.sender.id)
+                    RecurionDepthCount[event.from_id]=0
+                await clearsinglePrompt(event.from_id)
                 await NudgeReply(event) #真是递递又归归
                 return
             if withText:
@@ -245,6 +246,7 @@ def main(bot, master, logger):
                 if RecurionDepthCount[event.sender.id]>MaxRecursionTimes:
                     logger.warning("递归深度超过设置限度，自动退出。")
                     await bot.send(event,random.choice(chattingError))
+                    RecurionDepthCount.pop(event.sender.id)
                     return
             else:
                 RecurionDepthCount[event.sender.id]=0
@@ -436,6 +438,7 @@ def main(bot, master, logger):
                 if RecurionDepthCount[event.sender.id]>MaxRecursionTimes:
                     logger.warning("递归深度超过设置限度，自动退出。")
                     await bot.send(event,random.choice(chattingError))
+                    RecurionDepthCount.pop(event.sender.id)
                     return
             else:
                 RecurionDepthCount[event.sender.id]=0
