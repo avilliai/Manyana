@@ -117,7 +117,7 @@ async def geminirep(ak, messages, bot_info, GeminiRevProxy="",model="gemini-1.5-
             messages_copy[-1]['parts'].append(vb)
     if GeminiRevProxy == "" or GeminiRevProxy == " ":
         # Or use `os.getenv('GOOGLE_API_KEY')` to fetch an environment variable.
-        r=await geminiCFofficial(ak, messages_copy, proxy, model)
+        r=await geminiCFofficial(ak, messages, proxy, model)
         r=r.rstrip()
         '''genai.configure(api_key=GOOGLE_API_KEY)
 
@@ -170,13 +170,19 @@ async def geminiCFofficial(ak, messages, proxy, model):
         "http://": proxy,
         "https://": proxy
     }
-    async with httpx.AsyncClient(timeout=100,proxies=proxies) as client:
-        r = await client.post(url, json={"contents": messages, "safetySettings": [
-            {'category': 'HARM_CATEGORY_SEXUALLY_EXPLICIT', "threshold": "BLOCK_None"},
-            {'category': 'HARM_CATEGORY_HATE_SPEECH', "threshold": "BLOCK_None"},
-            {'category': 'HARM_CATEGORY_HARASSMENT', "threshold": "BLOCK_None"},
-            {'category': 'HARM_CATEGORY_DANGEROUS_CONTENT', "threshold": "BLOCK_None"}]})
-        print(r)
-        return r.json()['candidates'][0]["content"]["parts"][0]["text"]
+    async with httpx.AsyncClient(proxies=proxies) as client:
+
+        response = await client.post(
+            f"https://generativelanguage.googleapis.com/v1beta/openai/chat/completions",
+            headers={"Authorization": f"Bearer {ak}"},
+            json={
+                "model": model,  # 使用您选择的模型
+                "messages": messages,
+            }
+        )
+        response_data = response.json()
+
+        return response_data['choices'][0]['message']['content']
+
     #r=requests.post(url,json=message,verify=False)
 #支持图片识别的gemini
