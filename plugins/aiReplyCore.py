@@ -234,7 +234,7 @@ async def modelReply(senderName, senderId, text, modelHere=modelDefault, trustUs
                 return "模型不可用，请更换模型。"
         elif modelHere == "Gemini":
             r = await geminirep(ak=random.choice(geminiapikey), messages=prompt1, bot_info=bot_in,
-                                GeminiRevProxy=GeminiRevProxy, model=geminimodel,imgurls=imgurls),
+                                GeminiRevProxy=GeminiRevProxy, model=geminimodel,imgurls=imgurls,proxy=proxy),
             # print(r,type(r))
             rep = {"role": "assistant", "content": r[0].replace(r"\n", "\n")}
         elif modelHere=="sparkAI" or modelHere=="讯飞星火":
