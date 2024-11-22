@@ -20,6 +20,7 @@ from plugins.aiDrawer import getloras, SdDraw, draw2, airedraw, draw1, draw3, ti
 i = 0
 turn = 0
 UserGet = {}
+tag_user = {}
 
 def main(bot, logger):
     logger.info("ai绘画 启用")
@@ -42,47 +43,25 @@ def main(bot, logger):
     redraw = {}
     global UserGet
     UserGet = {}
+    tag_user = {}
 
     @bot.on(GroupMessage)
     async def msDrawer(event: GroupMessage):
-        if str(event.message_chain).startswith("画 ") and aiDrawController.get("modelscopeSD"):
-            tag = str(event.message_chain).replace("画 ", "")
+        if str(event.message_chain).startswith("画") and aiDrawController.get("modelscopeSD"):
+            tag = str(event.message_chain).split("画")[1]
             logger.info("发起modelscope SDai绘画请求，prompt:" + tag)
             try:
                 p = await fluxDrawer(tag)
-                await bot.send(event, Image(url=p), True)
-                await bot.send(event,"这不是sd，要sd图的再等等喵~") 
+                await bot.send(event, ["modelscope flux api result:",Image(url=p)], True)
             except Exception as e:
                 logger.error(e)
                 logger.error("modelscope Drawer出错")
-                await bot.send(event,"只因了喵~别急，不是sd喵~")
-        if str(event.message_chain).startswith("画横图 ") and aiDrawController.get("modelscopeSD"):
-            tag = str(event.message_chain).replace("画横图 ", "")
-            logger.info("发起modelscope SDai绘画请求，prompt:" + tag)
-            try:
-                p = await fluxDrawer(tag)
-                await bot.send(event, Image(url=p), True)
-                await bot.send(event,"这不是sd，要sd图的再等等喵~") 
-            except Exception as e:
-                logger.error(e)
-                logger.error("modelscope Drawer出错")
-                await bot.send(event,"只因了喵~别急，不是sd喵~")
-        if str(event.message_chain).startswith("画方图 ") and aiDrawController.get("modelscopeSD"):
-            tag = str(event.message_chain).replace("画方图 ", "")
-            logger.info("发起modelscope SDai绘画请求，prompt:" + tag)
-            try:
-                p = await fluxDrawer(tag)
-                await bot.send(event, Image(url=p), True)
-                await bot.send(event,"这不是sd，要sd图的再等等喵~") 
-            except Exception as e:
-                logger.error(e)
-                logger.error("modelscope Drawer出错")
-                await bot.send(event,"只因了喵~别急，不是sd喵~")         
+                #await bot.send(event,"只因了喵~别急，不是sd喵~")       
 
     @bot.on(GroupMessage)
     async def AiSdDraw(event: GroupMessage):
-        global turn
-        if str(event.message_chain).startswith("画 ") and aiDrawController.get("sd接口"):
+        global turn #画 中空格的意义在于防止误触发，但fluxDrawer无所谓了，其他倒是可以做一做限制。
+        if str(event.message_chain).startswith("画 ") and sdUrl!="" and sdUrl!=" ":
             tag = str(event.message_chain).replace("画 ", "")
             path = f"data/pictures/cache/{random_str()}.png"
             logger.info(f"发起SDai绘画请求，path:{path}|prompt:{tag}")
@@ -428,6 +407,48 @@ def main(bot, logger):
             except Exception as e:
                 logger.error(f"重绘失败: {e}")
                 await bot.send(event, "重绘失败了喵~", True)
+
+    async def url_to_base64(url):
+        async with httpx.AsyncClient(timeout=9000) as client:
+            response = await client.get(url)
+            if response.status_code == 200:
+                image_bytes = response.content
+                encoded_string = base64.b64encode(image_bytes).decode('utf-8')
+                return encoded_string
+            else:
+                raise Exception(f"Failed to retrieve image: {response.status_code}")
+            
+    @bot.on(GroupMessage)
+    async def tagger(event: GroupMessage):
+        global UserGet
+
+        if event.message_chain.has(Image) == False and (str(event.message_chain) == ("tag") or str(event.message_chain).startswith("tag ")):
+            tag_user[event.sender.id] = []
+            await bot.send(event, "请发送要识别的图片")
+
+        # 处理图片和重绘命令
+        if (str(event.message_chain).startswith("tag") or event.sender.id in tag_user) and event.message_chain.count(Image):
+            if (str(event.message_chain).startswith("tag")) and event.message_chain.count(Image):
+                tag_user[event.sender.id] = []
+
+            # 日志记录
+            logger.info(f"接收来自群：{event.group.id} 用户：{event.sender.id} 的tag反推指令")
+
+            # 获取图片路径
+            path = f"data/pictures/cache/{random_str()}.png"
+            lst_img = event.message_chain.get(Image)
+            img_url = lst_img[0].url
+            logger.info(f"发起反推tag请求，path:{path}")
+            tag_user.pop(event.sender.id)
+            
+            try:
+                b64_in = await url_to_base64(img_url)    
+                await bot.send(event, "tag反推中", True)
+                message,tags,tags_str = await pic_audit_standalone(b64_in,is_return_tags=True)
+                await bot.send(event, tags_str, True)
+            except Exception as e:
+                logger.error(f"反推失败: {e}")
+                await bot.send(event, "反推失败了喵~", True)
 
     async def url_to_base64(url):
         async with httpx.AsyncClient(timeout=9000) as client:
