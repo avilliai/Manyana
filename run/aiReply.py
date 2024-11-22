@@ -280,7 +280,8 @@ def main(bot, master, logger):
                 return
             except:
                 logger.error("语音合成调用失败")
-                await bot.send(event, r, True)
+                if not withText:
+                    await bot.send(event, r, True)
 
 
 
@@ -476,8 +477,8 @@ def main(bot, master, logger):
             except Exception as e:
                 logger.error(e)
                 logger.error("语音合成失败")
-
-                await bot.send(event, r, True)
+                if not withText:
+                    await bot.send(event, r, True)
 
 
     # 用于chatGLM清除本地缓存
