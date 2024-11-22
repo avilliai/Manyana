@@ -77,6 +77,9 @@ async def pic_audit_standalone(
     value.sort(reverse=True)
     reverse_dict = {v: k for k, v in to_user_dict.items()}
     message += (f"最终结果为:{reverse_dict[value[0]].rjust(5)}")
+    
+    keys = list(tags.keys())
+    tags_str = ", ".join(keys)
 
     if return_none:
         value = list(possibilities.values())
@@ -86,7 +89,7 @@ async def pic_audit_standalone(
         return True if reverse_dict[value[0]] == "questionable" or reverse_dict[value[0]] == "explicit" else False
 
     if is_return_tags:
-        return message, tags
+        return message, tags, tags_str
     if audit:
         return possibilities, message
     return message

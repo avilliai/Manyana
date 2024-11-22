@@ -20,6 +20,7 @@ from plugins.aiDrawer import getloras, SdDraw, draw2, airedraw, draw1, draw3, ti
 i = 0
 turn = 0
 UserGet = {}
+tag_user = {}
 
 def main(bot, logger):
     logger.info("ai绘画 启用")
@@ -42,6 +43,7 @@ def main(bot, logger):
     redraw = {}
     global UserGet
     UserGet = {}
+    tag_user = {}
 
     @bot.on(GroupMessage)
     async def msDrawer(event: GroupMessage):
@@ -405,6 +407,48 @@ def main(bot, logger):
             except Exception as e:
                 logger.error(f"重绘失败: {e}")
                 await bot.send(event, "重绘失败了喵~", True)
+
+    async def url_to_base64(url):
+        async with httpx.AsyncClient(timeout=9000) as client:
+            response = await client.get(url)
+            if response.status_code == 200:
+                image_bytes = response.content
+                encoded_string = base64.b64encode(image_bytes).decode('utf-8')
+                return encoded_string
+            else:
+                raise Exception(f"Failed to retrieve image: {response.status_code}")
+            
+    @bot.on(GroupMessage)
+    async def tagger(event: GroupMessage):
+        global UserGet
+
+        if event.message_chain.has(Image) == False and (str(event.message_chain) == ("tag") or str(event.message_chain).startswith("tag ")):
+            tag_user[event.sender.id] = []
+            await bot.send(event, "请发送要识别的图片")
+
+        # 处理图片和重绘命令
+        if (str(event.message_chain).startswith("tag") or event.sender.id in tag_user) and event.message_chain.count(Image):
+            if (str(event.message_chain).startswith("tag")) and event.message_chain.count(Image):
+                tag_user[event.sender.id] = []
+
+            # 日志记录
+            logger.info(f"接收来自群：{event.group.id} 用户：{event.sender.id} 的tag反推指令")
+
+            # 获取图片路径
+            path = f"data/pictures/cache/{random_str()}.png"
+            lst_img = event.message_chain.get(Image)
+            img_url = lst_img[0].url
+            logger.info(f"发起反推tag请求，path:{path}")
+            tag_user.pop(event.sender.id)
+            
+            try:
+                b64_in = await url_to_base64(img_url)    
+                await bot.send(event, "tag反推中", True)
+                message,tags,tags_str = await pic_audit_standalone(b64_in,is_return_tags=True)
+                await bot.send(event, tags_str, True)
+            except Exception as e:
+                logger.error(f"反推失败: {e}")
+                await bot.send(event, "反推失败了喵~", True)
 
     async def url_to_base64(url):
         async with httpx.AsyncClient(timeout=9000) as client:
