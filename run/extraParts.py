@@ -797,12 +797,10 @@ def main(bot, logger):
                 event.message_chain) == "随机奥术":
             from plugins.youtube0 import ASMR_random, get_audio, get_img
             logger.info("奥术魔刃，启动！")
-            logger.info("获取随机ASMR")
             athor, title, video_id, length = await ASMR_random()
             imgurl = await get_img(video_id)
             audiourl = await get_audio(video_id)
 
-            logger.info("推送随机ASMR")
             st1 = "标题:" + title + "\n"
             st1 += "频道：" + athor + "\n"
             st1 += f"时长：{length // 60}分{length % 60}秒\n"
