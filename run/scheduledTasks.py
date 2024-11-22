@@ -262,16 +262,17 @@ def main(bot,logger):
             st1 += f"时长：{length//60}分{length%60}秒\n"
             st2 = "======================\n"
             st2 += task_info.get("text")
+            msg =  MusicShare(kind="QQMusic",
+                              title=title,
+                              summary=athor,
+                              jump_url=f"https://www.amoyshare.com/player/?v={video_id}",
+                              picture_url=imgurl,
+                              music_url=audiourl,
+                              brief='ASMR')
             for i in groupdata.get("nightASMR").get("groups"):
                 try:
                     await bot.send_group_message(int(i), [st1,Image(url=imgurl),st2])
-                    await bot.send_group_message(int(i), MusicShare(kind="QQMusic", 
-                                                                    title=title, 
-                                                                    summary=athor,
-                                                                    jump_url=f"https://www.amoyshare.com/player/?v={video_id}",
-                                                                    picture_url=imgurl,
-                                                                    music_url=audiourl,
-                                                                    brief='ASMR'))
+                    await bot.send_group_message(int(i),msg)
                 except:
                     logger.error("不存在的群"+str(i))
         
