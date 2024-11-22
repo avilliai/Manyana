@@ -59,13 +59,15 @@ def main(bot,logger):
                     # print(content)
                 if content["code"] != 0:
                     await bot.send(event,f"出错啦~可能是图里角色太多了~\ncontent:{content}",True)
+                    dataGet.pop(event.sender.id)
                     return
                 data = content["data"]
                 if len(data) == 0:
                     await bot.send(event,"没有识别到任何角色",True)
+                    dataGet.pop(event.sender.id)
                     return
                 
-                st = f'共识别到{len(data)}个角色\n当前模型:{dataGet[event.sender.id]["model"]}'
+                st = f'共识别到{len(data)}个角色\n当前模型:{dataGet[event.sender.id]["model"]}\n更多模型请访问:https://ai.animedb.cn'
                 dataGet[event.sender.id]['message']=[]
                 b0 = ForwardMessageNode(sender_id=bot.qq, sender_name="Manyana",
                                             message_chain=MessageChain(st))
