@@ -7,6 +7,7 @@ import base64
 from io import BytesIO
 from PIL import Image as PILImage
 import asyncio
+import re
 
 import yaml
 from mirai import GroupMessage
@@ -15,12 +16,13 @@ from mirai import Image
 from plugins.toolkits import random_str
 
 from plugins.setuModerate import fileImgModerate, pic_audit_standalone
-from plugins.aiDrawer import getloras, SdDraw, draw2, airedraw, draw1, draw3, tiktokredraw, draw5, draw4, draw6, fluxDrawer, SdDraw1, SdDraw2, getcheckpoints, ckpt2, SdreDraw
+from plugins.aiDrawer import getloras, SdDraw, draw2, airedraw, draw1, draw3, tiktokredraw, draw5, draw4, draw6, fluxDrawer, SdDraw1, SdDraw2, getcheckpoints, ckpt2, SdreDraw, SdDraw0
 
 i = 0
 turn = 0
 UserGet = {}
 tag_user = {}
+sd_user_args = {}
 
 def main(bot, logger):
     logger.info("ai绘画 启用")
@@ -44,7 +46,35 @@ def main(bot, logger):
     global UserGet
     UserGet = {}
     tag_user = {}
-
+    
+    def parse_arguments(arg_string):
+        args = arg_string.split()
+        print(f"Split arguments: {args}")  # 调试信息
+        result = {}
+        for arg in args:
+            if arg.startswith('-') and len(arg) > 1:
+                # 找到第一个数字的位置
+                for i, char in enumerate(arg[1:], start=1):
+                    if char.isdigit():
+                        break
+                else:
+                    print(f"Warning: Invalid argument format '{arg}'")  # 调试信息
+                    continue
+                
+                key = arg[1:i]
+                value = arg[i:]
+                try:
+                    value = int(value)
+                except ValueError:
+                    print(f"Warning: Invalid value for key '{key}'")  # 调试信息
+                    continue
+                result[key] = value
+                print(f"Extracted key-value pair: {key} = {value}")  # 调试信息
+            else:
+                print(f"Warning: Invalid argument format '{arg}'")  # 调试信息
+        print(f"Parsed arguments: {result}")  # 调试信息
+        return result
+    
     @bot.on(GroupMessage)
     async def msDrawer(event: GroupMessage):
         if str(event.message_chain).startswith("画") and aiDrawController.get("modelscopeSD"):
@@ -61,12 +91,38 @@ def main(bot, logger):
     @bot.on(GroupMessage)
     async def AiSdDraw(event: GroupMessage):
         global turn #画 中空格的意义在于防止误触发，但fluxDrawer无所谓了，其他倒是可以做一做限制。
+        global sd_user_args
         if str(event.message_chain).startswith("画 ") and sdUrl!="" and sdUrl!=" ":
             tag = str(event.message_chain).replace("画 ", "")
             path = f"data/pictures/cache/{random_str()}.png"
             logger.info(f"发起SDai绘画请求，path:{path}|prompt:{tag}")
             try:
                 await bot.send(event, f'sd前面排队{turn}人，请耐心等待喵~', True)
+                turn += 1
+                # 没啥好审的，controller直接自个写了。
+                args = sd_user_args.get(event.sender.id, {})
+                p = await SdDraw0(tag + positive_prompt, negative_prompt, path, sdUrl, event.group.id, args)
+                # logger.error(str(p))
+                if p == False:
+                    turn -= 1
+                    logger.info("色图已屏蔽")
+                    await bot.send(event, "杂鱼，色图不给你喵~", True)
+                else:
+                    await bot.send(event, [Image(path=path)], True)
+                    turn -= 1
+                    # logger.info("success")
+                    #await bot.send(event, "防出色图加上rating_safe，如果色图请自行撤回喵~")
+            except Exception as e:
+                logger.error(e)
+                turn -= 1
+                await bot.send(event,"sd只因了，联系master喵~")
+        
+        if str(event.message_chain).startswith("画竖图 ") and sdUrl!="" and sdUrl!=" ":
+            tag = str(event.message_chain).replace("画竖图 ", "")
+            path = f"data/pictures/cache/{random_str()}.png"
+            logger.info(f"发起SDai绘画请求，path:{path}|prompt:{tag}")
+            try:
+                await bot.send(event, f'开始画竖图啦~sd前面排队{turn}人，请耐心等待喵~', True)
                 turn += 1
                 # 没啥好审的，controller直接自个写了。
                 p = await SdDraw(tag + positive_prompt, negative_prompt, path, sdUrl, event.group.id)
@@ -391,12 +447,13 @@ def main(bot, logger):
             
 
             try:
+                args = sd_user_args.get(event.sender.id, {})
                 b64_in = await url_to_base64(img_url)
                 
                 await bot.send(event, f"开始重绘啦~sd前面排队{turn}人，请耐心等待喵~", True)
                 turn += 1
                 # 将 UserGet[event.sender.id] 列表中的内容和 positive_prompt 合并成一个字符串
-                p = await SdreDraw(prompts_str, negative_prompt, path, sdUrl, event.group.id, b64_in)
+                p = await SdreDraw(prompts_str, negative_prompt, path, sdUrl, event.group.id, b64_in, args)
                 if p == False:
                     turn -= 1
                     logger.info("色图已屏蔽")
@@ -444,7 +501,7 @@ def main(bot, logger):
             try:
                 b64_in = await url_to_base64(img_url)    
                 await bot.send(event, "tag反推中", True)
-                message,tags,tags_str = await pic_audit_standalone(b64_in,is_return_tags=True)
+                message,tags,tags_str = await pic_audit_standalone(b64_in,is_return_tags=True,url =sdUrl)
                 await bot.send(event, tags_str, True)
             except Exception as e:
                 logger.error(f"反推失败: {e}")
@@ -459,4 +516,14 @@ def main(bot, logger):
                 return encoded_string
             else:
                 raise Exception(f"Failed to retrieve image: {response.status_code}")
+            
+    @bot.on(GroupMessage)
+    async def sdsettings(event: GroupMessage):
+        if str(event.message_chain).startswith("setsd "):
+            command = str(event.message_chain).replace("setsd ", "")
+            cmd_dict = parse_arguments(command)  # 不需要 await
+            sd_user_args[event.sender.id] = cmd_dict
+            print(f"Updated sd_user_args: {sd_user_args}")  # 调试信息
+            await bot.send(event, "设置成功喵~", True)
+            await bot.send(event, f"当前设置: {sd_user_args[event.sender.id]}")
             
