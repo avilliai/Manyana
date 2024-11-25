@@ -128,7 +128,15 @@ async def handwrite(msg):
         img.save(path)  # 使用PIL库保存图片
         # rint(path)
         return path
-
-
+async def bingEveryDay():
+    url="https://cn.bing.com/HPImageArchive.aspx?format=js&idx=0&n=1&mkt=zh-CN"
+    path = "data/pictures/cache/" + random_str() + ".png"
+    async with httpx.AsyncClient(timeout=200, headers=get_headers()) as client:
+        r = await client.get(url)
+        url="https://cn.bing.com"+r.json()["images"][0]["url"]
+        r = await client.get(url)
+        img = Image.open(BytesIO(r.content))  # 从二进制数据创建图片对象
+        img.save(path)
+        return path
 if __name__ == '__main__':
     asyncio.run(xingzuo())
