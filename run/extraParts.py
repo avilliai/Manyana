@@ -27,7 +27,7 @@ from plugins.extraParts import get_cp_mesg, arkOperator, minecraftSeverQuery, eg
 from plugins.gacha import arkGacha, starRailGacha, bbbgacha
 from plugins.extraParts import hisToday, steamEpic, search_and_download_image
 from plugins.jokeMaker import get_joke
-from plugins.newsEveryDay import news, moyu, xingzuo, sd, chaijun, danxianglii, beCrazy
+from plugins.newsEveryDay import news, moyu, xingzuo, sd, chaijun, danxianglii, beCrazy,bingEveryDay
 from plugins.picGet import pic, setuGet
 from plugins.setuModerate import setuModerate
 from plugins.solveSearch import solve
@@ -545,7 +545,11 @@ def main(bot, logger):
                 await bot.send(event, Image(path=p))
             except:
                 await bot.send(event, "出错，格式请按照/ba Blue#Archive")
-
+    @bot.on(GroupMessage)
+    async def bingToday(event: GroupMessage):
+        if str(event.message_chain)=="今日bing" or str(event.message_chain)=="今日必应":
+            p=await bingEveryDay()
+            await bot.send(event,Image(path=p))
     @bot.on(GroupMessage)
     async def moyuToday(event: GroupMessage):
         if ("方舟十连" in str(event.message_chain) and At(bot.qq) in event.message_chain) or str(
