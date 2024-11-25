@@ -15,7 +15,7 @@ from mirai import Startup, Shutdown
 from plugins import weatherQuery
 from plugins.aiReplyCore import modelReply
 from plugins.extraParts import steamEpic
-from plugins.newsEveryDay import news, danxianglii, moyu, xingzuo
+from plugins.newsEveryDay import news, danxianglii, moyu, xingzuo,bingEveryDay
 from plugins.toolkits import screenshot_to_pdf_and_png,picDwn
 
 
@@ -217,6 +217,15 @@ def main(bot,logger):
                     await bot.send_group_message(int(i), [task_info.get("text"), Image(path=path)])
                 except:
                     logger.error("不存在的群" + str(i))
+        elif task_name=="bingEveryDay":
+            logger.info("获取bing图像")
+            text,p=await bingEveryDay()
+            logger.info("推送")
+            for i in groupdata.get("bingEveryDay").get("groups"):
+                try:
+                    await bot.send_group_message(int(i), [task_info.get("text")+text, Image(path=path)])
+                except:
+                    logger.error("不存在的群" + str(i))
         elif task_name=="constellation":
             logger.info("获取星座运势")
             path = await xingzuo()
@@ -300,6 +309,8 @@ def main(bot,logger):
                 "每日星座": "constellation",
                 "单向历": "danxiangli",
                 "bangumi日榜":"bangumi",
+                "每日bing": "bingEveryDay",
+                "所有订阅": "所有订阅",
                 "晚安ASMR":"nightASMR"}
         key = cmds.get(cmd, 'unknown')
         if key == 'unknown':
@@ -343,6 +354,8 @@ def main(bot,logger):
             key="bangumi"
         elif str(event.message_chain)=="/取消 晚安ASMR":
             key="nightASMR"
+        elif str(event.message_chain)=="/取消 每日bing":
+            key="bingEveryDay"
         else:
             if str(event.message_chain) == "/取消 所有订阅":
                 for key in keys:
