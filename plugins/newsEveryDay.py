@@ -133,10 +133,11 @@ async def bingEveryDay():
     path = "data/pictures/cache/" + random_str() + ".png"
     async with httpx.AsyncClient(timeout=200, headers=get_headers()) as client:
         r = await client.get(url)
+        text="今日bing图像"+r.json()["images"][0]["title"]+"\n"+r.json()["images"][0]["copyright"]
         url="https://cn.bing.com"+r.json()["images"][0]["url"]
         r = await client.get(url)
         img = Image.open(BytesIO(r.content))  # 从二进制数据创建图片对象
         img.save(path)
-        return path
+        return text,path
 if __name__ == '__main__':
     asyncio.run(xingzuo())
