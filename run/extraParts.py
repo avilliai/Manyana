@@ -548,8 +548,8 @@ def main(bot, logger):
     @bot.on(GroupMessage)
     async def bingToday(event: GroupMessage):
         if str(event.message_chain)=="今日bing" or str(event.message_chain)=="今日必应":
-            p=await bingEveryDay()
-            await bot.send(event,Image(path=p))
+            text,p=await bingEveryDay()
+            await bot.send(event,[text,Image(path=p)])
     @bot.on(GroupMessage)
     async def moyuToday(event: GroupMessage):
         if ("方舟十连" in str(event.message_chain) and At(bot.qq) in event.message_chain) or str(
