@@ -411,7 +411,10 @@ def main(bot, master, logger):
                 event.sender.id) in trustUser) or event.group.id in trustG or event.group.id == int(mainGroup)):
             logger.info("ai聊天启动")
         else:
-            return
+            if str(event.message_chain).startswith(result.get("chatGLM").get("prefix")):
+                text=str(event.message_chain).replace(result.get("chatGLM").get("prefix"), '')
+            else:
+                return
 
         text = str(event.message_chain).replace("@" + str(bot.qq) + "", '')
         imgurl = None
