@@ -410,13 +410,14 @@ def main(bot, master, logger):
         if (At(bot.qq) in event.message_chain or str(event.sender.id) in chattingUser) and (glmReply or (trustglmReply and str(
                 event.sender.id) in trustUser) or event.group.id in trustG or event.group.id == int(mainGroup)):
             logger.info("ai聊天启动")
+            text = str(event.message_chain).replace("@" + str(bot.qq) + "", '')
         else:
             if str(event.message_chain).startswith(result.get("chatGLM").get("prefix")):
                 text=str(event.message_chain).replace(result.get("chatGLM").get("prefix"), '')
             else:
                 return
 
-        text = str(event.message_chain).replace("@" + str(bot.qq) + "", '')
+        
         imgurl = None
         if event.message_chain.count(Image):
             lst_img = event.message_chain.get(Image)
