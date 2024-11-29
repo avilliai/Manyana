@@ -102,7 +102,7 @@ class MyWebSocketAdapter(WebSocketAdapter):
 if __name__ == '__main__':
     import sys  # 确保导入 sys 模块
     counter = 0  # 初始化计数器
-    while counter <= 10:
+    while counter <= 20:
         try:
             if not os.path.exists("data/pictures/benzi"):
                 os.mkdir("data/pictures/benzi")
