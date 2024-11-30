@@ -179,6 +179,6 @@ def main(bot, logger):
         logger.info(data)
         async with httpx.AsyncClient(timeout=20,headers=header) as client:
             r = await client.post(url,json=data)
-            print(r)
+            print(r.json())
 
 
