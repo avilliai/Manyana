@@ -32,26 +32,18 @@
 [linux部署脚本](https://github.com/lux-QAQ/Manyana_deploy)
 
 # 🚀windows部署
-**如果你没有代理，或git连接不稳定，可在搭建时选择【镜像源】，镜像源和git源完全同步更新。**<br>
-
- 压缩包中附带了readme.txt 照做就行<br>
- 能用Launcher改设置就用launcher改，不规范地修改文件导致的格式错误自行搜索解决。<br>
 ## 方法1：搭建工具部署(推荐)
-**如果你觉得自己从零开始搭建bot比较困难，请使用此方案**<br>
-对于windows用户，存在两款启动器，分别是[Manyana1.x](https://github.com/avilliai/Manyana/releases) 和[Manyana_deploy](https://github.com/lux-QAQ/Manyana_deploy/releases) 你可以根据自己的喜好选择<br>
+**请使用此方案搭建**<br>
+> 对于windows用户，存在两款启动器，分别是[Manyana1.x](https://github.com/avilliai/Manyana/releases) 和[Manyana_deploy](https://github.com/lux-QAQ/Manyana_deploy/releases) 你可以根据自己的喜好选择<br>
+
 [Manyana1.x](https://github.com/avilliai/Manyana/releases) (啥都不懂你就用这个吧，别给自己上难度了)使用方式如下。
 - 从[release](https://github.com/avilliai/Manyana/releases)下载最大的rar文件并解压
-  - 如果下载过慢，你也可以从Q群623265372获得这个压缩包
-- 运行launcher.exe<br>
-- 点击主界面 克隆仓库(没有自己的onebot实现的，需要额外安装onebot文件夹下的两个文件，先qq后llob_install)
-- 关闭launcher，重启launcher
-- 此时可以看到主界面已经变化，填写主界面设置并保存。使用压缩包仅需修改前四项。<br>
-- 在第二个页面，依次启动overflow和Manyana<br>
+  - 如果下载过慢，你也可以从Q群251807019获得这个压缩包(最新版会先在这里发)
+- 解压并阅读readme.txt
 
-## 方法2：不使用release(不推荐，除非你有丰富bot搭建经验)
+## 方法2：不使用搭建工具(极其不推荐，除非你有丰富bot搭建经验)
 - 请确保py版本为3.9
 - 请确保已安装[mirai-api-http](https://github.com/project-mirai/mirai-api-http) 并[正确配置](https://github.com/avilliai/wReply/blob/master/setting.yml)
-- 强烈推荐使用[release](https://github.com/avilliai/Manyana/releases))的LAUNCHER_ALL_Requirements.rar进行部署，请参考 搭建工具部署 部分，这将省去大量折腾的时间。
 ### 如果你仍坚持不使用一键包
 - 从[release](https://github.com/avilliai/wReply/releases/tag/yirimirai-Bot)下载python39_amd.exe并安装，(**安装python39的第一步一定要先勾选add to path**)
 - 克隆本仓库。找一个你喜欢的目录(**不要带中文**)打开cmd或git bash执行
