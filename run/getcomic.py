@@ -152,7 +152,11 @@ def main(bot, logger):
                     # 使用 asyncio.to_thread 调用函数并获取返回结果
                     r=await loop.run_in_executor(executor, downloadALLAndToPdf, comic_id, jmcomicSettings.get("savePath"),URLSource,proxy)
                 logger.info(f"下载完成，车牌号：{comic_id} \n下载链接：{r} ")
-                await bot.send(event,f"下载完成，车牌号：{comic_id} \n下载链接：{r}\n请复制到浏览器打开，为避免失效请尽快使用",True)
+                if r:
+                    await bot.send(event,f"下载完成，车牌号：{comic_id} \n下载链接：{r}\n请复制到浏览器打开，为避免失效请尽快使用",True)
+                else:
+                    absolute_path = os.path.abspath(f"{jmcomicSettings.get('savePath')}/{comic_id}.pdf")
+                    await sendFile(event,absolute_path,comic_id)
             except Exception as e:
                 logger.error(e)
                 await bot.send(event, "下载失败",True)
@@ -162,6 +166,17 @@ def main(bot, logger):
                 if jmcomicSettings.get("autoClearPDF"):
                     os.remove(f"{jmcomicSettings.get('savePath')}/{comic_id}.pdf")
                 logger.info("移除预览缓存")
-
+    async def sendFile(event,path,comic_id):
+        url="http://localhost:3000/upload_group_file"
+        header = {
+        "Authorization": "Bearer 2f68dbbf-519d-4f01-9636-e2421b68f379" 
+        }
+        data={
+          "group_id": event.group.id,
+          "file": path,
+          "name": comic_id
+                }
+        async with httpx.AsyncClient(timeout=200,headers=header) as client:
+            r = await client.post(url,json=data)
 
 
