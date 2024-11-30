@@ -177,7 +177,7 @@ def main(bot, logger):
           "name": f"{comic_id}.pdf"
                 }
         logger.info(data)
-        async with httpx.AsyncClient(timeout=20,headers=header) as client:
+        async with httpx.AsyncClient(timeout=None,headers=header) as client:
             r = await client.post(url,json=data)
             print(r.json())
 
