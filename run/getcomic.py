@@ -166,6 +166,7 @@ def main(bot, logger):
                     if jmcomicSettings.get("autoClearPDF"):
                         os.remove(f"{jmcomicSettings.get('savePath')}/{comic_id}.pdf")
                     logger.info("移除预览缓存")
+                    await bot.send(event,"下载完成了( >ρ< ”)",True)
                 except Exception as e: 
                     logger.error(e)
                     await bot.send(event, e,True)
