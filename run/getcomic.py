@@ -159,7 +159,8 @@ def main(bot, logger):
             finally:
                 operating.remove(comic_id)
                 shutil.rmtree(f"{jmcomicSettings.get('savePath')}/{comic_id}")
-                os.remove(f"{jmcomicSettings.get('savePath')}/{comic_id}.pdf")
+                if jmcomicSettings.get("autoClearPDF"):
+                    os.remove(f"{jmcomicSettings.get('savePath')}/{comic_id}.pdf")
                 logger.info("移除预览缓存")
 
 
