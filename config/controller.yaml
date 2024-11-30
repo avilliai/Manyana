@@ -39,6 +39,7 @@ JMComic:            #禁漫相关功能设置
   onlyTrustUser: False #打开后，仅master授权用户可用
   URLSource: 1 #使用的网盘，0为蓝奏云，1为file.io。蓝奏云需配置cookie，file.io可能需要配置proxy
   previewPages: 6  #验车预览页数
+  autoClearPDF: True #下载后自动清除pdf
   savePath: "./data/pictures/benzi"  #下载为pdf的默认保存路径
 碧蓝档案:
   订阅与推送: True   #为强迫症提供的开关，关闭后不会再检查碧蓝档案三服订阅更新
