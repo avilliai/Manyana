@@ -174,7 +174,7 @@ def main(bot, logger):
         data={
           "group_id": event.group.id,
           "file": path,
-          "name": str(comic_id)
+          "name": f"{comic_id}.pdf"
                 }
         logger.info(data)
         async with httpx.AsyncClient(timeout=20,headers=header) as client:
