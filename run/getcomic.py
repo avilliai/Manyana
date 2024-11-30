@@ -145,7 +145,7 @@ def main(bot, logger):
                 return
             operating.append(comic_id)
             try:
-                await bot.send(event,"已启用线程,请等待下载完成，耗时可能较长。bot将以链接形式返回pdf文件",True)
+                await bot.send(event,"已启用线程,请等待下载完成",True)
                 loop = asyncio.get_running_loop()
                 # 使用线程池执行器
                 with ThreadPoolExecutor() as executor:
@@ -154,15 +154,15 @@ def main(bot, logger):
                 logger.info(f"下载完成，车牌号：{comic_id} \n下载链接：{r} ")
                 if r:
                     await bot.send(event,f"下载完成，车牌号：{comic_id} \n下载链接：{r}\n请复制到浏览器打开，为避免失效请尽快使用",True)
-                else:
-                    absolute_path = os.path.abspath(f"{jmcomicSettings.get('savePath')}/{comic_id}.pdf")
-                    await sendFile(event,absolute_path,comic_id)
             except Exception as e:
                 logger.error(e)
                 await bot.send(event, "下载失败",True)
             finally:
                 operating.remove(comic_id)
                 shutil.rmtree(f"{jmcomicSettings.get('savePath')}/{comic_id}")
+                if jmcomicSettings.get("sendFile"):
+                    absolute_path = os.path.abspath(f"{jmcomicSettings.get('savePath')}/{comic_id}.pdf")
+                    await sendFile(event,absolute_path,comic_id)
                 if jmcomicSettings.get("autoClearPDF"):
                     os.remove(f"{jmcomicSettings.get('savePath')}/{comic_id}.pdf")
                 logger.info("移除预览缓存")
