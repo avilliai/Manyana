@@ -113,7 +113,9 @@ def downloadALLAndToPdf(comic_id,savePath,URLSource=0,proxy=""):
     jmcomic.download_album(comic_id, option)
     if URLSource==0:
         r=lanzouFileToUrl(f"{savePath}/{comic_id}.pdf")
-    else:
+    elif URLSource==1:
         r=fileToUrl(f"{savePath}/{comic_id}.pdf",proxy)
+    else:
+        return False
     return r
 
