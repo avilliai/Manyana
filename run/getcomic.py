@@ -174,8 +174,9 @@ def main(bot, logger):
         data={
           "group_id": event.group.id,
           "file": path,
-          "name": comic_id
+          "name": str(comic_id)
                 }
+        logger.info(data)
         async with httpx.AsyncClient(timeout=20,headers=header) as client:
             r = await client.post(url,json=data)
             print(r)
