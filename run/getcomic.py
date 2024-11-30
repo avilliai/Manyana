@@ -158,14 +158,20 @@ def main(bot, logger):
                 logger.error(e)
                 await bot.send(event, "下载失败",True)
             finally:
-                operating.remove(comic_id)
-                shutil.rmtree(f"{jmcomicSettings.get('savePath')}/{comic_id}")
-                if jmcomicSettings.get("sendFile"):
-                    absolute_path = os.path.abspath(f"{jmcomicSettings.get('savePath')}/{comic_id}.pdf")
-                    await sendFile(event,absolute_path,comic_id)
-                if jmcomicSettings.get("autoClearPDF"):
-                    os.remove(f"{jmcomicSettings.get('savePath')}/{comic_id}.pdf")
-                logger.info("移除预览缓存")
+                try:
+                    shutil.rmtree(f"{jmcomicSettings.get('savePath')}/{comic_id}")
+                    if jmcomicSettings.get("sendFile"):
+                        absolute_path = os.path.abspath(f"{jmcomicSettings.get('savePath')}/{comic_id}.pdf")
+                        await sendFile(event,absolute_path,comic_id)
+                    if jmcomicSettings.get("autoClearPDF"):
+                        os.remove(f"{jmcomicSettings.get('savePath')}/{comic_id}.pdf")
+                    logger.info("移除预览缓存")
+                except Exception as e: 
+                    logger.error(e)
+                    await bot.send(event, e,True)
+                finally:
+                    operating.remove(comic_id)
+                
     async def sendFile(event,path,comic_id):
         url="http://localhost:3000/upload_group_file"
         header = {
