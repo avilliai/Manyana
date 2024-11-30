@@ -454,3 +454,7 @@
   - 新指令 #获取bing每日一图
   - /推送 每日bing
   - 今日bing
+2024/11/30:
+  - controller/JMcomic新增配置项
+  - sendFile 直接以文件形式发送下载好的本子
+  - 建议将URLsource设置为2，即不再使用直链方式分享文件。
