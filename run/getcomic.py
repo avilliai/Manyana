@@ -169,14 +169,15 @@ def main(bot, logger):
     async def sendFile(event,path,comic_id):
         url="http://localhost:3000/upload_group_file"
         header = {
-        "Authorization": "Bearer 2f68dbbf-519d-4f01-9636-e2421b68f379" 
+        "Authorization": "Bearer ff" 
         }
         data={
           "group_id": event.group.id,
           "file": path,
           "name": comic_id
                 }
-        async with httpx.AsyncClient(timeout=200,headers=header) as client:
+        async with httpx.AsyncClient(timeout=20,headers=header) as client:
             r = await client.post(url,json=data)
+            print(r)
 
 
