@@ -77,8 +77,8 @@ def main(bot, logger):
     
     @bot.on(GroupMessage)
     async def msDrawer(event: GroupMessage):
-        if str(event.message_chain).startswith("画") and aiDrawController.get("modelscopeSD"):
-            tag = str(event.message_chain).split("画")[1]
+        if str(event.message_chain).startswith("画 ") and aiDrawController.get("modelscopeSD"):
+            tag = str(event.message_chain).split("画 ")[1]
             logger.info("发起modelscope SDai绘画请求，prompt:" + tag)
             try:
                 p = await fluxDrawer(tag)
