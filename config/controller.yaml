@@ -37,7 +37,7 @@ ai绘画:
 JMComic:            #禁漫相关功能设置
   enable: True     #全局开关
   onlyTrustUser: False #打开后，仅master授权用户可用
-  URLSource: 1 #使用的网盘，0为蓝奏云，1为file.io，2为不启用。蓝奏云需配置cookie，file.io可能需要配置proxy
+  URLSource: 2 #使用的网盘，0为蓝奏云，1为file.io，2为不启用。蓝奏云需配置cookie，file.io可能需要配置proxy
   previewPages: 6  #验车预览页数
   sendFile: True #以文件形式发送(可能被吞和封号)
   autoClearPDF: True #下载后自动清除pdf
