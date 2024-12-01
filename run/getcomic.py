@@ -187,7 +187,8 @@ def main(bot, logger):
         async with httpx.AsyncClient(timeout=None,headers=header) as client:
             r = await client.post(url,json=data)
             print(r.json())
-    async def wait_and_delete_file(file_path, check_interval=1):
+    async def wait_and_delete_file(file_path, check_interval=30):
+        await asyncio.sleep(100)
         while True:
             try:
                 with open(file_path, 'a'):
