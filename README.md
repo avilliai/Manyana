@@ -12,6 +12,7 @@
 - [arona api](https://doc.arona.diyigemt.com/) 
 - [star-rail-atlas](https://gitee.com/Nwflower/star-rail-atlas) 
 - [Yiri-mirai](https://github.com/YiriMiraiProject/YiriMirai)
+- [napcat](https://napneko.github.io/)
 - [install_llob](https://github.com/super1207/install_llob)
 - 如果遇到使用问题，请在QQ群623265372反馈
 
