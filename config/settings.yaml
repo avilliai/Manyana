@@ -34,7 +34,7 @@ chatGLM:                   #对话模型通用设置
     - alcex_GPT3_5
     - 猫娘米米
     - 沫沫
-  prefix: "/" #ai对话指令触发前缀，正常来说，艾特也可以触发。
+  prefix: "." #ai对话指令触发前缀，正常来说，艾特也可以触发。
   multiplyReply: false  #是否开启分行回复，优化回复效果。记得在设定里面强调让bot分段回复/尽量简短
   multiplyReplyReExpression: '[。？！]' #切分回复使用的正则表达式
   nudgeReply: false        #戳一戳，是否使用模型回复
