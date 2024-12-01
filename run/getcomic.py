@@ -163,10 +163,11 @@ def main(bot, logger):
                     if jmcomicSettings.get("sendFile"):
                         absolute_path = os.path.abspath(f"{jmcomicSettings.get('savePath')}/{comic_id}.pdf")
                         await sendFile(event,absolute_path,comic_id)
-                    if jmcomicSettings.get("autoClearPDF"):
-                        os.remove(f"{jmcomicSettings.get('savePath')}/{comic_id}.pdf")
                     logger.info("移除预览缓存")
                     await bot.send(event,"下载完成了( >ρ< ”)",True)
+                    if jmcomicSettings.get("autoClearPDF"):
+                        await wait_and_delete_file(f"{jmcomicSettings.get('savePath')}/{comic_id}.pdf")
+
                 except Exception as e: 
                     logger.error(e)
                 finally:
@@ -186,5 +187,19 @@ def main(bot, logger):
         async with httpx.AsyncClient(timeout=None,headers=header) as client:
             r = await client.post(url,json=data)
             print(r.json())
-
+    async def wait_and_delete_file(file_path, check_interval=1):
+        while True:
+            try:
+                with open(file_path, 'a'):
+                    os.remove(file_path)
+                    logger.info(f"文件 {file_path} 已成功删除")
+                    break
+            except PermissionError:
+                await asyncio.sleep(check_interval)
+            except FileNotFoundError:
+                logger.warning(f"文件 {file_path} 不存在或已被删除")
+                break
+            except Exception as e:
+                logger.error(f"删除文件 {file_path} 时发生未知错误: {e}")
+                break
 
