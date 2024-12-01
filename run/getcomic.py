@@ -190,14 +190,8 @@ def main(bot, logger):
     async def wait_and_delete_file(file_path, check_interval=30):
         while True:
             try:
-                with open(file_path, 'a'):
-                    os.remove(file_path)
-                    logger.info(f"文件 {file_path} 已成功删除")
-                    break
-                try:
-                    os.remove(f"{jmcomicSettings.get('savePath')}/{comic_id}.pdf")
-                except:
-                    pass
+                command=f'del \"{file_path}\" /F'
+                os.system(command)
             except PermissionError:
                 logger.error("PermissionError")
                 await asyncio.sleep(check_interval)
