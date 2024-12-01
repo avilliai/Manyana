@@ -28,6 +28,13 @@
 > 未来恢复更新后，开发的重心将转向[Eridanus](https://github.com/avilliai/Eridanus)
 > 
 > ❗️源码矢山警告⚠，本仓库一开始是我为了学习py而创建的，因此代码内容及项目规划有许多不够明智和成熟的地方，加上并没有很好地管理来自其他开发者的pr，源码杂乱无章，未来有时间会进行整体重构，现在……先凑合着吧
+# 大前提
+项目的结构是onebot实现+overflow+Manyana，所以你需要一个onebot实现才能进行接下来的内容。<br>
+下面我会给你列出一些选择<br>
+- [napcat](https://napneko.github.io/)
+- [llob](https://llonebot.github.io/zh-CN/guide/getting-started)
+
+>还是太过复杂？没关系，下载windows整合包后，部署脚本.pdf 会教你完成napcat的部署，流程十分简单。
 
 # 🚀windows部署
 ## 方法1：搭建工具部署(推荐)
@@ -37,7 +44,7 @@
 [Manyana1.x](https://github.com/avilliai/Manyana/releases) (啥都不懂你就用这个吧，别给自己上难度了)使用方式如下。
 - 从[release](https://github.com/avilliai/Manyana/releases)下载最新整合包并解压
   - 如果下载过慢，你也可以从Q群251807019获得这个压缩包(最新版会先在这里发)
-- 解压并阅读readme.txt
+- 解压并阅读 部署文档.pdf
 
 ## 方法2：不使用搭建工具(极其不推荐，除非你有丰富bot搭建经验)
 - 请确保py版本为3.9
