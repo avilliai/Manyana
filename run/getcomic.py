@@ -188,17 +188,18 @@ def main(bot, logger):
             r = await client.post(url,json=data)
             print(r.json())
     async def wait_and_delete_file(file_path, check_interval=30):
-        while True:
+        for _ in range(10):
             try:
-                command=f'del \"{file_path}\" /F'
-                os.system(command)
+                shutil.os.remove(file_path)
+                logger.info(f"文件 {file_path} 已成功删除")
+                return
             except PermissionError:
-                logger.error("PermissionError")
-                await asyncio.sleep(check_interval)
+                logger.warning(f"文件 {file_path} 被占用，等待重试...")
+                await asyncio.sleep(interval)
             except FileNotFoundError:
-                logger.warning(f"文件 {file_path} 不存在或已被删除")
-                break
+                logger.warning(f"文件 {file_path} 已不存在")
+                return
             except Exception as e:
-                logger.error(f"删除文件 {file_path} 时发生未知错误: {e}")
-                break
+                logger.error(f"删除文件时出现错误: {e}")
+                return
 
