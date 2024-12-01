@@ -28,7 +28,7 @@
 > 未来恢复更新后，开发的重心将转向[Eridanus](https://github.com/avilliai/Eridanus)
 > 
 > ❗️源码矢山警告⚠，本仓库一开始是我为了学习py而创建的，因此代码内容及项目规划有许多不够明智和成熟的地方，加上并没有很好地管理来自其他开发者的pr，源码杂乱无章，未来有时间会进行整体重构，现在……先凑合着吧
-# 大前提
+# 大前提: 部署一个onebot实现
 项目的结构是onebot实现+overflow+Manyana，所以你需要一个onebot实现才能进行接下来的内容。<br>
 下面我会给你列出一些选择<br>
 - [napcat](https://napneko.github.io/)
