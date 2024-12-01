@@ -169,7 +169,6 @@ def main(bot, logger):
                     await bot.send(event,"下载完成了( >ρ< ”)",True)
                 except Exception as e: 
                     logger.error(e)
-                    await bot.send(event, e,True)
                 finally:
                     operating.remove(comic_id)
                 
