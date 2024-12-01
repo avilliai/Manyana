@@ -188,14 +188,18 @@ def main(bot, logger):
             r = await client.post(url,json=data)
             print(r.json())
     async def wait_and_delete_file(file_path, check_interval=30):
-        await asyncio.sleep(100)
         while True:
             try:
                 with open(file_path, 'a'):
                     os.remove(file_path)
                     logger.info(f"文件 {file_path} 已成功删除")
                     break
+                try:
+                    os.remove(f"{jmcomicSettings.get('savePath')}/{comic_id}.pdf")
+                except:
+                    pass
             except PermissionError:
+                logger.error("PermissionError")
                 await asyncio.sleep(check_interval)
             except FileNotFoundError:
                 logger.warning(f"文件 {file_path} 不存在或已被删除")
