@@ -194,7 +194,7 @@ def main(bot, config, moderateKey, logger):
                 await bot.send_friend_message(event.from_id, "该群无授权，请在bot用户群：" + str(
                     mainGroup) + "\n联系机器人管理员获取授权")
         else:
-            if str(event.from_id) in userdict.keys():
+            if str(event.from_id) in userdict.keys() or event.from_id == master:
                 try:
                     if int(userdict.get(str(event.from_id)).get("sts")) > qiandaoT or event.from_id == master:
                         if event.group_id in superBlGroups:
