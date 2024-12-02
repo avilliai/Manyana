@@ -1,0 +1,23 @@
+国服:
+  groups:
+  - 789999
+  hash:
+    国服未来视: 3c0badf9d5fc940f2672b027ef236e0a
+    国服活动: 91e47a3cd85086b2ca2cc295fe83253f
+国际服:
+  groups:
+  - 789999
+  hash:
+    国际服总力: f89829a363f8074f5adc264181043d1e
+    国际服未来视: 2cf82b1c84a498aca82121ed10ce7748
+    国际服活动: 0844622fda2fb1cd82dd961245a5dcfd
+    国际服火力演习: fd4fc52aa481a6da7eff44a9c1bedd52
+日服:
+  groups:
+  - 699455559
+  - 628763673
+  hash:
+    日服大决战: 59f5ea4e3794612f58776947eea96cd9
+    日服总力: 0844622fda2fb1cd82dd961245a5dcfd
+    日服活动: 397d60604aa06b9eda0268a75cb470bb
+    日服火力演习: 44f4319249451b0adf37a573b1937a03
