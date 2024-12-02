@@ -81,7 +81,7 @@ def main():
         4 导出群信息，制作一个chatLearning可用的配置文件
         5 其他素材下载(可选)
         6 安装奶龙检测必要素材
-         安装vits功能对应依赖""")
+        7 安装vits功能对应依赖""")
     a = input("输入要执行的数字")
     if a=="1":
         os.system(f"{git_path} init")
