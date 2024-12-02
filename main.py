@@ -29,7 +29,7 @@ from run import aiReply, voiceReply, nudgeReply, wikiHelper, imgSearch, extraPar
     draftBottle, galgame,character_identify,wifeyouwant
 
 
-# 为了实现黑名单和群开关功能，我们将继承webSocketAdapter类
+# 为了实现黑名单和群开关功能，继承webSocketAdapter类
 class MyWebSocketAdapter(WebSocketAdapter):
     def __init__(self, verify_key, host, port, result,qq):
         super().__init__(verify_key=verify_key, host=host, port=port)
