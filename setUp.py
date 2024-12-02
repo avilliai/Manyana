@@ -9,7 +9,7 @@ import colorlog
 import shutil
 current_dir = os.getcwd()
 
-# 获取上一级目录
+
 parent_dir = os.path.dirname(current_dir)
 
 # 检测parent_dir目录下是否有NTQQ_Launcher文件夹
