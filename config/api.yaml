@@ -36,7 +36,7 @@ GeminiRevProxy: ""               #基于netlify反向代理，搭建后本地环
 GptSovitsToken: ""     #GptSovits的token,带有情感向量的语音合成，从https://getkey.acgnai.top/获取
 FishTTSAuthorization: ""         #FishTTS语音合成必要参数，看https://github.com/avilliai/Manyana/issues/19
 sdUrl: ""                        #你自己搭建的sd，地址，示例http://127.0.0.1:17858（示例≠你能直接填示例用），部署https://www.bilibili.com/video/BV1iM4y1y7oA/
-sd审核和反推api : "http://server.20020026.xyz:7865"            
+sd审核和反推api: "http://server.20020026.xyz:7865"            
 
 蓝奏云:                           #文件转直链必要配置
   ylogin: ""                     #参考https://github.com/avilliai/Manyana/issues/36获取
