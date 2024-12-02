@@ -33,6 +33,7 @@ def main(bot, logger):
     moderateK = result.get("moderate")
     proxy = result.get("proxy")
     sdUrl = result.get("sdUrl")
+    sd1 = result.get("sd审核和反推api")
     with open('config/settings.yaml', 'r', encoding='utf-8') as f:
         result1 = yaml.load(f.read(), Loader=yaml.FullLoader)
     selfsensor = result1.get("moderate").get("selfsensor")
@@ -42,9 +43,6 @@ def main(bot, logger):
     aiDrawController = controller.get("ai绘画")
     negative_prompt = aiDrawController.get("negative_prompt")
     positive_prompt = aiDrawController.get("positive_prompt")
-    with open('config/api.yaml', 'r', encoding='utf-8') as f:
-        result = yaml.load(f.read(), Loader=yaml.FullLoader)
-    sd1 = aiDrawController.get("sd审核和反推api")
     global redraw
     redraw = {}
     global UserGet
