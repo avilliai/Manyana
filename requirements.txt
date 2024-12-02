@@ -28,6 +28,3 @@ lanzou-api
 pytubefix
 wordcloud
 jieba
-torch
-torchvision
-opencv-python
