@@ -12,7 +12,7 @@ current_dir = os.getcwd()
 
 parent_dir = os.path.dirname(current_dir)
 
-# 检测parent_dir目录下是否有NTQQ_Launcher文件夹
+# 检测parent_dir目录下是否有NTQQ_Launcher
 NTQQ_Launcher_path = os.path.join(parent_dir, "NTQQ_Launcher")
 if os.path.exists(NTQQ_Launcher_path):
     # 如果有NTQQ_Launcher文件夹，则设置路径为parent_dir下的指定目录
