@@ -29,7 +29,7 @@ with open('config/controller.yaml', 'r', encoding='utf-8') as f:
 aiDrawController = controller.get("ai绘画")
 negative_prompt = aiDrawController.get("negative_prompt")
 positive_prompt = aiDrawController.get("positive_prompt")
-no_nsfw_group = [int(group_id) for group_id in aiDrawController.get("no_nsfw_groups", []) if group_id.isdigit()]
+no_nsfw_group = [int(group_id) for group_id in aiDrawController.get("no_nsfw_groups", []) if str(group_id).isdigit()]
 ckpt = aiDrawController.get("sd默认启动模型")
 
 with open('config/api.yaml', 'r', encoding='utf-8') as f:
