@@ -29,7 +29,7 @@ with open('config/controller.yaml', 'r', encoding='utf-8') as f:
 aiDrawController = controller.get("ai绘画")
 negative_prompt = aiDrawController.get("negative_prompt")
 positive_prompt = aiDrawController.get("positive_prompt")
-no_nsfw_group = aiDrawController.get("no_nsfw_groups")
+no_nsfw_group = [int(group_id) for group_id in aiDrawController.get("no_nsfw_groups", []) if group_id.isdigit()]
 ckpt = aiDrawController.get("sd默认启动模型")
 
 with open('config/api.yaml', 'r', encoding='utf-8') as f:
@@ -72,7 +72,7 @@ async def SdDraw(prompt, negative_prompt, path, sdurl,groupid):
     #我的建议是，直接返回base64，让它去审查
     b64 = r['images'][0]
     if groupid in no_nsfw_group:                                   # 推荐用kaggle部署sd，防止占线（kaggle搜spawnerqwq）
-        check = await pic_audit_standalone(b64, return_none=True,url = sdurl)  # 这里如果是使用我（spawnerqwq）的kaggle云端脚本部署的sd，参数可以写(b64,return_none=True,url)
+        check = await pic_audit_standalone(b64, return_none=True,url = sd1)  # 这里如果是使用我（spawnerqwq）的kaggle云端脚本部署的sd，参数可以写(b64,return_none=True,url)
         if check:                                                  # 注意自己装的wd14打标插件没用，官方插件有bug，我在kaggle部署的插件是修改过的
             return False                                           # 注意这里的url是sdurl，如果你在不是sd的画图模块也想开审核，注意把那个url的参数填sdurl
     logger.info(f'检测到合规内容，已发送')
