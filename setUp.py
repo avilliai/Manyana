@@ -80,7 +80,8 @@ def main():
         3 清理无用数据(如缓存图片)
         4 导出群信息，制作一个chatLearning可用的配置文件
         5 其他素材下载(可选)
-        6 安装vits功能对应依赖""")
+        6 安装奶龙检测必要素材
+         安装vits功能对应依赖""")
     a = input("输入要执行的数字")
     if a=="1":
         os.system(f"{git_path} init")
@@ -191,6 +192,11 @@ def main():
                 logger.info("文件夹不存在，拉取素材")
                 os.system(f"{git_path} clone https://gitee.com/Nwflower/star-rail-atlas.git")
     elif a=="6":
+        logger.info("开始安装奶龙检测必要素材")
+        os.system(f"\"{python_path}\" -m pip install --upgrade torch")
+        os.system(f"\"{python_path}\" -m pip install --upgrade torchvision")
+        os.system(f"\"{python_path}\" -m pip install --upgrade opencv-python")
+    elif a=="7":
         logger.info("开始安装vits语音模块相关依赖")
         os.system(f"\"{python_path}\" -m pip install -r vits/vitsRequirements.txt")
     else:

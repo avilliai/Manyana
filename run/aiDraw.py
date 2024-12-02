@@ -24,6 +24,7 @@ UserGet = {}
 tag_user = {}
 sd_user_args = {}
 
+
 def main(bot, logger):
     logger.info("ai绘画 启用")
     i = 0
@@ -32,6 +33,7 @@ def main(bot, logger):
     moderateK = result.get("moderate")
     proxy = result.get("proxy")
     sdUrl = result.get("sdUrl")
+    sd1 = result.get("sd审核和反推api")
     with open('config/settings.yaml', 'r', encoding='utf-8') as f:
         result1 = yaml.load(f.read(), Loader=yaml.FullLoader)
     selfsensor = result1.get("moderate").get("selfsensor")
@@ -501,7 +503,7 @@ def main(bot, logger):
             try:
                 b64_in = await url_to_base64(img_url)    
                 await bot.send(event, "tag反推中", True)
-                message,tags,tags_str = await pic_audit_standalone(b64_in,is_return_tags=True,url =sdUrl)
+                message,tags,tags_str = await pic_audit_standalone(b64_in,is_return_tags=True,url =sd1)
                 await bot.send(event, tags_str, True)
             except Exception as e:
                 logger.error(f"反推失败: {e}")
