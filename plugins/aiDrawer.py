@@ -34,7 +34,7 @@ ckpt = aiDrawController.get("sd默认启动模型")
 
 with open('config/api.yaml', 'r', encoding='utf-8') as f:
     result = yaml.load(f.read(), Loader=yaml.FullLoader)
-sd1 = aiDrawController.get("sd审核和反推api")
+sd1 = result.get("sd审核和反推api")
 
 sd_user_args = {}
 async def SdDraw(prompt, negative_prompt, path, sdurl,groupid):
