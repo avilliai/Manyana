@@ -296,6 +296,10 @@ def updaat(f=False,jump=False,source=None):
         logger.warning("开始处理冲突文件")
         if file.endswith(".py"):
             os.remove(file)
+            try:
+                shutil.os.remove(file)
+            except:
+                pass
             logger.warning("移除了" + file)
         elif file.endswith(".yaml"):
             logger.info("冲突的配置文件" + file)
@@ -306,14 +310,26 @@ def updaat(f=False,jump=False,source=None):
                 try:
                     shutil.copyfile(file, file.replace("config/", "temp/").replace("data/","temp/"))
                     os.remove(file)
+                    try:
+                        shutil.os.remove(file)
+                    except:
+                        pass
                 except:
                     continue
             else:
                 os.mkdir("./temp")
                 shutil.copyfile(file, file.replace("config", "temp").replace("data","temp"))
                 os.remove(file)
+                try:
+                    shutil.os.remove(file)
+                except:
+                    pass
         else:
             os.remove(file)
+            try:
+                shutil.os.remove(file)
+            except:
+                pass
             logger.warning("移除了 " + file)
             #logger.warning("请自行决定删除或修改文件名称，在重新拉取后根据旧文件重新填写新文件")
     logger.warning("开始处理冲突文件")
