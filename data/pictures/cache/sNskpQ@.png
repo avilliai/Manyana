@@ -1,0 +1,676 @@
+
+<!doctype html>
+<html lang="zh-CN" class="">
+<head>
+    <meta charset="utf-8">
+    <div id="loading-text"><div>
+    <title>PixelCloud-API - 免费，稳定的API平台</title>
+    <meta name="description" content="PixelCloud-API，我们致力于为用户提供稳定、快速的免费API数据接口服务。" />
+    <meta name="keywords" content="API,像素云,API内容管理,免费API,GPTAPI,AI,FREEAPI" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <link rel="icon" href="https://cdn.jsdmirror.com/gh/Alcexn/static@f952709b85bb8b917d64d14cc63c4c8df6007f28/api/img/favicons/favicon.png">
+    <script src="https://cdn.jsdmirror.com/npm/darkreader@4.9.89/darkreader.js"></script>
+    <link rel="stylesheet" href="//cdn.jsdmirror.com/npm/element-plus/dist/index.css" />
+    <!-- Import Vue 3 -->
+    <script src="//cdn.jsdmirror.com/npm/vue@3"></script>
+    <script src="//cdn.jsdmirror.com/npm/element-plus"></script>
+    <script src="/assets/js/index.js"></script>
+    <link rel="stylesheet" id="css-main" href="https://cdn.jsdmirror.com/gh/Alcexn/static@f952709b85bb8b917d64d14cc63c4c8df6007f28/api/css/codebase.min-5.4.css">
+    <link href="//s4.zstatic.net/ajax/libs/nprogress/0.2.0/nprogress.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://npm.elemecdn.com/lxgw-wenkai-screen-webfont/style.css" />
+    <!-- Ciallo～(∠・ω< )⌒☆   -->
+    <link rel="stylesheet" href="//s4.zstatic.net/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" />
+    <script src="https://cdn.jsdmirror.com/npm/jquery@3.7.1/dist/jquery.js"></script>
+    <script src="https://cdn.jsdmirror.com/npm/js-cookie@3/dist/js.cookie.min.js"></script>
+    <script src="https://cdn.jsdmirror.cn/npm/sober@0.4.2/dist/sober.min.js"></script>
+    <link rel="stylesheet" href="/assets/css/index.css" />
+    <script src="//s4.zstatic.net/ajax/libs/jquery.pjax/2.0.1/jquery.pjax.min.js"></script>
+    <script src="//s4.zstatic.net/ajax/libs/clipboard.js/2.0.11/clipboard.min.js"></script>
+    <script src="/assets/js/app.min.js"></script>
+    <style>
+    .hljs {
+    color: #24292e;
+    background: none !important;
+}   
+   pre code.hljs {
+    display: block;
+    overflow-x: auto;
+    padding: unset !important;
+}
+.input-group-lg>.btn, .input-group-lg>.form-control, .input-group-lg>.form-select, .input-group-lg>.input-group-text {
+    border-radius: 60.1rem !important;
+}
+.input-group:not(.has-validation)>.dropdown-toggle:nth-last-child(n+3), .input-group:not(.has-validation)>.form-floating:not(:last-child)>.form-control, .input-group:not(.has-validation)>.form-floating:not(:last-child)>.form-select, .input-group:not(.has-validation)>:not(:last-child):not(.dropdown-toggle):not(.dropdown-menu):not(.form-floating) {
+    border-top-right-radius: 0 !important;
+    border-bottom-right-radius: 0 !important;
+}
+.input-group>:not(:first-child):not(.dropdown-menu):not(.valid-tooltip):not(.valid-feedback):not(.invalid-tooltip):not(.invalid-feedback) {
+    border-top-left-radius: 0 !important;
+    border-bottom-left-radius: 0 !important;
+}
+body:before {
+    content: '';
+    z-index: -1;
+    position: fixed;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    opacity: .1;
+    background: url(https://www.imaegoo.com/img/cute.webp) repeat;
+}
+#footer {
+    backdrop-filter: blur(3px);
+    background-color: rgba(255, 255, 255, .7) !important;
+}
+.el-col {
+  text-align: center;
+}
+</style>
+</head>
+<body>
+    
+<style>
+body:before {
+    content: '';
+    z-index: -1;
+    position: fixed;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    opacity: .1;
+    background: url(https://www.imaegoo.com/img/cute.webp) repeat;
+}
+#expireb {
+    text-align: center;
+}
+        #limited-image {
+            width: 300px; /* 设置图片的宽度 */
+            height: auto;
+            border-radius: 10px;/* 使图片的高度自适应，保持宽高比 */
+        }
+        a.Developer {
+            color: #0284c7 !important;
+            cursor: pointer;
+        }
+.el-backtop {
+    bottom: 50px !important;
+    right: 20px !important;
+}
+</style>
+<div id="page-container" class="sidebar-o enable-page-overlay side-scroll page-header-fixed main-content-boxed remember-theme side-trans-enabled">
+    <nav id="sidebar">
+        <div class="sidebar-content">
+            <div class="content-header justify-content-lg-center">
+                <div>
+                    <span class="smini-visible fw-bold tracking-wide fs-lg">
+								c<span class="text-primary">c</span>
+							</span>
+                    <a class="link-fx fw-bold tracking-wide mx-auto" data-pjax href="./?index">
+								<span class="smini-hidden">
+		                            
+									<span class="fs-4 text-dual">PixelCloud</span>
+									<span class="fs-4 text-primary">API</span>
+								</span>
+                    </a>
+                </div>
+                <div>
+                    <button type="button" class="btn btn-sm btn-alt-danger d-lg-none" data-toggle="layout"
+                            data-action="sidebar_close">
+                        <i class="fa fa-fw fa-times"></i>
+                    </button>
+                </div>
+            </div>
+            <div class="js-sidebar-scroll">
+                <div class="content-side content-side-user px-0 py-0">
+                    <div class="smini-visible-block animated fadeIn px-2">
+                        <img class="img-avatar img-avatar32"
+                             src="https://q2.qlogo.cn/g?b=qq&nk=3591299887&s=100" alt="">
+                    </div>
+                    <div class="smini-hidden text-center mx-auto">
+                        <a class="img-link" data-pjax href="./?index">
+                            <img class="img-avatar" alt="avatar" src="https://q2.qlogo.cn/g?b=qq&nk=3591299887&s=100"/>
+                        </a>
+                        <ul class="list-inline mt-3 mb-0">
+                            <li class="list-inline-item">
+                                <a class="text-dual fs-sm fw-semibold">Alcex</a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="content-side content-side-full" id="nav-main">
+                    <ul class="nav-main">
+                        <li class="nav-main-item">
+                            <a class="nav-main-link" data-pjax href="./">
+                                <i class="nav-main-link-icon fas fa-home"></i>
+                                <span class="nav-main-link-name">首页</span>
+                            </a>
+                        </li>
+                        <li class="nav-main-heading">导航</li>
+                        </li>
+                        
+                        <li class="nav-main-item">
+                                    <a data-pjax="" onclick="$('#modal-lg').modal('show');" class="nav-main-link">
+                                        <i class="nav-main-link-icon fa-solid fa-bolt"></i>
+                                        <span class="nav-main-link-name">
+											捐赠发电                                    </span>
+                                    </a>
+                                    <a data-pjax="" href="./?action=links" class="nav-main-link">
+                                        <i class="nav-main-link-icon fas fa-link"></i>
+                                        <span class="nav-main-link-name">
+											友链                                    </span>
+                                    </a>
+                                    <a data-pjax="" href="https://blog.alcex.cn/" class="nav-main-link">
+                                        <i class="nav-main-link-icon fa-duotone fa-solid fa-blog"></i>
+                                        <span class="nav-main-link-name">
+											站长博客                                    </span>
+                                    </a>
+                                    <a data-pjax="" href="./?action=about" class="nav-main-link">
+                                        <i class="nav-main-link-icon fas fa-user"></i>
+                                        <span class="nav-main-link-name">
+											关于                                    </span>
+                                    </a>
+                                    <a href="./admin" class="nav-main-link">
+                                        <i class="nav-main-link-icon fa fa-tachometer"></i>
+                                        <span class="nav-main-link-name">
+											后台管理                                    </span>
+                                    </a>
+                        </li>
+                        
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </nav>
+    <header id="page-header">
+        <div class="content-header ">
+            <div class="space-x-1">
+                <div class="content-header justify-content-lg-center">
+                    <div>
+                    <span class="smini-visible fw-bold tracking-wide fs-lg">
+								c<span class="text-primary">c</span>
+							</span>
+                        <a class="link-fx fw-bold tracking-wide mx-auto" data-pjax href="../">
+                            <span class="smini-hidden">
+                                <span class="fs-4 text-dual">PixelCloud</span>
+                                <span class="fs-4 text-primary">API</span>
+                            </span>
+                        </a>
+                    </div>
+
+                </div>
+            </div>
+            <div class="space-x-1">
+                <button type="button" id="expire-show" onclick="$('#modal-lg').modal('show');" class="btn btn-sm btn-alt-secondary">
+                    <i class="fa fa-heart text-danger"></i>
+                </button>
+                <button type="button" id="dark" onclick="dark()" class="btn btn-sm btn-alt-secondary">
+                    <i class="fa-solid fa-moon"></i>
+                </button>
+                
+                <a id="qq" class="btn btn-sm btn-alt-secondary" href="http://qm.qq.com/cgi-bin/qm/qr?_wv=1027&k=segHs999cYB4aIcXiRHnL8GDIpBLMiB_&authKey=YYBv9qF1E7AyoppacAINWv5iE8YGl3j%2BTSES8E%2F5sgxzG51xgDjsG0nHL8%2FBYgRM&noverify=0&group_code=916395971" target="_blank">
+                        <i class="nav-main-link-icon fa-brands fa-qq"></i></a>
+                        <button type="button" class="btn btn-sm btn-alt-secondary" data-toggle="layout" data-action="sidebar_toggle">
+                    <i class="fa fa-fw fa-bars"></i>
+                </button>
+            </div>
+
+        </div>
+        <div id="page-header-loader" class="overlay-header bg-primary">
+            <div class="content-header">
+                <div class="w-100 text-center">
+                    <i class="far fa-sun fa-spin text-white"></i>
+                </div>
+            </div>
+        </div>
+    </header>
+    
+       
+    <div class="modal modal-lg fade" id="modal-lg" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+     aria-labelledby="staticBackdropLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="block block-rounded shadow-none mb-0">
+                <div class="block-header block-header-default">
+                    <h3 class="block-title" id="title">赞助发电</h3>
+                    <div class="block-options">
+                        <button type="button" class="btn-block-option" data-bs-dismiss="modal" aria-label="Close">
+                            <i class="fa fa-times"></i>
+                        </button>
+                    </div>
+                </div>
+
+                <div id="expireb" class="block-content fs-sm">
+                    <div class="mb-4">
+                    本站站长是初三学生,服务器<b>20元/月</b>,续费比较有压力,可否赞助小站~本站服务器距到期还有 <b id="enddays"></b> 天,在下感激不尽!<i class="fa fa-heart text-danger"></i>
+                    </div>
+                        <el-button type="primary" onclick="alipay()" round>支付宝</el-button>
+                        <el-button type="success" onclick="weixin()" round>微信</el-button>
+                        <el-button type="info" onclick="window.open('https://afdian.com/a/alcex/', '_blank');" round>爱发电</el-button>
+                    <br><br>
+                    <img id="limited-image" src="https://creation.bcmcdn.com/716/appcraft/IMAGE_CW0oplJ9K_1725114682187.jpg"></img><br>
+                </div>
+
+                <div class="block-content block-content-full block-content-sm text-end border-top">
+                    <button type="button" class="btn btn-alt-secondary" data-bs-dismiss="modal">
+                        下次一定
+                    </button>
+                    <button type="button" class="btn btn-alt-primary" onclick="expire_true()">
+                        发电啦~
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>  
+        <el-button :icon="el-icon-top" id="fabUp" circle /></el-button>
+<script>
+// 获取到期日期并计算剩余天数
+async function getExpireDate() {
+    try {
+        // 发起API请求
+        const response = await fetch('https://api.alcex.cn/pages/api/expire.php');
+        const data = await response.json();
+        
+        // 获取到期日期
+        const expireDate = new Date(data.data);
+        // 获取当前日期
+        const today = new Date();
+        
+        // 计算时间差（毫秒）
+        const diffTime = expireDate.getTime() - today.getTime();
+        // 转换为天数
+        const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+        
+        // 更新DOM元素
+        const endDaysElement = document.getElementById('enddays');
+        endDaysElement.textContent = diffDays;
+    } catch (error) {
+        console.error('获取到期日期失败:', error);
+        const endDaysElement = document.getElementById('enddays');
+        endDaysElement.textContent = '获取失败';
+    }
+}
+
+// 页面加载时执行
+document.addEventListener('DOMContentLoaded', getExpireDate);
+
+DarkReader.setFetchMethod(window.fetch);
+const mediaQuery = window.matchMedia('(prefers-color-scheme: dark)');
+  function handleChange(event) {
+    if (event.matches) {
+      DarkReader.enable({
+        brightness: 100,
+        contrast: 90,
+        sepia: 10
+      });
+    } else {
+      DarkReader.disable();
+    }
+  }
+handleChange(mediaQuery);
+mediaQuery.addEventListener('change', handleChange);
+// 从 Cookie 中获取当前模式
+let darkModeValue = Cookies.get('darkMode');
+let isDarkMode = darkModeValue === 'dark';
+
+function dark() {
+    isDarkMode = !isDarkMode;
+    if (isDarkMode) {
+        DarkReader.enable({
+            brightness: 100,
+            contrast: 90,
+            sepia: 10
+        });
+        ElNotification({
+            title: '关灯啦🌙',
+            message: '当前已成功切换至夜间模式！可能会有稍许延迟哦~',
+            type: 'success',
+        });
+        Cookies.set('darkMode', 'dark', { expires: 7 }); // 设置 darkMode Cookie
+    } else {
+        DarkReader.disable();
+        ElNotification({
+            title: '开灯啦🌞',
+            message: '当前已成功切换至浅色模式！可能会有稍许延迟哦~',
+            type: 'success',
+        });
+        Cookies.set('darkMode', 'light', { expires: 7 }); // 设置 darkMode Cookie
+    }
+}
+
+// 页面加载时根据 Cookie 的值启用或禁用 DarkReader
+if (darkModeValue === 'dark') {
+    DarkReader.enable({
+        brightness: 100,
+        contrast: 90,
+        sepia: 10
+    });
+} else if (darkModeValue === 'light') {
+    DarkReader.disable();
+}
+const expireb = createApp({});
+expireb.use(ElementPlus);
+expireb.mount('#expireb');
+    function expire() {
+        $('#modal-lg').modal('show');
+    }
+    function goTop() {
+    window.scrollTo({
+        top: 0,
+        behavior: 'smooth' /* 平滑滚动 */
+    });
+    }
+    function weixin() {
+        const loadingInstance1 = ElLoading.service({ fullscreen: true });
+        var img = document.getElementById('limited-image');
+        img.src = 'https://creation.bcmcdn.com/716/appcraft/IMAGE_B8RCTGfto_1725114691272.png'; 
+        img.onload = function() {
+                loadingInstance1.close();
+            };
+    }
+    function alipay() {
+        const loadingInstance1 = ElLoading.service({ fullscreen: true });
+        var img = document.getElementById('limited-image');
+        img.src = 'https://creation.bcmcdn.com/716/appcraft/IMAGE_CW0oplJ9K_1725114682187.jpg';
+        img.onload = function() {
+                loadingInstance1.close();
+            };
+    }
+    function expire_true() {
+       ElMessage({
+        message: '感谢赞助！喵~您的支持是我前进的动力！',
+        type: 'success',
+    });
+        $('#modal-lg').modal('hide');
+        
+    }
+fetch('https://api.alcex.cn/pages/api/notce.php')
+    .then(response => {
+        if (!response.ok) {
+            throw new Error('网络错误 ' + response.statusText);
+        }
+        return response.json();
+    })
+    .then(data => {
+        let notice = data.data
+        ElNotification({
+          title: '公告',
+          dangerouslyUseHTMLString: true,
+          message: notice,
+          type: 'warning',
+          offset: 70,
+          duration: 0
+        });
+        })
+    .catch(error => {
+        console.error('Error:', error);
+    });
+</script><div id="app">
+    <main id="main-container">
+        <div class="content" id="pjax-container">
+            <div id="search" class="row block block-rounded">
+                <div class="block-content block-content-full">
+                    <div id="notice">
+                        <el-backtop :right="100" :bottom="100" /></el-backtop>
+                        
+                    <div class="py-3 text-center">
+                        <h2 class="fw-bold mb-3"><span style="vertical-align: inherit;"><span style="vertical-align: inherit;">
+                                    PixelCloud-API                                </span></span></h2>
+                        <h3 class="fs-base fw-medium text-muted mb-3">
+                            <span style="vertical-align: inherit;"><span style="vertical-align: inherit;">
+                                    PixelCloud-API，我们致力于为用户提供稳定、快速的免费API数据接口服务。                                </span></span></h3>
+                        <p class="fs-sm fw-medium text-muted mb-4">共收录了14个接口</p>
+                        <div class="row justify-content-center">
+                            <div class="col-md-10 col-lg-8 col-xl-6">
+                                <div class="input-group input-group-lg">
+                                    <input type="text" class="form-control" name="search" id="search" placeholder="来搜点什么吧">
+                                    <button type="submit" id="search" onclick="search(window.updateDisplay)" class="btn btn-alt-primary">
+                                        <i class="fa fa-search"></i>
+                                    </button>
+                                    
+                                </div>
+                            </div>
+                        </div>
+                        
+                      
+                    </div>
+                       <el-divider />
+                       <el-statistic title="API总调用次数:" :value="0"></el-statistic>
+                       
+                </div>
+                
+            </div>
+            </div>
+            <div class="row animated fadeIn" id="list"></div>
+            <div class="col-auto" id="items">
+                        <el-pagination
+                            background
+                            layout="prev, pager, next"
+                            :pager-count="5"
+                            :total="totalItems"
+                            :page-size="itemsPerPage"
+                            :current-page="currentPage"
+                            @current-change="handlePageChange"
+                        />
+                    </div>
+                    
+    </main>
+<br>
+<footer id="page-footer">
+    <div id="footer" class="block block-rounded animated fadeIn">
+        <script async src="https://npm.elemecdn.com/penndu@1.0.0/bsz.js"></script>
+        <div class="content py-3">
+            <div class="row fs-sm">
+                <div class="col-sm-6 order-sm-2 py-1 text-center text-sm-end">
+                    <i class="fa-solid fa-copyright"></i></i>Powered by <a class="Developer" href="https://www.alcex.cn/" target="_blank">Alcex</a> <br>
+                    <i class="fa-solid fa-code"></i>Developer: <a class="Developer" href="https://github.com/iCloudZA" target="_blank">CloudZA</a>&<a class="Developer" href="https://github.com/Alcexn" target="_blank">Alcex</a>
+                </div>
+                <div class="col-sm-6 order-sm-1 py-1 text-center text-sm-start">
+                    <a class="fw-semibold text-muted" href="javascript:void (0);">本站总访问量<span id="busuanzi_value_site_pv"></span>次&总访客数<span id="busuanzi_value_site_uv"></span>人</a>
+                </div>
+            </div>
+        </div>
+        </div>
+    </footer>
+    <style>
+        a.Developer {
+            color: #0284c7 !important;
+            cursor: pointer;
+        }
+        #footer {
+         margin: 0 15px;
+        }
+    </style></div></div></div></div>
+<script>
+function shuffleArray(array) {
+    for (let i = array.length - 1; i > 0; i--) {
+        let j = Math.floor(Math.random() * (i + 1));
+        [array[i], array[j]] = [array[j], array[i]];
+    }
+}
+
+// 将 search 函数定义在全局作用域中
+function search(updateDisplay) {
+    const loadingInstance = ElLoading.service({ fullscreen: true });
+    let name = x.getval('#search');
+    
+    if (!name.trim()) {
+        loadingInstance.close();
+        loadAllData(updateDisplay); // 空搜索时加载所有数据
+        return;
+    }
+    
+    x.ajax("extend/ajaxApi.php?act=search", {
+        name: name
+    }, (data) => {
+        loadingInstance.close();
+        if (data.code) {
+            updateDisplay(data.data || []);
+        } else {
+            showEmptyState();
+        }
+    });
+}
+
+// 将 loadAllData 函数定义在全局作用域中
+function loadAllData(updateDisplay) {
+    x.ajax("extend/ajaxApi.php?act=list", {}, (data) => {
+        if (data.code) {
+            shuffleArray(data.data);
+            updateDisplay(data.data || []);
+        } else {
+            showEmptyState();
+        }
+    });
+}
+
+// 将 showEmptyState 函数定义在全局作用域中
+function showEmptyState() {
+    const listElement = document.getElementById('list');
+    listElement.innerHTML = `
+        <div class="block block-rounded">
+            <div class="block-content block-content-full text-center">
+                <h2 class="h3 fw-bold mb-2">暂无接口</h2>
+                <h3 class="h4 fw-medium text-muted mb-2">您可以联系管理员添加接口</h3>
+            </div>
+        </div>
+    `;
+    const paginationContainer = document.querySelector('.pagination-container');
+    if (paginationContainer) {
+        paginationContainer.remove();
+    }
+}
+
+// 将 renderPage 函数定义在全局作用域中
+function renderPage(pageNum, data, itemsPerPage) {
+    const listElement = document.getElementById('list');
+    listElement.innerHTML = '';
+    const startIndex = (pageNum - 1) * itemsPerPage;
+    const endIndex = Math.min(startIndex + itemsPerPage, data.length);
+
+    for (let i = startIndex; i < endIndex; i++) {
+        let title = data[i].name;
+        let desc = data[i].desc;
+        let pv = data[i].pv;
+        let state = data[i].state;
+        let stateInfo = data[i].stateInfo;
+        let uri = data[i].uri + "?action=doc";
+        
+        let itemHtml = `<div class="col-sm-6"><a class="block block-rounded d-flex align-items-stretch" href="javascript:void(0)" onclick="goToApiDoc('${state}', '${uri}')">
+            <div class="block-content block-sticky-options pt-5 bg-white">
+                <div class="block-options block-options-left">
+                    <h2 class="fs-sm text-muted">${title}</h2>
+                </div>
+                <div class="block-options">
+                    <div class="block-options-item text-muted fs-sm">
+                        <i class="fas fa-code m-1"></i>${stateInfo}
+                        <i class="fas fa-eye m-1"></i>${pv}
+                    </div>
+                </div>
+                <h3 class="fs-sm fw-medium text-muted">${desc}</h3>
+            </div>
+        </a></div>`;
+        listElement.innerHTML += itemHtml;
+    }
+}
+
+const notice = createApp({});
+notice.component(ElAlert.name, ElAlert);
+notice.use(ElementPlus);
+notice.mount('#notice');
+const { ElPagination } = ElementPlus;
+
+const items = createApp({
+    setup() {
+        const currentData = ref([]);
+        const currentPage = ref(1);
+        const itemsPerPage = 6;
+        const totalItems = ref(0);
+
+        // 更新页面显示
+        window.updateDisplay = function(data) {
+        currentData.value = data;
+        currentPage.value = 1;
+        totalItems.value = data.length;
+        if (data.length > 0) {
+           renderPage(currentPage.value, data, itemsPerPage);
+        } else {
+           showEmptyState();
+        }
+        };
+
+        // 防抖函数
+        function debounce(func, wait) {
+            let timeout;
+            return function() {
+                const context = this;
+                const args = arguments;
+                clearTimeout(timeout);
+                timeout = setTimeout(() => {
+                    func.apply(context, args);
+                }, wait);
+            };
+        }
+
+        // 处理分页变化
+        function handlePageChange(page) {
+            currentPage.value = page;
+            renderPage(currentPage.value, currentData.value, itemsPerPage);
+            window.scrollTo({
+                top: 0,
+                behavior: 'smooth'
+            });
+        }
+
+        // 初始化
+        loadAllData(updateDisplay);
+
+        // 搜索框输入事件
+        const debouncedSearch = debounce(() => {
+            search(updateDisplay);
+        }, 300);
+
+        document.getElementById('search').addEventListener('input', debouncedSearch);
+
+        return {
+            currentPage,
+            itemsPerPage,
+            totalItems,
+            handlePageChange
+        };
+    }
+});
+items.component(ElPagination.name, ElPagination);
+items.mount('#items');
+
+
+async function fetchTotalRequests() {
+      try {
+        const response = await fetch('https://apiserver.alcex.cn/stats');
+        if (!response.ok) {
+          throw new Error('Network response was not ok');
+        }
+        const data = await response.json();
+        const totalRequests = data.total_requests;
+
+        // 更新页面内容
+        const statisticNumber = document.querySelector('.el-statistic__number');
+        if (statisticNumber) {
+          statisticNumber.textContent = totalRequests;
+        }
+      } catch (error) {
+        console.error('Error fetching total requests:', error);
+      }
+    }
+
+    // 页面加载完成后调用 fetchTotalRequests 函数
+    window.onload = fetchTotalRequests;
+</script>
+<script src="https://cdn.jsdmirror.com/gh/Alcexn/static@f952709b85bb8b917d64d14cc63c4c8df6007f28/api/js/codebase.app.min-5.4.js"></script>
+
+<script src="//s4.zstatic.net/ajax/libs/nprogress/0.2.0/nprogress.js"></script>
+
+</body>
+</html>
