@@ -8,7 +8,6 @@ from concurrent.futures import ThreadPoolExecutor
 import yaml
 from mirai import GroupMessage, MessageChain, Image, FriendMessage
 from mirai.models import ForwardMessageNode, Forward
-
 from plugins.jmcomicDownload import queryJM, downloadComic, downloadALLAndToPdf
 
 
@@ -41,6 +40,14 @@ def main(bot, logger):
     with open('config/api.yaml', 'r', encoding='utf-8') as f:
         resulttr = yaml.load(f.read(), Loader=yaml.FullLoader)
     proxy = resulttr.get("proxy")
+    @bot.on(GroupMessage)
+    async def addPermission(event: GroupMessage):
+        if str(event.message_chain).startswith("授权#") and event.sender.id==int(configData.get('master')):
+            global superUser
+            try:
+                superUser.append(int(str(event.message_chain).replace("授权#","")))
+            except:
+                pass
     @bot.on(GroupMessage)
     async def querycomic(event: GroupMessage):
         global superUser,operating
