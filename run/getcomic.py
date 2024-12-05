@@ -47,6 +47,7 @@ def main(bot, logger):
             global superUser
             try:
                 superUser.append(int(str(event.message_chain).replace("授权#","")))
+                superUser.append(str(event.message_chain).replace("授权#",""))
             except:
                 pass
     @bot.on(GroupMessage)
