@@ -51,9 +51,9 @@ def main(bot, logger):
     @bot.on(GroupMessage)
     async def querycomic(event: GroupMessage):
         global superUser,operating
-        if str(event.message_chain).startswith("jm搜索") or str(event.message_chain).startswith("JM搜索"):
+        if str(event.message_chain).startswith("jm搜") or str(event.message_chain).startswith("JM搜"):
             keyword = str(event.message_chain)
-            index = keyword.find("搜索")
+            index = keyword.find("搜")
             if index != -1:
                 keyword = keyword[index + len("查询") :]
                 if ':' in keyword or ' ' in keyword or '：' in keyword:
@@ -74,14 +74,13 @@ def main(bot, logger):
                     return
                 cmList = []
                 cmList.append(ForwardMessageNode(sender_id=bot.qq, sender_name="ninethnine", message_chain=MessageChain(context)))
+                await bot.send(event, Forward(node_list=cmList))
             except Exception as e:
                 logger.error(e)
                 await bot.send(event, "寄了喵", True)
     @bot.on(GroupMessage)
     async def download(event: GroupMessage):
         if '本周jm' == str(event.message_chain) or '本周JM' == str(event.message_chain) or '今日jm' == str(event.message_chain) or '今日JM' == str(event.message_chain):
-            if not group_manage_controller(f'{event.group.id}_JM'):
-                return
             context=JM_search_week()
             cmList = []
             cmList.append(ForwardMessageNode(sender_id=bot.qq, sender_name="ninethnine", message_chain=MessageChain('本周的JM排行如下，请君过目\n')))
@@ -93,7 +92,7 @@ def main(bot, logger):
     
     @bot.on(GroupMessage)
     async def download(event: GroupMessage):
-        if str(event.message_chain).startswith("验车") or str(event.message_chain).startswith("随机本子"):
+        if str(event.message_chain).startswith("验车") or str(event.message_chain)=="随机本子":
             global operating
             if jmcomicSettings.get("onlyTrustUser") and str(event.sender.id) not in superUser:
                 await bot.send(event, "用户无权限",True)
