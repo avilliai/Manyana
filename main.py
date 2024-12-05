@@ -456,7 +456,7 @@ if __name__ == '__main__':
                 nailong_get.main(bot, logger)
             except Exception as e:
                 logger.error(e)
-                logger.error("奶龙检测无法启用，请使用更新代码-6 安装奶龙检测必要素材")
+                logger.error("奶龙检测依赖未安装，如有需要，请使用更新代码-6 安装奶龙检测必要素材")
 
             try:
                 scheduledTasks.main(bot, logger)
@@ -469,7 +469,7 @@ if __name__ == '__main__':
                 wordCloud.main(bot, logger)
             except Exception as e:
                 logger.error(e)
-                logger.error("词云功能无法启用，请使用更新代码-补全依赖")
+                logger.error("词云功能依赖未安装，请使用更新代码-补全依赖")
             groupGames.main(bot, logger)
             musicpick.main(bot, logger)
             appCard.main(bot, logger)
