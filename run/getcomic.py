@@ -104,9 +104,9 @@ def main(bot, logger):
                     context=['正在随机ing，请稍等喵~~','正在翻找好看的本子喵~','嘿嘿，JM，启动！！！！','正在翻找JM.jpg','有色色！我来了','hero来了喵~~','了解~','全力色色ing~']
                     await bot.send(event, random.choice(context))
                     context=JM_search_comic_id()
-                    print(context)
                     comic_id = context[random.randint(1, len(context)) - 1]
-            except:
+            except Exception as e:
+                logger.error(e)
                 await bot.send(event, "无效输入 int，指令格式如下\n验车【车牌号】\n如：验车604142",True)
                 return
             if comic_id in operating:
