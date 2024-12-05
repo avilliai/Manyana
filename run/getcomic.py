@@ -60,23 +60,23 @@ def main(bot, logger):
                     keyword = keyword[+1:]
                 print(keyword)
                 context=JM_search(keyword)
-        aim = context
-        if jmcomicSettings.get("onlyTrustUser") and str(event.sender.id) not in superUser:
-            await bot.send(event, "用户无权限",True)
-            return
-        if aim in operating:
-            await bot.send(event,"相关文件占用中，等会再发吧",True)
-            return
-        logger.info(f"JM搜索: {aim}")
-        try:
-            if context=="":
-                await bot.send(event, "好像没有找到你说的本子呢~~~")
+            aim = context
+            if jmcomicSettings.get("onlyTrustUser") and str(event.sender.id) not in superUser:
+                await bot.send(event, "用户无权限",True)
                 return
-            cmList = []
-            cmList.append(ForwardMessageNode(sender_id=bot.qq, sender_name="ninethnine", message_chain=MessageChain(context)))
-        except Exception as e:
-            logger.error(e)
-            await bot.send(event, "寄了喵", True)
+            if aim in operating:
+                await bot.send(event,"相关文件占用中，等会再发吧",True)
+                return
+            logger.info(f"JM搜索: {aim}")
+            try:
+                if context=="":
+                    await bot.send(event, "好像没有找到你说的本子呢~~~")
+                    return
+                cmList = []
+                cmList.append(ForwardMessageNode(sender_id=bot.qq, sender_name="ninethnine", message_chain=MessageChain(context)))
+            except Exception as e:
+                logger.error(e)
+                await bot.send(event, "寄了喵", True)
     @bot.on(GroupMessage)
     async def download(event: GroupMessage):
         if '本周jm' == str(event.message_chain) or '本周JM' == str(event.message_chain) or '今日jm' == str(event.message_chain) or '今日JM' == str(event.message_chain):
