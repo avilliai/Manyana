@@ -14,11 +14,7 @@
 - [Yiri-mirai](https://github.com/YiriMiraiProject/YiriMirai)
 - [napcat](https://napneko.github.io/)
 - [install_llob](https://github.com/super1207/install_llob)
-- 如果遇到使用问题，请在QQ群623265372反馈
-
-<div align="center">
-   <p>声明：本项目根据AGPL V3协议开源，任何组织和个人在引用本项目的源码时，不得歪曲、隐藏项目的开源事实，并需依照协议公开项目的源代码。任何由二次分发行为产生的责任均由行为者自行承担，本项目不承担任何连带责任。</p>
-</div>
+- 如果遇到使用问题，请在QQ群251807019反馈
 
 ---
 
