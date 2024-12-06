@@ -202,7 +202,7 @@ def main(bot, logger):
         async with httpx.AsyncClient(timeout=None,headers=header) as client:
             r = await client.post(url,json=data)
             print(r.json())
-    async def wait_and_delete_file(file_path, interval=30):
+    async def wait_and_delete_file(file_path, interval=60):
         for _ in range(10):
             try:
                 shutil.os.remove(file_path)
