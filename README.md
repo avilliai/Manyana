@@ -122,6 +122,7 @@ Manyana/config.json的填写示例如下。
 由于 mirai 及 yirimirai 均采用了 AGPL-3.0 开源协议，本项目同样采用 AGPL-3.0 协议。<br>
 请注意，AGPL-3.0 是传染性协议。如果你的项目引用了 Manyana，请在发布时公开源代码，并同样采用 AGPL-3.0 协议。不得歪曲、隐藏项目开源事实。<br>
 
+严禁将本项目用于任何违反您所在地区相关法律法规的用途，请在使用本项目时遵循您所在地区的法律法规以及项目相关开源协议，本项目及相关作者不承担任何连带法律责任。
 # 🎄最后
 如果觉得项目还不错的话给个star喵，给个star谢谢喵
 ![Star History Chart](https://api.star-history.com/svg?repos=avilliai/Manyana&type=Date)
