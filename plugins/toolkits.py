@@ -12,6 +12,7 @@ import httpx
 import colorlog
 from io import BytesIO
 from PIL import Image
+import asyncio
 
 try:
     with open('config/api.yaml', 'r', encoding='utf-8') as f:
@@ -287,3 +288,43 @@ def save_data_image(data_url, path):
         f.write(img_data)
 
     return path
+async def send_like(user_id):
+    url = "http://localhost:3000/send_like"
+    payload = {
+        "user_id": user_id,
+        "times": 10
+    }
+    
+    headers = {
+        'Content-Type': 'application/json',
+        'Authorization': 'Bearer ff'
+    }
+    async def send_single_request():
+        async with httpx.AsyncClient(timeout=None,headers=headers) as client:
+            response = await client.post(url, json=payload)
+            print(response.text)
+    tasks = [send_single_request() for _ in range(5)]
+    await asyncio.gather(*tasks)  
+async def delete_msg(msg_id):
+    url = "http://localhost:3000/delete_msg"
+    payload = {
+        "message_id": str(msg_id)
+    }
+
+    headers = {
+        'Content-Type': 'application/json',
+        'Authorization': 'Bearer ff'
+    }
+    async with httpx.AsyncClient(timeout=None,headers=headers) as client:
+        response = await client.post(url, json=payload)
+        print(response.text)
+async def url_to_base64(url):
+    async with httpx.AsyncClient(timeout=9000) as client:
+        response = await client.get(url)
+        if response.status_code == 200:
+            image_bytes = response.content
+            encoded_string = base64.b64encode(image_bytes).decode('utf-8')
+            return encoded_string
+        else:
+            raise Exception(f"Failed to retrieve image: {response.status_code}")
+      

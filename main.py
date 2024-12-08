@@ -26,7 +26,7 @@ from mirai import Mirai, WebSocketAdapter, GroupMessage, Image, At, Startup, Fri
 from plugins.toolkits import newLogger, random_str, get_system_info
 from run import aiReply, voiceReply, nudgeReply, wikiHelper, imgSearch, extraParts, wReply, groupManager, \
     musicShare, LiveMonitor, aronaapi, groupGames, musicpick, scheduledTasks, appCard, aiDraw, starRail, bangumi, \
-    draftBottle, galgame, character_identify, wifeyouwant
+    draftBottle, galgame, character_identify, wifeyouwant, onebot_fun
 
 
 # 为了实现黑名单和群开关功能，继承webSocketAdapter类
@@ -451,6 +451,7 @@ if __name__ == '__main__':
             musicShare.main(bot, master, botName, logger)
             LiveMonitor.main(bot, logger)
             aronaapi.main(bot, logger)
+            onebot_fun.main(bot, logger, master)
             try:
                 from run import nailong_get
                 nailong_get.main(bot, logger)

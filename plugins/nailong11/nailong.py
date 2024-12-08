@@ -90,7 +90,7 @@ async def detect_nailong_from_base64(base64_string, model, transform, device):
     
     # 如果不是图像，则尝试作为视频处理
     try:
-        return await predict_video(video_bytes, model, transform, device)
+        return await predict_video(image_bytes, model, transform, device)
     except Exception as e:
         print(f"Error processing input: {e}")
         return False
