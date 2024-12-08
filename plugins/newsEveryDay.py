@@ -71,7 +71,7 @@ async def moyu():
         r = await client.get(url)
         with open(p, "wb") as f:
             f.write(r.content)
-        return p
+        return None
 
 
 async def xingzuo():
