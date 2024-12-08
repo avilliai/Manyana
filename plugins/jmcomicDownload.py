@@ -1,3 +1,4 @@
+# -*- coding:utf-8 -*-
 import copy
 import os.path
 import shutil
@@ -48,7 +49,58 @@ def queryJM(name,num=3):
         if len(results) > num:
             return results
         print(results)
+        
+def JM_search(name):
+    client = JmOption.default().new_jm_client()
 
+    # 分页查询，search_site就是禁漫网页上的【站内搜索】
+    page: JmSearchPage = client.search_site(search_query=f'{name}', page=1)
+    # page默认的迭代方式是page.iter_id_title()，每次迭代返回 albun_id, title
+    result=''
+    number=0
+    for album_id, title in page:
+        #print(f'[{album_id}]: {title}')
+        result += f'[{album_id}]: {title}\n'
+        number+=1
+        if number==30:break
+    return result
+
+def JM_search_week():
+    op = JmOption.default()
+    cl = op.new_jm_client()
+    page: JmCategoryPage = cl.week_ranking(1)
+    result=''
+    for page in cl.categories_filter_gen(page=1, # 起始页码
+                                         # 下面是分类参数
+                                         time=JmMagicConstants.TIME_WEEK,
+                                         category=JmMagicConstants.CATEGORY_ALL,
+                                         order_by=JmMagicConstants.ORDER_BY_VIEW,
+                                         ):
+        number=0
+        for aid, atitle in page:
+            result += f'[{aid}]: {atitle}\n'
+            #print(aid, atitle)
+            number+=1
+            if number==20:break
+        break
+    return result
+    
+def JM_search_comic_id():
+    op = JmOption.default()
+    cl = op.new_jm_client()
+    page: JmCategoryPage = cl.week_ranking(1)
+    result=[]
+    for page in cl.categories_filter_gen(page=1, # 起始页码
+                                         # 下面是分类参数
+                                         time=JmMagicConstants.TIME_MONTH,
+                                         category=JmMagicConstants.CATEGORY_ALL,
+                                         order_by=JmMagicConstants.ORDER_BY_VIEW,
+                                         ):
+        for aid, atitle in page:
+            result.append(aid)
+        #print(result)
+    return result
+    
 def downloadComic(comic_id,start=1,end=5):
     with open("config/jmcomic.yml", 'r', encoding='utf-8') as f: #不知道他这个options咋传的，我就修改配置文件得了。
         result = yaml.load(f.read(), Loader=yaml.FullLoader)

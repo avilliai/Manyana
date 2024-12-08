@@ -75,12 +75,13 @@ logger = newLogger()
 def main():
     print(
         """请输入要执行的指令：
-        1 绑定到远程仓库(如果通过源码包安装请执行)
+        1 绑定到远程仓库(整合包用不到，如果通过源码包安装请执行)
         2 更新bot代码
         3 清理无用数据(如缓存图片)
         4 导出群信息，制作一个chatLearning可用的配置文件
-        5 其他素材下载(可选)
-        6 安装vits功能对应依赖""")
+        5 游戏图片素材下载(如星穹铁道)
+        6 安装奶龙检测必要素材
+        7 安装vits功能对应依赖""")
     a = input("输入要执行的数字")
     if a=="1":
         os.system(f"{git_path} init")
@@ -191,6 +192,11 @@ def main():
                 logger.info("文件夹不存在，拉取素材")
                 os.system(f"{git_path} clone https://gitee.com/Nwflower/star-rail-atlas.git")
     elif a=="6":
+        logger.info("开始安装奶龙检测必要素材")
+        os.system(f"\"{python_path}\" -m pip install --upgrade torch")
+        os.system(f"\"{python_path}\" -m pip install --upgrade torchvision")
+        os.system(f"\"{python_path}\" -m pip install --upgrade opencv-python")
+    elif a=="7":
         logger.info("开始安装vits语音模块相关依赖")
         os.system(f"\"{python_path}\" -m pip install -r vits/vitsRequirements.txt")
     else:
@@ -210,7 +216,7 @@ def updaat(f=False,jump=False,source=None):
             os.system(f"\"{python_path}\" -m pip install --upgrade PicImageSearch")
     if source==None:
         logger.info("拉取bot代码\n--------------------")
-        logger.info("选择更新源(git源 镜像源相互兼容)：\n1 git源\n2 git代理源1\n3 git代理源2 \n4 国内源(稳定，但一般有一天延迟)")
+        logger.info("选择更新源(git源 镜像源相互兼容)：\n1 git源\n2 git代理源1\n3 git代理源2 \n4 国内源(没事别几把用这个)")
         source = input("选择更新源(输入数字 )：")
     else:
         source=str(source)
@@ -290,6 +296,10 @@ def updaat(f=False,jump=False,source=None):
         logger.warning("开始处理冲突文件")
         if file.endswith(".py"):
             os.remove(file)
+            try:
+                shutil.os.remove(file)
+            except:
+                pass
             logger.warning("移除了" + file)
         elif file.endswith(".yaml"):
             logger.info("冲突的配置文件" + file)
@@ -300,14 +310,26 @@ def updaat(f=False,jump=False,source=None):
                 try:
                     shutil.copyfile(file, file.replace("config/", "temp/").replace("data/","temp/"))
                     os.remove(file)
+                    try:
+                        shutil.os.remove(file)
+                    except:
+                        pass
                 except:
                     continue
             else:
                 os.mkdir("./temp")
                 shutil.copyfile(file, file.replace("config", "temp").replace("data","temp"))
                 os.remove(file)
+                try:
+                    shutil.os.remove(file)
+                except:
+                    pass
         else:
             os.remove(file)
+            try:
+                shutil.os.remove(file)
+            except:
+                pass
             logger.warning("移除了 " + file)
             #logger.warning("请自行决定删除或修改文件名称，在重新拉取后根据旧文件重新填写新文件")
     logger.warning("开始处理冲突文件")
