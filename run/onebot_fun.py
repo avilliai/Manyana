@@ -20,7 +20,7 @@ def main(bot,logger,master):
         if str(event.message_chain) == '赞我':
             try:
                 await send_like(event.sender.id)
-                await bot.send(event,'已赞你10次',True)
+                await bot.send(event,'已赞你',True)
             except:
                 await bot.send(event,'赞失败',True)
     
