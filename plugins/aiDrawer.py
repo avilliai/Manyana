@@ -407,8 +407,8 @@ async def SdDraw0(prompt, negative_prompt, path, sdurl,groupid,args):
     url = sdurl
 
     args = args
-    width = (args.get('w', 960) if args.get('w', 960) > 0 else 960) if isinstance(args, dict) else 960
-    height = (args.get('h', 1536) if args.get('h', 1536) > 0 else 1536) if isinstance(args, dict) else 1536
+    width = (args.get('w', 1064) if args.get('w', 1064) > 0 else 1064) if isinstance(args, dict) else 1064
+    height = (args.get('h', 1600) if args.get('h', 1600) > 0 else 1600) if isinstance(args, dict) else 1600
     
     payload = {
         "denoising_strength": 0.5,
@@ -451,6 +451,96 @@ async def SdDraw0(prompt, negative_prompt, path, sdurl,groupid,args):
     image.save(f'{path}')
     #image.save(f'{path}')
     return path                   
+
+async def cn1(prompt, negative_prompt, path, sdurl, groupid, b64_in,args):# 这是一个controlnet调用示例，想改的自己改
+    url = sdurl
+    args = args
+    width = (args.get('w', 1064) if args.get('w', 1064) > 0 else 1064) if isinstance(args, dict) else 1064
+    height = (args.get('h', 1600) if args.get('h', 1600) > 0 else 1600) if isinstance(args, dict) else 1600
+
+    payload = {
+        "denoising_strength": 0.7,
+        "enable_hr": 'false',
+        "hr_scale": 1.5,
+        "hr_second_pass_steps" : 15,
+        "hr_upscaler" : 'SwinIR_4x',
+        "prompt": f'score_9,score_8_up,score_7_up,{prompt},masterpiece,best quality,amazing quality,very aesthetic,absurdres,newest,',
+        "negative_prompt": '((nsfw)),score_6,score_5,score_4,((furry)),lowres,(bad quality,worst quality:1.2),bad anatomy,sketch,jpeg artifacts,ugly, poorly drawn,(censor),blurry,watermark,simple background,transparent background',
+        "seed": -1,
+        "batch_size": 1,
+        "n_iter": 1,
+        "steps": 35,
+        "cfg_scale": 6.5,
+        "width": width,
+        "height": height,
+        "restore_faces": False,
+        "tiling": False,
+        "sampler_index": "DPM++ 2M Karras",
+        "sampler_name": 'DPM++ 2M',
+        "scheduler": 'Karras',
+        "clip_skip_steps": 2,
+        "alwayson_scripts": {  # 下面是controlnet调用示例
+            "controlnet":
+                {
+                    "args": [
+                        {
+                            "enabled": True,  # 启用
+                            "control_mode": 0,  # 对应webui 的 Control Mode 可以直接填字符串 推荐使用下标 0 1 2
+                            "model": "t2i-adapter_diffusers_xl_lineart [bae0efef]",  # 对应webui 的 Model
+                            "module": "lineart_standard (from white bg & black line)",  # 对应webui 的 Preprocessor
+                            "weight": 0.45,  # 对应webui 的Control Weight
+                            "resize_mode": "Crop and Resize",
+                            "threshold_a": 200,  # 阈值a 部分control module会用上
+                            "threshold_b": 245,  # 阈值b
+                            "guidance_start": 0,  # 什么时候介入 对应webui 的 Starting Control Step
+                            "guidance_end": 0.7,  # 什么时候退出 对应webui 的 Ending Control Step
+                            "pixel_perfect": True,  # 像素完美
+                            "processor_res": 512,  # 预处理器分辨率
+                            "save_detected_map": False,  # 因为使用了 controlnet API会返回生成controlnet的效果图，默认是True，如何不需要，改成False
+                            "input_image": b64_in,  # 图片 格式为base64
+
+                        },
+                        # 多个controlnet 在复制上面一个字典下来就行
+                        {
+                            "enabled": False,
+                            "control_mode": 1,
+                            "model": "t2i-adapter_diffusers_xl_lineart [bae0efef]",
+                            "module": "lineart_standard (from white bg & black line)",
+                            "weight": 0.45,
+                            "resize_mode": "Crop and Resize",
+                            "threshold_a": 200,
+                            "threshold_b": 245,
+                            "guidance_start": 0,
+                            "guidance_end": 0.7,
+                            "pixel_perfect": True,
+                            "processor_res": 512,
+                            "save_detected_map": False,
+                            "input_image": b64_in,
+
+                        }
+                    ]
+                }
+        },
+        "override_settings": {
+            "sd_model_checkpoint": ckpt,  # 指定大模型
+            },
+        "override_settings_restore_afterwards": False,
+    }  #manba out
+    async with httpx.AsyncClient(timeout=1000) as client:
+        response = await client.post(url=f'{url}/sdapi/v1/txt2img', json=payload)
+    r = response.json()
+    if 'images' not in r or len(r['images']) == 0:
+        logger.error("Response does not contain images field or it is empty")
+        return None
+    b64 = r['images'][0]
+    if groupid in no_nsfw_group:                                   # 推荐用kaggle部署sd，防止占线（kaggle搜spawnerqwq）
+        check = await pic_audit_standalone(b64, return_none=True,url = sd1)  # 这里如果是使用我（spawnerqwq）的kaggle云端脚本部署的sd，参数可以写(b64,return_none=True,url)
+        if check:                                                  # 注意自己装的wd14打标插件没用，官方插件有bug，我在kaggle部署的插件是修改过的
+            return False                                           # 注意这里的url是sdurl，如果你在不是sd的画图模块也想开审核，注意把那个url的参数填sdurl
+    logger.info(f'检测到合规内容，已发送')
+    image = Image.open(io.BytesIO(base64.b64decode(r['images'][0])))
+    image.save(f'{path}')
+    return path 
 
 # 运行 Flask 应用
 if __name__ == "__main__":
