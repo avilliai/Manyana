@@ -16,13 +16,15 @@ from mirai import Image
 from plugins.toolkits import random_str
 
 from plugins.setuModerate import fileImgModerate, pic_audit_standalone
-from plugins.aiDrawer import getloras, SdDraw, draw2, airedraw, draw1, draw3, tiktokredraw, draw5, draw4, draw6, fluxDrawer, SdDraw1, SdDraw2, getcheckpoints, ckpt2, SdreDraw, SdDraw0
+from plugins.aiDrawer import getloras, SdDraw, draw2, airedraw, draw1, draw3, tiktokredraw, draw5, draw4, draw6, fluxDrawer, SdDraw1, SdDraw2, getcheckpoints, ckpt2, SdreDraw, SdDraw0, \
+    cn1
 
 i = 0
 turn = 0
 UserGet = {}
 tag_user = {}
 sd_user_args = {}
+UserGet1 = {}
 
 
 def main(bot, logger):
@@ -46,8 +48,10 @@ def main(bot, logger):
     global redraw
     redraw = {}
     global UserGet
+    global UserGet1
     UserGet = {}
     tag_user = {}
+    UserGet1 = {}
     
     def parse_arguments(arg_string):
         args = arg_string.split()
@@ -528,4 +532,51 @@ def main(bot, logger):
             print(f"Updated sd_user_args: {sd_user_args}")  # 调试信息
             await bot.send(event, "设置成功喵~", True)
             await bot.send(event, f"当前设置: {sd_user_args[event.sender.id]}")
+            
+    @bot.on(GroupMessage)
+    async def sdcn1(event: GroupMessage):
+        global UserGet1
+        global turn
+
+        if event.message_chain.has(Image) == False and (str(event.message_chain) == ("cn1") or str(event.message_chain).startswith("cn1 ")):
+            prompt = str(event.message_chain).replace("cn1", "").strip()
+            UserGet1[event.sender.id] = [prompt]
+            await bot.send(event, "请发送要进行cn1预设操作的图片")
+
+        # 处理图片和重绘命令
+        if (str(event.message_chain).startswith("cn1") or event.sender.id in UserGet1) and event.message_chain.count(Image):
+            if (str(event.message_chain).startswith("cn1")) and event.message_chain.count(Image):
+                prompt = str(event.message_chain).replace("cn1", "").strip()
+                UserGet1[event.sender.id] = [prompt]
+
+            # 日志记录
+            prompts = ', '.join(UserGet1[event.sender.id])
+            logger.info(f"接收来自群：{event.group.id} 用户：{event.sender.id} 的cn1指令 prompt: {prompts}")
+
+            # 获取图片路径
+            path = f"data/pictures/cache/{random_str()}.png"
+            lst_img = event.message_chain.get(Image)
+            img_url = lst_img[0].url
+            logger.info(f"发起SDaicn1请求，path:{path}|prompt:{prompts}")
+            prompts_str = ' '.join(UserGet1[event.sender.id]) + ' ' + positive_prompt
+            UserGet1.pop(event.sender.id)
+            
+
+            try:
+                args = sd_user_args.get(event.sender.id, {})
+                b64_in = await url_to_base64(img_url)
+                
+                await bot.send(event, f"开始cn1啦~sd前面排队{turn}人，请耐心等待喵~", True)
+                turn += 1
+                p = await cn1(prompts_str, negative_prompt, path, sdUrl, event.group.id, b64_in, args)
+                if p == False:
+                    turn -= 1
+                    logger.info("色图已屏蔽")
+                    await bot.send(event, "杂鱼，色图不给你喵~", True)
+                else:
+                    await bot.send(event, [Image(path=path)], True)
+                    turn -= 1
+            except Exception as e:
+                logger.error(f"cn1失败: {e}")
+                await bot.send(event, "cn1失败了喵~", True)
             
