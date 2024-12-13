@@ -12,6 +12,7 @@ import yaml
 from mirai import FriendMessage, GroupMessage, At,Image
 from mirai import Voice, Startup
 from mirai.models import NudgeEvent
+from mirai import At
 
 from plugins.aiReplyCore import modelReply, clearAllPrompts,clearsinglePrompt
 from plugins.toolkits import random_str
@@ -261,9 +262,9 @@ def main(bot, master, logger):
                     if sentence:
                         check_num+=1
                         if check_num==3:
-                            await bot.send(event,"".join(sentences[2:]).strip())
+                            await bot.send(event,[At(event.sender.id) if random.random() < 0.25 else '',"".join(sentences[2:]).strip()],True if random.random() < 0.35 else None)
                             break
-                        await bot.send(event,sentence.strip())
+                        await bot.send(event,[At(event.sender.id) if random.random() < 0.25 else '',sentence.strip()],True if random.random() < 0.35 else None)
                         waitTime=random.randint(1,6)
                         await sleep(waitTime)
             else:
@@ -462,9 +463,9 @@ def main(bot, master, logger):
                     if sentence:
                         check_num+=1
                         if check_num==3:
-                            await bot.send(event,"".join(sentences[2:]).strip())
+                            await bot.send(event,[At(event.sender.id) if random.random() < 0.25 else '',"".join(sentences[2:]).strip()],True if random.random() < 0.35 else None)
                             break
-                        await bot.send(event,sentence.strip())
+                        await bot.send(event,[At(event.sender.id) if random.random() < 0.25 else '',sentence.strip()],True if random.random() < 0.35 else None)
                         waitTime=random.randint(1,6)
                         await sleep(waitTime)
             else:
@@ -495,3 +496,10 @@ def main(bot, master, logger):
         elif str(event.message_chain) == "/allclear" and event.sender.id == master:
             reff = await clearAllPrompts()
             await bot.send(event, reff, True)
+        elif str(event.message_chain).startswith("/clear ") and event.sender.id == master:
+            message_content = event.message_chain
+            for element in message_content:
+                if isinstance(element, At):
+                    target_qq = element.target
+                    reff = await clearsinglePrompt(target_qq)
+                    await bot.send(event, reff, True)
