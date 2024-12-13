@@ -8,7 +8,7 @@ nasa_api: HSxxxxxxx              #nasa相关天文api 从https://api.nasa.gov/in
 chatGLM: 69xxxxxxx               #chatGLM的apiKey，从https://open.bigmodel.cn/获取
 gemini:                          #谷歌的gemini api，支持多key，在https://ai.google.dev/tutorials/setup?hl=zh-cn获取，需要配置proxy或GeminiRevProxy，否则无法使用
   - AIxxxxxxxxxx
-geminimodel: "gemini-1.5-flash"  #gemini默认的模型，不知道是啥就别动。可切换为gemini-1.5-pro，每日可请求次数会少一些但效果会更好。
+geminimodel: "gemini-1.5-flash"  #gemini默认的模型，不知道是啥就别动。可切换为gemini-2.0-flash-exp，更好效果。
 openaiSettings:                  #openai官方的apikey
   openai-keys:
     - sk-Mxxxxxxxxxxx
