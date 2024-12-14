@@ -60,20 +60,21 @@ def main(bot, logger):
         
         @bot.on(GroupMessage)
         async def get_pic(event: GroupMessage):
-            is_group_admin1 = await is_group_admin(event.group.id, bot.qq)
             lst_img = event.message_chain.get(Image)
             img_url = lst_img[0].url
             b64_in = await url_to_base64(img_url)
             check = await nailong_main(b64_in)
             if check == 1:
-                if chehui and is_group_admin1:
-                    msg = event.json()
-                    event_dict = json.loads(msg)
-                    Source_id = next((element['id'] for element in event_dict['message_chain']
-                                    if element.get('type') == 'Source'), None)
-                    await delete_msg(Source_id)
-                    await bot.send(event, f"爱发奶龙的小朋友你好啊~我是贝利亚",True)
-                elif chehui and is_group_admin1 == False:
-                    await bot.send(event, f"如果我是管理就给你撤了",True)
+                if chehui:
+                    is_group_admin1 = await is_group_admin(event.group.id, bot.qq)
+                    if is_group_admin1:
+                        msg = event.json()
+                        event_dict = json.loads(msg)
+                        Source_id = next((element['id'] for element in event_dict['message_chain']
+                                        if element.get('type') == 'Source'), None)
+                        await delete_msg(Source_id)
+                        await bot.send(event, f"爱发奶龙的小朋友你好啊~我是贝利亚",True)
+                    else:
+                        await bot.send(event, f"如果我是管理就给你撤了",True)
                 else:
                     await bot.send(event, f"爱发奶龙的小朋友你好啊~",True)
