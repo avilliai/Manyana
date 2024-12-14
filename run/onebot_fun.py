@@ -38,7 +38,7 @@ def main(bot,logger,master):
     
     @bot.on(GroupMessage)
     async def chehui(event: GroupMessage):
-        if str(event.message_chain) == '撤回' and event.sender.id == master:
+        if '撤回' in str(event.message_chain) and event.sender.id == master:
             msg = event.json()
             event_dict = json.loads(msg)
             has_quote = any(element.get('type') == 'Quote' for element in event_dict.get('message_chain', []))
