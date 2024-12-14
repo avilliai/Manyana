@@ -262,9 +262,9 @@ def main(bot, master, logger):
                     if sentence:
                         check_num+=1
                         if check_num==3:
-                            await bot.send(event,[At(event.sender.id) if random.random() < 0.25 else '',"".join(sentences[2:]).strip()],True if random.random() < 0.35 else None)
+                            await bot.send(event,"".join(sentences[2:]).strip(),True if random.random() < 0.35 else None)
                             break
-                        await bot.send(event,[At(event.sender.id) if random.random() < 0.25 else '',sentence.strip()],True if random.random() < 0.35 else None)
+                        await bot.send(event,sentence.strip(),True if random.random() < 0.35 else None)
                         waitTime=random.randint(1,6)
                         await sleep(waitTime)
             else:
