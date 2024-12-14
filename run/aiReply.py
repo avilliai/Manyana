@@ -18,6 +18,9 @@ from plugins.aiReplyCore import modelReply, clearAllPrompts,clearsinglePrompt
 from plugins.toolkits import random_str
 from plugins.vitsGenerate import superVG
 from plugins.wReply.wontRep import wontrep
+from plugins.wReply.wReplyOpeator import addRep, loadAllDict, getRep, compare2messagechain
+
+from plugins.wReply.MessageConvert import EventMessageConvert
 
 
 # 1
@@ -33,6 +36,10 @@ class CListen(threading.Thread):
 
 
 def main(bot, master, logger):
+    colorfulCharacterList = os.listdir("data/colorfulAnimeCharacter")
+    with open('config/settings.yaml', 'r', encoding='utf-8') as f:
+        result = yaml.load(f.read(), Loader=yaml.FullLoader)
+    wReply=result.get("wReply")
     with open('config/welcome.yaml', 'r', encoding='utf-8') as f:
         wecYaml = yaml.load(f.read(), Loader=yaml.FullLoader)
     chattingError=wecYaml.get("chattingError")
@@ -263,8 +270,16 @@ def main(bot, master, logger):
                         check_num+=1
                         if check_num==3:
                             await bot.send(event,"".join(sentences[2:]).strip(),True if random.random() < 0.35 else None)
+                            if random.randint(0, 100) < wReply.get("colorfulCharacter"):
+                                logger.info("本次使用彩色小人替代匹配回复")
+                                c = random.choice(colorfulCharacterList)
+                                await bot.send(event, Image(path="data/colorfulAnimeCharacter/" + c))
                             break
                         await bot.send(event,sentence.strip(),True if random.random() < 0.35 else None)
+                        if random.randint(0, 100) < wReply.get("colorfulCharacter"):
+                            logger.info("本次使用彩色小人替代匹配回复")
+                            c = random.choice(colorfulCharacterList)
+                            await bot.send(event, Image(path="data/colorfulAnimeCharacter/" + c))
                         waitTime=random.randint(1,6)
                         await sleep(waitTime)
             else:
@@ -464,8 +479,16 @@ def main(bot, master, logger):
                         check_num+=1
                         if check_num==3:
                             await bot.send(event,[At(event.sender.id) if random.random() < 0.25 else '',"".join(sentences[2:]).strip()],True if random.random() < 0.35 else None)
+                            if random.randint(0, 100) < wReply.get("colorfulCharacter"):
+                                logger.info("本次使用彩色小人替代匹配回复")
+                                c = random.choice(colorfulCharacterList)
+                                await bot.send(event, Image(path="data/colorfulAnimeCharacter/" + c))
                             break
                         await bot.send(event,[At(event.sender.id) if random.random() < 0.25 else '',sentence.strip()],True if random.random() < 0.35 else None)
+                        if random.randint(0, 100) < wReply.get("colorfulCharacter"):
+                            logger.info("本次使用彩色小人替代匹配回复")
+                            c = random.choice(colorfulCharacterList)
+                            await bot.send(event, Image(path="data/colorfulAnimeCharacter/" + c))
                         waitTime=random.randint(1,6)
                         await sleep(waitTime)
             else:
