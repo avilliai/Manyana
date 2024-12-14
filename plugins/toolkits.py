@@ -3,6 +3,7 @@ import os
 import random
 import platform
 import re
+import json
 
 import psutil
 import requests
@@ -294,17 +295,27 @@ async def send_like(user_id):
         "user_id": user_id,
         "times": 10
     }
-    
     headers = {
         'Content-Type': 'application/json',
         'Authorization': 'Bearer ff'
     }
-    async def send_single_request():
-        async with httpx.AsyncClient(timeout=None,headers=headers) as client:
-            response = await client.post(url, json=payload)
-            print(response.text)
+    async def send_single_request() -> dict:
+        try:
+            async with httpx.AsyncClient(timeout=None, headers=headers) as client:
+                response = await client.post(url, json=payload)
+                response.raise_for_status()
+                return {"success": True, "message": response.json().get('message', 'No message found')}
+        except (httpx.RequestError, httpx.HTTPStatusError, httpx.JSONDecodeError) as e:
+            return {"success": False, "message": f"Request failed: {e}"}
     tasks = [send_single_request() for _ in range(5)]
-    await asyncio.gather(*tasks)  
+    responses = await asyncio.gather(*tasks)
+    if not responses:
+        return 'No responses received'
+    first_response = responses[0]
+    if first_response["success"]:
+        return first_response["message"]
+    else:
+        return first_response["message"]  
 async def delete_msg(msg_id):
     url = "http://localhost:3000/delete_msg"
     payload = {
