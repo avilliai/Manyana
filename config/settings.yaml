@@ -50,7 +50,7 @@ chatGLM:                   #对话模型通用设置
   voiceRate: 60            #语音回复几率
   withText: true           #发送语音是否附带原始文本
   随机触发对话: false          #随机触发回复
-  随机触发几率: 0.1
+  随机触发几率: '0.1'
   bot_info:    #下面的设定你可以自由改动，但【bot】和【用户】是变量，建议保留
     characterglm:
       user_info: "【用户】是【bot】最喜欢的人"
