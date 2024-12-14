@@ -19,8 +19,11 @@ def main(bot,logger,master):
     async def like(event: GroupMessage):
         if str(event.message_chain) == '赞我':
             try:
-                await send_like(event.sender.id)
-                await bot.send(event,'已赞你',True)
+                res = await send_like(event.sender.id)
+                if res == '':
+                    await bot.send(event,'已赞你',True)
+                else:
+                    await bot.send(event,res,True)
             except:
                 await bot.send(event,'赞失败',True)
         elif str(event.message_chain).startswith('赞'):
@@ -28,8 +31,11 @@ def main(bot,logger,master):
                 for element in event.message_chain:
                     if isinstance(element, At):
                         target_qq = element.target
-                await send_like(target_qq)
-                await bot.send(event,['已赞',At(target_qq)],True)
+                res = await send_like(target_qq)
+                if res == '':
+                    await bot.send(event,['已赞',At(target_qq)],True)
+                else:
+                    await bot.send(event,res,True)
             except:
                 await bot.send(event,'赞失败',True)
     
