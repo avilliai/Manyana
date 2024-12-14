@@ -519,7 +519,7 @@ def main(bot, master, logger):
         elif str(event.message_chain) == "/allclear" and event.sender.id == master:
             reff = await clearAllPrompts()
             await bot.send(event, reff, True)
-        elif str(event.message_chain).startswith("/clear ") and event.sender.id == master:
+        elif str(event.message_chain).startswith("/clear") and event.sender.id == master:
             message_content = event.message_chain
             for element in message_content:
                 if isinstance(element, At):
