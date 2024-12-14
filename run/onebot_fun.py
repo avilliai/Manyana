@@ -10,7 +10,7 @@ import re
 
 import yaml
 from mirai import GroupMessage
-from mirai import Image
+from mirai import Image,At
 from plugins.toolkits import send_like,delete_msg
 
 
@@ -21,6 +21,15 @@ def main(bot,logger,master):
             try:
                 await send_like(event.sender.id)
                 await bot.send(event,'已赞你',True)
+            except:
+                await bot.send(event,'赞失败',True)
+        elif str(event.message_chain).startswith('赞'):
+            try:
+                for element in event.message_chain:
+                    if isinstance(element, At):
+                        target_qq = element.target
+                await send_like(target_qq)
+                await bot.send(event,['已赞',At(target_qq)],True)
             except:
                 await bot.send(event,'赞失败',True)
     
