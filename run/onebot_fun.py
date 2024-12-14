@@ -27,17 +27,14 @@ def main(bot,logger,master):
             except:
                 await bot.send(event,'赞失败',True)
         elif str(event.message_chain).startswith('赞'):
-            try:
                 for element in event.message_chain:
                     if isinstance(element, At):
                         target_qq = element.target
-                res = await send_like(target_qq)
-                if res == '':
-                    await bot.send(event,['已赞',At(target_qq)],True)
-                else:
-                    await bot.send(event,res,True)
-            except:
-                await bot.send(event,'赞失败',True)
+                        res = await send_like(target_qq)
+                        if res == '':
+                            await bot.send(event,['已赞',At(target_qq)],True)
+                        else:
+                            await bot.send(event,res,True)
     
     @bot.on(GroupMessage)
     async def chehui(event: GroupMessage):
