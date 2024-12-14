@@ -430,6 +430,8 @@ def main(bot, master, logger):
         else:
             if str(event.message_chain).startswith(result.get("chatGLM").get("prefix")):
                 text=str(event.message_chain).replace(result.get("chatGLM").get("prefix"), '')
+            elif result.get("chatGLM").get("随机触发对话") == True and random.random() < result.get("chatGLM").get("随机触发几率"):
+                text=str(event.message_chain)
             else:
                 return
 
