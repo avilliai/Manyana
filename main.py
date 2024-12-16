@@ -456,8 +456,8 @@ if __name__ == '__main__':
                 from run import nailong_get
                 nailong_get.main(bot, logger)
             except Exception as e:
-                logger.error(e)
-                logger.error("奶龙检测依赖未安装，如有需要，请使用更新代码-6 安装奶龙检测必要素材")
+                logger.warning(e)
+                logger.warning("奶龙检测依赖未安装，如有需要，请使用更新代码-6 安装奶龙检测必要素材")
 
             try:
                 scheduledTasks.main(bot, logger)
