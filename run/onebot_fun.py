@@ -10,7 +10,7 @@ import re
 
 import yaml
 from mirai import GroupMessage
-from mirai import Image
+from mirai import Image,At
 from plugins.toolkits import send_like,delete_msg
 
 
@@ -19,14 +19,26 @@ def main(bot,logger,master):
     async def like(event: GroupMessage):
         if str(event.message_chain) == '赞我':
             try:
-                await send_like(event.sender.id)
-                await bot.send(event,'已赞你',True)
+                res = await send_like(event.sender.id)
+                if res == '':
+                    await bot.send(event,'已赞你',True)
+                else:
+                    await bot.send(event,res,True)
             except:
                 await bot.send(event,'赞失败',True)
+        elif str(event.message_chain).startswith('赞'):
+                for element in event.message_chain:
+                    if isinstance(element, At):
+                        target_qq = element.target
+                        res = await send_like(target_qq)
+                        if res == '':
+                            await bot.send(event,['已赞',At(target_qq)],True)
+                        else:
+                            await bot.send(event,res,True)
     
     @bot.on(GroupMessage)
     async def chehui(event: GroupMessage):
-        if str(event.message_chain) == '撤回' and event.sender.id == master:
+        if '撤回' in str(event.message_chain) and event.sender.id == master:
             msg = event.json()
             event_dict = json.loads(msg)
             has_quote = any(element.get('type') == 'Quote' for element in event_dict.get('message_chain', []))

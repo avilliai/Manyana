@@ -62,6 +62,7 @@ async def SdDraw(prompt, negative_prompt, path, sdurl,groupid):
         "scheduler": 'Karras',
         "clip_skip_steps": 2,
         "override_settings": {
+            "CLIP_stop_at_last_layers": 2,
             "sd_model_checkpoint": ckpt,  # 指定大模型
             },
         "override_settings_restore_afterwards": False,
@@ -75,7 +76,6 @@ async def SdDraw(prompt, negative_prompt, path, sdurl,groupid):
         check = await pic_audit_standalone(b64, return_none=True,url = sd1)  # 这里如果是使用我（spawnerqwq）的kaggle云端脚本部署的sd，参数可以写(b64,return_none=True,url)
         if check:                                                  # 注意自己装的wd14打标插件没用，官方插件有bug，我在kaggle部署的插件是修改过的
             return False                                           # 注意这里的url是sdurl，如果你在不是sd的画图模块也想开审核，注意把那个url的参数填sdurl
-    logger.info(f'检测到合规内容，已发送')
     image = Image.open(io.BytesIO(base64.b64decode(r['images'][0])))
     #image = Image.open(io.BytesIO(base64.b64decode(p)))
     image.save(f'{path}')
@@ -107,6 +107,7 @@ async def SdDraw1(prompt, negative_prompt, path, sdurl,groupid):
         "scheduler": 'Karras',
         "clip_skip_steps": 2,
         "override_settings": {
+            "CLIP_stop_at_last_layers": 2,
             "sd_model_checkpoint": ckpt,  # 指定大模型
             },
         "override_settings_restore_afterwards": False,
@@ -152,6 +153,7 @@ async def SdDraw2(prompt, negative_prompt, path, sdurl,groupid):
         "scheduler": 'Karras',
         "clip_skip_steps": 2,
         "override_settings": {
+            "CLIP_stop_at_last_layers": 2,
             "sd_model_checkpoint": ckpt,  # 指定大模型
             },
         "override_settings_restore_afterwards": False,
@@ -380,6 +382,7 @@ async def SdreDraw(prompt, negative_prompt, path, sdurl, groupid, b64_in,args):
         "scheduler": 'Karras',
         "clip_skip_steps": 2,
         "override_settings": {
+            "CLIP_stop_at_last_layers": 2,
             "sd_model_checkpoint": ckpt,  # 指定大模型
             },
         "override_settings_restore_afterwards": False,
@@ -396,7 +399,6 @@ async def SdreDraw(prompt, negative_prompt, path, sdurl, groupid, b64_in,args):
         check = await pic_audit_standalone(b64, return_none=True,url = sd1)  # 这里如果是使用我（spawnerqwq）的kaggle云端脚本部署的sd，参数可以写(b64,return_none=True,url)
         if check:                                                  # 注意自己装的wd14打标插件没用，官方插件有bug，我在kaggle部署的插件是修改过的
             return False                                           # 注意这里的url是sdurl，如果你在不是sd的画图模块也想开审核，注意把那个url的参数填sdurl
-    logger.info(f'检测到合规内容，已发送')
     image = Image.open(io.BytesIO(base64.b64decode(r['images'][0])))
     #image = Image.open(io.BytesIO(base64.b64decode(p)))
     image.save(f'{path}')
@@ -432,6 +434,7 @@ async def SdDraw0(prompt, negative_prompt, path, sdurl,groupid,args):
         "scheduler": 'Karras',
         "clip_skip_steps": 2,
         "override_settings": {
+            "CLIP_stop_at_last_layers": 2,
             "sd_model_checkpoint": ckpt,  # 指定大模型
             },
         "override_settings_restore_afterwards": False,
@@ -445,7 +448,6 @@ async def SdDraw0(prompt, negative_prompt, path, sdurl,groupid,args):
         check = await pic_audit_standalone(b64, return_none=True,url = sd1)  # 这里如果是使用我（spawnerqwq）的kaggle云端脚本部署的sd，参数可以写(b64,return_none=True,url)
         if check:                                                  # 注意自己装的wd14打标插件没用，官方插件有bug，我在kaggle部署的插件是修改过的
             return False                                           # 注意这里的url是sdurl，如果你在不是sd的画图模块也想开审核，注意把那个url的参数填sdurl
-    logger.info(f'检测到合规内容，已发送')
     image = Image.open(io.BytesIO(base64.b64decode(r['images'][0])))
     #image = Image.open(io.BytesIO(base64.b64decode(p)))
     image.save(f'{path}')
@@ -522,6 +524,7 @@ async def cn1(prompt, negative_prompt, path, sdurl, groupid, b64_in,args):# 这�
                 }
         },
         "override_settings": {
+            "CLIP_stop_at_last_layers": 2,
             "sd_model_checkpoint": ckpt,  # 指定大模型
             },
         "override_settings_restore_afterwards": False,
@@ -537,7 +540,6 @@ async def cn1(prompt, negative_prompt, path, sdurl, groupid, b64_in,args):# 这�
         check = await pic_audit_standalone(b64, return_none=True,url = sd1)  # 这里如果是使用我（spawnerqwq）的kaggle云端脚本部署的sd，参数可以写(b64,return_none=True,url)
         if check:                                                  # 注意自己装的wd14打标插件没用，官方插件有bug，我在kaggle部署的插件是修改过的
             return False                                           # 注意这里的url是sdurl，如果你在不是sd的画图模块也想开审核，注意把那个url的参数填sdurl
-    logger.info(f'检测到合规内容，已发送')
     image = Image.open(io.BytesIO(base64.b64decode(r['images'][0])))
     image.save(f'{path}')
     return path 

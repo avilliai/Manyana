@@ -113,4 +113,6 @@ scheduledTasks:    #其他定时任务模块的内容会陆续转到这里
     enable: true
     text: 听完就赶紧睡觉吧~祝你好梦！(≧▽≦*)
     time: 22/35
-
+奶龙检测:
+  开关: true
+  是否撤回: true
