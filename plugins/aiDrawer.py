@@ -62,6 +62,7 @@ async def SdDraw(prompt, negative_prompt, path, sdurl,groupid):
         "scheduler": 'Karras',
         "clip_skip_steps": 2,
         "override_settings": {
+            "CLIP_stop_at_last_layers": 2,
             "sd_model_checkpoint": ckpt,  # 指定大模型
             },
         "override_settings_restore_afterwards": False,
@@ -106,6 +107,7 @@ async def SdDraw1(prompt, negative_prompt, path, sdurl,groupid):
         "scheduler": 'Karras',
         "clip_skip_steps": 2,
         "override_settings": {
+            "CLIP_stop_at_last_layers": 2,
             "sd_model_checkpoint": ckpt,  # 指定大模型
             },
         "override_settings_restore_afterwards": False,
@@ -151,6 +153,7 @@ async def SdDraw2(prompt, negative_prompt, path, sdurl,groupid):
         "scheduler": 'Karras',
         "clip_skip_steps": 2,
         "override_settings": {
+            "CLIP_stop_at_last_layers": 2,
             "sd_model_checkpoint": ckpt,  # 指定大模型
             },
         "override_settings_restore_afterwards": False,
@@ -379,6 +382,7 @@ async def SdreDraw(prompt, negative_prompt, path, sdurl, groupid, b64_in,args):
         "scheduler": 'Karras',
         "clip_skip_steps": 2,
         "override_settings": {
+            "CLIP_stop_at_last_layers": 2,
             "sd_model_checkpoint": ckpt,  # 指定大模型
             },
         "override_settings_restore_afterwards": False,
@@ -430,6 +434,7 @@ async def SdDraw0(prompt, negative_prompt, path, sdurl,groupid,args):
         "scheduler": 'Karras',
         "clip_skip_steps": 2,
         "override_settings": {
+            "CLIP_stop_at_last_layers": 2,
             "sd_model_checkpoint": ckpt,  # 指定大模型
             },
         "override_settings_restore_afterwards": False,
@@ -519,6 +524,7 @@ async def cn1(prompt, negative_prompt, path, sdurl, groupid, b64_in,args):# 这�
                 }
         },
         "override_settings": {
+            "CLIP_stop_at_last_layers": 2,
             "sd_model_checkpoint": ckpt,  # 指定大模型
             },
         "override_settings_restore_afterwards": False,
