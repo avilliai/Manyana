@@ -24,6 +24,7 @@ turn = 0
 UserGet = {}
 tag_user = {}
 sd_user_args = {}
+sd_re_args = {}
 UserGet1 = {}
 
 
@@ -453,7 +454,7 @@ def main(bot, logger):
             
 
             try:
-                args = sd_user_args.get(event.sender.id, {})
+                args = sd_re_args.get(event.sender.id, {})
                 b64_in = await url_to_base64(img_url)
                 
                 await bot.send(event, f"开始重绘啦~sd前面排队{turn}人，请耐心等待喵~", True)
@@ -526,12 +527,20 @@ def main(bot, logger):
     @bot.on(GroupMessage)
     async def sdsettings(event: GroupMessage):
         if str(event.message_chain).startswith("setsd "):
+            global sd_user_args
             command = str(event.message_chain).replace("setsd ", "")
             cmd_dict = parse_arguments(command)  # 不需要 await
             sd_user_args[event.sender.id] = cmd_dict
-            print(f"Updated sd_user_args: {sd_user_args}")  # 调试信息
-            await bot.send(event, "设置成功喵~", True)
-            await bot.send(event, f"当前设置: {sd_user_args[event.sender.id]}")
+            await bot.send(event, f"当前设置: {sd_user_args[event.sender.id]}", True)
+    
+    @bot.on(GroupMessage)
+    async def sdresettings(event: GroupMessage):
+        if str(event.message_chain).startswith("setre "):
+            global sd_re_args
+            command = str(event.message_chain).replace("setre ", "")
+            cmd_dict = parse_arguments(command)  # 不需要 await
+            sd_re_args[event.sender.id] = cmd_dict
+            await bot.send(event, f"当前设置: {sd_re_args[event.sender.id]}", True)
             
     @bot.on(GroupMessage)
     async def sdcn1(event: GroupMessage):
