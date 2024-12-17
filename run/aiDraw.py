@@ -65,7 +65,6 @@ def main(bot, logger):
                     if char.isdigit():
                         break
                 else:
-                    print(f"Warning: Invalid argument format '{arg}'")  # 调试信息
                     continue
                 
                 key = arg[1:i]
@@ -76,10 +75,8 @@ def main(bot, logger):
                     print(f"Warning: Invalid value for key '{key}'")  # 调试信息
                     continue
                 result[key] = value
-                print(f"Extracted key-value pair: {key} = {value}")  # 调试信息
             else:
                 print(f"Warning: Invalid argument format '{arg}'")  # 调试信息
-        print(f"Parsed arguments: {result}")  # 调试信息
         return result
     
     @bot.on(GroupMessage)
