@@ -528,7 +528,7 @@ def main(bot, logger):
             command = str(event.message_chain).replace("setsd ", "")
             cmd_dict = parse_arguments(command)  # 不需要 await
             sd_user_args[event.sender.id] = cmd_dict
-            await bot.send(event, f"当前设置: {sd_user_args[event.sender.id]}", True)
+            await bot.send(event, f"当前绘画参数设置: {sd_user_args[event.sender.id]}", True)
     
     @bot.on(GroupMessage)
     async def sdresettings(event: GroupMessage):
@@ -537,7 +537,7 @@ def main(bot, logger):
             command = str(event.message_chain).replace("setre ", "")
             cmd_dict = parse_arguments(command)  # 不需要 await
             sd_re_args[event.sender.id] = cmd_dict
-            await bot.send(event, f"当前设置: {sd_re_args[event.sender.id]}", True)
+            await bot.send(event, f"当前重绘参数设置: {sd_re_args[event.sender.id]}", True)
             
     @bot.on(GroupMessage)
     async def sdcn1(event: GroupMessage):
