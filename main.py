@@ -272,6 +272,7 @@ if __name__ == '__main__':
             with open('config/controller.yaml', 'r', encoding='utf-8') as f:
                 controller = yaml.load(f.read(), Loader=yaml.FullLoader)
             FordMesmenu = controller.get("bot自身设置").get("FordMesMenu")
+            nailongSetting = controller.get("奶龙检测")
 
 
             @bot.on(GroupMessage)
@@ -453,11 +454,12 @@ if __name__ == '__main__':
             aronaapi.main(bot, logger)
             onebot_fun.main(bot, logger, master)
             try:
-                from run import nailong_get
-                nailong_get.main(bot, logger)
+                if nailongSetting:
+                    from run import nailong_get
+                    nailong_get.main(bot, logger)
             except Exception as e:
-                logger.error(e)
-                logger.error("奶龙检测依赖未安装，如有需要，请使用更新代码-6 安装奶龙检测必要素材")
+                logger.warning(e)
+                logger.warning("奶龙检测依赖未安装，如有需要，请使用更新代码-6 安装奶龙检测必要素材")
 
             try:
                 scheduledTasks.main(bot, logger)
