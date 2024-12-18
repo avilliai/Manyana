@@ -66,6 +66,8 @@ def main(bot, logger):
     if if_nailong:
         @bot.on(GroupMessage)
         async def get_pic(event: GroupMessage):
+            if not event.message_chain.count(Image):
+                return
             lst_img = event.message_chain.get(Image)
             img_url = lst_img[0].url
             b64_in = await url_to_base64(img_url)
@@ -91,6 +93,8 @@ def main(bot, logger):
     if if_doro:
         @bot.on(GroupMessage)
         async def get_pic1(event: GroupMessage):
+            if not event.message_chain.count(Image):
+                return
             lst_img = event.message_chain.get(Image)
             img_url = lst_img[0].url
             b64_in = await url_to_base64(img_url)
