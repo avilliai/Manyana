@@ -367,7 +367,7 @@ def main(bot, master, logger):
                 if allowUserSetModel:
                     await bot.send(event, "不存在的角色")
                 else:
-                    await bot.send(event, "禁止用户自行设定模型(可联系master修改配置)")
+                    await bot.send(event, "禁止使用此指令。")
 
     @bot.on(Startup)
     async def upDate(event: Startup):
