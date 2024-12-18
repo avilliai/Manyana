@@ -103,7 +103,11 @@ class MyWebSocketAdapter(WebSocketAdapter):
 
 if __name__ == '__main__':
     import sys  # 确保导入 sys 模块
-
+    with open('config/api.yaml', 'r', encoding='utf-8') as f:
+        resulttr = yaml.load(f.read(), Loader=yaml.FullLoader)
+    proxy = resulttr.get("proxy")
+    if proxy != "":
+        os.environ["http_proxy"] = proxy
     counter = 0  # 初始化计数器
     while counter <= 20:
         try:
