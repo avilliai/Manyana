@@ -192,7 +192,7 @@ async def getcheckpoints(sdurl="http://166.0.199.118:17858"):
     async with httpx.AsyncClient(timeout=10.0) as client:
         response = await client.get(url)
         r = response.json()
-        model_lines = [f'{model.get("title", "未知")}' for model in r]
+        model_lines = [f'{model.get("model_name", "未知")}' for model in r]
         result = f'当前底模: {ckpt}\n以下是可用的底模：\n' + '\n'.join(model_lines) + '\n'
         return result
 
