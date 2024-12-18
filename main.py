@@ -454,7 +454,7 @@ if __name__ == '__main__':
             aronaapi.main(bot, logger)
             onebot_fun.main(bot, logger, master)
             try:
-                if nailongSetting["奶龙检测"] or nailongSetting["doro检测"]:
+                if (nailongSetting["奶龙检测"] or nailongSetting["doro检测"]) and nailongSetting["runInManyana"]:
                     from run import nailong_get
                     nailong_get.main(bot, logger)
             except Exception as e:
