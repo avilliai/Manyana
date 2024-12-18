@@ -175,28 +175,26 @@ async def SdDraw2(prompt, negative_prompt, path, sdurl,groupid):
     return path
 
 async def getloras(sdurl="http://166.0.199.118:17858"):
-    url = sdurl
-    async with httpx.AsyncClient(timeout=1000) as client:
-        response = await client.get(f'{url}/sdapi/v1/loras')
-    r = response.json()
-    result = '以下是可用的lora：\n'
-    for lora in r:
-        result += f'<lora:{lora.get("name", "未知")}:1.0>,'
-    return result
+    url = f'{sdurl}/sdapi/v1/loras'
+    async with httpx.AsyncClient(timeout=10.0) as client:
+        response = await client.get(url)
+        r = response.json()
+        result_lines = [f'<lora:{lora.get("name", "未知")}:1.0>,' for lora in r]
+        result = '以下是可用的lora：\n' + '\n'.join(result_lines) + '\n'
+        return result
 
 async def ckpt2(model):
     global ckpt
     ckpt = model
 
 async def getcheckpoints(sdurl="http://166.0.199.118:17858"):
-    url = sdurl
-    async with httpx.AsyncClient(timeout=1000) as client:
-        response = await client.get(f'{url}/sdapi/v1/sd-models')
-    r = response.json()
-    result = f'当前{ckpt},以下是可用的底模：\n'
-    for models in r:
-        result += f'{models.get("title", "未知")},'
-    return result
+    url = f'{sdurl}/sdapi/v1/sd-models'
+    async with httpx.AsyncClient(timeout=10.0) as client:
+        response = await client.get(url)
+        r = response.json()
+        model_lines = [f'{model.get("model_name", "未知")}' for model in r]
+        result = f'当前底模: {ckpt}\n以下是可用的底模：\n' + '\n'.join(model_lines) + '\n'
+        return result
 
 async def draw2(prompt, path="./test.png"):
     url = f"https://api.lolimi.cn/API/AI/sd.php?msg={prompt}&mode=动漫"
