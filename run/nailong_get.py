@@ -26,8 +26,8 @@ def main(bot, logger):
     chehui2 = sets.get("doro撤回")
     if_nailong = sets.get("奶龙检测")
     if_doro = sets.get("doro检测")
-    mute2=sets.get("doru禁言")
-    attack2=sets.get("骂doru")
+    mute2=sets.get("doro禁言")
+    attack2=sets.get("骂doro")
     async def get_group_member_info(group_id: int, user_id: int):
         url = "http://localhost:3000/get_group_member_info"
         payload = {
