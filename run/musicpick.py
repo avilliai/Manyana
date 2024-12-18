@@ -130,7 +130,7 @@ def main(bot, logger):
                     logger.info(f"已下载目标单曲：{p}")
                     await bot.send(event, Voice(path=p))
                 else:
-                    MusicUrlDownLoad=await newCloudMusicDown(musiclist[order - 1][1], True,True)
+                    p, MusicUrlDownLoad =await newCloudMusicDown(musiclist[order - 1][1], True,True)
                     await bot.send(event, MusicShare(kind = "QQMusic",
                                      title = f'{musiclist[order - 1][0]}',
                                      summary = f'{musiclist[order - 1][0]}',
