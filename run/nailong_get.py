@@ -7,7 +7,7 @@ from io import BytesIO
 from PIL import Image as PILImage
 import asyncio
 import re
-
+from concurrent.futures import ThreadPoolExecutor
 import yaml
 from mirai import GroupMessage
 from mirai import Image
@@ -71,7 +71,11 @@ def main(bot, logger):
             lst_img = event.message_chain.get(Image)
             img_url = lst_img[0].url
             b64_in = await url_to_base64(img_url)
-            check = await nailong_main(b64_in)
+            loop = asyncio.get_running_loop()
+                # 使用线程池执行器
+            with ThreadPoolExecutor() as executor:
+                # 使用 asyncio.to_thread 调用函数并获取返回结果
+                check = await loop.run_in_executor(executor, nailong_main, b64_in)
             if check == 1:
                 if chehui1:
                     #is_group_admin1 = await is_group_admin(event.group.id, bot.qq)
@@ -98,7 +102,11 @@ def main(bot, logger):
             lst_img = event.message_chain.get(Image)
             img_url = lst_img[0].url
             b64_in = await url_to_base64(img_url)
-            check = await doro_main(b64_in)
+            loop = asyncio.get_running_loop()
+                # 使用线程池执行器
+            with ThreadPoolExecutor() as executor:
+                # 使用 asyncio.to_thread 调用函数并获取返回结果
+                check = await loop.run_in_executor(executor, doro_main, b64_in)
             if check == 1:
                 if chehui2:
                     #is_group_admin1 = await is_group_admin(event.group.id, bot.qq)
