@@ -116,5 +116,11 @@ scheduledTasks:    #其他定时任务模块的内容会陆续转到这里
 检测:
   奶龙检测: false
   奶龙撤回: true
+  奶龙禁言: true
+  骂奶龙:
+  - 奶龙是你叠？这么喜欢发奶龙？
   doro检测: false
   doro撤回: true
+  doru禁言: true
+  骂doru:
+  - doru是你🐴？这么喜欢发？
