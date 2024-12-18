@@ -174,7 +174,7 @@ async def SdDraw2(prompt, negative_prompt, path, sdurl,groupid):
     #image.save(f'{path}')
     return path
 
-async def get_loras(sdurl="http://166.0.199.118:17858"):
+async def getloras(sdurl="http://166.0.199.118:17858"):
     url = f'{sdurl}/sdapi/v1/loras'
     async with httpx.AsyncClient(timeout=10.0) as client:
         response = await client.get(url)
@@ -187,7 +187,7 @@ async def ckpt2(model):
     global ckpt
     ckpt = model
 
-async def get_checkpoints(sdurl="http://166.0.199.118:17858"):
+async def getcheckpoints(sdurl="http://166.0.199.118:17858"):
     url = f'{sdurl}/sdapi/v1/sd-models'
     async with httpx.AsyncClient(timeout=10.0) as client:
         response = await client.get(url)
