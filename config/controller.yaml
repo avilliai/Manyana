@@ -114,7 +114,15 @@ scheduledTasks:    #其他定时任务模块的内容会陆续转到这里
     text: 听完就赶紧睡觉吧~祝你好梦！(≧▽≦*)
     time: 22/35
 检测:
-  奶龙检测: true
+  奶龙检测: false
   奶龙撤回: true
-  doro检测: true
+  奶龙禁言: true
+  骂奶龙:
+  - 奶龙是你叠？这么喜欢发奶龙？
+  doro检测: false
   doro撤回: true
+  doro禁言: true
+  骂doro:
+  - doro是你🐴？这么喜欢发你🐴的遗照？ #自己添加
+  - 粉色奶龙
+  - 唐

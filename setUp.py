@@ -193,6 +193,7 @@ def main():
                 os.system(f"{git_path} clone https://gitee.com/Nwflower/star-rail-atlas.git")
     elif a=="6":
         logger.info("开始安装奶龙检测必要素材")
+        os.system(f"\"{python_path}\" -m pip config set global.index-url https://mirrors.aliyun.com/pypi/simple/")
         os.system(f"\"{python_path}\" -m pip install --upgrade torch")
         os.system(f"\"{python_path}\" -m pip install --upgrade torchvision")
         os.system(f"\"{python_path}\" -m pip install --upgrade opencv-python")

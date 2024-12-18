@@ -272,7 +272,7 @@ if __name__ == '__main__':
             with open('config/controller.yaml', 'r', encoding='utf-8') as f:
                 controller = yaml.load(f.read(), Loader=yaml.FullLoader)
             FordMesmenu = controller.get("bot自身设置").get("FordMesMenu")
-            nailongSetting = controller.get("奶龙检测")
+            nailongSetting = controller.get("检测")
 
 
             @bot.on(GroupMessage)
@@ -454,7 +454,7 @@ if __name__ == '__main__':
             aronaapi.main(bot, logger)
             onebot_fun.main(bot, logger, master)
             try:
-                if nailongSetting:
+                if nailongSetting["奶龙检测"] or nailongSetting["doro检测"]:
                     from run import nailong_get
                     nailong_get.main(bot, logger)
             except Exception as e:

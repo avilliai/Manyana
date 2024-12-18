@@ -7,7 +7,7 @@ from io import BytesIO
 from PIL import Image as PILImage
 import asyncio
 import re
-
+from concurrent.futures import ThreadPoolExecutor
 import yaml
 from mirai import GroupMessage
 from mirai import Image
@@ -21,9 +21,13 @@ def main(bot, logger):
         controller = yaml.load(f.read(), Loader=yaml.FullLoader)
     sets = controller.get("检测")
     chehui1 = sets.get("奶龙撤回")
+    mute1=sets.get("奶龙禁言")
+    attack1=sets.get("骂奶龙")
     chehui2 = sets.get("doro撤回")
     if_nailong = sets.get("奶龙检测")
     if_doro = sets.get("doro检测")
+    mute2=sets.get("doro禁言")
+    attack2=sets.get("骂doro")
     async def get_group_member_info(group_id: int, user_id: int):
         url = "http://localhost:3000/get_group_member_info"
         payload = {
@@ -62,43 +66,58 @@ def main(bot, logger):
     if if_nailong:
         @bot.on(GroupMessage)
         async def get_pic(event: GroupMessage):
+            if not event.message_chain.count(Image):
+                return
             lst_img = event.message_chain.get(Image)
             img_url = lst_img[0].url
             b64_in = await url_to_base64(img_url)
-            check = await nailong_main(b64_in)
+            loop = asyncio.get_running_loop()
+            with ThreadPoolExecutor() as executor:
+                check = await loop.run_in_executor(executor, nailong_main, b64_in)
             if check == 1:
                 if chehui1:
-                    is_group_admin1 = await is_group_admin(event.group.id, bot.qq)
-                    if is_group_admin1:
+                    #is_group_admin1 = await is_group_admin(event.group.id, bot.qq)
+                    try:
                         msg = event.json()
                         event_dict = json.loads(msg)
                         Source_id = next((element['id'] for element in event_dict['message_chain']
                                         if element.get('type') == 'Source'), None)
                         await delete_msg(Source_id)
-                        await bot.send(event, f"爱发奶龙的小朋友你好啊~我是贝利亚",True)
-                    else:
-                        await bot.send(event, f"如果我是管理就给你撤了",True)
+                        await bot.send(event, random.choice(attack1),True)
+                        if mute1:
+                            await bot.mute(target=event.sender.group.id, member_id=event.sender.id,
+                                   time=100)
+                    except:
+                        await bot.send(event, random.choice(attack1),True)
                 else:
-                    await bot.send(event, f"爱发奶龙的小朋友你好啊~",True)
+                    await bot.send(event, random.choice(attack1),True)
     
     if if_doro:
         @bot.on(GroupMessage)
         async def get_pic1(event: GroupMessage):
+            if not event.message_chain.count(Image):
+                return
             lst_img = event.message_chain.get(Image)
             img_url = lst_img[0].url
             b64_in = await url_to_base64(img_url)
-            check = await doro_main(b64_in)
+            loop = asyncio.get_running_loop()
+            #线程池
+            with ThreadPoolExecutor() as executor:
+                check = await loop.run_in_executor(executor, doro_main, b64_in)
             if check == 1:
                 if chehui2:
-                    is_group_admin1 = await is_group_admin(event.group.id, bot.qq)
-                    if is_group_admin1:
+                    #is_group_admin1 = await is_group_admin(event.group.id, bot.qq)
+                    try:
                         msg = event.json()
                         event_dict = json.loads(msg)
                         Source_id = next((element['id'] for element in event_dict['message_chain']
                                         if element.get('type') == 'Source'), None)
                         await delete_msg(Source_id)
-                        await bot.send(event, f"禁止doro",True)
-                    else:
-                        await bot.send(event, f"doro，我想要撤回",True)
+                        await bot.send(event, random.choice(attack2),True)
+                        if mute2:
+                            await bot.mute(target=event.sender.group.id, member_id=event.sender.id,
+                                   time=100)
+                    except:
+                        await bot.send(event, random.choice(attack2),True)
                 else:
-                    await bot.send(event, f"doro！",True)
+                    await bot.send(event, random.choice(attack2),True)

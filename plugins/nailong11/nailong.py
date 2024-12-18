@@ -5,7 +5,6 @@ import torch.nn as nn
 import torchvision.transforms as transforms
 import cv2
 import base64
-import asyncio
 import os
 
 # 定义数据预处理
@@ -27,7 +26,7 @@ def load_model(model_path, device):
     model.eval()
     return model
 
-async def predict_frame(frame, model, transform, device):
+def predict_frame(frame, model, transform, device):
     """ 对单帧图像进行预测 """
     model.eval()
     frame = transform(frame).unsqueeze(0).to(device)
@@ -36,7 +35,7 @@ async def predict_frame(frame, model, transform, device):
         _, pred = torch.max(output, 1)
     return pred.item() == 1  # 返回是否为奶龙元素
 
-async def predict_image_or_gif(image_bytes, model, transform, device):
+def predict_image_or_gif(image_bytes, model, transform, device):
     """ 对图像或GIF文件进行预测 """
     model.eval()
     image_stream = io.BytesIO(image_bytes)
@@ -45,14 +44,14 @@ async def predict_image_or_gif(image_bytes, model, transform, device):
     if image.format == 'GIF':
         for frame in ImageSequence.Iterator(image):
             frame = frame.convert('RGB')
-            if await predict_frame(frame, model, transform, device):
+            if predict_frame(frame, model, transform, device):
                 return True  # 发现奶龙元素
         return False  # 没有发现奶龙元素
     else:
         image = image.convert('RGB')
-        return await predict_frame(image, model, transform, device)  # 返回是否为奶龙元素
+        return predict_frame(image, model, transform, device)  # 返回是否为奶龙元素
 
-async def predict_video(video_bytes, model, transform, device):
+def predict_video(video_bytes, model, transform, device):
     """ 对视频文件的每一帧进行预测 """
     video_stream = io.BytesIO(video_bytes)
     cap = cv2.VideoCapture()
@@ -66,7 +65,7 @@ async def predict_video(video_bytes, model, transform, device):
             break
         frame_rgb = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
         pil_image = Image.fromarray(frame_rgb)
-        if await predict_frame(pil_image, model, transform, device):
+        if predict_frame(pil_image, model, transform, device):
             found = True
             print(f"Frame {frame_count}: True")  # 发现奶龙元素
         frame_count += 1
@@ -75,7 +74,7 @@ async def predict_video(video_bytes, model, transform, device):
         print("Prediction: False")  # 没有发现奶龙元素
     return found
 
-async def detect_nailong_from_base64(base64_string, model, transform, device):
+def detect_nailong_from_base64(base64_string, model, transform, device):
     # 解码base64字符串
     image_bytes = base64.b64decode(base64_string)
     
@@ -84,18 +83,18 @@ async def detect_nailong_from_base64(base64_string, model, transform, device):
     try:
         image = Image.open(image_stream)
         if image.format in ['JPEG', 'PNG', 'BMP', 'GIF']:
-            return await predict_image_or_gif(image_bytes, model, transform, device)
+            return predict_image_or_gif(image_bytes, model, transform, device)
     except IOError:
         pass
     
     # 如果不是图像，则尝试作为视频处理
     try:
-        return await predict_video(image_bytes, model, transform, device)
+        return predict_video(image_bytes, model, transform, device)
     except Exception as e:
         print(f"Error processing input: {e}")
         return False
 
-async def main(base64_string):
+def main(base64_string):
     # 设备
     device = 'cuda' if torch.cuda.is_available() else 'cpu'
     print(f"Using device: {device}")
@@ -105,6 +104,6 @@ async def main(base64_string):
     model = load_model(model_path, device)
     
     # 检测奶龙元素
-    result = await detect_nailong_from_base64(base64_string, model, test_transform, device)
+    result = detect_nailong_from_base64(base64_string, model, test_transform, device)
     print(f"Detection Result: {'True' if result else 'False'}")
     return result
