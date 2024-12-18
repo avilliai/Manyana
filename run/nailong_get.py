@@ -21,9 +21,13 @@ def main(bot, logger):
         controller = yaml.load(f.read(), Loader=yaml.FullLoader)
     sets = controller.get("检测")
     chehui1 = sets.get("奶龙撤回")
+    mute1=sets.get("奶龙禁言")
+    attack1=sets.get("骂奶龙")
     chehui2 = sets.get("doro撤回")
     if_nailong = sets.get("奶龙检测")
     if_doro = sets.get("doro检测")
+    mute2=sets.get("doru禁言")
+    attack2=sets.get("骂doru")
     async def get_group_member_info(group_id: int, user_id: int):
         url = "http://localhost:3000/get_group_member_info"
         payload = {
@@ -75,11 +79,14 @@ def main(bot, logger):
                         Source_id = next((element['id'] for element in event_dict['message_chain']
                                         if element.get('type') == 'Source'), None)
                         await delete_msg(Source_id)
-                        await bot.send(event, f"爱发奶龙的小朋友你好啊~我是贝利亚",True)
+                        await bot.send(event, random.choice(attack1),True)
+                        if mute1:
+                            await bot.mute(target=event.sender.group.id, member_id=event.sender.id,
+                                   time=100)
                     else:
                         await bot.send(event, f"如果我是管理就给你撤了",True)
                 else:
-                    await bot.send(event, f"爱发奶龙的小朋友你好啊~",True)
+                    await bot.send(event, random.choice(attack1),True)
     
     if if_doro:
         @bot.on(GroupMessage)
@@ -97,8 +104,11 @@ def main(bot, logger):
                         Source_id = next((element['id'] for element in event_dict['message_chain']
                                         if element.get('type') == 'Source'), None)
                         await delete_msg(Source_id)
-                        await bot.send(event, f"禁止doro",True)
+                        await bot.send(event, random.choice(attack2),True)
+                        if mute2:
+                            await bot.mute(target=event.sender.group.id, member_id=event.sender.id,
+                                   time=100)
                     else:
                         await bot.send(event, f"doro，我想要撤回",True)
                 else:
-                    await bot.send(event, f"doro！",True)
+                    await bot.send(event, random.choice(attack2),True)
