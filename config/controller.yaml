@@ -114,7 +114,6 @@ scheduledTasks:    #其他定时任务模块的内容会陆续转到这里
     text: 听完就赶紧睡觉吧~祝你好梦！(≧▽≦*)
     time: 22/35
 检测:
-  runInManyana: True #开启则作为Manyana子模块运行，但如果你有上百个群可能造成负载过高。【建议】关闭此项后，手动使用 奶龙检测单独启动脚本.bat 启用奶龙和doro检测。
   奶龙检测: false
   奶龙撤回: true
   奶龙禁言: true
