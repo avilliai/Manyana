@@ -74,8 +74,8 @@ def main(bot, logger):
             check = await nailong_main(b64_in)
             if check == 1:
                 if chehui1:
-                    is_group_admin1 = await is_group_admin(event.group.id, bot.qq)
-                    if is_group_admin1:
+                    #is_group_admin1 = await is_group_admin(event.group.id, bot.qq)
+                    try:
                         msg = event.json()
                         event_dict = json.loads(msg)
                         Source_id = next((element['id'] for element in event_dict['message_chain']
@@ -85,8 +85,8 @@ def main(bot, logger):
                         if mute1:
                             await bot.mute(target=event.sender.group.id, member_id=event.sender.id,
                                    time=100)
-                    else:
-                        await bot.send(event, f"如果我是管理就给你撤了",True)
+                    except:
+                        await bot.send(event, random.choice(attack1),True)
                 else:
                     await bot.send(event, random.choice(attack1),True)
     
@@ -101,8 +101,8 @@ def main(bot, logger):
             check = await doro_main(b64_in)
             if check == 1:
                 if chehui2:
-                    is_group_admin1 = await is_group_admin(event.group.id, bot.qq)
-                    if is_group_admin1:
+                    #is_group_admin1 = await is_group_admin(event.group.id, bot.qq)
+                    try:
                         msg = event.json()
                         event_dict = json.loads(msg)
                         Source_id = next((element['id'] for element in event_dict['message_chain']
@@ -112,7 +112,7 @@ def main(bot, logger):
                         if mute2:
                             await bot.mute(target=event.sender.group.id, member_id=event.sender.id,
                                    time=100)
-                    else:
-                        await bot.send(event, f"doro，我想要撤回",True)
+                    except:
+                        await bot.send(event, random.choice(attack2),True)
                 else:
                     await bot.send(event, random.choice(attack2),True)
