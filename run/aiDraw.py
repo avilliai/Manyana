@@ -11,13 +11,15 @@ import re
 
 import yaml
 from mirai import GroupMessage
-from mirai import Image
+from mirai import Image, MessageChain
 
 from plugins.toolkits import random_str
+from bs4 import BeautifulSoup
+from mirai.models import ForwardMessageNode, Forward
 
 from plugins.setuModerate import fileImgModerate, pic_audit_standalone
 from plugins.aiDrawer import getloras, SdDraw, draw2, airedraw, draw1, draw3, tiktokredraw, draw5, draw4, draw6, fluxDrawer, SdDraw1, SdDraw2, getcheckpoints, ckpt2, SdreDraw, SdDraw0, \
-    cn1
+    cn1, n4
 
 i = 0
 turn = 0
@@ -585,4 +587,159 @@ def main(bot, logger):
             except Exception as e:
                 logger.error(f"cn1失败: {e}")
                 await bot.send(event, "cn1失败了喵~", True)
+
+    @bot.on(GroupMessage)
+    async def naiDraw(event: GroupMessage):
+        global turn
+        global sd_user_args
+        if str(event.message_chain).startswith("n4 ") and aiDrawController.get("nai"):
+            tag = str(event.message_chain).replace("n4 ", "")
+            path = f"data/pictures/cache/{random_str()}.png"
+            logger.info(f"发起nai绘画请求，path:{path}|prompt:{tag}")
+
+            async def attempt_draw(retries_left=10): # 这里是递归请求的次数
+                try:
+                    p = await n4(tag + positive_prompt, negative_prompt, path, event.group.id)
+                    if p == False:
+                        logger.info("色图已屏蔽")
+                        await bot.send(event, "杂鱼，色图不给你喵~", True)
+                    else:
+                        await bot.send(event, [Image(path=path)], True)
+                except Exception as e:
+                    logger.error(e)
+                    if retries_left > 0:
+                        logger.error(f"尝试重新请求nai，剩余尝试次数：{retries_left - 1}")
+                        await asyncio.sleep(0.5)  # 等待0.5秒
+                        await attempt_draw(retries_left - 1)
+                    else:
+                        await bot.send(event, "nai只因了，联系master喵~")
+
+            await attempt_draw()
+
+    @bot.on(GroupMessage)
+    async def db(event: GroupMessage):
+        if str(event.message_chain).startswith("dan "):
+            tag = str(event.message_chain).replace("dan ", "")
+            logger.info(f"收到来自群{event.group.id}的请求，prompt:{tag}")
+            limit = 3
+            proxies = {
+                "http://": proxy,
+                "https://": proxy,
+            }
+
+            db_base_url = "https://danbooru.donmai.us"
+
+            msg = tag
+            try:
+                async with httpx.AsyncClient(timeout=1000, proxies=proxies) as client:
+                    resp = await client.get(
+                        f"{db_base_url}/autocomplete?search%5Bquery%5D={msg}&search%5Btype%5D=tag_query&version=1&limit={limit}",
+                        follow_redirects=True,
+                    )
+                    resp.raise_for_status()  # 检查请求是否成功
+                    logger.info(f"Autocomplete request successful for tag: {tag}")
+            except Exception as e:
+                logger.error(f"Failed to get autocomplete data for tag: {tag}. Error: {e}")
+                return
+
+            soup = BeautifulSoup(resp.text, 'html.parser')
+            tags = soup.find_all('li', class_='ui-menu-item')
+
+            data_values = []
+            raw_data_values = []
+            for tag in tags:
+                data_value = tag['data-autocomplete-value']
+                raw_data_values.append(data_value)
+                data_value_space = data_value.replace('_', ' ')
+                data_values.append(data_value_space)
+                logger.info(f"Found autocomplete tag: {data_value_space}")
+
+            build_msg = []
+
+            for tag in raw_data_values:
+                b1 = ForwardMessageNode(sender_id=bot.qq, sender_name="Manyana", message_chain=MessageChain([f"({tag}:1)"]))
+                build_msg.append(b1)
+                formatted_tag = tag.replace(' ', '_').replace('(', '%28').replace(')', '%29')
+
+                try:
+                    async with httpx.AsyncClient(timeout=1000, proxies=proxies) as client:
+                        image_resp = await client.get(
+                            f"{db_base_url}/posts?tags={formatted_tag}",
+                            follow_redirects=True
+                        )
+                        image_resp.raise_for_status()  # 检查请求是否成功
+                        logger.info(f"Posts request successful for tag: {formatted_tag}")
+                except Exception as e:
+                    logger.error(f"Failed to get posts for tag: {formatted_tag}. Error: {e}")
+                    continue  # 继续处理下一个标签
+
+                soup = BeautifulSoup(image_resp.text, 'html.parser')
+                img_urls = [img['src'] for img in soup.find_all('img') if img['src'].startswith('http')][:2]
+                logger.info(f"Found {len(img_urls)} images for tag: {formatted_tag}")
+
+                async def download_img(image_url: str) -> (str, bytes):
+                    try:
+                        async with httpx.AsyncClient(timeout=1000, proxies=proxies) as client:
+                            response = await client.get(image_url)
+                            response.raise_for_status()
+                            content_type = response.headers.get('content-type', '').lower()
+                            if not content_type.startswith('image/'):
+                                raise ValueError(f"URL {image_url} does not point to an image.")
+                            bytes_image = response.content
+
+                            buffered = BytesIO(bytes_image)
+                            base64_image = base64.b64encode(buffered.getvalue()).decode('utf-8')
+
+                            logger.info(f"Downloaded image from URL: {image_url}")
+                            return base64_image, bytes_image
+
+                    except httpx.RequestError as e:
+                        logger.error(f"Failed to download image from {image_url}: {e}")
+                        raise
+                    except Exception as e:
+                        logger.error(f"An error occurred while processing the image from {image_url}: {e}")
+                        raise
+
+                async def process_image(image_url):
+                    try:
+                        base64_image, bytes_image = await download_img(image_url)
+                        audit_result = await pic_audit_standalone(base64_image, return_none=True, url = sd1)
+                        if audit_result:
+                            logger.info(f"Image at URL {image_url} was flagged by audit: {audit_result}")
+                            return "太涩了"
+                        else:
+                            logger.info(f"Image at URL {image_url} passed the audit")
+                            return Image(url=image_url)
+                    except Exception as e:
+                        logger.error(f"Failed to process image at {image_url}: {e}")
+                        return None
+
+                async def process_images(img_urls):
+                    tasks = [process_image(url) for url in img_urls]
+                    results = await asyncio.gather(*tasks, return_exceptions=True)
+
+                    # 过滤掉异常和 None 结果
+                    filtered_results = [result for result in results if not isinstance(result, Exception) and result is not None]
+
+                    # 创建 ForwardMessageNode 列表
+                    forward_messages = [
+                        ForwardMessageNode(
+                            sender_id=bot.qq,
+                            sender_name="Manyana",
+                            message_chain=MessageChain([result])
+                        )
+                        for result in filtered_results
+                    ]
+
+                    logger.info(f"Processed {len(filtered_results)} images for tag: {formatted_tag}")
+                    return forward_messages
+
+                results = await process_images(img_urls)
+                build_msg.extend(results)
+
+            try:
+                await bot.send(event, Forward(node_list=build_msg))
+                logger.info("Successfully sent the compiled message to the group.")
+            except Exception as e:
+                logger.error(f"Failed to send the compiled message to the group. Error: {e}")
             

@@ -10,6 +10,7 @@ ai绘画:
   接口6: true    #(还行，只支持英文prompt)
   modelscopeSD: True  #modelscope逆向ai绘图，较为稳定
   sd接口: true   #anything v3
+  nai: false #novel ai绘图，需要有key，在api.yaml里填
   ai重绘: false  #目前应该是不可用的
   ai重绘2: false #同上
   sd默认启动模型: obsessionIllustrious_v30.safetensors

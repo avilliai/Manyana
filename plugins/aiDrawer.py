@@ -2,6 +2,7 @@
 import json
 import re
 from http.cookies import SimpleCookie
+import zipfile
 
 import asyncio
 import base64
@@ -20,6 +21,8 @@ from plugins.toolkits import random_str,random_session_hash
 with open('config/api.yaml', 'r', encoding='utf-8') as f:
     resulttr = yaml.load(f.read(), Loader=yaml.FullLoader)
 modelscopeCookie = resulttr.get("modelscopeCookie")
+proxy = resulttr.get("proxy")
+nai_key = resulttr.get("nai_key")
 if modelscopeCookie == "":
     modelscopeCookie = "cna=j117HdPDmkoCAXjC3hh/4rjk; ajs_anonymous_id=5aa505b4-8510-47b5-a1e3-6ead158f3375; t=27c49d517b916cf11d961fa3769794dd; uuid_tt_dd=11_99759509594-1710000225471-034528; log_Id_click=16; log_Id_pv=12; log_Id_view=277; xlly_s=1; csrf_session=MTcxMzgzODI5OHxEdi1CQkFFQ180SUFBUkFCRUFBQU12LUNBQUVHYzNSeWFXNW5EQW9BQ0dOemNtWlRZV3gwQm5OMGNtbHVad3dTQUJCNFkwRTFkbXAwV0VVME0wOUliakZwfHNEIp5sKWkjeJWKw1IphSS3e4R_7GyEFoKKuDQuivUs; csrf_token=TkLyvVj3to4G5Mn_chtw3OI8rRA%3D; _samesite_flag_=true; cookie2=11ccab40999fa9943d4003d08b6167a0; _tb_token_=555ee71fdee17; _gid=GA1.2.1037864555.1713838369; h_uid=2215351576043; _xsrf=2|f9186bd2|74ae7c9a48110f4a37f600b090d68deb|1713840596; csg=242c1dff; m_session_id=769d7c25-d715-4e3f-80de-02b9dbfef325; _gat_gtag_UA_156449732_1=1; _ga_R1FN4KJKJH=GS1.1.1713838368.22.1.1713841094.0.0.0; _ga=GA1.1.884310199.1697973032; tfstk=fE4KxBD09OXHPxSuRWsgUB8pSH5GXivUTzyBrU0oKGwtCSJHK7N3ebe0Ce4n-4Y8X8wideDotbQ8C7kBE3queYwEQ6OotW08WzexZUVIaNlgVbmIN7MQBYNmR0rnEvD-y7yAstbcoWPEz26cnZfu0a_qzY_oPpRUGhg5ntbgh_D3W4ZudTQmX5MZwX9IN8ts1AlkAYwSdc9sMjuSF8g56fGrgX9SFbgs5bGWtBHkOYL8Srdy07KF-tW4Wf6rhWQBrfUt9DHbOyLWPBhKvxNIBtEfyXi_a0UyaUn8OoyrGJ9CeYzT1yZbhOxndoh8iuFCRFg38WZjVr6yVWunpVaQDQT762H3ezewpOHb85aq5cbfM5aaKWzTZQ_Ss-D_TygRlsuKRvgt_zXwRYE_VymEzp6-UPF_RuIrsr4vHFpmHbxC61Ky4DGguGhnEBxD7Zhtn1xM43oi_fHc61Ky4DGZ6xfGo3-rjf5..; isg=BKKjOsZlMNqsZy8UH4-lXjE_8ygE86YNIkwdKew665XKv0I51IGvHCUz7_tDrx6l"
 
@@ -541,6 +544,97 @@ async def cn1(prompt, negative_prompt, path, sdurl, groupid, b64_in,args):# 这�
     image = Image.open(io.BytesIO(base64.b64decode(r['images'][0])))
     image.save(f'{path}')
     return path 
+
+async def n4(prompt, negative_prompt, path, groupid):
+    url = "https://image.novelai.net"
+
+    if "方" in prompt:
+        prompt = prompt.replace("方", "")
+        width = 1024
+        height = 1024
+    elif "横" in prompt:
+        prompt = prompt.replace("横", "")
+        width = 1216
+        height = 832
+    else:
+        width = 832
+        height = 1216
+    
+    payload = {
+        "input": f"{prompt}, rating:general, best quality, very aesthetic, absurdres",
+        "model": "nai-diffusion-4-curated-preview",
+        "action": "generate",
+        "parameters": {
+            "params_version": 3,
+            "width": width,
+            "height": height,
+            "scale": 6,
+            "sampler": "k_euler_ancestral",
+            "steps": 23,
+            "n_samples": 1,
+            "ucPreset": 0,
+            "qualityToggle": True,
+            "dynamic_thresholding": False,
+            "controlnet_strength": 1,
+            "legacy": False,
+            "add_original_image": True,
+            "cfg_rescale": 0,
+            "noise_schedule": "karras",
+            "legacy_v3_extend": False,
+            "skip_cfg_above_sigma": None,
+            "use_coords": False,
+            "seed": random.randint(0, 2**32 - 1),
+            "characterPrompts": [],
+            "v4_prompt": {
+                "caption": {
+                    "base_caption": f"{prompt}, rating:general, best quality, very aesthetic, absurdres",
+                    "char_captions": []
+                },
+                "use_coords": False,
+                "use_order": True
+            },
+            "v4_negative_prompt": {
+                "caption": {
+                    "base_caption": "blurry, lowres, error, film grain, scan artifacts, worst quality, bad quality, jpeg artifacts, very displeasing, chromatic aberration, logo, dated, signature, multiple views, gigantic breasts",
+                    "char_captions": []
+                }
+            },
+            "negative_prompt": "blurry, lowres, error, film grain, scan artifacts, worst quality, bad quality, jpeg artifacts, very displeasing, chromatic aberration, logo, dated, signature, multiple views, gigantic breasts",
+            "reference_image_multiple": [],
+            "reference_information_extracted_multiple": [],
+            "reference_strength_multiple": [],
+            "deliberate_euler_ancestral_bug": False,
+            "prefer_brownian": True
+        }
+    }
+
+    headers = {
+        "Authorization": f"Bearer {nai_key}"
+    }
+    proxies = {
+        "http://": proxy,
+        "https://": proxy,
+    }
+    async with httpx.AsyncClient(timeout=1000, proxies=proxies) as client:
+        response = await client.post(url=f'{url}/ai/generate-image', json=payload, headers=headers)
+        response.raise_for_status()
+        zip_content = response.content
+        zip_file = io.BytesIO(zip_content)
+        with zipfile.ZipFile(zip_file, 'r') as zf:
+            file_names = zf.namelist()
+            if not file_names:
+                raise ValueError("The zip archive is empty.")
+            file_name = file_names[0]
+            if not file_name.lower().endswith(('.png', '.jpg', '.jpeg', '.gif', '.bmp')):
+                raise ValueError("The zip archive does not contain an image file.")
+            image_data = zf.read(file_name)
+            if groupid in no_nsfw_group:
+                check = await pic_audit_standalone(base64.b64encode(image_data).decode('utf-8'), return_none=True, url=sd1)
+                if check:
+                    return False
+            with open(path, 'wb') as img_file:
+                img_file.write(image_data)
+    return path
 
 # 运行 Flask 应用
 if __name__ == "__main__":
