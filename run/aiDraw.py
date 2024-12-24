@@ -17,7 +17,7 @@ from plugins.toolkits import random_str
 
 from plugins.setuModerate import fileImgModerate, pic_audit_standalone
 from plugins.aiDrawer import getloras, SdDraw, draw2, airedraw, draw1, draw3, tiktokredraw, draw5, draw4, draw6, fluxDrawer, SdDraw1, SdDraw2, getcheckpoints, ckpt2, SdreDraw, SdDraw0, \
-    cn1
+    cn1, n4
 
 i = 0
 turn = 0
@@ -585,4 +585,31 @@ def main(bot, logger):
             except Exception as e:
                 logger.error(f"cn1失败: {e}")
                 await bot.send(event, "cn1失败了喵~", True)
+
+    @bot.on(GroupMessage)
+    async def naiDraw(event: GroupMessage):
+        global turn
+        global sd_user_args
+        if str(event.message_chain).startswith("n4 ") and aiDrawController.get("nai"):
+            tag = str(event.message_chain).replace("n4 ", "")
+            path = f"data/pictures/cache/{random_str()}.png"
+            logger.info(f"发起nai绘画请求，path:{path}|prompt:{tag}")
+            try:
+                turn += 1
+                # 没啥好审的，controller直接自个写了。
+                p = await n4(tag + positive_prompt, negative_prompt, path, event.group.id)
+                # logger.error(str(p))
+                if p == False:
+                    turn -= 1
+                    logger.info("色图已屏蔽")
+                    await bot.send(event, "杂鱼，色图不给你喵~", True)
+                else:
+                    await bot.send(event, [Image(path=path)], True)
+                    turn -= 1
+                    # logger.info("success")
+                    #await bot.send(event, "防出色图加上rating_safe，如果色图请自行撤回喵~")
+            except Exception as e:
+                logger.error(e)
+                turn -= 1
+                await bot.send(event,"nai只因了，联系master喵~")
             
