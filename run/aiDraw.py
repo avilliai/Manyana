@@ -594,22 +594,23 @@ def main(bot, logger):
             tag = str(event.message_chain).replace("n4 ", "")
             path = f"data/pictures/cache/{random_str()}.png"
             logger.info(f"发起nai绘画请求，path:{path}|prompt:{tag}")
-            try:
-                turn += 1
-                # 没啥好审的，controller直接自个写了。
-                p = await n4(tag + positive_prompt, negative_prompt, path, event.group.id)
-                # logger.error(str(p))
-                if p == False:
-                    turn -= 1
-                    logger.info("色图已屏蔽")
-                    await bot.send(event, "杂鱼，色图不给你喵~", True)
-                else:
-                    await bot.send(event, [Image(path=path)], True)
-                    turn -= 1
-                    # logger.info("success")
-                    #await bot.send(event, "防出色图加上rating_safe，如果色图请自行撤回喵~")
-            except Exception as e:
-                logger.error(e)
-                turn -= 1
-                await bot.send(event,"nai只因了，联系master喵~")
+
+            async def attempt_draw(retries_left=10): # 这里是递归请求的次数
+                try:
+                    p = await n4(tag + positive_prompt, negative_prompt, path, event.group.id)
+                    if p == False:
+                        logger.info("色图已屏蔽")
+                        await bot.send(event, "杂鱼，色图不给你喵~", True)
+                    else:
+                        await bot.send(event, [Image(path=path)], True)
+                except Exception as e:
+                    logger.error(e)
+                    if retries_left > 0:
+                        logger.error(f"尝试重新请求nai，剩余尝试次数：{retries_left - 1}")
+                        await asyncio.sleep(0.5)  # 等待0.5秒
+                        await attempt_draw(retries_left - 1)
+                    else:
+                        await bot.send(event, "nai只因了，联系master喵~")
+
+            await attempt_draw()
             
