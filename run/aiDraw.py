@@ -703,7 +703,7 @@ def main(bot, logger):
                 async def process_image(image_url):
                     try:
                         base64_image, bytes_image = await download_img(image_url)
-                        audit_result = await pic_audit_standalone(base64_image, return_none=True)
+                        audit_result = await pic_audit_standalone(base64_image, return_none=True, url = sd1)
                         if audit_result:
                             logger.info(f"Image at URL {image_url} was flagged by audit: {audit_result}")
                             return "太涩了"
