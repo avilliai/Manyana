@@ -596,6 +596,7 @@ def main(bot, logger):
             tag = str(event.message_chain).replace("n4 ", "")
             path = f"data/pictures/cache/{random_str()}.png"
             logger.info(f"发起nai绘画请求，path:{path}|prompt:{tag}")
+            await bot.send(event,'正在进行nai画图',True)
 
             async def attempt_draw(retries_left=10): # 这里是递归请求的次数
                 try:
@@ -628,6 +629,8 @@ def main(bot, logger):
             }
 
             db_base_url = "https://danbooru.donmai.us"
+            
+            build_msg = [ForwardMessageNode(sender_id=bot.qq, sender_name="Manyana", message_chain=MessageChain([f"{tag}的搜索结果:"]))]
 
             msg = tag
             try:
@@ -654,7 +657,6 @@ def main(bot, logger):
                 data_values.append(data_value_space)
                 logger.info(f"Found autocomplete tag: {data_value_space}")
 
-            build_msg = []
 
             for tag in raw_data_values:
                 b1 = ForwardMessageNode(sender_id=bot.qq, sender_name="Manyana", message_chain=MessageChain([f"({tag}:1)"]))
