@@ -98,8 +98,8 @@ async def geminirep(ak, messages, bot_info, GeminiRevProxy="",model="gemini-1.5-
     messages_copy = copy.deepcopy(messages)
 
     # 在副本上进行操作
-    messages_copy.insert(0, {"role": "user", "parts": [bot_info]})
-    messages_copy.insert(1, {"role": 'model', "parts": ["好的，我会根据以上设定扮演好对应角色，无论发生什么，我都会坚守我的设定。"]})
+    #messages_copy.insert(0, {"role": "user", "parts": [bot_info]})
+    #messages_copy.insert(1, {"role": 'model', "parts": ["好的，我会根据以上设定扮演好对应角色，无论发生什么，我都会坚守我的设定。"]})
     # 假设convert_content_to_parts_and_role是一个自定义函数，确保它不会修改外部状态
     messages_copy = convert_content_to_parts_and_role(messages_copy)
     if imgurls!=None:
@@ -114,7 +114,7 @@ async def geminirep(ak, messages, bot_info, GeminiRevProxy="",model="gemini-1.5-
             messages_copy[-1]['parts'].append(vb)
     if GeminiRevProxy == "" or GeminiRevProxy == " ":
         # Or use `os.getenv('GOOGLE_API_KEY')` to fetch an environment variable.
-        r=await geminiCFofficial(ak, messages_copy, proxy, model)
+        r=await geminiCFofficial(ak, messages_copy, proxy, model,bot_info)
         r=r.rstrip()
         '''genai.configure(api_key=GOOGLE_API_KEY)
 
@@ -143,12 +143,13 @@ async def geminirep(ak, messages, bot_info, GeminiRevProxy="",model="gemini-1.5-
         #print(response.text)'''
     else:
 
-        r = await geminiCFProxy(ak, messages_copy, GeminiRevProxy,model)
+        r = await geminiCFProxy(ak, messages_copy, GeminiRevProxy,model,bot_info)
         r = r.rstrip()
     return r
 
 
-async def geminiCFProxy(ak, messages, proxyUrl,model):
+async def geminiCFProxy(ak, messages, proxyUrl,model,bot_info):
+    #print(messages)
     url = f"{proxyUrl}/v1beta/models/{model}:generateContent?key={ak}"
     #print(requests.get(url,verify=False))
     async with httpx.AsyncClient(timeout=100) as client:
@@ -156,11 +157,18 @@ async def geminiCFProxy(ak, messages, proxyUrl,model):
             {'category': 'HARM_CATEGORY_SEXUALLY_EXPLICIT', "threshold": "BLOCK_None"},
             {'category': 'HARM_CATEGORY_HATE_SPEECH', "threshold": "BLOCK_None"},
             {'category': 'HARM_CATEGORY_HARASSMENT', "threshold": "BLOCK_None"},
-            {'category': 'HARM_CATEGORY_DANGEROUS_CONTENT', "threshold": "BLOCK_None"}]})
+            {'category': 'HARM_CATEGORY_DANGEROUS_CONTENT', "threshold": "BLOCK_None"}],"systemInstruction": {
+            "parts": [
+                {
+                    "text": bot_info,
+                }
+            ]
+        }})
 
         return r.json()['candidates'][0]["content"]["parts"][0]["text"]
 
-async def geminiCFofficial(ak, messages, proxy, model):
+async def geminiCFofficial(ak, messages, proxy, model,bot_info):
+    #print(messages)
     url = f"https://generativelanguage.googleapis.com/v1beta/models/{model}:generateContent?key={ak}"
     # print(requests.get(url,verify=False))
     proxies = {
@@ -172,7 +180,13 @@ async def geminiCFofficial(ak, messages, proxy, model):
             {'category': 'HARM_CATEGORY_SEXUALLY_EXPLICIT', "threshold": "BLOCK_None"},
             {'category': 'HARM_CATEGORY_HATE_SPEECH', "threshold": "BLOCK_None"},
             {'category': 'HARM_CATEGORY_HARASSMENT', "threshold": "BLOCK_None"},
-            {'category': 'HARM_CATEGORY_DANGEROUS_CONTENT', "threshold": "BLOCK_None"}]})
+            {'category': 'HARM_CATEGORY_DANGEROUS_CONTENT', "threshold": "BLOCK_None"}],"systemInstruction": {
+            "parts": [
+                {
+                    "text": bot_info,
+                }
+            ]
+        }})
         return r.json()['candidates'][0]["content"]["parts"][0]["text"]
 
 
