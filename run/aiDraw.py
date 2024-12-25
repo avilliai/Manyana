@@ -659,7 +659,8 @@ def main(bot, logger):
 
 
             for tag in raw_data_values:
-                b1 = ForwardMessageNode(sender_id=bot.qq, sender_name="Manyana", message_chain=MessageChain([f"({tag}:1)"]))
+                tag1 = tag.replace(' ', '_')
+                b1 = ForwardMessageNode(sender_id=bot.qq, sender_name="Manyana", message_chain=MessageChain([f"({tag1}:1)"]))
                 build_msg.append(b1)
                 formatted_tag = tag.replace(' ', '_').replace('(', '%28').replace(')', '%29')
 
