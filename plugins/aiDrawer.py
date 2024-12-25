@@ -636,6 +636,82 @@ async def n4(prompt, negative_prompt, path, groupid):
                 img_file.write(image_data)
     return path
 
+async def n3(prompt, negative_prompt, path, groupid):
+    url = "https://image.novelai.net"
+
+    if "方" in prompt:
+        prompt = prompt.replace("方", "")
+        width = 1024
+        height = 1024
+    elif "横" in prompt:
+        prompt = prompt.replace("横", "")
+        width = 1216
+        height = 832
+    else:
+        width = 832
+        height = 1216
+    
+    payload = {
+        "input": f"{prompt}, best quality, amazing quality, very aesthetic, absurdres",
+        "model": "nai-diffusion-3",
+        "action": "generate",
+        "parameters": {
+            "params_version": 3,
+            "width": width,
+            "height": height,
+            "scale": 5,
+            "sampler": "k_dpmpp_2m",
+            "steps": 23,
+            "n_samples": 1,
+            "ucPreset": 0,
+            "qualityToggle": true,
+            "sm": false,
+            "sm_dyn": false,
+            "dynamic_thresholding": false,
+            "controlnet_strength": 1,
+            "legacy": false,
+            "add_original_image": true,
+            "cfg_rescale": 0,
+            "noise_schedule": "exponential",
+            "legacy_v3_extend": false,
+            "skip_cfg_above_sigma": null,
+            "seed": random.randint(0, 2**32 - 1),
+            "characterPrompts": [],
+            "negative_prompt": "nsfw, lowres, {bad}, error, fewer, extra, missing, worst quality, jpeg artifacts, bad quality, watermark, unfinished, displeasing, chromatic aberration, signature, extra digits, artistic error, username, scan, [abstract]",
+            "reference_image_multiple": [],
+            "reference_information_extracted_multiple": [],
+            "reference_strength_multiple": []
+        }
+    }
+
+    headers = {
+        "Authorization": f"Bearer {nai_key}"
+    }
+    proxies = {
+        "http://": proxy,
+        "https://": proxy,
+    }
+    async with httpx.AsyncClient(timeout=1000, proxies=proxies) as client:
+        response = await client.post(url=f'{url}/ai/generate-image', json=payload, headers=headers)
+        response.raise_for_status()
+        zip_content = response.content
+        zip_file = io.BytesIO(zip_content)
+        with zipfile.ZipFile(zip_file, 'r') as zf:
+            file_names = zf.namelist()
+            if not file_names:
+                raise ValueError("The zip archive is empty.")
+            file_name = file_names[0]
+            if not file_name.lower().endswith(('.png', '.jpg', '.jpeg', '.gif', '.bmp')):
+                raise ValueError("The zip archive does not contain an image file.")
+            image_data = zf.read(file_name)
+            if groupid in no_nsfw_group:
+                check = await pic_audit_standalone(base64.b64encode(image_data).decode('utf-8'), return_none=True, url=sd1)
+                if check:
+                    return False
+            with open(path, 'wb') as img_file:
+                img_file.write(image_data)
+    return path
+
 # 运行 Flask 应用
 if __name__ == "__main__":
     asyncio.run(fluxDrawer("prompt:[[[artist:onineko]]], [[[artist:namie]]],cute, symbol-shaped pupils,school uniform, serafuku, clover print, sailor shirt, pleated skirt, sailor collar,shy, holding skirt,, 1girl, 1girl solo, loli, cat girl, animal ear fluff, cat ears,mid shot, x hair ornament, ahoge,traditional media, faux traditional media, lineart, {loli}"))
