@@ -508,6 +508,7 @@ def main(bot, logger):
                 b64_in = await url_to_base64(img_url)    
                 await bot.send(event, "tag反推中", True)
                 message,tags,tags_str = await pic_audit_standalone(b64_in,is_return_tags=True,url =sd1)
+                tags_str = tags_str.replace("_"," ")
                 await bot.send(event, tags_str, True)
             except Exception as e:
                 logger.error(f"反推失败: {e}")
