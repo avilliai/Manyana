@@ -659,9 +659,9 @@ def main(bot, logger):
 
 
             for tag in raw_data_values:
-                b1 = ForwardMessageNode(sender_id=bot.qq, sender_name="Manyana", message_chain=MessageChain([f"({tag}:1)"]))
-                build_msg.append(b1)
                 formatted_tag = tag.replace(' ', '_').replace('(', '%28').replace(')', '%29')
+                b1 = ForwardMessageNode(sender_id=bot.qq, sender_name="Manyana", message_chain=MessageChain([f"({formatted_tag}:1)"]))
+                build_msg.append(b1)
 
                 try:
                     async with httpx.AsyncClient(timeout=1000, proxies=proxies) as client:
