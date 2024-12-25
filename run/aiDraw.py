@@ -658,8 +658,11 @@ def main(bot, logger):
                 "https://": proxy,
             }
 
-            db_base_url = "https://kagamihara.donmai.us"   # 原站https://danbooru.donmai.us，上不去原站的可以试试这几个前缀，把danbooru换成sonohara、kagamihara、hijiribe这三个任意一个试试，后面的不用改。
-                                                           # 大概是反代
+
+            db_base_url = "https://kagamihara.donmai.us" #这是反代，原来的是https://danbooru.donmai.us
+            #把danbooru换成sonohara、kagamihara、hijiribe这三个任意一个试试，后面的不用改
+            
+
             build_msg = [ForwardMessageNode(sender_id=bot.qq, sender_name="Manyana", message_chain=MessageChain([f"{tag}的搜索结果:"]))]
 
             msg = tag
@@ -692,6 +695,7 @@ def main(bot, logger):
                 tag1 = tag.replace('_', ' ')
                 b1 = ForwardMessageNode(sender_id=bot.qq, sender_name="Manyana", message_chain=MessageChain([f"({tag1}:1)"]))
                 build_msg.append(b1)
+                formatted_tag = tag.replace(' ', '_').replace('(', '%28').replace(')', '%29')
 
 
                 try:
