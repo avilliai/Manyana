@@ -595,8 +595,8 @@ def main(bot, logger):
         if str(event.message_chain).startswith("n4 ") and aiDrawController.get("nai"):
             tag = str(event.message_chain).replace("n4 ", "")
             path = f"data/pictures/cache/{random_str()}.png"
-            logger.info(f"发起nai绘画请求，path:{path}|prompt:{tag}")
-            await bot.send(event,'正在进行nai画图',True)
+            logger.info(f"发起nai4绘画请求，path:{path}|prompt:{tag}")
+            await bot.send(event,'正在进行nai4画图',True)
 
             async def attempt_draw(retries_left=10): # 这里是递归请求的次数
                 try:
@@ -609,7 +609,7 @@ def main(bot, logger):
                 except Exception as e:
                     logger.error(e)
                     if retries_left > 0:
-                        logger.error(f"尝试重新请求nai，剩余尝试次数：{retries_left - 1}")
+                        logger.error(f"尝试重新请求nai4，剩余尝试次数：{retries_left - 1}")
                         await asyncio.sleep(0.5)  # 等待0.5秒
                         await attempt_draw(retries_left - 1)
                     else:
@@ -624,8 +624,8 @@ def main(bot, logger):
         if str(event.message_chain).startswith("n3 ") and aiDrawController.get("nai"):
             tag = str(event.message_chain).replace("n3 ", "")
             path = f"data/pictures/cache/{random_str()}.png"
-            logger.info(f"发起nai绘画请求，path:{path}|prompt:{tag}")
-            await bot.send(event,'正在进行nai画图',True)
+            logger.info(f"发起nai3绘画请求，path:{path}|prompt:{tag}")
+            await bot.send(event,'正在进行nai3画图',True)
 
             async def attempt_draw(retries_left=10): # 这里是递归请求的次数
                 try:
@@ -638,7 +638,7 @@ def main(bot, logger):
                 except Exception as e:
                     logger.error(e)
                     if retries_left > 0:
-                        logger.error(f"尝试重新请求nai，剩余尝试次数：{retries_left - 1}")
+                        logger.error(f"尝试重新请求nai3，剩余尝试次数：{retries_left - 1}")
                         await asyncio.sleep(0.5)  # 等待0.5秒
                         await attempt_draw(retries_left - 1)
                     else:
