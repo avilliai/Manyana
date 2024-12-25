@@ -12,11 +12,15 @@ import yaml
 from mirai import FriendMessage, GroupMessage, At,Image
 from mirai import Voice, Startup
 from mirai.models import NudgeEvent
+from mirai import At
 
 from plugins.aiReplyCore import modelReply, clearAllPrompts,clearsinglePrompt
 from plugins.toolkits import random_str
 from plugins.vitsGenerate import superVG
 from plugins.wReply.wontRep import wontrep
+from plugins.wReply.wReplyOpeator import addRep, loadAllDict, getRep, compare2messagechain
+
+from plugins.wReply.MessageConvert import EventMessageConvert
 
 
 # 1
@@ -32,6 +36,10 @@ class CListen(threading.Thread):
 
 
 def main(bot, master, logger):
+    colorfulCharacterList = os.listdir("data/colorfulAnimeCharacter")
+    with open('config/settings.yaml', 'r', encoding='utf-8') as f:
+        result = yaml.load(f.read(), Loader=yaml.FullLoader)
+    wReply=result.get("wReply")
     with open('config/welcome.yaml', 'r', encoding='utf-8') as f:
         wecYaml = yaml.load(f.read(), Loader=yaml.FullLoader)
     chattingError=wecYaml.get("chattingError")
@@ -261,9 +269,17 @@ def main(bot, master, logger):
                     if sentence:
                         check_num+=1
                         if check_num==3:
-                            await bot.send(event,"".join(sentences[2:]).strip())
+                            await bot.send(event,"".join(sentences[2:]).strip(),True if random.random() < 0.35 else None)
+                            if random.randint(0, 100) < wReply.get("colorfulCharacter"):
+                                logger.info("本次使用彩色小人替代匹配回复")
+                                c = random.choice(colorfulCharacterList)
+                                await bot.send(event, Image(path="data/colorfulAnimeCharacter/" + c))
                             break
-                        await bot.send(event,sentence.strip())
+                        await bot.send(event,sentence.strip(),True if random.random() < 0.35 else None)
+                        if random.randint(0, 100) < wReply.get("colorfulCharacter"):
+                            logger.info("本次使用彩色小人替代匹配回复")
+                            c = random.choice(colorfulCharacterList)
+                            await bot.send(event, Image(path="data/colorfulAnimeCharacter/" + c))
                         waitTime=random.randint(1,6)
                         await sleep(waitTime)
             else:
@@ -351,7 +367,7 @@ def main(bot, master, logger):
                 if allowUserSetModel:
                     await bot.send(event, "不存在的角色")
                 else:
-                    await bot.send(event, "禁止用户自行设定模型(可联系master修改配置)")
+                    await bot.send(event, "禁止使用此指令。")
 
     @bot.on(Startup)
     async def upDate(event: Startup):
@@ -414,6 +430,8 @@ def main(bot, master, logger):
         else:
             if str(event.message_chain).startswith(result.get("chatGLM").get("prefix")):
                 text=str(event.message_chain).replace(result.get("chatGLM").get("prefix"), '')
+            elif result.get("chatGLM").get("随机触发对话") == True and random.random() < float(result.get("chatGLM").get("随机触发几率")):
+                text=str(event.message_chain)
             else:
                 return
 
@@ -462,9 +480,17 @@ def main(bot, master, logger):
                     if sentence:
                         check_num+=1
                         if check_num==3:
-                            await bot.send(event,"".join(sentences[2:]).strip())
+                            await bot.send(event,[At(event.sender.id) if random.random() < 0.25 else '',"".join(sentences[2:]).strip()],True if random.random() < 0.35 else None)
+                            if random.randint(0, 100) < wReply.get("colorfulCharacter"):
+                                logger.info("本次使用彩色小人替代匹配回复")
+                                c = random.choice(colorfulCharacterList)
+                                await bot.send(event, Image(path="data/colorfulAnimeCharacter/" + c))
                             break
-                        await bot.send(event,sentence.strip())
+                        await bot.send(event,[At(event.sender.id) if random.random() < 0.25 else '',sentence.strip()],True if random.random() < 0.35 else None)
+                        if random.randint(0, 100) < wReply.get("colorfulCharacter"):
+                            logger.info("本次使用彩色小人替代匹配回复")
+                            c = random.choice(colorfulCharacterList)
+                            await bot.send(event, Image(path="data/colorfulAnimeCharacter/" + c))
                         waitTime=random.randint(1,6)
                         await sleep(waitTime)
             else:
@@ -495,3 +521,10 @@ def main(bot, master, logger):
         elif str(event.message_chain) == "/allclear" and event.sender.id == master:
             reff = await clearAllPrompts()
             await bot.send(event, reff, True)
+        elif str(event.message_chain).startswith("/clear") and event.sender.id == master:
+            message_content = event.message_chain
+            for element in message_content:
+                if isinstance(element, At):
+                    target_qq = element.target
+                    reff = await clearsinglePrompt(target_qq)
+                    await bot.send(event, reff, True)

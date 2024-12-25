@@ -11,18 +11,23 @@ import re
 
 import yaml
 from mirai import GroupMessage
-from mirai import Image
+from mirai import Image, MessageChain
 
 from plugins.toolkits import random_str
+from bs4 import BeautifulSoup
+from mirai.models import ForwardMessageNode, Forward
 
 from plugins.setuModerate import fileImgModerate, pic_audit_standalone
-from plugins.aiDrawer import getloras, SdDraw, draw2, airedraw, draw1, draw3, tiktokredraw, draw5, draw4, draw6, fluxDrawer, SdDraw1, SdDraw2, getcheckpoints, ckpt2, SdreDraw, SdDraw0
+from plugins.aiDrawer import getloras, SdDraw, draw2, airedraw, draw1, draw3, tiktokredraw, draw5, draw4, draw6, fluxDrawer, SdDraw1, SdDraw2, getcheckpoints, ckpt2, SdreDraw, SdDraw0, \
+    cn1, n4, n3
 
 i = 0
 turn = 0
 UserGet = {}
 tag_user = {}
 sd_user_args = {}
+sd_re_args = {}
+UserGet1 = {}
 
 
 def main(bot, logger):
@@ -46,8 +51,10 @@ def main(bot, logger):
     global redraw
     redraw = {}
     global UserGet
+    global UserGet1
     UserGet = {}
     tag_user = {}
+    UserGet1 = {}
     
     def parse_arguments(arg_string):
         args = arg_string.split()
@@ -60,7 +67,6 @@ def main(bot, logger):
                     if char.isdigit():
                         break
                 else:
-                    print(f"Warning: Invalid argument format '{arg}'")  # 调试信息
                     continue
                 
                 key = arg[1:i]
@@ -71,10 +77,8 @@ def main(bot, logger):
                     print(f"Warning: Invalid value for key '{key}'")  # 调试信息
                     continue
                 result[key] = value
-                print(f"Extracted key-value pair: {key} = {value}")  # 调试信息
             else:
                 print(f"Warning: Invalid argument format '{arg}'")  # 调试信息
-        print(f"Parsed arguments: {result}")  # 调试信息
         return result
     
     @bot.on(GroupMessage)
@@ -449,7 +453,7 @@ def main(bot, logger):
             
 
             try:
-                args = sd_user_args.get(event.sender.id, {})
+                args = sd_re_args.get(event.sender.id, {})
                 b64_in = await url_to_base64(img_url)
                 
                 await bot.send(event, f"开始重绘啦~sd前面排队{turn}人，请耐心等待喵~", True)
@@ -504,6 +508,7 @@ def main(bot, logger):
                 b64_in = await url_to_base64(img_url)    
                 await bot.send(event, "tag反推中", True)
                 message,tags,tags_str = await pic_audit_standalone(b64_in,is_return_tags=True,url =sd1)
+                tags_str = tags_str.replace("_"," ")
                 await bot.send(event, tags_str, True)
             except Exception as e:
                 logger.error(f"反推失败: {e}")
@@ -522,10 +527,256 @@ def main(bot, logger):
     @bot.on(GroupMessage)
     async def sdsettings(event: GroupMessage):
         if str(event.message_chain).startswith("setsd "):
+            global sd_user_args
             command = str(event.message_chain).replace("setsd ", "")
             cmd_dict = parse_arguments(command)  # 不需要 await
             sd_user_args[event.sender.id] = cmd_dict
-            print(f"Updated sd_user_args: {sd_user_args}")  # 调试信息
-            await bot.send(event, "设置成功喵~", True)
-            await bot.send(event, f"当前设置: {sd_user_args[event.sender.id]}")
+            await bot.send(event, f"当前绘画参数设置: {sd_user_args[event.sender.id]}", True)
+    
+    @bot.on(GroupMessage)
+    async def sdresettings(event: GroupMessage):
+        if str(event.message_chain).startswith("setre "):
+            global sd_re_args
+            command = str(event.message_chain).replace("setre ", "")
+            cmd_dict = parse_arguments(command)  # 不需要 await
+            sd_re_args[event.sender.id] = cmd_dict
+            await bot.send(event, f"当前重绘参数设置: {sd_re_args[event.sender.id]}", True)
+            
+    @bot.on(GroupMessage)
+    async def sdcn1(event: GroupMessage):
+        global UserGet1
+        global turn
+
+        if event.message_chain.has(Image) == False and (str(event.message_chain) == ("cn1") or str(event.message_chain).startswith("cn1 ")):
+            prompt = str(event.message_chain).replace("cn1", "").strip()
+            UserGet1[event.sender.id] = [prompt]
+            await bot.send(event, "请发送要进行cn1预设操作的图片")
+
+        # 处理图片和重绘命令
+        if (str(event.message_chain).startswith("cn1") or event.sender.id in UserGet1) and event.message_chain.count(Image):
+            if (str(event.message_chain).startswith("cn1")) and event.message_chain.count(Image):
+                prompt = str(event.message_chain).replace("cn1", "").strip()
+                UserGet1[event.sender.id] = [prompt]
+
+            # 日志记录
+            prompts = ', '.join(UserGet1[event.sender.id])
+            logger.info(f"接收来自群：{event.group.id} 用户：{event.sender.id} 的cn1指令 prompt: {prompts}")
+
+            # 获取图片路径
+            path = f"data/pictures/cache/{random_str()}.png"
+            lst_img = event.message_chain.get(Image)
+            img_url = lst_img[0].url
+            logger.info(f"发起SDaicn1请求，path:{path}|prompt:{prompts}")
+            prompts_str = ' '.join(UserGet1[event.sender.id]) + ' ' + positive_prompt
+            UserGet1.pop(event.sender.id)
+            
+
+            try:
+                args = sd_user_args.get(event.sender.id, {})
+                b64_in = await url_to_base64(img_url)
+                
+                await bot.send(event, f"开始cn1啦~sd前面排队{turn}人，请耐心等待喵~", True)
+                turn += 1
+                p = await cn1(prompts_str, negative_prompt, path, sdUrl, event.group.id, b64_in, args)
+                if p == False:
+                    turn -= 1
+                    logger.info("色图已屏蔽")
+                    await bot.send(event, "杂鱼，色图不给你喵~", True)
+                else:
+                    await bot.send(event, [Image(path=path)], True)
+                    turn -= 1
+            except Exception as e:
+                logger.error(f"cn1失败: {e}")
+                await bot.send(event, "cn1失败了喵~", True)
+
+    @bot.on(GroupMessage)
+    async def naiDraw4(event: GroupMessage):
+        global turn
+        global sd_user_args
+        if str(event.message_chain).startswith("n4 ") and aiDrawController.get("nai"):
+            tag = str(event.message_chain).replace("n4 ", "")
+            path = f"data/pictures/cache/{random_str()}.png"
+            logger.info(f"发起nai4绘画请求，path:{path}|prompt:{tag}")
+            await bot.send(event,'正在进行nai4画图',True)
+
+            async def attempt_draw(retries_left=10): # 这里是递归请求的次数
+                try:
+                    p = await n4(tag + positive_prompt, negative_prompt, path, event.group.id)
+                    if p == False:
+                        logger.info("色图已屏蔽")
+                        await bot.send(event, "杂鱼，色图不给你喵~", True)
+                    else:
+                        await bot.send(event, [Image(path=path)], True)
+                except Exception as e:
+                    logger.error(e)
+                    if retries_left > 0:
+                        logger.error(f"尝试重新请求nai4，剩余尝试次数：{retries_left - 1}")
+                        await asyncio.sleep(0.5)  # 等待0.5秒
+                        await attempt_draw(retries_left - 1)
+                    else:
+                        await bot.send(event, "nai只因了，联系master喵~")
+
+            await attempt_draw()
+
+    @bot.on(GroupMessage)
+    async def naiDraw3(event: GroupMessage):
+        global turn
+        global sd_user_args
+        if str(event.message_chain).startswith("n3 ") and aiDrawController.get("nai"):
+            tag = str(event.message_chain).replace("n3 ", "")
+            path = f"data/pictures/cache/{random_str()}.png"
+            logger.info(f"发起nai3绘画请求，path:{path}|prompt:{tag}")
+            await bot.send(event,'正在进行nai3画图',True)
+
+            async def attempt_draw(retries_left=10): # 这里是递归请求的次数
+                try:
+                    p = await n3(tag + positive_prompt, negative_prompt, path, event.group.id)
+                    if p == False:
+                        logger.info("色图已屏蔽")
+                        await bot.send(event, "杂鱼，色图不给你喵~", True)
+                    else:
+                        await bot.send(event, [Image(path=path)], True)
+                except Exception as e:
+                    logger.error(e)
+                    if retries_left > 0:
+                        logger.error(f"尝试重新请求nai3，剩余尝试次数：{retries_left - 1}")
+                        await asyncio.sleep(0.5)  # 等待0.5秒
+                        await attempt_draw(retries_left - 1)
+                    else:
+                        await bot.send(event, "nai只因了，联系master喵~")
+
+            await attempt_draw()    
+
+    @bot.on(GroupMessage)
+    async def db(event: GroupMessage):
+        if str(event.message_chain).startswith("dan "):
+            tag = str(event.message_chain).replace("dan ", "")
+            logger.info(f"收到来自群{event.group.id}的请求，prompt:{tag}")
+            limit = 3
+            proxies = {
+                "http://": proxy,
+                "https://": proxy,
+            }
+
+
+            db_base_url = "https://kagamihara.donmai.us" #这是反代，原来的是https://danbooru.donmai.us
+            #把danbooru换成sonohara、kagamihara、hijiribe这三个任意一个试试，后面的不用改
+            
+
+            build_msg = [ForwardMessageNode(sender_id=bot.qq, sender_name="Manyana", message_chain=MessageChain([f"{tag}的搜索结果:"]))]
+
+            msg = tag
+            try:
+                async with httpx.AsyncClient(timeout=1000, proxies=proxies) as client:
+                    resp = await client.get(
+                        f"{db_base_url}/autocomplete?search%5Bquery%5D={msg}&search%5Btype%5D=tag_query&version=1&limit={limit}",
+                        follow_redirects=True,
+                    )
+                    resp.raise_for_status()  # 检查请求是否成功
+                    logger.info(f"Autocomplete request successful for tag: {tag}")
+            except Exception as e:
+                logger.error(f"Failed to get autocomplete data for tag: {tag}. Error: {e}")
+                return
+
+            soup = BeautifulSoup(resp.text, 'html.parser')
+            tags = soup.find_all('li', class_='ui-menu-item')
+
+            data_values = []
+            raw_data_values = []
+            for tag in tags:
+                data_value = tag['data-autocomplete-value']
+                raw_data_values.append(data_value)
+                data_value_space = data_value.replace('_', ' ')
+                data_values.append(data_value_space)
+                logger.info(f"Found autocomplete tag: {data_value_space}")
+
+
+            for tag in raw_data_values:
+                tag1 = tag.replace('_', ' ')
+                b1 = ForwardMessageNode(sender_id=bot.qq, sender_name="Manyana", message_chain=MessageChain([f"({tag1}:1)"]))
+                build_msg.append(b1)
+                formatted_tag = tag.replace(' ', '_').replace('(', '%28').replace(')', '%29')
+
+
+                try:
+                    async with httpx.AsyncClient(timeout=1000, proxies=proxies) as client:
+                        image_resp = await client.get(
+                            f"{db_base_url}/posts?tags={formatted_tag}",
+                            follow_redirects=True
+                        )
+                        image_resp.raise_for_status()  # 检查请求是否成功
+                        logger.info(f"Posts request successful for tag: {formatted_tag}")
+                except Exception as e:
+                    logger.error(f"Failed to get posts for tag: {formatted_tag}. Error: {e}")
+                    continue  # 继续处理下一个标签
+
+                soup = BeautifulSoup(image_resp.text, 'html.parser')
+                img_urls = [img['src'] for img in soup.find_all('img') if img['src'].startswith('http')][:2]
+                logger.info(f"Found {len(img_urls)} images for tag: {formatted_tag}")
+
+                async def download_img(image_url: str) -> (str, bytes):
+                    try:
+                        async with httpx.AsyncClient(timeout=1000, proxies=proxies) as client:
+                            response = await client.get(image_url)
+                            response.raise_for_status()
+                            content_type = response.headers.get('content-type', '').lower()
+                            if not content_type.startswith('image/'):
+                                raise ValueError(f"URL {image_url} does not point to an image.")
+                            bytes_image = response.content
+
+                            buffered = BytesIO(bytes_image)
+                            base64_image = base64.b64encode(buffered.getvalue()).decode('utf-8')
+
+                            logger.info(f"Downloaded image from URL: {image_url}")
+                            return base64_image, bytes_image
+
+                    except httpx.RequestError as e:
+                        logger.error(f"Failed to download image from {image_url}: {e}")
+                        raise
+                    except Exception as e:
+                        logger.error(f"An error occurred while processing the image from {image_url}: {e}")
+                        raise
+
+                async def process_image(image_url):
+                    try:
+                        base64_image, bytes_image = await download_img(image_url)
+                        audit_result = await pic_audit_standalone(base64_image, return_none=True, url = sd1)
+                        if audit_result:
+                            logger.info(f"Image at URL {image_url} was flagged by audit: {audit_result}")
+                            return "太涩了"
+                        else:
+                            logger.info(f"Image at URL {image_url} passed the audit")
+                            return Image(url=image_url)
+                    except Exception as e:
+                        logger.error(f"Failed to process image at {image_url}: {e}")
+                        return None
+
+                async def process_images(img_urls):
+                    tasks = [process_image(url) for url in img_urls]
+                    results = await asyncio.gather(*tasks, return_exceptions=True)
+
+                    # 过滤掉异常和 None 结果
+                    filtered_results = [result for result in results if not isinstance(result, Exception) and result is not None]
+
+                    # 创建 ForwardMessageNode 列表
+                    forward_messages = [
+                        ForwardMessageNode(
+                            sender_id=bot.qq,
+                            sender_name="Manyana",
+                            message_chain=MessageChain([result])
+                        )
+                        for result in filtered_results
+                    ]
+
+                    logger.info(f"Processed {len(filtered_results)} images for tag: {formatted_tag}")
+                    return forward_messages
+
+                results = await process_images(img_urls)
+                build_msg.extend(results)
+
+            try:
+                await bot.send(event, Forward(node_list=build_msg))
+                logger.info("Successfully sent the compiled message to the group.")
+            except Exception as e:
+                logger.error(f"Failed to send the compiled message to the group. Error: {e}")
             

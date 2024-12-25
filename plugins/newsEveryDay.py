@@ -61,8 +61,9 @@ async def danxianglii():
 
 async def moyu():
     headers = get_headers()
-    url = "https://dayu.qqsuu.cn/moyuribao/apis.php"
-    time = datetime.datetime.now().strftime('%Y_%m_%d')
+    time = datetime.datetime.now().strftime('%Y%m%d')
+    url = f"https://dayu.qqsuu.cn/moyurili/file/{time}.png"
+    
     p = "data/pictures/cache/" + time + "moyu.png"
     #path="moyu.png"
 
@@ -70,7 +71,7 @@ async def moyu():
         r = await client.get(url)
         with open(p, "wb") as f:
             f.write(r.content)
-        return p
+        return None
 
 
 async def xingzuo():

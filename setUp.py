@@ -193,6 +193,7 @@ def main():
                 os.system(f"{git_path} clone https://gitee.com/Nwflower/star-rail-atlas.git")
     elif a=="6":
         logger.info("开始安装奶龙检测必要素材")
+        os.system(f"\"{python_path}\" -m pip config set global.index-url https://mirrors.aliyun.com/pypi/simple/")
         os.system(f"\"{python_path}\" -m pip install --upgrade torch")
         os.system(f"\"{python_path}\" -m pip install --upgrade torchvision")
         os.system(f"\"{python_path}\" -m pip install --upgrade opencv-python")
@@ -214,6 +215,7 @@ def updaat(f=False,jump=False,source=None):
             os.system(f"\"{python_path}\" -m pip install --upgrade lanzou-api")
             os.system(f"\"{python_path}\" -m pip install --upgrade pytubefix")
             os.system(f"\"{python_path}\" -m pip install --upgrade PicImageSearch")
+            os.system(f"\"{python_path}\" -m pip install httpx==0.27.2")
     if source==None:
         logger.info("拉取bot代码\n--------------------")
         logger.info("选择更新源(git源 镜像源相互兼容)：\n1 git源\n2 git代理源1\n3 git代理源2 \n4 国内源(没事别几把用这个)")

@@ -8,7 +8,7 @@ nasa_api: HSxxxxxxx              #nasa相关天文api 从https://api.nasa.gov/in
 chatGLM: 69xxxxxxx               #chatGLM的apiKey，从https://open.bigmodel.cn/获取
 gemini:                          #谷歌的gemini api，支持多key，在https://ai.google.dev/tutorials/setup?hl=zh-cn获取，需要配置proxy或GeminiRevProxy，否则无法使用
   - AIxxxxxxxxxx
-geminimodel: "gemini-1.5-flash"  #gemini默认的模型，不知道是啥就别动。可切换为gemini-1.5-pro，每日可请求次数会少一些但效果会更好。
+geminimodel: "gemini-1.5-flash"  #gemini默认的模型，不知道是啥就别动。可切换为gemini-2.0-flash-exp，更好效果。
 openaiSettings:                  #openai官方的apikey
   openai-keys:
     - sk-Mxxxxxxxxxxx
@@ -36,7 +36,8 @@ GeminiRevProxy: ""               #基于netlify反向代理，搭建后本地环
 GptSovitsToken: ""     #GptSovits的token,带有情感向量的语音合成，从https://getkey.acgnai.top/获取
 FishTTSAuthorization: ""         #FishTTS语音合成必要参数，看https://github.com/avilliai/Manyana/issues/19
 sdUrl: ""                        #你自己搭建的sd，地址，示例http://127.0.0.1:17858（示例≠你能直接填示例用），部署https://www.bilibili.com/video/BV1iM4y1y7oA/
-sd审核和反推api: "http://server.20020026.xyz:7865"            
+sd审核和反推api: "http://server.20020026.xyz:7865"      # 如果你的sd有反推插件https://github.com/spawner1145/stable-diffusion-webui-wd14-tagger.git，可以直接使用你的sdurl的api
+nai_key: '' #novel ai的key
 
 蓝奏云:                           #文件转直链必要配置
   ylogin: ""                     #参考https://github.com/avilliai/Manyana/issues/36获取

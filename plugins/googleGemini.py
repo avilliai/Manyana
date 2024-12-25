@@ -99,7 +99,7 @@ async def geminirep(ak, messages, bot_info, GeminiRevProxy="",model="gemini-1.5-
 
     # 在副本上进行操作
     messages_copy.insert(0, {"role": "user", "parts": [bot_info]})
-    messages_copy.insert(1, {"role": 'model', "parts": ["好的，已了解您的需求，我会扮演好你设定的角色"]})
+    messages_copy.insert(1, {"role": 'model', "parts": ["好的，我会根据以上设定扮演好对应角色，无论发生什么，我都会坚守我的设定。"]})
     # 假设convert_content_to_parts_and_role是一个自定义函数，确保它不会修改外部状态
     messages_copy = convert_content_to_parts_and_role(messages_copy)
     if imgurls!=None:

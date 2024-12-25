@@ -10,6 +10,7 @@ ai绘画:
   接口6: true    #(还行，只支持英文prompt)
   modelscopeSD: True  #modelscope逆向ai绘图，较为稳定
   sd接口: true   #anything v3
+  nai: false #novel ai绘图，需要有key，在api.yaml里填
   ai重绘: false  #目前应该是不可用的
   ai重绘2: false #同上
   sd默认启动模型: obsessionIllustrious_v30.safetensors
@@ -51,9 +52,9 @@ ai绘画:
 JMComic:            #禁漫相关功能设置
   enable: True     #全局开关
   onlyTrustUser: False #打开后，仅master授权用户可用
-  URLSource: 2 #使用的网盘，0为蓝奏云，1为file.io，2为不启用。蓝奏云需配置cookie，file.io可能需要配置proxy
+  URLSource: 1 #使用的网盘，0为蓝奏云，1为file.io，2为不启用。蓝奏云需配置cookie，file.io可能需要配置proxy
   previewPages: 6  #验车预览页数
-  sendFile: True #以文件形式发送(可能被吞和封号)
+  sendFile: False #以文件形式发送(可能被吞和封号)
   autoClearPDF: True #下载后自动清除pdf
   savePath: "./data/pictures/benzi"  #下载为pdf的默认保存路径
 碧蓝档案:
@@ -113,4 +114,16 @@ scheduledTasks:    #其他定时任务模块的内容会陆续转到这里
     enable: true
     text: 听完就赶紧睡觉吧~祝你好梦！(≧▽≦*)
     time: 22/35
-
+检测:
+  奶龙检测: false
+  奶龙撤回: true
+  奶龙禁言: true
+  骂奶龙:
+  - 奶龙是你叠？这么喜欢发奶龙？
+  doro检测: false
+  doro撤回: true
+  doro禁言: true
+  骂doro:
+  - doro是你🐴？这么喜欢发你🐴的遗照？ #自己添加
+  - 粉色奶龙
+  - 唐
