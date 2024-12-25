@@ -81,13 +81,10 @@ async def GeminiDownloadAllImagesAndSetPrompts(imgurls, rev=False):
                             break
                         quality -= 5
 
-                    if rev:
-                        img_base64 = base64.b64encode(img_byte_arr.getvalue()).decode('utf-8')
-                        imgresults.append({"inline_data": {"mime_type": "image/jpeg", "data": img_base64}})
-                    else:
-                        img_byte_arr.seek(0)
-                        organ = Image.open(img_byte_arr)
-                        imgresults.append(organ)
+
+                    img_base64 = base64.b64encode(img_byte_arr.getvalue()).decode('utf-8')
+                    imgresults.append({"inline_data": {"mime_type": "image/jpeg", "data": img_base64}})
+
 
                     success = True  # Mark as successful if no exception occurs
             except Exception as e:
