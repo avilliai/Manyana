@@ -692,7 +692,7 @@ def main(bot, logger):
                 tag1 = tag.replace('_', ' ')
                 b1 = ForwardMessageNode(sender_id=bot.qq, sender_name="Manyana", message_chain=MessageChain([f"({tag1}:1)"]))
                 build_msg.append(b1)
-                formatted_tag = tag.replace(' ', '_').replace('(', '%28').replace(')', '%29')
+
 
                 try:
                     async with httpx.AsyncClient(timeout=1000, proxies=proxies) as client:
