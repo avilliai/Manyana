@@ -19,7 +19,7 @@ from mirai.models import ForwardMessageNode, Forward
 
 from plugins.setuModerate import fileImgModerate, pic_audit_standalone
 from plugins.aiDrawer import getloras, SdDraw, draw2, airedraw, draw1, draw3, tiktokredraw, draw5, draw4, draw6, fluxDrawer, SdDraw1, SdDraw2, getcheckpoints, ckpt2, SdreDraw, SdDraw0, \
-    cn1, n4
+    cn1, n4, n3
 
 i = 0
 turn = 0
@@ -508,6 +508,7 @@ def main(bot, logger):
                 b64_in = await url_to_base64(img_url)    
                 await bot.send(event, "tag反推中", True)
                 message,tags,tags_str = await pic_audit_standalone(b64_in,is_return_tags=True,url =sd1)
+                tags_str = tags_str.replace("_"," ")
                 await bot.send(event, tags_str, True)
             except Exception as e:
                 logger.error(f"反推失败: {e}")
@@ -589,14 +590,14 @@ def main(bot, logger):
                 await bot.send(event, "cn1失败了喵~", True)
 
     @bot.on(GroupMessage)
-    async def naiDraw(event: GroupMessage):
+    async def naiDraw4(event: GroupMessage):
         global turn
         global sd_user_args
         if str(event.message_chain).startswith("n4 ") and aiDrawController.get("nai"):
             tag = str(event.message_chain).replace("n4 ", "")
             path = f"data/pictures/cache/{random_str()}.png"
-            logger.info(f"发起nai绘画请求，path:{path}|prompt:{tag}")
-            await bot.send(event,'正在进行nai画图',True)
+            logger.info(f"发起nai4绘画请求，path:{path}|prompt:{tag}")
+            await bot.send(event,'正在进行nai4画图',True)
 
             async def attempt_draw(retries_left=10): # 这里是递归请求的次数
                 try:
@@ -609,13 +610,42 @@ def main(bot, logger):
                 except Exception as e:
                     logger.error(e)
                     if retries_left > 0:
-                        logger.error(f"尝试重新请求nai，剩余尝试次数：{retries_left - 1}")
+                        logger.error(f"尝试重新请求nai4，剩余尝试次数：{retries_left - 1}")
                         await asyncio.sleep(0.5)  # 等待0.5秒
                         await attempt_draw(retries_left - 1)
                     else:
                         await bot.send(event, "nai只因了，联系master喵~")
 
             await attempt_draw()
+
+    @bot.on(GroupMessage)
+    async def naiDraw3(event: GroupMessage):
+        global turn
+        global sd_user_args
+        if str(event.message_chain).startswith("n3 ") and aiDrawController.get("nai"):
+            tag = str(event.message_chain).replace("n3 ", "")
+            path = f"data/pictures/cache/{random_str()}.png"
+            logger.info(f"发起nai3绘画请求，path:{path}|prompt:{tag}")
+            await bot.send(event,'正在进行nai3画图',True)
+
+            async def attempt_draw(retries_left=10): # 这里是递归请求的次数
+                try:
+                    p = await n3(tag + positive_prompt, negative_prompt, path, event.group.id)
+                    if p == False:
+                        logger.info("色图已屏蔽")
+                        await bot.send(event, "杂鱼，色图不给你喵~", True)
+                    else:
+                        await bot.send(event, [Image(path=path)], True)
+                except Exception as e:
+                    logger.error(e)
+                    if retries_left > 0:
+                        logger.error(f"尝试重新请求nai3，剩余尝试次数：{retries_left - 1}")
+                        await asyncio.sleep(0.5)  # 等待0.5秒
+                        await attempt_draw(retries_left - 1)
+                    else:
+                        await bot.send(event, "nai只因了，联系master喵~")
+
+            await attempt_draw()    
 
     @bot.on(GroupMessage)
     async def db(event: GroupMessage):
@@ -628,8 +658,8 @@ def main(bot, logger):
                 "https://": proxy,
             }
 
-            db_base_url = "https://danbooru.donmai.us"
-            
+            db_base_url = "https://kagamihara.donmai.us"   # 原站https://danbooru.donmai.us，上不去原站的可以试试这几个前缀，把danbooru换成sonohara、kagamihara、hijiribe这三个任意一个试试，后面的不用改。
+                                                           # 大概是反代
             build_msg = [ForwardMessageNode(sender_id=bot.qq, sender_name="Manyana", message_chain=MessageChain([f"{tag}的搜索结果:"]))]
 
             msg = tag
@@ -659,9 +689,10 @@ def main(bot, logger):
 
 
             for tag in raw_data_values:
-                formatted_tag = tag.replace(' ', '_').replace('(', '%28').replace(')', '%29')
-                b1 = ForwardMessageNode(sender_id=bot.qq, sender_name="Manyana", message_chain=MessageChain([f"({formatted_tag}:1)"]))
+                tag1 = tag.replace('_', ' ')
+                b1 = ForwardMessageNode(sender_id=bot.qq, sender_name="Manyana", message_chain=MessageChain([f"({tag1}:1)"]))
                 build_msg.append(b1)
+
 
                 try:
                     async with httpx.AsyncClient(timeout=1000, proxies=proxies) as client:
