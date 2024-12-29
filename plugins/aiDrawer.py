@@ -46,7 +46,7 @@ async def bing_dalle3(prompt,proxy=None):
     else:
         proxies = None
     url=f"https://apiserver.alcex.cn/dall-e-3/generate-image?prompt={prompt}"
-    async with httpx.AsyncClient(proxies=proxy,timeout=100) as client:
+    async with httpx.AsyncClient(proxies=proxies,timeout=100) as client:
         response = await client.get(url)
     if response:
         paths=[]
@@ -54,7 +54,7 @@ async def bing_dalle3(prompt,proxy=None):
         for i in d:
             try:
                 url=i["url"]
-                async with httpx.AsyncClient(proxies=proxy,timeout=100) as client:
+                async with httpx.AsyncClient(proxies=proxies,timeout=100) as client:
                     response = await client.get(url)
                 p=f"data/pictures/cache/{random_str(10)}.png"
                 with open(p,"wb") as f:
