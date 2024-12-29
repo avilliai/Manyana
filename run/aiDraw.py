@@ -89,10 +89,10 @@ def main(bot, logger):
 
             try:
                 functions = [
-                    ideo_gram(prompt, proxy),
+                    #ideo_gram(prompt, proxy),
                     bing_dalle3(prompt, proxy),
-                    flux_speed(prompt, proxy),
-                    recraft_v3(prompt, proxy),
+                    #flux_speed(prompt, proxy),
+                    #recraft_v3(prompt, proxy),
                     flux_ultra(prompt, proxy),
                 ]
 
