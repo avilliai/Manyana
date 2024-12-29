@@ -8,8 +8,8 @@ import copy
 import yaml
 
 from plugins.ReplyModels import gptOfficial, gptUnofficial, kimi, qingyan,alcexGpt4o,lingyi, stepAI, qwen, gptvvvv, grop, \
-    gpt4hahaha, anotherGPT35, chatGLM, relolimigpt2, xinghuo, Gemma, binggpt4, alcex_GPT3_5, freeGemini, catRep, \
-    momoRep, sparkAI, wenxinAI, YuanQiTencent
+    gpt4hahaha, anotherGPT35, chatGLM, relolimigpt2, xinghuo, Gemma, binggpt4, alcex_GPT3_5, freeGemini, free_phi_3_5, \
+    free_gemini, sparkAI, wenxinAI, YuanQiTencent,meta_llama
 from plugins.googleGemini import geminirep
 from plugins.toolkits import newLogger,random_str,translate
 logger=newLogger()
@@ -60,7 +60,7 @@ trustDays = friendsAndGroups.get("trustDays")
 glmReply = result.get("chatGLM").get("glmReply")
 modelDefault = result.get("chatGLM").get("model")
 privateGlmReply = result.get("chatGLM").get("privateGlmReply")
-randomModelPriority = result.get("chatGLM").get("randomModel&&&&Priority")
+randomModelPriority = result.get("chatGLM").get("randomModel&&&&&Priority")
 autoClearWhenError=result.get("chatGLM").get("AutoClearWhenError")
 replyModel = result.get("chatGLM").get("model")
 trustglmReply = result.get("chatGLM").get("trustglmReply")
@@ -166,11 +166,11 @@ async def modelReply(senderName, senderId, text, modelHere=modelDefault, trustUs
             #    tasks.append(loop_run_in_executor(loop, gpt4hahaha, prompt1, bot_in))        # 2024-07-17测试无效
             #    tasks.append(loop_run_in_executor(loop, anotherGPT35, prompt1, senderId))    # 2024-07-17测试 初始化失败
             #    tasks.append(loop_run_in_executor(loop, xinghuo, prompt1, senderId))         # 2024-07-17测试无效
-            tasks.append(loop_run_in_executor(loop, Gemma, prompt1, bot_in))  # 2024-07-17测试通过
-            tasks.append(loop_run_in_executor(loop, alcex_GPT3_5, prompt1, bot_in))  # 2024-07-17测试通过
-            tasks.append(loop_run_in_executor(loop, catRep, prompt1, bot_in))
-            tasks.append(loop_run_in_executor(loop, momoRep, prompt1, bot_in))
-            tasks.append(loop_run_in_executor(loop,alcexGpt4o,prompt1,bot_in))
+            #tasks.append(loop_run_in_executor(loop, Gemma, prompt1, bot_in))         # 2024-07-17测试通过
+            tasks.append(loop_run_in_executor(loop, meta_llama, prompt1, bot_in))  # 2024-07-17测试通过
+            tasks.append(loop_run_in_executor(loop, free_phi_3_5, prompt1, bot_in))
+            tasks.append(loop_run_in_executor(loop, free_gemini, prompt1, bot_in))  #2024-12-29测试通过
+            #tasks.append(loop_run_in_executor(loop,alcexGpt4o,prompt1,bot_in))
             #    tasks.append(loop_run_in_executor(loop,freeGemini,prompt1,bot_in))           # 2024-07-17测试无效
 
             # tasks.append(loop_run_in_executor(loop,localAurona,prompt1,bot_in))

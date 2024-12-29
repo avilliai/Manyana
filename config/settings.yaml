@@ -28,12 +28,10 @@ moderate:
 chatGLM:                   #对话模型通用设置
   aiReplyCore: False  #ai回复核心，为大部分功能启用ai回复，可优化回复表现
   model: random  #ai模型，random(自动选取免费可用模型) |binggpt4(免费无需配置，速度较慢)| 后面几个需要配置api.yaml对应变量(括号内为api.yaml对应配置项，括号前为这里填写的模型名): 讯飞星火(api.yaml的sparkAI),文心一言(api.yaml的wenxinAI),Gemini(api.yaml的gemini),腾讯元器(api.yaml的腾讯元器),gpt3.5(api.yaml的openai-keys),characterglm(chatGLM)
-  randomModel&&&&Priority:   #random子模型调用顺序，不要乱动！你最好读文档了
-    - alcexGpt4o
-    - Gemma
-    - alcex_GPT3_5
-    - 猫娘米米
-    - 沫沫
+  randomModel&&&&&Priority:   #random子模型调用顺序，不要乱动！你最好读文档了。由https://api.alcex.cn/提供。
+    - free_gemini
+    - free_phi_3_5
+    - meta_llama
   prefix: "." #ai对话指令触发前缀，正常来说，艾特也可以触发。
   multiplyReply: false  #是否开启分行回复，优化回复效果。记得在设定里面强调让bot分段回复/尽量简短
   multiplyReplyReExpression: '[。？！]' #切分回复使用的正则表达式

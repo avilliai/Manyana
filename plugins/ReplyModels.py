@@ -268,45 +268,46 @@ def relolimigpt2(prompt, meta):
     return {"role": "assistant", "content": r.text}
 
 
-def glm4hahaha(prompt, meta):
+def meta_llama(prompt, meta):
     prompt.insert(0, {"role": "user", "content": meta})
     prompt.insert(1, {"role": "assistant", "content": "好的，已了解您的需求~我会扮演好您设定的角色。"})
-    url = f"https://api.lolimi.cn/API/AI/zp.php?msg={str(prompt)}"
-    r = requests.get(url, timeout=20)
-    return {"role": "assistant", "content": r.json().get("data").get("output")}
-def cozeBotRep(url, text, proxy, channelid=None):
-    os.environ["http_proxy"] = proxy
-    headers = {
-        'accept': 'application/json',
-        'Content-Type': 'application/json'
-    }
+    url = "https://apiserver.alcex.cn/v1/chat/completions"
     data = {
-        "messages": text,
+        "model": "meta-llama/Llama-3.3-70B-Instruct-Turbo",
+        "messages": prompt,
         "stream": False
     }
-
-    r = requests.post(url, headers=headers, json=data)
-    print(r)
+    r = requests.post(url, data=json.dumps(data), timeout=20)
     print(r.text)
-    print(r)
-    if r.status_code == 200:
-        result = r.json()
-        return result.get('choices')[0].get('message')
+    return r.json()["choices"][0]["message"]
 
-    else:
-        print(f'Error: {r.status_code}')
-def catRep(prompt,meta):
+def free_phi_3_5(prompt,meta):
     prompt.insert(0, {"role": "user", "content": meta})
     prompt.insert(1, {"role": "assistant", "content": "好的，已了解您的需求~我会扮演好您设定的角色。"})
-    url=f"https://api.mhimg.cn/api/gpt_aimaoniang/?prompt={prompt}"
-    r=requests.get(url,timeout=20)
-    return {"role": "assistant", "content": r.text}
-def momoRep(prompt,meta):
+    url="https://apiserver.alcex.cn/v1/chat/completions"
+    data={
+      "model": "phi-3.5",
+      "messages": prompt,
+      "stream": False
+    }
+    r=requests.post(url,data=json.dumps(data),timeout=20)
+    print(r.text)
+    return r.json()["choices"][0]["message"]
+def free_gemini(prompt,meta):
     prompt.insert(0, {"role": "user", "content": meta})
     prompt.insert(1, {"role": "assistant", "content": "好的，已了解您的需求~我会扮演好您设定的角色。"})
-    url=f"https://api.lolimi.cn/API/AI/mm.php?msg={prompt}"
-    r = requests.get(url, timeout=20)
-    return {"role": "assistant", "content": r.json().get("data").get("output")}
+    url=f"https://apiserver.alcex.cn/v1/chat/completions"
+    headers = {
+        "Content-Type": "application/json",
+        "Cookie": "sl-session=Ei97VrWfame4ViswzDZ/IQ=="
+    }
+    payload = json.dumps({
+        "model": "gemini-1.5-flash",
+        "messages": prompt,
+        "stream": False
+    })
+    r=requests.post(url,headers=headers,data=payload,timeout=20)
+    return r.json().get("choices")[0].get("message")
 async def sparkAI(prompt,bot_info,key,secret,model):
     prompt_copy = copy.deepcopy(prompt)
     prompt_copy.insert(0, {"role": "user", "content": bot_info})
@@ -386,8 +387,8 @@ async def YuanQiTencent(prompt,assistant_id,token,userID=1940094972):
         return {'role': 'assistant', 'content': response.json()["choices"][0]["message"]["content"]}
 if __name__ == '__main__':
 
-    print(1)
-    '''k = momoRep([{"role": "user", "content": "谁赢得了2020年的世界职业棒球大赛?"},
+
+    k = meta_llama([{"role": "user", "content": "谁赢得了2020年的世界职业棒球大赛?"},
                   {"role": "assistant", "content": "洛杉矶道奇队在2020年赢得了世界职业棒球大赛冠军."},
                   {"role": "user", "content": "它在哪里举办的?"}],"你是猫娘")
-    print(k)'''
+    print(k)
