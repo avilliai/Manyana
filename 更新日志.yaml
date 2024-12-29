@@ -483,3 +483,6 @@
   - danbooru搜索
   - 指令： dan tag #比如 dan 奶龙
   - @spawner pr
+2024/12/29:
+  - 新增免费无需配置的bing_dalle3            #感谢https://api.alcex.cn/?index提供的api
+  - 但因为bing_dalle3返回图片的url在国内无法直接访问，因此需要配置api.yaml的proxy
