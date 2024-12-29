@@ -40,14 +40,16 @@ with open('config/api.yaml', 'r', encoding='utf-8') as f:
 sd1 = result.get("sd审核和反推api")
 
 sd_user_args = {}
-async def bing_dalle3(prompt,proxy=None):
+async def get_results(url,proxy=None):
     if proxy is not None:
         proxies = {"http://": proxy, "https://": proxy}
     else:
         proxies = None
-    url=f"https://apiserver.alcex.cn/dall-e-3/generate-image?prompt={prompt}"
-    async with httpx.AsyncClient(proxies=proxies,timeout=100) as client:
-        response = await client.get(url)
+    try:
+        async with httpx.AsyncClient(proxies=proxies,timeout=100) as client:
+            response = await client.get(url)
+    except:
+        return []
     if response:
         paths=[]
         d=response.json()["data"]
@@ -65,8 +67,25 @@ async def bing_dalle3(prompt,proxy=None):
         return paths
     else:
         return []
+async def ideo_gram(prompt,proxy=None):
 
+    url=f"https://apiserver.alcex.cn/ideogram/generate-image?prompt={prompt}"
+    return await get_results(url,proxy)
 
+async def bing_dalle3(prompt,proxy=None):
+
+    url=f"https://apiserver.alcex.cn/dall-e-3/generate-image?prompt={prompt}"
+    return await get_results(url,proxy)
+async def flux_speed(prompt,proxy=None):
+
+    url=f"https://apiserver.alcex.cn/flux-speed/generate-image?prompt={prompt}"
+    return await get_results(url,proxy)
+async def recraft_v3(prompt,proxy=None):
+    url=f"https://apiserver.alcex.cn/recraft-v3/generate-image?prompt={prompt}"
+    return await get_results(url,proxy)
+async def flux_ultra(prompt,proxy=None):
+    url=f"https://apiserver.alcex.cn/flux-pro.ultra/generate-image?prompt={prompt}"
+    return await get_results(url,proxy)
 async def SdDraw(prompt, negative_prompt, path, sdurl,groupid):
     url = sdurl
 
