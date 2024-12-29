@@ -18,8 +18,9 @@ from bs4 import BeautifulSoup
 from mirai.models import ForwardMessageNode, Forward
 
 from plugins.setuModerate import fileImgModerate, pic_audit_standalone
-from plugins.aiDrawer import getloras, SdDraw, draw2, airedraw, draw1, draw3, tiktokredraw, draw5, draw4, draw6, fluxDrawer, SdDraw1, SdDraw2, getcheckpoints, ckpt2, SdreDraw, SdDraw0, \
-    cn1, n4, n3
+from plugins.aiDrawer import getloras, SdDraw, draw2, airedraw, draw1, draw3, tiktokredraw, draw5, draw4, draw6, \
+    fluxDrawer, SdDraw1, SdDraw2, getcheckpoints, ckpt2, SdreDraw, SdDraw0, \
+    cn1, n4, n3, bing_dalle3
 
 i = 0
 turn = 0
@@ -80,7 +81,22 @@ def main(bot, logger):
             else:
                 print(f"Warning: Invalid argument format '{arg}'")  # 调试信息
         return result
-    
+    @bot.on(GroupMessage)
+    async def bing_dalle3_draw(event: GroupMessage):
+        if str(event.message_chain).startswith("画 "):
+            tag = str(event.message_chain).split("画 ")[1]
+            logger.info("发起bing dalle 3 绘画请求，prompt:" + tag)
+            try:
+                p = await bing_dalle3(tag,proxy)
+                if p!=[]:
+                    send_list=[]
+                    for i in p:
+                        send_list.append(Image(path=i))
+                    await bot.send(event, send_list, True)
+            except Exception as e:
+                logger.error(e)
+                logger.error("bing dalle 3 Drawer出错")
+
     @bot.on(GroupMessage)
     async def msDrawer(event: GroupMessage):
         if str(event.message_chain).startswith("画 ") and aiDrawController.get("modelscopeSD"):

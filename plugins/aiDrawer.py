@@ -40,6 +40,33 @@ with open('config/api.yaml', 'r', encoding='utf-8') as f:
 sd1 = result.get("sd审核和反推api")
 
 sd_user_args = {}
+async def bing_dalle3(prompt,proxy=None):
+    if proxy is not None:
+        proxies = {"http://": proxy, "https://": proxy}
+    else:
+        proxies = None
+    url=f"https://apiserver.alcex.cn/dall-e-3/generate-image?prompt={prompt}"
+    async with httpx.AsyncClient(proxies=proxy,timeout=100) as client:
+        response = await client.get(url)
+    if response:
+        paths=[]
+        d=response.json()["data"]
+        for i in d:
+            try:
+                url=i["url"]
+                async with httpx.AsyncClient(proxies=proxy,timeout=100) as client:
+                    response = await client.get(url)
+                p=f"data/pictures/cache/{random_str(10)}.png"
+                with open(p,"wb") as f:
+                    f.write(response.content)
+                paths.append(p)
+            except:
+                continue
+        return paths
+    else:
+        return []
+
+
 async def SdDraw(prompt, negative_prompt, path, sdurl,groupid):
     url = sdurl
 
