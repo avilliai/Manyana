@@ -191,15 +191,7 @@ async def modelReply(senderName, senderId, text, modelHere=modelDefault, trustUs
                 if result is not None:
                     if "content" not in result:
                         continue
-                    if "无法解析" in result.get("content") or "账户余额不足" in result.get(
-                            "content") or "令牌额度" in result.get(
-                        "content") or "敏感词汇" in result.get("content") or "request id" in result.get(
-                        "content") or "This model's maximum" in result.get(
-                        "content") or "solve CAPTCHA to" in result.get("content") or "输出错误请联系站长" in result.get(
-                        "content") or "接口失败" in result.get("content") or "psot格式请求" in result.get(
-                        "content") or "第三方响应错误" in result.get(
-                        "content") or "access the URL on this server" in result.get(
-                        "content") or "正常人完全够用" in result.get("content") or "请到我们的官方群" in result.get("content"):
+                    if "无法解析" in result.get("content") or "reached your free usage limit" in result.get("content"):
                         continue
                     reps[task.result()[0]] = task.result()[1]
                     # reps.append(task.result())  # 添加可用结果
