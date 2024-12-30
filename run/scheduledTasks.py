@@ -223,7 +223,7 @@ def main(bot,logger):
             logger.info("推送")
             for i in groupdata.get("bingEveryDay").get("groups"):
                 try:
-                    await bot.send_group_message(int(i), [task_info.get("text")+text, Image(path=path)])
+                    await bot.send_group_message(int(i), [task_info.get("text")+text, Image(path=p)])
                 except:
                     logger.error("不存在的群" + str(i))
         elif task_name=="constellation":
