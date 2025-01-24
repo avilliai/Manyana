@@ -19,7 +19,7 @@
 ---
 
 **本仓库将基本不再更新。如果您有意愿参与开发和维护，欢迎pr。<br>
-目前开发的重心在[Eridanus](https://github.com/avilliai/Eridanus)。**
+目前开发的重心在[Eridanus](https://github.com/avilliai/Eridanus)。Eridanus旨在实现对Manyana的全面替代，功能更多，占用更低，功能之间的联动性更强。**
 
 [阅读文档](https://doc.luxmix.top/)
 
