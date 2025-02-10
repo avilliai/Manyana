@@ -203,7 +203,7 @@ def main():
     else:
         print("结束")
 def updaat(f=False,jump=False,source=None):
-    if jump==False:
+    if not jump:
         logger.warning("是否补全依赖？如已使用最新整合包请输入1以跳过。(更新的新功能可能需要执行此步骤)。可以按1跳过，如果更新后启动报错/提示功能无法启用，请回来执行这一步")
         if input("在这里输入:") != "1":
             logger.warning("即将开始更新依赖库，请确保已关闭代理，否则无法安装依赖库")
@@ -216,7 +216,7 @@ def updaat(f=False,jump=False,source=None):
             os.system(f"\"{python_path}\" -m pip install --upgrade pytubefix")
             os.system(f"\"{python_path}\" -m pip install --upgrade PicImageSearch")
             os.system(f"\"{python_path}\" -m pip install httpx==0.27.2")
-    if source==None:
+    if source is None:
         logger.info("拉取bot代码\n--------------------")
         logger.info("选择更新源(git源 镜像源相互兼容)：\n1 git源\n2 git代理源1\n3 git代理源2 \n4 国内源(没事别几把用这个)")
         source = input("选择更新源(输入数字 )：")
@@ -249,7 +249,7 @@ def updaat(f=False,jump=False,source=None):
 
     # 存放冲突文件名的列表
     conflict_files = []
-    if f==True:
+    if f:
         if os.path.exists("./temp"):
             if len(os.listdir("./config")) != 14:
                 logger.error("文件数目异常，请参考远程仓库config文件夹https://github.com/avilliai/Manyana/tree/main/config补全缺失文件。")

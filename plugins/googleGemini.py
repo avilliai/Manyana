@@ -102,14 +102,14 @@ async def geminirep(ak, messages, bot_info, GeminiRevProxy="",model="gemini-1.5-
     #messages_copy.insert(1, {"role": 'model', "parts": ["好的，我会根据以上设定扮演好对应角色，无论发生什么，我都会坚守我的设定。"]})
     # 假设convert_content_to_parts_and_role是一个自定义函数，确保它不会修改外部状态
     messages_copy = convert_content_to_parts_and_role(messages_copy)
-    if imgurls!=None:
+    if imgurls is not None:
         if GeminiRevProxy==" " or GeminiRevProxy=="":
             rev=False
         else:
             rev=True
         imgPromptResults=await GeminiDownloadAllImagesAndSetPrompts(imgurls,rev)
     messages_copy = promptConvert(messages_copy)
-    if imgurls != None:
+    if imgurls is not None:
         for vb in imgPromptResults:
             messages_copy[-1]['parts'].append(vb)
     if GeminiRevProxy == "" or GeminiRevProxy == " ":

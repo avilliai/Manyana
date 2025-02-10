@@ -5,7 +5,7 @@ from numpy import float32
 import librosa
 
 
-class HParams():
+class HParams:
   def __init__(self, **kwargs):
     for k, v in kwargs.items():
       if type(v) == dict:

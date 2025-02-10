@@ -99,7 +99,7 @@ def main(bot, logger):
                 for future in asyncio.as_completed(functions):
                     try:
                         result = await future
-                        if result != []:
+                        if result:
                             send_list = []
                             for i in result:
                                 send_list.append(ForwardMessageNode(sender_id=bot.qq, sender_name="Manyana",
@@ -141,7 +141,7 @@ def main(bot, logger):
                 args = sd_user_args.get(event.sender.id, {})
                 p = await SdDraw0(tag + positive_prompt, negative_prompt, path, sdUrl, event.group.id, args)
                 # logger.error(str(p))
-                if p == False:
+                if not p:
                     turn -= 1
                     logger.info("色图已屏蔽")
                     await bot.send(event, "杂鱼，色图不给你喵~", True)
@@ -165,7 +165,7 @@ def main(bot, logger):
                 # 没啥好审的，controller直接自个写了。
                 p = await SdDraw(tag + positive_prompt, negative_prompt, path, sdUrl, event.group.id)
                 # logger.error(str(p))
-                if p == False:
+                if not p:
                     turn -= 1
                     logger.info("色图已屏蔽")
                     await bot.send(event, "杂鱼，色图不给你喵~", True)
@@ -209,7 +209,7 @@ def main(bot, logger):
                 # 没啥好审的，controller直接自个写了。
                 p = await SdDraw1(tag + positive_prompt, negative_prompt, path, sdUrl, event.group.id)
                 # logger.error(str(p))
-                if p == False:
+                if not p:
                     turn -= 1
                     logger.info("色图已屏蔽")
                     await bot.send(event, "杂鱼，色图不给你喵~", True)
@@ -233,7 +233,7 @@ def main(bot, logger):
                 # 没啥好审的，controller直接自个写了。
                 p = await SdDraw2(tag + positive_prompt, negative_prompt, path, sdUrl, event.group.id)
                 # logger.error(str(p))
-                if p == False:
+                if not p:
                     turn -= 1
                     logger.info("色图已屏蔽")
                     await bot.send(event, "杂鱼，色图不给你喵~", True)
@@ -460,7 +460,7 @@ def main(bot, logger):
         global UserGet
         global turn
 
-        if event.message_chain.has(Image) == False and (str(event.message_chain) == ("重绘") or str(event.message_chain).startswith("重绘 ")):
+        if event.message_chain.has(Image) == False and (str(event.message_chain) == "重绘" or str(event.message_chain).startswith("重绘 ")):
             prompt = str(event.message_chain).replace("重绘", "").strip()
             UserGet[event.sender.id] = [prompt]
             await bot.send(event, "请发送要重绘的图片")
@@ -492,7 +492,7 @@ def main(bot, logger):
                 turn += 1
                 # 将 UserGet[event.sender.id] 列表中的内容和 positive_prompt 合并成一个字符串
                 p = await SdreDraw(prompts_str, negative_prompt, path, sdUrl, event.group.id, b64_in, args)
-                if p == False:
+                if not p:
                     turn -= 1
                     logger.info("色图已屏蔽")
                     await bot.send(event, "杂鱼，色图不给你喵~", True)
@@ -517,7 +517,7 @@ def main(bot, logger):
     async def tagger(event: GroupMessage):
         global UserGet
 
-        if event.message_chain.has(Image) == False and (str(event.message_chain) == ("tag") or str(event.message_chain).startswith("tag ")):
+        if event.message_chain.has(Image) == False and (str(event.message_chain) == "tag" or str(event.message_chain).startswith("tag ")):
             tag_user[event.sender.id] = []
             await bot.send(event, "请发送要识别的图片")
 
@@ -579,7 +579,7 @@ def main(bot, logger):
         global UserGet1
         global turn
 
-        if event.message_chain.has(Image) == False and (str(event.message_chain) == ("cn1") or str(event.message_chain).startswith("cn1 ")):
+        if event.message_chain.has(Image) == False and (str(event.message_chain) == "cn1" or str(event.message_chain).startswith("cn1 ")):
             prompt = str(event.message_chain).replace("cn1", "").strip()
             UserGet1[event.sender.id] = [prompt]
             await bot.send(event, "请发送要进行cn1预设操作的图片")
@@ -610,7 +610,7 @@ def main(bot, logger):
                 await bot.send(event, f"开始cn1啦~sd前面排队{turn}人，请耐心等待喵~", True)
                 turn += 1
                 p = await cn1(prompts_str, negative_prompt, path, sdUrl, event.group.id, b64_in, args)
-                if p == False:
+                if not p:
                     turn -= 1
                     logger.info("色图已屏蔽")
                     await bot.send(event, "杂鱼，色图不给你喵~", True)
@@ -634,7 +634,7 @@ def main(bot, logger):
             async def attempt_draw(retries_left=10): # 这里是递归请求的次数
                 try:
                     p = await n4(tag + positive_prompt, negative_prompt, path, event.group.id)
-                    if p == False:
+                    if not p:
                         logger.info("色图已屏蔽")
                         await bot.send(event, "杂鱼，色图不给你喵~", True)
                     else:
@@ -663,7 +663,7 @@ def main(bot, logger):
             async def attempt_draw(retries_left=10): # 这里是递归请求的次数
                 try:
                     p = await n3(tag + positive_prompt, negative_prompt, path, event.group.id)
-                    if p == False:
+                    if not p:
                         logger.info("色图已屏蔽")
                         await bot.send(event, "杂鱼，色图不给你喵~", True)
                     else:

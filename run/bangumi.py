@@ -91,7 +91,7 @@ def main(bot,logger):
             #url = "https://api.bgm.tv/calendar"
             url = "https://bgm.tv/calendar"
             path = "data/pictures/cache/week-"
-        elif str(event.message_chain)==("bangumi热门"):
+        elif str(event.message_chain)== "bangumi热门":
             url = "https://www.bangumi.app/hot/anime"
             path = "data/pictures/cache/hot-"
         else:

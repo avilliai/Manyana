@@ -128,7 +128,7 @@ def main(bot, master, logger):
 
             text = str(event.message_chain)[len(str(event.message_chain).split("说")[0]) + 1:]
             speaker = str(event.message_chain).split("说")[0].replace(prefix,"")
-            if GPTSOVITS_SPEAKERS!=None:
+            if GPTSOVITS_SPEAKERS is not None:
                 original_speaker=speaker
                 if f"{speaker}【原神】" in list(GPTSOVITS_SPEAKERS.keys()):
                     speaker = f"{speaker}【原神】"
@@ -217,7 +217,7 @@ def main(bot, master, logger):
                                          message_chain=MessageChain("bert_vits2可用角色如下：\n" + str(modelScope))))
             b1.append(ForwardMessageNode(sender_id=bot.qq, sender_name="Manyana",
                                          message_chain=MessageChain(f"outVits可用角色如下：\n{outVitsSpeakers}")))
-            if GPTSOVITS_SPEAKERS!=None:
+            if GPTSOVITS_SPEAKERS is not None:
                 b1.append(ForwardMessageNode(sender_id=bot.qq, sender_name="Manyana",
                                              message_chain=MessageChain(f"gptsoVits可用角色如下：\n{str(list(GPTSOVITS_SPEAKERS.keys()))}")))
             b1.append(ForwardMessageNode(sender_id=bot.qq, sender_name="Manyana",

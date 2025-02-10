@@ -55,7 +55,7 @@ async def find_most_similar_key_async(json_data, target_key, threshold,mode,inMa
 
         key_text = next((item.get('text') for item in key_data if 'text' in item), None)
         target_text = next((item.get('text') for item in target_data if 'text' in item), None) #这个是我们传入的关键字
-        if mode=="in" and target_text!=None and key_text!=None:
+        if mode=="in" and target_text is not None and key_text is not None:
             if len(target_text)*inMaxLength<len(key_text):
                 return key, 0
         #print(key_text, target_text)
@@ -77,7 +77,7 @@ async def find_most_similar_key_async(json_data, target_key, threshold,mode,inMa
             # 如果 text 和 image_id 都没有匹配，则对整个键值对进行匹配
             overall_score = await asyncio.to_thread(fuzz.ratio, key, target_key)
             score = overall_score'''
-        if mode == "in" and target_text!=None and key_text!=None:
+        if mode == "in" and target_text is not None and key_text is not None:
             if key_text in target_text and score < threshold:
                 logger.info(f"当前加权值{inWeighting}")
                 score+=inWeighting

@@ -777,12 +777,12 @@ def main(bot, logger):
 
     @bot.on(GroupMessage)
     async def searchGame(event: GroupMessage):
-        if (str(event.message_chain).startswith("steam查询")):
+        if str(event.message_chain).startswith("steam查询"):
             keyword = str(event.message_chain).replace("steam查询", "")
             try:
                 logger.info(f"查询游戏{keyword}")
                 result_dict = await solve(keyword)
-                if (result_dict is None):
+                if result_dict is None:
                     await bot.send(event, "没有找到哦，试试其他名字~")
                     return
                 logger.info(result_dict)

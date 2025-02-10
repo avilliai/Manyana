@@ -95,7 +95,7 @@ async def modelReply(senderName, senderId, text, modelHere=modelDefault, trustUs
     global chatGLMData
     logger.info(modelHere)
 
-    if senderName==None:
+    if senderName is None:
         senderName="指挥"
     try:
         if not noRolePrompt:

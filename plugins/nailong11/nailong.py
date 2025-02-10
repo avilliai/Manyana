@@ -59,7 +59,7 @@ def predict_video(video_bytes, model, transform, device):
 
     frame_count = 0
     found = False
-    while(cap.isOpened()):
+    while cap.isOpened():
         ret, frame = cap.read()
         if not ret:
             break
