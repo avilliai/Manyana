@@ -76,7 +76,7 @@ async def pic_audit_standalone(
     value = list(to_user_dict.values())
     value.sort(reverse=True)
     reverse_dict = {v: k for k, v in to_user_dict.items()}
-    message += (f"最终结果为:{reverse_dict[value[0]].rjust(5)}")
+    message += f"最终结果为:{reverse_dict[value[0]].rjust(5)}"
     
     keys = list(tags.keys())
     tags_str = ", ".join(keys)

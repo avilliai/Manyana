@@ -26,7 +26,7 @@ from plugins.wReply.MessageConvert import EventMessageConvert
 # 1
 class CListen(threading.Thread):
     def __init__(self, loop):
-        threading.Thread.__init__(self)
+        super().__init__()
         self.mLoop = loop
 
     def run(self):
@@ -227,17 +227,12 @@ def main(bot, master, logger):
             pass
         else:
             return
-        text = str(event.message_chain)
-        imgurl = None
 
         text = str(event.message_chain)  # 初始text
         imgurl = None
         if event.message_chain.count(Image):
             lst_img = event.message_chain.get(Image)
-            imgurl = []
-            for i in lst_img:
-                url = i.url
-                imgurl.append(url)
+            imgurl = [i.url for i in lst_img]
         
         if event.sender.id in chatGLMCharacters:
             print(type(chatGLMCharacters.get(event.sender.id)), chatGLMCharacters.get(event.sender.id))

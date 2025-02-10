@@ -20,19 +20,19 @@ class MyDownloader(jmcomic.JmDownloader):
         end = self.end
         if detail.is_album() and self.onlyFirstPhoto:
             album: jmcomic.JmAlbumDetail = detail
-            if(len(album)<self.album_index):
+            if len(album)<self.album_index:
                 self.album_index = len(album)-1
-            if(self.album_index<1):
+            if self.album_index<1:
                 self.album_index = 1
             return [album[self.album_index-1]]
-        if(detail.is_photo()):
+        if detail.is_photo():
             photo: jmcomic.JmPhotoDetail = detail
             print(len(photo))
-            if(end>len(photo)):
+            if end>len(photo):
                 end = len(photo)
-            if(start>len(photo)):
+            if start>len(photo):
                 start = len(photo)
-            if(start == end):
+            if start == end:
                 start = 0
                 end = len(photo)
             return photo[start:end]
