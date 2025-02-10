@@ -33,9 +33,7 @@ def main(bot, logger):
                     logger.info(f"bing接口发起请求:{tag}")
                     p = await bingCreate(sock5proxy, tag, bing_image_creator_key.get("_U"),
                                          bing_image_creator_key.get("KievRPSSecAuth"))
-                    plist = []
-                    for i in p:
-                        plist.append(Image(path=i))
+                    plist = [Image(path=i) for i in p]
                     await bot.send(event, plist, True)
                 except Exception as e:
                     logger.error(e)

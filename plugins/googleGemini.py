@@ -57,7 +57,6 @@ safety_settings = [
 
 
 async def GeminiDownloadAllImagesAndSetPrompts(imgurls, rev=False):
-    imgresults = []
     for i in imgurls:
         retry_count = 0
         success = False
@@ -81,7 +80,7 @@ async def GeminiDownloadAllImagesAndSetPrompts(imgurls, rev=False):
 
 
                     img_base64 = base64.b64encode(img_byte_arr.getvalue()).decode('utf-8')
-                    imgresults.append({"inline_data": {"mime_type": "image/jpeg", "data": img_base64}})
+                    yield {"inline_data": {"mime_type": "image/jpeg", "data": img_base64}}
 
 
                     success = True  # Mark as successful if no exception occurs
@@ -91,7 +90,7 @@ async def GeminiDownloadAllImagesAndSetPrompts(imgurls, rev=False):
                 if retry_count == 3:
                     pass
                     #print(f"Failed to download and process image from {i} after 3 attempts")
-    return imgresults
+
 async def geminirep(ak, messages, bot_info, GeminiRevProxy="",model="gemini-1.5-flash",imgurls=None,proxy=None):
     messages_copy = copy.deepcopy(messages)
 

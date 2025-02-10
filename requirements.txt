@@ -5,7 +5,7 @@ colorlog==6.7.0
 edge-tts
 psutil
 fuzzywuzzy==0.18.0
-httpx
+httpx>=0.28.1
 openpyxl==3.1.2
 PicImageSearch
 Pillow==10.0.0

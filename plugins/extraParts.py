@@ -251,7 +251,7 @@ def arkOperator():
 
 def get_cp_mesg(gong, shou):
     with open('data/autoReply/cp.json', "r", encoding="utf-8") as f:
-        cp_data = json.loads(f.read())
+        cp_data = json.load(f)
     return random.choice(cp_data['data']).replace('<攻>', gong).replace('<受>', shou)
 
 

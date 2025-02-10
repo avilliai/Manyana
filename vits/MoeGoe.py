@@ -93,10 +93,8 @@ def vG(tex,out,speakerID=2,modelSelect=['vits/voiceModel/nene/1374_epochsm.pth',
     text=tex
     out_path=out
 
-    if '--escape' in sys.argv:
-        escape = True
-    else:
-        escape = False
+    escape = '--escape' in sys.argv
+
     if modelSelect[0].startswith("vits/"):
 
         model=modelSelect[0]

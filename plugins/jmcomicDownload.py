@@ -88,7 +88,6 @@ def JM_search_comic_id():
     op = JmOption.default()
     cl = op.new_jm_client()
     page: JmCategoryPage = cl.week_ranking(1)
-    result=[]
     for page in cl.categories_filter_gen(page=1, # 起始页码
                                          # 下面是分类参数
                                          time=JmMagicConstants.TIME_MONTH,
@@ -96,9 +95,8 @@ def JM_search_comic_id():
                                          order_by=JmMagicConstants.ORDER_BY_VIEW,
                                          ):
         for aid, atitle in page:
-            result.append(aid)
+            yield aid
         #print(result)
-    return result
     
 def downloadComic(comic_id,start=1,end=5):
     with open("config/jmcomic.yml", 'r', encoding='utf-8') as f: #不知道他这个options咋传的，我就修改配置文件得了。

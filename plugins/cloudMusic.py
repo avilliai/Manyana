@@ -80,12 +80,11 @@ async def cccdddm(musicname):
         r = await client.post(url)
         #print(r.json().get("result").get("songs"))
         #print(r.json().get("result").get("songs")[0].get("id"))
-        newa = []
+
         for i in r.json().get("result").get("songs"):
             #newa.append([i.get("name"),i.get("id"),i.get("artists")[0].get("img1v1Url"),i.get("artists")[0].get("name")])
-            newa.append(
-                [i.get("name"), i.get("id"), i.get("artists")[0].get("name")])
-        return newa
+            yield [i.get("name"), i.get("id"), i.get("artists")[0].get("name")]
+
 
 async def musicDown(id, name):
     url = "http://music.163.com/song/media/outer/url?id=" + str(id) + ".mp3"

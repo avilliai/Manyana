@@ -49,9 +49,9 @@ def main(bot, logger):
 
     logger.info("额外的功能 启动完成")
     with open("data/text/odes.json", encoding="utf-8") as fp:
-        odes = json.loads(fp.read())
+        odes = json.load(fp)
     with open("data/text/IChing.json", encoding="utf-8") as fp:
-        IChing = json.loads(fp.read())
+        IChing = json.load(fp)
     global data
     with open('data/text/nasaTasks.yaml', 'r', encoding='utf-8') as file:
         data = yaml.load(file, Loader=yaml.FullLoader)
