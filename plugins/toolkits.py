@@ -1,19 +1,15 @@
+import asyncio
 import base64
-import os
-import random
+import logging
 import platform
+import random
 import re
-import json
 
+import colorlog
+import httpx
 import psutil
 import requests
 import yaml
-import logging
-import httpx
-import colorlog
-from io import BytesIO
-from PIL import Image
-import asyncio
 
 try:
     with open('config/api.yaml', 'r', encoding='utf-8') as f:

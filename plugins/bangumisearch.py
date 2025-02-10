@@ -7,7 +7,6 @@ import httpx
 async def banguimiList(year,month,top):
 
     rank = 1  # 排名
-    page = 1  # 页数
     finNal_Cover = []
     fiNal_Text=[]
     isbottom = 0  # 标记是否到底

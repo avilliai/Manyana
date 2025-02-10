@@ -1,20 +1,18 @@
 # -*- coding: utf-8 -*-
-import json
-import re
-from http.cookies import SimpleCookie
-import zipfile
-
 import asyncio
 import base64
 import io
+import json
 import logging
+import zipfile
+
 logger = logging.getLogger(__name__)
 
 import httpx
 import yaml
 from PIL import Image
 import random
-from plugins.setuModerate import fileImgModerate, pic_audit_standalone
+from plugins.setuModerate import pic_audit_standalone
 
 from plugins.toolkits import random_str,random_session_hash
 

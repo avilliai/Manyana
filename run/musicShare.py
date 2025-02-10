@@ -16,15 +16,15 @@ from plugins.toolkits import random_str
 def main(bot, master, botName, logger):
     logger.warning("ntqq不启用定时推送点歌")
     return
-    file = open('data/music/music.txt', 'r')
-    js = file.read()
+    with open('data/music/music.txt', 'r') as file:
+        js = file.read()
     global userdict
     userdict = json.loads(js)
     logger.info("点歌加载完成")
 
-    file1 = open('data/music/groups.txt', 'r')
-    js1 = file1.read()
-    file.close()
+    with open('data/music/groups.txt', 'r') as file1:
+        js1 = file1.read()
+
     global groupSend
     groupSend = 0
     global severGroups
@@ -186,14 +186,14 @@ def main(bot, master, botName, logger):
 
             await sleep(9)
 
-            file = open('data/music/music.txt', 'r')
-            js = file.read()
+            with open('data/music/music.txt', 'r') as file:
+                js = file.read()
 
             try:
                 music = json.loads(js).get(str(datetime.date.today()))
                 logger.info(music)
                 # out = random.choice(file)
-                logger.info('正在向群' + str(i) + '点歌')
+                logger.info(f'正在向群{str(i)}点歌')
                 await bot.send_group_message(intTrans, MusicShare(kind=music.get("kind"), title=music.get("title"),
                                                                   summary=music.get("summary"),
                                                                   jump_url=music.get("jump_url"),
@@ -203,7 +203,7 @@ def main(bot, master, botName, logger):
                 await bot.send_group_message(intTrans, "晚间电台ヾ(≧▽≦*)o\n来自" + str(
                     music.get("user") + "的点歌\n留言：" + str(music.get("message")) + "\n随机码:" + random_str()))
                 await bot.send_group_message(intTrans,
-                                             "私聊" + bm + "发送 点歌 即可点歌\n群内发送 /回复+回复内容 即可向点歌人回复\n随机码:" + random_str())
+                                             f"私聊{bm}发送 点歌 即可点歌\n群内发送 /回复+回复内容 即可向点歌人回复\n随机码:" + random_str())
             except:
                 logger.error("指定群不存在或已退出")
 

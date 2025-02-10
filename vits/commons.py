@@ -1,7 +1,6 @@
-import math
 import torch
-from torch.nn import functional as F
 import torch.jit
+from torch.nn import functional as F
 
 
 def script_method(fn, _rcb=None):

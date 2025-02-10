@@ -1,15 +1,16 @@
 # -*- coding:utf-8 -*-
-import os
-import shutil
-import httpx
 import asyncio
+import os
 import random
+import shutil
 from concurrent.futures import ThreadPoolExecutor
 
+import httpx
 import yaml
-from mirai import GroupMessage, MessageChain, Image, FriendMessage
+from mirai import GroupMessage, MessageChain, Image
 from mirai.models import ForwardMessageNode, Forward
-from plugins.jmcomicDownload import queryJM, downloadComic, downloadALLAndToPdf, JM_search, JM_search_week, JM_search_comic_id
+
+from plugins.jmcomicDownload import downloadComic, downloadALLAndToPdf, JM_search, JM_search_week, JM_search_comic_id
 
 
 def main(bot, logger):

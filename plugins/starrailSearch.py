@@ -1,13 +1,11 @@
 # -*- coding: utf-8 -*-
 import json
 
-file = open('./data/star-rail-atlas/othername.json', 'r', encoding="utf-8")
-js = file.read()
-origindata = json.loads(js)
+with open('./data/star-rail-atlas/othername.json', 'r', encoding="utf-8") as file:
+    origindata = json.load(file)
 
-file = open("./data/star-rail-atlas/path.json", 'r', encoding="utf-8")
-js = file.read()
-picData = json.loads(js)
+with open("./data/star-rail-atlas/path.json", 'r', encoding="utf-8") as file:
+    picData = json.load(file)
 
 
 def find_keys_containing_value(json_data, search_value):
@@ -35,4 +33,4 @@ def getxinqiuPath(search_value):
     for path in result:
         p = "/".join(path)
     r = picData.get(p.split("/")[0]).get(p.split("/")[1])
-    return "data/star-rail-atlas/" + r
+    return f"data/star-rail-atlas/{r}"

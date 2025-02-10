@@ -55,12 +55,9 @@ async def userAvatarDownLoad(url):
 async def check_image_size():
     try:
         #logger.info("获取签到背景图片")
-        image_path = pic()
-
-        return image_path
+        return pic()
     except Exception as e:
-        image_path = "data/pictures/new_sign_Image/9bFIzYz.png"
-        return image_path
+        return "data/pictures/new_sign_Image/9bFIzYz.png"
 
 async def signPicMaker(url, ids, weather, nowTime, times, exp, startTime):
     # Load the background image

@@ -27,4 +27,16 @@ img2pdf
 lanzou-api
 pytubefix
 wordcloud
+librosa
+scipy
 jieba
+cn2an
+torch
+pypinyin
+jamo
+pyopenjtalk
+unidecode
+inflect
+numpy
+numba
+mirai

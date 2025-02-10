@@ -95,7 +95,6 @@ def tarotChoice(isAbstract):
     if ints == 0:
         tarots = random.choice(tarot)
         txt = tarots[0] + '\n' + 'ÕýÎ»' + '\n' + tarots[1]
-        img = 'data/pictures/tarot/TarotImages/' + tarots[3]
         img_folder = 'AbstractImages' if isAbstract else 'TarotImages'
         img = f'data/pictures/tarot/{img_folder}/{tarots[3]}'
         return txt, img

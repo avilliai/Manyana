@@ -1,10 +1,12 @@
 # -*- coding:utf-8 -*-
+import copy
 import datetime
 import os.path
-import copy
-from mirai import GroupMessage, Plain
-from mirai import Image, Voice, Startup, MessageChain
 from asyncio import sleep
+
+from mirai import GroupMessage, Plain
+from mirai import Image, Startup
+
 from plugins.toolkits import random_str
 from plugins.wordcloud import appendData, create_chinese_wordcloud_async, getMyAllText, getgroupText
 

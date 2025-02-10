@@ -2,7 +2,6 @@
 import random
 
 import yaml
-from mirai import GroupMessage
 from mirai import Poke
 from mirai.models import NudgeEvent
 

@@ -1,15 +1,11 @@
 # -*- coding: utf-8 -*-
-import os
-import random
 
-import httpx
 import yaml
 from mirai import GroupMessage
 from mirai import Image, MessageChain
 from mirai.models import ForwardMessageNode, Forward
 
 from plugins.imgSearch import fetch_results
-from plugins.setuModerate import setuModerate
 from plugins.toolkits import picDwn, random_str
 
 

@@ -1,17 +1,17 @@
 # -*- coding: utf-8 -*-
 import asyncio
+import copy
 import os
 import random
-import re
-import copy
+
 # 注释
 import yaml
 
-from plugins.ReplyModels import gptOfficial, gptUnofficial, kimi, qingyan,alcexGpt4o,lingyi, stepAI, qwen, gptvvvv, grop, \
-    gpt4hahaha, anotherGPT35, chatGLM, relolimigpt2, xinghuo, Gemma, binggpt4, alcex_GPT3_5, freeGemini, free_phi_3_5, \
-    free_gemini, sparkAI, wenxinAI, YuanQiTencent,meta_llama
+from plugins.ReplyModels import gptOfficial, gptUnofficial, anotherGPT35, chatGLM, binggpt4, free_phi_3_5, \
+    free_gemini, sparkAI, wenxinAI, YuanQiTencent, meta_llama
 from plugins.googleGemini import geminirep
-from plugins.toolkits import newLogger,random_str,translate
+from plugins.toolkits import newLogger
+
 logger=newLogger()
 with open('config/api.yaml', 'r', encoding='utf-8') as f:
     resulttr = yaml.load(f.read(), Loader=yaml.FullLoader)

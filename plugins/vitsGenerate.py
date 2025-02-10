@@ -1,15 +1,13 @@
 # -*- coding: utf-8 -*-
 # -*- coding: utf-8 -*-
+import asyncio
 import json
 import os
 import re
-
-import asyncio
 from concurrent.futures import ThreadPoolExecutor
 
 import httpx
 import requests
-import websockets
 import yaml
 
 from plugins.toolkits import translate, random_str, random_session_hash, newLogger
