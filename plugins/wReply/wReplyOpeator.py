@@ -1,9 +1,9 @@
+import asyncio
+import json
 import os
+from typing import Tuple
 
 import yaml
-import asyncio
-from typing import Dict, List, Tuple, Optional
-import json
 from fuzzywuzzy import fuzz
 
 from plugins.toolkits import newLogger

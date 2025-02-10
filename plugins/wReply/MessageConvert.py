@@ -1,5 +1,4 @@
 import json
-from mirai import FriendMessage, GroupMessage, At, Plain,MessageChain,Startup,Image
 
 from plugins.toolkits import picDwn, random_str
 

@@ -1,15 +1,18 @@
 # -*- coding: utf-8 -*-
-import os
-import random
-import yaml
 import asyncio
 import datetime
 import json
+import os
+import random
 import re
+
+import yaml
 from mirai.models import ForwardMessageNode, Forward
-from plugins.extraParts import get_game_image,sort_yaml,manage_group_status
+
+from plugins.extraParts import get_game_image, sort_yaml, manage_group_status
+
 _task = None
-from mirai import Mirai, WebSocketAdapter, GroupMessage, Image, At, Startup, Shutdown,MessageChain
+from mirai import GroupMessage, Image, Startup, Shutdown,MessageChain
 import requests
 
 
@@ -394,7 +397,7 @@ def main(bot, logger):
     @bot.on(Shutdown)
     async def stop_scheduler(_):
         # 退出时停止定时任务
-        if _task and not task.done():
+        if _task and not _task.done():
             _task.cancel()
 
 

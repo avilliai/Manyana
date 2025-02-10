@@ -1,5 +1,4 @@
 # -*- coding:utf-8 -*-
-import copy
 import os.path
 import shutil
 
@@ -7,7 +6,7 @@ import jmcomic
 import yaml
 from jmcomic import *
 
-from plugins.toolkits import fileToUrl, lanzouFileToUrl,random_str
+from plugins.toolkits import fileToUrl, lanzouFileToUrl, random_str
 
 
 class MyDownloader(jmcomic.JmDownloader):

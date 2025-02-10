@@ -2,16 +2,15 @@
 import os
 import random
 
-import yaml
 import httpx
-from bs4 import BeautifulSoup
+import yaml
 from fuzzywuzzy import process
 from mirai import GroupMessage, At
 from mirai import Voice
 from mirai.models import MusicShare
 
-from plugins.newsEveryDay import get_headers
 from plugins.cloudMusic import newCloudMusicDown, cccdddm
+
 
 async def delete_msg_async(msg_id):
     url = "http://localhost:3000/delete_msg"

@@ -1,13 +1,11 @@
 # -*- coding: utf-8 -*-
 import base64
+import copy
 import io
 
-from PIL import Image
-import asyncio
-import copy
-
-import google.generativeai as genai
 import httpx
+from PIL import Image
+
 
 #官方sdk的prompt和使用post请求的prompt结构不同，需要进行转换
 def promptConvert(input_list):

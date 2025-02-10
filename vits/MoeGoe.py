@@ -1,27 +1,20 @@
 # -*- coding:utf-8 -*-
 import asyncio
-import datetime
-import os
-from asyncio import sleep
+import logging
+import re
+import sys
 
 import httpx
 import librosa
 import soundfile
 from scipy.io.wavfile import write
-
-
-from .mel_processing import spectrogram_torch
-
-from .text import text_to_sequence, _clean_text
-from .models import SynthesizerTrn
-from . import utils
-from . import commons
-import sys
-import re
 from torch import no_grad, LongTensor
-import logging
 
-
+from . import commons
+from . import utils
+from .mel_processing import spectrogram_torch
+from .models import SynthesizerTrn
+from .text import text_to_sequence, _clean_text
 
 logging.getLogger('numba').setLevel(logging.WARNING)
 
@@ -182,10 +175,7 @@ def change_sample_rate(path,new_sample_rate=44100):
 
 
 def voice_conversion(sourcepath,speaker=0):
-    if '--escape' in sys.argv:
-        escape = True
-    else:
-        escape = False
+    escape = '--escape' in sys.argv
     afd=['voiceModel/nene/1374_epochsm.pth', 'voiceModel/nene/config.json']
     model = afd[0]
     config = afd[1]

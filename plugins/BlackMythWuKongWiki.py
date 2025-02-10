@@ -1,11 +1,12 @@
 # -*- coding: utf-8 -*-
-import asyncio
 
 import httpx
+from bs4 import BeautifulSoup
+from mirai import Plain, Image
 
 from plugins.toolkits import get_headers, random_str, picDwn
-from bs4 import BeautifulSoup
-from mirai import FriendMessage, GroupMessage, At, Plain,MessageChain,Startup,Image
+
+
 async def wukongwiki(aim,action=False):
     mesChain=[]
     async with httpx.AsyncClient(headers=get_headers(),timeout=20,verify=False) as client:

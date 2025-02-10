@@ -92,7 +92,7 @@ def main(bot,logger):
                     b1 = ForwardMessageNode(sender_id=bot.qq, sender_name="Manyana",
                                             message_chain=MessageChain([Image(base64 = base64.b64encode(img_bytes.getvalue())),st1]))
                     dataGet.get(event.sender.id).get('message').append(b1)
-                    img_bytes = None  # 释放内存
+                    del img_bytes  # 释放内存
 
                 logger.info("角色识别成功")
                 await bot.send(event,Forward(node_list=dataGet.get(event.sender.id).get('message')))
@@ -100,5 +100,5 @@ def main(bot,logger):
             except Exception as e:
                 logger.error(f"角色识别出错：{e}")
                 await bot.send(event,f"出错啦,请稍后再试~",True)
-            files['image'].close    # 关闭图片
+            files['image'].close()    # 关闭图片
             dataGet.pop(event.sender.id)

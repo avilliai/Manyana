@@ -1,6 +1,5 @@
 # -*- coding: utf-8 -*-
 import asyncio
-import threading
 
 import httpx
 import zhipuai

@@ -1,8 +1,6 @@
 # -*- coding:utf-8 -*-
-import json
-
-import asyncio
 import copy
+import json
 import os
 import random
 

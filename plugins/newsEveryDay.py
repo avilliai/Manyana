@@ -1,7 +1,6 @@
 import asyncio
 import datetime
 import os.path
-import random
 from io import BytesIO
 
 import httpx
