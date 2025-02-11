@@ -542,7 +542,15 @@ def main(bot, logger):
                 logger.error(f"反推失败: {e}")
                 await bot.send(event, "反推失败了喵~", True)
 
-
+    async def url_to_base64(url):
+        async with httpx.AsyncClient(timeout=9000) as client:
+            response = await client.get(url)
+            if response.status_code == 200:
+                image_bytes = response.content
+                encoded_string = base64.b64encode(image_bytes).decode('utf-8')
+                return encoded_string
+            else:
+                raise Exception(f"Failed to retrieve image: {response.status_code}")
     @bot.on(GroupMessage)
     async def sdsettings(event: GroupMessage):
         if str(event.message_chain).startswith("setsd "):
