@@ -107,7 +107,7 @@ def main(bot, logger):
                 else:
                     context=['正在随机ing，请稍等喵~~','正在翻找好看的本子喵~','嘿嘿，JM，启动！！！！','正在翻找JM.jpg','有色色！我来了','hero来了喵~~','了解~','全力色色ing~']
                     await bot.send(event, random.choice(context))
-                    context= list(JM_search_comic_id())
+                    context= JM_search_comic_id()
                     comic_id = context[random.randint(1, len(context)) - 1]
             except Exception as e:
                 logger.error(e)
