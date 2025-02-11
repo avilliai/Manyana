@@ -86,7 +86,7 @@ async def pic_audit_standalone(
         value.sort(reverse=True)
         reverse_dict = {v: k for k, v in possibilities.items()}
         #logger.info(message)
-        return reverse_dict[value[0]] == "questionable" or reverse_dict[value[0]] == "explicit"
+        return True if reverse_dict[value[0]] == "questionable" or reverse_dict[value[0]] == "explicit" else False
 
     if is_return_tags:
         return message, tags, tags_str
