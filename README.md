@@ -19,9 +19,9 @@
 ---
 
 **本仓库将基本不再更新。如果您有意愿参与开发和维护，欢迎pr。<br>
-无论您是正在考虑搭建Manyana的新用户，还是老用户，我们都建议转用[Eridanus](https://github.com/avilliai/Eridanus) <br>
-Eridanus是对Manyana的全面替代，功能更多，占用更低，功能之间的联动性更强，Eridanus的函数调用得以充分发挥所接入的llm的能力，同时进一步降低了使用门槛。<br>
-Eridanus脱离了mirai生态，但您仍然可以使overflow(mirai)和Eridanus同时开启，它们并不会冲突。**
+如果您在计划搭建Manyana，我们强烈建议转用[Eridanus](https://github.com/avilliai/Eridanus) 而不是Manyana。<br>
+Eridanus是对Manyana的全面替代，功能更多，占用更低，功能之间的联动性更强，Eridanus的函数调用得以充分发挥所接入的llm的能力，同时进一步降低了使用门槛。<br>**
+Eridanus脱离了mirai生态，但您仍然可以使overflow(mirai)和Eridanus同时开启，它们并不会冲突。
 
 [阅读文档](https://doc.luxmix.top/)
 
