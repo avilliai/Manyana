@@ -97,6 +97,7 @@ def vG(tex,out,speakerID=2,modelSelect=['vits/voiceModel/nene/1374_epochsm.pth',
         escape = True
     else:
         escape = False
+
     if modelSelect[0].startswith("vits/"):
 
         model=modelSelect[0]

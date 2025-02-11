@@ -1,20 +1,18 @@
 # -*- coding:utf-8 -*-
-from itertools import repeat
-from time import sleep
-
 import asyncio
 import datetime
-import websockets
-from websockets.exceptions import ConnectionClosedOK, ConnectionClosed
-from websockets import connect
-
+import json
 import os
 import random
 import shutil
 import sys
-import json
+from asyncio import sleep as sleep1
+from itertools import repeat
+from time import sleep
 
-from asyncio import sleep as sleep1, exceptions
+import websockets
+from websockets import connect
+from websockets.exceptions import ConnectionClosedOK
 
 # 下面的两行是launcher启动必要设置，勿动。
 os.chdir(os.path.dirname(os.path.abspath(__file__)))

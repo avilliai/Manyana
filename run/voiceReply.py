@@ -210,13 +210,12 @@ def main(bot, master, logger):
                     str1+=i+" |"
             except:
                 str1 = ""
-            b1=[]
-            b1.append(ForwardMessageNode(sender_id=bot.qq, sender_name="Manyana",
-                                    message_chain=MessageChain(str1)))
-            b1.append(ForwardMessageNode(sender_id=bot.qq, sender_name="Manyana",
-                                         message_chain=MessageChain("bert_vits2可用角色如下：\n" + str(modelScope))))
-            b1.append(ForwardMessageNode(sender_id=bot.qq, sender_name="Manyana",
-                                         message_chain=MessageChain(f"outVits可用角色如下：\n{outVitsSpeakers}")))
+            b1= [ForwardMessageNode(sender_id=bot.qq, sender_name="Manyana",
+                                    message_chain=MessageChain(str1)),
+                 ForwardMessageNode(sender_id=bot.qq, sender_name="Manyana",
+                                    message_chain=MessageChain("bert_vits2可用角色如下：\n" + str(modelScope))),
+                 ForwardMessageNode(sender_id=bot.qq, sender_name="Manyana",
+                                    message_chain=MessageChain(f"outVits可用角色如下：\n{outVitsSpeakers}"))]
             if GPTSOVITS_SPEAKERS is not None:
                 b1.append(ForwardMessageNode(sender_id=bot.qq, sender_name="Manyana",
                                              message_chain=MessageChain(f"gptsoVits可用角色如下：\n{str(list(GPTSOVITS_SPEAKERS.keys()))}")))

@@ -75,8 +75,8 @@ def main(bot, logger):
                 if context=="":
                     await bot.send(event, "好像没有找到你说的本子呢~~~")
                     return
-                cmList = []
-                cmList.append(ForwardMessageNode(sender_id=bot.qq, sender_name="ninethnine", message_chain=MessageChain(context)))
+                cmList = [
+                    ForwardMessageNode(sender_id=bot.qq, sender_name="ninethnine", message_chain=MessageChain(context))]
                 await bot.send(event, Forward(node_list=cmList))
             except Exception as e:
                 logger.error(e)
@@ -85,9 +85,10 @@ def main(bot, logger):
     async def download(event: GroupMessage):
         if '本周jm' == str(event.message_chain) or '本周JM' == str(event.message_chain) or '今日jm' == str(event.message_chain) or '今日JM' == str(event.message_chain):
             context=JM_search_week()
-            cmList = []
-            cmList.append(ForwardMessageNode(sender_id=bot.qq, sender_name="ninethnine", message_chain=MessageChain('本周的JM排行如下，请君过目\n')))
-            cmList.append(ForwardMessageNode(sender_id=bot.qq, sender_name="ninethnine", message_chain=MessageChain(context)))
+            cmList = [ForwardMessageNode(sender_id=bot.qq, sender_name="ninethnine",
+                                         message_chain=MessageChain('本周的JM排行如下，请君过目\n')),
+                      ForwardMessageNode(sender_id=bot.qq, sender_name="ninethnine",
+                                         message_chain=MessageChain(context))]
             await bot.send(event, Forward(node_list=cmList))
 
 
@@ -106,7 +107,7 @@ def main(bot, logger):
                 else:
                     context=['正在随机ing，请稍等喵~~','正在翻找好看的本子喵~','嘿嘿，JM，启动！！！！','正在翻找JM.jpg','有色色！我来了','hero来了喵~~','了解~','全力色色ing~']
                     await bot.send(event, random.choice(context))
-                    context=JM_search_comic_id()
+                    context= JM_search_comic_id()
                     comic_id = context[random.randint(1, len(context)) - 1]
             except Exception as e:
                 logger.error(e)

@@ -260,17 +260,17 @@ def main(bot, logger):
             tag = str(event.message_chain).replace("画 ", "")
             path = "data/pictures/cache/" + random_str() + ".png"
             logger.info("发起ai绘画请求，path:" + path + "|prompt:" + tag)
-            i = 1
-            while i < 8:
+            times = 1
+            while times < 8:
                 try:
-                    logger.info(f"接口1绘画中......第{i}次请求....")
+                    logger.info(f"接口1绘画中......第{times}次请求....")
                     p = await draw1(tag, path)
                     logger.error(str(p))
                     await bot.send(event, [Image(path=p[0]), Image(path=p[1]), Image(path=p[2]), Image(path=p[3])],True)                   
                 except Exception as e:
                     logger.error(e)
                     logger.error("接口1绘画失败.......")
-                    i += 1
+                    times += 1
                     # await bot.send(event,"接口1绘画失败.......")
 
     @bot.on(GroupMessage)
@@ -551,7 +551,6 @@ def main(bot, logger):
                 return encoded_string
             else:
                 raise Exception(f"Failed to retrieve image: {response.status_code}")
-            
     @bot.on(GroupMessage)
     async def sdsettings(event: GroupMessage):
         if str(event.message_chain).startswith("setsd "):
