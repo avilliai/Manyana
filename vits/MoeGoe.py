@@ -1,20 +1,27 @@
 # -*- coding:utf-8 -*-
 import asyncio
-import logging
-import re
-import sys
+import datetime
+import os
+from asyncio import sleep
 
 import httpx
 import librosa
 import soundfile
 from scipy.io.wavfile import write
-from torch import no_grad, LongTensor
 
-from . import commons
-from . import utils
+
 from .mel_processing import spectrogram_torch
-from .models import SynthesizerTrn
+
 from .text import text_to_sequence, _clean_text
+from .models import SynthesizerTrn
+from . import utils
+from . import commons
+import sys
+import re
+from torch import no_grad, LongTensor
+import logging
+
+
 
 logging.getLogger('numba').setLevel(logging.WARNING)
 
@@ -97,7 +104,6 @@ def vG(tex,out,speakerID=2,modelSelect=['vits/voiceModel/nene/1374_epochsm.pth',
         escape = True
     else:
         escape = False
-
     if modelSelect[0].startswith("vits/"):
 
         model=modelSelect[0]
@@ -176,7 +182,10 @@ def change_sample_rate(path,new_sample_rate=44100):
 
 
 def voice_conversion(sourcepath,speaker=0):
-    escape = '--escape' in sys.argv
+    if '--escape' in sys.argv:
+        escape = True
+    else:
+        escape = False
     afd=['voiceModel/nene/1374_epochsm.pth', 'voiceModel/nene/config.json']
     model = afd[0]
     config = afd[1]
