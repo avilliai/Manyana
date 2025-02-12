@@ -12,14 +12,14 @@ async def bingCreate(sockProxy, prompt, _U, kiev):
     bing_art = BingArt(auth_cookie_U=_U, auth_cookie_KievRPSSecAuth=kiev, auto=True)
     results = bing_art.generate_images(prompt)
     #print(results)
-    paths = []
+
     for i in results.get("images"):
         url2 = i.get("url")
         async with httpx.AsyncClient(timeout=40) as client:
             r1 = await client.get(url2)
-        path = "data/pictures/cache/" + random_str() + ".png"
-        paths.append(path)
+        path = f"data/pictures/cache/{random_str()}.png"
         with open(path, "wb") as f:
             f.write(r1.content)
+        yield path
         # print(path)
-    return paths
+

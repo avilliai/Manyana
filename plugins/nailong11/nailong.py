@@ -105,5 +105,5 @@ def main(base64_string):
     
     # 检测奶龙元素
     result = detect_nailong_from_base64(base64_string, model, test_transform, device)
-    print(f"Detection Result: {'True' if result else 'False'}")
+    print(f"Detection Result: {str(result)}")
     return result
