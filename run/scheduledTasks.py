@@ -133,7 +133,7 @@ def main(bot,logger):
                 userli2 = []
                 for i in userdict:
                     try:
-                        s=int(i)
+                        int(i)
                     except:
                         continue
                     singleUserData = userdict.get(i)

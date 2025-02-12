@@ -12,9 +12,9 @@ def main(bot, master, logger, berturl, proxy):
     normal_Reply = result.get("nudgedReply")
     special_Reply = result.get("BeatNudge")
     special_Reply1 = result.get("BeatNudge1")
-    global transLateData
-    with open('data/autoReply/transLateData.yaml', 'r', encoding='utf-8') as file:
-        transLateData = yaml.load(file, Loader=yaml.FullLoader)
+
+    # with open('data/autoReply/transLateData.yaml', 'r', encoding='utf-8') as file:
+    # transLateData = yaml.load(file, Loader=yaml.FullLoader)
     prob = result.get("prob")
     logger.info("读取到apiKey列表")
 
@@ -27,7 +27,6 @@ def main(bot, master, logger, berturl, proxy):
 
     @bot.on(NudgeEvent)
     async def NudgeReply(event: NudgeEvent):
-        global transLateData
         if event.target == bot.qq and not nudgeornot:
             logger.info("接收到来自" + str(event.from_id) + "的戳一戳")
             if random.randint(0, 100) > 100 - prob:

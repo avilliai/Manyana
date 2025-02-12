@@ -13,15 +13,15 @@ def main(bot, api_key, proxy, logger):
     logger.info("搜图功能启动完毕")
     with open('config/api.yaml', 'r', encoding='utf-8') as f:
         result = yaml.load(f.read(), Loader=yaml.FullLoader)
-    cookies = result.get("e-hentai")
+    # cookies = result.get("e-hentai")
     proxy=result.get("proxy")
     sauceno_api=result.get("sauceno-api")
     if proxy=="" or proxy==" ":
         proxy=None
-    with open('config/settings.yaml', 'r', encoding='utf-8') as f:
-        result1 = yaml.load(f.read(), Loader=yaml.FullLoader)
-    selfsensor = result1.get("moderate").get("selfsensor")
-    selfthreshold = result1.get("moderate").get("selfthreshold")
+    #with open('config/settings.yaml', 'r', encoding='utf-8') as f:
+    #result1 = yaml.load(f.read(), Loader=yaml.FullLoader)
+    # selfsensor = result1.get("moderate").get("selfsensor")
+    # selfthreshold = result1.get("moderate").get("selfthreshold")
     global dataGet
     dataGet = {}
     global userSearch

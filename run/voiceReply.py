@@ -15,7 +15,7 @@ from plugins.vitsGenerate import superVG, sovits, taffySayTest, gptVitsSpeakers
 def main(bot, master, logger):
     with open('config/api.yaml', 'r', encoding='utf-8') as f:
         result0 = yaml.load(f.read(), Loader=yaml.FullLoader)
-    FishTTSAuthorization = result0.get("FishTTSAuthorization")
+     #FishTTSAuthorization = result0.get("FishTTSAuthorization")
     try:
         GPTSOVITS_SPEAKERS = asyncio.run(gptVitsSpeakers())
     except Exception as e:

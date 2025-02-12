@@ -23,15 +23,13 @@ async def delete_msg_async(msg_id):
         'Authorization': 'Bearer ff'
     }
     async with httpx.AsyncClient(timeout=None,headers=headers) as client:
-        response = await client.post(url, json=payload)
+        await client.post(url, json=payload)
         #print(response.text)
-
+musicTask = {}
+musicTask_recall = {}
 def main(bot, logger):
     logger.warning("语音点歌 loaded")
-    global musicTask
-    musicTask = {}
-    global musicTask_recall
-    musicTask_recall = {}
+
     with open('config/controller.yaml', 'r', encoding='utf-8') as f:
         controller = yaml.load(f.read(), Loader=yaml.FullLoader)
     downloadMusicUrl = controller.get("点歌").get("下载链接")
@@ -104,7 +102,7 @@ def main(bot, logger):
                     try:
                         await delete_msg_async(musicTask_recall.get(event.sender.id))
                     except:
-                        logger.info(f"无法正常撤回。请检查，recall_id：{recall_id}")
+                        logger.info(f"无法正常撤回。请检查，musicpiack.py:107")
                     musicTask_recall.pop(event.sender.id)
                     musicTask.pop(event.sender.id)
                     return
@@ -143,8 +141,6 @@ def main(bot, logger):
                     logger.info(f"无法正常撤回。请检查，recall_id：{recall_id}")
                 if downloadMusicUrl:
                     await bot.send(event, f"下载链接(mp3)：{MusicUrlDownLoad}")
-
-                
 
             except Exception as e:
                 logger.error(e)

@@ -24,9 +24,7 @@ def main(bot,logger):
     global temp
     temp = {}
     global lists
-    lists = {}
-    for i in live:
-        lists[i] = 0
+    lists = {i:0 for i in live}
     logger.info(lists)
 
     @bot.on(Startup)

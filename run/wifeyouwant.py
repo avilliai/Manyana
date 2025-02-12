@@ -17,12 +17,12 @@ import requests
 
 
 def main(bot, logger):
-    with open('config.json', 'r', encoding='utf-8') as f:
-        data = yaml.load(f.read(), Loader=yaml.FullLoader)
-    config = data
-    botName = str(config.get('botName'))
-    master = int(config.get('master'))
-    mainGroup = int(config.get("mainGroup"))
+# with open('config.json', 'r', encoding='utf-8') as f:
+     #   data = yaml.load(f.read(), Loader=yaml.FullLoader)
+    # config = data
+    # botName = str(config.get('botName'))
+    # master = int(config.get('master'))
+    # mainGroup = int(config.get("mainGroup"))
     with open('config/controller.yaml', 'r', encoding='utf-8') as f:
         controllerResult = yaml.load(f.read(), Loader=yaml.FullLoader)
     wifePrefix = controllerResult.get("图片相关").get("wifePrefix")
@@ -124,7 +124,7 @@ def main(bot, logger):
                 flag_persona = 4
                 from_id = int(event.sender.id)
                 if manage_group_status(from_id) :
-                    target_group = int(event.group.id)
+                    # target_group = int(event.group.id)
                     target_id_aim=manage_group_status(from_id)
                     flag_aim = 1
                 else:
@@ -162,8 +162,6 @@ def main(bot, logger):
                     #print(rnum1)
                     #print(flag_aim)
 
-
-
                 rnum0 = random.randint(1, 10)
                 if rnum0 == 1:
                     await bot.send(event, '不许瑟瑟！！！！')
@@ -173,9 +171,6 @@ def main(bot, logger):
                 logger.info("透群友任务开启")
 
                 friendlist = []
-                target_name = None
-                target_id = None
-                target_img = None
                 # target_nikenamne=None
                 from_name = str(event.sender.member_name)
                 from_id = int(event.sender.id)
@@ -362,28 +357,22 @@ def main(bot, logger):
                     if os.path.exists(file_path):
                         with open(file_path, 'r') as file:
                             users_data = yaml.safe_load(file) or {}
-                            type='day'
-                            users_data[type] = {}
+                            users_data['day'] = {}
                         if int(weekday) == 0:
-                            type = 'week'
-                            users_data[type] = {}
+                            users_data['week'] = {}
                         if int(day) == 1:
-                            type = 'moon'
-                            users_data[type] = {}
+                            users_data['moon'] = {}
                         with open(file_path, 'w') as file:
                             yaml.safe_dump(users_data, file)
                     file_path="data/pictures/wife_you_want_img/wife_you_want_week_check_from.yaml"
                     if os.path.exists(file_path):
                         with open(file_path, 'r') as file:
                             users_data = yaml.safe_load(file) or {}
-                            type='day'
-                            users_data[type] = {}
+                            users_data['day'] = {}
                         if int(weekday) == 0:
-                            type = 'week'
-                            users_data[type] = {}
+                            users_data['week'] = {}
                         if int(day) == 1:
-                            type = 'moon'
-                            users_data[type] = {}
+                            users_data['moon'] = {}
                         with open(file_path, 'w') as file:
                             yaml.safe_dump(users_data, file)
                     print('娶群友事件已重置')

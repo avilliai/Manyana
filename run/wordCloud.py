@@ -4,7 +4,7 @@ import datetime
 import os.path
 from asyncio import sleep
 
-from mirai import GroupMessage, Plain
+from mirai import GroupMessage
 from mirai import Image, Startup
 
 from plugins.toolkits import random_str
@@ -37,7 +37,7 @@ def main(bot,logger):
     async def addData(event: GroupMessage):
         global tempData
         try:
-            text=event.message_chain.get(Plain)
+            # text=event.message_chain.get(Plain)
             groupid=event.group.id
             userid=event.sender.id
             if str(groupid)+"/"+str(userid) in tempData:
