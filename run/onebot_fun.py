@@ -41,9 +41,3 @@ def main(bot,logger,master):
                     await delete_msg(quote_id)
                 except:
                     await bot.send(event,'撤回失败',True)
-
-        
-                
-                
-                
-                

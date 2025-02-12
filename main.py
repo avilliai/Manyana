@@ -438,7 +438,7 @@ if __name__ == '__main__':
             try:
                 from run import youtube
 
-                youtube.main(bot, logger, proxy)
+                youtube.main(bot, logger)
             except:
                 logger.warning("youtube功能无法启用(测试功能，无需在意)")
                 sleep(3)
