@@ -40,7 +40,7 @@ Eridanus实现了对Manyana的全面替代，功能更多，占用更低，功�
 **请使用此方案搭建**<br>
 > 对于windows用户，存在两款启动器，分别是[Manyana1.x](https://github.com/avilliai/Manyana/releases) 和[Manyana_deploy](https://github.com/lux-QAQ/Manyana_deploy/releases) 你可以根据自己的喜好选择<br>
 
-[Manyana1.x](https://github.com/avilliai/Manyana/releases) (啥都不懂你就用这个吧，别给自己上难度了)使用方式如下。
+[Manyana1.x](https://github.com/avilliai/Manyana/releases) (建议)使用方式如下。
 - 从[release](https://github.com/avilliai/Manyana/releases)下载最新整合包并解压
   - 如果下载过慢，你也可以从Q群251807019获得这个压缩包(最新版会先在这里发)
 - 解压并阅读 部署文档.pdf
