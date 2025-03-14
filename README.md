@@ -23,6 +23,8 @@
 Eridanus实现了对Manyana的全面替代，功能更多，占用更低，功能之间的联动性更强。<br>
 以后有时间可能会回来重写Manyana**
 
+---
+
 [阅读文档](https://doc.luxmix.top/)
 
 
