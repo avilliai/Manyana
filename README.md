@@ -18,9 +18,9 @@
 
 ---
 
-**本仓库将基本不再更新。如果您有意愿参与开发和维护，欢迎pr。<br>
+**本仓库不再更新维护。如果您有意愿参与开发和维护，欢迎pr。<br>
 目前不建议再使用Manyana，建议改用[Eridanus](https://github.com/avilliai/Eridanus)。<br>
-Eridanus实现了对Manyana的全面替代，功能更多，占用更低，功能之间的联动性更强。<br>
+Eridanus实现了对Manyana的全面替代，功能更多，占用更低，功能之间的联动性更强。部署也远比Manyana简单<br>
 以后有时间可能会回来重写Manyana**
 
 ---
